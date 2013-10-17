@@ -7,6 +7,22 @@ package cn.me.xdf.common.upload;
  * 
  */
 public enum StoreType {
+
+	/**
+	 * 返回项目路径
+	 */
+	FOLDER {
+		@Override
+		public int getValue() {
+			return 1;
+		}
+
+		@Override
+		public String getName() {
+			return "Folder";
+		}
+	},
+
 	/**
 	 * 返回系统路径
 	 */
@@ -23,19 +39,22 @@ public enum StoreType {
 		}
 
 	},
+
 	/**
-	 * 返回项目路径
+	 * FileNet存储
 	 */
-	FOLDER {
+	FILEET {
+
 		@Override
 		public int getValue() {
-			return 1;
+			return 3;
 		}
 
 		@Override
 		public String getName() {
-			return "Folder";
+			return "FileNet";
 		}
+
 	};
 
 	public abstract int getValue();

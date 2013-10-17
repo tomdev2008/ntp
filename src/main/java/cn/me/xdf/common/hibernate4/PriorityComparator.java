@@ -3,11 +3,20 @@ package cn.me.xdf.common.hibernate4;
 import java.io.Serializable;
 import java.util.Comparator;
 
+/**
+ * 排序
+ * @author xiaobin
+ *
+ */
 @SuppressWarnings("serial")
 public class PriorityComparator implements Comparator<PriorityInterface>,
 		Serializable {
+	
 	public static final PriorityComparator INSTANCE = new PriorityComparator();
 
+	/**
+	 * 优先级排序
+	 */
 	public int compare(PriorityInterface o1, PriorityInterface o2) {
 		Number v1 = o1.getPriority();
 		Number v2 = o2.getPriority();

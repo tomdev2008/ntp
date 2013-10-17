@@ -490,7 +490,7 @@ public class Finder {
 				throw new RuntimeException("value is not List type");
 			}
 		}
-		throw new RuntimeException("Null in point searchtype");
+		throw new RuntimeException("不支持的搜索类型");
 	}
 
 	/**
@@ -650,6 +650,7 @@ public class Finder {
 		Finder find = Finder
 				.create("select distinct p FROM BookType join fetch p");
 		System.out.println(find.getRowCountHql());
+
 		System.out.println(find.getOrigHql());
 	}
 

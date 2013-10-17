@@ -109,6 +109,11 @@ public class Updater<T> {
 
 	// private static final Logger log = LoggerFactory.getLogger(Updater.class);
 
+	/**
+	 * 更新模型
+	 * @author xiaobin
+	 *
+	 */
 	public static enum UpdateMode {
 		MAX, MIN, MIDDLE
 	}

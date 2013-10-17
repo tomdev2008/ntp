@@ -99,7 +99,8 @@ public class Identities {
 		return new Date(Long.parseLong(timeInfo, 16));
 	}
 
+	//测试生成主键
 	public static void main(String[] args) {
-		System.out.println(generateID());
+		System.out.println(generateID(System.currentTimeMillis()));
 	}
 }
