@@ -77,7 +77,6 @@ public class FileUtil {
 					}
 				}
 			}
-			bis.close();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {

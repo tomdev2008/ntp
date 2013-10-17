@@ -58,13 +58,16 @@ public class DownloadHttpMessageConverter extends
 				f.delete();
 			}
 		} else {
-			if(downFile.getCharset()==null){
-				//Charset.forName("UTF-8")
-				FileCopyUtils.copy(downFile.getContent(), new OutputStreamWriter(
-						outputMessage.getBody(), Charset.forName("UTF-8")));
-			}else{
-				FileCopyUtils.copy(downFile.getContent(), new OutputStreamWriter(
-						outputMessage.getBody(), downFile.getCharset()));
+			if (downFile.getCharset() == null) {
+				// Charset.forName("UTF-8")
+				FileCopyUtils.copy(
+						downFile.getContent(),
+						new OutputStreamWriter(outputMessage.getBody(), Charset
+								.forName("UTF-8")));
+			} else {
+				FileCopyUtils.copy(downFile.getContent(),
+						new OutputStreamWriter(outputMessage.getBody(),
+								downFile.getCharset()));
 			}
 		}
 
