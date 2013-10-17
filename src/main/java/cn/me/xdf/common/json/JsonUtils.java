@@ -8,6 +8,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Json工具类
+ * 
+ * @author xiaobin
+ * 
+ */
 public class JsonUtils {
 
 	private static final Logger log = LoggerFactory.getLogger(JsonUtils.class);
