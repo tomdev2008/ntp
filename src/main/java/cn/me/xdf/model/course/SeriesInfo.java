@@ -1,16 +1,13 @@
 package cn.me.xdf.model.course;
 
-import java.util.Set;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -48,6 +45,11 @@ public class SeriesInfo extends IdEntity{
 	 * 系列描述
 	 */
 	private String fdDescription;
+	
+	/**
+	 * 是否有效
+	 */
+	private Boolean isAvailable;
 	
 	/**
 	 * 对应封面存储的附件
@@ -88,4 +90,13 @@ public class SeriesInfo extends IdEntity{
 	public void setAttMain(AttMain attMain) {
 		this.attMain = attMain;
 	}
+
+	public Boolean getIsAvailable() {
+		return isAvailable;
+	}
+
+	public void setIsAvailable(Boolean isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+	
 }
