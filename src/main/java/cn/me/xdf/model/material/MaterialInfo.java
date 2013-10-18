@@ -32,7 +32,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @SuppressWarnings("serial")
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Table(name = "IXDF_NTP_MATERIAL_INFO")
+@Table(name = "IXDF_NTP_MATERIAL")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class MaterialInfo  extends IdEntity {
 	
