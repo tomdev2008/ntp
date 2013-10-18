@@ -36,7 +36,7 @@ public class CourseAuth extends IdEntity{
 	/**
 	 * 用户
 	 */
-	private SysOrgPerson user;
+	private SysOrgPerson fdUser;
 	
 	/**
 	 * 是否可授权学习
@@ -59,13 +59,13 @@ public class CourseAuth extends IdEntity{
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdUserId")
-	public SysOrgPerson getUser() {
-		return user;
+	@JoinColumn(name = "fdUserId")	
+	public SysOrgPerson getFdUser() {
+		return fdUser;
 	}
 
-	public void setUser(SysOrgPerson user) {
-		this.user = user;
+	public void setFdUser(SysOrgPerson fdUser) {
+		this.fdUser = fdUser;
 	}
 
 	public Boolean getIsAuthStudy() {

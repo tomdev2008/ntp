@@ -36,12 +36,12 @@ public class CourseParticipateAuth extends IdEntity{
 	/**
 	 * 用户
 	 */
-	private SysOrgPerson user;
+	private SysOrgPerson fdUser;
 	
 	/**
 	 * 导师
 	 */
-	private SysOrgPerson teacher;
+	private SysOrgPerson fdTeacher;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdCourseId")
@@ -55,22 +55,22 @@ public class CourseParticipateAuth extends IdEntity{
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdUserId")
-	public SysOrgPerson getUser() {
-		return user;
+	public SysOrgPerson getFdUser() {
+		return fdUser;
 	}
 
-	public void setUser(SysOrgPerson user) {
-		this.user = user;
+	public void setFdUser(SysOrgPerson fdUser) {
+		this.fdUser = fdUser;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdTeacherId")
-	public SysOrgPerson getTeacher() {
-		return teacher;
+	public SysOrgPerson getFdTeacher() {
+		return fdTeacher;
 	}
 
-	public void setTeacher(SysOrgPerson teacher) {
-		this.teacher = teacher;
+	public void setFdTeacher(SysOrgPerson fdTeacher) {
+		this.fdTeacher = fdTeacher;
 	}
 	
 	
