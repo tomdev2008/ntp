@@ -1,8 +1,0 @@
-1：在TraineeService的第60行，应该获取本学校下所有的流程信息：
-
-Finder finder = Finder
-				.create("select p from BamProject p join fetch p.bamProjectMembers m where p.status=:status")
-				.setParam("status", BamProject.IS_OPEN);
-		finder.append("and m.newteachId=:nid").setParam("nid", userId);
-		finder.append("and m.through=:through").setParam("through", false);// 未通过
-		return find(finder);
