@@ -36,12 +36,12 @@ import cn.me.xdf.model.base.IdEntity;
 public class SeriesCourses extends IdEntity{
 
 	/**
-	 * 系列ID
+	 * 系列
 	 */
 	private SeriesInfo series;
 	
 	/**
-	 * 课程ID
+	 * 课程
 	 */
 	private CourseInfo courses;
 	

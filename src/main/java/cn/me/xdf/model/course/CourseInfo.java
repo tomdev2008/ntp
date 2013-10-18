@@ -123,6 +123,16 @@ public class CourseInfo extends IdEntity{
 	 * 学习顺序
 	 */
 	private String fdOrder;
+	
+	/**
+	 * 是否有效
+	 */
+	private Boolean isAvailable;
+	
+	/**
+	 * 状态：00草稿，01发布
+	 */
+	private String fdStatus;
 
 	public String getFdTitle() {
 		return fdTitle;
@@ -150,6 +160,7 @@ public class CourseInfo extends IdEntity{
 		this.fdCategory = fdCategory;
 	}
 
+	@Column(length = 2000)
 	public String getFdSummary() {
 		return fdSummary;
 	}
@@ -158,6 +169,7 @@ public class CourseInfo extends IdEntity{
 		this.fdSummary = fdSummary;
 	}
 
+	@Column(length = 2000)
 	public String getFdLearnAim() {
 		return fdLearnAim;
 	}
@@ -174,6 +186,7 @@ public class CourseInfo extends IdEntity{
 		this.fdProposalsGroup = fdProposalsGroup;
 	}
 
+	@Column(length = 1000)
 	public String getFdDemand() {
 		return fdDemand;
 	}
@@ -271,6 +284,22 @@ public class CourseInfo extends IdEntity{
 
 	public void setFdOrder(String fdOrder) {
 		this.fdOrder = fdOrder;
+	}
+
+	public Boolean getIsAvailable() {
+		return isAvailable;
+	}
+
+	public void setIsAvailable(Boolean isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+
+	public String getFdStatus() {
+		return fdStatus;
+	}
+
+	public void setFdStatus(String fdStatus) {
+		this.fdStatus = fdStatus;
 	}
 	
 }

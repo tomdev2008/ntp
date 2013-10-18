@@ -13,7 +13,7 @@ import cn.me.xdf.model.base.IdEntity;
 
 /**
  * 
- * 课程分类的定义
+ * 课程标签的定义
  * 
  * @author zuoyi
  * 
@@ -21,17 +21,17 @@ import cn.me.xdf.model.base.IdEntity;
 @SuppressWarnings("serial")
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Table(name = "IXDF_NTP_COURSE_CATEGORY")
+@Table(name = "IXDF_NTP_TAG")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class CourseCategory extends IdEntity{
+public class TagInfo extends IdEntity {
 	
 	/**
-	 * 分类名称
+	 * 标签名称
 	 */
 	private String fdName;
 	
 	/**
-	 * 分类描述
+	 * 标签描述
 	 */
 	private String fdDescription;
 
@@ -51,6 +51,4 @@ public class CourseCategory extends IdEntity{
 	public void setFdDescription(String fdDescription) {
 		this.fdDescription = fdDescription;
 	}
-	
-	
 }

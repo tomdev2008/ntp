@@ -136,6 +136,11 @@ public class MaterialInfo  extends IdEntity {
 	private SysOrgPerson creator;
 	
 	/**
+	 * 是否有效
+	 */
+	private Boolean isAvailable;
+	
+	/**
 	 * 试题
 	 */
 	private List<ExamQuestion> questions;
@@ -303,5 +308,12 @@ public class MaterialInfo  extends IdEntity {
 		this.creator = creator;
 	}
 
+	public Boolean getIsAvailable() {
+		return isAvailable;
+	}
+
+	public void setIsAvailable(Boolean isAvailable) {
+		this.isAvailable = isAvailable;
+	}
 	
 }
