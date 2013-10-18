@@ -52,7 +52,7 @@ public class MaterialInfo  extends IdEntity {
 	 * 07富文本
 	 * 08测试
 	 * 09测评
-	 * 10作业
+	 * 10作业包
 	 * 11日程
 	 */
 	private String fdType;
