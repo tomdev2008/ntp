@@ -1,0 +1,81 @@
+package cn.me.xdf.model.course;
+
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.IdEntity;
+
+
+/**
+ * 
+ * 系列课程关系实体的定义
+ * 
+ * @author zuoyi
+ * 
+ */
+@SuppressWarnings("serial")
+@Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Table(name = "IXDF_NTP_SERIES_COURSE")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class SeriesCourses extends IdEntity{
+
+	/**
+	 * 系列ID
+	 */
+	private SeriesInfo series;
+	
+	/**
+	 * 课程ID
+	 */
+	private CourseInfo courses;
+	
+	/**
+	 * 课程序号
+	 */
+	private String fdCourseNo;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fdSeriesId")
+	public SeriesInfo getSeries() {
+		return series;
+	}
+
+	public void setSeries(SeriesInfo series) {
+		this.series = series;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fdCourseId")
+	public CourseInfo getCourses() {
+		return courses;
+	}
+
+	public void setCourses(CourseInfo courses) {
+		this.courses = courses;
+	}
+
+	public String getFdCourseNo() {
+		return fdCourseNo;
+	}
+
+	public void setFdCourseNo(String fdCourseNo) {
+		this.fdCourseNo = fdCourseNo;
+	}
+	
+}

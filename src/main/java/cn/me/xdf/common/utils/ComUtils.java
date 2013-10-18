@@ -1,139 +1,108 @@
 package cn.me.xdf.common.utils;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 
-/**
- * 共用辅助方法
- * 
- * 包含一些零散的便捷方法。
- * 
- * @author xiaobin
- * 
- */
+import cn.me.xdf.common.utils.sso.AESX3;
+
+
+
 public class ComUtils {
 
-	public static final String JSESSION_COOKIE = "JSESSIONID";
-	public static final String JSESSION_URL = "jsessionid";
+	public static String HTTP_URL = "http://ntp.xdf.cn/otp";
 
 	/**
-	 * 获得当前时间。
+	 * 根据新东方的email邮件获取登录名
 	 * 
+	 * @param email
 	 * @return
 	 */
-	public static java.sql.Timestamp now() {
-		return new java.sql.Timestamp(System.currentTimeMillis());
-	}
-
-	/**
-	 * 格式化日期。yyyy-MM-dd
-	 * 
-	 * @param date
-	 * @return
-	 */
-	public static String dateFormat(Date date) {
-		return format.format(date);
-	}
-
-	/**
-	 * 格式化日期。yyyy-MM-dd hh-mm-ss
-	 * 
-	 * @param date
-	 * @return
-	 */
-	public static String dataFormatWhole(Date date) {
-		return formatw.format(date);
-	}
-
-	public static String formatDate(Date date, int style) {
-		if (date == null) {
-			return "";
+	public static String getLoginNameByEmail(String email) {
+		if (StringUtils.isBlank(email)) {
+			return email;
 		}
-		switch (style) {
-		case 4:
-			return formats.format(date);
-		case 3:
-			return formatm.format(date);
-		case 2:
-			return format.format(date);
-		default:
-			return formatw.format(date);
+		if (RegexUtils.checkEmail(email, 100)) {
+			return email.substring(0, email.lastIndexOf('@'));
 		}
+		return email;
 	}
 
-	public static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	/**
+	 * 获取人员的默认头像
+	 * 
+	 * @return
+	 */
+	public static String getDefaultPoto() {
+		return "resources/images/face-placeholder.png";
+	}
 
-	public static final DateFormat formatw = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss");
-	public static final DateFormat formatm = new SimpleDateFormat("MM-dd HH:mm");
+	public static String getFileUrl(String fdId, String fileName) {
+		return "http://me.xdf.cn/iportal/sys/attachment/sys_att_swf/viewer.do?method=viewer&fdId="
+				+ fdId + "&seq=0&type=iwork&fileName=" + fileName;
+	}
 
-	public static final DateFormat formats = new SimpleDateFormat("MM-dd");
+	// 调用得到人员头像URL
+	public static String getURLByLoginName(String loginName) {
+		final String _password = "123.com!@#!@#";
+		// 一共3种_original, _129129, _9494
+		final String _type = "_9494";
+		String _key = loginName + _password;
+		String _enKey = AESX3.md5(_key);
 
-	public static FilenameFilter DIR_FILE_FILTER = new FilenameFilter() {
-		public boolean accept(File dir, String name) {
-			if (dir.isDirectory()) {
+		StringBuffer _url = new StringBuffer
+
+		("http://img.staff.xdf.cn/Photo/");
+
+		if (StringUtils.isBlank(_enKey))
+			return null;
+
+		String _hash12 = _enKey.substring(_enKey.length() - 2,
+
+		_enKey.length());
+		String _hash34 = _enKey.substring(_enKey.length() - 4,
+				_enKey.length() - 2);
+
+		_url.append(_hash12 + "/");
+		_url.append(_hash34 + "/");
+		_url.append(_enKey.toLowerCase());
+		_url.append(_type);
+		_url.append(".jpg");
+
+		return _url.toString();
+	}
+
+	/**
+	 * 功能描述 : 检测当前URL是否可连接或是否有效
+	 * 
+	 * @param url
+	 *            指定URL网络地址
+	 * 
+	 * @return boolean
+	 */
+	public static synchronized boolean isConnect(String url) {
+		URL urlStr;
+		HttpURLConnection connection;
+		if (url == null || url.length() <= 0) {
+			return false;
+		}
+		try {
+			urlStr = new URL(url);
+			connection = (HttpURLConnection) urlStr.openConnection();
+			int state = connection.getResponseCode();
+			if (state == 200) {
 				return true;
-			} else {
-				return false;
 			}
+		} catch (Exception ex) {
+			return false;
 		}
-	};
-
-	/**
-	 * 判断某天是星期几
-	 * 
-	 * @param date
-	 * @return
-	 */
-	public static String getWeekday(String date) {// 必须yyyy-MM-dd
-		SimpleDateFormat sdw = new SimpleDateFormat("E");
-		Date d = null;
-		try {
-			d = format.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return sdw.format(d);
-	}
-
-	public static String getWebPath(HttpServletRequest request) {
-		String path = request.getContextPath();
-		// String serverName = request.getServerName();
-		String basePath = request.getScheme() + "://" + request.getServerName()
-				+ ":" + request.getServerPort() + path + "/";
-		return basePath;
-	}
-
-	public static Calendar getCalendarDay(String date) {
-		Date d = null;
-		try {
-			d = format.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		Calendar c = Calendar.getInstance();
-		c.clear();
-		c.setTime(d);
-		// 获取是本月的第几周
-		// int week = c.get(Calendar.WEEK_OF_MONTH);
-		// int week = c.get(Calendar.WEEK_OF_YEAR);
-		// 获致是本周的第几天地, 1代表星期天...7代表星期六
-		// int day = c.get(Calendar.DAY_OF_WEEK);
-		// System.out.println("今天是本月的第" + week + "周");
-		// System.out.println("今天是星期"+ (day-1));
-		return c;
+		return false;
 	}
 
 	public static void main(String[] args) {
-		Calendar calendar = getCalendarDay("2013-09-12");
-		System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
+		String loginName = getLoginNameByEmail("yyf262300@BJ@xdf.cn");
+		System.out.println("loginName===" + loginName);
 	}
 
 }
