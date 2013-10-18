@@ -1,4 +1,4 @@
-package cn.me.xdf.model;
+package cn.me.xdf.model.base;
 
 import java.io.Serializable;
 
