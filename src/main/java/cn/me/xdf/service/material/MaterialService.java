@@ -7,10 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.service.BaseService;
 import cn.me.xdf.utils.ShiroUtils;
-
+/**
+ * 
+ * 资源service
+ * 
+ * @author zhaoq
+ * 
+ */
 @Service
 @Transactional(readOnly = false)
 public class MaterialService extends BaseService {
@@ -35,6 +42,18 @@ public class MaterialService extends BaseService {
 		finder.append("where (info.isPublish='true') or (anth.isReader='true' and anth.fdUser.fdId=:userId and info.fdId=anth.material.fdId )");
 		finder.setParam("userId",ShiroUtils.getUser().getId());
 		return super.find(finder);
+	}
+	
+	/**
+	 * 修改资源权限
+	 */
+	public void updateMaterialAuth(String materialAuthId,List<MaterialAuth> materialAuths){
+		//删除所有相关的权限信息
+		materialAuthService.deleMaterialAuthByMaterialId(materialAuthId);
+		//插入权限信息
+		for (MaterialAuth materialAuth : materialAuths) {
+			materialAuthService.save(materialAuth);
+		}
 	}
 
 }

@@ -1,12 +1,20 @@
 package cn.me.xdf.service.material;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.service.BaseService;
-
+/**
+ * 
+ * 资源权限service
+ * 
+ * @author zhaoq
+ * 
+ */
 @Service
 @Transactional(readOnly = false)
 public class MaterialAuthService extends BaseService{
@@ -52,5 +60,21 @@ public class MaterialAuthService extends BaseService{
 		return (MaterialAuth) super.find(finder).get(0);
 	}
 
+	/**
+	 * 根据资源Id删除所有资源权限
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = false)
+	public void deleMaterialAuthByMaterialId(String materialId){
+		Finder finder = Finder
+				.create("from MaterialAuth anth ");
+		finder.append("where anth.material.fdId like :materialId");
+		finder.setParam("materialId", materialId);
+		List<MaterialAuth> list = super.find(finder);
+		for (MaterialAuth materialAuth : list) {
+			delete(materialAuth);
+		}
+	}
 
 }

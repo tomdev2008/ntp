@@ -7,7 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.service.BaseService;
-
+/**
+ * 
+ * 课程参与权限service
+ * 
+ * @author zhaoq
+ * 
+ */
 @Service
 @Transactional(readOnly = false)
 public class CourseParticipateAuthService extends BaseService{
@@ -21,6 +27,7 @@ public class CourseParticipateAuthService extends BaseService{
 	/**
 	 * 添加或修改参与人
 	 * 
+	 * @return CourseParticipateAuth
 	 */
 	@Transactional(readOnly = false)
 	public CourseParticipateAuth saveOrUpdateCourseParticipateAuth(CourseParticipateAuth CourseParticipateAuth){
@@ -31,4 +38,6 @@ public class CourseParticipateAuthService extends BaseService{
 			return update(auth.get(0));
 		}
 	}
+	
+	
 }

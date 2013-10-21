@@ -9,6 +9,13 @@ import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.service.BaseService;
 
+/**
+ * 
+ * 课程权限service
+ * 
+ * @author zhaoq
+ * 
+ */
 @Service
 @Transactional(readOnly = false)
 public class CourseAuthService extends BaseService{
@@ -23,6 +30,7 @@ public class CourseAuthService extends BaseService{
 	/**
 	 * 添加或修改课程权限
 	 * 
+	 * @return CourseAuth
 	 */
 	@Transactional(readOnly = false)
 	public CourseAuth saveOrUpdateCourseAuth(CourseAuth courseAuth){
@@ -49,6 +57,7 @@ public class CourseAuthService extends BaseService{
 	/**
 	 * 查找课程权限
 	 * 
+	 * @return CourseAuth
 	 */
 	@Transactional(readOnly = true)
 	public CourseAuth findByCourseIdAndUserId(String courseId,String userId){
@@ -64,6 +73,7 @@ public class CourseAuthService extends BaseService{
 	 * 根据课程Id删除课程权限
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = false)
 	public void deleCourseAuthByCourseId(String courseId){
 		Finder finder = Finder
