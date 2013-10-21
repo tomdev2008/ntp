@@ -78,7 +78,7 @@ public class CourseAuthService extends BaseService{
 	public void deleCourseAuthByCourseId(String courseId){
 		Finder finder = Finder
 				.create("from CourseAuth anth ");
-		finder.append("where anth.courseInfo.fdId like :courseId");
+		finder.append("where anth.courseInfo.fdId = :courseId");
 		finder.setParam("courseId", courseId);
 		List<CourseAuth> list = super.find(finder);
 		for (CourseAuth courseAuth : list) {

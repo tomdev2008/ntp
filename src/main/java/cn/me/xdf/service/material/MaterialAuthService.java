@@ -69,7 +69,7 @@ public class MaterialAuthService extends BaseService{
 	public void deleMaterialAuthByMaterialId(String materialId){
 		Finder finder = Finder
 				.create("from MaterialAuth anth ");
-		finder.append("where anth.material.fdId like :materialId");
+		finder.append("where anth.material.fdId = :materialId");
 		finder.setParam("materialId", materialId);
 		List<MaterialAuth> list = super.find(finder);
 		for (MaterialAuth materialAuth : list) {
