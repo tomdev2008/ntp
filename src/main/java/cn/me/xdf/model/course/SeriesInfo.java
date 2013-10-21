@@ -10,6 +10,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -83,6 +84,7 @@ public class SeriesInfo extends IdEntity{
 		this.fdDescription = fdDescription;
 	}
 
+	@Transient
 	public AttMain getAttMain() {
 		return attMain;
 	}
