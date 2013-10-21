@@ -32,7 +32,6 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_COURSE")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class CourseInfo extends IdEntity{
 	
 	/**
