@@ -26,7 +26,6 @@ import cn.me.xdf.model.material.MaterialInfo;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_COURSE_CONTENT")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class CourseContent extends IdEntity{
 	
 	/**

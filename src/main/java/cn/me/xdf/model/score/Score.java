@@ -27,7 +27,6 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_SCORE")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Score extends IdEntity{
 
 	/**

@@ -24,7 +24,6 @@ import cn.me.xdf.model.base.IdEntity;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_COURSE_TAG")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class CourseTag extends IdEntity{
 
 	/**
