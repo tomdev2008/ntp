@@ -1,5 +1,7 @@
 package cn.me.xdf.service.course;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,4 +60,19 @@ public class CourseAuthService extends BaseService{
 		return (CourseAuth) super.find(finder).get(0);
 	}
 
+	/**
+	 * 根据课程Id删除课程权限
+	 * 
+	 */
+	@Transactional(readOnly = false)
+	public void deleCourseAuthByCourseId(String courseId){
+		Finder finder = Finder
+				.create("from CourseAuth anth ");
+		finder.append("where anth.courseInfo.fdId like :courseId");
+		finder.setParam("courseId", courseId);
+		List<CourseAuth> list = super.find(finder);
+		for (CourseAuth courseAuth : list) {
+			delete(courseAuth);
+		}
+	}
 }
