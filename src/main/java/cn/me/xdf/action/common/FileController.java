@@ -90,9 +90,7 @@ public class FileController {
     @RequestMapping("/image/{id}")
     @ResponseBody
     public String delete(@PathVariable("id") String id) throws IOException {
-        AttMain attMain = attMainService.get(id);
-        String file = attMain.getFdFilePath();
-        return BooleanUtils.toString(FileUtil.delete(file), "true", "false");
+        return BooleanUtils.toString(attMainService.deleteAttMain(id), "true", "false");
     }
 
     /**

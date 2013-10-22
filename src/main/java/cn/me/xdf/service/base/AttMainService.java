@@ -2,7 +2,9 @@ package cn.me.xdf.service.base;
 
 import java.util.List;
 
+import cn.me.xdf.common.file.FileUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,23 @@ public class AttMainService extends SimpleService {
         return null;
     }
 
+
+    @Transactional(readOnly = false)
+    public boolean deleteAttMain(String id) {
+        AttMain attMain = get(id);
+        String file = attMain.getFdFilePath();
+        delete(AttMain.class, id);
+        return FileUtil.delete(file);
+    }
+
+    @Transactional(readOnly = false)
+    public void deleteAttMainByModelId(String modelId) {
+        List<AttMain> attMains = getAttsByModelId(modelId);
+        for (AttMain attMain : attMains) {
+            deleteAttMain(attMain.getFdId());
+        }
+    }
+
     /**
      * 根据模型ID查询上传附件的信息
      *
@@ -57,6 +76,18 @@ public class AttMainService extends SimpleService {
             return attMains.get(0);
         }
         return null;
+    }
+
+
+    /**
+     * 根据模型ID查询上传附件的信息
+     *
+     * @param modelId
+     * @return
+     */
+    public List<AttMain> getAttsByModelId(String modelId) {
+        return findByCriteria(AttMain.class,
+                Value.eq("fdModelId", modelId));
     }
 
     /**
