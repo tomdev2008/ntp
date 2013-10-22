@@ -72,7 +72,7 @@ request.setAttribute("path", path[path.length-1]);
 					<li><a href="${ctx}/login">登录</a></li>
 				</j:then>
 				<j:else>
-					<li><a href="${ctx }/self_register">注册</a></li>
+					<li><a href="${ctx }/register/add">注册</a></li>
 				</j:else>
 			 </j:ifelse>
 	        </ul>

@@ -35,7 +35,7 @@
             	  邮箱账号或密码输入错误，请重新登录</span>
             </c:if> 
             <p class="bar_link">
-           	  <a href="${ctx}/register/forgotPwd" class="btn btn-link"><i class="icon-qm"></i>忘记密码</a>
+           	  <a href="${ctx}/forgotPwd" class="btn btn-link"><i class="icon-qm"></i>忘记密码</a>
             </p>
        	  <p class="login_btns clearfix">
             <button class="btn btn-register" type="button" onClick="location.href='${ctx }/register/add'" >注册</button>

@@ -2,19 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
-<!DOCTYPE html>
-<html lang="zh_CN">
+<!DOCTYPE HTML>
+<html>
 <head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>新东方在线教师备课平台</title>
+<link href="${ctx}/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/resources/css/datepicker.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/resources/css/register.css" rel="stylesheet" type="text/css">
-
-<script type="text/javascript" src="${ctx}/resources/js/jquery.jalert.js"></script>
-<script type="text/javascript" src="${ctx }/resources/js/jquery.js"></script>
-	
 <script type="text/javascript">
-
-	//注册
+    //注册
 	function register() {
 		//头像
 		var img = document.getElementById("fdIcoUrl").value;
@@ -45,6 +42,7 @@
 				}
 			}
 		}
+		
 		//出生日期
 		var birthday = document.getElementById("birthday").value;
 		//血性
@@ -76,12 +74,17 @@
 				"img" : img,
 			},
 			success : function(msg) {
+				alert("11111");
 				msg = msg.substr(1, msg.length - 2);
+				alert(msg);
 				if(msg=="redirect:/login"){
+					alert("3333");
 					window.location.href="${ctx}/";
 				}else if(msg=="redirect:/register/list"){
+					alert("4444");
 					window.location.href="${ctx}/register/list";
 				}else if(msg=="redirect:/register/listerr"){
+					alert("5555");
 					window.parent.$.fn.jalert2("注册失败！");
 					window.location.href="${ctx}/register/list";
 				}else{
@@ -89,10 +92,7 @@
 				}
 			}
 		});
-		
-
 	}
-
 	function checkemail(email) {
 		var temp = email;
 		var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
@@ -187,8 +187,7 @@
 			document.getElementById("carderrorMsg").innerHTML = "*&nbsp;证件号码格式错误，请重新输入";
 			return false;
 		}
-		$
-				.ajax({
+		$.ajax({
 					type : "post",
 					dataType : "json",
 					url : "${ctx}/ajax/register/checkIdentityCard",
@@ -299,7 +298,7 @@
 </head>
 
 <body>
-	<div class="container">
+<div class="container">
 		<div class="main">
 			<p class="reg_intro">如果您尚未开通新东方集团邮箱账号，请按照如下步骤注册临时账号。</p>
 			<ul class="reg_steps clearfix" id="reg_steps">
@@ -357,44 +356,14 @@
 				<p class="reg_form-intro">请确认您填写的个人资料，以便大家更加了解您。</p>
 				<div class="control-group">
 					<label for="face" class="control-label">头像</label>
-					<%--  <div class="controls">
-			<img id="imgshow" src="${ctx}/resources/images/default-avatar.jpg" class="img-polaroid img-face"/>
-			<!-- <input type="hidden" name="fdIcoUrl" value="resources/images/default-avatar.jpg"/> -->
-			 <tags:icoupload  fullname="fdIcoUrl" fullnameid="fdIcoUrl" folder="Folder" imgshow="imgshow"
-              	filename="fdIcoUrl" filevalue="" fullvalue="" id="upIcon">
-              
-            </tags:icoupload>
-		</div> --%>
 					<div class="controls">
-
-						<table cellpadding="0" cellspacing="0">
-							<tr >
-								<td><a class="face pull-left"> <c:if
-											test="${bean.fdIcoUrl == null}">
-											<img id="imgshow" style="width: 70px; height: 70px"
-												src="${ctx}/resources/images/face-placeholder.png" alt="" class="face">
-										</c:if> <c:if test="${bean.fdIcoUrl != null}">
-											<img id="imgshow" style="width: 70px; height: 70px"
-												align="bottom"
-												src="<%=request.getContextPath()%>/${bean.fdIcoUrl}" />
-										</c:if>
-										
-								</a>
-									<div class="pull-left support-img">
-										支持JPG\JPEG、PNG、BMP格式的图片<br /> 建议文件小于2M
-									</div></td>
-							</tr>
-							<tr>
-								<td>
-								<div style="position: relative;top:-20px;">
-								<input type="file" id="upIcon" name="upIcon" />
-								</div>
-								</td>
-							</tr>
-						</table>
-						<input type="hidden" id="fdIcoUrl" name="fdIcoUrl"
-							value="${bean.fdIcoUrl}" />
-					</div>
+					  <a href="#" class="face pull-left">
+                    	<img src="images/face-placeholder.png" alt="" >
+                        <h6>修改</h6>
+                    </a>
+                    <div class="pull-left support-img">支持JPG\JPEG、PNG、BMP格式的图片<br />建议文件小于2M</div>
+                    <input type="hidden" id="fdIcoUrl" name="fdIcoUrl" value="${bean.fdIcoUrl}" />
+				</div>
 
 				</div>
 				<div class="control-group">
@@ -552,137 +521,125 @@
 			</form>
 		</div>
 	</div>
-	<script type="text/javascript"
-		src="${ctx}/resources/js/lib/bootstrap/bootstrap-datepicker.js"></script>
-	<script type="text/javascript">
-		$(function() {
-			var datepicker = $("#dpYear").datepicker().on('changeDate',
-					function(ev) {
-						datepicker.datepicker("hide");
-					});
-			var $regSteps = $("#reg_steps>li>a");
-			var $lines = $("#reg_steps>li>.line");
 
-			$("#submit_step01").bind(
-					"click",
-					function() {
-						var email = document.getElementById("user").value;
-						checkemail(email);
-						var canGo1=(document.getElementById("usererrorMsg").innerHTML=="");
-						var p1 = document.getElementById("password").value;
-						var p2 = document.getElementById("confirmPwd").value;
-						var canGo2 = checkpass1(p1, p2);
-						var canGo3 = checkpass2(p1, p2);
-						if (canGo1 == false || canGo2 == false || canGo3==false) {
-							return;
-						} else {
-							$regSteps.eq(1).children("i").add($lines.eq(0))
-									.addClass("pass");
-							$("#form-step02").removeClass("hide").siblings(
-									"form").addClass("hide");
-						}
-					});
-			$("#submit_step02")
-					.bind(
-							"click",
-							function() {
-								var id = document.getElementById("ID").value;
-
-								var name = document.getElementById("name").value;
-
-								var depart = document
-										.getElementById("department");
-								var index = depart.selectedIndex;
-								var departsele = depart.options[index].value;
-
-								var tel = document.getElementById("tel").value;
-
-								var goto2 = checkname(name);
-								checkIdentityCard(id);
-								var goto1 =(document.getElementById("carderrorMsg").innerHTML==""); 
-								var goto3 = checkdepart(departsele);
-								var goto4 = checktel(tel);
-								if (goto1 == false || goto2 == false
-										|| goto3 == false || goto4 == false) {
-									return;
-								} else {
-									//设置email
-									document.getElementById("emailend").innerHTML = document
-											.getElementById("user").value;
-									//设置姓名
-									document.getElementById("nameend").innerHTML = document
-											.getElementById("name").value;
-									//设置证件号
-									document.getElementById("idend").innerHTML = document
-											.getElementById("ID").value;
-									//设置机构部门
-									var jg = document.getElementById("org");
-									var jgindex = jg.selectedIndex;
-									var jgname = jg.options[jgindex].text;
-									var depart = document
-											.getElementById("department");
-									var index = depart.selectedIndex;
-									var departid = depart.options[index].value;
-									var departname = depart.options[index].text;
-									document.getElementById("departend").innerHTML = jgname
-											+ "--" + departname;
-									//设置电话
-									document.getElementById("telend").innerHTML = document
-											.getElementById("tel").value;
-									//设置性别
-									var sex = "";
-									var temp = document
-											.getElementsByName("sex");
-									for ( var i = 0; i < temp.length; i++) {
-										if (temp[i].checked) {
-											if (temp[i].value == "f") {
-												sex = "女";
-											} else {
-												sex = "男";
-											}
-										}
-									}
-									document.getElementById("sexend").innerHTML = sex;
-									//设置出生日期
-									document.getElementById("birthdayend").innerHTML = document
-											.getElementById("birthday").value;
-									//设置血性
-									var bloodend = "";
-									var temp1 = document
-											.getElementsByName("blood");
-									for ( var i = 0; i < temp1.length; i++) {
-										if (temp1[i].checked) {
-											if (temp1[i].value == "OTHER") {
-												bloodend = "不详";
-											} else {
-												bloodend = temp1[i].value;
-											}
-										}
-									}
-									document.getElementById("bloodend").innerHTML = bloodend;
-									$(window).scrollTop(80);
-									$regSteps.eq(2).children("i").add(
-											$lines.eq(1)).addClass("pass");
-									$("#form-step03").removeClass("hide")
-											.siblings("form").addClass("hide");
-								}
-							});
-
-			$regSteps.each(function(i) {
-				$(this).bind(
-						"click",
-						function(e) {
-							e.preventDefault();
-							if ($(this).find("i").hasClass("pass")) {
-								console.log(i);
-								$regSteps.slice(i + 1).children("i").add(
-										$lines.slice(i)).removeClass("pass");
-								$("#form-step0" + (i + 1)).removeClass("hide")
-										.siblings("form").addClass("hide");
-							}
-						});
-			});
+<script type="text/javascript" src="${ctx}/resources/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+$(function(){
+	var datepicker = $("#dpYear").datepicker()
+		.on('changeDate', function(ev){
+			datepicker.datepicker("hide");
 		});
-	</script>
+	var $regSteps = $("#reg_steps>li>a");
+	var $lines = $("#reg_steps>li>.line");
+	$("#submit_step01").bind("click",function(){
+		var email = document.getElementById("user").value;
+		checkemail(email);
+		var canGo1=(document.getElementById("usererrorMsg").innerHTML=="");
+		var p1 = document.getElementById("password").value;
+		var p2 = document.getElementById("confirmPwd").value;
+		var canGo2 = checkpass1(p1, p2);
+		var canGo3 = checkpass2(p1, p2);
+		if (canGo1 == false || canGo2 == false || canGo3==false) {
+			return;
+		}else{
+			$regSteps.eq(1).children("i").add($lines.eq(0)).addClass("pass");
+			$("#form-step02").removeClass("hide").siblings("form").addClass("hide");	
+		}
+		
+	});
+	$("#submit_step02").bind("click",function(){
+		var id = document.getElementById("ID").value;
+
+		var name = document.getElementById("name").value;
+
+		var depart = document
+				.getElementById("department");
+		var index = depart.selectedIndex;
+		var departsele = depart.options[index].value;
+
+		var tel = document.getElementById("tel").value;
+
+		var goto2 = checkname(name);
+		checkIdentityCard(id);
+		var goto1 =(document.getElementById("carderrorMsg").innerHTML==""); 
+		var goto3 = checkdepart(departsele);
+		var goto4 = checktel(tel);
+		if (goto1 == false || goto2 == false
+				|| goto3 == false || goto4 == false) {
+			return;
+		} else {
+			//设置email
+			document.getElementById("emailend").innerHTML = document
+					.getElementById("user").value;
+			//设置姓名
+			document.getElementById("nameend").innerHTML = document
+					.getElementById("name").value;
+			//设置证件号
+			document.getElementById("idend").innerHTML = document
+					.getElementById("ID").value;
+			//设置机构部门
+			var jg = document.getElementById("org");
+			var jgindex = jg.selectedIndex;
+			var jgname = jg.options[jgindex].text;
+			var depart = document
+					.getElementById("department");
+			var index = depart.selectedIndex;
+			var departid = depart.options[index].value;
+			var departname = depart.options[index].text;
+			document.getElementById("departend").innerHTML = jgname
+					+ "--" + departname;
+			//设置电话
+			document.getElementById("telend").innerHTML = document
+					.getElementById("tel").value;
+			//设置性别
+			var sex = "";
+			var temp = document
+					.getElementsByName("sex");
+			for ( var i = 0; i < temp.length; i++) {
+				if (temp[i].checked) {
+					if (temp[i].value == "f") {
+						sex = "女";
+					} else {
+						sex = "男";
+					}
+				}
+			}
+			document.getElementById("sexend").innerHTML = sex;
+			//设置出生日期
+			document.getElementById("birthdayend").innerHTML = document
+					.getElementById("birthday").value;
+			//设置血性
+			var bloodend = "";
+			var temp1 = document
+					.getElementsByName("blood");
+			for ( var i = 0; i < temp1.length; i++) {
+				if (temp1[i].checked) {
+					if (temp1[i].value == "OTHER") {
+						bloodend = "不详";
+					} else {
+						bloodend = temp1[i].value;
+					}
+				}
+			}
+			document.getElementById("bloodend").innerHTML = bloodend;
+			$(window).scrollTop(80);
+			$regSteps.eq(2).children("i").add(
+					$lines.eq(1)).addClass("pass");
+			$("#form-step03").removeClass("hide")
+					.siblings("form").addClass("hide");	
+		}
+	});
+	$regSteps.each(function(i){
+		$(this).bind("click",function(e){
+			e.preventDefault();
+			if($(this).find("i").hasClass("pass")){console.log(i);
+				$regSteps.slice(i+1).children("i").add($lines.slice(i)).removeClass("pass");
+				$("#form-step0" + (i+1)).removeClass("hide").siblings("form").addClass("hide");
+			}
+		});
+	});
+});
+
+</script>
 </body>
 </html>
