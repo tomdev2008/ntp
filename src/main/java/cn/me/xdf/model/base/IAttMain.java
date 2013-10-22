@@ -1,5 +1,7 @@
 package cn.me.xdf.model.base;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: xiaobin268
@@ -10,7 +12,7 @@ package cn.me.xdf.model.base;
  */
 public interface IAttMain {
 
-    public String getAttId();
+    public List<String> getAttId();
 
-    public String setAttId();
+    public List<String> setAttId();
 }

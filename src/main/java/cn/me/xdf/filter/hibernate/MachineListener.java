@@ -34,7 +34,6 @@ public class MachineListener extends DefaultLoadEventListener
     public void onPostDelete(PostDeleteEvent event) {
         Object o = event.getEntity();
         if (o instanceof IAttMain) {
-            IAttMain attMain = (IAttMain) o;
             AttMainMachine attMainMachine = event.getClass().getAnnotation(AttMainMachine.class);
             String modelId = attMainMachine.modelId();
             attMainService.getAttsByModelId(modelId);
@@ -51,13 +50,17 @@ public class MachineListener extends DefaultLoadEventListener
             String modelName = attMainMachine.modelName();
             String key = attMainMachine.key();
             String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
-            AttMain att = (AttMain) event.getSession().get(AttMain.class, attMain.getAttId());
-            if (att != null) {
-                att.setFdKey(key);
-                att.setFdModelId(modelIdValue);
-                att.setFdModelName(modelName);
-                event.getSession().update(attMain);
+            List<String> attIds = attMain.getAttId();
+            for (String attId : attIds) {
+                AttMain att = (AttMain) event.getSession().get(AttMain.class, attId);
+                if (att != null) {
+                    att.setFdKey(key);
+                    att.setFdModelId(modelIdValue);
+                    att.setFdModelName(modelName);
+                    event.getSession().update(attMain);
+                }
             }
+
         }
     }
 }
