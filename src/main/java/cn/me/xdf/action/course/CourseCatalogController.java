@@ -11,9 +11,11 @@ import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
@@ -96,6 +98,12 @@ public class CourseCatalogController {
 	public void deleteCatalogById(HttpServletRequest request) {
 		//获取章节ID
 		String fdId = request.getParameter("fdid");
+		CourseCatalog courseCatalog = courseCatalogService.get(fdId);
+		//如果删除的是节，那么需要重新计算课程的总节数
+		if(Constant.CATALOG_TYPE_LECTURE==courseCatalog.getFdType()){
+			//重新计算课程总节数
+			reCalculateCourseInfo(courseCatalog.getCourseInfo().getFdId(),courseCatalog.getCourseInfo().getFdTotalPart()-1);
+		}
 		courseCatalogService.delete(fdId);
 	}
 		
@@ -103,7 +111,11 @@ public class CourseCatalogController {
 	 * 更新章节的顺序
 	 * @param request
 	 */
+	@RequestMapping(value = "ajax/updateCatalogOrder")
+	@ResponseBody
 	public void updateCatalogOrder(HttpServletRequest request) {
+		//获取课程ID
+		String courseId = request.getParameter("courseid");
 		//获取章
 		String chapter = request.getParameter("chapter");
 		//获取节
@@ -138,6 +150,8 @@ public class CourseCatalogController {
 				}
 			}
 		}
+		
+		reCalculateCatalog(courseId);
 	}
 	
 	/**
@@ -166,7 +180,7 @@ public class CourseCatalogController {
 	public String addCatalog(HttpServletRequest request) {
 		//获取课程ID
 		String courseId = request.getParameter("courseid");
-		//获取章ID
+		//获取添加的是否为章
 		String isChapter = request.getParameter("ischapter");
 		//获取总序号
 		String fdTotalNo = request.getParameter("fdtotalno");	
@@ -180,25 +194,76 @@ public class CourseCatalogController {
 		if(StringUtil.isNotEmpty(courseId)){
 			course = courseService.get(courseId);
 			courseCatalog.setCourseInfo(course);
-		}else{			
+		}else{
+			//新建课程时总节数设置为0
+			course.setFdTotalPart(0);
 			course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
 			courseService.save(course);
 			courseCatalog.setCourseInfo(course);
 		}
-		
 		courseCatalog.setFdName(fdName);
 		courseCatalog.setFdTotalNo(fdTotalNo);
 		courseCatalog.setFdNo(fdNo);
 		if("true".equals(isChapter)){
 			courseCatalog.setFdType(Constant.CATALOG_TYPE_CHAPTER);
+			courseCatalog.setFdTotalPart(0);
 		}else{
 			courseCatalog.setFdType(Constant.CATALOG_TYPE_LECTURE);
+			courseCatalog.setFdTotalContent(0);
+			//重新计算课程总节数
+			reCalculateCourseInfo(course.getFdId(),course.getFdTotalPart()+1);
 		}
 		 courseCatalogService.save(courseCatalog);
+		 
+		 reCalculateCatalog(course.getFdId());
 		 List<Map> list = new ArrayList<Map>();
 		 Map map = new HashMap();
 		 map.put("id", courseCatalog.getFdId());
 		 map.put("courseid", course.getFdId());
 		 return JsonUtils.writeObjectToJson(list);
+	}
+	
+	/**
+	 * 重新计算课程的总节数
+	 * @param courseId 课程ID
+	 */
+	private void reCalculateCourseInfo(String courseId,int totalPart){
+		CourseInfo courseInfo = courseService.get(courseId);
+		if(courseInfo!=null){
+			courseInfo.setFdTotalPart(totalPart);
+			courseService.save(courseInfo);
+		}
+	}
+	
+	/**
+	 * 重新计算章节信息
+	 * @param courseId 课程ID
+	 */
+	private void reCalculateCatalog(String courseId){
+		int totalPart = 0;
+		String hbmparentid = "";
+		//根据课程ID取章节列表
+		List<CourseCatalog> catalogs = courseCatalogService.getCatalogsByCourseId(courseId);
+		if(catalogs!=null && catalogs.size()>0){
+			for(CourseCatalog catalog:catalogs){
+				//判断如果是章，则记录下章的ID，并且将章中的总节数置0
+				if(Constant.CATALOG_TYPE_CHAPTER==catalog.getFdType()){
+					hbmparentid = catalog.getFdId();
+					totalPart = 0;
+				}
+				//否则如果是节，则将总节数累加
+				else{
+					totalPart++;
+				}
+				if(StringUtil.isNotEmpty(hbmparentid) && Constant.CATALOG_TYPE_LECTURE==catalog.getFdType()){
+					//如果记录的章ID不为空并且当前是节的话，根据章ID取出章，将总节数更新到章中，同时更新节的上级
+					CourseCatalog courseCatalog = courseCatalogService.get(hbmparentid);
+					courseCatalog.setFdTotalPart(totalPart);
+					courseCatalogService.save(courseCatalog);
+					catalog.setHbmParent(courseCatalog);
+					courseCatalogService.save(catalog);
+				}
+			}
+		}
 	}
 }
