@@ -1,9 +1,13 @@
 package cn.me.xdf.action.common;
 
 import cn.me.xdf.common.download.DownloadHelper;
+import cn.me.xdf.common.file.FileUtil;
+import cn.me.xdf.common.upload.FileModel;
 import cn.me.xdf.common.upload.FileRepository;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.service.base.AttMainService;
+import jodd.io.StreamUtil;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,20 +24,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
 /**
- * 
  * @author xiaobin
- *
  */
 @Controller
+@RequestMapping("/comm/file")
 public class FileController {
 
 
     /**
      * 上传文件
      */
-    @RequestMapping("/common/o_upload")
+    @RequestMapping("/o_upload")
     @ResponseBody
-    public cn.me.xdf.common.upload.FileModel execute(HttpServletRequest request,
+    public FileModel execute(HttpServletRequest request,
                              HttpServletResponse response, ModelMap model) {
         CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
                 request.getSession().getServletContext());
@@ -41,18 +44,20 @@ public class FileController {
         commonsMultipartResolver.setDefaultEncoding("utf-8");
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("Filedata");
-        return fileRepository.storeByExt(file);
-
+        FileModel fileModel = fileRepository.storeByExt(file);
+        AttMain attMain = fileModel.toAttMain();
+        attMain = attMainService.save(attMain);
+        fileModel.setAttId(attMain.getFdId());
+        return fileModel;
     }
 
     /**
      * 文件下载
      *
-     * @param id
-     *            (对应AttMain的主键)
+     * @param id (对应AttMain的主键)
      * @return
      */
-    @RequestMapping("/common/download/{id}")
+    @RequestMapping("/download/{id}")
     @ResponseBody
     public DownloadHelper download(@PathVariable("id") String id,
                                    HttpServletRequest request, HttpServletResponse response) {
@@ -82,9 +87,22 @@ public class FileController {
         return dh;
     }
 
+    @RequestMapping("/image/{id}")
+    @ResponseBody
+    public String delete(@PathVariable("id") String id) throws IOException {
+        AttMain attMain = attMainService.get(id);
+        String file = attMain.getFdFilePath();
+        return BooleanUtils.toString(FileUtil.delete(file), "true", "false");
+    }
+
     /**
-     * 图片查看
+     * 查看图片
+     *
+     * @param modelId  对应业务表主键，也就是AttMain的modelId
+     * @param request
+     * @param response
      */
+    @RequestMapping("/image/{modelId}")
     public void image(@PathVariable("modelId") String modelId,
                       HttpServletRequest request, HttpServletResponse response) {
         response.setHeader("Cache-Control", "max-age=2592000");
@@ -102,11 +120,9 @@ public class FileController {
             while (is.read(buffer, 0, 1024) != -1) {
                 out.write(buffer);
             }
-            is.close();
             out.flush();
-            out.close();
-            out = null;
-            is = null;
+            StreamUtil.close(is);
+            StreamUtil.close(out);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

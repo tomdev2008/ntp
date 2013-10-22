@@ -17,6 +17,10 @@ import cn.me.xdf.service.SimpleService;
 @Transactional(readOnly = true)
 public class AttMainService extends SimpleService {
 
+    public AttMain get(String id) {
+        return get(AttMain.class, id);
+    }
+
     public AttMain save(AttMain attMain) {
         return super.save(attMain);
     }
