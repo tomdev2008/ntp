@@ -1,11 +1,15 @@
 package cn.me.xdf.service.score;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.management.RuntimeErrorException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.Score;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.BaseService;
@@ -32,11 +36,53 @@ public class ScoreService extends BaseService{
 	 */
 	public int getCountByModelIdAndScore(String fdModelId,int fdScore){
 		Finder finder = Finder
-				.create("from Score score ");
+				.create("select count(*) from Score score ");
 		finder.append("where score.fdModelId = :fdModelId and score.fdScore = :fdScore");
 		finder.setParam("fdModelId", fdModelId);
 		finder.setParam("fdScore", fdScore);
-		List<Score> scores = find(finder);
-		return scores.size();
+		List list = find(finder);
+		Object[] objects =(Object[])list.get(0);
+		return (Integer)objects[0];
 	}
+	
+	/**
+	 * 根据 业务Id和用户Id查找评分信息
+	 * 
+	 */
+	public Score findByModelIdAndUserId(String fdModelId,String userId){
+		Finder finder = Finder
+				.create("from Score score ");
+		finder.append("where score.fdModelId = :fdModelId and score.fdUser.fdId = :userId");
+		finder.setParam("fdModelId", fdModelId);
+		finder.setParam("userId", userId);
+		List<Score> scores = find(finder);
+		return scores.get(0);
+	}
+	
+	/**
+	 * 为相应业务打分
+	 * 
+	 * @param fdModelName 业务名称
+	 * @param fdModelId   业务Id
+	 * @param fdScore     分数
+	 * @param userId      评分人Id
+	 * 
+	 * @return 评分信息
+	 */
+	public Score pushScore(String fdModelName,String fdModelId,String fdScore,String userId){
+		Score s = findByModelIdAndUserId(fdModelId, userId);
+		if(s!=null){
+			throw new RuntimeException("不能重复评分");
+		}
+		SysOrgPerson orgPerson = new SysOrgPerson();
+		orgPerson.setFdId(userId);
+		Score score = new Score();
+		score.setFdModelName(fdModelName);
+		score.setFdModelId(fdModelId);
+		score.setFdCreateTime(new Date());
+		score.setFdScore(new Integer(fdScore));
+		score.setFdUser(orgPerson);
+		return save(score);
+	}
+	
 }

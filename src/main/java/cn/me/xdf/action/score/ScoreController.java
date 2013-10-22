@@ -73,15 +73,7 @@ public class ScoreController {
 	@RequestMapping(value = "ajax/pushScore")
 	@ResponseBody
 	public String pushScore(String fdModelName,String fdModelId,String fdScore,String userId){
-		SysOrgPerson orgPerson = new SysOrgPerson();
-		orgPerson.setFdId(userId);
-		Score score = new Score();
-		score.setFdModelName(fdModelName);
-		score.setFdModelId(fdModelId);
-		score.setFdCreateTime(new Date());
-		score.setFdScore(new Integer(fdScore));
-		score.setFdUser(orgPerson);
-		scoreService.save(score);
+		scoreService.pushScore(fdModelName, fdModelId, fdScore, userId);
 		ScoreStatistics scoreStatistics = scoreStatisticsService.resetInfoByFdModelId(fdModelId);
 		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
@@ -96,5 +88,20 @@ public class ScoreController {
 		map.put("fdOneScoreNum", scoreStatistics.getFdOneScoreNum());
 		list.add(map);
 		return JsonUtils.writeObjectToJson(list);
+	}
+	
+	/**
+	 * 是否可以评分
+	 * 
+	 * @param fdModelId   业务Id
+	 * @param userId      评分人Id
+	 * 
+	 * @return  String(true:可以评分；false：不可以评分)
+	 */
+	@RequestMapping(value = "ajax/canPushScore")
+	@ResponseBody
+	public String canPushScore(String fdModelId,String userId) {
+		Score score = scoreService.findByModelIdAndUserId(fdModelId, userId);
+		return (score == null) ? "false" : "true";
 	}
 }

@@ -42,4 +42,15 @@ public class MessageController {
 	public void deleteMessageById(String fdid) {
 		messageService.delete(fdid);
 	}
+	
+	/**
+	 * 查看用户是否可以支持或反对评论
+	 * 
+	 * @return String(true:能；false：不能)
+	 */
+	@RequestMapping(value = "ajax/canSupportOrOppose")
+	@ResponseBody
+	public String canSupportOrOppose(String userId, String messageId) {
+		return messageService.canSupportOrOppose(userId, messageId)+"";
+	}
 }
