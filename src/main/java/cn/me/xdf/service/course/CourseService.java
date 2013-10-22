@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.service.BaseService;
@@ -43,5 +45,48 @@ public class CourseService  extends BaseService{
 			courseAuthService.save(courseAuth);
 		}
 	}
-	
+	/*
+	 * 课程列表
+	 * author hanhl
+	 */
+	public Pagination findAllCourseInfos(String userId,Integer pageNo){
+		/*根据当前用户  
+		 * 查询用户的课程
+		 * 
+		 * 此处需要添加客车评分?//遗留
+		 * author hanhl
+		 * */
+		Finder finder = Finder
+				.create("from CouserInfo ci ");
+		finder.append("where ci.creator.fdId = :userId and ci.isAvailable='01' ");
+		finder.setParam("userId", userId);
+	    Pagination pagination=getPage(finder, pageNo);
+		return pagination;
+	}
+
+	/*
+	 * 根据课程名称模糊搜索
+	 * 
+	 * 此处需要添加客车评分?//遗留
+	 * author hanhl
+	 * */
+	public  Pagination findCourseInfosByName(String userId,String fdName,Integer pageNo ,String orderbyStr){
+		Finder finder = Finder
+				.create("from CourseInfo ci ");
+		finder.append("where ci.creator.fdId=:userId  and  ci.isAvailable='01'");/*发布*/
+		finder.append("and  ci.fdTitle = :ft  or ci.fdSubTitle like :fs");
+		finder.setParam("userId", userId);
+		finder.setParam("ft", fdName);
+		finder.setParam("fs", fdName);
+		//根据标题排序
+		if(orderbyStr.equals("fdTitle")){
+			finder.append(" order by ci.fdTitle ");
+		}
+		//根据创建时间排序
+		if(orderbyStr.equals("fdCreateTime")){
+			finder.append("order by ci.fdCreateTime ");
+		}
+		Pagination pagination=getPage(finder,pageNo);
+		return pagination;
+	}
 }
