@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- SQL Hibernate Dynamic Statement Mapping DTD.
 
-<!DOCTYPE dynamic-hibernate-statement PUBLIC 
-    "-//LANDRAY/SQL Hibernate Dynamic Statement DTD 1.0//EN"
-    "http://www.dynamic.com/dtd/dtd/dynamic-hibernate-statement-1.0.dtd">
+<!DOCTYPE dynamic-hibernate-statement>
 -->
 
 <!--

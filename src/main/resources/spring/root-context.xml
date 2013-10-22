@@ -94,7 +94,7 @@
 		class="cn.me.xdf.common.hibernate4.dynamic.DefaultDynamicHibernateAssembleBuilder">
 		<property name="fileNames">
 			<list>
-				<value>classpath:cn/me/xdf/dao/dynamic/*-dynamic.xml</value>
+				<value>classpath:dynamicsql/*-dynamic.xml</value>
 			</list>
 		</property>
 	</bean>
