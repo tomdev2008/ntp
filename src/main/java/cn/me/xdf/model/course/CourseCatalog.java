@@ -97,6 +97,19 @@ public class CourseCatalog extends IdEntity {
 	 * 11日程
 	 */
 	private String fdMaterialType;
+	
+	/**
+	 * 章节类型 0表示章，1表示节
+	 */
+	private Integer fdType;
+	
+	public Integer getFdType() {
+		return fdType;
+	}
+
+	public void setFdType(Integer fdType) {
+		this.fdType = fdType;
+	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdCourseId")

@@ -101,4 +101,24 @@ public class Constant {
 	 * 消息类型：03系统消息
 	 */
 	public static final String MESSAGE_TYPE_SYS = "03";
+	
+	/**
+	 * 课程模板状态：00草稿
+	 */
+	public static final String COURSE_TEMPLATE_STATUS_DRAFT = "00";
+	
+	/**
+	 * 课程模板状态：01发布
+	 */
+	public static final String COURSE_TEMPLATE_STATUS_RELEASE = "01";
+	
+	/**
+	 * 章节类型：0表示章
+	 */
+	public static final Integer CATALOG_TYPE_CHAPTER = 0;
+	
+	/**
+	 * 章节类型：1表示节
+	 */
+	public static final Integer CATALOG_TYPE_LECTURE = 1;
 }
