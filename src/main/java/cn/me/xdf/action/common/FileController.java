@@ -1,7 +1,6 @@
 package cn.me.xdf.action.common;
 
 import cn.me.xdf.common.download.DownloadHelper;
-import cn.me.xdf.common.file.FileUtil;
 import cn.me.xdf.common.upload.FileModel;
 import cn.me.xdf.common.upload.FileRepository;
 import cn.me.xdf.model.base.AttMain;
@@ -100,12 +99,12 @@ public class FileController {
      * @param request
      * @param response
      */
-    @RequestMapping("/image/{modelId}")
-    public void image(@PathVariable("modelId") String modelId,
+    @RequestMapping("/image/{id}")
+    public void image(@PathVariable("id") String id,
                       HttpServletRequest request, HttpServletResponse response) {
         response.setHeader("Cache-Control", "max-age=2592000");
 
-        AttMain attMain = attMainService.getByModelId(modelId);
+        AttMain attMain = attMainService.get(id);
 
         response.setContentType(attMain.getFdContentType());
         response.addHeader("Content-Length",

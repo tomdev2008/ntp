@@ -64,6 +64,13 @@ public class AttMain extends IdEntity {
     private String fdContentType;
 
     /**
+     * 文件的URL路径
+     *
+     *
+     */
+    private String fileUrl;
+
+    /**
      * 内容
      */
     private byte[] fdData;
@@ -144,6 +151,14 @@ public class AttMain extends IdEntity {
 
     public void setFdStoreType(String fdStoreType) {
         this.fdStoreType = fdStoreType;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 
     public String getFdFileType() {
