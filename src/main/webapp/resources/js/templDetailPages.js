@@ -6,12 +6,7 @@
 	(function(){
 		"use strict";
 		
-		var rightCont = {
-			loadSectionDirectoryPage:undefined,
-			loadBasicInfoPage: undefined,
-			loadDetailInfoPage: undefined,
-			loadPromotionPage: undefined
-		},global,data = {};
+		var rightCont = {},global,data = {};
 		
 		global = (function(){ return this || (0,eval)('this'); }());
 		global.rightCont = rightCont;
@@ -44,7 +39,14 @@
 		
 		//删除课程 模板函数
 		var deleteCourseFn = doT.template(document.getElementById("deleteCourseTemplate").text, undefined, def);
-		
+
+        //各媒体页 模板函数
+        var mediaPageFn = doT.template(document.getElementById("mediaPageTemplate").text);
+        //各媒体页 列表项 模板函数
+        var mediaListFn = doT.template(document.getElementById("mediaListTemplate").text);
+        //编辑章节标题模板函数
+        var editMediaTitleFn = doT.template(document.getElementById("formEditMediaTitle").text);
+
 		//编辑章节标题模板函数
 		var editTitleFn = doT.template(document.getElementById("formEditSectionTitle").text);
 		//添加章节模板函数
@@ -55,7 +57,179 @@
 		var sectionsFn = doT.template(document.getElementById("sectionsTemplate").text + document.getElementById("sectionBarTemplate").text + document.getElementById("lectureContentTemplate").text);
 		//load章节目录模板函数
 		var loadsectionsDirectoryFn = doT.template(document.getElementById("sectionDirectoryTemplate").text + document.getElementById("sectionBarTemplate").text + document.getElementById("lectureContentTemplate").text, undefined, def);
-		
+
+        //加载视频页
+        rightCont.loadVideoPage = function (opt){
+            /*============================================ ajax 加载JSON数据 ================================================*/
+            /*$.getJSON("url?load",{id:opt.id},function(rsult){
+                 data = rsult;
+                 data.pageTitle = opt.title;
+                 data.lectureIndex = numParseCN(opt.index);
+                 data.typeTxt = "视频";
+                 data.uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
+                 $("#rightCont").html(mediaPageFn(data));
+             });*/
+            data = {
+                learnTime: "",
+                sectionsIntro: "",
+                mediaList: [
+                    {
+                        id: "fdid4258924985",
+                        index: 2,
+                        title: "俞老师对国外考试项目新教师致辞"
+                    },
+                    {
+                        id: "fdid4255",
+                        index: 1,
+                        title: "新东方2013校园招聘"
+                    },
+                    {
+                        id: "fdid425511111",
+                        index: 4,
+                        title: "国外考试新教师备课致辞"
+                    },
+                    {
+                        id: "fdid425522222",
+                        index: 3,
+                        title: "国外部项目备课致辞"
+                    },
+                    {
+                        id: "fdid425500",
+                        index: 5,
+                        title: "BC官员雅思考试解读"
+                    },
+                    {
+                        id: "fdid43454545222",
+                        index: 6,
+                        title: "国外考试新教师在线备课平台介绍"
+                    }
+                ]
+            }
+            data.pageTitle = opt.title;
+            data.lectureIndex = numParseCN(opt.index);
+            data.typeTxt = "视频";
+            data.uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
+            $("#rightCont").html(mediaPageFn(data));
+
+            $("#listMedia").sortable()
+                .bind("sortupdate",function(){//绑定拖放元素改变次序事件
+                    $(this).children().each(function(i){
+                        $(this).find(".title>.index").text(i+1);
+                    });
+                })
+                .delegate(".btn-ctrls","click",function(e){
+                    e.preventDefault();
+                    if($(this).hasClass("icon-remove")){//删除项
+                        $(this).parent("li").remove();
+                        $("#mediaCount").text($("#listMedia").children("li").each(function(i){
+                            $(this).find(".title>.index").text(i+1);
+                        }).length);
+                    }else if($(this).hasClass("icon-pencil2")){//编辑项
+                        var $tit = $(this).prev(".title");
+                        $(this).parent("li").hide().after(editMediaTitleFn({
+                            typeTxt: data.typeTxt,
+                            index: $tit.children(".index").text(),
+                            name: $tit.children(".name").text()
+                        }));
+                    }
+                })
+                //绑定保存,取消标题按钮事件
+                .delegate(".form-edit-title .btn","click",function(e){
+                    e.preventDefault();
+                    if($(this).hasClass("btn-primary")){//保存
+                        var val = $(this).parent().prev(".control-group").find(":text").val();
+                        if(val){
+                            $(this).closest(".form-edit-title").prev("li").show()
+                                .find(".title>.name").text(val);
+                        }
+                    } else{
+                        $(this).closest(".form-edit-title").prev("li").show();
+                    }
+                    $(this).closest(".form-edit-title").remove();
+                });
+            $("#formMedia").validate({
+                submitHandler:function(form){
+                    var listArr = [];
+                    $("#listMedia>li").each(function(i){
+                        listArr.push({
+                            id: $(this).attr("data-fdid"),
+                            index: $(this).find(".title>.index").text(),
+                            title: $(this).find(".title>.name").text()
+                        });
+                    });
+                    $.post("url?update",{
+                        pageTitle: $("#lectureName").val(),
+                        learnTime:  $("#learnTime").val(),
+                        sectionsIntro: $("#sectionsIntro").val(),
+                        mediaList:listArr
+                    })
+                        .success(function(){
+                            //提交成功
+                        });
+                }
+            });
+            var itemHtml,
+                $listMedia = $("#listMedia"),
+                addFlag = false,
+                mediaData = [
+                {
+                    id: "fdid8348934020202002",
+                    name: "雅思听力"
+                },
+                {
+                    id: "fdid834893ewfge",
+                    name: "雅思听力练习"
+                },
+                {
+                    id: "fdid3ewfge4343",
+                    name: "雅思听力技巧"
+                },
+                {
+                    id: "fdid3lliuu23",
+                    name: "雅思听力视频"
+                }
+            ];
+            /*$("#addMedia").autocomplete("url.jsp",{
+                 dataType: "json",
+                 parse: function(data) {
+                     return $.map(data, function(row) {
+                         return {
+                         data: row,
+                         value: row.name,
+                         result:
+                         }
+                     });
+                 },*/
+            $("#addMedia").autocomplete(mediaData,{
+                formatItem: function(item) {
+                    return item.name;
+                },
+                matchContains:true ,
+                max: 10,
+                scroll: false,
+                width:688
+            }).result(function(e,item){
+                    item.typeTxt = data.typeTxt;
+                    item.index = $listMedia.children("li").length + 1;
+                    itemHtml = mediaListFn(item);
+                    addFlag = true;
+                })
+                .next(".btn-primary").bind("click", function(){
+                    if(addFlag){
+                        $listMedia.append(itemHtml)
+                            .sortable();
+                        $("#mediaCount").text($listMedia.children("li").length);
+                        addFlag = false;
+                    }
+                });
+        }
+
+        function numParseCN(n){
+            var num = ["零","一","二","三","四","五","六","七","八","九","十"];
+            n = typeof n == "number" ? n : parseInt(n) ;
+            return (n/10)>1 ? (num[n/10] + num[10] + num[n%10]) : num[n];
+        }
+
 		//加载删除课程 	
 		rightCont.loadDeleteCoursePage = function (title, fdid){	
 			
@@ -186,7 +360,7 @@
 				scroll: false,
 				width:688
 			}).result(function(e,item){
-				$(e.target).val(item.name);
+				$(this).val(item.name);
 				$("#list_user").append(listUserKinguserFn(item))
 				.sortable({
 					handle: '.state-dragable',
@@ -351,19 +525,24 @@
 		//加载基本信息	
 		rightCont.loadBasicInfoPage = function (title){
 			/*============================================ ajax 加载基本信息数据 ================================================*/
-			/*$.getJSON("url?load",function(rsult){
+			/*$.getJSON("${ctx}/course/ajaxgetBaseCourseInfoById?courseId=$('#courseId').val()",function(rsult){
 				data = rsult;
 				data.pageTitle = title;
-				$("#rightCont").html(basicInfoFn(data));	
-					
+				$("#rightCont").html(basicInfoFn(data));
+
 			});*/
 			data = {//ajax 成功后删除
 				action: "#",//模板详情_基本信息 的form表单action			
 				courseTit: "集团英联邦项目雅思强化口语备课课程",
 				subTit: "",
 				keyword: ["雅思","新教师备课"],
-				courseTypeList: ["小学辅导","中学辅导","大学考试","中学辅导","大学考试","多语种","夏冬令营"],
-				courseType: "小学辅导"
+				courseType: "1",
+				courseTypeList: [
+					{title: "国外考试", id: "1"},
+					{title: "国内考试", id: "2"},
+					{title: "英语学习", id: "3"},
+					{title: "优能中学", id: "4"},
+					{title: "优能小学", id: "5"}]		
 			}
 			data.pageTitle = title;	//ajax 成功后删除
 			$("#rightCont").html(basicInfoFn(data));//ajax 成功后删除
@@ -407,7 +586,7 @@
 			$("#formBasicInfo .courseType>li>a").bind("click",function(e){
 				e.preventDefault();
 				$(this).parent().addClass("active").siblings().removeClass("active");
-				$("#courseType").val($(this).text());
+				$("#courseType").val($(this).next("input").val());
 			});
 			
 		}
@@ -415,7 +594,7 @@
 		//加载章节目录
 		rightCont.loadSectionDirectoryPage = function(title){
 			/*============================================ ajax 加载章节数据 ================================================*/
-			/*$.getJSON("url?load",function(rsult){
+			/*$.getJSON("${ctx}/catalog/ajax/getCatalogJsonByCourseId?courseId=$('#courseId').val()",function(rsult){
 				data = rsult;
 				data.pageTitle = title;
 				$("#rightCont").html(loadsectionsDirectoryFn(data));
@@ -480,34 +659,7 @@
 				handle: '.sortable-bar',
 				forcePlaceholderSize: true
 			})
-			.bind("sortupdate",function(){//绑定拖放元素改变次序事件
-				var $items = $sections.children("li"),
-				i_ch = 1,
-				i_le = 1,
-				data = {
-					chapter : [],
-					lecture : []
-				}, $item ;
-				$items.each(function(i){		
-					$item = $(this);		
-					if($item.hasClass("chapter")){
-						$item.find(".title>.index").text(i_ch);
-						data.chapter.push({
-							index: i,
-							num: i_ch++,
-							id: $item.attr("data-fdid")
-						});
-					} else if($item.hasClass("lecture")){
-						$item.find(".title>.index").text(i_le);
-						data.lecture.push({
-							index: i,
-							num: i_le++,
-							id: $item.attr("data-fdid")
-						});
-					}
-				});
-				$.post("url",data,function(res){},'json');// ajax 更新所有章节排序
-			})
+			.bind("sortupdate",changIndex)//绑定拖放元素改变次序事件
 			//绑定编辑标题按钮事件
 			.delegate(".sortable-bar>.icon-pencil2","click",function(e){
 				e.preventDefault();
@@ -520,11 +672,14 @@
 				e.preventDefault();
 				var $li = $(this).closest("li");
 				//=====================================================可在此 ajax 删除章节数据==================================
-						/*$.post('#url?delete',{fdid: $li.attr("data-fdid")})
+						/*$.post('${ctx}/catalog/ajax/deleteCatalogById',{fdid: $li.attr("data-fdid")})
 						.success(function(){
 							$li.remove();
+							changIndex();
+							updataProgressCourses($sections.children(".lecture").length);
 						});*/
 				$li.remove();
+                changIndex();
 				updataProgressCourses($sections.children(".lecture").length);
 			})
 			//绑定编辑节内容按钮事件
@@ -550,7 +705,7 @@
 				if($tit.val()){			
 					if($form.prev().hasClass("sortable-bar")){//编辑已有章节					
 						//=====================================================可在此 ajax 更新章节名称数据==================================
-						/*$.post('#url',{fdid: $li.attr("data-fdid"), title: $tit.val()},function(data){},"json")
+						/*$.post('${ctx}/ajax/updateCatalogNameById',{fdid: $li.attr("data-fdid"), title: $tit.val()},function(data){},"json")
 						.success(function(){
 							$li.children(".sortable-bar").removeClass("hide").find(".name").text($tit.val());
 						});*/
@@ -559,14 +714,16 @@
 					} else {//新加章节							
 						
 						//=====================================================可在此 ajax 提交新加章节的数据, 返回fdId==============================
-						/*$.post('#url?add',data,function(result){					
+						/*$.post('${ctx}/ajax/addCatalog',{courseid:$("#courseId").val(),ischapter:$li.hasClass("chapter"),fdtotalno:$li.length,fdno:$form.find(".index").text(),title:$tit.val()},function(result){					
 							var data = rtnSectionData($li.hasClass("chapter"),$form.find(".index").text(),$tit.val(),$li.length,"none",result.id);
+							$("#courseId").val(result.courseid);
 							$li.attr("data-fdid",result.id)
 							$form.before(sectionsFn(data));	
 							$sections.sortable({
 								handle: '.sortable-bar',
 								forcePlaceholderSize: true
 							});
+							var numAll = $form.find(".index").text();	
 							updataProgressCourses(numAll);
 						},"json");
 						*/
@@ -601,9 +758,45 @@
 			.delegate(".lecture-content>.bd>.btn-type","click",function(e){
 				if($(this).hasClass("disabled")){
 					e.preventDefault();
-				}		
+				} else {
+                    var $tit = $(this).closest(".lecture-content").prev().find(".title");
+                    urlRouter(false,{
+                        id: $(this).closest(".lecture").attr("data-fdid"),
+                        title: $tit.find(".name").text(),
+                        index: $tit.find(".index").text()
+                    });
+                }
 			});
-			
+            //更新章节顺序方法
+            function changIndex(){
+                var $items = $sections.children("li"),
+                    i_ch = 1,
+                    i_le = 1,
+                    data = {
+                		courseid : $("#courseId").val(),
+                        chapter : [],
+                        lecture : []
+                    }, $item ;
+                $items.each(function(i){
+                    $item = $(this);
+                    if($item.hasClass("chapter")){
+                        $item.find(".title>.index").text(i_ch);
+                        data.chapter.push({
+                            index: i,
+                            num: i_ch++,
+                            id: $item.attr("data-fdid")
+                        });
+                    } else if($item.hasClass("lecture")){
+                        $item.find(".title>.index").text(i_le);
+                        data.lecture.push({
+                            index: i,
+                            num: i_le++,
+                            id: $item.attr("data-fdid")
+                        });
+                    }
+                });
+                $.post("${ctx}/catalog/ajax/updateCatalogOrder",data,function(res){},'json');// ajax 更新所有章节排序
+            }
 			//绑定添加章事件
 			$("#addChapter").bind("click",function(){
 				if(!$sections.children(".chapter").last().children(".form-edit-title").length){

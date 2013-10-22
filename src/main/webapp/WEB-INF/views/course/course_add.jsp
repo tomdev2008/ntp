@@ -127,14 +127,14 @@
 			<a href="#" class="icon-remove-sign"></a>
 			</div>
 			<div class="bd">
-				<a class="btn-type{{?param.type != 'none' && param.type != 'video'}} disabled{{?}}" href="#"><i class="icon-video-lg"></i><h5>视频</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'audio'}} disabled{{?}}" href="#"><i class="icon-audio-lg"></i><h5>音频</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'doc'}} disabled{{?}}" href="#"><i class="icon-doc-lg"></i><h5>文档</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'ppt'}} disabled{{?}}" href="#"><i class="icon-ppt-lg"></i><h5>幻灯片</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'img'}} disabled{{?}}" href="#"><i class="icon-img-lg"></i><h5>图片</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'exam'}} disabled{{?}}" href="#"><i class="icon-exam-lg"></i><h5>测试</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'task'}} disabled{{?}}" href="#"><i class="icon-task-lg"></i><h5>作业</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'calendar'}} disabled{{?}}" href="#"><i class="icon-calendar-lg"></i><h5>日程安排</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'video'}} disabled{{?}}" href="#video"><i class="icon-video-lg"></i><h5>视频</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'audio'}} disabled{{?}}" href="#audio"><i class="icon-audio-lg"></i><h5>音频</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'doc'}} disabled{{?}}" href="#doc"><i class="icon-doc-lg"></i><h5>文档</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'ppt'}} disabled{{?}}" href="#ppt"><i class="icon-ppt-lg"></i><h5>幻灯片</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'img'}} disabled{{?}}" href="#img"><i class="icon-img-lg"></i><h5>图片</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'exam'}} disabled{{?}}" href="#exam"><i class="icon-exam-lg"></i><h5>测试</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'task'}} disabled{{?}}" href="#task"><i class="icon-task-lg"></i><h5>作业</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'calendar'}} disabled{{?}}" href="#calendar"><i class="icon-calendar-lg"></i><h5>日程安排</h5></a>
 			</div>
 		</div>
 	#}}
@@ -167,7 +167,7 @@
                     <input type="hidden" id="courseType" name="courseType" value="{{=it.courseType || ''}}" />
                     <ul class="nav nav-pills courseType">
 						{{~ it.courseTypeList :type:index}}
-							 <li{{?type == it.courseType}} class="active"{{?}}><a href="#">{{=type}}</a></li>
+							 <li{{?type.id == it.courseType}} class="active"{{?}}><a href="#">{{=type.title}}</a><input type='hidden' value='{{=type.id}}'></li>
 						{{~}}                    	                  
                     </ul>  
 	       </div>
@@ -370,6 +370,93 @@
 	 </div> 	
 </script>
 
+<!-- 视频,文档。。。页 模板 -->
+<script id="mediaPageTemplate" type="text/x-dot-template">
+    <div class="page-header">
+        <h4>第{{=it.lectureIndex}}节 {{=it.pageTitle || ''}}</h4>
+    </div>
+    <div class="page-body mediaPage-content">
+        <form id="formMedia" method="post" class="form-horizontal" action="{{=it.action || '##'}}">
+	    	<div class="section" >
+                <div class="control-group">
+                    <label class="control-label" for="lectureName">章节名称</label>
+                    <div class="controls"><input value="{{=it.pageTitle || ''}}" id="lectureName" required class="input-xlarge" name="lectureName" type="text" /></div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="learnTime">学习时长</label>
+                    <div class="controls"><input value="{{=it.learnTime || ''}}" required placeholder="请认真填写该章节的 建议学习时长" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="sectionsIntro">章节说明</label>
+                    <div class="controls">
+                        <textarea placeholder="请认真填写该章节的描述信息" rows="4" required minlength="20" class="input-xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>
+                    </div>
+                </div>
+	       </div>
+            <div class="mediaList">
+                <label >{{=it.typeTxt}}列表（<span id="mediaCount">{{=it.mediaList.length || ''}}</span>  个）</label>
+                <ul class="unstyled" id="listMedia">
+                    {{~it.mediaList :item:index}}
+                        {{~it.mediaList :item2:index2}}
+                            {{?(index+1) == item2.index}}
+                            <li data-fdid="{{=item.id}}"><span class="title">{{=it.typeTxt}} <span class="index">{{=item2.index}}</span>：<span class="name">{{=item.title}}</span></span>
+                                <a class="icon-pencil2 btn-ctrls" href="#"></a>
+                                <a class="icon-remove btn-ctrls" href="#"></a>
+                                <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+                            </li>
+                            {{?}}
+                        {{~}}
+                    {{~}}
+                </ul>
+            </div>
+		   <div class="section" >
+					<label>{{=it.uploadIntro || ''}}</label>
+					<div class="control-upload">
+						<span class="progress">
+		            		<div class="bar" style="width:20%;"></div>
+		            	</span>
+						<span class="txt"><span>20%</span>，剩余时间：<span>00:00:29</span></span>
+						<button class="btn btn-primary btn-large" type="button" >上传</button>
+					</div>
+	       </div>
+            <div class="section" >
+                <label>或者从 <a href="#">课程素材库</a> 中选择{{=it.typeTxt}}</label>
+                <div class="autoCompleteWrap">
+					<input id="addMedia" type="text" />
+                    <button class="btn btn-primary btn-large" type="button" >选择</button>
+                </div>
+            </div>
+           <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
+       </form>
+	 </div>
+</script>
+
+<!-- 视频,文档。。。列表项 模板 -->
+<script id="mediaListTemplate" type="text/x-dot-template">
+    <li data-fdid="{{=it.id}}"><span class="title">{{=it.typeTxt}} <span class="index">{{=it.index}}</span>：<span class="name">{{=it.name}}</span></span>
+        <a class="icon-pencil2 btn-ctrls" href="#"></a>
+        <a class="icon-remove btn-ctrls" href="#"></a>
+        <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+    </li>
+</script>
+
+<!--编辑视频,文档。。。列表项 标题表单模板-->
+<script id="formEditMediaTitle" type="text/x-dot-template">
+    <li class="form-edit-title form-horizontal">
+        <div class="control-group">
+            <label class="control-label">{{=it.typeTxt}}<span class="index">{{=it.index}}</span></label>
+            <div class="controls">
+                <input type="text" class="input-block-level" placeholder="请输入标题" value="{{=it.name || ''}}" />
+                <span class="count">20字</span>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="btn btn-primary btn-large" type="button">保存</button>
+            <button class="btn btn-link" type="button">取消</button>
+        </div>
+    </li>
+</script>
+
 <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
@@ -409,7 +496,7 @@
 	<div class="clearfix">
 		<div class="tit-bar">    	
 	        <div class="page-title section" id="page-title">
-	        	<input type="hidden" id="courseId" value="">
+	        	<input type='hidden' id='courseId' value='' />
 	        	<h5>集团英联邦项目雅思强化口语备课课程</h5>
 	            <div class="btn-group">
 		            <button class="btn btn-primary btn-large" disabled type="button">预览</button>
@@ -476,7 +563,7 @@
 	});
 	
 	//根据URL中‘#’后参数判断加载栏目
-	function urlRouter(href){		
+	function urlRouter(href,opt){
 		setTimeout(function(){
 			var param = href ? href : location.href.split("#").pop();			
 			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass("active");
@@ -499,6 +586,11 @@
 				case "deleteCourse":
 	  				rightCont.loadDeleteCoursePage("删除课程","{fdid}");
 	  				break;
+                case "video":
+                    if(opt) {
+                        rightCont.loadVideoPage(opt);
+                        break;
+                    }
 	  			case "sectionsDirectory":
 	  			default:
 	  				rightCont.loadSectionDirectoryPage("章节目录");			

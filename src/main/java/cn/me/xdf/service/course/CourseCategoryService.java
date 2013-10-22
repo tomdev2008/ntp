@@ -6,39 +6,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
-import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.course.CourseCategory;
 import cn.me.xdf.service.BaseService;
+
 
 /**
  * 
- * 课程章节service
+ * 课程分类service
  * 
  * @author zuoyi
  * 
  */
 @Service
 @Transactional(readOnly = false)
-public class CourseCatalogService extends BaseService{
-
+public class CourseCategoryService extends BaseService{
 	@SuppressWarnings("unchecked")
 	@Override
-	public  Class<CourseCatalog> getEntityClass() {
-		return CourseCatalog.class;
+	public  Class<CourseCategory> getEntityClass() {
+		return CourseCategory.class;
 	}
-	
+
 	/**
-	 * 查找课程权限
-	 * @param courseId 课程ID
-	 * @return List 章节列表
+	 * 查找所有课程分类
+	 * @return List 分类列表
 	 */
 	@Transactional(readOnly = true)
-	public List<CourseCatalog> getCatalogsByCourseId(String courseId){
+	public List<CourseCategory> findAll(){
 		//根据课程ID查找章节，并按总序号升序
 		Finder finder = Finder
-				.create("from CourseCatalog catalog ");
-		finder.append("where catalog.courseInfo.fdId = :userId order by catalog.fdTotalNo");
-		finder.setParam("courseId", courseId);		
+				.create("from CourseCategory category ");		
 		return  super.find(finder);
 	}
-	
 }
