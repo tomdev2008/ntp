@@ -27,7 +27,26 @@ public class MachineListener extends DefaultLoadEventListener
 
     @Override
     public void onPostUpdate(PostUpdateEvent event) {
+        Object o = event.getEntity();
+        if (o instanceof IAttMain) {
+            IAttMain attMain = (IAttMain) o;
+            AttMainMachine attMainMachine = event.getClass().getAnnotation(AttMainMachine.class);
+            String modelId = attMainMachine.modelId();
+            String modelName = attMainMachine.modelName();
+            String key = attMainMachine.key();
+            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
+            List<String> attIds = attMain.getAttId();
+            for (String attId : attIds) {
+                AttMain att = (AttMain) event.getSession().get(AttMain.class, attId);
+                if (att != null) {
+                    att.setFdKey(key);
+                    att.setFdModelId(modelIdValue);
+                    att.setFdModelName(modelName);
+                    event.getSession().update(attMain);
+                }
+            }
 
+        }
     }
 
     @Override
