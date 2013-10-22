@@ -33,5 +33,5 @@ public class CourseCatalogService extends BaseService{
 		finder.setParam("courseId", courseId);		
 		return  super.find(finder);
 	}
-
+	
 }
