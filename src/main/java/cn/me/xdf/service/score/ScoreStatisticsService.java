@@ -32,9 +32,19 @@ public class ScoreStatisticsService extends BaseService{
 	 * 
 	 */
 	@Transactional(readOnly = false)
-	public ScoreStatistics resetInfo(String ScoreStatisticsId){
+	public ScoreStatistics resetInfoByFdId(String ScoreStatisticsId){
 		ScoreStatistics scoreStatistics = findUniqueByProperty("fdId", ScoreStatisticsId);
 		String fdModelId = scoreStatistics.getFdModelId();
+		return resetInfoByFdModelId(fdModelId);
+	}
+	
+	/**
+	 * 重新计算评分统计
+	 * 
+	 */
+	@Transactional(readOnly = false)
+	public ScoreStatistics resetInfoByFdModelId(String fdModelId){
+		ScoreStatistics scoreStatistics = findUniqueByProperty("fdModelId", fdModelId);
 		int score_1 = scoreService.getCountByModelIdAndScore(fdModelId, 1);
 		int score_2 = scoreService.getCountByModelIdAndScore(fdModelId, 2);
 		int score_3 = scoreService.getCountByModelIdAndScore(fdModelId, 3);
