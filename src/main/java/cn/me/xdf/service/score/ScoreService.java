@@ -30,7 +30,7 @@ public class ScoreService extends BaseService{
 	 * 计算指定 业务Id和分数的记录数量
 	 * 
 	 */
-	public int fingCountModelIdAndScore(String fdModelId,int fdScore){
+	public int getCountByModelIdAndScore(String fdModelId,int fdScore){
 		Finder finder = Finder
 				.create("from Score score ");
 		finder.append("where score.fdModelId = :fdModelId and score.fdScore = :fdScore");

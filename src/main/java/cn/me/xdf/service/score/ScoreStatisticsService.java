@@ -35,11 +35,11 @@ public class ScoreStatisticsService extends BaseService{
 	public ScoreStatistics resetInfo(String ScoreStatisticsId){
 		ScoreStatistics scoreStatistics = findUniqueByProperty("fdId", ScoreStatisticsId);
 		String fdModelId = scoreStatistics.getFdModelId();
-		int score_1 = scoreService.fingCountModelIdAndScore(fdModelId, 1);
-		int score_2 = scoreService.fingCountModelIdAndScore(fdModelId, 2);
-		int score_3 = scoreService.fingCountModelIdAndScore(fdModelId, 3);
-		int score_4 = scoreService.fingCountModelIdAndScore(fdModelId, 4);
-		int score_5 = scoreService.fingCountModelIdAndScore(fdModelId, 5);
+		int score_1 = scoreService.getCountByModelIdAndScore(fdModelId, 1);
+		int score_2 = scoreService.getCountByModelIdAndScore(fdModelId, 2);
+		int score_3 = scoreService.getCountByModelIdAndScore(fdModelId, 3);
+		int score_4 = scoreService.getCountByModelIdAndScore(fdModelId, 4);
+		int score_5 = scoreService.getCountByModelIdAndScore(fdModelId, 5);
 		int num = score_1+score_2+score_3+score_4+score_5;
 		Double average = (score_1+score_2*2+score_3*3+score_4*4+score_5*5)/new Double(num);
 		scoreStatistics.setFdAverage(average);
