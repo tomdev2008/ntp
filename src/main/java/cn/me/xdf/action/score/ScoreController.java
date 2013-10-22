@@ -37,14 +37,14 @@ public class ScoreController {
 	private ScoreStatisticsService scoreStatisticsService;
 	
 	/**
-	 * 根据业务Id得到评分统计信息
+	 * 根据业务Id和业务Name得到评分统计信息
 	 * 
 	 * @return 评分统计信息json
 	 */
 	@RequestMapping(value = "ajax/getScoreStatisticsByfdModelId")
 	@ResponseBody
-	public String getScoreStatisticsByfdModelId(String fdModelId){
-		ScoreStatistics scoreStatistics =  scoreStatisticsService.findUniqueByProperty("fdModelId", fdModelId);
+	public String getScoreStatisticsByfdModelId(String fdModelId,String fdModelName){
+		ScoreStatistics scoreStatistics =  scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(fdModelName, fdModelId);
 		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
 		map.put("fdId", scoreStatistics.getFdId());
@@ -74,7 +74,7 @@ public class ScoreController {
 	@ResponseBody
 	public String pushScore(String fdModelName,String fdModelId,String fdScore,String userId){
 		scoreService.pushScore(fdModelName, fdModelId, fdScore, userId);
-		ScoreStatistics scoreStatistics = scoreStatisticsService.resetInfoByFdModelId(fdModelId);
+		ScoreStatistics scoreStatistics = scoreStatisticsService.resetInfoByFdModelId(fdModelName,fdModelId);
 		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
 		map.put("fdId", scoreStatistics.getFdId());
@@ -94,14 +94,15 @@ public class ScoreController {
 	 * 是否可以评分
 	 * 
 	 * @param fdModelId   业务Id
+	 * @param fdModelName   业务Name
 	 * @param userId      评分人Id
 	 * 
 	 * @return  String(true:可以评分；false：不可以评分)
 	 */
 	@RequestMapping(value = "ajax/canPushScore")
 	@ResponseBody
-	public String canPushScore(String fdModelId,String userId) {
-		Score score = scoreService.findByModelIdAndUserId(fdModelId, userId);
+	public String canPushScore(String fdModelName, String fdModelId,String userId) {
+		Score score = scoreService.findByModelIdAndUserId(fdModelName,fdModelId, userId);
 		return (score == null) ? "false" : "true";
 	}
 }

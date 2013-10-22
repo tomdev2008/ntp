@@ -1,9 +1,13 @@
 package cn.me.xdf.service.score;
 
+import java.util.List;
+
+import org.hibernate.criterion.Criterion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.BaseService;
 import cn.me.xdf.service.material.MaterialAuthService;
@@ -35,7 +39,23 @@ public class ScoreStatisticsService extends BaseService{
 	public ScoreStatistics resetInfoByFdId(String ScoreStatisticsId){
 		ScoreStatistics scoreStatistics = findUniqueByProperty("fdId", ScoreStatisticsId);
 		String fdModelId = scoreStatistics.getFdModelId();
-		return resetInfoByFdModelId(fdModelId);
+		String fdModelName = scoreStatistics.getFdModelName();
+		return resetInfoByFdModelId(fdModelName,fdModelId);
+	}
+	
+	/**
+	 * 通过fdModelName和fdModelId得到评分统计
+	 * 
+	 */
+	@Transactional(readOnly = false)
+	public ScoreStatistics findScoreStatisticsByModelNameAndModelId(String fdModelName, String fdModelId){
+		Finder finder = Finder
+				.create("from ScoreStatistics scoreStatistics ");
+		finder.append("where scoreStatistics.fdModelName=:fdModelName and scoreStatistics.fdModelId = :fdModelId");
+		finder.setParam("fdModelId", fdModelId);
+		finder.setParam("fdModelName", fdModelName);
+		List<ScoreStatistics> list = find(finder);
+		return list.get(0);
 	}
 	
 	/**
@@ -43,13 +63,13 @@ public class ScoreStatisticsService extends BaseService{
 	 * 
 	 */
 	@Transactional(readOnly = false)
-	public ScoreStatistics resetInfoByFdModelId(String fdModelId){
-		ScoreStatistics scoreStatistics = findUniqueByProperty("fdModelId", fdModelId);
-		int score_1 = scoreService.getCountByModelIdAndScore(fdModelId, 1);
-		int score_2 = scoreService.getCountByModelIdAndScore(fdModelId, 2);
-		int score_3 = scoreService.getCountByModelIdAndScore(fdModelId, 3);
-		int score_4 = scoreService.getCountByModelIdAndScore(fdModelId, 4);
-		int score_5 = scoreService.getCountByModelIdAndScore(fdModelId, 5);
+	public ScoreStatistics resetInfoByFdModelId(String fdModelName, String fdModelId){
+		ScoreStatistics scoreStatistics = findScoreStatisticsByModelNameAndModelId(fdModelName, fdModelId);
+		int score_1 = scoreService.getCountByModelIdAndScore(fdModelName,fdModelId, 1);
+		int score_2 = scoreService.getCountByModelIdAndScore(fdModelName,fdModelId, 2);
+		int score_3 = scoreService.getCountByModelIdAndScore(fdModelName,fdModelId, 3);
+		int score_4 = scoreService.getCountByModelIdAndScore(fdModelName,fdModelId, 4);
+		int score_5 = scoreService.getCountByModelIdAndScore(fdModelName,fdModelId, 5);
 		int num = score_1+score_2+score_3+score_4+score_5;
 		Double average = (score_1+score_2*2+score_3*3+score_4*4+score_5*5)/new Double(num);
 		scoreStatistics.setFdAverage(average);

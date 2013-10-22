@@ -34,10 +34,11 @@ public class ScoreService extends BaseService{
 	 * 计算指定 业务Id和分数的记录数量
 	 * 
 	 */
-	public int getCountByModelIdAndScore(String fdModelId,int fdScore){
+	public int getCountByModelIdAndScore(String fdModelName, String fdModelId,int fdScore){
 		Finder finder = Finder
 				.create("select count(*) from Score score ");
-		finder.append("where score.fdModelId = :fdModelId and score.fdScore = :fdScore");
+		finder.append("where score.fdModelName=:fdModelName and score.fdModelId = :fdModelId and score.fdScore = :fdScore");
+		finder.setParam("fdModelName", fdModelName);
 		finder.setParam("fdModelId", fdModelId);
 		finder.setParam("fdScore", fdScore);
 		List list = find(finder);
@@ -46,13 +47,14 @@ public class ScoreService extends BaseService{
 	}
 	
 	/**
-	 * 根据 业务Id和用户Id查找评分信息
+	 * 根据 业务Id、业务Name和用户Id查找评分信息
 	 * 
 	 */
-	public Score findByModelIdAndUserId(String fdModelId,String userId){
+	public Score findByModelIdAndUserId(String fdModelName, String fdModelId,String userId){
 		Finder finder = Finder
 				.create("from Score score ");
-		finder.append("where score.fdModelId = :fdModelId and score.fdUser.fdId = :userId");
+		finder.append("where score.fdModelName=:fdModelName and score.fdModelId = :fdModelId and score.fdUser.fdId = :userId");
+		finder.setParam("fdModelName", fdModelName);
 		finder.setParam("fdModelId", fdModelId);
 		finder.setParam("userId", userId);
 		List<Score> scores = find(finder);
@@ -70,7 +72,7 @@ public class ScoreService extends BaseService{
 	 * @return 评分信息
 	 */
 	public Score pushScore(String fdModelName,String fdModelId,String fdScore,String userId){
-		Score s = findByModelIdAndUserId(fdModelId, userId);
+		Score s = findByModelIdAndUserId(fdModelName,fdModelId, userId);
 		if(s!=null){
 			throw new RuntimeException("不能重复评分");
 		}
