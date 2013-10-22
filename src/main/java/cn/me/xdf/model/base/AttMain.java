@@ -12,193 +12,204 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 
-
 /**
  * 附件存储表
- * 
+ *
  * @author zuoyi
- * 
  */
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "IXDF_NTP_ATT_MAIN")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class AttMain extends IdEntity{
-	
-	/**
-	 * 附件名称
-	 */
-	private String fdFileName;
-	
-	/**
-	 * 排序号
-	 */
-	private String fdOrder;
-	
-	/**
-	 * 附件路径
-	 */
-	private String fdFilePath;
-	
-	/**
-	 * 附件大小
-	 */
-	private Double fdSize;
-	
-	/**
-	 * 存储方式01:数据库 02:磁盘
-	 */
-	private String fdStoreType;
-	
-	/**
-	 * 文档类型
-	 * 01视频
-	 * 02音频
-	 * 03图片
-	 * 04文档
-	 * 05幻灯片
-	 */
-	private String fdFileType;
-	
-	/**
-	 * 内容
-	 */
-	private byte[] fdData;
-	
-	/**
-	 * 业务模型
-	 */
-	private String fdModelName;
-	
-	/**
-	 * 业务Id
-	 */
-	private String fdModelId;
-	
-	/**
-	 * 关键字
-	 */
-	private String fdKey;
-	
-	/**
-	 * 位置编号
-	 */
-	private String fdPositionNo;
-	
-	/**
-	 * 创建时间
-	 */
-	private Date fdCreateTime;
-	
-	/**
-	 * 创建者
-	 */
-	private String fdCreatorId;
+public class AttMain extends IdEntity {
 
-	public String getFdFileName() {
-		return fdFileName;
-	}
+    /**
+     * 附件名称
+     */
+    private String fdFileName;
 
-	public void setFdFileName(String fdFileName) {
-		this.fdFileName = fdFileName;
-	}
+    /**
+     * 排序号
+     */
+    private String fdOrder;
 
-	public String getFdOrder() {
-		return fdOrder;
-	}
+    /**
+     * 附件路径
+     */
+    private String fdFilePath;
 
-	public void setFdOrder(String fdOrder) {
-		this.fdOrder = fdOrder;
-	}
+    /**
+     * 附件大小
+     */
+    private Double fdSize;
 
-	public String getFdFilePath() {
-		return fdFilePath;
-	}
+    /**
+     * 存储方式01:数据库 02:磁盘
+     */
+    private String fdStoreType;
 
-	public void setFdFilePath(String fdFilePath) {
-		this.fdFilePath = fdFilePath;
-	}
+    /**
+     * 文档类型
+     * 01视频
+     * 02音频
+     * 03图片
+     * 04文档
+     * 05幻灯片
+     */
+    private String fdFileType;
 
-	public Double getFdSize() {
-		return fdSize;
-	}
+    /**
+     * 文件上传头
+     */
+    private String fdContentType;
 
-	public void setFdSize(Double fdSize) {
-		this.fdSize = fdSize;
-	}
+    /**
+     * 内容
+     */
+    private byte[] fdData;
 
-	public String getFdStoreType() {
-		return fdStoreType;
-	}
+    /**
+     * 业务模型
+     */
+    private String fdModelName;
 
-	public void setFdStoreType(String fdStoreType) {
-		this.fdStoreType = fdStoreType;
-	}
+    /**
+     * 业务Id
+     */
+    private String fdModelId;
 
-	public String getFdFileType() {
-		return fdFileType;
-	}
+    /**
+     * 关键字
+     */
+    private String fdKey;
 
-	public void setFdFileType(String fdFileType) {
-		this.fdFileType = fdFileType;
-	}
+    /**
+     * 位置编号
+     */
+    private String fdPositionNo;
 
-	@Lob
-	@Basic(fetch = FetchType.LAZY)
-	public byte[] getFdData() {
-		return fdData;
-	}
+    /**
+     * 创建时间
+     */
+    private Date fdCreateTime;
 
-	public void setFdData(byte[] fdData) {
-		this.fdData = fdData;
-	}
+    /**
+     * 创建者
+     */
+    private String fdCreatorId;
 
-	public String getFdModelName() {
-		return fdModelName;
-	}
+    public String getFdFileName() {
+        return fdFileName;
+    }
 
-	public void setFdModelName(String fdModelName) {
-		this.fdModelName = fdModelName;
-	}
+    public void setFdFileName(String fdFileName) {
+        this.fdFileName = fdFileName;
+    }
 
-	public String getFdModelId() {
-		return fdModelId;
-	}
+    public String getFdOrder() {
+        return fdOrder;
+    }
 
-	public void setFdModelId(String fdModelId) {
-		this.fdModelId = fdModelId;
-	}
+    public void setFdOrder(String fdOrder) {
+        this.fdOrder = fdOrder;
+    }
 
-	public String getFdKey() {
-		return fdKey;
-	}
+    public String getFdContentType() {
+        return fdContentType;
+    }
 
-	public void setFdKey(String fdKey) {
-		this.fdKey = fdKey;
-	}
+    public void setFdContentType(String fdContentType) {
+        this.fdContentType = fdContentType;
+    }
 
-	public String getFdPositionNo() {
-		return fdPositionNo;
-	}
+    public String getFdFilePath() {
+        return fdFilePath;
+    }
 
-	public void setFdPositionNo(String fdPositionNo) {
-		this.fdPositionNo = fdPositionNo;
-	}
+    public void setFdFilePath(String fdFilePath) {
+        this.fdFilePath = fdFilePath;
+    }
 
-	public Date getFdCreateTime() {
-		return fdCreateTime;
-	}
+    public Double getFdSize() {
+        return fdSize;
+    }
 
-	public void setFdCreateTime(Date fdCreateTime) {
-		this.fdCreateTime = fdCreateTime;
-	}
+    public void setFdSize(Double fdSize) {
+        this.fdSize = fdSize;
+    }
 
-	public String getFdCreatorId() {
-		return fdCreatorId;
-	}
+    public String getFdStoreType() {
+        return fdStoreType;
+    }
 
-	public void setFdCreatorId(String fdCreatorId) {
-		this.fdCreatorId = fdCreatorId;
-	}
-	
+    public void setFdStoreType(String fdStoreType) {
+        this.fdStoreType = fdStoreType;
+    }
+
+    public String getFdFileType() {
+        return fdFileType;
+    }
+
+    public void setFdFileType(String fdFileType) {
+        this.fdFileType = fdFileType;
+    }
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    public byte[] getFdData() {
+        return fdData;
+    }
+
+    public void setFdData(byte[] fdData) {
+        this.fdData = fdData;
+    }
+
+    public String getFdModelName() {
+        return fdModelName;
+    }
+
+    public void setFdModelName(String fdModelName) {
+        this.fdModelName = fdModelName;
+    }
+
+    public String getFdModelId() {
+        return fdModelId;
+    }
+
+    public void setFdModelId(String fdModelId) {
+        this.fdModelId = fdModelId;
+    }
+
+    public String getFdKey() {
+        return fdKey;
+    }
+
+    public void setFdKey(String fdKey) {
+        this.fdKey = fdKey;
+    }
+
+    public String getFdPositionNo() {
+        return fdPositionNo;
+    }
+
+    public void setFdPositionNo(String fdPositionNo) {
+        this.fdPositionNo = fdPositionNo;
+    }
+
+    public Date getFdCreateTime() {
+        return fdCreateTime;
+    }
+
+    public void setFdCreateTime(Date fdCreateTime) {
+        this.fdCreateTime = fdCreateTime;
+    }
+
+    public String getFdCreatorId() {
+        return fdCreatorId;
+    }
+
+    public void setFdCreatorId(String fdCreatorId) {
+        this.fdCreatorId = fdCreatorId;
+    }
+
 }
