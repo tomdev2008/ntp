@@ -28,8 +28,8 @@
            	<a href="./forgot.html" class="btn btn-link"><i class="icon-qm"></i>忘记密码</a>
             </p>
        	  <p class="login_btns clearfix">
-            <button class="btn btn-register" type="button" onClick="location.href='./register.html'" >注册</button>
-            <button class="btn btn-primary btn-login" type="button" onClick="location.href='./home.html'">登录</button>
+            <button class="btn btn-register" type="button" onClick="location.href='${ctx }/register/add'" >注册</button>
+            <button type="submit" id="loginSubmit"  class="btn btn-primary btn-login" type="button">登录</button>
             </p>
         </div>
 		<div class="login_intro">请使用您的集团邮箱账号及密码直接登录本平台，或者注册临时账号以保证快速访问。<br />
