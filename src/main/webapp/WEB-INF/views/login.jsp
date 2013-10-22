@@ -30,13 +30,15 @@
         	<input type="password" name="password" onclick="clearErrorMsg()" class="input-block-level inp inp-password" placeholder="请输入您的登录密码">
         	 <br>
             <c:if test="${error=='error'}">
-            	<span id="errorMsg" class="help-block text-warning">* 邮箱账号或密码输入错误，请重新登录</span>
+            	<span id="errorMsg" class="help-block text-warning">
+            	<b class="icon-disc-bg warning">!</b> 
+            	  邮箱账号或密码输入错误，请重新登录</span>
             </c:if> 
             <p class="bar_link">
            	  <a href="${ctx}/register/forgotPwd" class="btn btn-link"><i class="icon-qm"></i>忘记密码</a>
             </p>
        	  <p class="login_btns clearfix">
-            <button class="btn btn-register" type="button" onClick="location.href='${ctx }/self_register'" >注册</button>
+            <button class="btn btn-register" type="button" onClick="location.href='${ctx }/register/add'" >注册</button>
             <button type="submit" id="loginSubmit"  class="btn btn-primary btn-login" type="button">登录</button>
             </p>
         </div>

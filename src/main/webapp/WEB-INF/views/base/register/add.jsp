@@ -5,74 +5,14 @@
 <!DOCTYPE html>
 <html lang="zh_CN">
 <head>
-<link rel="stylesheet" type="text/css"
-	href="${ctx}/resources/uploadify/uploadify.css"></link>	
-<link href="${ctx}/resources/css/datepicker.css" rel="stylesheet">
-<link href="${ctx}/resources/css/register.css" rel="stylesheet">
 
-<style>
-.uploadify-button {
-	background-color: rgb(67, 145, 187);
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(67,
-		145, 187) ), color-stop(1, rgb(67, 145, 187) ) );
-	max-width: 70px;
-	max-height: 20px;
-	border-radius: 1px;
-	border: 0px;
-	font: bold 12px Arial, Helvetica, sans-serif;
-	display: block;
-	text-align: center;
-	text-shadow: 0 0px 0 rgba(0, 0, 0, 0.25);
-}
+<link href="${ctx}/resources/css/datepicker.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/css/register.css" rel="stylesheet" type="text/css">
 
-.uploadify:hover .uploadify-button {
-	background-color: rgb(67, 145, 187);
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(67,
-		145, 187) ), color-stop(1, rgb(67, 145, 187) ) );
-}
-</style>
-<script type="text/javascript"
-	src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=22"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.jalert.js"></script>
+<script type="text/javascript" src="${ctx }/resources/js/jquery.js"></script>
 	
 <script type="text/javascript">
-	jQuery(function() {
-		jQuery("#upIcon").uploadify(
-				{
-					'height' : 20,
-					'width' : 70,
-					'buttonText' : '修改',
-					'multi' : false,
-					'simUploadLimit' : 1,
-					'swf' : '${ctx}/resources/uploadify/uploadify.swf',
-					'uploader' : '${ctx}/register2/o_upload;',
-					'auto' : true,
-					'fileTypeExts' : '*.jpg;*.png;*.jpeg;*.bmp;',
-					'onUploadStart' : function(file) {
-						jQuery("#upIcon").uploadify("settings", "formData", {
-							'folder' : 'Folder'
-						});
-					},
-					'onUploadSuccess' : function(file, data, Response) {
-						if (Response) {
-							var objvalue = eval("(" + data + ")");
-							// objvalue.contentType='application/octet-stream';
-							if (jQuery("#fdIcoUrl")) {
-								jQuery("#fdIcoUrl").val(file.name);
-							}
-							if (jQuery("#imgshow")) {
-								jQuery("#imgshow").attr('src',
-										'${ctx}/' + objvalue.filePath);
-							}
-							jQuery("#fdIcoUrl").val(objvalue.filePath);
-							
-							jQuery("#imgend").attr('src',
-									'${ctx}/' + objvalue.filePath);
-							count++;
-						}
-					}
-				});
-	});
 
 	//注册
 	function register() {

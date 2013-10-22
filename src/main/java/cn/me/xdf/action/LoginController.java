@@ -52,9 +52,7 @@ public class LoginController {
 			token = doDbLogin(userName,passWord);	
 		}
 		if (token == null) {
-			/*String msg = "createToken method implementation returned null. A valid non-null AuthenticationToken "
-					+ "must be created in order to execute a login attempt.";
-			throw new IllegalStateException(msg);*/
+			request.setAttribute("error", "error");
 			return "login";
 		}
 		try {
