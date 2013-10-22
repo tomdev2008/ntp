@@ -60,40 +60,40 @@
 	</div>
     <div class="online6-wrap">
     	<dl class="dl-onliner6 clearfix">
-    		<dt><img src="${ctx}/resources/loginCss/images/online6-tit.jpg" width="360" height="240">
+    		<dt><img src="${ctx}/resources/images/online6-tit.jpg" width="360" height="240">
             	<div class="caption">
             		<h3>在线备课六步闯关</h3>
             		<p><span class="text-warning">1,000+</span>人参与</p>
             	</div>
             </dt>
     		<dd>
-            	<img src="${ctx}/resources/loginCss/images/online6-1.jpg" >
+            	<img src="${ctx}/resources/images/online6-1.jpg" >
             	<div class="caption">
            		  <h3>业务学习</h3>
            	  	</div>
             </dd>
     		<dd>
-            	<img src="${ctx}/resources/loginCss/images/online6-2.jpg" >
+            	<img src="${ctx}/resources/images/online6-2.jpg" >
             	<div class="caption">
            		  <h3>学术准备</h3>
            	  	</div></dd>
     		<dd>
-            	<img src="${ctx}/resources/loginCss/images/online6-3.jpg" >
+            	<img src="${ctx}/resources/images/online6-3.jpg" >
             	<div class="caption">
            		  <h3>标准化教案学习</h3>
            	  	</div></dd>
     		<dd>
-            	<img src="${ctx}/resources/loginCss/images/online6-4.jpg" >
+            	<img src="${ctx}/resources/images/online6-4.jpg" >
             	<div class="caption">
            		  <h3>课件编写</h3>
            	  	</div></dd>
     		<dd>
-            	<img src="${ctx}/resources/loginCss/images/online6-5.jpg" >
+            	<img src="${ctx}/resources/images/online6-5.jpg" >
             	<div class="caption">
            		  <h3>批课</h3>
            	  	</div></dd>
     		<dd>
-            	<img src="${ctx}/resources/loginCss/images/online6-6.jpg" >
+            	<img src="${ctx}/resources/images/online6-6.jpg" >
             	<div class="caption">
            		  <h3>批课确认</h3>
            	  	</div></dd>
@@ -119,25 +119,25 @@
    	  </div>
    	  <ul class="nav nav-tabs">
    		  <li class="active"><a href="#tab1" data-toggle="tab">
-       	  	<img src="${ctx}/resources/loginCss/images/temp-face01.jpg" width="70" height="70">
+       	  	<img src="${ctx}/resources/images/temp-face70.jpg" width="70" height="70">
             <h5>Grace</h5>
             <p>雅思教师</p>
             <b class="caret"></b>
           </a></li>
    		  <li><a href="#tab2" data-toggle="tab">
-       	  	<img src="${ctx}/resources/loginCss/images/temp-face02.jpeg" width="70" height="70">
+       	  	<img src="${ctx}/resources/images/temp-face70.jpg" width="70" height="70">
             <h5>Eric</h5>
             <p>托福教师</p>
             <b class="caret"></b>
           </a></li>
    		  <li><a href="#tab3" data-toggle="tab">
-       	  	<img src="${ctx}/resources/loginCss/images/temp-face03.jpg" width="70" height="70">
+       	  	<img src="${ctx}/resources/images/temp-face70.jpg" width="70" height="70">
             <h5>Daniel</h5>
             <p>考研教师</p>
             <b class="caret"></b>
           </a></li>
    		  <li><a href="#tab4" data-toggle="tab">
-       	  	<img src="${ctx}/resources/loginCss/images/temp-face04.jpg" width="70" height="70">
+       	  	<img src="${ctx}/resources/images/temp-face70.jpg" width="70" height="70">
             <h5>Felix</h5>
             <p>SAT教师</p>
             <b class="caret"></b>
@@ -158,7 +158,7 @@
                 </span>
                 <a href="#">&rarr;</a>
           </div>
-   		  <img src="${ctx}/resources/loginCss/images/hoverfold-01.jpg" alt="">
+   		  <img src="${ctx}/resources/images/hoverfold-01.jpg" alt="">
           <h5>广州学校</h5>
        </div>
        <div class="view">
@@ -171,7 +171,7 @@
                 </span>
                 <a href="#">&rarr;</a>
           </div>
-   		  <img src="${ctx}/resources/loginCss/images/hoverfold-02.jpg" alt="">
+   		  <img src="${ctx}/resources/images/hoverfold-02.jpg" alt="">
           <h5>武汉学校</h5>
        </div>
        <div class="view">
@@ -184,7 +184,7 @@
                 </span>
                 <a href="#">&rarr;</a>
           </div>
-   		  <img src="${ctx}/resources/loginCss/images/hoverfold-03.jpg" alt="">
+   		  <img src="${ctx}/resources/images/hoverfold-03.jpg" alt="">
           <h5>杭州学校</h5>
        </div>
        <div class="view">
@@ -197,7 +197,7 @@
                 </span>
                 <a href="#">&rarr;</a>
           </div>
-   		  <img src="${ctx}/resources/loginCss/images/hoverfold-04.jpg" alt="">
+   		  <img src="${ctx}/resources/images/hoverfold-04.jpg" alt="">
           <h5>深圳学校</h5>
        </div>
        <div class="view">
@@ -210,7 +210,7 @@
                 </span>
                 <a href="#">&rarr;</a>
           </div>
-   		  <img src="${ctx}/resources/loginCss/images/hoverfold-05.jpg" alt="">
+   		  <img src="${ctx}/resources/images/hoverfold-05.jpg" alt="">
           <h5>济南学校</h5>
        </div>
        <div class="view">
@@ -223,7 +223,7 @@
                 </span>
                 <a href="#">&rarr;</a>
           </div>
-   		  <img src="${ctx}/resources/loginCss/images/hoverfold-06.jpg" alt="">
+   		  <img src="${ctx}/resources/images/hoverfold-06.jpg" alt="">
           <h5>南京学校</h5>
        </div>
        <div class="view">
@@ -236,7 +236,7 @@
                 </span>
                 <a href="#">&rarr;</a>
           </div>
-   		  <img src="${ctx}/resources/loginCss/images/hoverfold-07.jpg" alt="">
+   		  <img src="${ctx}/resources/images/hoverfold-07.jpg" alt="">
           <h5>苏州学校</h5>
        </div>
        <div class="view">
@@ -249,7 +249,7 @@
                 </span>
                 <a href="#">&rarr;</a>
           </div>
-   		  <img src="${ctx}/resources/loginCss/images/hoverfold-08.jpg" alt="">
+   		  <img src="${ctx}/resources/images/hoverfold-08.jpg" alt="">
           <h5>无锡学校</h5>
        </div>
        <div class="view">
@@ -262,7 +262,7 @@
                 </span>
                 <a href="#">&rarr;</a>
           </div>
-   		  <img src="${ctx}/resources/loginCss/images/hoverfold-09.jpg" alt="">
+   		  <img src="${ctx}/resources/images/hoverfold-09.jpg" alt="">
           <h5>敬请期待</h5>
        </div>
        <div class="view">
@@ -275,7 +275,7 @@
                 </span>
                 <a href="#">&rarr;</a>
           </div>
-   		  <img src="${ctx}/resources/loginCss/images/hoverfold-10.jpg" alt="">
+   		  <img src="${ctx}/resources/images/hoverfold-10.jpg" alt="">
           <h5>更多学校</h5>
        </div>
     </div>
