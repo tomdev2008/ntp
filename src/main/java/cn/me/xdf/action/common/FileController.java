@@ -86,9 +86,9 @@ public class FileController {
         return dh;
     }
 
-    @RequestMapping("/image/{id}")
+    @RequestMapping("/delete/{id}")
     @ResponseBody
-    public String delete(@PathVariable("id") String id) throws IOException {
+    public String delete(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
         return BooleanUtils.toString(attMainService.deleteAttMain(id), "true", "false");
     }
 
