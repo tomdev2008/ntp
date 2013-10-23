@@ -19,9 +19,11 @@ import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.course.CourseCategory;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.TagInfo;
+import cn.me.xdf.model.organization.User;
 import cn.me.xdf.service.course.CourseCategoryService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.course.CourseTagService;
+import cn.me.xdf.service.course.TagInfoService;
 
 /**
  * 课程信息的ajax
@@ -42,6 +44,9 @@ public class CourseAjaxController {
 	
 	@Autowired
 	private CourseTagService courseTagService;
+	
+	@Autowired
+	private TagInfoService tagInfoService;
 	
 	/**
 	 * 获取当前课程的基本信息
@@ -90,4 +95,34 @@ public class CourseAjaxController {
 		list.add(map);
 		return JsonUtils.writeObjectToJson(list);
 	}
+	
+	/**
+	 * 根据标签名称模糊查询标签信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "findTagInfosByKey")
+	@ResponseBody
+	public String findTagInfosByKey(HttpServletRequest request) {
+		//获取课程ID
+		String key = request.getParameter("key");
+		List<TagInfo> tagInfos = tagInfoService.findTagInfosByKey(key);
+		//将所有课程标签信息转换成json返回到页面
+		List<Map> list = new ArrayList<Map>();
+		Map map = new HashMap();
+		if(tagInfos!=null && tagInfos.size()>0){
+			List<Map> cateList = new ArrayList<Map>();
+			for(TagInfo tagInfo:tagInfos){
+				Map catemap = new HashMap();
+				catemap.put("fdName", tagInfo.getFdName());
+				catemap.put("fdDescription", tagInfo.getFdDescription());
+				cateList.add(catemap);
+			}
+			map.put("tagInfoList", JsonUtils.writeObjectToJson(cateList));		
+		}
+		list.add(map);
+		return JsonUtils.writeObjectToJson(list);
+	}
+
 }
