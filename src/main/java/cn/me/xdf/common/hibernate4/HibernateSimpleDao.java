@@ -97,6 +97,65 @@ public abstract class HibernateSimpleDao {
 		p.setList(list);
 		return p;
 	}
+	
+	/**
+	 * 通过Finder(原生SQL)获得分页数据
+	 * 
+	 * @param finder
+	 *            Finder对象
+	 * @param pageNo
+	 *            页码
+	 * @param pageSize
+	 *            每页条数
+	 * @return
+	 */
+	public Pagination findBySql(Finder finder, int pageNo, int pageSize) {
+		int totalCount = countQueryResultBySql(finder);
+		Pagination p = new Pagination(pageNo, pageSize, totalCount);
+		if (totalCount < 1) {
+			p.setList(new ArrayList());
+			return p;
+		}
+		Query query = getSession().createSQLQuery(finder.getOrigHql());
+		finder.setParamsToQuery(query);
+		query.setFirstResult(p.getFirstResult());
+		query.setMaxResults(p.getPageSize());
+		if (finder.isCacheable()) {
+			query.setCacheable(true);
+		}
+		List list = query.list();
+		p.setList(list);
+		return p;
+	}
+	
+	/**
+	 * 获得Finder(原生SQL)的记录总数
+	 * 
+	 * @param finder
+	 * @return
+	 */
+	protected int countQueryResultBySql(Finder finder) {
+		if (finder.getOrigHql().contains("group by")) {
+			Query query = getSession().createSQLQuery(finder.getOrigHql());
+			finder.setParamsToQuery(query);
+			if (finder.isCacheable()) {
+				query.setCacheable(true);
+			}
+			Iterator<?> iterator = query.iterate();
+			int sum = 0;
+			while (iterator.hasNext()) {
+				sum++;
+				iterator.next();
+			}
+			return sum;
+		}
+		Query query = getSession().createSQLQuery(finder.getRowCountHql());
+		finder.setParamsToQuery(query);
+		if (finder.isCacheable()) {
+			query.setCacheable(true);
+		}
+		return ((Number) query.iterate().next()).intValue();
+	}
 
 	public Pagination find(Finder finder, int pageNo, int pageSize) {
 		return find(finder, pageNo, pageSize, null);
