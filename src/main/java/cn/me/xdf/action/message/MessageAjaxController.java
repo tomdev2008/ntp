@@ -15,7 +15,7 @@ import cn.me.xdf.service.message.MessageService;
  * 
  */
 @Controller
-@RequestMapping(value = "/message/ajax")
+@RequestMapping(value = "/ajax/message")
 @Scope("request")
 public class MessageAjaxController {
 
