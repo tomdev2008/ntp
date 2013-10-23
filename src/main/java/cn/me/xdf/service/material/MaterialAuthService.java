@@ -54,7 +54,7 @@ public class MaterialAuthService extends BaseService{
 	public MaterialAuth findByMaterialIdAndUserId(String materialId,String userId){
 		Finder finder = Finder
 				.create("from MaterialAuth anth ");
-		finder.append("where anth.material.fdId like :materialId and anth.fdUser.fdId like :userId");
+		finder.append("where anth.material.fdId = :materialId and anth.fdUser.fdId = :userId");
 		finder.setParam("materialId", materialId);
 		finder.setParam("userId", userId);
 		return (MaterialAuth) super.find(finder).get(0);
