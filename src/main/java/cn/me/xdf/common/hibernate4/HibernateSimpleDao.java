@@ -154,7 +154,7 @@ public abstract class HibernateSimpleDao {
 		if (finder.isCacheable()) {
 			query.setCacheable(true);
 		}
-		return ((Number) query.iterate().next()).intValue();
+		return ((Number) query.uniqueResult()).intValue();
 	}
 
 	public Pagination find(Finder finder, int pageNo, int pageSize) {
