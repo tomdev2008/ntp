@@ -40,7 +40,12 @@ public class MessageReplyService extends BaseService{
 		finder.setParam("fdType1", "01");
 		finder.setParam("fdType2", "02");
 		List<MessageReply> scores = find(finder);
-		return scores.get(0);
+		if(scores.size()==0){
+			return null;
+		}else{
+			return scores.get(0);	
+		}
+		
 	}
 	
 	

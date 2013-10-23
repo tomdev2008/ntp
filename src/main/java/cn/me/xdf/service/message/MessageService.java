@@ -76,7 +76,7 @@ public class MessageService extends BaseService{
 		MessageReply messageReply = new MessageReply();
 		messageReply.setMessage(message);
 		SysOrgPerson orgPerson = new SysOrgPerson();
-		orgPerson.setFdId(ShiroUtils.getUser().getId());
+		orgPerson.setFdId(userId);
 		messageReply.setFdUser(orgPerson);
 		messageReply.setFdCreateTime(new Date());
 		messageReply.setFdType(fdType);
@@ -96,8 +96,8 @@ public class MessageService extends BaseService{
 		finder.setParam("messageId", messageId);
 		finder.setParam("fdType", "01");
 		List scores = find(finder);
-		Object[] obj = (Object[])scores.get(0);
-		return (Integer)obj[0];
+		long obj = (Long)scores.get(0);
+		return (int)obj;
 	}
 	/**
 	 * 计算指定评论的反对数
@@ -111,8 +111,8 @@ public class MessageService extends BaseService{
 		finder.setParam("messageId", messageId);
 		finder.setParam("fdType", "02");
 		List scores = find(finder);
-		Object[] obj = (Object[])scores.get(0);
-		return (Integer)obj[0];
+		long obj = (Long)scores.get(0);
+		return (int)obj;
 	}
 	
 	
