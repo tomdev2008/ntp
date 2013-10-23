@@ -42,8 +42,8 @@ public class ScoreService extends BaseService{
 		finder.setParam("fdModelId", fdModelId);
 		finder.setParam("fdScore", fdScore);
 		List list = find(finder);
-		Object[] objects =(Object[])list.get(0);
-		return (Integer)objects[0];
+		long object =(Long)list.get(0);
+		return (int)object;
 	}
 	
 	/**
@@ -57,8 +57,14 @@ public class ScoreService extends BaseService{
 		finder.setParam("fdModelName", fdModelName);
 		finder.setParam("fdModelId", fdModelId);
 		finder.setParam("userId", userId);
+		
 		List<Score> scores = find(finder);
-		return scores.get(0);
+		if(scores.size()==0){
+			return null;
+		}else{
+			return scores.get(0);
+		}
+		
 	}
 	
 	/**

@@ -55,7 +55,12 @@ public class ScoreStatisticsService extends BaseService{
 		finder.setParam("fdModelId", fdModelId);
 		finder.setParam("fdModelName", fdModelName);
 		List<ScoreStatistics> list = find(finder);
-		return list.get(0);
+		if(list.size()==0){
+			return null;
+		}else{
+			return list.get(0);
+		}
+		
 	}
 	
 	/**
@@ -65,6 +70,9 @@ public class ScoreStatisticsService extends BaseService{
 	@Transactional(readOnly = false)
 	public ScoreStatistics resetInfoByFdModelId(String fdModelName, String fdModelId){
 		ScoreStatistics scoreStatistics = findScoreStatisticsByModelNameAndModelId(fdModelName, fdModelId);
+		if(scoreStatistics==null){
+			throw new RuntimeException("不存在评分统计信息");
+		}
 		int score_1 = scoreService.getCountByModelIdAndScore(fdModelName,fdModelId, 1);
 		int score_2 = scoreService.getCountByModelIdAndScore(fdModelName,fdModelId, 2);
 		int score_3 = scoreService.getCountByModelIdAndScore(fdModelName,fdModelId, 3);

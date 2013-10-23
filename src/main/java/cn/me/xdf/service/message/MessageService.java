@@ -115,7 +115,18 @@ public class MessageService extends BaseService{
 		return (int)obj;
 	}
 	
-	
+	/**
+	 * 根据MessageId得到消息回复
+	 * 
+	 * @return List
+	 */
+	public List<MessageReply> findMessageReplysByMessageId(String messageId){
+		Finder finder = Finder
+				.create("from MessageReply messageReply ");
+		finder.append("where messageReply.message.fdId = :messageId");
+		finder.setParam("messageId", messageId);
+		return messageReplyService.find(finder);
+	}
 	
 	
 }
