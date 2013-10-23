@@ -26,7 +26,7 @@ import cn.me.xdf.service.score.ScoreStatisticsService;
  * 
  */
 @Controller
-@RequestMapping(value = "/score/ajax")
+@RequestMapping(value = "/ajax/score")
 @Scope("request")
 public class ScoreAjaxController {
 	
