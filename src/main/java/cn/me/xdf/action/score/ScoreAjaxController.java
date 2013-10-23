@@ -45,6 +45,9 @@ public class ScoreAjaxController {
 	@ResponseBody
 	public String getScoreStatisticsByfdModelId(String fdModelId,String fdModelName){
 		ScoreStatistics scoreStatistics =  scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(fdModelName, fdModelId);
+		if(scoreStatistics==null){
+			return "0";
+		}
 		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
 		map.put("fdId", scoreStatistics.getFdId());
@@ -73,12 +76,29 @@ public class ScoreAjaxController {
 	@RequestMapping(value = "pushScore")
 	@ResponseBody
 	public String pushScore(String fdModelName,String fdModelId,String fdScore,String userId){
+		
+		//如果没有评分统计，则先添加评分统计
+		ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(fdModelName, fdModelId);
+		if(scoreStatistics==null){
+			scoreStatistics = new ScoreStatistics();
+			scoreStatistics.setFdModelId(fdModelId);
+			scoreStatistics.setFdModelName(fdModelName);
+			scoreStatistics.setFdAverage(0.0);
+			scoreStatistics.setFdScoreNum(0);
+			scoreStatistics.setFdOneScoreNum(0);
+			scoreStatistics.setFdTwoScoreNum(0);
+			scoreStatistics.setFdThreeScoreNum(0);
+			scoreStatistics.setFdFourScoreNum(0);
+			scoreStatistics.setFdFiveScoreNum(0);
+			scoreStatisticsService.save(scoreStatistics);
+		}
 		scoreService.pushScore(fdModelName, fdModelId, fdScore, userId);
-		ScoreStatistics scoreStatistics = scoreStatisticsService.resetInfoByFdModelId(fdModelName,fdModelId);
+		scoreStatistics = scoreStatisticsService.resetInfoByFdModelId(fdModelName,fdModelId);
 		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
 		map.put("fdId", scoreStatistics.getFdId());
 		map.put("fdModelId", scoreStatistics.getFdModelId());
+		map.put("fdModelName", scoreStatistics.getFdModelName());
 		map.put("fdAverage", scoreStatistics.getFdAverage());
 		map.put("fdScoreNum", scoreStatistics.getFdScoreNum());
 		map.put("fdFiveScoreNum", scoreStatistics.getFdFiveScoreNum());
