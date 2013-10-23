@@ -74,7 +74,7 @@ public class CourseCatalogAjaxController {
 						lectureMap.put("index", catalog.getFdTotalNo());
 						lectureMap.put("num", catalog.getFdNo());
 						lectureMap.put("title", catalog.getFdName());
-						lectureMap.put("type", catalog.getFdMaterialType());
+						lectureMap.put("type", catalog.getMaterialType());
 						lecture.add(lectureMap);
 					}					
 				}

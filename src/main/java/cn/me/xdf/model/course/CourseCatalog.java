@@ -8,10 +8,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.base.IdEntity;
 
 /**
@@ -211,6 +213,36 @@ public class CourseCatalog extends IdEntity {
 
 	public void setFdMaterialType(String fdMaterialType) {
 		this.fdMaterialType = fdMaterialType;
+	}
+	
+	@Transient
+	public String getMaterialType() {
+		String materialType = getFdMaterialType();
+		if(Constant.MATERIAL_TYPE_VIDEO.equals(materialType)){
+			return "video";
+		}
+		if(Constant.MATERIAL_TYPE_AUDIO.equals(materialType)){
+			return "audio";
+		}
+		if(Constant.MATERIAL_TYPE_DOC.equals(materialType)){
+			return "doc";
+		}
+		if(Constant.MATERIAL_TYPE_PPT.equals(materialType)){
+			return "ppt";
+		}
+		if(Constant.MATERIAL_TYPE_PIC.equals(materialType)){
+			return "img";
+		}
+		if(Constant.MATERIAL_TYPE_TEST.equals(materialType)){
+			return "exam";
+		}
+		if(Constant.MATERIAL_TYPE_JOBPACKAGE.equals(materialType)){
+			return "task";
+		}
+		if(Constant.MATERIAL_TYPE_SCHEDULE.equals(materialType)){
+			return "calendar";
+		}
+		return "none";
 	}
 	
 }
