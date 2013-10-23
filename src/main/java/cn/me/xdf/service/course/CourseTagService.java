@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.model.base.IdEntity;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.service.BaseService;
@@ -18,7 +19,7 @@ import cn.me.xdf.service.BaseService;
  * 
  */
 @Service
-@Transactional(readOnly = false)
+@Transactional(readOnly = true)
 public class CourseTagService extends BaseService{
 	@SuppressWarnings("unchecked")
 	@Override
@@ -27,15 +28,31 @@ public class CourseTagService extends BaseService{
 	}
 
 	/**
-	 * 查找所有课程分类
-	 * @return List 分类列表
+	 * 根据课程查找课程已设置的标签
+	 * @return List 标签列表
 	 */
 	@Transactional(readOnly = true)
 	public List<TagInfo> findTagByCourseId(String courseId){
 		//根据课程ID查找标签
 		Finder finder = Finder
-				.create("select tag.tag from CourseTag tag where tag.courses.fdid=:courseId");	
+				.create("select tag.tag from CourseTag tag where tag.courses.fdId=:courseId");	
 		finder.setParam("courseId", courseId);		
 		return  super.find(finder);
+	}
+	
+	/**
+	 * 保存课程与标签的关系
+	 * @return List 标签列表
+	 */
+	@Transactional(readOnly = false)
+	public void save(CourseTag courseTag) {
+		Finder finder = Finder
+				.create(" from CourseTag tag where tag.courses.fdId=:courseId and tag.tag.fdId=:tagId");	
+		finder.setParam("courseId", courseTag.getCourses().getFdId());
+		finder.setParam("tagId", courseTag.getTag().getFdId());
+		//如果关系表中已经存在，则不保存
+		if(super.findUnique(finder)==null){
+			super.save(courseTag);
+		}		
 	}
 }

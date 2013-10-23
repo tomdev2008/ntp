@@ -18,7 +18,7 @@ import cn.me.xdf.service.BaseService;
  * 
  */
 @Service
-@Transactional(readOnly = false)
+@Transactional(readOnly = true)
 public class CourseCategoryService extends BaseService{
 	@SuppressWarnings("unchecked")
 	@Override

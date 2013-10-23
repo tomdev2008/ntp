@@ -33,9 +33,9 @@ import cn.me.xdf.service.course.CourseService;
  * 
  */
 @Controller
-@RequestMapping(value = "/catalog")
+@RequestMapping(value = "/ajax/catalog")
 @Scope("request")
-public class CourseCatalogController {
+public class CourseCatalogAjaxController {
 	@Autowired
 	private CourseCatalogService courseCatalogService;
 	
@@ -47,7 +47,7 @@ public class CourseCatalogController {
 	 * @param request
 	 * @return String
 	 */
-	@RequestMapping(value = "ajax/getCatalogJsonByCourseId")
+	@RequestMapping(value = "getCatalogJsonByCourseId")
 	@ResponseBody
 	public String getCatalogJsonByCourseId(HttpServletRequest request) {
 		//获取课程ID
@@ -93,7 +93,7 @@ public class CourseCatalogController {
 	 * 根据章节ID删除章节信息
 	 * @param request
 	 */
-	@RequestMapping(value = "ajax/deleteCatalogById")
+	@RequestMapping(value = "deleteCatalogById")
 	@ResponseBody
 	public void deleteCatalogById(HttpServletRequest request) {
 		//获取章节ID
@@ -111,7 +111,7 @@ public class CourseCatalogController {
 	 * 更新章节的顺序
 	 * @param request
 	 */
-	@RequestMapping(value = "ajax/updateCatalogOrder")
+	@RequestMapping(value = "updateCatalogOrder")
 	@ResponseBody
 	public void updateCatalogOrder(HttpServletRequest request) {
 		//获取课程ID
@@ -158,7 +158,7 @@ public class CourseCatalogController {
 	 * 根据章节ID更新章节名称
 	 * @param request
 	 */
-	@RequestMapping(value = "ajax/updateCatalogNameById")
+	@RequestMapping(value = "updateCatalogNameById")
 	@ResponseBody
 	public void updateCatalogNameById(HttpServletRequest request) {
 		//获取章节ID
@@ -175,7 +175,7 @@ public class CourseCatalogController {
 	 * @param request
 	 * @return String 新增的章节id及
 	 */
-	@RequestMapping(value = "ajax/addCatalog")
+	@RequestMapping(value = "addCatalog")
 	@ResponseBody
 	public String addCatalog(HttpServletRequest request) {
 		//获取课程ID

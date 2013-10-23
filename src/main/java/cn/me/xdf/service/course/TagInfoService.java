@@ -11,7 +11,7 @@ import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.service.BaseService;
 
 @Service
-@Transactional(readOnly = false)
+@Transactional(readOnly = true)
 public class TagInfoService extends BaseService {
 
 	@SuppressWarnings("unchecked")
@@ -23,11 +23,26 @@ public class TagInfoService extends BaseService {
 	/**
 	 * 根据key模糊查找TagInfo
 	 */
+	@Transactional(readOnly = true)
 	public List<TagInfo> findTagInfosByKey(String key){
 		Finder finder = Finder
 				.create("from TagInfo tagInfo ");
 		finder.append("where tagInfo.fdName like :key");
 		finder.setParam("key", '%' + key + '%');
 		return find(finder);
+	}
+
+	/**
+	 * 根据标签名称查找TagInfo
+	 * @param tagName 标签名
+	 * @return TagInfo 标签信息
+	 */
+	@Transactional(readOnly = true)
+	public TagInfo getTagByName(String tagName) {
+		Finder finder = Finder
+				.create("from TagInfo tagInfo ");
+		finder.append("where tagInfo.fdName = :key");
+		finder.setParam("key", tagName);
+		return findUnique(finder);
 	}
 }

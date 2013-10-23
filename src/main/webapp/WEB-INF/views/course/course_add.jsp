@@ -171,7 +171,7 @@
 						{{~}}                    	                  
                     </ul>  
 	       </div>
-           <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
+           <button class="btn btn-block btn-submit btn-inverse" type="button" onClick="saveBaseInfo()">保存</button>
        </form>
        </div>	  
 	 </div> 
@@ -601,6 +601,23 @@
 	}
 	urlRouter();
 
+	//ajax保存课程基本信息
+	function saveBaseInfo(){
+		$.post('${ctx}/course/ajax/saveBaseInfo',{
+			 courseId : $("#courseId").val(),
+			 courseTitle: $("#courseTitle").val(),
+			 subTitle:  $("#subTitle").val(),
+			 keyword: $("#keyword").val(),
+			 courseType: $("#courseType").val(),
+			},
+			function(data){
+				$("#courseId").val(data.courseid);
+			},"json")
+		.success(function(){
+			//提交成功跳转到详细信息
+       	    urlRouter("detailInfo");
+		});
+	}
 </script>
 </body>
 </html>
