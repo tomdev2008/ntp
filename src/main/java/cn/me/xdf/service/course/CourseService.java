@@ -74,18 +74,18 @@ public class CourseService  extends BaseService{
 		Finder finder = Finder
 				.create("from CourseInfo ci ");
 		finder.append("where ci.creator.fdId=:userId  and  ci.isAvailable='01'");/*发布*/
-		finder.append("and  ci.fdTitle = :ft  or ci.fdSubTitle like :fs");
+		finder.append("and  ( ci.fdTitle = :ft  or ci.fdSubTitle like :fs )");
 		finder.setParam("userId", userId);
-		finder.setParam("ft", fdName);
-		finder.setParam("fs", fdName);
-		//根据标题排序
-		if(orderbyStr.equals("fdTitle")){
-			finder.append(" order by ci.fdTitle ");
-		}
-		//根据创建时间排序
-		if(orderbyStr.equals("fdCreateTime")){
-			finder.append("order by ci.fdCreateTime ");
-		}
+		finder.setParam("ft", '%'+fdName+'%');
+		finder.setParam("fs", '%'+fdName+'%');
+//		//根据标题排序
+//		if(orderbyStr.equals("fdTitle")){
+//			finder.append(" order by ci.fdTitle ");
+//		}
+//		//根据创建时间排序
+//		if(orderbyStr.equals("fdCreateTime")){
+//			finder.append("order by ci.fdCreateTime ");
+//		}
 		Pagination pagination=getPage(finder,pageNo);
 		return pagination;
 	}
