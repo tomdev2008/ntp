@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.json.JsonUtils;
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseCategory;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
-import cn.me.xdf.model.organization.User;
 import cn.me.xdf.service.course.CourseCategoryService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.course.CourseTagService;
@@ -61,6 +62,22 @@ public class CourseAjaxController {
 		String courseId = request.getParameter("courseId");
 		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
+		
+		//将所有课程分类信息转换成json返回到页面
+		List<CourseCategory> categorys = courseCategoryService.findAll();
+		if(categorys!=null && categorys.size()>0){
+			List<Map> cateList = new ArrayList<Map>();
+			for(CourseCategory category:categorys){
+				Map catemap = new HashMap();
+				catemap.put("id", category.getFdId());
+				catemap.put("title", category.getFdName());
+				cateList.add(catemap);
+			}
+			map.put("courseTypeList", JsonUtils.writeObjectToJson(cateList));
+			//默认将第一个分类选中
+			map.put("courseType", categorys.get(0).getFdId());
+		}
+		
 		if(StringUtil.isNotEmpty(courseId)){
 			CourseInfo course = courseService.get(courseId);
 			if(course!=null){
@@ -79,20 +96,89 @@ public class CourseAjaxController {
 				}
 			}
 		}
-		
-		//将所有课程分类信息转换成json返回到页面
-		List<CourseCategory> categorys = courseCategoryService.findAll();
-		if(categorys!=null && categorys.size()>0){
-			List<Map> cateList = new ArrayList<Map>();
-			for(CourseCategory category:categorys){
-				Map catemap = new HashMap();
-				catemap.put("id", category.getFdId());
-				catemap.put("title", category.getFdName());
-				cateList.add(catemap);
+		list.add(map);
+		return JsonUtils.writeObjectToJson(list);
+	}
+	
+	/**
+	 * 保存课程的基本信息
+	 * @param request
+	 * @return String
+	 */
+	@RequestMapping(value = "saveBaseInfo")
+	@ResponseBody
+	public String saveBaseInfo(HttpServletRequest request) {
+		//获取课程ID
+		String courseId = request.getParameter("courseId");
+		//获取课程标题
+		String courseTitle = request.getParameter("courseTitle");
+		//获取课程副标题
+		String subTitle = request.getParameter("subTitle");
+		//获取课程标签
+		String keyword = request.getParameter("keyword");
+		//获取课程分类ID
+		String courseType = request.getParameter("courseType");
+		List<Map> list = new ArrayList<Map>();
+		Map map = new HashMap();
+		CourseInfo course = new CourseInfo();
+		if(StringUtil.isNotEmpty(courseId)){
+			course = courseService.get(courseId);
+			if(course==null){
+				course = new CourseInfo();
+				course.setFdTitle(courseTitle);
+				course.setFdSubTitle(subTitle);
+				//新建课程时总节数设置为0
+				course.setFdTotalPart(0);
+				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
+				//将分类保存到课程中
+				if(StringUtil.isNotEmpty(courseType)){
+					CourseCategory category = courseCategoryService.get(courseType);
+					course.setFdCategory(category);
+				}
+				course = courseService.save(course);
+			}else{
+				course.setFdTitle(courseTitle);
+				course.setFdSubTitle(subTitle);
+				
+				//将分类保存到课程中
+				if(StringUtil.isNotEmpty(courseType)){
+					CourseCategory category = courseCategoryService.get(courseType);
+					course.setFdCategory(category);
+				}
+				course = courseService.update(course);
 			}
-			map.put("courseTypeList", JsonUtils.writeObjectToJson(cateList));		
+		}else{
+			course.setFdTitle(courseTitle);
+			course.setFdSubTitle(subTitle);
+			//新建课程时总节数设置为0
+			course.setFdTotalPart(0);
+			course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
+			//将分类保存到课程中
+			if(StringUtil.isNotEmpty(courseType)){
+				CourseCategory category = courseCategoryService.get(courseType);
+				course.setFdCategory(category);
+			}
+			course = courseService.save(course);
 		}
 		
+		//保存标签库中没有的标签
+		if(StringUtil.isNotEmpty(keyword)){
+			String[] tags = keyword.split(",");
+			for(String tagName:tags){
+				TagInfo tagInfo = tagInfoService.getTagByName(tagName);
+				if(tagInfo==null){
+					tagInfo = new TagInfo();
+					tagInfo.setFdName(tagName);
+					tagInfo = tagInfoService.save(tagInfo);
+				}
+				//保存课程与标签的关系
+				CourseTag courseTag = new CourseTag();
+				courseTag.setCourses(course);
+				courseTag.setTag(tagInfo);
+				courseTagService.save(courseTag);
+			}
+		}
+		map.put("courseid", courseId);
 		list.add(map);
 		return JsonUtils.writeObjectToJson(list);
 	}
@@ -148,6 +234,4 @@ public class CourseAjaxController {
 		}
 		courseService.update(courseInfo);
 	}
-	
-
 }
