@@ -67,7 +67,7 @@ public class CourseService  extends BaseService{
 	/*
 	 * 根据课程名称模糊搜索
 	 * 
-	 * 此处需要添加客车评分?//遗留
+	 * 此处需要添加课程评分?//遗留
 	 * author hanhl
 	 * */
 	public  Pagination findCourseInfosByName(String userId,String fdName,Integer pageNo ,String orderbyStr){
@@ -76,16 +76,9 @@ public class CourseService  extends BaseService{
 		finder.append("where ci.creator.fdId=:userId  and  ci.isAvailable='01'");/*发布*/
 		finder.append("and  ( ci.fdTitle = :ft  or ci.fdSubTitle like :fs )");
 		finder.setParam("userId", userId);
-		finder.setParam("ft", '%'+fdName+'%');
-		finder.setParam("fs", '%'+fdName+'%');
-//		//根据标题排序
-//		if(orderbyStr.equals("fdTitle")){
-//			finder.append(" order by ci.fdTitle ");
-//		}
-//		//根据创建时间排序
-//		if(orderbyStr.equals("fdCreateTime")){
-//			finder.append("order by ci.fdCreateTime ");
-//		}
+		finder.setParam("ft", "%"+fdName+"%");
+		finder.setParam("fs", "%"+fdName+"%");
+
 		Pagination pagination=getPage(finder,pageNo);
 		return pagination;
 	}
