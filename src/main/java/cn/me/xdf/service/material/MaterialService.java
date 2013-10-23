@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.service.BaseService;
@@ -15,7 +16,7 @@ import cn.me.xdf.utils.ShiroUtils;
  * 
  * 资源service
  * 
- * @author zhaoq
+ * @author 
  * 
  */
 @Service
@@ -30,10 +31,47 @@ public class MaterialService extends BaseService {
 	public  Class<MaterialInfo> getEntityClass() {
 		return MaterialInfo.class;
 	}
+	/**
+	 * 查看可使用的资源（分页操作）
+	 * @param fdType 资源类型
+	 * @param pageNo 页码
+	 * @param pageSize 每页几条数据
+	 * @return
+	 */
+	public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize){
+		Finder finder = Finder.create("select distinct * from MaterialInfo info right join MaterialAuth auth");
+		finder.append("where info.fdId=auth.material.fdId and info.fdType=:fdType");
+		finder.setParam("fdType", fdType);
+		finder.append(" and ( (info.isPublish=:isPublish ) or ( auth.isReader=:isReader and auth.fdUser.fdId=:userId ) )");
+		finder.setParam("isPublish",true);
+		finder.setParam("isReader",true);
+		finder.setParam("userId",ShiroUtils.getUser().getId());
+		Pagination page = this.getPage(finder, pageNo, pageSize);
+		return page;
+	}
+	/**
+	 * 在list页面进行搜索的方法
+	 * @param fdName 页面传来的资源名字
+	 * @param fdType 资源类型
+	 * @param pageNo 页码
+	 * @param pageSize 每页几条数据
+	 * @return Pagination
+	 */
+	public Pagination serachMaterialList(String fdType, String fdName, Integer pageNo, Integer pageSize){
+		Finder finder = Finder.create("select distinct * from MaterialInfo info right join MaterialAuth auth");
+		finder.append("where info.fdId=auth.material.fdId and info.fdType=:fdType and info.fdName like '%:fdName%' ");
+		finder.setParam("fdType", fdType);
+		finder.setParam("fdName", fdName);
+		finder.append(" and ( (info.isPublish=:isPublish ) or ( auth.isReader=:isReader and auth.fdUser.fdId=:userId ) )");
+		finder.setParam("isPublish",true);
+		finder.setParam("isReader",true);
+		finder.setParam("userId",ShiroUtils.getUser().getId());
+		Pagination page = this.getPage(finder, pageNo, pageSize);
+		return page;
+	}
 	
 	/**
 	 * 查看当前用户可用的资源
-	 * 
 	 */
 	@SuppressWarnings("unchecked")
 	public List<MaterialInfo> findCanUsed(){
