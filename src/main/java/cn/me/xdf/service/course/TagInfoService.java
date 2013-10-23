@@ -11,7 +11,7 @@ import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.service.BaseService;
 
 @Service
-@Transactional(readOnly = false)
+@Transactional(readOnly = true)
 public class TagInfoService extends BaseService {
 
 	@SuppressWarnings("unchecked")
