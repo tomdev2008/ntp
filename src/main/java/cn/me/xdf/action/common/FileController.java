@@ -26,7 +26,7 @@ import java.io.*;
  * @author xiaobin
  */
 @Controller
-@RequestMapping("/comm/file")
+@RequestMapping("/common/file")
 public class FileController {
 
 
@@ -106,7 +106,8 @@ public class FileController {
 
         AttMain attMain = attMainService.get(id);
 
-        response.setContentType(attMain.getFdContentType());
+        //response.setContentType(attMain.getFdContentType());
+        response.setContentType("image/jpeg");
         response.addHeader("Content-Length",
                 String.valueOf(attMain.getFdSize()));
         OutputStream out;

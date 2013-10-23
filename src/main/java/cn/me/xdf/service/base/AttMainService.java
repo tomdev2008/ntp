@@ -1,10 +1,16 @@
 package cn.me.xdf.service.base;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import cn.me.xdf.annotaion.AttMainMachine;
+import cn.me.xdf.annotaion.AttValues;
 import cn.me.xdf.common.file.FileUtil;
+import cn.me.xdf.common.utils.MyBeanUtils;
+import cn.me.xdf.model.base.IAttMain;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +29,7 @@ public class AttMainService extends SimpleService {
         return get(AttMain.class, id);
     }
 
+    @Transactional(readOnly = false)
     public AttMain save(AttMain attMain) {
         return super.save(attMain);
     }
@@ -90,6 +97,16 @@ public class AttMainService extends SimpleService {
                 Value.eq("fdModelId", modelId));
     }
 
+
+    public List<String> getFdIdsAttsByModelId(String modelId) {
+        List<AttMain> attMains = getAttsByModelId(modelId);
+        List<String> lists = new ArrayList<String>();
+        for (AttMain att : attMains) {
+            lists.add(att.getFdId());
+        }
+        return lists;
+    }
+
     /**
      * 根据模型ID和模型名称查询上传附件的信息
      *
@@ -105,6 +122,79 @@ public class AttMainService extends SimpleService {
             return attMains.get(0);
         }
         return null;
+    }
+
+    @Transactional(readOnly = false)
+    public void updateAttMainMachine(Object o){
+        if (o instanceof IAttMain) {
+            IAttMain attMain = (IAttMain) o;
+            AttMainMachine attMainMachine = o.getClass().getAnnotation(AttMainMachine.class);
+            String modelId = attMainMachine.modelId();
+            String modelName = attMainMachine.modelName();
+            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
+            AttValues[] attValues = attMainMachine.value();
+            String fdId = modelIdValue;
+            List<String> allAttId = new ArrayList<String>();
+            for (AttValues v : attValues) {
+
+                String key = v.key();
+                //存储附件的主键属性
+                String field = v.fild();
+
+                Object fieldValue = MyBeanUtils.getFieldValue(o, field);
+                if (fieldValue != null) {
+                    List<String> attIds = (List<String>) fieldValue;
+                    allAttId.addAll(attIds);
+                    for (String attId : attIds) {
+                        AttMain att = get(AttMain.class, attId);
+                        if (att != null) {
+                            att.setFdKey(key);
+                            att.setFdModelId(modelIdValue);
+                            att.setFdModelName(modelName);
+                            super.update(att);
+                        }
+                    }
+                }
+            }
+
+            List<String> dbAttId = getFdIdsAttsByModelId(fdId);
+            dbAttId.removeAll(allAttId);
+            for (String id : dbAttId) {
+                deleteAttMain(id);
+            }
+
+        }
+    }
+
+    @Transactional(readOnly = false)
+    public void saveAttMainMachine(Object o) {
+        if (o instanceof IAttMain) {
+            AttMainMachine attMainMachine = o.getClass().getAnnotation(AttMainMachine.class);
+            String modelId = attMainMachine.modelId();
+            String modelName = attMainMachine.modelName();
+            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
+            AttValues[] attValues = attMainMachine.value();
+            for (AttValues v : attValues) {
+
+                String key = v.key();
+                //存储附件的主键属性
+                String field = v.fild();
+                Object fieldValue = MyBeanUtils.getFieldValue(o, field);
+                if (fieldValue != null) {
+                    List<String> attIds = (List<String>) fieldValue;
+                    for (String attId : attIds) {
+                        AttMain att = get(AttMain.class, attId);
+                        if (att != null) {
+                            att.setFdKey(key);
+                            att.setFdModelId(modelIdValue);
+                            att.setFdModelName(modelName);
+                            super.update(att);
+                        }
+                    }
+                }
+
+            }
+        }
     }
 
 }
