@@ -8,11 +8,7 @@ import java.util.List;
  * Date: 13-10-22
  * Time: 下午3:18
  * To change this template use File | Settings | File Templates.
- * 用法：在getAttId()方法上加注解：@Transient
+ * 用法：getModelId()方法上加注解：@Transient
  */
 public interface IAttMain {
-
-    public List<String> getAttId();
-
-    public List<String> setAttId();
 }
