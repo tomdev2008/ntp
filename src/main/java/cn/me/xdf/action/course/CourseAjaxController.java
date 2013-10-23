@@ -57,7 +57,7 @@ public class CourseAjaxController {
 	 */
 	@RequestMapping(value = "getBaseCourseInfoById")
 	@ResponseBody
-	public String getCatalogJsonByCourseId(HttpServletRequest request) {
+	public String getBaseCourseInfoById(HttpServletRequest request) {
 		//获取课程ID
 		String courseId = request.getParameter("courseId");
 		List<Map> list = new ArrayList<Map>();
@@ -103,7 +103,7 @@ public class CourseAjaxController {
 	/**
 	 * 保存课程的基本信息
 	 * @param request
-	 * @return String
+	 * @return String 课程ID
 	 */
 	@RequestMapping(value = "saveBaseInfo")
 	@ResponseBody
@@ -181,6 +181,79 @@ public class CourseAjaxController {
 		map.put("courseid", courseId);
 		list.add(map);
 		return JsonUtils.writeObjectToJson(list);
+	}
+	
+	/**
+	 * 获取当前课程的详细信息
+	 * @param request
+	 * @return String
+	 */
+	@RequestMapping(value = "getDetailCourseInfoById")
+	@ResponseBody
+	public String getDetailCourseInfoById(HttpServletRequest request) {
+		//获取课程ID
+		String courseId = request.getParameter("courseId");
+		List<Map> list = new ArrayList<Map>();
+		Map map = new HashMap();
+		if(StringUtil.isNotEmpty(courseId)){
+			CourseInfo course = courseService.get(courseId);
+			if(course!=null){
+				//课程摘要
+				map.put("courseAbstract", course.getFdSummary());
+				//学习目标
+				String learnObjectives = course.getFdLearnAim()==null?"":course.getFdLearnAim();
+				map.put("learnObjectives", JsonUtils.writeObjectToJson(learnObjectives.split("|")));
+				//建议群体
+				String suggestedGroup = course.getFdProposalsGroup()==null?"":course.getFdProposalsGroup();
+				map.put("suggestedGroup", JsonUtils.writeObjectToJson(suggestedGroup.split("|")));
+				//课程要求
+				String courseRequirements = course.getFdDemand()==null?"":course.getFdDemand();
+				map.put("courseRequirements", JsonUtils.writeObjectToJson(courseRequirements.split("|")));						
+			}
+		}
+		list.add(map);
+		return JsonUtils.writeObjectToJson(list);
+	}
+	
+	/**
+	 * 保存课程的详细信息
+	 * @param request
+	 */
+	@RequestMapping(value = "saveDetailInfo")
+	@ResponseBody
+	public void saveDetailInfo(HttpServletRequest request) {
+		//获取课程ID
+		String courseId = request.getParameter("courseId");
+		//课程摘要
+		String courseAbstract = request.getParameter("courseAbstract");
+		//学习目标
+		String learnObjectives = request.getParameter("learnObjectives");
+		//建议群体
+		String suggestedGroup = request.getParameter("suggestedGroup");
+		//课程要求
+		String courseRequirements = request.getParameter("courseRequirements");
+		if(StringUtil.isNotEmpty(courseId)){
+			CourseInfo course = courseService.get(courseId);
+			if(course!=null){
+				//课程摘要
+				if(StringUtil.isNotEmpty(courseAbstract)){
+					course.setFdSummary(courseAbstract);
+				}
+				//学习目标
+				if(StringUtil.isNotEmpty(learnObjectives)){
+					course.setFdLearnAim(learnObjectives);
+				}
+				//建议群体
+				if(StringUtil.isNotEmpty(suggestedGroup)){
+					course.setFdProposalsGroup(suggestedGroup);
+				}
+				//课程要求
+				if(StringUtil.isNotEmpty(courseRequirements)){
+					course.setFdDemand(courseRequirements);
+				}
+				courseService.update(course);
+			}
+		}
 	}
 	
 	/**

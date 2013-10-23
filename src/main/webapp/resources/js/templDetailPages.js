@@ -475,7 +475,7 @@
 		//加载详细信息	
 		rightCont.loadDetailInfoPage = function (title){
 			/*============================================ ajax 加载JSON数据 ================================================*/
-			/*$.getJSON("url?load",function(rsult){
+			/*$.getJSON("${ctx}/ajax/course/getDetailCourseInfoById?courseId=$('#courseId').val()",function(rsult){
 				data = rsult;
 				data.pageTitle = title;
 				$("#rightCont").html(detailInfoFn(data));	
@@ -503,7 +503,7 @@
 					$item.bind("closed",delItem);
 					$(this).parent().removeClass("warning").prev(".list_alert").append($item);
 					var _val = $field.val();
-					$field.val(_val + "," + tit);
+					$field.val(_val + "|" + tit);
 					$(this).prevAll(":text").val("");
 				} else {
 					$(this).parent().addClass("warning");
@@ -525,7 +525,7 @@
 		//加载基本信息	
 		rightCont.loadBasicInfoPage = function (title){
 			/*============================================ ajax 加载基本信息数据 ================================================*/
-			/*$.getJSON("${ctx}/course/ajaxgetBaseCourseInfoById?courseId=$('#courseId').val()",function(rsult){
+			/*$.getJSON("${ctx}/ajax/course/getBaseCourseInfoById?courseId=$('#courseId').val()",function(rsult){
 				data = rsult;
 				data.pageTitle = title;
 				$("#rightCont").html(basicInfoFn(data));
@@ -594,7 +594,7 @@
 		//加载章节目录
 		rightCont.loadSectionDirectoryPage = function(title){
 			/*============================================ ajax 加载章节数据 ================================================*/
-			/*$.getJSON("${ctx}/catalog/ajax/getCatalogJsonByCourseId?courseId=$('#courseId').val()",function(rsult){
+			/*$.getJSON("${ctx}/ajax/catalog/getCatalogJsonByCourseId?courseId=$('#courseId').val()",function(rsult){
 				data = rsult;
 				data.pageTitle = title;
 				$("#rightCont").html(loadsectionsDirectoryFn(data));
@@ -672,7 +672,7 @@
 				e.preventDefault();
 				var $li = $(this).closest("li");
 				//=====================================================可在此 ajax 删除章节数据==================================
-						/*$.post('${ctx}/catalog/ajax/deleteCatalogById',{fdid: $li.attr("data-fdid")})
+						/*$.post('${ctx}/ajax/catalog/deleteCatalogById',{fdid: $li.attr("data-fdid")})
 						.success(function(){
 							$li.remove();
 							changIndex();
@@ -705,7 +705,7 @@
 				if($tit.val()){			
 					if($form.prev().hasClass("sortable-bar")){//编辑已有章节					
 						//=====================================================可在此 ajax 更新章节名称数据==================================
-						/*$.post('${ctx}/ajax/updateCatalogNameById',{fdid: $li.attr("data-fdid"), title: $tit.val()},function(data){},"json")
+						/*$.post('${ctx}/ajax/catalog/updateCatalogNameById',{fdid: $li.attr("data-fdid"), title: $tit.val()},function(data){},"json")
 						.success(function(){
 							$li.children(".sortable-bar").removeClass("hide").find(".name").text($tit.val());
 						});*/
@@ -714,7 +714,7 @@
 					} else {//新加章节							
 						
 						//=====================================================可在此 ajax 提交新加章节的数据, 返回fdId==============================
-						/*$.post('${ctx}/ajax/addCatalog',{courseid:$("#courseId").val(),ischapter:$li.hasClass("chapter"),fdtotalno:$li.length,fdno:$form.find(".index").text(),title:$tit.val()},function(result){					
+						/*$.post('${ctx}/ajax/catalog/addCatalog',{courseid:$("#courseId").val(),ischapter:$li.hasClass("chapter"),fdtotalno:$li.length,fdno:$form.find(".index").text(),title:$tit.val()},function(result){					
 							var data = rtnSectionData($li.hasClass("chapter"),$form.find(".index").text(),$tit.val(),$li.length,"none",result.id);
 							$("#courseId").val(result.courseid);
 							$li.attr("data-fdid",result.id)
@@ -795,7 +795,7 @@
                         });
                     }
                 });
-                $.post("${ctx}/catalog/ajax/updateCatalogOrder",data,function(res){},'json');// ajax 更新所有章节排序
+                $.post("${ctx}/ajax/catalog/updateCatalogOrder",data,function(res){},'json');// ajax 更新所有章节排序
             }
 			//绑定添加章事件
 			$("#addChapter").bind("click",function(){

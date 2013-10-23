@@ -226,7 +226,7 @@
 					{{#def.formAddItem:"课程要求"}}
                     
 	       </div>
-           <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
+           <button class="btn btn-block btn-submit btn-inverse" type="button" onClick="saveDetailInfo()">保存</button>
        </form>	  
 	 </div> 
 	 {{##def.formAddItem:param:
@@ -572,16 +572,32 @@
 	  				rightCont.loadBasicInfoPage("基本信息");
 	  				break;
 	  			case "detailInfo":
-	  				rightCont.loadDetailInfoPage("详细信息");
+	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
+	  					rightCont.loadDetailInfoPage("详细信息");
+	  				}else{
+	  					rightCont.loadBasicInfoPage("基本信息");
+	  				}
 	  				break;
 	  			case "promotion":
-	  				rightCont.loadPromotionPage("课程推广");
+	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
+	  					rightCont.loadPromotionPage("课程推广");
+	  				}else{
+	  					rightCont.loadBasicInfoPage("基本信息");
+	  				}
 	  				break;
 	  			case "accessRight":
-	  				rightCont.loadAccessRightPage("权限设置");
+	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
+	  					rightCont.loadAccessRightPage("权限设置");
+	  				}else{
+	  					rightCont.loadBasicInfoPage("基本信息");
+	  				}
 	  				break;
 	  			case "kinguser":
-	  				rightCont.loadKinguserPage("授权管理");
+	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
+	  					rightCont.loadKinguserPage("授权管理");
+	  				}else{
+	  					rightCont.loadBasicInfoPage("基本信息");
+	  				}
 	  				break;
 				case "deleteCourse":
 	  				rightCont.loadDeleteCoursePage("删除课程","{fdid}");
@@ -616,6 +632,21 @@
 		.success(function(){
 			//提交成功跳转到详细信息
        	    urlRouter("detailInfo");
+		});
+	}
+	
+	//ajax保存课程详细信息
+	function saveDetailInfo(){
+		$.post('${ctx}/course/ajax/saveDetailInfo',{
+			 courseId : $("#courseId").val(),
+			 courseAbstract: $("#courseAbstract").val(),
+			 learnObjectives:  $("#learnObjectives").val(),
+			 suggestedGroup: $("#suggestedGroup").val(),
+			 courseRequirements: $("#courseRequirements").val(),
+			})
+		.success(function(){
+			//提交成功跳转到详细信息
+       	    urlRouter("promotion");
 		});
 	}
 </script>
