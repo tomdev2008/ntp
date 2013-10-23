@@ -34,7 +34,7 @@ public class SeriesInfo extends IdEntity{
 	/**
 	 * 上级系列
 	 */
-	private SeriesCourses hbmParent;
+	private SeriesInfo hbmParent;
 	
 	/**
 	 * 系列名称
@@ -58,11 +58,11 @@ public class SeriesInfo extends IdEntity{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdParentId")
-	public SeriesCourses getHbmParent() {
+	public SeriesInfo getHbmParent() {
 		return hbmParent;
 	}
 
-	public void setHbmParent(SeriesCourses hbmParent) {
+	public void setHbmParent(SeriesInfo hbmParent) {
 		this.hbmParent = hbmParent;
 	}
 
