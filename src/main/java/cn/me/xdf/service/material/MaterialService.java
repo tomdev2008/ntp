@@ -2,11 +2,15 @@ package cn.me.xdf.service.material;
 
 import java.util.List;
 
+import jodd.util.StringUtil;
+
+import org.htmlparser.lexer.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.hibernate4.Finder.SearchType;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
@@ -36,37 +40,21 @@ public class MaterialService extends BaseService {
 	 * @param fdType 资源类型
 	 * @param pageNo 页码
 	 * @param pageSize 每页几条数据
+	 * @param fdName 不为空是表示搜索
+	 * @author yuhuizhe
 	 * @return
 	 */
-	public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize){
-		Finder finder = Finder.create("select distinct * from MaterialInfo info right join MaterialAuth auth");
-		finder.append("where info.fdId=auth.material.fdId and info.fdType=:fdType");
+	public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName){
+		Finder finder = Finder.create("select info.* from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
+		finder.append("on info.FDID=auth.FDMATERIALID  where info.FDTYPE=:fdType and info.isAvailable=1 ");
+		finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' ");
+		finder.append(" ) or info.FDAUTHOR='"+ShiroUtils.getUser().getId()+"') ");
 		finder.setParam("fdType", fdType);
-		finder.append(" and ( (info.isPublish=:isPublish ) or ( auth.isReader=:isReader and auth.fdUser.fdId=:userId ) )");
-		finder.setParam("isPublish",true);
-		finder.setParam("isReader",true);
-		finder.setParam("userId",ShiroUtils.getUser().getId());
-		Pagination page = this.getPage(finder, pageNo, pageSize);
-		return page;
-	}
-	/**
-	 * 在list页面进行搜索的方法
-	 * @param fdName 页面传来的资源名字
-	 * @param fdType 资源类型
-	 * @param pageNo 页码
-	 * @param pageSize 每页几条数据
-	 * @return Pagination
-	 */
-	public Pagination serachMaterialList(String fdType, String fdName, Integer pageNo, Integer pageSize){
-		Finder finder = Finder.create("select distinct * from MaterialInfo info right join MaterialAuth auth");
-		finder.append("where info.fdId=auth.material.fdId and info.fdType=:fdType and info.fdName like '%:fdName%' ");
-		finder.setParam("fdType", fdType);
-		finder.setParam("fdName", fdName);
-		finder.append(" and ( (info.isPublish=:isPublish ) or ( auth.isReader=:isReader and auth.fdUser.fdId=:userId ) )");
-		finder.setParam("isPublish",true);
-		finder.setParam("isReader",true);
-		finder.setParam("userId",ShiroUtils.getUser().getId());
-		Pagination page = this.getPage(finder, pageNo, pageSize);
+		if(StringUtil.isNotBlank(fdName)&&StringUtil.isNotEmpty(fdName)){
+			finder.append(" and info.FDNAME like : fdName");
+			finder.setParam("fdName", '%' + fdName + '%');
+		}
+		Pagination page = getPageBySql(finder, pageNo, pageSize);
 		return page;
 	}
 	

@@ -25,7 +25,7 @@
 <title>新东方教师在线备课平台</title>
 <link rel="shortcut icon" href="${ctx}/resources/img/favicon.ico" />
 <link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css" />
-<link rel="stylesheet" href="${ctx}/resources/css/global.css?id=12" />
+<link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <script src="${ctx}/resources/js/jquery.js" type="text/javascript"></script>
 <script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
 <sitemesh:head />

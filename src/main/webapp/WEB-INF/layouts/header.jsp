@@ -16,11 +16,11 @@ request.setAttribute("path", path[path.length-1]);
 	<div class="navbar-inner">
     	<div class="container pr">
 			<a href="#" class="logo"></a>
-	        <!--<ul class="nav">
+	        <ul class="nav">
 	          <li><a href="#">系统管理</a></li>
 	          <li><a href="#">我是导师</a></li>
-	          <li><a href="#">我是主管</a></li>
-	        </ul> -->
+	          <li><a href="${ctx}/material/findList?fdType=01">我是主管</a></li>
+	        </ul>
 			<shiro:authenticated>
             <ul class="nav pull-right">
               <li class="dropdown">
