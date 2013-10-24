@@ -125,10 +125,8 @@ public class MachineListener extends DefaultLoadEventListener
 
     @Override
     public boolean onPreInsert(PreInsertEvent event) {
-        System.out.println("-----------start Insert----------------------");
         Object o = event.getEntity();
         if (o instanceof IAttMain) {
-            System.out.println("-----------IAttMain----------------------");
             IAttMain attMain = (IAttMain) o;
             AttMainMachine attMainMachine = event.getEntity().getClass().getAnnotation(AttMainMachine.class);
             String modelId = attMainMachine.modelId();
@@ -140,16 +138,12 @@ public class MachineListener extends DefaultLoadEventListener
                 String key = v.key();
                 //存储附件的主键属性
                 String field = v.fild();
-                System.out.println("-------1--------field="+field);
                 Object fieldValue = MyBeanUtils.getFieldValue(o, field);
-                System.out.println("fieldValue=="+fieldValue);
                 if (fieldValue != null) {
                     List<String> attIds = (List<String>) fieldValue;
                     for (String attId : attIds) {
-                        System.out.println("-------2---------"+attId);
                         AttMain att = (AttMain) event.getSession().get(AttMain.class, attId);
                         if (att != null) {
-                            System.out.println("-------3---------");
                             att.setFdKey(key);
                             att.setFdModelId(modelIdValue);
                             att.setFdModelName(modelName);
