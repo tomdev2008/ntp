@@ -819,7 +819,7 @@
                         });
                     }
                 });
-                $.post($('#ctx').val()+"/ajax/catalog/updateCatalogOrder",data,function(res){},'json');// ajax 更新所有章节排序
+                $.post($('#ctx').val()+"/ajax/catalog/updateCatalogOrder",{courseid : $("#courseId").val(),chapter:JSON.stringify(data.chapter),lecture:JSON.stringify(data.lecture)},function(res){},'json');// ajax 更新所有章节排序
             }
 			//绑定添加章事件
 			$("#addChapter").bind("click",function(){

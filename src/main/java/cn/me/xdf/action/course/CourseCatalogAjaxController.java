@@ -135,9 +135,9 @@ public class CourseCatalogAjaxController {
 					String chapterId = (String)chapterMap.get("id");
 					if(StringUtil.isNotEmpty(chapterId)){
 						CourseCatalog courseCatalog = courseCatalogService.get(chapterId);
-						courseCatalog.setFdNo((String)chapterMap.get("num"));
-						courseCatalog.setFdTotalNo((String)chapterMap.get("index"));
-						courseCatalogService.save(courseCatalog);
+						courseCatalog.setFdNo(String.valueOf(chapterMap.get("num")));
+						courseCatalog.setFdTotalNo(String.valueOf(chapterMap.get("index")));
+						courseCatalogService.update(courseCatalog);
 					}
 				}
 			}
@@ -150,9 +150,9 @@ public class CourseCatalogAjaxController {
 					String lectureId = (String)lectureMap.get("id");
 					if(StringUtil.isNotEmpty(lectureId)){
 						CourseCatalog courseCatalog = courseCatalogService.get(lectureId);
-						courseCatalog.setFdNo((String)lectureMap.get("num"));
-						courseCatalog.setFdTotalNo((String)lectureMap.get("index"));
-						courseCatalogService.save(courseCatalog);
+						courseCatalog.setFdNo(String.valueOf(lectureMap.get("num")));
+						courseCatalog.setFdTotalNo(String.valueOf(lectureMap.get("index")));
+						courseCatalogService.update(courseCatalog);
 					}
 				}
 			}
@@ -174,7 +174,7 @@ public class CourseCatalogAjaxController {
 		String fdName = request.getParameter("title");
 		CourseCatalog courseCatalog = courseCatalogService.get(fdId);
 		courseCatalog.setFdName(fdName);
-		courseCatalogService.save(courseCatalog);
+		courseCatalogService.update(courseCatalog);
 	}
 	
 	/**
@@ -237,7 +237,7 @@ public class CourseCatalogAjaxController {
 		CourseInfo courseInfo = courseService.get(courseId);
 		if(courseInfo!=null){
 			courseInfo.setFdTotalPart(totalPart);
-			courseService.save(courseInfo);
+			courseService.update(courseInfo);
 		}
 	}
 	
@@ -265,9 +265,9 @@ public class CourseCatalogAjaxController {
 					//如果记录的章ID不为空并且当前是节的话，根据章ID取出章，将总节数更新到章中，同时更新节的上级
 					CourseCatalog courseCatalog = courseCatalogService.get(hbmparentid);
 					courseCatalog.setFdTotalPart(totalPart);
-					courseCatalogService.save(courseCatalog);
+					courseCatalogService.update(courseCatalog);
 					catalog.setHbmParent(courseCatalog);
-					courseCatalogService.save(catalog);
+					courseCatalogService.update(catalog);
 				}
 			}
 		}
