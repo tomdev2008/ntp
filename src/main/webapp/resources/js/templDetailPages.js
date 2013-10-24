@@ -511,7 +511,7 @@
 					$item.bind("closed",delItem);
 					$(this).parent().removeClass("warning").prev(".list_alert").append($item);
 					var _val = $field.val();
-					$field.val(_val + "," + tit);
+					$field.val(_val + "#" + tit);
 					$(this).prevAll(":text").val("");
 				} else {
 					$(this).parent().addClass("warning");
@@ -519,11 +519,11 @@
 					
 			});
 			//删除字段列表项事件
-			$("#formDetailInfo .list_alert>.alert").bind("closed",delItem);
+			$("#formDetailInfo .list_alert>.alert").bind("click",delItem);
 			function delItem(){
-				var arr = [];
+				var arr = '';
 				$(this).siblings(".alert").each(function(){
-					arr.push($(this).children("span").text());
+					arr = arr + $(this).children("span").text()+'#';
 				})
 				$(this).parent().prev(":hidden").val(arr);
 			}			

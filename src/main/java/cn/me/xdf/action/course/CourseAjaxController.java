@@ -220,7 +220,7 @@ public class CourseAjaxController {
 	 */
 	private static List buildString(String s) {
 		List list = new ArrayList();
-		String[] ls = s.split(",");
+		String[] ls = s.split("#");
 		for(String tmp:ls){
 			if(StringUtil.isEmpty(tmp)){
 				continue;
@@ -251,21 +251,13 @@ public class CourseAjaxController {
 			CourseInfo course = courseService.get(courseId);
 			if(course!=null){
 				//课程摘要
-				if(StringUtil.isNotEmpty(courseAbstract)){
 					course.setFdSummary(courseAbstract);
-				}
 				//学习目标
-				if(StringUtil.isNotEmpty(learnObjectives)){
 					course.setFdLearnAim(learnObjectives);
-				}
 				//建议群体
-				if(StringUtil.isNotEmpty(suggestedGroup)){
 					course.setFdProposalsGroup(suggestedGroup);
-				}
 				//课程要求
-				if(StringUtil.isNotEmpty(courseRequirements)){
 					course.setFdDemand(courseRequirements);
-				}
 				courseService.update(course);
 			}
 		}
