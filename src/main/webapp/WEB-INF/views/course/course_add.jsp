@@ -494,7 +494,7 @@
 		</div>
     </div>
 </header> -->
-
+<input type="hidden" id="ctx" value="${pageContext.request.contextPath}"/>
 <section class="container">
 	<div class="clearfix">
 		<div class="tit-bar">    	

@@ -308,7 +308,10 @@
 			});
 			var allUserData ;
 			
-			allUserData = [
+			$.getJSON("${ctx}/ajax/user/findByName?q="+$('#addUser').val(),function(rsult){
+				allUserData = rsult;
+			});
+			/*allUserData = [
 				{
 					id: "fdid3232323",
 					imgUrl: "http://img.staff.xdf.cn/Photo/06/3A/a911e1178bf3725acd75ddbb9c7e3a06_9494.jpg",
@@ -333,7 +336,7 @@
 					org: "广州学校",
 					department: "国外考试部"
 				}
-			]
+			]*/
 			/*$("#addUser").autocomplete("url.jsp",{
 				dataType: "json",
 				parse: function(data) {
@@ -525,8 +528,10 @@
 		
 		//加载基本信息	
 		rightCont.loadBasicInfoPage = function (title){
+			var ctx = $('#ctx').val();
+			var courseId = $('#courseId').val();
 			/*============================================ ajax 加载基本信息数据 ================================================*/
-			$.getJSON("${ctx}/ajax/course/getBaseCourseInfoById?courseId=$('#courseId').val()",function(rsult){
+			$.getJSON(ctx+"/ajax/course/getBaseCourseInfoById?courseId="+courseId,function(rsult){
 				data = rsult;
 				data.pageTitle = title;
 				$("#rightCont").html(basicInfoFn(data));
@@ -595,8 +600,10 @@
 		
 		//加载章节目录
 		rightCont.loadSectionDirectoryPage = function(title){
+			var ctx = $('#ctx').val();
+			var courseId = $('#courseId').val();
 			/*============================================ ajax 加载章节数据 ================================================*/
-			$.getJSON("${ctx}/ajax/catalog/getCatalogJsonByCourseId?courseId="+$('#courseId').val(),function(rsult){
+			$.getJSON(ctx+"/ajax/catalog/getCatalogJsonByCourseId?courseId="+courseId,function(rsult){
 				data = rsult;
 				data.pageTitle = title;
 				$("#rightCont").html(loadsectionsDirectoryFn(data));
