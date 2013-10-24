@@ -54,7 +54,7 @@ public class MaterialService extends BaseService {
 			finder.setParam("fdName", '%' + fdName + '%');
 		}
 		if(StringUtil.isNotBlank(order)&&StringUtil.isNotEmpty(order)){
-			if(order.equalsIgnoreCase("FDNAME")){
+			if(order.equalsIgnoreCase("fdName")){
 				finder.append(" order by info.fdName ");
 			}
 			if(order.equalsIgnoreCase("FDCREATETIME")){

@@ -23,7 +23,7 @@
 					<i class="icon-search"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>含“<a
-					href="#">雅思</a>”的条目
+					href="#">雅思</a>”的条目${param.order}
 				</span> <a class="btn btn-link" href="#rightCont">清空搜索结果</a>
 			</div>
 		</div>
@@ -31,15 +31,30 @@
 			<div class="btn-toolbar">
 				<label class="muted">排序</label>
 				<div class="btn-group btns-radio" data-toggle="buttons-radio">
-				<a onclick="pageNavClick('${param.fdType}','${page.getNextPage()}','fdName')">
+				 <a onclick="pageNavClick('${param.fdType}','1','FDNAME')">
+				   <c:if test="${param.order=='FDNAME'}">
 					<button class="btn btn-large active" type="button">名称</button>
-				</a>
-				<a onclick="pageNavClick('${param.fdType}','${page.getNextPage()}','FDCREATETIME')">
+				   </c:if>
+				   <c:if test="${param.order!='FDNAME'}">
+					<button class="btn btn-large" type="button">名称</button>
+				   </c:if>
+				 </a>
+				 <a onclick="pageNavClick('${param.fdType}','1','FDCREATETIME')">
+				   <c:if test="${param.order=='FDCREATETIME'}">
+					<button class="btn btn-large active" type="button">时间</button>
+				   </c:if>
+				   <c:if test="${param.order!='FDCREATETIME'}">
 					<button class="btn btn-large" type="button">时间</button>
+				   </c:if>
 				</a>
-				<a onclick="pageNavClick('${param.fdType}','${page.getNextPage()}','FDSCORE')">
+			    <a onclick="pageNavClick('${param.fdType}','1','FDSCORE')">
+			      <c:if test="${param.order=='FDSCORE'}">
+					<button class="btn btn-large active" type="button">评分</button>
+				   </c:if>
+				   <c:if test="${param.order!='FDSCORE'}">
 					<button class="btn btn-large" type="button">评分</button>
-				</a>
+				   </c:if>
+				</a> 
 				</div>
 				<label class="radio inline" for="selectCurrPage"><input
 					type="radio" id="selectCurrPage" name="selectCheckbox" checked />选中本页</label>
@@ -47,8 +62,20 @@
 					type="radio" id="selectAll" name="selectCheckbox" />选中全部</label>
 				<div class="pages pull-right">
 					<div class="span2">
-						 第<span> 1 - ${page.getTotalPage()}</span> / <span>${page.getTotalCount()}</span>
-						 条 
+						 第<span> 
+						 <c:if test="${page.getTotalPage()==1}">
+						   1 - ${page.getTotalCount()}
+						 </c:if>  
+						 <c:if test="${page.getTotalPage()>1}">
+							<c:if test="${page.getPageNo()<page.getTotalPage()}">
+						   ${page.getPageNo()*10+1} - ${page.getPageNo()*20}
+						 </c:if>
+							<c:if test="${page.getPageNo()==page.getTotalPage()}">
+						   ${page.getPageNo()*10+1} - ${page.getTotalCount()}
+						 </c:if>
+						</c:if>
+					</span> 
+						 / <span>${page.getTotalCount()}</span> 条 
 					</div>
 					<div class="btn-group">
 
@@ -89,13 +116,14 @@
 				    <span class="title">${bean.FDNAME}</span> 
 				    <span class="rating-view">
 					  <span class="rating-all">
-					    <i class="icon-star active"></i>
-						<i class="icon-star active"></i> 
-						<i class="icon-star"></i> 
-						<i class="icon-star"></i> 
-						<i class="icon-star"></i>
+					  <c:forEach var="i" begin="1" end="${bean.FDSCORE}">
+					   <i class="icon-star active"></i>
+					  </c:forEach>
+					  <c:forEach var="i" begin="1" end="${5-bean.FDSCORE}">
+					   <i class="icon-star"></i>
+					  </c:forEach>
 					  </span> 
-					  <b class="text-warning">2.0</b>
+					  <b class="text-warning">${bean.FDSCORE}</b>
 					</span> <span class="date"><i class="icon-time"></i>${bean.FDCREATETIME}</span>
 						<span class="btns">
 							<button type="button" class="btn btn-link">
@@ -105,7 +133,13 @@
 								<i class="icon-thumbs-up"></i>2940
 							</button>
 							<button type="button" class="btn btn-link">
-								<i class="icon-download"></i>0
+								<i class="icon-download"></i>
+								<c:if test="${bean.FDDOWNLOADS==null}">
+								  0
+								</c:if>
+								<c:if test="${bean.FDDOWNLOADS!=null}">
+								  ${bean.FDDOWNLOADS}
+								</c:if>
 							</button>
 					</span>
 				</a></li>
@@ -137,18 +171,26 @@
                 </c:otherwise>
             </c:choose>
           </c:forEach>
-		 <c:if test="${page.getTotalPage()>2}">
 			<button class="btn btn-primary btn-num  dropdown-toggle"
 				data-toggle="dropdown" type="button">
 				<span class="caret"></span>
 			</button>
-		 </c:if>
 			<ul class="dropdown-menu pull-right">
 			  <c:forEach var="i" begin="1" end="${page.getTotalPage()}">
-			     <li><a onclick="pageNavClick('${param.fdType}','${i}')">
-			         ${i*10+1}-${i*20+1}
-			     </a></li>
-			  </c:forEach>
+				<li><a onclick="pageNavClick('${param.fdType}','${i}')"> 
+				<c:if test="${page.getTotalPage()==1}">
+						   1 - ${page.getTotalCount()}
+				</c:if> 
+				<c:if test="${page.getTotalPage()>1}">
+					<c:if test="${page.getPageNo()<page.getTotalPage()}">
+						  ${page.getPageNo()*10+1} - ${page.getPageNo()*20}
+					</c:if>
+				    <c:if test="${page.getPageNo()==page.getTotalPage()}">
+						   ${page.getPageNo()*10+1} - ${page.getTotalCount()}
+					</c:if>
+				</c:if> <%-- ${i*10+1}-${i*20+1} --%>
+				</a></li>
+			</c:forEach>
 			</ul>
 
 		<c:if test="${page.isLastPage()==true}">

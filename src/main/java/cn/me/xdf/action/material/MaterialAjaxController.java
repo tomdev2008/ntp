@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView; 
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.service.material.MaterialService;
 
 @Controller
@@ -27,7 +28,6 @@ public class MaterialAjaxController {
 	public ModelAndView findList(Model model , HttpServletRequest request) {
 		String fdType = request.getParameter("fdType");
 		String pageNoStr = request.getParameter("pageNo");
-		String pageSizeStr = request.getParameter("pageSize");
 		String fdName = request.getParameter("fdName");
 		String order = request.getParameter("order");
 		int pageNo;
@@ -36,15 +36,9 @@ public class MaterialAjaxController {
 		} else {
 			pageNo = 1;
 		}
-		int pageSize;
-		if(StringUtil.isNotBlank(pageSizeStr)&&StringUtil.isNotEmpty(pageSizeStr)){
-			pageSize = Integer.parseInt(pageSizeStr);
-		} else {
-			pageSize =10;
-		}
 		if(StringUtil.isNotBlank(fdType)&&StringUtil.isNotEmpty(fdType)){
-			Pagination page = materialService.findMaterialList(fdType, pageNo, pageSize,fdName, order);
-			request.setAttribute("page", page);
+			Pagination page = materialService.findMaterialList(fdType, pageNo,SimplePage.DEF_COUNT,fdName, order);
+			model.addAttribute("page", page);
 		}
 		return new ModelAndView("forward:/WEB-INF/views/base/material/divMatList.jsp");
 	}

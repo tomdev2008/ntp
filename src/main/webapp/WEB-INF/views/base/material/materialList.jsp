@@ -6,6 +6,7 @@
 <!DOCTYPE HTML>
 <%
  String fdType = request.getParameter("fdType");
+ String order = request.getParameter("order");
 %>
  <html class=""> 
 <head>
@@ -31,21 +32,47 @@
 	             <li class="nav-header">
                      <span>课程素材库</span>
 	            </li>
+                <c:if test="${param.fdType==01}">
                 <li class="active">
-                  <a href="${ctx}/material/findList?fdType=01&order=fdName"><i class="icon-video">
+                </c:if>
+                <c:if test="${param.fdType!=01}">
+                <li>
+                </c:if>
+                  <a href="${ctx}/material/findList?fdType=01"><i class="icon-video">
                 </i>视频</a></li>
+                </li>
+	            <c:if test="${param.fdType==04}">
+                <li class="active">
+                </c:if>
+                <c:if test="${param.fdType!=04}">
                 <li>
-                  <a href="${ctx}/material/findList?fdType=04&order=fdName"><i class="icon-doc">
+                </c:if>
+                  <a href="${ctx}/material/findList?fdType=04"><i class="icon-doc">
                 </i>文档</a></li>
+                <c:if test="${param.fdType==05}">
+                <li class="active">
+                </c:if>
+                <c:if test="${param.fdType!=05}">
                 <li>
-                  <a href="${ctx}/material/findList?fdType=05&order=fdName"><i class="icon-ppt">
+                </c:if>
+                  <a href="${ctx}/material/findList?fdType=05"><i class="icon-ppt">
                 </i>幻灯片</a></li>
+                <c:if test="${param.fdType==08}">
+                <li class="active">
+                </c:if>
+                <c:if test="${param.fdType!=08}">
                 <li>
-                  <a href="${ctx}/material/findList?fdType=08&order=fdName"><i class="icon-exam">
+                </c:if>
+                  <a href="${ctx}/material/findList?fdType=08"><i class="icon-exam">
                 </i>测试</a></li>
-                <li>
-                  <a href="${ctx}/material/findList?fdType=10&order=fdName"><i class="icon-task">
-                </i>作业</a></li>
+                
+                <c:if test="${param.fdType==10}">
+                 <li class="active">
+                </c:if>
+                <c:if test="${param.fdType!=10}">
+                 <li>
+                </c:if>
+                  <a href="${ctx}/material/findList?fdType=10"><i class="icon-task"></i>作业</a></li>
 	    </ul>
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
