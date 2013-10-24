@@ -13,16 +13,6 @@ public class SeriesInfoService extends BaseService {
 	public  Class<SeriesInfo> getEntityClass() {
 		return SeriesInfo.class;
 	}
-	
-	/*
-	 * 根据id查找系列
-	 * author hanhl
-	 */
-	public SeriesInfo findSeriesById(String sid){
-		Finder finder=Finder.create(" from SeriesInfo series ");
-		finder.append(" where series.fdId=:sid");
-		finder.setParam("sid", sid);
-		return (SeriesInfo) find(finder).get(0);
-	}
+
 
 }

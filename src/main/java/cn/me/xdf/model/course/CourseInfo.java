@@ -1,6 +1,7 @@
 package cn.me.xdf.model.course;
 
 import java.util.Date;
+import java.util.List;
 
 
 import javax.persistence.Column;
@@ -17,7 +18,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 
+import cn.me.xdf.annotaion.AttMainMachine;
+import cn.me.xdf.annotaion.AttValues;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.model.base.IdEntity;
 import cn.me.xdf.model.organization.SysOrgPerson;
 
@@ -32,7 +36,8 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_COURSE")
-public class CourseInfo extends IdEntity{
+@AttMainMachine(modelName="cn.me.xdf.model.course.CourseInfo", value = { @AttValues(fild = "attMains") })
+public class CourseInfo extends IdEntity implements IAttMain{
 	
 	/**
 	 * 课程标题
@@ -72,7 +77,7 @@ public class CourseInfo extends IdEntity{
 	/**
 	 * 课程封面
 	 */
-	private AttMain attMain;
+	private List<AttMain> attMains;
 	
 	/**
 	 * 课程皮肤
@@ -196,17 +201,19 @@ public class CourseInfo extends IdEntity{
 	}
 
 	@Transient
-	public AttMain getAttMain() {
-		return attMain;
+	public List<AttMain> getAttMains() {
+		return attMains;
 	}
 
-	public void setAttMain(AttMain attMain) {
-		this.attMain = attMain;
+	public void setAttMains(List<AttMain> attMains) {
+		this.attMains = attMains;
 	}
 
 	public String getFdSkin() {
 		return fdSkin;
 	}
+
+	
 
 	public void setFdSkin(String fdSkin) {
 		this.fdSkin = fdSkin;
