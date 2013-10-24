@@ -28,7 +28,7 @@
           备注：    <input type="text" name="fdContext">
     <br/>
     <tags:simpleupload filename="fdName"
-                       filevalue="" id="upMovie" exts="*.jpg;" attIdName="attIds[0]" attIdID="attIdID">
+                       filevalue="" id="upMovie" exts="*.jpg;" attIdName="attIds[0].fdId" attIdID="attIdID" attIdValue="attIds[0].fdId">
     </tags:simpleupload>
      <br/>
     <input type="submit" value="确定"/>

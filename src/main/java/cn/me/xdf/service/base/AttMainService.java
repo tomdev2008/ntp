@@ -44,11 +44,21 @@ public class AttMainService extends SimpleService {
      */
     public AttMain getByModelIdAndModelNameAndKey(String modelId,
                                                   String modelName, String key) {
+        List<AttMain> attMains = getByModeslIdAndModelNameAndKey(modelId, modelName, key);
+        if (CollectionUtils.isNotEmpty(attMains)) {
+            return attMains.get(0);
+        }
+        return null;
+    }
+
+
+    public List<AttMain> getByModeslIdAndModelNameAndKey(String modelId,
+                                                         String modelName, String key) {
         List<AttMain> attMains = findByCriteria(AttMain.class,
                 Value.eq("fdModelId", modelId),
                 Value.eq("fdModelName", modelName), Value.eq("fdKey", key));
         if (CollectionUtils.isNotEmpty(attMains)) {
-            return attMains.get(0);
+            return attMains;
         }
         return null;
     }
@@ -124,8 +134,27 @@ public class AttMainService extends SimpleService {
         return null;
     }
 
+    public void convertModelAttMain(Object o) {
+        if (o instanceof IAttMain) {
+            AttMainMachine attMainMachine = o.getClass().getAnnotation(AttMainMachine.class);
+            String modelId = attMainMachine.modelId();
+            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
+            String modelName = attMainMachine.modelName();
+            AttValues[] attValues = attMainMachine.value();
+            System.out.println("start--");
+            for (AttValues v : attValues) {
+                String key = v.key();
+                //存储附件的主键属性
+                String field = v.fild();
+                List<AttMain> list = getByModeslIdAndModelNameAndKey(modelIdValue, modelName, key);
+                System.out.println("size===" + list.size());
+                MyBeanUtils.setFieldValue(o, field, list);
+            }
+        }
+    }
+
     @Transactional(readOnly = false)
-    public void updateAttMainMachine(Object o){
+    public void updateAttMainMachine(Object o) {
         if (o instanceof IAttMain) {
             IAttMain attMain = (IAttMain) o;
             AttMainMachine attMainMachine = o.getClass().getAnnotation(AttMainMachine.class);
@@ -143,10 +172,12 @@ public class AttMainService extends SimpleService {
 
                 Object fieldValue = MyBeanUtils.getFieldValue(o, field);
                 if (fieldValue != null) {
-                    List<String> attIds = (List<String>) fieldValue;
-                    allAttId.addAll(attIds);
-                    for (String attId : attIds) {
-                        AttMain att = get(AttMain.class, attId);
+                    List<AttMain> attIds = (List<AttMain>) fieldValue;
+
+                    //allAttId.addAll(attIds);
+                    for (AttMain attId : attIds) {
+                        AttMain att = get(AttMain.class, attId.getFdId());
+                        allAttId.add(attId.getFdId());
                         if (att != null) {
                             att.setFdKey(key);
                             att.setFdModelId(modelIdValue);
@@ -181,9 +212,9 @@ public class AttMainService extends SimpleService {
                 String field = v.fild();
                 Object fieldValue = MyBeanUtils.getFieldValue(o, field);
                 if (fieldValue != null) {
-                    List<String> attIds = (List<String>) fieldValue;
-                    for (String attId : attIds) {
-                        AttMain att = get(AttMain.class, attId);
+                    List<AttMain> attIds = (List<AttMain>) fieldValue;
+                    for (AttMain attId : attIds) {
+                        AttMain att = get(AttMain.class, attId.getFdId());
                         if (att != null) {
                             att.setFdKey(key);
                             att.setFdModelId(modelIdValue);

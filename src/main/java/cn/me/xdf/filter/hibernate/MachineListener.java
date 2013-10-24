@@ -31,129 +31,22 @@ public class MachineListener extends DefaultLoadEventListener
 
     @Override
     public void onPostUpdate(PostUpdateEvent event) {
-        Object o = event.getEntity();
-        if (o instanceof IAttMain) {
-            IAttMain attMain = (IAttMain) o;
-            AttMainMachine attMainMachine = event.getEntity().getClass().getAnnotation(AttMainMachine.class);
-            String modelId = attMainMachine.modelId();
-            String modelName = attMainMachine.modelName();
-            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
-            AttValues[] attValues = attMainMachine.value();
-            String fdId = modelIdValue;
-            List<String> allAttId = new ArrayList<String>();
-            for (AttValues v : attValues) {
 
-                String key = v.key();
-                //存储附件的主键属性
-                String field = v.fild();
-
-                Object fieldValue = MyBeanUtils.getFieldValue(o, field);
-                if (fieldValue != null) {
-                    List<String> attIds = (List<String>) fieldValue;
-                    allAttId.addAll(attIds);
-                    for (String attId : attIds) {
-                        AttMain att = (AttMain) event.getSession().get(AttMain.class, attId);
-                        if (att != null) {
-                            att.setFdKey(key);
-                            att.setFdModelId(modelIdValue);
-                            att.setFdModelName(modelName);
-                            event.getSession().update(attMain);
-                        }
-                    }
-                }
-            }
-
-            List<String> dbAttId = attMainService.getFdIdsAttsByModelId(fdId);
-            dbAttId.removeAll(allAttId);
-            for (String id : dbAttId) {
-                attMainService.deleteAttMain(id);
-            }
-
-        }
     }
 
     @Override
     public void onPostDelete(PostDeleteEvent event) {
-        Object o = event.getEntity();
-        if (o instanceof IAttMain) {
-            AttMainMachine attMainMachine = event.getEntity().getClass().getAnnotation(AttMainMachine.class);
-            String modelId = attMainMachine.modelId();
 
-            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
-            attMainService.getAttsByModelId(modelIdValue);
-        }
     }
 
 
     public void onPostInsert(PostInsertEvent event) {
-        System.out.println("-----------start Insert----------------------");
-        Object o = event.getEntity();
-        if (o instanceof IAttMain) {
-            System.out.println("-----------IAttMain----------------------");
-            IAttMain attMain = (IAttMain) o;
-            AttMainMachine attMainMachine = event.getEntity().getClass().getAnnotation(AttMainMachine.class);
-            String modelId = attMainMachine.modelId();
-            String modelName = attMainMachine.modelName();
-            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
-            AttValues[] attValues = attMainMachine.value();
-            for (AttValues v : attValues) {
 
-                String key = v.key();
-                //存储附件的主键属性
-                String field = v.fild();
-                System.out.println("-------1--------field="+field);
-                Object fieldValue = MyBeanUtils.getFieldValue(o, field);
-                System.out.println("fieldValue=="+fieldValue);
-                if (fieldValue != null) {
-                    List<String> attIds = (List<String>) fieldValue;
-                    for (String attId : attIds) {
-                        System.out.println("-------2---------"+attId);
-                        AttMain att = (AttMain) event.getSession().get(AttMain.class, attId);
-                        if (att != null) {
-                            System.out.println("-------3---------");
-                            att.setFdKey(key);
-                            att.setFdModelId(modelIdValue);
-                            att.setFdModelName(modelName);
-                            event.getSession().update(attMain);
-                        }
-                    }
-                }
-
-            }
-        }
     }
 
     @Override
     public boolean onPreInsert(PreInsertEvent event) {
-        Object o = event.getEntity();
-        if (o instanceof IAttMain) {
-            IAttMain attMain = (IAttMain) o;
-            AttMainMachine attMainMachine = event.getEntity().getClass().getAnnotation(AttMainMachine.class);
-            String modelId = attMainMachine.modelId();
-            String modelName = attMainMachine.modelName();
-            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
-            AttValues[] attValues = attMainMachine.value();
-            for (AttValues v : attValues) {
 
-                String key = v.key();
-                //存储附件的主键属性
-                String field = v.fild();
-                Object fieldValue = MyBeanUtils.getFieldValue(o, field);
-                if (fieldValue != null) {
-                    List<String> attIds = (List<String>) fieldValue;
-                    for (String attId : attIds) {
-                        AttMain att = (AttMain) event.getSession().get(AttMain.class, attId);
-                        if (att != null) {
-                            att.setFdKey(key);
-                            att.setFdModelId(modelIdValue);
-                            att.setFdModelName(modelName);
-                            event.getSession().update(attMain);
-                        }
-                    }
-                }
-
-            }
-        }
         return true;
     }
 }

@@ -48,14 +48,14 @@ public class UnitModel extends IdEntity implements IAttMain{
         this.fdContext = fdContext;
     }
 
-    private List<String> attIds;
+    private List<AttMain> attIds;
 
     @Transient
-    public List<String> getAttIds() {
+    public List<AttMain> getAttIds() {
         return attIds;
     }
 
-    public void setAttIds(List<String> attIds) {
+    public void setAttIds(List<AttMain> attIds) {
         this.attIds = attIds;
     }
 }

@@ -15,7 +15,7 @@
     <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
 </head>
 <body>
-<form class="form-horizontal" id="inputForm" method="post" action="${ctx}/demo/unit/save" name="form">
+<form class="form-horizontal" id="inputForm" method="post" action="${ctx}/demo/unit/update" name="form">
     <input type="hidden" name="fdId" value="${bean.fdId}"/>
     名称：   <input type="text" id="fdName" name="fdName" value="${bean.fdName}"/>
     <br/>
@@ -23,7 +23,7 @@
     备注：    <input type="text" name="fdContext" value="${bean.fdContext}">
     <br/>
     <tags:simpleupload filename="fdName"
-                       filevalue="" id="upMovie" exts="*.jpg;" attIdName="attIds[0]" attIdValue="${attIds[0]}" attIdID="attIdID">
+                       filevalue="" id="upMovie" exts="*.jpg;" attIdName="attIds[0].fdId" attIdValue="${attIds[0].fdId}" attIdID="attIdID">
     </tags:simpleupload>
     <br/>
     <input type="submit" value="确定"/>

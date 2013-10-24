@@ -38,31 +38,21 @@ public class UnitModelController {
     public String save(UnitModel unitModel) {
         unitModelService.save(unitModel);
         attMainService.saveAttMainMachine(unitModel);
-        List<String> attIds = unitModel.getAttIds();
-        if (attIds != null) {
-            for (String attId : attIds) {
-                System.out.println("attId===" + attId);
-            }
-        }
         return "redirect:/demo/unit/index";
     }
 
-    @RequestMapping(value = "/edit/${id}", method = RequestMethod.GET)
-    public String edit(Model model,@PathVariable("id") String id) {
-        model.addAttribute("bean",attMainService.get(id));
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String edit(Model model, @PathVariable("id") String id) {
+        UnitModel unitModel = unitModelService.get(UnitModel.class, id);
+        attMainService.convertModelAttMain(unitModel);
+        model.addAttribute("bean", unitModel);
         return "/demo/unit/edit";
     }
 
-
-    public String update(UnitModel unitModel){
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(UnitModel unitModel) {
         unitModelService.save(unitModel);
         attMainService.updateAttMainMachine(unitModel);
-        List<String> attIds = unitModel.getAttIds();
-        if (attIds != null) {
-            for (String attId : attIds) {
-                System.out.println("attId===" + attId);
-            }
-        }
         return "redirect:/demo/unit/index";
     }
 }
