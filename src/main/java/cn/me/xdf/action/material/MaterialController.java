@@ -38,16 +38,21 @@ public class MaterialController {
 		String pageNoStr = request.getParameter("pageNo");
 		String pageSizeStr = request.getParameter("pageSize");
 		String fdName = request.getParameter("fdName");
-		Integer pageNo = 1;
+		String order = request.getParameter("order");
+		int pageNo;
 		if(StringUtil.isNotBlank(pageNoStr)&&StringUtil.isNotEmpty(pageNoStr)){
 			pageNo = Integer.parseInt(pageNoStr);
+		} else {
+			pageNo = 1;
 		}
-		Integer pageSize =10;
-		if(StringUtil.isNotBlank(pageNoStr)&&StringUtil.isNotEmpty(pageNoStr)){
+		int pageSize;
+		if(StringUtil.isNotBlank(pageSizeStr)&&StringUtil.isNotEmpty(pageSizeStr)){
 			pageSize = Integer.parseInt(pageSizeStr);
+		} else {
+			pageSize =10;
 		}
 		if(StringUtil.isNotBlank(fdType)&&StringUtil.isNotEmpty(fdType)){
-			Pagination page = materialService.findMaterialList(fdType, pageNo, pageSize,fdName);
+			Pagination page = materialService.findMaterialList(fdType, pageNo, pageSize,fdName,order);
 			request.setAttribute("page", page);
 		}
 		return "/base/material/materialList";

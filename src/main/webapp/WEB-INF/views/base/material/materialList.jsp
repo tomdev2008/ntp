@@ -32,19 +32,19 @@
                      <span>课程素材库</span>
 	            </li>
                 <li class="active">
-                  <a href="${ctx}/material/findList?fdType=01"><i class="icon-video">
+                  <a href="${ctx}/material/findList?fdType=01&order=fdName"><i class="icon-video">
                 </i>视频</a></li>
                 <li>
-                  <a href="${ctx}/material/findList?fdType=04"><i class="icon-doc">
+                  <a href="${ctx}/material/findList?fdType=04&order=fdName"><i class="icon-doc">
                 </i>文档</a></li>
                 <li>
-                  <a href="${ctx}/material/findList?fdType=05"><i class="icon-ppt">
+                  <a href="${ctx}/material/findList?fdType=05&order=fdName"><i class="icon-ppt">
                 </i>幻灯片</a></li>
                 <li>
-                  <a href="${ctx}/material/findList?fdType=08"><i class="icon-exam">
+                  <a href="${ctx}/material/findList?fdType=08&order=fdName"><i class="icon-exam">
                 </i>测试</a></li>
                 <li>
-                  <a href="${ctx}/material/findList?fdType=10"><i class="icon-task">
+                  <a href="${ctx}/material/findList?fdType=10&order=fdName"><i class="icon-task">
                 </i>作业</a></li>
 	    </ul>
 	  </section>
@@ -84,7 +84,7 @@
 </section>
 
 <script type="text/javascript">	
-function pageClick(fdType,pageNo){
+function pageNavClick(fdType,pageNo,order){
 	var fdName = document.getElementById("serach").value;
 	$("#pageBody").html("");
 	$.ajax({
@@ -94,6 +94,7 @@ function pageClick(fdType,pageNo){
 			"fdName" : fdName,
 			"fdType" : fdType,
 			"pageNo" : pageNo,
+			"order" : order,
 		},
 		cache: false, 
 		dataType: "html",

@@ -19,7 +19,7 @@
 				</div>
 				<form class="toolbar-search">
 					<input type="text" id="serach" class="search" placeholder="搜索条目"
-					   onblur="pageClick('${param.fdType}');" > 
+					   onblur="pageNavClick('${param.fdType}');" > 
 					<i class="icon-search"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>含“<a
@@ -31,9 +31,15 @@
 			<div class="btn-toolbar">
 				<label class="muted">排序</label>
 				<div class="btn-group btns-radio" data-toggle="buttons-radio">
+				<a onclick="pageNavClick('${param.fdType}','${page.getNextPage()}','fdName')">
 					<button class="btn btn-large active" type="button">名称</button>
+				</a>
+				<a onclick="pageNavClick('${param.fdType}','${page.getNextPage()}','FDCREATETIME')">
 					<button class="btn btn-large" type="button">时间</button>
+				</a>
+				<a onclick="pageNavClick('${param.fdType}','${page.getNextPage()}','FDSCORE')">
 					<button class="btn btn-large" type="button">评分</button>
+				</a>
 				</div>
 				<label class="radio inline" for="selectCurrPage"><input
 					type="radio" id="selectCurrPage" name="selectCheckbox" checked />选中本页</label>

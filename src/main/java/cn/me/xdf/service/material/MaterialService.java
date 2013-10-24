@@ -4,13 +4,11 @@ import java.util.List;
 
 import jodd.util.StringUtil;
 
-import org.htmlparser.lexer.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
-import cn.me.xdf.common.hibernate4.Finder.SearchType;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
@@ -41,10 +39,11 @@ public class MaterialService extends BaseService {
 	 * @param pageNo 页码
 	 * @param pageSize 每页几条数据
 	 * @param fdName 不为空是表示搜索
+	 * @param order 排序规则
 	 * @author yuhuizhe
 	 * @return
 	 */
-	public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName){
+	public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName,String order){
 		Finder finder = Finder.create("select info.* from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
 		finder.append("on info.FDID=auth.FDMATERIALID  where info.FDTYPE=:fdType and info.isAvailable=1 ");
 		finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' ");
@@ -53,6 +52,18 @@ public class MaterialService extends BaseService {
 		if(StringUtil.isNotBlank(fdName)&&StringUtil.isNotEmpty(fdName)){
 			finder.append(" and info.FDNAME like :fdName");
 			finder.setParam("fdName", '%' + fdName + '%');
+		}
+		if(StringUtil.isNotBlank(order)&&StringUtil.isNotEmpty(order)){
+			if(order.equalsIgnoreCase("FDNAME")){
+				finder.append(" order by info.fdName ");
+			}
+			if(order.equalsIgnoreCase("FDCREATETIME")){
+				finder.append(" order by info.FDCREATETIME ");
+			}
+			if(order.equalsIgnoreCase("FDSCORE")){
+				finder.append(" order by info.FDSCORE ");
+			}
+			
 		}
 		Pagination page = getPageBySql(finder, pageNo, pageSize);
 		return page;

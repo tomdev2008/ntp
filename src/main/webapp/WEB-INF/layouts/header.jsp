@@ -19,7 +19,7 @@ request.setAttribute("path", path[path.length-1]);
 	        <ul class="nav">
 	          <li><a href="#">系统管理</a></li>
 	          <li><a href="#">我是导师</a></li>
-	          <li><a href="${ctx}/material/findList?fdType=01">我是主管</a></li>
+	          <li><a href="${ctx}/material/findList?fdType=01&order=FDNAME">我是主管</a></li>
 	        </ul>
 			<shiro:authenticated>
             <ul class="nav pull-right">
