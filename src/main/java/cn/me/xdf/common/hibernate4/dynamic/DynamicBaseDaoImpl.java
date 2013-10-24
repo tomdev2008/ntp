@@ -318,8 +318,8 @@ public abstract class DynamicBaseDaoImpl extends HibernateSimpleDao implements
         return query;
     }
 
-    // @Autowired
-    //private MachineListener listener;
+    @Autowired
+    private MachineListener listener;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -355,11 +355,11 @@ public abstract class DynamicBaseDaoImpl extends HibernateSimpleDao implements
 
 
 
-     /*   EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory).getServiceRegistry().getService(
+     EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory).getServiceRegistry().getService(
                 EventListenerRegistry.class);
-        registry.getEventListenerGroup(EventType.PRE_INSERT).appendListener(listener);
+        registry.getEventListenerGroup(EventType.POST_INSERT).appendListener(listener);
         registry.getEventListenerGroup(EventType.POST_UPDATE).appendListener(listener);
-        registry.getEventListenerGroup(EventType.POST_DELETE).appendListener(listener);*/
+        registry.getEventListenerGroup(EventType.POST_DELETE).appendListener(listener);
     }
 
     protected String processTemplate(StatementTemplate statementTemplate,

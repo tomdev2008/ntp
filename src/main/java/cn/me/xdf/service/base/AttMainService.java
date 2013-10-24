@@ -141,13 +141,11 @@ public class AttMainService extends SimpleService {
             String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
             String modelName = attMainMachine.modelName();
             AttValues[] attValues = attMainMachine.value();
-            System.out.println("start--");
             for (AttValues v : attValues) {
                 String key = v.key();
                 //存储附件的主键属性
                 String field = v.fild();
                 List<AttMain> list = getByModeslIdAndModelNameAndKey(modelIdValue, modelName, key);
-                System.out.println("size===" + list.size());
                 MyBeanUtils.setFieldValue(o, field, list);
             }
         }
@@ -156,7 +154,6 @@ public class AttMainService extends SimpleService {
     @Transactional(readOnly = false)
     public void updateAttMainMachine(Object o) {
         if (o instanceof IAttMain) {
-            IAttMain attMain = (IAttMain) o;
             AttMainMachine attMainMachine = o.getClass().getAnnotation(AttMainMachine.class);
             String modelId = attMainMachine.modelId();
             String modelName = attMainMachine.modelName();

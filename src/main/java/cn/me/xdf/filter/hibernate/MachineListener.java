@@ -23,8 +23,8 @@ import java.util.Map;
  * Time: 下午4:12
  * To change this template use File | Settings | File Templates.
  */
-public class MachineListener extends DefaultLoadEventListener
-        implements PostUpdateEventListener, PreInsertEventListener, PostDeleteEventListener  {
+public class MachineListener
+        implements PostUpdateEventListener, PostInsertEventListener, PostDeleteEventListener {
 
     @Autowired
     private AttMainService attMainService;
@@ -39,14 +39,8 @@ public class MachineListener extends DefaultLoadEventListener
 
     }
 
-
+    @Override
     public void onPostInsert(PostInsertEvent event) {
 
-    }
-
-    @Override
-    public boolean onPreInsert(PreInsertEvent event) {
-
-        return true;
     }
 }
