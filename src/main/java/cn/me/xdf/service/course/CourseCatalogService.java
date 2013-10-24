@@ -36,8 +36,22 @@ public class CourseCatalogService extends BaseService{
 		//根据课程ID查找章节，并按总序号升序
 		Finder finder = Finder
 				.create("from CourseCatalog catalog ");
-		finder.append("where catalog.courseInfo.fdId = :userId order by catalog.fdTotalNo");
+		finder.append("where catalog.courseInfo.fdId = :courseId order by catalog.fdTotalNo");
 		finder.setParam("courseId", courseId);		
+		return  super.find(finder);
+	}
+
+	/**
+	 * 根据章ID查找章下的节
+	 * @param fdId 章ID
+	 * @return List 节列表
+	 */
+	@Transactional(readOnly = true)
+	public List<CourseCatalog> getChildCatalog(String fdId) {
+		Finder finder = Finder
+				.create("from CourseCatalog catalog ");
+		finder.append("where catalog.hbmParent.fdId = :fdId");
+		finder.setParam("fdId", fdId);		
 		return  super.find(finder);
 	}
 	

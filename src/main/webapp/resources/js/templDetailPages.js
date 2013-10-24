@@ -478,11 +478,15 @@
 		//加载详细信息	
 		rightCont.loadDetailInfoPage = function (title){
 			/*============================================ ajax 加载JSON数据 ================================================*/
-			$.getJSON("${ctx}/ajax/course/getDetailCourseInfoById?courseId=$('#courseId').val()",function(rsult){
-				data = rsult;
-				data.pageTitle = title;
-				$("#rightCont").html(detailInfoFn(data));	
-					
+			$.ajax({
+				  url: $('#ctx').val()+"/ajax/course/getDetailCourseInfoById?courseId="+$('#courseId').val(),
+				  async:false,
+				  dataType:'json',
+				  success: function(rsult){
+					  data = rsult;
+						data.pageTitle = title;
+						$("#rightCont").html(detailInfoFn(data));	
+				  },
 			});
 			/*
 			data = {//ajax 成功后删除
@@ -507,7 +511,7 @@
 					$item.bind("closed",delItem);
 					$(this).parent().removeClass("warning").prev(".list_alert").append($item);
 					var _val = $field.val();
-					$field.val(_val + "|" + tit);
+					$field.val(_val + "," + tit);
 					$(this).prevAll(":text").val("");
 				} else {
 					$(this).parent().addClass("warning");
@@ -528,14 +532,16 @@
 		
 		//加载基本信息	
 		rightCont.loadBasicInfoPage = function (title){
-			var ctx = $('#ctx').val();
-			var courseId = $('#courseId').val();
 			/*============================================ ajax 加载基本信息数据 ================================================*/
-			$.getJSON(ctx+"/ajax/course/getBaseCourseInfoById?courseId="+courseId,function(rsult){
-				data = rsult;
-				data.pageTitle = title;
-				$("#rightCont").html(basicInfoFn(data));
-
+			$.ajax({
+				  url: $('#ctx').val()+"/ajax/course/getBaseCourseInfoById?courseId="+$('#courseId').val(),
+				  async:false,
+				  dataType:'json',
+				  success: function(rsult){
+						data = rsult ;	
+						data.pageTitle = title;
+						$("#rightCont").html(basicInfoFn(data));
+				  },
 			});
 			/*
 			data = {//ajax 成功后删除
@@ -600,15 +606,17 @@
 		
 		//加载章节目录
 		rightCont.loadSectionDirectoryPage = function(title){
-			var ctx = $('#ctx').val();
-			var courseId = $('#courseId').val();
 			/*============================================ ajax 加载章节数据 ================================================*/
-			$.getJSON(ctx+"/ajax/catalog/getCatalogJsonByCourseId?courseId="+courseId,function(rsult){
-				data = rsult;
-				data.pageTitle = title;
-				$("#rightCont").html(loadsectionsDirectoryFn(data));
-				updataProgressCourses($('#sortable').children(".lecture").length);
-				
+			$.ajax({
+				  url: $('#ctx').val()+"/ajax/catalog/getCatalogJsonByCourseId?courseId="+$('#courseId').val(),
+				  async:false,
+				  dataType:'json',
+				  success: function(rsult){
+						data = rsult ;	
+						data.pageTitle = title;		
+						$("#rightCont").html(loadsectionsDirectoryFn(data));
+						updataProgressCourses($('#sortable').children(".lecture").length);	
+				  },
 			});
 			/*
 			data = {	//ajax 成功后删除	
@@ -660,9 +668,6 @@
 						type: "video"	
 					}]
 			}
-			data.pageTitle = title;	//ajax 成功后删除		
-			$("#rightCont").html(loadsectionsDirectoryFn(data));//ajax 成功后删除
-			updataProgressCourses($('#sortable').children(".lecture").length);//ajax 成功后删除		
 			*/
 			var $sections = $('#sortable');
 			$sections.sortable({
@@ -682,7 +687,7 @@
 				e.preventDefault();
 				var $li = $(this).closest("li");
 				//=====================================================可在此 ajax 删除章节数据==================================
-				$.post('${ctx}/ajax/catalog/deleteCatalogById',{fdid: $li.attr("data-fdid")})
+				$.post($('#ctx').val()+'/ajax/catalog/deleteCatalogById',{fdid: $li.attr("data-fdid")})
 				.success(function(){
 					$li.remove();
 					changIndex();
@@ -717,7 +722,7 @@
 				if($tit.val()){			
 					if($form.prev().hasClass("sortable-bar")){//编辑已有章节					
 						//=====================================================可在此 ajax 更新章节名称数据==================================
-						$.post('${ctx}/ajax/catalog/updateCatalogNameById',{fdid: $li.attr("data-fdid"), title: $tit.val()},function(data){},"json")
+						$.post($('#ctx').val()+'/ajax/catalog/updateCatalogNameById',{fdid: $li.attr("data-fdid"), title: $tit.val()},function(data){},"json")
 						.success(function(){
 							$li.children(".sortable-bar").removeClass("hide").find(".name").text($tit.val());
 						});
@@ -725,20 +730,25 @@
 						$li.children(".sortable-bar").removeClass("hide").find(".name").text($tit.val());
 						*/
 					} else {//新加章节							
-						
 						//=====================================================可在此 ajax 提交新加章节的数据, 返回fdId==============================
-						$.post('${ctx}/ajax/catalog/addCatalog',{courseid:$("#courseId").val(),ischapter:$li.hasClass("chapter"),fdtotalno:$li.length,fdno:$form.find(".index").text(),title:$tit.val()},function(result){					
-							var data = rtnSectionData($li.hasClass("chapter"),$form.find(".index").text(),$tit.val(),$li.length,"none",result.id);
-							$("#courseId").val(result.courseid);
-							$li.attr("data-fdid",result.id)
-							$form.before(sectionsFn(data));	
-							$sections.sortable({
-								handle: '.sortable-bar',
-								forcePlaceholderSize: true
-							});
-							var numAll = $form.find(".index").text();	
-							updataProgressCourses(numAll);
-						},"json");
+						$.ajax({
+							  url: $('#ctx').val()+"/ajax/catalog/addCatalog",
+							  async:false,
+							  data:{courseid:$("#courseId").val(),ischapter:$li.hasClass("chapter"),fdtotalno:parseInt($sections.children("li").length)-1,fdno:$form.find(".index").text(),title:$tit.val()},
+							  dataType:'json',
+							  success: function(result){
+								  var data = rtnSectionData($li.hasClass("chapter"),$form.find(".index").text(),$tit.val(),$li.length,"none",result.id);
+									$("#courseId").val(result.courseid);
+									$li.attr("data-fdid",result.id);
+									$form.before(sectionsFn(data));	
+									$sections.sortable({
+										handle: '.sortable-bar',
+										forcePlaceholderSize: true
+									});
+									var numAll = $form.find(".index").text();	
+									updataProgressCourses(numAll);
+							  },
+						});
 						/*
 						var tempid = "sectionId0" + Math.random() ;					
 						var data = rtnSectionData($li.hasClass("chapter"),$form.find(".index").text(),$tit.val(),$li.length,"none");
@@ -809,36 +819,44 @@
                         });
                     }
                 });
-                $.post("${ctx}/ajax/catalog/updateCatalogOrder",data,function(res){},'json');// ajax 更新所有章节排序
+                $.post($('#ctx').val()+"/ajax/catalog/updateCatalogOrder",data,function(res){},'json');// ajax 更新所有章节排序
             }
 			//绑定添加章事件
 			$("#addChapter").bind("click",function(){
-				if(!$sections.children(".chapter").last().children(".form-edit-title").length){
-					var data = {
-						chapter: {
-							index: $sections.children("li").length, 
-							num: $sections.children(".chapter").length + 1
-						}			
-					}		
-					$sections.append(addSectionsFn(data));			
-				} else {			
-					$sections.children(".chapter").last().find(".form-edit-title .control-group:first").addClass("warning").find(":text").after('<span class="help-block">请先完成未保存的章！</span>');
-				}	
-			});
-			//绑定添加节事件
-			$("#addLecture").bind("click",function(){
 				if(!$sections.children(".lecture").last().children(".form-edit-title").length){
-					var data = {
-						lecture: {
-							index: $sections.children("li").length,
-							num: $sections.children(".lecture").length + 1
-						}
+					if(!$sections.children(".chapter").last().children(".form-edit-title").length){
+						var data = {
+							chapter: {
+								index: $sections.children("li").length, 
+								num: $sections.children(".chapter").length + 1
+							}			
+						}		
+						$sections.append(addSectionsFn(data));			
+					} else {			
+						$sections.children(".chapter").last().find(".form-edit-title .control-group:first").addClass("warning").find(":text").after('<span class="help-block">请先完成未保存的章！</span>');
 					}		
-					$sections.append(addSectionsFn(data));			
 				} else {			
 					$sections.children(".lecture").last().find(".form-edit-title .control-group:first").addClass("warning").find(":text").after('<span class="help-block">请先完成未保存的节！</span>');
 				}	
-				
+					
+			});
+			//绑定添加节事件
+			$("#addLecture").bind("click",function(){
+				if(!$sections.children(".chapter").last().children(".form-edit-title").length){
+					if(!$sections.children(".lecture").last().children(".form-edit-title").length){
+						var data = {
+							lecture: {
+								index: $sections.children("li").length,
+								num: $sections.children(".lecture").length + 1
+							}
+						}		
+						$sections.append(addSectionsFn(data));			
+					} else {			
+						$sections.children(".lecture").last().find(".form-edit-title .control-group:first").addClass("warning").find(":text").after('<span class="help-block">请先完成未保存的节！</span>');
+					}			
+				} else {			
+					$sections.children(".chapter").last().find(".form-edit-title .control-group:first").addClass("warning").find(":text").after('<span class="help-block">请先完成未保存的章！</span>');
+				}
 			});
 		}
 		

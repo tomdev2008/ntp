@@ -81,12 +81,10 @@ public class CourseCatalogAjaxController {
 			}
 		}		
 		//将章节信息转换成json返回到页面
-		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
-		map.put("chapter", JsonUtils.writeObjectToJson(chapter));
-		map.put("lecture", JsonUtils.writeObjectToJson(lecture));
-		list.add(map);
-		return JsonUtils.writeObjectToJson(list);
+		map.put("chapter", chapter);
+		map.put("lecture", lecture);
+		return JsonUtils.writeObjectToJson(map);
 	}
 	
 	/**
@@ -103,6 +101,15 @@ public class CourseCatalogAjaxController {
 		if(Constant.CATALOG_TYPE_LECTURE==courseCatalog.getFdType()){
 			//重新计算课程总节数
 			reCalculateCourseInfo(courseCatalog.getCourseInfo().getFdId(),courseCatalog.getCourseInfo().getFdTotalPart()-1);
+		}else{
+			//如果删除的是章，那么需要更新章下的节所在的章
+			List<CourseCatalog> childList = courseCatalogService.getChildCatalog(fdId);
+			if(childList!=null && childList.size()>0){
+				for(CourseCatalog child : childList){
+					child.setHbmParent(null);
+					courseCatalogService.update(child);
+				}
+			}
 		}
 		courseCatalogService.delete(fdId);
 	}
@@ -216,11 +223,10 @@ public class CourseCatalogAjaxController {
 		 courseCatalogService.save(courseCatalog);
 		 
 		 reCalculateCatalog(course.getFdId());
-		 List<Map> list = new ArrayList<Map>();
 		 Map map = new HashMap();
 		 map.put("id", courseCatalog.getFdId());
 		 map.put("courseid", course.getFdId());
-		 return JsonUtils.writeObjectToJson(list);
+		 return JsonUtils.writeObjectToJson(map);
 	}
 	
 	/**

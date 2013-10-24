@@ -60,7 +60,6 @@ public class CourseAjaxController {
 	public String getBaseCourseInfoById(HttpServletRequest request) {
 		//获取课程ID
 		String courseId = request.getParameter("courseId");
-		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
 		
 		//将所有课程分类信息转换成json返回到页面
@@ -73,18 +72,18 @@ public class CourseAjaxController {
 				catemap.put("title", category.getFdName());
 				cateList.add(catemap);
 			}
-			map.put("courseTypeList", JsonUtils.writeObjectToJson(cateList));
+			map.put("courseTypeList", cateList);
 			//默认将第一个分类选中
 			map.put("courseType", categorys.get(0).getFdId());
 		}
-		
 		if(StringUtil.isNotEmpty(courseId)){
 			CourseInfo course = courseService.get(courseId);
 			if(course!=null){
 				map.put("courseTit", course.getFdTitle());
 				map.put("subTit", course.getFdSubTitle());
-				map.put("courseType", course.getFdCategory().getFdId());
-				
+				if(course.getFdCategory()!=null){
+					map.put("courseType", course.getFdCategory().getFdId());
+				}				
 				//将课程的标签信息返回到页面
 				List<TagInfo> tagList = courseTagService.findTagByCourseId(courseId);
 				if(tagList!=null && tagList.size()>0){
@@ -92,12 +91,11 @@ public class CourseAjaxController {
 					for(TagInfo tag:tagList){
 						tags.add(tag.getFdName());
 					}
-					map.put("keyword", JsonUtils.writeObjectToJson(tags));
+					map.put("keyword", tags);
 				}
 			}
 		}
-		list.add(map);
-		return JsonUtils.writeObjectToJson(list);
+		return JsonUtils.writeObjectToJson(map);
 	}
 	
 	/**
@@ -118,7 +116,6 @@ public class CourseAjaxController {
 		String keyword = request.getParameter("keyword");
 		//获取课程分类ID
 		String courseType = request.getParameter("courseType");
-		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
 		CourseInfo course = new CourseInfo();
 		if(StringUtil.isNotEmpty(courseId)){
@@ -159,12 +156,16 @@ public class CourseAjaxController {
 				course.setFdCategory(category);
 			}
 			course = courseService.save(course);
+			courseId = course.getFdId();
 		}
 		
 		//保存标签库中没有的标签
 		if(StringUtil.isNotEmpty(keyword)){
 			String[] tags = keyword.split(",");
 			for(String tagName:tags){
+				if(StringUtil.isEmpty(tagName)){
+					continue;
+				}
 				TagInfo tagInfo = tagInfoService.getTagByName(tagName);
 				if(tagInfo==null){
 					tagInfo = new TagInfo();
@@ -179,8 +180,7 @@ public class CourseAjaxController {
 			}
 		}
 		map.put("courseid", courseId);
-		list.add(map);
-		return JsonUtils.writeObjectToJson(list);
+		return JsonUtils.writeObjectToJson(map);
 	}
 	
 	/**
@@ -193,7 +193,6 @@ public class CourseAjaxController {
 	public String getDetailCourseInfoById(HttpServletRequest request) {
 		//获取课程ID
 		String courseId = request.getParameter("courseId");
-		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
 		if(StringUtil.isNotEmpty(courseId)){
 			CourseInfo course = courseService.get(courseId);
@@ -202,17 +201,33 @@ public class CourseAjaxController {
 				map.put("courseAbstract", course.getFdSummary());
 				//学习目标
 				String learnObjectives = course.getFdLearnAim()==null?"":course.getFdLearnAim();
-				map.put("learnObjectives", JsonUtils.writeObjectToJson(learnObjectives.split("|")));
+				map.put("learnObjectives", buildString(learnObjectives));
 				//建议群体
 				String suggestedGroup = course.getFdProposalsGroup()==null?"":course.getFdProposalsGroup();
-				map.put("suggestedGroup", JsonUtils.writeObjectToJson(suggestedGroup.split("|")));
+				map.put("suggestedGroup", buildString(suggestedGroup));
 				//课程要求
 				String courseRequirements = course.getFdDemand()==null?"":course.getFdDemand();
-				map.put("courseRequirements", JsonUtils.writeObjectToJson(courseRequirements.split("|")));						
+				map.put("courseRequirements", buildString(courseRequirements));						
 			}
 		}
-		list.add(map);
-		return JsonUtils.writeObjectToJson(list);
+		return JsonUtils.writeObjectToJson(map);
+	}
+	
+	/**
+	 * 根据#号分隔字符串,返回list
+	 * @param String
+	 * @return List
+	 */
+	private static List buildString(String s) {
+		List list = new ArrayList();
+		String[] ls = s.split(",");
+		for(String tmp:ls){
+			if(StringUtil.isEmpty(tmp)){
+				continue;
+			}
+			list.add(tmp);
+		}
+		return list;
 	}
 	
 	/**

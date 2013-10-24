@@ -499,7 +499,7 @@
 	<div class="clearfix">
 		<div class="tit-bar">    	
 	        <div class="page-title section" id="page-title">
-	        	<input type='hidden' id='courseId' value='' />
+	        	<input type='hidden' id='courseId' value='141e961af14a105ea9289704c479954f' />
 	        	<h5>集团英联邦项目雅思强化口语备课课程</h5>
 	            <div class="btn-group">
 		            <button class="btn btn-primary btn-large" disabled type="button">预览</button>
@@ -622,7 +622,7 @@
 
 	//ajax保存课程基本信息
 	function saveBaseInfo(){
-		$.post('${ctx}/course/ajax/saveBaseInfo',{
+		$.post('${ctx}/ajax/course/saveBaseInfo',{
 			 courseId : $("#courseId").val(),
 			 courseTitle: $("#courseTitle").val(),
 			 subTitle:  $("#subTitle").val(),
@@ -640,7 +640,7 @@
 	
 	//ajax保存课程详细信息
 	function saveDetailInfo(){
-		$.post('${ctx}/course/ajax/saveDetailInfo',{
+		$.post('${ctx}/ajax/course/saveDetailInfo',{
 			 courseId : $("#courseId").val(),
 			 courseAbstract: $("#courseAbstract").val(),
 			 learnObjectives:  $("#learnObjectives").val(),
