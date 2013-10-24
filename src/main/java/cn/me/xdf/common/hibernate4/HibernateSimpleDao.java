@@ -116,7 +116,7 @@ public abstract class HibernateSimpleDao {
 			p.setList(new ArrayList());
 			return p;
 		}
-		Query query = getSession().createSQLQuery(finder.getOrigHql());
+		Query query = getSession().createSQLQuery(finder.getOrigHql()).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 		finder.setParamsToQuery(query);
 		query.setFirstResult(p.getFirstResult());
 		query.setMaxResults(p.getPageSize());

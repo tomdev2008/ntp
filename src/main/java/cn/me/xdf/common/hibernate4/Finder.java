@@ -61,7 +61,7 @@ public class Finder {
 		String hql = hqlBuilder.toString();
 
 		int fromIndex = hql.toLowerCase().indexOf(FROM);
-		String projectionHql = hql.substring(0, fromIndex);
+		//String projectionHql = hql.substring(0, fromIndex);
 
 		hql = hql.substring(fromIndex);
 		String rowCountHql = hql.replace(HQL_FETCH, "");
@@ -70,7 +70,8 @@ public class Finder {
 		if (index > 0) {
 			rowCountHql = rowCountHql.substring(0, index);
 		}
-		return wrapProjection(projectionHql) + rowCountHql;
+		//return wrapProjection(projectionHql) + rowCountHql;
+		return ROW_COUNT + rowCountHql;
 	}
 
 	private String rowCountSql;
