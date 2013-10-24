@@ -46,7 +46,7 @@ public class SeriesController {
 		}else{
 			//不为空 则是阶段 ????这块有问题,如果系列和阶段是在同一操作页面,如何构建级联关系,若直接添加阶段?
 			
-			SeriesInfo supSeries=seriesInfoService.findSeriesById(parentId);
+			SeriesInfo supSeries=seriesInfoService.get(parentId);
 			seriesInfo.setFdName(fdName);
 			seriesInfo.setFdDescription(fdDescription);
 			seriesInfo.setHbmParent(supSeries);
@@ -65,7 +65,7 @@ public class SeriesController {
 	@RequestMapping(value="updateSeries")
 	public String updateSeries(HttpServletRequest request){
 		String seriesId=request.getParameter("seriesId");
-		SeriesInfo seriesInfo=seriesInfoService.findSeriesById(seriesId);
+		SeriesInfo seriesInfo=seriesInfoService.get(seriesId);
 		String fdName=request.getParameter("fdName");
 		String fdDescription=request.getParameter("fdDescription");
 		seriesInfo.setFdName(fdName);
@@ -80,7 +80,7 @@ public class SeriesController {
 	@RequestMapping(value="/course/deleteSeries")
 	public String deleteSeries(HttpServletRequest request){
 		String seriesId=request.getParameter("seriesId");
-		SeriesInfo seriesInfo=seriesInfoService.findSeriesById(seriesId);
+		SeriesInfo seriesInfo=seriesInfoService.get(seriesId);
 		seriesInfo.setIsAvailable(false);
 		seriesInfoService.update(seriesInfo);
 		return "";
