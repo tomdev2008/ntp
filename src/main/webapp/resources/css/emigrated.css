@@ -43,7 +43,6 @@ body {background:#efefef;color:#000;}
 .pages .span2{line-height:30px;}
 .pages .btn-group .btn{border-radius:15px;width:30px;height:30px;padding:0;border-bottom:none;margin-right:8px;}
 .pages .btn-group .btn:hover{background-position:0 -30px;}
-.pages .btn-group .btn i{margin-top:2px;}
 .comment-list{margin:0 20px;}
 .comment-list .media{border-bottom:dashed #e2e2e2 1px;margin-bottom:28px;padding-bottom:10px;}
 .comment-list .media > .pull-left{width:45px;height:45px;margin-right:14px;}
