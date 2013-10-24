@@ -86,11 +86,15 @@
 <script type="text/javascript">	
 function pageClick(fdType,pageNo){
 	var fdName = document.getElementById("serach").value;
-	alert(fdName);
 	$("#pageBody").html("");
 	$.ajax({
-		type:"POST",
-		url:"${ctx}/material/findList?fdType="+fdType+"&pageNo="+pageNo,
+		type: "post",
+		 url: "${ctx}/ajax/material/findList",
+		data : {
+			"fdName" : fdName,
+			"fdType" : fdType,
+			"pageNo" : pageNo,
+		},
 		cache: false, 
 		dataType: "html",
 		success:function(data){		

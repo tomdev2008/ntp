@@ -51,7 +51,7 @@ public class MaterialService extends BaseService {
 		finder.append(" ) or info.FDAUTHOR='"+ShiroUtils.getUser().getId()+"') ");
 		finder.setParam("fdType", fdType);
 		if(StringUtil.isNotBlank(fdName)&&StringUtil.isNotEmpty(fdName)){
-			finder.append(" and info.FDNAME like : fdName");
+			finder.append(" and info.FDNAME like :fdName");
 			finder.setParam("fdName", '%' + fdName + '%');
 		}
 		Pagination page = getPageBySql(finder, pageNo, pageSize);

@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView; 
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.service.material.MaterialService;
 
@@ -22,8 +22,9 @@ public class MaterialAjaxController {
 	@Autowired
 	private MaterialService materialService;
 	
-	@RequestMapping(value = "findList", method = RequestMethod.GET)
-	public String findList(Model model , HttpServletRequest request) {
+	@RequestMapping(value = "findList")
+	@ResponseBody
+	public ModelAndView findList(Model model , HttpServletRequest request) {
 		String fdType = request.getParameter("fdType");
 		String pageNoStr = request.getParameter("pageNo");
 		String pageSizeStr = request.getParameter("pageSize");
@@ -40,7 +41,7 @@ public class MaterialAjaxController {
 			Pagination page = materialService.findMaterialList(fdType, pageNo, pageSize,fdName);
 			request.setAttribute("page", page);
 		}
-		return "/base/material/divMatList";
+		return new ModelAndView("forward:/WEB-INF/views/base/material/divMatList.jsp");
 	}
 
 }
