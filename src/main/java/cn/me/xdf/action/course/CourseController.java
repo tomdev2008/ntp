@@ -2,6 +2,8 @@ package cn.me.xdf.action.course;
 
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.organization.SysOrgElement;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.utils.ShiroUtils;
 
@@ -51,5 +54,9 @@ public class CourseController {
 		model.addAttribute("page", page);
 		return "/course/coures_list.jsp";
 	}
-		
+	
+	@RequestMapping(value = "add")
+	public String addCourse() {
+		return "/course/course_add";
+	}
 }

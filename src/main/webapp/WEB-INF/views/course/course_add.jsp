@@ -1,4 +1,7 @@
-<%@page pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
 <!--[if lt IE 7]>      <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="lt-ie9 lt-ie8"> <![endif]-->
@@ -167,11 +170,11 @@
                     <input type="hidden" id="courseType" name="courseType" value="{{=it.courseType || ''}}" />
                     <ul class="nav nav-pills courseType">
 						{{~ it.courseTypeList :type:index}}
-							 <li{{?type.id == it.courseType}} class="active"{{?}}><a href="#">{{=type.title}}</a><input type='hidden' value='{{=type.id}}'></li>
+							 <li{{?type == it.courseType}} class="active"{{?}}><a href="#">{{=type}}</a></li>
 						{{~}}                    	                  
                     </ul>  
 	       </div>
-           <button class="btn btn-block btn-submit btn-inverse" type="button" onClick="saveBaseInfo()">保存</button>
+           <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
        </form>
        </div>	  
 	 </div> 
@@ -226,7 +229,7 @@
 					{{#def.formAddItem:"课程要求"}}
                     
 	       </div>
-           <button class="btn btn-block btn-submit btn-inverse" type="button" onClick="saveDetailInfo()">保存</button>
+           <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
        </form>	  
 	 </div> 
 	 {{##def.formAddItem:param:
@@ -461,7 +464,7 @@
 </head>
 
 <body>
-<header class="navbar navbar-inverse navbar-fixed-top">
+<!-- <header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
     	<div class="container">
 			<a href="#" class="logo"></a>
@@ -490,13 +493,12 @@
             </ul>
 		</div>
     </div>
-</header>
+</header> -->
 
 <section class="container">
 	<div class="clearfix">
 		<div class="tit-bar">    	
 	        <div class="page-title section" id="page-title">
-	        	<input type='hidden' id='courseId' value='' />
 	        	<h5>集团英联邦项目雅思强化口语备课课程</h5>
 	            <div class="btn-group">
 		            <button class="btn btn-primary btn-large" disabled type="button">预览</button>
@@ -534,7 +536,7 @@
 	</div>
 
 <!--底部 S-->
-	<footer>
+<%-- 	<footer>
 		<div class="navbar clearfix">
 			<div class="nav">
 				<li><a href="http://www.xdf.cn/" target="_blank">新东方网</a></li>
@@ -545,7 +547,7 @@
 			</div>
             <p style="font-size:13px">&copy; 2013 新东方教育科技集团&nbsp;知识管理中心</p>
 		</div>
-	</footer>
+	</footer> --%>
 <!--底部 E-->
 </section>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
@@ -572,32 +574,16 @@
 	  				rightCont.loadBasicInfoPage("基本信息");
 	  				break;
 	  			case "detailInfo":
-	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
-	  					rightCont.loadDetailInfoPage("详细信息");
-	  				}else{
-	  					rightCont.loadBasicInfoPage("基本信息");
-	  				}
+	  				rightCont.loadDetailInfoPage("详细信息");
 	  				break;
 	  			case "promotion":
-	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
-	  					rightCont.loadPromotionPage("课程推广");
-	  				}else{
-	  					rightCont.loadBasicInfoPage("基本信息");
-	  				}
+	  				rightCont.loadPromotionPage("课程推广");
 	  				break;
 	  			case "accessRight":
-	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
-	  					rightCont.loadAccessRightPage("权限设置");
-	  				}else{
-	  					rightCont.loadBasicInfoPage("基本信息");
-	  				}
+	  				rightCont.loadAccessRightPage("权限设置");
 	  				break;
 	  			case "kinguser":
-	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
-	  					rightCont.loadKinguserPage("授权管理");
-	  				}else{
-	  					rightCont.loadBasicInfoPage("基本信息");
-	  				}
+	  				rightCont.loadKinguserPage("授权管理");
 	  				break;
 				case "deleteCourse":
 	  				rightCont.loadDeleteCoursePage("删除课程","{fdid}");
@@ -617,38 +603,6 @@
 	}
 	urlRouter();
 
-	//ajax保存课程基本信息
-	function saveBaseInfo(){
-		$.post('${ctx}/course/ajax/saveBaseInfo',{
-			 courseId : $("#courseId").val(),
-			 courseTitle: $("#courseTitle").val(),
-			 subTitle:  $("#subTitle").val(),
-			 keyword: $("#keyword").val(),
-			 courseType: $("#courseType").val(),
-			},
-			function(data){
-				$("#courseId").val(data.courseid);
-			},"json")
-		.success(function(){
-			//提交成功跳转到详细信息
-       	    urlRouter("detailInfo");
-		});
-	}
-	
-	//ajax保存课程详细信息
-	function saveDetailInfo(){
-		$.post('${ctx}/course/ajax/saveDetailInfo',{
-			 courseId : $("#courseId").val(),
-			 courseAbstract: $("#courseAbstract").val(),
-			 learnObjectives:  $("#learnObjectives").val(),
-			 suggestedGroup: $("#suggestedGroup").val(),
-			 courseRequirements: $("#courseRequirements").val(),
-			})
-		.success(function(){
-			//提交成功跳转到详细信息
-       	    urlRouter("promotion");
-		});
-	}
 </script>
 </body>
 </html>
