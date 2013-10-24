@@ -27,7 +27,7 @@ public class SeriesController {
 	/*
 	 * 保存系列
 	 */
-	@RequestMapping(value="/course/saveSeries")
+	@RequestMapping(value="saveSeries")
 	public String  saveSeries(HttpServletRequest request){
 		String parentId=request.getParameter("parentId");
 		String fdName=request.getParameter("fdName");
@@ -44,7 +44,8 @@ public class SeriesController {
 			
 			seriesInfoService.save(seriesInfo);
 		}else{
-			//不为空 则是阶段
+			//不为空 则是阶段 ????这块有问题,如果系列和阶段是在同一操作页面,如何构建级联关系,若直接添加阶段?
+			
 			SeriesInfo supSeries=seriesInfoService.findSeriesById(parentId);
 			seriesInfo.setFdName(fdName);
 			seriesInfo.setFdDescription(fdDescription);
@@ -61,22 +62,15 @@ public class SeriesController {
 	/*
 	 * 修改系列或阶段信息
 	 */
-	@RequestMapping(value="/course/updateSeries")
+	@RequestMapping(value="updateSeries")
 	public String updateSeries(HttpServletRequest request){
 		String seriesId=request.getParameter("seriesId");
 		SeriesInfo seriesInfo=seriesInfoService.findSeriesById(seriesId);
 		String fdName=request.getParameter("fdName");
 		String fdDescription=request.getParameter("fdDescription");
-		String fileName=request.getParameter("fileName");
 		seriesInfo.setFdName(fdName);
 		seriesInfo.setFdDescription(fdDescription);
 		//修改封面附件信息 先删除原始附件 然后更新为最新上传附件
-		AttMain attMain=seriesInfo.getAttMain();
-		if(!attMain.getFdFileName().equals(fileName)){
-			//判断新上传附件与元附件的,若相同则删除,重新上传
-			attMainService.deleteEntity(attMain);
-		}
-		//
 		seriesInfoService.update(seriesInfo);
 		return "";
 	}
