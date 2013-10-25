@@ -714,7 +714,6 @@
 					arr.push($(this).children("span").text());
 				})
 				$("#keyword").val(arr);
-				alert($("#keyword").val());
 			}
 			//选择课程类型事件
 			$("#formBasicInfo .courseType>li>a").bind("click",function(e){
