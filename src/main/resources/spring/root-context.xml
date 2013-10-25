@@ -41,6 +41,8 @@
 
             -->
 
+    <bean id="applicationContextHelper" class="cn.me.xdf.common.spring.ApplicationContextHelper"></bean>
+
 
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

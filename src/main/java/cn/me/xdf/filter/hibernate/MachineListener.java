@@ -1,20 +1,8 @@
 package cn.me.xdf.filter.hibernate;
 
-import cn.me.xdf.annotaion.AttMainMachine;
-import cn.me.xdf.annotaion.AttValues;
-import cn.me.xdf.common.utils.MyBeanUtils;
-import cn.me.xdf.model.base.AttMain;
-import cn.me.xdf.model.base.IAttMain;
-import cn.me.xdf.service.base.AttMainService;
-import org.apache.commons.lang3.ObjectUtils;
-import org.hibernate.HibernateException;
-import org.hibernate.event.internal.DefaultLoadEventListener;
+
 import org.hibernate.event.spi.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,12 +10,12 @@ import java.util.Map;
  * Date: 13-10-22
  * Time: 下午4:12
  * To change this template use File | Settings | File Templates.
+ * 事件监听机制
+ * 当一个资源标识通过后，通知资源对应的节、节接受到数据后通知章、章接受到数据后通知课程。
  */
 public class MachineListener
         implements PostUpdateEventListener, PostInsertEventListener, PostDeleteEventListener {
 
-    @Autowired
-    private AttMainService attMainService;
 
     @Override
     public void onPostUpdate(PostUpdateEvent event) {

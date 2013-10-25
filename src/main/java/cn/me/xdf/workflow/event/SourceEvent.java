@@ -1,6 +1,7 @@
 package cn.me.xdf.workflow.event;
 
 import org.springframework.context.ApplicationEvent;
+import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
