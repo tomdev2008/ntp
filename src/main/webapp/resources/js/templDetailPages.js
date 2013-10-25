@@ -258,7 +258,14 @@
 				$("#rightCont").html(kinguserFn(data));	
 					
 			});*/
-			data = {//ajax 成功后删除		
+			$.ajax({
+				  url: $("#ctx").val()+"/ajax/course/getAuthInfoByCourseId?courseId="+$("#courseId").val(),
+				  async:false,
+				  success: function(rsult){
+					  data = $.parseJSON(rsult);
+				  }
+			});
+			/*data = {//ajax 成功后删除		
 				user: [
 					{
 						id: "fdid323",
@@ -294,7 +301,7 @@
 						editingCourse: false
 					}
 				]
-			}
+			}*/
 			data.pageTitle = title;	//ajax 成功后删除
 			$("#rightCont").html(kinguserFn(data));//ajax 成功后删除
 			

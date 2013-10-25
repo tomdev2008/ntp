@@ -506,7 +506,7 @@
 		            <button class="btn btn-primary btn-large" disabled type="button">发布</button>
 	            </div>
 	        </div>
-	        <img src="images/admin-leftImg.png" width="187" height="60">
+	        <img src="${ctx}/resources/images/admin-leftImg.png" width="187" height="60">
 	    </div>
 	  <div class="col-left pull-left">
 	<ul class="nav nav-list sidenav" id="sideNav">

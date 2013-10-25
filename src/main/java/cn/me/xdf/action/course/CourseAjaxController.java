@@ -314,4 +314,19 @@ public class CourseAjaxController {
 		}
 		courseService.update(courseInfo);
 	}
+	
+	/**
+	 * 得到指定课程的权限信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getAuthInfoByCourseId")
+	@ResponseBody
+	public String getAuthInfoByCourseId(HttpServletRequest request){
+		//获取课程ID
+		String courseId = request.getParameter("courseId");
+		List<Map> list = courseService.findAuthInfoByCourseId(courseId);
+		return JsonUtils.writeObjectToJson(list);
+	}
 }
