@@ -306,7 +306,7 @@ public class CourseAjaxController {
 		String isPublish = request.getParameter("isPublish");
 		String fdPassword = request.getParameter("fdPassword");
 		CourseInfo courseInfo = courseService.findUniqueByProperty("fdId", courseId);
-		if(isPublish.equals("true")){
+		if(isPublish.equals("open")){
 			courseInfo.setIsPublish(true);
 		}else{
 			courseInfo.setIsPublish(false);
