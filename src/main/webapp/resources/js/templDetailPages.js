@@ -227,24 +227,7 @@
             var itemHtml,
                 $listMedia = $("#listMedia"),
                 addFlag = false,
-                mediaData = [
-                {
-                    id: "fdid8348934020202002",
-                    name: "雅思听力"
-                },
-                {
-                    id: "fdid834893ewfge",
-                    name: "雅思听力练习"
-                },
-                {
-                    id: "fdid3ewfge4343",
-                    name: "雅思听力技巧"
-                },
-                {
-                    id: "fdid3lliuu23",
-                    name: "雅思听力视频"
-                }
-            ];
+                mediaData ;
             /*$("#addMedia").autocomplete("url.jsp",{
                  dataType: "json",
                  parse: function(data) {
@@ -256,10 +239,31 @@
                          }
                      });
                  },*/
-            $("#addMedia").autocomplete(mediaData,{
+            $("#addMedia").autocomplete($("#ctx").val()+"/ajax/material/getMaterialBykey",{
                 formatItem: function(item) {
                     return item.name;
                 },
+                extraParams : {
+					key : function() {
+						return $('#addMedia').val();
+					},
+					type : function() {
+						return type;
+					}
+				},
+                parse : function(data) {
+					var rows = [];
+					for ( var i = 0; i < data.length; i++) {
+						rows[rows.length] = {
+							data : data[i],
+							value : data[i].name,
+							result : data[i].name
+						//显示在输入文本框里的内容 ,
+						};
+					}
+					return rows;
+				},
+				dataType : 'json',
                 matchContains:true ,
                 max: 10,
                 scroll: false,

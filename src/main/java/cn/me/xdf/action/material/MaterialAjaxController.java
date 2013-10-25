@@ -1,5 +1,8 @@
 package cn.me.xdf.action.material;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
@@ -10,9 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView; 
+import org.springframework.web.servlet.ModelAndView;
+
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.service.material.MaterialService;
 
 @Controller
@@ -41,6 +46,14 @@ public class MaterialAjaxController {
 			model.addAttribute("page", page);
 		}
 		return new ModelAndView("forward:/WEB-INF/views/base/material/divMatList.jsp");
+	}
+	
+	@RequestMapping(value = "getMaterialBykey")
+	@ResponseBody
+	public List<Map> getMaterialBykey(HttpServletRequest request){
+		String key = request.getParameter("key");
+		String type = request.getParameter("type");
+		return materialService.getMaterialsTop10Bykey(key, type);
 	}
 
 }

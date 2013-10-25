@@ -696,7 +696,8 @@
 			})
 		.success(function(){
 			//提交成功跳转到详细信息
-       	    urlRouter("promotion");
+       	    urlRouter("kinguser");
+			
 		});
 	}
 </script>

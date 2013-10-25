@@ -1,7 +1,10 @@
 package cn.me.xdf.service.material;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jodd.util.StringUtil;
 
@@ -127,6 +130,29 @@ public class MaterialService extends BaseService {
 		for (MaterialAuth materialAuth : materialAuths) {
 			materialAuthService.save(materialAuth);
 		}
+	}
+	
+	/**
+	 * 模糊查询资源
+	 */
+	public List<Map> getMaterialsTop10Bykey(String key,String type){
+		Finder finder = Finder
+				.create(" from MaterialInfo  info ");
+		finder.append("where info.fdType = :type and info.fdName like :key");
+		finder.setParam("type", type);
+		finder.setParam("key", "%"+key+"%");
+		List<MaterialInfo> list =(List<MaterialInfo>)(getPage(finder, 1,10).getList());
+		if(list==null){
+			return null;
+		}
+		List<Map> maps = new ArrayList<Map>();
+		for (MaterialInfo materialInfo : list) {
+			Map map = new HashMap();
+			map.put("id", materialInfo.getFdId());
+			map.put("name", materialInfo.getFdName());
+			maps.add(map);
+		}
+		return maps;
 	}
 
 }
