@@ -301,7 +301,7 @@
 						</div>
 					</div>					
 	       </div>		 
-           <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
+           <button class="btn btn-block btn-submit btn-inverse" type="button" onClick="saveIsPublish()">保存</button>
        </form>	  
 	 </div> 	
 </script>
@@ -646,6 +646,19 @@
 			 learnObjectives:  $("#learnObjectives").val(),
 			 suggestedGroup: $("#suggestedGroup").val(),
 			 courseRequirements: $("#courseRequirements").val(),
+			})
+		.success(function(){
+			//提交成功跳转到详细信息
+       	    urlRouter("promotion");
+		});
+	}
+	
+	//ajax保存课程详细信息
+	function saveIsPublish(){
+		$.post('${ctx}/ajax/course/updateIsPublish',{
+			courseId : $("#courseId").val(),
+			isPublish: $("#permission").val(),
+			fdPassword:  $("#coursePwd").val(),
 			})
 		.success(function(){
 			//提交成功跳转到详细信息

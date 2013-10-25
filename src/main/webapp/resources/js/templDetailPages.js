@@ -315,9 +315,9 @@
 			});
 			var allUserData ;
 			
-			$.getJSON("${ctx}/ajax/user/findByName?q="+$('#addUser').val(),function(rsult){
+			/*$.getJSON("${ctx}/ajax/user/findByName?q="+$('#addUser').val(),function(rsult){
 				allUserData = rsult;
-			});
+			});*/
 			/*allUserData = [
 				{
 					id: "fdid3232323",
@@ -355,7 +355,7 @@
 						}
 					});
 				},*/
-			$("#addUser").autocomplete(allUserData,{
+			$("#addUser").autocomplete($("#ctx").val()+"/ajax/user/findByName",{
 				formatMatch: function(item) { 
 					return item.name + item.mail + item.org + item.department; 
 				},
@@ -365,6 +365,15 @@
 						+ item.name + '（' + item.mail + '），' 
 						+ item.org + '  ' + item.department; 
 				},
+				extraParams : {
+					q : function() {
+						return $('#addUser').val();
+					},
+					deptId : function() {
+						return $('#schId').val();
+					}
+				},
+				dataType : 'json',
 				matchContains:true ,
 				max: 10,
 				scroll: false,
@@ -405,18 +414,20 @@
 		//加载访问权限 	
 		rightCont.loadAccessRightPage = function (title){
 			/*============================================ ajax 加载JSON数据 ================================================*/
-			/*$.getJSON("url?load",function(rsult){
-				data = rsult;
-				data.pageTitle = title;
-				$("#rightCont").html(accessRightFn(data));	
-					
-			});*/
-			data = {//ajax 成功后删除
+			$.ajax({
+				  url: $('#ctx').val()+"/ajax/course/getIsPublishInfo?courseId="+$('#courseId').val(),
+				  async:false,
+				  dataType:'json',
+				  success: function(rsult){
+					  data = rsult;
+				  },
+			});
+			/*data = {//ajax 成功后删除
 				action: "",//form表单action			
-				permission: "",
-				encryptType: "",
-				coursePwd: ""
-			}
+				permission: "encrypt",
+				encryptType: "passwordProtect",
+				coursePwd: "123123123"
+			}*/
 			data.pageTitle = title;	//ajax 成功后删除
 			$("#rightCont").html(accessRightFn(data));//ajax 成功后删除	
 			
@@ -444,7 +455,7 @@
 					$("#coursePwd").attr("disabled",true);
 				}						
 			});	
-			$('#formAccessRight a[data-toggle="tab"]').on('shown', function (e) {
+			$('#formAccessRight a[data-toggle="tab"]').bind('click', function (e) {
 				var href = 	e.target.href.split("#").pop();		
 				$("#permission").val(href);
 				$("#encrypt").find("input").not($("#passwordProtect").is(":checked") ? null : $("#coursePwd")).attr("disabled", href != "encrypt");								
