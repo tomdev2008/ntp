@@ -329,4 +329,24 @@ public class CourseAjaxController {
 		List<Map> list = courseService.findAuthInfoByCourseId(courseId);
 		return JsonUtils.writeObjectToJson(list);
 	}
+	
+	/**
+	 * 得到指定课程的是否公开信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getIsPublishInfo")
+	@ResponseBody
+	public String getIsPublishInfo(HttpServletRequest request){
+		String courseId = request.getParameter("courseId");
+		CourseInfo courseInfo = courseService.get(courseId);
+		Map map = new HashMap();
+		map.put("action", "");
+		map.put("permission", courseInfo.getIsPublish()==true?"open":"encrypt");
+		map.put("encryptType", courseInfo.getFdPassword().equals("")?"authorized":"passwordProtect");
+		map.put("coursePwd", courseInfo.getFdPassword());
+		return JsonUtils.writeObjectToJson(map);
+	}
+	
 }

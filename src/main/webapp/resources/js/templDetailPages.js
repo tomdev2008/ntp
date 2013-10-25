@@ -415,7 +415,7 @@
 		rightCont.loadAccessRightPage = function (title){
 			/*============================================ ajax 加载JSON数据 ================================================*/
 			$.ajax({
-				  url: "",
+				  url: $('#ctx').val()+"/ajax/course/getIsPublishInfo?courseId="+$('#courseId').val(),
 				  async:false,
 				  dataType:'json',
 				  success: function(rsult){
