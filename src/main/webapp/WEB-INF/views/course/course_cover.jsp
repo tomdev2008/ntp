@@ -16,13 +16,15 @@
 <body>
 <form class="form-horizontal" id="inputForm" method="post" action="${ctx}/course/cover" name="form">
 <input name="courseId" id="courseId" type="hidden" value="141e8cfa2710a52f4f19ee243dcba0a9"><!--courseId--对应的课程id-->
+    <img id="imgshow" style="width: 200px;height:300px;" src="${ctx}/resources/images/zht-main-img.jpg"></img>
+    <br/>         
              名称：   <input type="text" id="fdName" name="fdName"/>
     <br/>
 
           备注：    <input type="text" name="fdContext">
     <br/>
 <tags:simpleupload filename="fdName"
-                       filevalue="" id="upMovie" exts="*.jpg;" attIdName="attId" attIdID="attIdID">
+                       filevalue="" id="upMovie" exts="*.jpg;" imgshow="imgshow" attIdName="attId" attIdID="attIdID">
     </tags:simpleupload>
      <br/>
     <input type="submit" value="确定"/>
