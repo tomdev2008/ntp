@@ -421,6 +421,18 @@
 						+ item.name + '（' + item.mail + '），' 
 						+ item.org + '  ' + item.department; 
 				},
+				parse : function(data) {
+					var rows = [];
+					for ( var i = 0; i < data.length; i++) {
+						rows[rows.length] = {
+							data : data[i],
+							value : data[i].name,
+							result : data[i].name
+						//显示在输入文本框里的内容 ,
+						};
+					}
+					return rows;
+				},
 				extraParams : {
 					q : function() {
 						return $('#addUser').val();
