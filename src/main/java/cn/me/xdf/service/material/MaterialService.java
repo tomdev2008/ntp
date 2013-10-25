@@ -1,5 +1,6 @@
 package cn.me.xdf.service.material;
 
+import java.util.Date;
 import java.util.List;
 
 import jodd.util.StringUtil;
@@ -12,6 +13,7 @@ import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.BaseService;
 import cn.me.xdf.utils.ShiroUtils;
 /**
@@ -44,8 +46,10 @@ public class MaterialService extends BaseService {
 	 * @return
 	 */
 	public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName,String order){
-		Finder finder = Finder.create("select info.* from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
-		finder.append("on info.FDID=auth.FDMATERIALID  where info.FDTYPE=:fdType and info.isAvailable=1 ");
+		Finder finder = Finder.create("select info.*,score.fdscore as materialScore from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
+		finder.append("on info.FDID=auth.FDMATERIALID ");
+		finder.append(" left join IXDF_NTP_SCORE score on info.FDID = score.fdModelId and info.fdname=score.fdmodelname");
+		finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1 ");
 		finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' ");
 		finder.append(" ) or info.FDAUTHOR='"+ShiroUtils.getUser().getId()+"') ");
 		finder.setParam("fdType", fdType);
@@ -61,12 +65,44 @@ public class MaterialService extends BaseService {
 				finder.append(" order by info.FDCREATETIME ");
 			}
 			if(order.equalsIgnoreCase("FDSCORE")){
-				finder.append(" order by info.FDSCORE ");
+				finder.append(" order by score.FDSCORE ");
 			}
 			
 		}
 		Pagination page = getPageBySql(finder, pageNo, pageSize);
 		return page;
+	}
+	/**
+	 * 保存素材
+	 * @param info
+	 */
+	@Transactional(readOnly = false)
+	public void saveMaterial(MaterialInfo info){
+		SysOrgPerson creator = new SysOrgPerson();
+		creator.setFdId(ShiroUtils.getUser().getId());
+		info.setCreator(creator);
+		info.setFdCreateTime(new Date());
+		info.setIsAvailable(true);
+		super.save(info);
+	}
+	/**
+	 * 编辑素材
+	 * @param material
+	 * @param fdId
+	 */
+	@Transactional(readOnly = false)
+	public void updateMaterial(MaterialInfo material,String fdId){
+		MaterialInfo info = this.get(fdId);
+		info.setFdAuthorDescription(material.getFdAuthorDescription());
+        info.setFdAuthor(material.getFdAuthor());
+        info.setFdDescription(material.getFdDescription());
+        info.setIsPublish(material.getIsPublish());
+        info.setFdLink(material.getFdLink());
+        info.setFdName(material.getFdName());
+		info.setAttMains(material.getAttMains());
+		info.setAuthList(material.getAuthList());
+		info.setQuestions(material.getQuestions());
+		this.update(info);
 	}
 	
 	/**

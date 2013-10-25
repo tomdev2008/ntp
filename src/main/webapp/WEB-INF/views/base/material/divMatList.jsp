@@ -115,15 +115,27 @@
 				<input type="checkbox" /> 
 				    <span class="title">${bean.FDNAME}</span> 
 				    <span class="rating-view">
+				    <c:if test="${materialScore!=null}">
 					  <span class="rating-all">
-					  <c:forEach var="i" begin="1" end="${bean.FDSCORE}">
+					  <c:forEach var="i" begin="1" end="${materialScore}">
 					   <i class="icon-star active"></i>
 					  </c:forEach>
-					  <c:forEach var="i" begin="1" end="${5-bean.FDSCORE}">
+					  <c:forEach var="i" begin="1" end="${5-materialScore}">
 					   <i class="icon-star"></i>
 					  </c:forEach>
 					  </span> 
-					  <b class="text-warning">${bean.FDSCORE}</b>
+					  <b class="text-warning">${materialScore}</b>
+					  </c:if>
+					  
+					  <c:if test="${materialScore==null}">
+					  <span class="rating-all">
+					  <c:forEach var="i" begin="1" end="5">
+					   <i class="icon-star"></i>
+					  </c:forEach>
+					  </span> 
+					  <b class="text-warning">0</b>
+					  </c:if>
+					  
 					</span> <span class="date"><i class="icon-time"></i>${bean.FDCREATETIME}</span>
 						<span class="btns">
 							<button type="button" class="btn btn-link">
