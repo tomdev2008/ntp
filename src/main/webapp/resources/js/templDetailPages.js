@@ -629,7 +629,6 @@
 						$("#rightCont").html(basicInfoFn(data));
 				  },
 			});
-			
 			/*
 			data = {//ajax 成功后删除
 				action: "#",//模板详情_基本信息 的form表单action			
@@ -660,10 +659,14 @@
 						if($(this).hasClass("btn-primary")){
 							if($(this).prevAll(":text").val()){
 								var tit = $(this).prevAll(":text").val();
-								$addBtn.before(tagKeywordFn({keyword: tit})).prev().bind("closed",delKeyword);
 								var _val = $("#keyword").val();
-								$("#keyword").val(_val + "," + tit);
-								$(this).parent().remove();
+								if(_val.indexOf(tit)<0){
+									$addBtn.before(tagKeywordFn({keyword: tit})).prev().bind("click",delKeyword);
+									$("#keyword").val(_val + "," + tit);
+									$(this).parent().remove();
+								}else{
+									$(this).parent().addClass("warning");
+								}								
 							} else {
 								$(this).parent().addClass("warning");
 							}					
@@ -704,13 +707,14 @@
 				});
 			});
 			//删除关键词事件
-			$("#formBasicInfo .keywordWrap>.alert-tag").bind("closed",delKeyword);
+			$("#formBasicInfo .keywordWrap>.alert-tag").bind("click",delKeyword);
 			function delKeyword(){
 				var arr = [];
 				$(this).siblings(".alert-tag").each(function(){
 					arr.push($(this).children("span").text());
 				})
 				$("#keyword").val(arr);
+				alert($("#keyword").val());
 			}
 			//选择课程类型事件
 			$("#formBasicInfo .courseType>li>a").bind("click",function(e){
@@ -887,6 +891,11 @@
 			//绑定取消章节标题编辑按钮事件
 			.delegate(".form-edit-title .btn-link","click",function(e){
 				e.preventDefault();
+				var $form = $(this).closest(".form-edit-title");
+				var $li = $form.parent("li");
+				if(!$li.attr("data-fdid")){
+					$li.remove();
+				}
 				$(this).closest(".form-edit-title").prev(".sortable-bar").removeClass("hide").end().remove();		
 			})	
 			//绑定输入框不为空时，去掉警告样式
