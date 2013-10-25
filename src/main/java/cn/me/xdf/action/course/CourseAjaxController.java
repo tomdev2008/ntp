@@ -271,25 +271,11 @@ public class CourseAjaxController {
 	 */
 	@RequestMapping(value = "findTagInfosByKey")
 	@ResponseBody
-	public String findTagInfosByKey(HttpServletRequest request) {
+	public List<TagInfo> findTagInfosByKey(HttpServletRequest request) {
 		//key
 		String key = request.getParameter("key");
 		List<TagInfo> tagInfos = tagInfoService.findTagInfosByKey(key);
-		//将所有课程标签信息转换成json返回到页面
-		List<Map> list = new ArrayList<Map>();
-		Map map = new HashMap();
-		if(tagInfos!=null && tagInfos.size()>0){
-			List<Map> cateList = new ArrayList<Map>();
-			for(TagInfo tagInfo:tagInfos){
-				Map catemap = new HashMap();
-				catemap.put("fdName", tagInfo.getFdName());
-				catemap.put("fdDescription", tagInfo.getFdDescription());
-				cateList.add(catemap);
-			}
-			map.put("tagInfoList", JsonUtils.writeObjectToJson(cateList));		
-		}
-		list.add(map);
-		return JsonUtils.writeObjectToJson(list);
+		return tagInfos;
 	}
 	
 	/**

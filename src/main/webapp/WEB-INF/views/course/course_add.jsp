@@ -185,7 +185,7 @@
 <!-- 模板详情_基本信息 添加关键词 模板 -->
 <script id="addKeywordInfoTemplate" type="text/x-dot-template">
 		<div class="inpKeyword form-inline control-group">
-			<input type="text" class="span5" placeholder="请输入关键词" />
+			<input type="text" class="span5" id="addKey" placeholder="请输入关键词" />
 			<button class="btn btn-large btn-primary" type="button">确定</button>
 			<button class="btn btn-large" type="button">取消</button>
 		  </div>

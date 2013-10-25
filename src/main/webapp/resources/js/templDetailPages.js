@@ -629,6 +629,7 @@
 						$("#rightCont").html(basicInfoFn(data));
 				  },
 			});
+			
 			/*
 			data = {//ajax 成功后删除
 				action: "#",//模板详情_基本信息 的form表单action			
@@ -670,7 +671,37 @@
 							$(this).parent().remove();	
 						}							
 					});
-				}			
+				}
+				$("#addKey").autocomplete($("#ctx").val()+"/ajax/course/findTagInfosByKey",{
+					formatMatch: function(item) { 
+						return item.fdName + item.fdDescription; 
+					},
+					formatItem: function(item) { 
+						return item.fdName; 
+					},
+					extraParams : {
+						key : function() {
+							return $('#addKey').val();
+						},
+					},
+					parse : function(data) {
+						var rows = [];
+						for ( var i = 0; i < data.length; i++) {
+							rows[rows.length] = {
+								data : data[i],
+								value :  data[i].fdName,
+								result :  data[i].fdName
+							//显示在输入文本框里的内容 ,
+							};
+						}
+						return rows;
+					},
+					dataType : 'json',
+					matchContains:true ,
+					max: 10,
+					scroll: false,
+					width:336
+				});
 			});
 			//删除关键词事件
 			$("#formBasicInfo .keywordWrap>.alert-tag").bind("closed",delKeyword);

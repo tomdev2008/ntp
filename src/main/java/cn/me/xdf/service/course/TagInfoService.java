@@ -29,7 +29,7 @@ public class TagInfoService extends BaseService {
 				.create("from TagInfo tagInfo ");
 		finder.append("where tagInfo.fdName like :key");
 		finder.setParam("key", '%' + key + '%');
-		return find(finder);
+		return (List<TagInfo>) getPage(finder, 1,10).getList();
 	}
 
 	/**
