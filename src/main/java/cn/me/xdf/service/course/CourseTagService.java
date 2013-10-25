@@ -29,6 +29,7 @@ public class CourseTagService extends BaseService{
 
 	/**
 	 * 根据课程查找课程已设置的标签
+	 * @param courseId 课程ID
 	 * @return List 标签列表
 	 */
 	@Transactional(readOnly = true)
@@ -42,7 +43,7 @@ public class CourseTagService extends BaseService{
 	
 	/**
 	 * 保存课程与标签的关系
-	 * @return List 标签列表
+	 * @param courseTag 课程标签
 	 */
 	@Transactional(readOnly = false)
 	public void save(CourseTag courseTag) {

@@ -137,7 +137,9 @@
 				<a class="btn-type{{?param.type != 'none' && param.type != 'img'}} disabled{{?}}" href="#img"><i class="icon-img-lg"></i><h5>图片</h5></a>
 				<a class="btn-type{{?param.type != 'none' && param.type != 'exam'}} disabled{{?}}" href="#exam"><i class="icon-exam-lg"></i><h5>测试</h5></a>
 				<a class="btn-type{{?param.type != 'none' && param.type != 'task'}} disabled{{?}}" href="#task"><i class="icon-task-lg"></i><h5>作业</h5></a>
+				<!-- 
 				<a class="btn-type{{?param.type != 'none' && param.type != 'calendar'}} disabled{{?}}" href="#calendar"><i class="icon-calendar-lg"></i><h5>日程安排</h5></a>
+				-->
 			</div>
 		</div>
 	#}}
@@ -387,7 +389,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="learnTime">学习时长</label>
-                    <div class="controls"><input value="{{=it.learnTime || ''}}" required placeholder="请认真填写该章节的 建议学习时长" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
+                    <div class="controls"><input value="{{=it.learnTime || ''}}" required placeholder="请认真填写该章节的建议学习时长" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="sectionsIntro">章节说明</label>
@@ -412,7 +414,8 @@
                     {{~}}
                 </ul>
             </div>
-		   <div class="section" >
+			{{?it.type != 'exam' && it.type != 'task'}}
+		    <div class="section" >
 					<label>{{=it.uploadIntro || ''}}</label>
 					<div class="control-upload">
 						<span class="progress">
@@ -421,7 +424,8 @@
 						<span class="txt"><span>20%</span>，剩余时间：<span>00:00:29</span></span>
 						<button class="btn btn-primary btn-large" type="button" >上传</button>
 					</div>
-	       </div>
+	        </div>
+			{{?}}
             <div class="section" >
                 <label>或者从 <a href="#">课程素材库</a> 中选择{{=it.typeTxt}}</label>
                 <div class="autoCompleteWrap">
@@ -607,7 +611,37 @@
 	  				break;
                 case "video":
                     if(opt) {
-                        rightCont.loadVideoPage(opt);
+                        rightCont.loadVideoPage(opt,"01");
+                        break;
+                    }
+                case "audio":
+                    if(opt) {
+                        rightCont.loadVideoPage(opt,"02");
+                        break;
+                    }
+                case "doc":
+                    if(opt) {
+                        rightCont.loadVideoPage(opt,"04");
+                        break;
+                    }
+                case "ppt":
+                    if(opt) {
+                        rightCont.loadVideoPage(opt,"05");
+                        break;
+                    }
+                case "img":
+                    if(opt) {
+                        rightCont.loadVideoPage(opt,"03");
+                        break;
+                    }
+                case "exam":
+                    if(opt) {
+                        rightCont.loadVideoPage(opt,"08");
+                        break;
+                    }
+                case "task":
+                    if(opt) {
+                        rightCont.loadVideoPage(opt,"10");
                         break;
                     }
 	  			case "sectionsDirectory":
@@ -652,7 +686,7 @@
        	    urlRouter("promotion");
 		});
 	}
-	
+		
 	//ajax保存课程详细信息
 	function saveIsPublish(){
 		$.post('${ctx}/ajax/course/updateIsPublish',{

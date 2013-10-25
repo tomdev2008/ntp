@@ -59,7 +59,7 @@
 		var loadsectionsDirectoryFn = doT.template(document.getElementById("sectionDirectoryTemplate").text + document.getElementById("sectionBarTemplate").text + document.getElementById("lectureContentTemplate").text, undefined, def);
 
         //加载视频页
-        rightCont.loadVideoPage = function (opt){
+        rightCont.loadVideoPage = function (opt,type){
             /*============================================ ajax 加载JSON数据 ================================================*/
             /*$.getJSON("url?load",{id:opt.id},function(rsult){
                  data = rsult;
@@ -69,6 +69,56 @@
                  data.uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
                  $("#rightCont").html(mediaPageFn(data));
              });*/
+        	$.ajax({
+				  url: $('#ctx').val()+"/ajax/courseContent/getMaterialsByCategoryId",
+				  async:false,
+				  data:{catalogId:opt.id},
+				  dataType:'json',
+				  success: function(rsult){
+					  data = rsult;
+		              data.pageTitle = opt.title;
+		              data.lectureIndex = numParseCN(opt.index);
+		              switch(type){
+		              	case "01":
+		              		data.type = "video";
+		              		data.typeTxt = "视频";
+		              		data.uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
+		              		break;
+		                case "02":
+		                	data.type = "audio";
+		                	data.typeTxt = "音频";
+				            data.uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的视频将会显示在下面的音频列表中。";
+				            break;
+		                case "04":
+		                	data.type = "doc";
+		                	data.typeTxt = "文档";
+				            data.uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的视频将会显示在下面的文档列表中。";
+				            break;
+		                case "05":
+		                	data.type = "ppt";
+		                	data.typeTxt = "幻灯片";
+				            data.uploadIntro = "上传幻灯片（建议小于10G）：成功上传的视频将会显示在下面的幻灯片列表中。";
+				            break;
+		                case "03":
+		                	data.type = "img";
+		                	data.typeTxt = "图片";
+				            data.uploadIntro = "上传视频（支持JPG、PNG、BMP格式的图片，建议小于10G）：成功上传的视频将会显示在下面的图片列表中。";
+				            break;
+		                case "08":
+		                	data.type = "exam";
+		                	data.typeTxt = "测试";
+				            data.uploadIntro = "";
+				            break;
+		                case "10":
+		                	data.type = "task";
+		                	data.typeTxt = "作业";
+				            data.uploadIntro = "";
+				            break;
+		              }
+		              $("#rightCont").html(mediaPageFn(data));
+				  },
+			});
+        	/*
             data = {
                 learnTime: "",
                 sectionsIntro: "",
@@ -110,7 +160,7 @@
             data.typeTxt = "视频";
             data.uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
             $("#rightCont").html(mediaPageFn(data));
-
+			*/
             $("#listMedia").sortable()
                 .bind("sortupdate",function(){//绑定拖放元素改变次序事件
                     $(this).children().each(function(i){
@@ -141,7 +191,10 @@
                         if(val){
                             $(this).closest(".form-edit-title").prev("li").show()
                                 .find(".title>.name").text(val);
-                        }
+                        }else {                          
+							$(this).closest(".form-edit-title").find(".control-group:first").addClass("warning").find(":text").after('<span class="help-block">请填写名称！</span>');;
+							return ;
+						}
                     } else{
                         $(this).closest(".form-edit-title").prev("li").show();
                     }
@@ -157,14 +210,17 @@
                             title: $(this).find(".title>.name").text()
                         });
                     });
-                    $.post("url?update",{
+                    $.post($('#ctx').val()+"/ajax/courseContent/saveCourseContent",{
+                    	catalogId:opt.id,
+                    	type:type,
                         pageTitle: $("#lectureName").val(),
                         learnTime:  $("#learnTime").val(),
                         sectionsIntro: $("#sectionsIntro").val(),
-                        mediaList:listArr
+                        mediaList:JSON.stringify(listArr)
                     })
                         .success(function(){
                             //提交成功
+                        	urlRouter("sectionsDirectory");
                         });
                 }
             });
