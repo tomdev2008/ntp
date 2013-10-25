@@ -74,17 +74,12 @@
 				"img" : img,
 			},
 			success : function(msg) {
-				alert("11111");
 				msg = msg.substr(1, msg.length - 2);
-				alert(msg);
 				if(msg=="redirect:/login"){
-					alert("3333");
 					window.location.href="${ctx}/";
 				}else if(msg=="redirect:/register/list"){
-					alert("4444");
 					window.location.href="${ctx}/register/list";
 				}else if(msg=="redirect:/register/listerr"){
-					alert("5555");
 					window.parent.$.fn.jalert2("注册失败！");
 					window.location.href="${ctx}/register/list";
 				}else{

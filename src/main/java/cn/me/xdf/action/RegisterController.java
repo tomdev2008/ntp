@@ -5,14 +5,18 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.model.base.NotifyEntity;
 import cn.me.xdf.model.organization.SysOrgElement;
+import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.SysOrgPersonTemp;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.RegisterService;
@@ -21,6 +25,7 @@ import cn.me.xdf.utils.ShiroUtils;
 
 @Controller
 @RequestMapping(value = "/register")
+@Scope("request")
 public class RegisterController {
 	
 
@@ -39,31 +44,174 @@ public class RegisterController {
 		model.addAttribute("elements", elements);
 		return "/base/register/add";
 	}
-
-	/*
-	 * 新教师保存
+	
+	/**
+	 * 更改用户基本信息)
+	 * @param sysOrgPersonTemp
+	 * @param request
+	 * @return
 	 */
-	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public String save(SysOrgPersonTemp sysOrgPersonTemp,
+	@RequestMapping(value = "updateOtherData", method = RequestMethod.POST)
+	public String updateOtherData(SysOrgPersonTemp sysOrgPersonTemp,
 			HttpServletRequest request) {
-		registerService.registerTemp(sysOrgPersonTemp);
+		SysOrgPersonTemp personTemp = registerService
+				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+						sysOrgPersonTemp.getFdIdentityCard());
+		if(personTemp != null){
+			registerService.updateOtherData(sysOrgPersonTemp,sysOrgPersonTemp.getPersonId());
+		}else {
+			registerService.updatePersonData(sysOrgPersonTemp,sysOrgPersonTemp.getPersonId());
+		}
+		
+		return "redirect:/register/updateTeacher";
+	}
+	/**
+	 * 返回修改图像
+	 * @return
+	 */
+	@RequestMapping(value = "updateIco")
+	public String updateIco(Model model){
+		String uid = ShiroUtils.getUser().getId();
+		SysOrgPerson person = accountService.load(uid);
+		SysOrgPersonTemp personTemp = registerService
+				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+						person.getFdIdentityCard());
+		if(personTemp !=null){
+			model.addAttribute("fdId",personTemp.getFdId());
+		}
+		model.addAttribute("fdIsEmp",person.getFdIsEmp());
+		model.addAttribute("fdIdentityCard",person.getFdIdentityCard());
+		model.addAttribute("fdIcoUrl",person.getPoto());
+		return "/base/newTeacher/editIco";
+	}
+	/**
+	 * 更新新教师图像
+	 * @param sysOrgPersonTemp
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "updateTeacher", method = RequestMethod.POST)
+	public String updateTeacher(SysOrgPersonTemp sysOrgPersonTemp,
+			HttpServletRequest request) {
+		String fdIcoUrl = request.getParameter("fdIcoUrl");
+		String uid = ShiroUtils.getUser().getId();
+		SysOrgPersonTemp personTemp = registerService
+				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+						sysOrgPersonTemp.getFdIdentityCard());
+		if(personTemp != null){
+		  registerService.updateTeacherPic(sysOrgPersonTemp, fdIcoUrl,uid);
+		} else {
+		  registerService.updatePerToDBIXDF(fdIcoUrl,uid);
+		}
 		if (ShiroUtils.getUser() == null) {
 			return "redirect:/login";
 		}
-		return "redirect:/register/list";
+		return "redirect:/register/updateTeacher";
 	}
-	/*
-	 * 管理员编辑新教师
+	/**
+	 * 点击修改密码时返回修改密码页面
+	 * @param model
+	 * @return
 	 */
-	@RequestMapping(value = "edit/{fdId}")
-	public String edit(Model model, @PathVariable("fdId") String fdId) {
-		SysOrgPersonTemp sysOrgPersonTemp = registerService.get(
-				SysOrgPersonTemp.class, fdId);
-
-		model.addAttribute("bean", sysOrgPersonTemp);
+	@RequestMapping(value = "changePwd")
+	public String changePwd(Model model){
+		if (ShiroUtils.getUser() == null) {
+			return "redirect:/login";
+		}
+		String uid = ShiroUtils.getUser().getId();
+		SysOrgPerson person = accountService.load(uid);
+		SysOrgPersonTemp personTemp = registerService
+				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+						person.getFdIdentityCard());
+		if(personTemp != null){
+		  model.addAttribute("fdId", personTemp.getFdId());
+		  model.addAttribute("fdEmail", personTemp.getFdEmail());
+		}
+		model.addAttribute("fdIcoUrl", person.getPoto());
+		model.addAttribute("fdIsEmp", personTemp.getFdIsEmp());
+		return "/base/newTeacher/changePwd";
+	}
+	/**
+	 * 修改密码的方法
+	 * @param sysOrgPersonTemp
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "updateTeacherPwd", method = RequestMethod.POST)
+	public String updateTeacherPwd(SysOrgPersonTemp sysOrgPersonTemp,HttpServletRequest request){
+		if (ShiroUtils.getUser() == null) {
+			return "redirect:/login";
+		}
+		String uid = ShiroUtils.getUser().getId();
+		String newPwd = sysOrgPersonTemp.getFdPassword();
+		String fdId = sysOrgPersonTemp.getFdId();
+		registerService.updateTeacherPwd(fdId, newPwd, uid);
+		return "redirect:/register/changePwd";
+	}
+	
+	/**
+	 * 新老师更改信息
+	 * @param model
+	 */
+	@RequestMapping(value = "updateTeacher")
+	public String updateTeacher(Model model) {
+		if (ShiroUtils.getUser() == null) {
+			return "redirect:/login";
+		}
+		String uid = ShiroUtils.getUser().getId();
+		SysOrgPerson person = accountService.load(uid);
+		if ("0".equals(person.getFdIsEmp())){
+			SysOrgPersonTemp sysOrgPersonTemp = registerService
+					.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+							person.getFdIdentityCard());
+			if (sysOrgPersonTemp == null) {
+		        sysOrgPersonTemp = new SysOrgPersonTemp();
+			    sysOrgPersonTemp.setDeptName(person.getDeptName());
+			    sysOrgPersonTemp.setDepatId(person.getDepatId());;
+			    sysOrgPersonTemp.setFdIcoUrl(person.getPoto());
+			    sysOrgPersonTemp.setFdSex(person.getFdSex());
+			    sysOrgPersonTemp.setFdIdentityCard(person.getFdIdentityCard());
+			    NotifyEntity notifyEntity = new NotifyEntity();
+			    notifyEntity.setFdMobileNo(person.getFdMobileNo()==null?"":person.getFdMobileNo());
+			    sysOrgPersonTemp.setNotifyEntity(notifyEntity);
+			    sysOrgPersonTemp.setPersonId(person.getFdId());
+				model.addAttribute("bean", sysOrgPersonTemp);
+			}else {
+			   sysOrgPersonTemp.setPersonId(person.getFdId());
+			   model.addAttribute("bean", sysOrgPersonTemp);
+			}
+		}else{
+			SysOrgPersonTemp sysOrgPersonTemp = new SysOrgPersonTemp();
+		    sysOrgPersonTemp.setDeptName(person.getDeptName());
+		    sysOrgPersonTemp.setDepatId(person.getDepatId());;
+		    sysOrgPersonTemp.setFdIcoUrl(person.getPoto());
+		    sysOrgPersonTemp.setFdSex(person.getFdSex());
+		    sysOrgPersonTemp.setFdIdentityCard(person.getFdIdentityCard());
+		    NotifyEntity notifyEntity = new NotifyEntity();
+		    notifyEntity.setFdMobileNo(person.getFdMobileNo()==null?"":person.getFdMobileNo());
+		    sysOrgPersonTemp.setNotifyEntity(notifyEntity);
+		    sysOrgPersonTemp.setPersonId(person.getFdId());
+		    SysOrgPersonTemp personTemp = registerService
+					.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+							person.getFdIdentityCard());
+			if (personTemp != null) {		        
+			    sysOrgPersonTemp.setFdBirthDay(personTemp.getFdBirthDay());
+			    sysOrgPersonTemp.setFdBloodType(personTemp.getFdBloodType());				
+			}		    
+			model.addAttribute("bean", sysOrgPersonTemp);
+		}
+		model.addAttribute("fdIcoUrl",person.getPoto());
+		model.addAttribute("fdIsEmp", person.getFdIsEmp());
+		if(person.getHbmParent() != null && person.getHbmParent().getHbmParentOrg()!= null){
+			   model.addAttribute("sysParOrg",person.getHbmParent().getHbmParentOrg().getFdName());
+			   model.addAttribute("sysParOrgId",person.getHbmParent().getHbmParentOrg().getFdId());
+		}
 		List<SysOrgElement> elements = sysOrgElementService.findTypeis1();
 		model.addAttribute("elements", elements);
-		return "/base/register2/edit";
+		if("0".equals(person.getFdIsEmp())){
+			return "/base/newTeacher/edit";
+		}
+		return "/base/newTeacher/view";
 	}
 
 	/*

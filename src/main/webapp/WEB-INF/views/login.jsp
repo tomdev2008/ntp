@@ -19,7 +19,6 @@
  function clearErrorMsg(){
 	document.getElementById("errorMsg").innerHTML="";
  }
-
 </script>
 <div class="container main">
   <form action="" method="post">
@@ -29,11 +28,14 @@
         	<input type="text" name="username" onclick="clearErrorMsg()" class="input-block-level inp inp-mail" placeholder="请输入您的邮箱账号">
         	<input type="password" name="password" onclick="clearErrorMsg()" class="input-block-level inp inp-password" placeholder="请输入您的登录密码">
         	 <br>
-            <c:if test="${error=='error'}">
+            
             	<span id="errorMsg" class="help-block text-warning">
+            	<c:if test="${error=='error'}">
             	<b class="icon-disc-bg warning">!</b> 
-            	  邮箱账号或密码输入错误，请重新登录</span>
-            </c:if> 
+            	  邮箱账号或密码输入错误，请重新登录
+            	  </c:if>
+            	  </span>
+             
             <p class="bar_link">
            	  <a href="${ctx}/forgotPwd" class="btn btn-link"><i class="icon-qm"></i>忘记密码</a>
             </p>

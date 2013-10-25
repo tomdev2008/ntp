@@ -49,8 +49,9 @@ request.setAttribute("path", path[path.length-1]);
                 	<li><a href="${ctx}/coach/progress/list"><i class="icon-teacher"></i>指导教师</a></li>
                    </shiro:hasRole>
 
-                    <li><a href="${ctx}/notify/list/1/ALL"><i class="icon-envelope"></i>我的私信<span class="icon-disc-bg" id="msgNum">${count}</span></a></li>
-                    <li><a href="${ctx}/register2/updateTeacher"><i class="icon-user"></i>账号设置</a></li>
+                    <li><a href="${ctx}/notify/list/1/ALL"><i class="icon-envelope"></i>我的私信
+                    <span class="icon-disc-bg" id="msgNum"></span></a></li>
+                    <li><a href="${ctx}/register/updateTeacher"><i class="icon-user"></i>账号设置</a></li>
                     <li><a href="${ctx}/logout"><i class="icon-off"></i>退出平台</a></li>
                 </ul>
               </li>
