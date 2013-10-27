@@ -12,10 +12,12 @@ import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.json.JsonUtils;
+import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseCategory;
@@ -26,6 +28,7 @@ import cn.me.xdf.service.course.CourseCategoryService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.course.CourseTagService;
 import cn.me.xdf.service.course.TagInfoService;
+import cn.me.xdf.utils.ShiroUtils;
 
 /**
  * 课程信息的ajax
@@ -333,6 +336,20 @@ public class CourseAjaxController {
 		map.put("encryptType", courseInfo.getFdPassword().equals("")?"authorized":"passwordProtect");
 		map.put("coursePwd", courseInfo.getFdPassword());
 		return JsonUtils.writeObjectToJson(map);
+	}
+	/*
+	 * 查询课程列表 或者根据关键字搜索
+	 * author hanhl
+	 * */
+	@RequestMapping(value="getCoureInfosOrByKey")
+	public String getCoureInfosOrByKey(Model model,HttpServletRequest request){
+		String userId = ShiroUtils.getUser().getId();
+		String fdTitle = request.getParameter("fdTitle");
+		String pageNoStr = request.getParameter("pageNo");
+		String orderbyStr = request.getParameter("order");
+		Pagination page=courseService.findCourseInfosByName(userId, fdTitle, pageNoStr, orderbyStr);
+		model.addAttribute("page", page);
+		return "/course/course_list";
 	}
 	
 }

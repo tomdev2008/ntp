@@ -28,7 +28,7 @@
                     <span>课程管理</span>
 	            </li>
 	            <li><a href="#"><i class="icon-course-series"></i>我的系列课程</a></li>
-	            <li><a href="#"><i class="icon-course"></i>我的课程</a></li>
+	            <li><a href="${ctx}/course/findcourseInfos?fdType=1000" id="courseInfos"><i class="icon-course"></i>我的课程</a></li>
 	             <li class="nav-header">
                      <span>课程素材库</span>
 	            </li>
@@ -77,6 +77,7 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
+	           <c:if test="${param.fdType!=1000}">
                 <span class="muted">我正在看：</span> 
                  <c:if test="${param.fdType==01}">视频</c:if>
                  <c:if test="${param.fdType==02}">音频</c:if>
@@ -84,12 +85,23 @@
                  <c:if test="${param.fdType==05}">幻灯片</c:if> 
                  <c:if test="${param.fdType==08}">测试</c:if> 
                  <c:if test="${param.fdType==10}">作业包</c:if> 
+                </c:if> 
+                <c:if test="${param.fdType==1000}">
+                   <div class="page-header">
+                   <span class="muted">我的课程</span> 
+	        </div>
+                </c:if>
                 <div class="backHome">
                     <a href="#"><span class="muted">返回</span>主管<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
                 </div>
 	        </div>
 	        <div class="page-body" id="pageBody">
-             <%@ include file="/WEB-INF/views/base/material/divMatList.jsp" %>  
+	         <c:if test="${param.fdType!=1000}">
+             <%@ include file="/WEB-INF/views/base/material/divMatList.jsp" %>
+             </c:if>
+             <c:if test="${param.fdType==1000}">
+               <%@ include file="/WEB-INF/views/course/course_list.jsp" %>
+               </c:if>  
             </div>           
 	    </section>
 	</section>

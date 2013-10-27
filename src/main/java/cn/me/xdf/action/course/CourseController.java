@@ -43,24 +43,15 @@ public class CourseController {
 	 * 获取课程列表
 	 * author hanhl
 	 * */
-	@RequestMapping(value="getCoureseInfos")
-	public String getCourseInfos(Model model, String pageNo, HttpServletRequest request){
+	@RequestMapping(value="findcourseInfos")
+	public String findcourseInfos(Model model,HttpServletRequest request){
 		String userId = ShiroUtils.getUser().getId();
-		Pagination page=courseService.findAllCourseInfos(userId, NumberUtils.createInteger(pageNo));
+		String fdTitle = request.getParameter("fdTitle");
+		String pageNoStr = request.getParameter("pageNo");
+		String orderbyStr = request.getParameter("order");
+		Pagination page=courseService.findCourseInfosByName(userId, fdTitle, pageNoStr, orderbyStr);
 		model.addAttribute("page", page);
-		return "/course/coures_list";
-	}
-	
-	/*
-	 * 根据关键字搜索课程信息
-	 * author hanhl
-	 * */
-	@RequestMapping(value="getCoureInfosByKey")
-	public String getCourseInfosByKey(Model model, String fdName,String pageNo,String orderbyStr, HttpServletRequest request){
-		String userId = ShiroUtils.getUser().getId();
-		Pagination page=courseService.findCourseInfosByName(userId, fdName, NumberUtils.createInteger(pageNo), orderbyStr);
-		model.addAttribute("page", page);
-		return "/course/coures_list";
+		return "/base/material/materialList";
 	}
 	
 	@RequestMapping(value = "add")
