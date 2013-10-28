@@ -5,8 +5,18 @@ package cn.me.xdf.model.base;
  * User: xiaobin268
  * Date: 13-10-25
  * Time: 下午1:29
- * To change this template use File | Settings | File Templates.
- */
+ *
+ * 流程实例需要实现此接口。
+ *
+ * 1、资源进度实例
+ * 2、节进度实例
+ * 3、章进度实例
+ * 4、课程进度实例
+ *
+ *
+ *
+ *
+ **/
 public interface BamProcess {
 
     public static final String THROGHT_FIELD = "through";

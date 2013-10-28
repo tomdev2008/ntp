@@ -3,6 +3,7 @@ package cn.me.xdf.common.spring;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,6 +12,7 @@ import org.springframework.context.ApplicationContextAware;
  * Time: 下午2:08
  * To change this template use File | Settings | File Templates.
  */
+@Component
 public class ApplicationContextHelper implements ApplicationContextAware {
 
     private static ApplicationContext appCtx;

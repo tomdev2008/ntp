@@ -13,6 +13,16 @@ import org.springframework.stereotype.Component;
  * Date: 13-10-25
  * Time: 上午11:51
  * To change this template use File | Settings | File Templates.
+ * 资源监听事件
+ * 1、当资源内容发生改变时，触发此监听
+ * 2、资源监听接收到通过数据，通知上层的节，
+ * 3、节接受到数据后，校验自身数据通知章，
+ * 4、章接收到通知课程。
+ * 5、课程再到系列。
+ * <p/>
+ * 资源--->节--->章---->课程---->系列
+ * 资源进度由前端事件触发，触发后上传至节，节自动上传到章、课程、系列。
+ *
  */
 @Component
 public class SourceListener implements SmartApplicationListener {
@@ -25,13 +35,13 @@ public class SourceListener implements SmartApplicationListener {
     @Override
     public boolean supportsSourceType(Class<?> sourceType) {
         try {
-            return (sourceType.newInstance() instanceof BamProcess)  ;
+            //必须实现进度实例才可
+            return (sourceType.newInstance() instanceof BamProcess);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     @Override
