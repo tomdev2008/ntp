@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.NotifyEntity;
+import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.organization.SysOrgElement;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.SysOrgPersonTemp;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.RegisterService;
 import cn.me.xdf.service.SysOrgElementService;
+import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.utils.ShiroUtils;
 
 @Controller
@@ -37,6 +40,9 @@ public class RegisterController {
 
 	@Autowired
 	private SysOrgElementService sysOrgElementService;
+	
+	@Autowired
+    private AttMainService attMainService;
 
 	@RequestMapping(value = "add")
 	public String registerForm(Model model) {
@@ -54,6 +60,9 @@ public class RegisterController {
 	@RequestMapping(value = "updateOtherData", method = RequestMethod.POST)
 	public String updateOtherData(SysOrgPersonTemp sysOrgPersonTemp,
 			HttpServletRequest request) {
+		if (ShiroUtils.getUser() == null) {
+			return "redirect:/login";
+		}
 		SysOrgPersonTemp personTemp = registerService
 				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
 						sysOrgPersonTemp.getFdIdentityCard());
@@ -71,6 +80,9 @@ public class RegisterController {
 	 */
 	@RequestMapping(value = "updateIco")
 	public String updateIco(Model model){
+		if (ShiroUtils.getUser() == null) {
+			return "redirect:/login";
+		}
 		String uid = ShiroUtils.getUser().getId();
 		SysOrgPerson person = accountService.load(uid);
 		SysOrgPersonTemp personTemp = registerService
@@ -93,18 +105,23 @@ public class RegisterController {
 	@RequestMapping(value = "updateTeacher", method = RequestMethod.POST)
 	public String updateTeacher(SysOrgPersonTemp sysOrgPersonTemp,
 			HttpServletRequest request) {
-		String fdIcoUrl = request.getParameter("fdIcoUrl");
+		if (ShiroUtils.getUser() == null) {
+			return "redirect:/login";
+		}
 		String uid = ShiroUtils.getUser().getId();
 		SysOrgPersonTemp personTemp = registerService
 				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
 						sysOrgPersonTemp.getFdIdentityCard());
 		if(personTemp != null){
-		  registerService.updateTeacherPic(sysOrgPersonTemp, fdIcoUrl,uid);
+	    	String attMainId=request.getParameter("attId");
+	    	AttMain attMain = attMainService.get(attMainId);
+	    	attMain.setFdModelId(personTemp.getFdId());
+	    	attMain.setFdModelName(SysOrgPersonTemp.class+"");
+	    	attMain.setFdKey("Person");
+	    	attMainService.save(attMain);
+		  registerService.updateTeacherPic(sysOrgPersonTemp,uid);
 		} else {
-		  registerService.updatePerToDBIXDF(fdIcoUrl,uid);
-		}
-		if (ShiroUtils.getUser() == null) {
-			return "redirect:/login";
+		  registerService.updatePerToDBIXDF(sysOrgPersonTemp.getFdIcoUrl(),uid);
 		}
 		return "redirect:/register/updateTeacher";
 	}

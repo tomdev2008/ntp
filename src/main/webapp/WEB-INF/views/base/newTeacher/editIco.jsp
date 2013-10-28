@@ -9,6 +9,40 @@
 <head>
 
 <link href="${ctx}/resources/css/settings.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
+<style>
+.uploadify-button {
+    background-color:rgb(67,145,187);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(67,145,187)),
+		color-stop(1, rgb(67,145,187))
+	);
+	max-width:70px;
+	max-height:20px;
+	border-radius: 1px;
+	border: 0px;
+	font: bold 12px Arial, Helvetica, sans-serif;
+	display: block;
+	text-align: center;
+	text-shadow: 0 0px 0 rgba(0,0,0,0.25);
+    
+}
+.uploadify:hover .uploadify-button {
+    background-color:rgb(67,145,187);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(67,145,187)),
+		color-stop(1, rgb(67,145,187))
+	);
+}
+</style>
+<script src="${ctx}/resources/js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=12"></script>
 
 
 </head>
@@ -39,21 +73,46 @@
             <a href="${ctx}/dashboard" title="返回主页" class="replyMybk"><i class="icon-home icon-white"></i></a>
         </div> 
        <div class="page-body"> 
-          <form method="post" id="inputForm" action="${ctx}/register2/updateTeacher" class="reg_form form-horizontal">
+          <form method="post" id="inputForm" action="${ctx}/register/updateTeacher" class="reg_form form-horizontal">
           <input type="hidden" name="fdId" value="${fdId}"/>
           <input type="hidden" id="fdIcoUrl" name="fdIcoUrl" value="${fdIcoUrl}" />
           <input type="hidden" id="fdIdentityCard" name="fdIdentityCard" value="${fdIdentityCard}">
            
         	<p class="reg_form-intro">请确认您填写的个人资料，完成临时账号注册。</p>
         	<div class="control-group">
-        		<div class="controls" style="height: 70px;">
+        		<div class="controls" style="height: 110px;">
         		   <label for="face" class="control-label">头像</label>
         		    <div class="controls">
+        		    
+        		  <table>
+        		  <tr>
+        		   <td>
                 	 <a href="#" class="face pull-left">
-                    	<img src="images/face-placeholder.png" alt="">
-                        <h6>修改</h6>
+                    	<c:if test="${fdIsEmp == '0'}">
+                         <img id="imgshow"  align="bottom" src="<%=request.getContextPath()%>/${fdIcoUrl}"/>
+                        </c:if>
+                        <c:if test="${fdIsEmp != '0'}">
+                          <img id="imgshow"  align="bottom" src="${fdIcoUrl}"/>
+                        </c:if>
+                    	
+                        <h6>
+                        </h6>
+                     
                      </a>
                     <div class="pull-left support-img">支持JPG\JPEG、PNG、BMP格式的图片<br />建议文件小于2M</div>
+                      </td>
+                </tr>
+                <tr>
+                <td>
+                 <div style="position: relative;top:-20px;">
+                 	<tags:simpleupload filename="fdName"
+                       filevalue="" id="upPic" exts="*.jpg;*.JPEG;*.png;*.bmp;" imgshow="imgshow" attIdName="attId" attIdID="attIdID">
+    			     </tags:simpleupload> 
+                </div> 
+                </td>
+                </tr>
+               </table>
+               
                    </div>
                 </div>
         	</div> 
