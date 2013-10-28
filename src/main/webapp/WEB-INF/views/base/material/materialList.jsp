@@ -28,7 +28,16 @@
                     <span>课程管理</span>
 	            </li>
 	            <li><a href="#"><i class="icon-course-series"></i>我的系列课程</a></li>
-	            <li><a href="${ctx}/course/findcourseInfos?fdType=1000" id="courseInfos"><i class="icon-course"></i>我的课程</a></li>
+	            <c:if test="${param.fdType==1000}">
+	            <li class="active">
+	             </c:if>
+	             <c:if test="${param.fdType!=1000}">
+	            <li>
+	             </c:if>
+	             
+	              <a href="${ctx}/course/findcourseInfos?fdType=1000" id="courseInfos">
+	              <i class="icon-course"></i>我的课程</a>
+	             </li>
 	             <li class="nav-header">
                      <span>课程素材库</span>
 	            </li>
@@ -132,6 +141,27 @@ function pageNavClick(fdType,pageNo,order){
 		data : {
 			"fdName" : fdName,
 			"fdType" : fdType,
+			"pageNo" : pageNo,
+			"order" : order,
+		},
+		cache: false, 
+		dataType: "html",
+		success:function(data){		
+			$("#pageBody").html(data);
+		}
+	}); 
+}
+</script>
+<script type="text/javascript">	
+
+function findeCoursesByKey(pageNo,order){
+	var fdTitle = document.getElementById("serach").value;
+	$("#pageBody").html("");
+	$.ajax({
+		type: "post",
+		 url: "${ctx}/ajax/course/getCoureInfosOrByKey",
+		data : {
+			"fdTitle" : fdTitle,
 			"pageNo" : pageNo,
 			"order" : order,
 		},
