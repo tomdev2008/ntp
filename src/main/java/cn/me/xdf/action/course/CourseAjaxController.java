@@ -317,6 +317,7 @@ public class CourseAjaxController {
 		CourseInfo courseInfo = courseService.findUniqueByProperty("fdId", courseId);
 		if(isPublish.equals("open")){
 			courseInfo.setIsPublish(true);
+			courseInfo.setFdPassword("");
 		}else{
 			courseInfo.setIsPublish(false);
 			courseInfo.setFdPassword(fdPassword);
@@ -354,8 +355,8 @@ public class CourseAjaxController {
 		CourseInfo courseInfo = courseService.get(courseId);
 		Map map = new HashMap();
 		map.put("action", "");
-		map.put("permission", courseInfo.getIsPublish()==true?"open":"encrypt");
-		map.put("encryptType", courseInfo.getFdPassword().equals("")?"authorized":"passwordProtect");
+		map.put("permission", (courseInfo.getIsPublish()==null||courseInfo.getIsPublish()==true)?"open":"encrypt");
+		map.put("encryptType", StringUtil.isBlank(courseInfo.getFdPassword())?"authorized":"passwordProtect");
 		map.put("coursePwd", courseInfo.getFdPassword());
 		return JsonUtils.writeObjectToJson(map);
 	}

@@ -458,7 +458,7 @@
 					}
 				});
 				if(canAdd == false){
-					alert("不能重复添加用户");
+					$.fn.jalert2("不能重复添加用户？");
 					return;
 				}
 				$(this).val(item.name);
@@ -493,7 +493,7 @@
 					  data:{data:JSON.stringify(data)},
 					  dataType:'json',
 					  success: function(rsult){
-						  alert("修改成功");
+						  $.fn.jalert2("修改成功");
 					  },
 				});
 			});
