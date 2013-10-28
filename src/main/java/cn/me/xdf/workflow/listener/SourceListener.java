@@ -2,8 +2,8 @@ package cn.me.xdf.workflow.listener;
 
 import cn.me.xdf.model.base.BamProcess;
 import cn.me.xdf.workflow.event.SourceEvent;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
  * <p/>
  * 资源--->节--->章---->课程---->系列
  * 资源进度由前端事件触发，触发后上传至节，节自动上传到章、课程、系列。
- *
  */
 @Component
 public class SourceListener implements SmartApplicationListener {
@@ -34,14 +33,7 @@ public class SourceListener implements SmartApplicationListener {
 
     @Override
     public boolean supportsSourceType(Class<?> sourceType) {
-        try {
-            //必须实现进度实例才可
-            return (sourceType.newInstance() instanceof BamProcess);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return (BeanUtils.instantiateClass(sourceType) instanceof BamProcess);
     }
 
     @Override

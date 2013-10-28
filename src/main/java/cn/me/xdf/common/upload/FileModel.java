@@ -197,7 +197,10 @@ public class FileModel {
         att.setFdFileName(fileName);
         att.setFdContentType(getContentType());
         att.setFdCreateTime(new Date());
-        att.setFdCreatorId(ShiroUtils.getUser().id);
+        if (ShiroUtils.getUser() != null) {
+            att.setFdCreatorId(ShiroUtils.getUser().id);
+        }
+
         att.setFdFilePath(getFilePath());
         att.setFdStoreType(getStoreType().getName());
         return att;
