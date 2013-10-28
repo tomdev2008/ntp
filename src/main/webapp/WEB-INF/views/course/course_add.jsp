@@ -389,7 +389,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="learnTime">学习时长</label>
-                    <div class="controls"><input value="{{=it.learnTime || ''}}" required placeholder="请认真填写该章节的建议学习时长" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
+                    <div class="controls"><input value="{{=it.learnTime || ''}}" required digits="true" placeholder="请认真填写该章节的建议学习时长" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="sectionsIntro">章节说明</label>
@@ -507,7 +507,7 @@
 	        	<h5>集团英联邦项目雅思强化口语备课课程</h5>
 	            <div class="btn-group">
 		            <button class="btn btn-primary btn-large" disabled type="button">预览</button>
-		            <button class="btn btn-primary btn-large" disabled type="button">发布</button>
+		            <button class="btn btn-primary btn-large" disabled type="button" onclick="releaseCourse()">发布</button>
 	            </div>
 	        </div>
 	        <img src="${ctx}/resources/images/admin-leftImg.png" width="187" height="60">
@@ -699,6 +699,11 @@
        	    urlRouter("kinguser");
 			
 		});
+	}
+	
+	//课程发布
+	function releaseCourse(){
+		window.location.href="${ctx}/course/releaseCourse?courseId=$(courseId)";
 	}
 </script>
 </body>

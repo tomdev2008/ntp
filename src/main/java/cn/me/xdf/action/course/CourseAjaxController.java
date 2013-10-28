@@ -1,6 +1,5 @@
 package cn.me.xdf.action.course;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,14 +20,19 @@ import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
+import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseCategory;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.course.CourseAuthService;
+import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseCategoryService;
+import cn.me.xdf.service.course.CourseContentService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.course.CourseTagService;
+import cn.me.xdf.service.course.SeriesCoursesService;
 import cn.me.xdf.service.course.TagInfoService;
 import cn.me.xdf.utils.ShiroUtils;
 
@@ -54,6 +58,18 @@ public class CourseAjaxController {
 	
 	@Autowired
 	private TagInfoService tagInfoService;
+	
+	@Autowired
+	private SeriesCoursesService seriesCoursesService;
+	
+	@Autowired
+	private CourseContentService courseContentService;
+	
+	@Autowired
+	private CourseCatalogService courseCatalogService;
+	
+	@Autowired
+	private CourseAuthService courseAuthService;
 	
 	/**
 	 * 获取当前课程的基本信息
@@ -385,5 +401,46 @@ public class CourseAjaxController {
 		courseService.updateCourseAuth(courseId, auths);
 	}
 	
-	
+	/**
+	 * 删除课程
+	 * @param request
+	 */
+	@RequestMapping(value = "deleteCourse")
+	@ResponseBody
+	public void deleteCourse(HttpServletRequest request) {
+		//获取课程ID
+		String courseId = request.getParameter("courseId");
+		if(StringUtil.isNotEmpty(courseId)){
+			CourseInfo course = courseService.get(courseId);
+			if(course!=null && course.getIsAvailable()){
+				//需要判断课程状态是发布还是草稿，如果是发布，则只改是否有效的状态，如果是草稿，则删除课程及课程相关数据。
+				if(Constant.COURSE_TEMPLATE_STATUS_DRAFT.equals(course.getFdStatus())){
+					//删除课程与关键字的关系
+					courseTagService.deleteByCourseId(courseId);
+					//删除课程权限
+					courseAuthService.deleCourseAuthByCourseId(courseId);
+					//获取课程下的所有章节
+					List<CourseCatalog> list = courseCatalogService.getCatalogsByCourseId(courseId);
+					if(list!=null && list.size()>0){
+						for(CourseCatalog catalog:list){
+							if(Constant.CATALOG_TYPE_LECTURE==catalog.getFdType()){
+								//删除节与内容的关系
+								courseContentService.deleteByCatalogId(catalog.getFdId());
+							}
+							//删除章节
+							courseCatalogService.deleteEntity(catalog);
+						}
+					}
+					//删除课程
+					courseService.delete(courseId);
+				}else{
+					//删除已发布课程模板时，需要删除课程与系列的关系，则否会在系列中显示该课程，其他关系保持不变。
+					seriesCoursesService.deleteByCourseId(courseId);
+					//修改课程模板有效状态
+					course.setIsAvailable(false);
+					courseService.update(course);					
+				}
+			}
+		}
+	}
 }

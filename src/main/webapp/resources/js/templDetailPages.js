@@ -268,6 +268,13 @@
                     item.index = $listMedia.children("li").length + 1;
                     itemHtml = mediaListFn(item);
                     addFlag = true;
+                    $("#formMedia").find(".autoCompleteWrap").removeClass("warning").find(".help-block").remove();
+                    $("#listMedia>li").each(function(i){
+                        if($(this).attr("data-fdid")==item.id){
+                        	$("#formMedia").find(".autoCompleteWrap").addClass("warning").find(":button").after('<span class="help-block">不能添加重复的素材！</span>');;
+                        	addFlag = false;
+                        }
+                   });
                 })
                 .next(".btn-primary").bind("click", function(){
                     if(addFlag){
@@ -293,15 +300,14 @@
 			
 			$("#deleteCourse").click(function(){
 				/*============================================ ajax 删除当前课程 ================================================*/
-				/*$.post("url?method=delete", {id:fdid})
-					.success(function(){
-						// some code
-					});
-				*/
-				urlRouter("sectionsDirectory");	//跳转到章节目录  或者其它页面
+				 $.post($('#ctx').val()+"/ajax/course/deleteCourse",{
+					 courseId:fdid
+                 })
+                     .success(function(){
+                         //提交成功
+                    	 window.location.href=$('#ctx').val()+"/course/findcourseInfos";
+                     });
 			});
-				
-			
 		}
 		
 		//加载授权管理 	

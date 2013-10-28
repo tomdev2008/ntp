@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.model.base.IdEntity;
 import cn.me.xdf.model.course.CourseTag;
+import cn.me.xdf.model.course.SeriesCourses;
 import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.service.BaseService;
 
@@ -55,5 +56,22 @@ public class CourseTagService extends BaseService{
 		if(super.findUnique(finder)==null){
 			super.save(courseTag);
 		}		
+	}
+
+	/**
+	 * 根据课程ID删除课程与标签的关系
+	 * @param courseId 课程ID
+	 */
+	@Transactional(readOnly = false)
+	public void deleteByCourseId(String courseId) {
+		Finder finder = Finder
+				.create(" from CourseTag tag where  tag.courses.fdId=:courseId");	
+		finder.setParam("courseId", courseId);
+		List<CourseTag> list = super.find(finder);
+		if(list!=null && list.size()>0){
+			for(CourseTag tag:list){
+				super.deleteEntity(tag);
+			}
+		}
 	}
 }

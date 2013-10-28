@@ -131,6 +131,7 @@ public class CourseContentAjaxController {
 									courseContent.setMaterial(material);
 									courseContent.setFdRemark(title);
 									courseContent.setFdMaterialNo(index);
+									courseContent.setCatalog(catalog);
 									courseContentService.save(courseContent);
 								}
 							}
