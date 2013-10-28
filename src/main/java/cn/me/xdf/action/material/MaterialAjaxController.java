@@ -51,7 +51,7 @@ public class MaterialAjaxController {
 	@RequestMapping(value = "getMaterialBykey")
 	@ResponseBody
 	public List<Map> getMaterialBykey(HttpServletRequest request){
-		String key = request.getParameter("key");
+		String key = request.getParameter("q");
 		String type = request.getParameter("type");
 		return materialService.getMaterialsTop10Bykey(key, type);
 	}

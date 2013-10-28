@@ -244,12 +244,7 @@
                     return item.name;
                 },
                 extraParams : {
-					key : function() {
-						return $('#addMedia').val();
-					},
-					type : function() {
-						return type;
-					}
+					type : type
 				},
                 parse : function(data) {
 					var rows = [];
@@ -416,7 +411,7 @@
 						}
 					});
 				},*/
-			$("#addUser").autocomplete($("#ctx").val()+"/ajax/user/findByName",{
+			$("#addUser").autocomplete($("#ctx").val()+"/ajax/user/findByName"+$('#addUser').val(),{
 				formatMatch: function(item) { 
 					return item.name + item.mail + item.org + item.department; 
 				},
@@ -438,14 +433,7 @@
 					}
 					return rows;
 				},
-				extraParams : {
-					q : function() {
-						return $('#addUser').val();
-					},
-					deptId : function() {
-						return $('#schId').val();
-					}
-				},
+			
 				dataType : 'json',
 				matchContains:true ,
 				max: 10,
@@ -703,11 +691,6 @@
 					},
 					formatItem: function(item) { 
 						return item.fdName; 
-					},
-					extraParams : {
-						key : function() {
-							return $('#addKey').val();
-						},
 					},
 					parse : function(data) {
 						var rows = [];
