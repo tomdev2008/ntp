@@ -452,6 +452,17 @@
 				scroll: false,
 				width:688
 			}).result(function(e,item){
+				var canAdd = true;
+				$("#list_user>tr").each(function(){
+					if($(this).attr("data-fdid")==item.id){
+						canAdd = false;
+						return;
+					}
+				});
+				if(canAdd == false){
+					alert("不能重复添加用户");
+					return;
+				}
 				$(this).val(item.name);
 				$("#list_user").append(listUserKinguserFn(item))
 				.sortable({
