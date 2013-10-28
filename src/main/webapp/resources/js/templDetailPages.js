@@ -321,8 +321,9 @@
 			$.ajax({
 				  url: $("#ctx").val()+"/ajax/course/getAuthInfoByCourseId?courseId="+$("#courseId").val(),
 				  async:false,
+				  dataType : 'json',
 				  success: function(rsult){
-					  data = $.parseJSON(rsult);
+					  data = rsult;
 				  }
 			});
 			/*data = {//ajax 成功后删除		
@@ -474,12 +475,18 @@
 						tissuePreparation: $(this).find(".tissuePreparation").is(":checked"),
 						editingCourse: $(this).find(".editingCourse").is(":checked")
 					});
-				});console.log(JSON.stringify(data));
-				//ajax
-				/*$.post("url?updata",data)
-				.success(function(){
-					alert("保存成功");
-				});*/
+				});
+				//console.log(JSON.stringify(data));
+				//alert(JSON.stringify(data));
+				$.ajax({
+					  url: $('#ctx').val()+"/ajax/course/updateCourseAuth?courseId="+$('#courseId').val(),
+					  async:false,
+					  data:{data:JSON.stringify(data)},
+					  dataType:'json',
+					  success: function(rsult){
+						  alert("修改成功");
+					  },
+				});
 			});
 		}
 		

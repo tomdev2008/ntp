@@ -28,7 +28,7 @@ import cn.me.xdf.service.BaseService;
  * 
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 public class CourseService  extends BaseService{
 	
 	@Autowired
@@ -98,7 +98,7 @@ public class CourseService  extends BaseService{
 	
 	public List<Map> findAuthInfoByCourseId(String courseId){
 		//获取课程ID
-		List<CourseAuth> auths = courseAuthService.findByProperty("fdUser.fdId", courseId);
+		List<CourseAuth> auths = courseAuthService.findByProperty("course.fdId", courseId);
 		List<Map> list = new ArrayList<Map>();
 		User user = null;
 		for (int i=0;i<auths.size();i++) {
