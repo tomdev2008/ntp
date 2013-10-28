@@ -4,18 +4,22 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import jodd.util.StringUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.NotifyEntity;
 import cn.me.xdf.model.organization.SysOrgElement;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.SysOrgPersonTemp;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.RegisterService;
+import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.utils.ShiroUtils;
 
 /**
@@ -34,6 +38,9 @@ public class RegisterAjaxController {
 
 	@Autowired
 	private RegisterService registerService;
+	
+	@Autowired
+    private AttMainService attMainService;
 
 	@RequestMapping(value = "checkIdentityCard")
 	@ResponseBody
@@ -99,6 +106,17 @@ public class RegisterAjaxController {
 			sysOrgPersonTemp.setFdBloodType(bloodend);
 			sysOrgPersonTemp.setFdIcoUrl(img);
 			registerService.registerTemp(sysOrgPersonTemp);
+			String attMainId=request.getParameter("attId");
+			if(StringUtil.isNotBlank(attMainId)){
+				SysOrgPersonTemp personTemp = registerService
+						.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+								sysOrgPersonTemp.getFdIdentityCard());
+				AttMain attMain = attMainService.get(attMainId);
+		    	attMain.setFdModelId(personTemp.getFdId());
+		    	attMain.setFdModelName("cn.me.xdf.model.organization.SysOrgPersonTemp");
+		    	attMain.setFdKey("Person");
+		    	attMainService.update(attMain);
+			}
 			if (ShiroUtils.getUser() == null) {
 				return "redirect:/login";
 			}

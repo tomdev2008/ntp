@@ -7,9 +7,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>新东方在线教师备课平台</title>
-<link href="${ctx}/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/resources/css/datepicker.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/resources/css/register.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
+<style>
+.uploadify-button {
+    background-color:rgb(67,145,187);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(67,145,187)),
+		color-stop(1, rgb(67,145,187))
+	);
+	max-width:70px;
+	max-height:20px;
+	border-radius: 1px;
+	border: 0px;
+	font: bold 12px Arial, Helvetica, sans-serif;
+	display: block;
+	text-align: center;
+	text-shadow: 0 0px 0 rgba(0,0,0,0.25);
+    
+}
+.uploadify:hover .uploadify-button {
+    background-color:rgb(67,145,187);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(67,145,187)),
+		color-stop(1, rgb(67,145,187))
+	);
+}
+</style>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=12"></script>
 <script type="text/javascript">
     //注册
 	function register() {
@@ -25,6 +57,8 @@
 		var cradid = document.getElementById("ID").value;
 		//机构部门
 		var depart = document.getElementById("department");
+		//附件
+		var attId = document.getElementById("attIdID").value;
 		var index = depart.selectedIndex;
 		var departid = depart.options[index].value;
 		var deptName = depart.options[index].text;
@@ -72,6 +106,7 @@
 				"bloodend" : bloodend,
 				"deptName" : deptName,
 				"img" : img,
+				"attId":attId
 			},
 			success : function(msg) {
 				msg = msg.substr(1, msg.length - 2);
@@ -352,14 +387,28 @@
 				<div class="control-group">
 					<label for="face" class="control-label">头像</label>
 					<div class="controls">
-					  <a href="#" class="face pull-left">
-                    	<img src="images/face-placeholder.png" alt="" >
-                        <h6>修改</h6>
-                    </a>
-                    <div class="pull-left support-img">支持JPG\JPEG、PNG、BMP格式的图片<br />建议文件小于2M</div>
-                    <input type="hidden" id="fdIcoUrl" name="fdIcoUrl" value="${bean.fdIcoUrl}" />
+					 <table >
+        		     <tr>
+        		      <td><a class="face pull-left">
+                         <img id="imgshow" style="width: 70px; height: 70px" src="${ctx}/resources/images/face-placeholder.png"/> <h6></h6>
+                         </a>
+                         <div class="pull-left support-img">支持JPG\JPEG、PNG、BMP格式的图片<br />建议文件小于2M</div>
+                      </td>
+                    </tr>
+                    <tr>
+                    <td>
+                     <div style="position: relative;top:-20px;">
+                 	 <tags:simpleupload filename="fdName"
+                         filevalue="" id="registerPic" exts="*.jpg;*.JPEG;*.png;*.bmp;" 
+                         imgshow="imgshow" attIdName="attId" attIdID="attIdID">
+    			      </tags:simpleupload> 
+                     </div> 
+                   </td>
+                  </tr>
+                 </table>
+                    <input type="hidden" id="fdIcoUrl" name="fdIcoUrl" value="" />
+                    
 				</div>
-
 				</div>
 				<div class="control-group">
 					<label for="name" class="control-label">姓名<span
@@ -456,7 +505,7 @@
 				<div class="control-group">
 					<label class="control-label">头像</label>
 					<div class="controls">
-						<img id="imgend" src="${ctx}/resources/images/face-placeholder.png" alt="" class="face">
+						<img id="imgend" src="${ctx}/resources/images/face-placeholder.png" complete="complete" alt="" class="face">
 					</div>
 				</div>
 				<div class="control-group">

@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import jodd.util.StringUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -114,11 +116,14 @@ public class RegisterController {
 						sysOrgPersonTemp.getFdIdentityCard());
 		if(personTemp != null){
 	    	String attMainId=request.getParameter("attId");
-	    	AttMain attMain = attMainService.get(attMainId);
-	    	attMain.setFdModelId(personTemp.getFdId());
-	    	attMain.setFdModelName(SysOrgPersonTemp.class+"");
-	    	attMain.setFdKey("Person");
-	    	attMainService.save(attMain);
+	    	if(StringUtil.isNotBlank(attMainId)){
+		    	AttMain attMain = attMainService.get(attMainId);
+		    	attMain.setFdModelId(personTemp.getFdId());
+		    	attMain.setFdModelName("cn.me.xdf.model.organization.SysOrgPersonTemp");
+		    	attMain.setFdKey("Person");
+		    	attMainService.update(attMain);
+			}
+	    	
 		  registerService.updateTeacherPic(sysOrgPersonTemp,uid);
 		} else {
 		  registerService.updatePerToDBIXDF(sysOrgPersonTemp.getFdIcoUrl(),uid);

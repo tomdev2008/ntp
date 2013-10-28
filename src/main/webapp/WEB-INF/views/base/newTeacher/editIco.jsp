@@ -9,7 +9,7 @@
 <head>
 
 <link href="${ctx}/resources/css/settings.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/> 
 <style>
 .uploadify-button {
     background-color:rgb(67,145,187);
