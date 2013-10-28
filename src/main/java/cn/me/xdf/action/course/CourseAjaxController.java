@@ -1,5 +1,6 @@
 package cn.me.xdf.action.course;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -277,7 +278,7 @@ public class CourseAjaxController {
 	@ResponseBody
 	public List<TagInfo> findTagInfosByKey(HttpServletRequest request) {
 		//key
-		String key = request.getParameter("key");
+		String key = request.getParameter("q");
 		List<TagInfo> tagInfos = tagInfoService.findTagInfosByKey(key);
 		return tagInfos;
 	}
