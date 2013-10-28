@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.service.BaseService;
 
@@ -53,6 +54,36 @@ public class CourseCatalogService extends BaseService{
 		finder.append("where catalog.hbmParent.fdId = :fdId");
 		finder.setParam("fdId", fdId);		
 		return  super.find(finder);
+	}
+
+	/**
+	 * 根据课程ID删除章节
+	 * @param fdId 课程ID
+	 */
+	@Transactional(readOnly = false)
+	public void deleteByCourseId(String courseId) {
+		List<CourseCatalog> list = getCatalogsByCourseId(courseId);
+		if(list!=null && list.size()>0){
+			for(CourseCatalog catalog:list){
+				//递归删除章节
+				deleteCatalogs(catalog);
+			}
+		}
+	}
+
+	/**
+	 * 递归删除章节
+	 * @param catalog 上层章节
+	 */
+	private void deleteCatalogs(CourseCatalog catalog) {
+		List<CourseCatalog> list = getChildCatalog(catalog.getFdId());
+		if(list!=null && list.size()>0){
+			for(CourseCatalog subcatalog:list){
+				//递归删除章节
+				deleteCatalogs(subcatalog);
+			}
+		}
+		super.deleteEntity(catalog);
 	}
 	
 }

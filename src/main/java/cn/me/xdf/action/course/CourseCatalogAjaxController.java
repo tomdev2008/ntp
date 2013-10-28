@@ -205,6 +205,7 @@ public class CourseCatalogAjaxController {
 			//新建课程时总节数设置为0
 			course.setFdTotalPart(0);
 			course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
+			course.setIsAvailable(true);
 			courseService.save(course);
 			courseCatalog.setCourseInfo(course);
 		}

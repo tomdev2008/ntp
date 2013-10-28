@@ -148,6 +148,7 @@ public class CourseAjaxController {
 				//新建课程时总节数设置为0
 				course.setFdTotalPart(0);
 				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
+				course.setIsAvailable(true);
 				//将分类保存到课程中
 				if(StringUtil.isNotEmpty(courseType)){
 					CourseCategory category = courseCategoryService.get(courseType);
@@ -171,6 +172,7 @@ public class CourseAjaxController {
 			//新建课程时总节数设置为0
 			course.setFdTotalPart(0);
 			course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
+			course.setIsAvailable(true);
 			//将分类保存到课程中
 			if(StringUtil.isNotEmpty(courseType)){
 				CourseCategory category = courseCategoryService.get(courseType);
@@ -427,10 +429,10 @@ public class CourseAjaxController {
 								//删除节与内容的关系
 								courseContentService.deleteByCatalogId(catalog.getFdId());
 							}
-							//删除章节
-							courseCatalogService.deleteEntity(catalog);
 						}
 					}
+					//删除章节
+					courseCatalogService.deleteByCourseId(courseId);
 					//删除课程
 					courseService.delete(courseId);
 				}else{

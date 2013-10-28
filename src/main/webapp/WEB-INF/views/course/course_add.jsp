@@ -77,7 +77,7 @@
 			<div class="control-group">
 				<label class="control-label">第<span class="index">{{?it.chapter}}{{=it.chapter.num}}</span>章{{??it.lecture}}{{=it.lecture.num}}</span>节{{?}}</label>
 				<div class="controls">
-					<input type="text" class="input-block-level" placeholder="请输入课程标题" value="{{=(it.chapter ? it.chapter.title : it.lecture.title) || ''}}" />
+					<input type="text" maxlength="20" class="input-block-level" placeholder="请输入课程标题" value="{{=(it.chapter ? it.chapter.title : it.lecture.title) || ''}}" />
 					<span class="count">20字</span>
 				</div>
 			</div>
@@ -371,7 +371,7 @@
 3. 本课程中的内容资料（包括视频、文档等）请前往 课程素材库 进行查阅。
 					</div>
 	       </div>		 
-           <button class="btn btn-block btn-warning btn-submit" id="deleteCourse" type="button">删除</button>         
+           <button class="btn btn-block btn-warning btn-submit" id="deleteCourse" type="button" onClick="confirmDel()">删除</button>         
 	 </div> 	
 </script>
 
@@ -389,7 +389,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="learnTime">学习时长</label>
-                    <div class="controls"><input value="{{=it.learnTime || ''}}" required digits="true" placeholder="请认真填写该章节的建议学习时长" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
+                    <div class="controls"><input value="{{=it.learnTime || ''}}" required digits="true" placeholder="请认真填写该章节的建议学习时长(分钟)" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="sectionsIntro">章节说明</label>
@@ -503,7 +503,7 @@
 	<div class="clearfix">
 		<div class="tit-bar">    	
 	        <div class="page-title section" id="page-title">
-	        	<input type='hidden' id='courseId' value='141e961af14a105ea9289704c479954f' />
+	        	<input type='hidden' id='courseId' value='141e95ecce5ba4f578742b0482bb3d07' />
 	        	<h5>集团英联邦项目雅思强化口语备课课程</h5>
 	            <div class="btn-group">
 		            <button class="btn btn-primary btn-large" disabled type="button">预览</button>
@@ -561,6 +561,7 @@
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap.min.js"></script>
 <script src="${ctx}/resources/js/jquery.sortable.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script src="${ctx}/resources/js/templDetailPages.js"></script>
 <script type="text/javascript">	
 	
@@ -607,7 +608,7 @@
 	  				}
 	  				break;
 				case "deleteCourse":
-	  				rightCont.loadDeleteCoursePage("删除课程","{fdid}");
+	  				rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
 	  				break;
                 case "video":
                     if(opt) {
@@ -703,7 +704,7 @@
 	
 	//课程发布
 	function releaseCourse(){
-		window.location.href="${ctx}/course/releaseCourse?courseId=$(courseId)";
+		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
 	}
 </script>
 </body>

@@ -294,20 +294,24 @@
 
 		//加载删除课程 	
 		rightCont.loadDeleteCoursePage = function (title, fdid){	
-			
 			data.pageTitle = title;	
 			$("#rightCont").html(deleteCourseFn(data));	
 			
-			$("#deleteCourse").click(function(){
+			$("#deleteCourse").click(function(){confirmDel();});
+			function confirmDel(){
+				$.fn.jalert("您确认要删除当前课程？",deleteCourse)
+			}
+			//调用ajax删除当前课程
+			function deleteCourse(){
 				/*============================================ ajax 删除当前课程 ================================================*/
 				 $.post($('#ctx').val()+"/ajax/course/deleteCourse",{
 					 courseId:fdid
-                 })
-                     .success(function(){
-                         //提交成功
-                    	 window.location.href=$('#ctx').val()+"/course/findcourseInfos";
-                     });
-			});
+		         })
+		             .success(function(){
+		                 //提交成功
+		            	 window.location.href=$('#ctx').val()+"/course/findcourseInfos";
+		             });
+			}
 		}
 		
 		//加载授权管理 	

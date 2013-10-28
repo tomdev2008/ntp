@@ -2,27 +2,22 @@ package cn.me.xdf.action.course;
 
 
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseInfo;
-import cn.me.xdf.model.organization.SysOrgElement;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.utils.ShiroUtils;
@@ -95,7 +90,7 @@ public class CourseController {
 		String courseId = request.getParameter("courseId");
 		if(StringUtil.isNotEmpty(courseId)){
 			CourseInfo course = courseService.get(courseId);
-			if(course!=null && course.getIsAvailable()){
+			if(course!=null && Constant.COURSE_TEMPLATE_STATUS_DRAFT.equals(course.getFdStatus())){
 				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 				courseService.update(course);
 			}
