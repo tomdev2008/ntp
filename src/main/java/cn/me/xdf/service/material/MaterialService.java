@@ -136,20 +136,24 @@ public class MaterialService extends BaseService {
 	 * 模糊查询资源
 	 */
 	public List<Map> getMaterialsTop10Bykey(String key,String type){
+		
 		Finder finder = Finder
-				.create(" from MaterialInfo  info ");
-		finder.append("where info.fdType = :type and info.fdName like :key");
-		finder.setParam("type", type);
+				.create("select info.FDID as id , info.FDNAME as name from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
+		finder.append(" on info.FDID=auth.FDMATERIALID ");
+		finder.append(" where info.FDTYPE=:fdType and info.ISAVAILABLE=1 and info.FDNAME like :key ");
+		finder.append(" and ( (auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' and auth.ISREADER=1 ) ");
+		finder.append("  or info.ISPUBLISH=1) ");
+		finder.setParam("fdType", type);
 		finder.setParam("key", "%"+key+"%");
-		List<MaterialInfo> list =(List<MaterialInfo>)(getPage(finder, 1,10).getList());
+		List<Map> list =(List<Map>)(getPageBySql(finder, 1,10).getList());
 		if(list==null){
 			return null;
 		}
 		List<Map> maps = new ArrayList<Map>();
-		for (MaterialInfo materialInfo : list) {
+		for (Map map1 : list) {
 			Map map = new HashMap();
-			map.put("id", materialInfo.getFdId());
-			map.put("name", materialInfo.getFdName());
+			map.put("id", map1.get("ID"));
+			map.put("name",  map1.get("NAME"));
 			maps.add(map);
 		}
 		return maps;
