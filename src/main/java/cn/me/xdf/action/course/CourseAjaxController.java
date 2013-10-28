@@ -24,6 +24,7 @@ import cn.me.xdf.model.course.CourseCategory;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
+import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.course.CourseCategoryService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.course.CourseTagService;
@@ -316,7 +317,9 @@ public class CourseAjaxController {
 		//获取课程ID
 		String courseId = request.getParameter("courseId");
 		List<Map> list = courseService.findAuthInfoByCourseId(courseId);
-		return JsonUtils.writeObjectToJson(list);
+		Map map = new HashMap();
+		map.put("user", list);
+		return JsonUtils.writeObjectToJson(map);
 	}
 	
 	/**
@@ -351,5 +354,35 @@ public class CourseAjaxController {
 		model.addAttribute("page", page);
 		return "/course/course_list";
 	}
+	
+	/**
+	 * 修改课程授权信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "updateCourseAuth")
+	@ResponseBody
+	public void updateCourseAuth(HttpServletRequest request){
+		String courseId = request.getParameter("courseId");
+		
+		String data = request.getParameter("data");
+		List<Map> list =  JsonUtils.readObjectByJson(data, List.class);
+		List<CourseAuth> auths = new ArrayList<CourseAuth>();
+		CourseInfo course = new CourseInfo();
+		course.setFdId(courseId);
+		for (Map map : list) {
+			CourseAuth auth = new CourseAuth();
+			auth.setCourse(course);
+			SysOrgPerson fdUser = new SysOrgPerson();
+			fdUser.setFdId((String)map.get("id"));
+			auth.setFdUser(fdUser);
+			auth.setIsAuthStudy((Boolean)map.get("tissuePreparation"));
+			auth.setIsEditer((Boolean)map.get("editingCourse"));
+			auths.add(auth);
+		}
+		courseService.updateCourseAuth(courseId, auths);
+	}
+	
 	
 }
