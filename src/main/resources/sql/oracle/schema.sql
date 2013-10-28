@@ -1,1 +1,0 @@
-delete from SYS_USER_ROLE where fdId='13b0cc641357059ccbf0b484a8da92dc';

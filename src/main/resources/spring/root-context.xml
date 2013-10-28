@@ -169,14 +169,5 @@
             <property name="minEvictableIdleTimeMillis"
                       value="${development.dbcp.minEvictableIdleTimeMillis}"/>
         </bean>
-
-        <!-- 初始化数据表结构 -->
-        <jdbc:initialize-database data-source="dataSource"
-                                  ignore-failures="ALL">
-            <jdbc:script location="classpath:sql/mysql/schema.sql"/>
-            <jdbc:script location="classpath:sql/mysql/import-data.sql"/>
-            <!-- <jdbc:script location="classpath:sql/mysql/import-depart-data.sql"
-                /> <jdbc:script location="classpath:sql/mysql/import-user-data.sql" /> -->
-        </jdbc:initialize-database>
     </beans>
 </beans>
