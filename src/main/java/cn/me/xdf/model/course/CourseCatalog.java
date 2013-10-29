@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,6 +22,7 @@ import cn.me.xdf.model.base.IdEntity;
  * 课程章节实体的定义
  * 
  * @author zuoyi
+ *
  * 
  */
 @SuppressWarnings("serial")
@@ -214,7 +216,8 @@ public class CourseCatalog extends IdEntity {
 	public void setFdMaterialType(String fdMaterialType) {
 		this.fdMaterialType = fdMaterialType;
 	}
-	
+
+    @JsonIgnore
 	@Transient
 	public String getMaterialType() {
 		String materialType = getFdMaterialType();
