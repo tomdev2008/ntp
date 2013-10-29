@@ -138,7 +138,7 @@
                     'multi' : false,
                     'simUploadLimit' : 1,
                     'swf' : $('#ctx').val()+'/resources/uploadify/uploadify.swf',
-                    'buttonText' : '浏览',
+                    'buttonText' : '上传',
                     'uploader' : $('#ctx').val()+'/common/file/o_upload',
                     'auto' : true,
                     'queueID': 'upMaterialDiv',

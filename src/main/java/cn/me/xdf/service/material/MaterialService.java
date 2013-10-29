@@ -140,7 +140,7 @@ public class MaterialService extends BaseService {
 		Finder finder = Finder
 				.create("select info.FDID as id , info.FDNAME as name from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
 		finder.append(" on info.FDID=auth.FDMATERIALID ");
-		finder.append(" where info.FDTYPE=:fdType and info.ISAVAILABLE=1 and info.FDNAME like :key ");
+		finder.append(" where info.FDTYPE=:fdType and info.ISAVAILABLE=1 and lower(info.FDNAME) like :key ");
 		finder.append(" and ( (auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' and auth.ISREADER=1 ) ");
 		finder.append("  or info.ISPUBLISH=1) ");
 		finder.setParam("fdType", type);
