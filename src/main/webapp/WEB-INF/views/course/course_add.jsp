@@ -758,6 +758,10 @@
 		
 	//ajax保存课程详细信息
 	function saveIsPublish(){
+		if($(':radio[name="encryptType"]:checked').val()=="passwordProtect"&&$("#coursePwd").val().length<6){
+			  $.fn.jalert2("信息错误，修改失败");
+			  return;
+		}
 		$.post('${ctx}/ajax/course/updateIsPublish',{
 			courseId : $("#courseId").val(),
 			isPublish: $("#permission").val(),
