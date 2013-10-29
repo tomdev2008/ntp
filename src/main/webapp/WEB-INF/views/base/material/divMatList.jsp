@@ -23,7 +23,7 @@
 					<i class="icon-search"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>含“<a
-					href="#">雅思</a>”的条目${param.order}
+					href="#">雅思</a>”的条目
 				</span> <a class="btn btn-link" href="#rightCont">清空搜索结果</a>
 			</div>
 		</div>

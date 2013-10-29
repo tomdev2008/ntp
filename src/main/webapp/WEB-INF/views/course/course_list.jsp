@@ -31,7 +31,7 @@
 			<div class="btn-toolbar">
 				<label class="muted">排序</label>
 				<div class="btn-group btns-radio" data-toggle="buttons-radio">
-				 <a onclick="findeCoursesByKey('${param.fdTitle}','1','fdtitle')">
+				 <a onclick="findeCoursesByKey('1','fdtitle')">
 				   <c:if test="${param.order=='fdtitle'}">
 					<button class="btn btn-large active" type="button">名称</button>
 				   </c:if>
@@ -39,7 +39,7 @@
 					<button class="btn btn-large" type="button">名称</button>
 				   </c:if>
 				 </a>
-				 <a onclick="findeCoursesByKey('${param.fdTitle}','1','fdcreatetime')">
+				 <a onclick="findeCoursesByKey('1','fdcreatetime')">
 				   <c:if test="${param.order=='fdcreatetime'}">
 					<button class="btn btn-large active" type="button">时间</button>
 				   </c:if>
@@ -47,7 +47,7 @@
 					<button class="btn btn-large" type="button">时间</button>
 				   </c:if>
 				</a>
-			    <a onclick="findeCoursesByKey('${param.fdTitle}','1','fdsorce')">
+			    <a onclick="findeCoursesByKey('1','fdsorce')">
 			      <c:if test="${param.order=='fdsorce'}">
 					<button class="btn btn-large active" type="button">评分</button>
 				   </c:if>
@@ -85,7 +85,7 @@
 						</button>
 					</c:if>
 					<c:if test="${page.isFirstPage()==false}">
-						<a onclick="findeCoursesByKey('${param.fdType}','${page.getPrePage()}')">
+						<a onclick="findeCoursesByKey('${page.getPrePage()}')">
 							<button class="btn btn-primary btn-ctrl" type="button">
 								<i class="icon-chevron-left icon-white"></i>
 							</button>
@@ -97,7 +97,7 @@
 						</button>
 					</c:if>
 					<c:if test="${page.isLastPage()!=true}">
-						<a onclick="findeCoursesByKey('${param.fdType}','${page.getNextPage()}')">
+						<a onclick="findeCoursesByKey('${page.getNextPage()}')">
 							<button class="btn btn-primary btn-ctrl" type="button">
 								<i class="icon-chevron-right icon-white"></i>
 							</button>
@@ -152,7 +152,7 @@
 			</button>
 		</c:if>
 		<c:if test="${page.isFirstPage()==false}">
-			<a onclick="findeCoursesByKey('','${page.getPrePage()}')">
+			<a onclick="findeCoursesByKey('${page.getPrePage()}')">
 				<button class="btn btn-primary btn-ctrl" type="button">
 					<i class="icon-chevron-left icon-white"></i>
 				</button>
@@ -197,7 +197,7 @@
 			</button>
 		</c:if>
 		<c:if test="${page.isLastPage()!=true}">
-			<a onclick="findeCoursesByKey('','${page.getNextPage()}')">
+			<a onclick="findeCoursesByKey('${page.getNextPage()}')">
 				<button class="btn btn-primary btn-ctrl" type="button">
 					<i class="icon-chevron-right icon-white"></i>
 				</button>
@@ -207,25 +207,3 @@
 	</div>
 	</div>
     </div>         
-<script type="text/javascript">	
-
-function findeCoursesByKey(fdTitle,pageNo,order){
-	var fdTitle = document.getElementById("serach").value;
-	$("#pageBody").html("");
-	$.ajax({
-		type: "post",
-		 url: "${ctx}/ajax/course/getCoureInfosOrByKey",
-		data : {
-			"fdTitle" : fdTitle,
-			"pageNo" : pageNo,
-			"order" : order,
-		},
-		cache: false, 
-		dataType: "html",
-		success:function(data){		
-				alert("jj");
-			$("#pageBody").html(data);
-		}
-	}); 
-}
-</script>
