@@ -567,7 +567,7 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script src="${ctx}/resources/js/templDetailPages.js"></script>
-/*上传附件的"浏览"按钮样式*/
+<!--上传附件的"浏览"按钮样式-->
 <style type="text/css">
 .uploadify-button {
     background-color:rgb(67,145,187);
@@ -599,14 +599,14 @@
 	);
 }
 .uploadify-queue-item {
-	background-color: #F5F5F5;
+	background-color: #FFFFFF;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 	font: 11px Verdana, Geneva, sans-serif;
-	margin-top: 5px;
+	margin-top: 1px;
 	max-width: 1000px;
-	padding: 10px;
+	padding: 5px;
 }
 .uploadify-progress {
 	background-color: #E5E5E5;
@@ -774,7 +774,7 @@
 			})
 		.success(function(){
 			//提交成功跳转课程推广
-       	    urlRouter("promotion");
+       	   // urlRouter("promotion");
 		});
     }
 </script>
