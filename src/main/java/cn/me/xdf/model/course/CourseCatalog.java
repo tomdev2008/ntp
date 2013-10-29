@@ -74,12 +74,12 @@ public class CourseCatalog extends IdEntity {
 	/**
 	 * 章节序号
 	 */
-	private String fdNo;
+	private Integer fdNo;
 	
 	/**
 	 * 总序号
 	 */
-	private String fdTotalNo;
+	private Integer fdTotalNo;
 	
 	/**
 	 * 过关条件（%）
@@ -185,19 +185,19 @@ public class CourseCatalog extends IdEntity {
 		this.fdStudyTime = fdStudyTime;
 	}
 
-	public String getFdNo() {
+	public Integer getFdNo() {
 		return fdNo;
 	}
 
-	public void setFdNo(String fdNo) {
+	public void setFdNo(Integer fdNo) {
 		this.fdNo = fdNo;
 	}
 
-	public String getFdTotalNo() {
+	public Integer getFdTotalNo() {
 		return fdTotalNo;
 	}
 
-	public void setFdTotalNo(String fdTotalNo) {
+	public void setFdTotalNo(Integer fdTotalNo) {
 		this.fdTotalNo = fdTotalNo;
 	}
 

@@ -41,7 +41,7 @@ public class CourseContent extends IdEntity{
 	/**
 	 * 素材序号
 	 */
-	private String fdMaterialNo;
+	private Integer fdMaterialNo;
 	
 	/**
 	 * 是否可下载
@@ -78,11 +78,11 @@ public class CourseContent extends IdEntity{
 		this.material = material;
 	}
 
-	public String getFdMaterialNo() {
+	public Integer getFdMaterialNo() {
 		return fdMaterialNo;
 	}
 
-	public void setFdMaterialNo(String fdMaterialNo) {
+	public void setFdMaterialNo(Integer fdMaterialNo) {
 		this.fdMaterialNo = fdMaterialNo;
 	}
 

@@ -130,7 +130,7 @@ public class CourseContentAjaxController {
 									CourseContent courseContent = new CourseContent();
 									courseContent.setMaterial(material);
 									courseContent.setFdRemark(title);
-									courseContent.setFdMaterialNo(index);
+									courseContent.setFdMaterialNo(Integer.parseInt(index));
 									courseContent.setCatalog(catalog);
 									courseContentService.save(courseContent);
 								}

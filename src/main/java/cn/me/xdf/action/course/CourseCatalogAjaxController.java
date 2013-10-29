@@ -135,8 +135,8 @@ public class CourseCatalogAjaxController {
 					String chapterId = (String)chapterMap.get("id");
 					if(StringUtil.isNotEmpty(chapterId)){
 						CourseCatalog courseCatalog = courseCatalogService.get(chapterId);
-						courseCatalog.setFdNo(String.valueOf(chapterMap.get("num")));
-						courseCatalog.setFdTotalNo(String.valueOf(chapterMap.get("index")));
+						courseCatalog.setFdNo((Integer)chapterMap.get("num"));
+						courseCatalog.setFdTotalNo((Integer)chapterMap.get("index"));
 						courseCatalogService.update(courseCatalog);
 					}
 				}
@@ -150,8 +150,8 @@ public class CourseCatalogAjaxController {
 					String lectureId = (String)lectureMap.get("id");
 					if(StringUtil.isNotEmpty(lectureId)){
 						CourseCatalog courseCatalog = courseCatalogService.get(lectureId);
-						courseCatalog.setFdNo(String.valueOf(lectureMap.get("num")));
-						courseCatalog.setFdTotalNo(String.valueOf(lectureMap.get("index")));
+						courseCatalog.setFdNo((Integer)lectureMap.get("num"));
+						courseCatalog.setFdTotalNo((Integer)lectureMap.get("index"));
 						courseCatalogService.update(courseCatalog);
 					}
 				}
@@ -190,9 +190,9 @@ public class CourseCatalogAjaxController {
 		//获取添加的是否为章
 		String isChapter = request.getParameter("ischapter");
 		//获取总序号
-		String fdTotalNo = request.getParameter("fdtotalno");	
+		int fdTotalNo = Integer.parseInt(request.getParameter("fdtotalno"));	
 		//获取章节序号
-		String fdNo = request.getParameter("fdno");	
+		int fdNo = Integer.parseInt(request.getParameter("fdno"));	
 		//获取章节名称
 		String fdName = request.getParameter("title");
 		CourseCatalog courseCatalog = new CourseCatalog();
