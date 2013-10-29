@@ -20,6 +20,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.model.base.IdEntity;
 import cn.me.xdf.model.organization.SysOrgPerson;
 
@@ -36,7 +37,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_MATERIAL")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class MaterialInfo  extends IdEntity {
+public class MaterialInfo  extends IdEntity implements IAttMain{
 	
 	/**
 	 * 素材名称

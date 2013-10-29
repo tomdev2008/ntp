@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import jodd.util.StringUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
@@ -38,6 +42,67 @@ public class MaterialService extends BaseService {
 	public  Class<MaterialInfo> getEntityClass() {
 		return MaterialInfo.class;
 	}
+	
+	
+	/**
+	 * 编辑视频素材
+	 * @param material
+	 * @param fdId
+	 */
+	@Transactional(readOnly = false)
+	public void updateMaterial(MaterialInfo material,String fdId){
+		MaterialInfo info = this.get(fdId);
+		info.setFdAuthorDescription(material.getFdAuthorDescription());
+        info.setFdAuthor(material.getFdAuthor());
+        info.setFdDescription(material.getFdDescription());
+        info.setIsPublish(material.getIsPublish());
+        info.setFdLink(material.getFdLink());
+        info.setFdName(material.getFdName());
+		info.setAuthList(material.getAuthList());
+		info.setQuestions(material.getQuestions());
+		this.update(info);
+	}
+	/**
+	 * 保存素材的相关权限
+	 * @param kingUser
+	 * @param materialId
+	 */
+	@Transactional(readOnly = false)
+	public void saveMaterAuth(String kingUser,String materialId){
+		List<Map> list =  JsonUtils.readObjectByJson(kingUser, List.class);
+		List<MaterialAuth> auths = new ArrayList<MaterialAuth>();
+		MaterialInfo info = this.get(materialId);
+		//删除素材的权限
+		materialAuthService.deleMaterialAuthByMaterialId(materialId);
+		for (Map map : list) {
+			MaterialAuth auth = new MaterialAuth();
+			auth.setMaterial(info);
+			SysOrgPerson fdUser = new SysOrgPerson();
+			fdUser.setFdId((String)map.get("id"));
+			auth.setFdUser(fdUser);
+			auth.setIsReader((Boolean)map.get("tissuePreparation"));
+			auth.setIsEditer((Boolean)map.get("editingCourse"));
+			auths.add(auth);
+		}
+		//插入权限信息
+		for(MaterialAuth auth:auths){
+			materialAuthService.save(auth);
+		}
+	}
+	/**
+	 * 使材料置为无效
+	 * @param str
+	 */
+	@Transactional(readOnly = false)
+	public void disableMaterial(String[] ids){
+		for (String id : ids) {
+			MaterialInfo material = this.get(id);
+			material.setIsAvailable(false);
+			this.update(material);
+		}
+	}
+
+	
 	/**
 	 * 查看可使用的资源（分页操作）
 	 * @param fdType 资源类型
@@ -74,38 +139,6 @@ public class MaterialService extends BaseService {
 		}
 		Pagination page = getPageBySql(finder, pageNo, pageSize);
 		return page;
-	}
-	/**
-	 * 保存素材
-	 * @param info
-	 */
-	@Transactional(readOnly = false)
-	public void saveMaterial(MaterialInfo info){
-		SysOrgPerson creator = new SysOrgPerson();
-		creator.setFdId(ShiroUtils.getUser().getId());
-		info.setCreator(creator);
-		info.setFdCreateTime(new Date());
-		info.setIsAvailable(true);
-		super.save(info);
-	}
-	/**
-	 * 编辑素材
-	 * @param material
-	 * @param fdId
-	 */
-	@Transactional(readOnly = false)
-	public void updateMaterial(MaterialInfo material,String fdId){
-		MaterialInfo info = this.get(fdId);
-		info.setFdAuthorDescription(material.getFdAuthorDescription());
-        info.setFdAuthor(material.getFdAuthor());
-        info.setFdDescription(material.getFdDescription());
-        info.setIsPublish(material.getIsPublish());
-        info.setFdLink(material.getFdLink());
-        info.setFdName(material.getFdName());
-		info.setAttMains(material.getAttMains());
-		info.setAuthList(material.getAuthList());
-		info.setQuestions(material.getQuestions());
-		this.update(info);
 	}
 	
 	/**

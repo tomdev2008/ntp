@@ -12,7 +12,7 @@ import cn.me.xdf.service.BaseService;
  * 
  * 资源权限service
  * 
- * @author zhaoq
+ * @author
  * 
  */
 @Service

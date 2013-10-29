@@ -1,6 +1,7 @@
 package cn.me.xdf.action.material;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -86,6 +88,40 @@ public class MaterialAjaxController {
 		map.put("id", materialInfo.getFdId());
 		map.put("name", materialInfo.getFdName());
 		return map;
+	}
+	
+	/**
+	 * 更新或保存素材
+	 * @param materialInfo
+	 * @return
+	 */
+	@RequestMapping(value="saveOrUpdateVideo", method = RequestMethod.POST)
+	public void saveOrUpdateVideo(HttpServletRequest request){
+		MaterialInfo info = new MaterialInfo();
+		info.setFdAuthor(request.getParameter("author"));
+		info.setFdAuthorDescription(request.getParameter("authorIntro"));
+		info.setFdLink(request.getParameter("videoUrl"));
+		info.setFdName(request.getParameter("videoName"));
+		info.setFdDescription(request.getParameter("videoIntro"));
+		String permission = request.getParameter("permission");
+		String kingUser = request.getParameter("kingUser");
+		if(permission.equals("open")){
+			info.setIsPublish(true);
+		} else {
+			info.setIsPublish(false);
+		}
+		String fdId = request.getParameter("fdId");
+		if(StringUtil.isBlank(fdId)){
+			SysOrgPerson creator = new SysOrgPerson();
+			creator.setFdId(ShiroUtils.getUser().getId());
+			info.setCreator(creator);
+			info.setFdCreateTime(new Date());
+			info.setIsAvailable(true);
+			materialService.save(info);
+		} else {
+			materialService.updateMaterial(info, fdId);
+			materialService.saveMaterAuth(kingUser,fdId);
+		}
 	}
 
 }

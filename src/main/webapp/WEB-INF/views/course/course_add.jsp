@@ -331,9 +331,11 @@
 									{{?index == user.index}}
 									<tr data-fdid="{{=user.id}}">
 										<td class="tdTit">
+                                          <div class="pr">
 											<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 											<img src="{{=user.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=user.name}}（{{=user.mail}}），{{=user.org}} {{=user.department}}
-										</td>
+										 </div>
+                                          </td>
 										<td><input type="checkbox" {{?user.tissuePreparation}}checked{{?}} class="tissuePreparation" /></td>
 										<td><input type="checkbox" {{?user.editingCourse}}checked{{?}} class="editingCourse" /></td>
 										<td><a href="#" class="icon-remove-blue"></a></td>
@@ -353,9 +355,11 @@
 <script id="listUserKinguserTemplate" type="text/x-dot-template">
 <tr data-fdid="{{=it.id}}">
 	<td class="tdTit">
+     <div class="pr">
 		<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 		<img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
-	</td>
+     <div>	
+    </td>
 	<td><input type="checkbox" checked class="tissuePreparation" /></td>
 	<td><input type="checkbox" class="editingCourse" /></td>
 	<td><a href="#" class="icon-remove-blue"></a></td>
