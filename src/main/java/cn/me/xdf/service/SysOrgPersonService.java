@@ -28,7 +28,7 @@ public class SysOrgPersonService extends BaseService{
 	public List<SysOrgPerson> findUserByLinkLoginAndRealNameTop10(String key){
 		Finder finder = Finder
 				.create("from SysOrgPerson p ");
-		finder.append("where (lower(p.loginName like) :key1  or lower(p.notifyEntity.realName) like :key2) and p.loginName <> :admin");
+		finder.append("where (lower(p.loginName) like :key1  or lower(p.notifyEntity.realName) like :key2) and p.loginName <> :admin");
 		finder.setParam("key1", "%"+key+"%");
 		finder.setParam("key2", "%"+key+"%");
 		finder.setParam("admin", "admin");
