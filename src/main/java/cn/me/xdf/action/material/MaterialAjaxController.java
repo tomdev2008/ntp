@@ -1,5 +1,6 @@
 package cn.me.xdf.action.material;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.material.MaterialService;
+import cn.me.xdf.utils.ShiroUtils;
 
 @Controller
 @RequestMapping(value = "/ajax/material")
@@ -54,6 +58,30 @@ public class MaterialAjaxController {
 		String key = request.getParameter("q");
 		String type = request.getParameter("type");
 		return materialService.getMaterialsTop10Bykey(key, type);
+	}
+	
+	@RequestMapping(value = "saveMaterial")
+	@ResponseBody
+	public String saveMaterial(HttpServletRequest request){
+		String type = request.getParameter("type");
+		String fileName = request.getParameter("fileName");
+		String attId = request.getParameter("attId");
+		MaterialInfo materialInfo = new MaterialInfo();
+		materialInfo.setFdName(fileName);
+		materialInfo.setFdType(type);
+		materialInfo.setIsAvailable(true);
+		materialInfo.setIsPublish(true);
+		materialInfo.setIsDownload(true);
+		SysOrgPerson creator = new SysOrgPerson();
+		creator.setFdId(ShiroUtils.getUser().getId());
+		materialInfo.setCreator(creator);
+		List<AttMain> attMains = new ArrayList<AttMain>();
+		AttMain attMain = new AttMain();
+		attMain.setFdId(attId);
+		attMains.add(attMain);
+		materialInfo.setAttMains(attMains);
+		materialService.save(materialInfo);
+		return "asdasd";
 	}
 
 }

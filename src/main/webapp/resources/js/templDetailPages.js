@@ -118,6 +118,43 @@
 		              $("#rightCont").html(mediaPageFn(data));
 				  },
 			});
+        	jQuery(function() {
+                jQuery("#upMaterial").uploadify({
+                    'height' : 27,
+                    'width' : 80,
+                    'multi' : false,
+                    'simUploadLimit' : 1,
+                    'swf' : $('#ctx').val()+'/resources/uploadify/uploadify.swf',
+                    'buttonText' : '浏览',
+                    'uploader' : $('#ctx').val()+'/common/file/o_upload',
+                    'auto' : true,
+//                    'queueID': 'qdiv',
+                    'fileTypeExts' : '*.jpg;*.png;',
+                    'onUploadStart' : function (file) {
+                        jQuery("#upMaterial").uploadify("settings", "formData");
+                    },
+                    'onUploadSuccess' : function (file, data, Response) {
+                        if (Response) {
+                            var objvalue = eval("(" + data + ")");
+                            jQuery("#upMaterial").val(objvalue.attId);
+                        }
+                        $.ajax({
+          				  url: $("#ctx").val()+"/ajax/material/saveMaterial",
+          				  async:false,
+          				  data:{
+          					  type : type,
+          					  fileName : file.name,
+          					  attId : objvalue.attId
+          				  },
+          				  dataType : 'json',
+          				  success: function(rsult){
+          					 
+          				  }
+                        });
+                    },
+                    'removeCompleted':false
+                });
+            });
         	/*
             data = {
                 learnTime: "",
