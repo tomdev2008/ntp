@@ -54,8 +54,7 @@
 
 /* 课程推广页 */
 .courseCover{padding:8px 0 18px;}
-.control-upload .progress{width:484px;height:24px;padding:2px;border:solid #d0e3ee 1px;background-color:#FFF;display:inline-block;margin-bottom:0;vertical-align:middle;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
-.control-upload .txt{margin:0 10px;color:#888;}
+
 .courseSkins{margin-top:20px;overflow:hidden;}
 .courseSkins label{padding-left:20px;}
 .courseSkins .courseSkinList{margin-left:-20px;margin-bottom:0;}

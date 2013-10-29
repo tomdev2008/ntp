@@ -27,11 +27,15 @@
 .sidenav > .active > a > i{-ms-background-position-x: right;background-position-x: right;}
 
 /*right content*/
-.page-header{position:relative;overflow:hidden;background-color:#FFF;margin:0;padding:18px 20px;line-height:24px;height:24px;
-    border-bottom:solid #dcdcdc 2px;}
+.lt-ie9 .input-block-level{min-height: 20px;}
+.bder2{border-bottom:solid #dcdcdc 2px;}
+.page-header{position:relative;overflow:hidden;background-color:#FFF;margin:0;padding:18px 20px;line-height:24px;height:24px;}
 .page-header .backHome{position: absolute;right: 20px;top: 14px;}
 .page-header .backHome a{color: #000000;display: block;
     line-height: 34px;}
+.page-header .backParent{position: absolute;left: 20px;top:18px;}
+.page-header .btn-group{position: absolute;right: 12px;top:10px;}
+.page-header h4{text-align: center;margin: 0;line-height: 24px;}
 .box-control{margin-top: 25px}
 .box-control .hd{border-bottom: solid #e5e5e5 1px;padding: 15px 0;}
 .box-control .hd .btn-toolbar{margin: 0 18px}
@@ -61,10 +65,39 @@
 .listWrap .list>li>a .date > i{margin-right: 8px;}
 .listWrap .list>li>a .rating-view{position: relative;top: -1px;}
 .listWrap .list>li>a .btns{position: absolute;right: 20px;top: 22px;}
-.listWrap .list>li>a .btns .btn{padding: 0 6px;color: #4391bb;text-decoration: none;border: none;}
-.listWrap .list>li>a .btns .btn + .btn{border-left: solid #a6a6a6 1px;}
-.listWrap .list>li>a .btns .btn i{margin-right: 5px;}
-.listWrap .list>li>a:hover .icon-thumbs-up{background-position: right -296px;}
-.listWrap .list>li>a:hover .icon-eye{background-position: right -256px;}
-.listWrap .list>li>a:hover .icon-download{background-position: right -336px;}
+.listWrap .list>li>a .btns .btn,.btns-handle .btn{padding: 0 6px;color: #4391bb;text-decoration: none;border: none;}
+.listWrap .list>li>a .btns .btn + .btn,.btns-handle .btn + .btn{border-left: solid #a6a6a6 1px;}
+.listWrap .list>li>a .btns .btn i,.btns-handle .btn i{margin-right: 5px;}
+.btns-handle .active.btn {    background-color: transparent;}
+.listWrap .list>li>a:hover .icon-thumbs-up,.btn:hover .icon-thumbs-up,.active.btn .icon-thumbs-up {background-position: right -296px;}
+.listWrap .list>li>a:hover .icon-eye,.btn:hover .icon-eye,.active.btn .icon-eye{background-position: right -256px;}
+.listWrap .list>li>a:hover .icon-download,.btn:hover .icon-download,.active.btn .icon-download{background-position: right -336px;}
 .page-body > .pages{text-align: right;margin-top: 20px;}
+.media-placeholder{color:#fff;font-size:16px;height:510px;text-align:center;line-height:700px;overflow:hidden;background: #a0c9db url("../images/video-transform-type.png") no-repeat 50% 50%;*background-position: 50% 180px;}
+.state-dragable{position:absolute;}
+.state-dragable .icon-bar{display:block;width:20px;height:1px;margin-bottom:3px;background-color:#75777a}
+.page-body .btn-submit{padding:19px 0;margin-top:20px;}
+
+/*视频编辑页面*/
+.editingBody .section{padding: 20px;}
+.editingBody .section .control-group .control-label{width: 60px;text-align: left;}
+.editingBody .section .control-group .controls{
+    margin-left: 80px;*margin-left: 0;position: relative;}
+.editingBody .section .control-group .controls input,.editingBody .control-group .controls textarea{
+    background-color: #efefef;}
+.editingBody .section .control-group .input-block-level{*width: 648px;}
+.controls-txt{padding-top: 8px;}
+.editingBody .controls .date{  position: absolute;right: 0;top: 10px;color: #999;}
+.editingBody .nav-pills{margin:-32px 0 0 74px;}
+.editingBody .nav-pills li a{margin:0;border:solid #e5e4e5 1px;padding:10px 16px;color:#000;}
+.editingBody .nav-pills .active a{border-color:#4391bb;background-color:#4391bb;color:#fff;}
+.editingBody .tab-content{margin-top:20px;overflow: visible;}
+.editingBody #open.tab-pane{padding:16px;background-color:#efefef;border:solid #d7d6d6 1px;}
+.editingBody .tab-content .autoComplete{*width: 728px}
+.editingBody .tab-content .autoComplete + .icon-search{position: absolute;right: 10px;top: 10px;}
+.editingBody .tab-content .table td,.kinguser-content .table th{text-align:center;line-height:36px;padding:12px;}
+.editingBody .tab-content .table .tdTit img{width:36px;height:36px;margin-right:8px;}
+.editingBody .tab-content .table .tdTit .pr{text-align:left;padding-left:50px;}
+.editingBody .tab-content .table .tdTit .state-dragable{left:18px;top:12px;}
+.editingBody .tab-content .table .sortable-placeholder{border:dashed #4391bb 1px;height:60px;padding:0;}
+.editingBody .tab-content .table tbody a.icon-remove-blue,.kinguser-content .table tbody input{vertical-align:middle;}
