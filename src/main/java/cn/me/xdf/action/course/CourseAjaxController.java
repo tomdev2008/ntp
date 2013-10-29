@@ -454,6 +454,7 @@ public class CourseAjaxController {
      * author hanhl
      */
     @RequestMapping(value = "cover")
+    @ResponseBody
     public void courseCover(HttpServletRequest request) {
     	String courseId=request.getParameter("courseId");
     	String attMainId=request.getParameter("attId");

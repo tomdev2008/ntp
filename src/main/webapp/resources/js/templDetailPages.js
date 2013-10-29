@@ -675,12 +675,11 @@
 	                    },
 	                    'onSelect':function(file){
 	                    	//选择新文件时,先清文件列表,因为此处是课程封页,所以只需要一个图片附件
-	                    	swfuploadify = this;
 	                    	var queuedFile = {};
 	            			for (var n in this.queueData.files) {
 	            					queuedFile = this.queueData.files[n];
 	            					if(queuedFile.id!=file.id){
-	            						delete swfuploadify.queueData.files[queuedFile.id]
+	            						delete this.queueData.files[queuedFile.id]
 	            						$('#' + queuedFile.id).fadeOut(0, function() {
 	            							$(this).remove();
 	            						});
