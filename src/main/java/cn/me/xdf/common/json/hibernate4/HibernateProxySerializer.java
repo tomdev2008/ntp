@@ -79,11 +79,6 @@ public class HibernateProxySerializer
             provider.defaultSerializeNull(jgen);
             return;
         }
-        /* This isn't exactly right, since type serializer really refers to proxy
-         * object, not value. And we really don't either know static type (necessary
-         * to know how to apply additional type info) or other things;
-         * so it's not going to work well. But... we'll do out best.
-         */
         findSerializer(provider, proxiedValue).serializeWithType(proxiedValue, jgen, provider, typeSer);
     }
 
