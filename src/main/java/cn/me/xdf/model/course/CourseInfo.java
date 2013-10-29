@@ -142,20 +142,6 @@ public class CourseInfo extends IdEntity implements IAttMain{
 	 */
 	private String fdStatus;
 	
-	/**
-	 * 章节
-	 */
-	private List<CourseCatalog> catalogList;
-
-	@OneToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "courseInfo")
-	public List<CourseCatalog> getCatalogList() {
-		return catalogList;
-	}
-
-	public void setCatalogList(List<CourseCatalog> catalogList) {
-		this.catalogList = catalogList;
-	}
-
 	public String getFdTitle() {
 		return fdTitle;
 	}
