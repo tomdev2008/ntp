@@ -33,7 +33,7 @@ public class JsonModelUtils extends BaseTest {
         catalog1.setHbmParent(null);
 
         items.add(catalog1);
-        courseInfo.setCatalogList(items);
+        //courseInfo.setCatalogList(items);
 
         String jsonStr = JsonUtils.writeObjectToJson(courseInfo);
         System.out.println("json===" + jsonStr);
