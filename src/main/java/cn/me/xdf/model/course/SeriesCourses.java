@@ -42,7 +42,7 @@ public class SeriesCourses extends IdEntity{
 	/**
 	 * 课程序号
 	 */
-	private String fdCourseNo;
+	private Integer fdCourseNo;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdSeriesId")
@@ -64,11 +64,11 @@ public class SeriesCourses extends IdEntity{
 		this.courses = courses;
 	}
 
-	public String getFdCourseNo() {
+	public Integer getFdCourseNo() {
 		return fdCourseNo;
 	}
 
-	public void setFdCourseNo(String fdCourseNo) {
+	public void setFdCourseNo(Integer fdCourseNo) {
 		this.fdCourseNo = fdCourseNo;
 	}
 	
