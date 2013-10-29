@@ -430,7 +430,9 @@
                 <label>或者从 <a href="#">课程素材库</a> 中选择{{=it.typeTxt}}</label>
                 <div class="autoCompleteWrap">
 					<input id="addMedia" type="text" />
-                    <button class="btn btn-primary btn-large" type="button" >选择</button>
+					<!--
+					<button class="btn btn-primary btn-large" type="button" >选择</button>
+					-->
                 </div>
             </div>
            <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
