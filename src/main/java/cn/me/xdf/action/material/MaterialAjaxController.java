@@ -1,6 +1,7 @@
 package cn.me.xdf.action.material;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,7 @@ public class MaterialAjaxController {
 	
 	@RequestMapping(value = "saveMaterial")
 	@ResponseBody
-	public String saveMaterial(HttpServletRequest request){
+	public Map saveMaterial(HttpServletRequest request){
 		String type = request.getParameter("type");
 		String fileName = request.getParameter("fileName");
 		String attId = request.getParameter("attId");
@@ -81,7 +82,10 @@ public class MaterialAjaxController {
 		attMains.add(attMain);
 		materialInfo.setAttMains(attMains);
 		materialService.save(materialInfo);
-		return "asdasd";
+		Map map = new HashMap();
+		map.put("id", materialInfo.getFdId());
+		map.put("name", materialInfo.getFdName());
+		return map;
 	}
 
 }

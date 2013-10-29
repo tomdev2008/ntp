@@ -69,6 +69,46 @@
                  data.uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
                  $("#rightCont").html(mediaPageFn(data));
              });*/
+        	var data_type;
+        	var data_typeTxt;
+        	var data_uploadIntro;
+        	switch(type){
+          	case "01":
+          		data_type = "video";
+          		data_typeTxt = "视频";
+          		data_uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
+          		break;
+            case "02":
+            	data_type = "audio";
+            	data_typeTxt = "音频";
+            	data_uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的视频将会显示在下面的音频列表中。";
+	            break;
+            case "04":
+            	data_type = "doc";
+            	data_typeTxt = "文档";
+            	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的视频将会显示在下面的文档列表中。";
+	            break;
+            case "05":
+            	data_type = "ppt";
+            	data_typeTxt = "幻灯片";
+            	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的视频将会显示在下面的幻灯片列表中。";
+	            break;
+            case "03":
+            	data_type = "img";
+            	data_typeTxt = "图片";
+            	data_uploadIntro = "上传视频（支持JPG、PNG、BMP格式的图片，建议小于10G）：成功上传的视频将会显示在下面的图片列表中。";
+	            break;
+            case "08":
+            	data_type = "exam";
+            	data_typeTxt = "测试";
+            	data_uploadIntro = "";
+	            break;
+            case "10":
+            	data_type = "task";
+            	data_typeTxt = "作业";
+            	data_uploadIntro = "";
+	            break;
+          }
         	$.ajax({
 				  url: $('#ctx').val()+"/ajax/courseContent/getMaterialsByCategoryId",
 				  async:false,
@@ -78,43 +118,9 @@
 					  data = rsult;
 		              data.pageTitle = opt.title;
 		              data.lectureIndex = numParseCN(opt.index);
-		              switch(type){
-		              	case "01":
-		              		data.type = "video";
-		              		data.typeTxt = "视频";
-		              		data.uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
-		              		break;
-		                case "02":
-		                	data.type = "audio";
-		                	data.typeTxt = "音频";
-				            data.uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的视频将会显示在下面的音频列表中。";
-				            break;
-		                case "04":
-		                	data.type = "doc";
-		                	data.typeTxt = "文档";
-				            data.uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的视频将会显示在下面的文档列表中。";
-				            break;
-		                case "05":
-		                	data.type = "ppt";
-		                	data.typeTxt = "幻灯片";
-				            data.uploadIntro = "上传幻灯片（建议小于10G）：成功上传的视频将会显示在下面的幻灯片列表中。";
-				            break;
-		                case "03":
-		                	data.type = "img";
-		                	data.typeTxt = "图片";
-				            data.uploadIntro = "上传视频（支持JPG、PNG、BMP格式的图片，建议小于10G）：成功上传的视频将会显示在下面的图片列表中。";
-				            break;
-		                case "08":
-		                	data.type = "exam";
-		                	data.typeTxt = "测试";
-				            data.uploadIntro = "";
-				            break;
-		                case "10":
-		                	data.type = "task";
-		                	data.typeTxt = "作业";
-				            data.uploadIntro = "";
-				            break;
-		              }
+		              data.type = data_type;
+		              data.typeTxt = data_typeTxt;
+		              data.uploadIntro = data_uploadIntro;
 		              $("#rightCont").html(mediaPageFn(data));
 				  },
 			});
@@ -148,7 +154,10 @@
           				  },
           				  dataType : 'json',
           				  success: function(rsult){
-          					 
+          					  rsult.typeTxt = data_typeTxt;
+          					  rsult.index = $listMedia.children("li").length + 1;
+                              $listMedia.append(mediaListFn(rsult)).sortable();
+                              $("#mediaCount").text($listMedia.children("li").length);
           				  }
                         });
                     },
