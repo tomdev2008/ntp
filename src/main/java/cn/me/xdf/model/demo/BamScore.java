@@ -10,6 +10,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.List;
 
+import static cn.me.xdf.common.json.JsonUtils.*;
+
 /**
  *
  *
@@ -81,7 +83,7 @@ public class BamScore extends IdEntity implements BamProcess {
     @JsonIgnore
     public List<CourseCatalog> getCatalogs() {
         if (StringUtils.isNotBlank(catalogJson)) {
-            return (List<CourseCatalog>) JsonUtils.readObjectByJson(catalogJson, List.class);
+            return readObjectByJson(catalogJson, List.class);
         }
         return null;
     }
