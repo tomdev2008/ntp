@@ -418,11 +418,8 @@
 		    <div class="section" >
 					<label>{{=it.uploadIntro || ''}}</label>
 					<div class="control-upload">
-						<span class="progress">
-		            		<div class="bar" style="width:20%;"></div>
-		            	</span>
-						<span class="txt"><span>20%</span>，剩余时间：<span>00:00:29</span></span>
-						<button class="btn btn-primary btn-large" type="button" >上传</button>
+						<input type="file" name="upMaterial" id="upMaterial" />
+						<input type="hidden" name="upMaterial" id="upMaterialId"  />
 					</div>
 	        </div>
 			{{?}}
@@ -562,6 +559,8 @@
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap.min.js"></script>
 <script src="${ctx}/resources/js/jquery.sortable.js"></script>
+<link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script src="${ctx}/resources/js/templDetailPages.js"></script>
