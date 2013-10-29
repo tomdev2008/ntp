@@ -254,16 +254,19 @@
 	    	<div class="section" >              	
 					<label for="CourseCover">课程封面</label>
 					<input id="courseCover" name="courseCover" class="input-block-level" type="hidden" value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
-					<div class="courseCover"><img src="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" alt="" /></div>					
+												<!--图片预览-->
+					<div class="courseCover"><img id="imgshow" name="imgshow" style="width: 300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/zht-main-img.jpg'}}" alt="" /></div>					
 	       </div>
 		   <div class="section" >              	
 					<label>上传图片（支持JPG\JPEG、PNG、BMP格式的图片，建议小于2M）</label>
 					<div class="control-upload">
-						<span class="progress">
-		            		<div class="bar" style="width:20%;"></div>
-		            	</span>	
-						<span class="txt"><span>20%</span>，剩余时间：<span>00:00:29</span></span>	
-						<button class="btn btn-primary btn-large" type="button" >上传</button>
+							<table width="100%">
+								<tr>
+									<td width="85%"><div id='qdiv' class="uploadify-queue-item"></div></td>
+									<td width="15%"><input type="file" class="btn btn-primary btn-large" type="button" name="upMovie" id="upMovie" /></td>
+								</tr>
+							</table>
+							<input type="hidden" name="attId" id="attIdID"  />
 					</div>		
 	       </div>		  
 		   <div class="courseSkins">
@@ -275,7 +278,7 @@
 					{{~}}                    	                  
 				</ul>
 			</div>
-           <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
+           <button class="btn btn-block btn-submit btn-inverse" type="submit"  onclick="saveCoursePic();">保存</button>
        </form>	  
 	 </div> 	
 </script>
@@ -564,6 +567,58 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script src="${ctx}/resources/js/templDetailPages.js"></script>
+/*上传附件的"浏览"按钮样式*/
+<style type="text/css">
+.uploadify-button {
+    background-color:rgb(67,145,187);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(67,145,187)),
+		color-stop(1, rgb(67,145,187))
+	);
+	max-width:70px;
+	max-height:30px;
+	border-radius: 1px;
+	border: 0px;
+	font: bold 12px Arial, Helvetica, sans-serif;
+	display: block;
+	text-align: center;
+	text-shadow: 0 0px 0 rgba(0,0,0,0.25);
+    
+}
+.uploadify:hover .uploadify-button {
+    background-color:rgb(67,145,187);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(67,145,187)),
+		color-stop(1, rgb(67,145,187))
+	);
+}
+.uploadify-queue-item {
+	background-color: #F5F5F5;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font: 11px Verdana, Geneva, sans-serif;
+	margin-top: 5px;
+	max-width: 1000px;
+	padding: 10px;
+}
+.uploadify-progress {
+	background-color: #E5E5E5;
+	margin-top: 10px;
+	width: 100%;
+}
+.uploadify-progress-bar {
+	background-color: #0099FF;
+	height: 30px;
+	width: 1px;
+}
+</style>
 <script type="text/javascript">	
 	
 	//点击左侧菜单事件
@@ -711,6 +766,17 @@
 	function releaseCourse(){
 		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
 	}
+	//课程封页图片保存
+    function saveCoursePic(){
+    	$.post('${ctx}/ajax/course/cover',{
+			courseId : $("#courseId").val(),
+			attId: $("#attIdID").val(),
+			})
+		.success(function(){
+			//提交成功跳转课程推广
+       	    urlRouter("promotion");
+		});
+    }
 </script>
 </body>
 </html>

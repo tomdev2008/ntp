@@ -57,29 +57,7 @@ public class CourseController {
 	public String addCourse() {
 		return "/course/course_add";
 	}
-	/*
-     * 课程封页图片
-     * author hanhl
-     */
-
-	 @RequestMapping(value = "coverpage", method = RequestMethod.GET)
-	    public String init() {
-	        return "/course/course_cover";
-	    }
-
-    @RequestMapping(value = "cover", method = RequestMethod.POST)
-    public String courseCover(HttpServletRequest request) {
-    	String courseId=request.getParameter("courseId");
-    	String attMainId=request.getParameter("attId");
-    	AttMain attMain = attMainService.get(attMainId);
-    	 attMain.setFdModelId(courseId);
-    	 attMain.setFdModelName(""+CourseInfo.class);
-    	 attMain.setFdKey("Course");
-    	 attMainService.save(attMain);
-        
-      return "redirect:/course/coverpage";
-    }
-    
+	
     /**
 	 * 发布课程
 	 * @param request

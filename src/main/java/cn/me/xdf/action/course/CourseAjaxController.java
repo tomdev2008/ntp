@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseCatalog;
@@ -26,6 +27,7 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseAuthService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseCategoryService;
@@ -70,7 +72,8 @@ public class CourseAjaxController {
 	
 	@Autowired
 	private CourseAuthService courseAuthService;
-	
+	@Autowired
+    private AttMainService attMainService;
 	/**
 	 * 获取当前课程的基本信息
 	 * @param request
@@ -446,4 +449,19 @@ public class CourseAjaxController {
 			}
 		}
 	}
+	/*
+     * 课程封页图片
+     * author hanhl
+     */
+    @RequestMapping(value = "cover")
+    public void courseCover(HttpServletRequest request) {
+    	String courseId=request.getParameter("courseId");
+    	String attMainId=request.getParameter("attId");
+    	AttMain attMain = attMainService.get(attMainId);
+    	 attMain.setFdModelId(courseId);
+    	 attMain.setFdModelName("cn.me.xdf.model.course.CourseInfo");
+    	 attMain.setFdKey("Course");
+    	 attMainService.update(attMain);
+        
+    }
 }
