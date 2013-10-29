@@ -35,9 +35,9 @@ public class JsonModelUtils extends BaseTest {
         items.add(catalog1);
         //courseInfo.setCatalogList(items);
 
-        String jsonStr = JsonUtils.writeObjectToJson(courseInfo);
+        String jsonStr = JsonUtils.writeObjectToJson(items);
         System.out.println("json===" + jsonStr);
-        CourseInfo courseJson = JsonUtils.readObjectByJson(jsonStr, CourseInfo.class);
-        System.out.println("courseJson.fdTitle===" + courseJson.getFdTitle());
+        List<CourseCatalog> courseJson = JsonUtils.readObjectByJson(jsonStr, List.class);
+
     }
 }

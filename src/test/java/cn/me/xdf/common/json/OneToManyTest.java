@@ -49,6 +49,37 @@ public class OneToManyTest extends JunitBaseTest {
         assertEquals(EXPECTED_JSON, mapWithHibernateModule(object));
     }
 
+    public void testJsonToList() {
+        CourseInfo courseInfo = new CourseInfo();
+        courseInfo.setFdId("courseInfo_id");
+        courseInfo.setFdTitle("courseInfo_title");
+
+        List<CourseCatalog> items = new ArrayList<CourseCatalog>();
+
+        CourseCatalog catalog1 = new CourseCatalog();
+        catalog1.setFdId("catelog1_id");
+        catalog1.setFdName("第一节");
+        catalog1.setCourseInfo(courseInfo);
+        catalog1.setFdDescription("说明");
+        catalog1.setHbmParent(null);
+
+        items.add(catalog1);
+
+
+        CourseCatalog catalog2 = new CourseCatalog();
+        catalog2.setFdId("catelog2_id");
+        catalog2.setFdName("第二节");
+        catalog2.setCourseInfo(courseInfo);
+        catalog2.setFdDescription("说明");
+        catalog2.setHbmParent(null);
+        items.add(catalog2);
+
+        String jsonStr = JsonUtils.writeObjectToJson(items);
+        System.out.println("json===" + jsonStr);
+        List<CourseCatalog> courseJson = JsonUtils.readObjectByJson(jsonStr, List.class);
+        System.out.println(courseJson.size());
+    }
+
     private String mapWithHibernateModule(Object object) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Hibernate4Module());
