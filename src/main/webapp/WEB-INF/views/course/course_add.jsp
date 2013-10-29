@@ -301,7 +301,7 @@
 						</div>
 						<div class="tab-pane{{?it.permission == 'encrypt'}} active{{?}}" id="encrypt">
 							<label  class="radio" for="authorized"><input type="radio" onclick="removePass()" value="authorized" {{?it.encryptType == 'authorized' || it.encryptType == ''}}checked{{?}} name="encryptType" id="authorized" /><span class="labelTxt">授权组织备课</span>前往 <a href="#kinguser" onClick="urlRouter()" >授权管理</a> 本课程的用户列表</label>
-							<label  class="radio" for="passwordProtect"><input type="radio" value="passwordProtect" {{?it.encryptType == 'passwordProtect'}}checked{{?}} name="encryptType" id="passwordProtect" /><span class="labelTxt">密码保护</span><input type="password" id="coursePwd"  name="coursePwd" {{?it.encryptType != 'passwordProtect'}}disabled{{?}} placeholder="请填写课程访问的密码" value="{{=it.coursePwd}}" /></label>
+							<label  class="radio" id="passRadio" for="passwordProtect"><input type="radio" value="passwordProtect" {{?it.encryptType == 'passwordProtect'}}checked{{?}} name="encryptType" id="passwordProtect" /><span class="labelTxt">密码保护</span><input type="password" id="coursePwd"  name="coursePwd" {{?it.encryptType != 'passwordProtect'}}disabled{{?}} placeholder="请填写课程访问的密码" value="{{=it.coursePwd}}" /></label>
 						</div>
 					</div>					
 	       </div>		 
@@ -758,9 +758,8 @@
 		
 	//ajax保存课程详细信息
 	function saveIsPublish(){
-		if($(':radio[name="encryptType"]:checked').val()=="passwordProtect"&&$("#coursePwd").val().length<6){
-			  $.fn.jalert2("信息错误，修改失败");
-			  return;
+		if($(':radio[name="encryptType"]:checked').val()=="passwordProtect"&&!$("#formAccessRight").valid()){
+			return;
 		}
 		$.post('${ctx}/ajax/course/updateIsPublish',{
 			courseId : $("#courseId").val(),
@@ -775,6 +774,9 @@
 	}
 	//清空密码input
 	function removePass(){
+		$("#coursePwd").attr("class", "valid");
+		$("#passRadio label").remove();
+		
 		$("#coursePwd").val("");
 	}
 	
