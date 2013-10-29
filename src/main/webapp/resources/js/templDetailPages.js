@@ -132,7 +132,6 @@
 		              $("#rightCont").html(mediaPageFn(data));
 				  },
 			});
-        	jQuery(function() {
                 jQuery("#upMaterial").uploadify({
                     'height' : 27,
                     'width' : 80,
@@ -171,7 +170,7 @@
                     },
                     'removeCompleted':false
                 });
-            });
+
         	/*
             data = {
                 learnTime: "",
@@ -643,7 +642,7 @@
 				$("#courseSkin").val($(this).next("h5").text());
 			});		
 			/*课程推广 封页图片上传*/
-			 jQuery(function() {
+
 	                jQuery("#upMovie").uploadify({
 	                    'height' : 27,
 	                    'width' : 80,
@@ -690,7 +689,7 @@
 	                    },
 	                    'removeCompleted':false //进度条不消失
 	                });
-	            });
+
 		}
 		
 		//加载详细信息	

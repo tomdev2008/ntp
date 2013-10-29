@@ -622,7 +622,13 @@
 <script type="text/javascript">	
 	
 	//点击左侧菜单事件
-	$("#sideNav>li>a").bind("click",function(e){		
+	$("#sideNav>li>a").bind("click",function(e){	
+		if ($('#upMovie').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+		     $('#upMovie').uploadify('destroy'); 
+		}
+		if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+		     $('#upMaterial').uploadify('destroy'); 
+		}
 		urlRouter();		
 	});
 	
