@@ -260,13 +260,12 @@
 		   <div class="section" >              	
 					<label>上传图片（支持JPG\JPEG、PNG、BMP格式的图片，建议小于2M）</label>
 					<div class="control-upload">
-							<table width="100%">
-								<tr>
-									<td width="85%"><div id='qdiv' class="uploadify-queue-item"></div></td>
-									<td width="15%"><input type="file" class="btn btn-primary btn-large" type="button" name="upMovie" id="upMovie" /></td>
-								</tr>
-							</table>
-							<input type="hidden" name="attId" id="attIdID"  />
+						 <div id="qdiv" style="height:20px;width:650px;display:block;">
+							 
+ 						 </div>
+						 <div style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
+						     <button id="upMovie" class="btn btn-primary btn-large" type="button" >上传</button>
+						 </div>
 					</div>		
 	       </div>		  
 		   <div class="courseSkins">
@@ -421,8 +420,15 @@
 		    <div class="section" >
 					<label>{{=it.uploadIntro || ''}}</label>
 					<div class="control-upload">
-						<input type="file" name="upMaterial" id="upMaterial" />
-						<input type="hidden" name="upMaterial" id="upMaterialId"  />
+
+						<div id="upMaterialDiv" style="height:20px;width:650px;display:block;">
+							 
+ 						 </div>
+						 <div  style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
+						     <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>
+						 </div>
+
+
 					</div>
 	        </div>
 			{{?}}
@@ -614,8 +620,8 @@
 	width: 100%;
 }
 .uploadify-progress-bar {
-	background-color: #0099FF;
-	height: 30px;
+	background-color: rgb(67,145,187);
+	height: 27px;
 	width: 1px;
 }
 </style>
