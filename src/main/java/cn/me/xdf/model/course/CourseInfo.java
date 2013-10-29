@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -23,6 +25,7 @@ import cn.me.xdf.annotaion.AttValues;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.model.base.IdEntity;
+import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.organization.SysOrgPerson;
 
 /**
@@ -138,6 +141,20 @@ public class CourseInfo extends IdEntity implements IAttMain{
 	 * 状态：00草稿，01发布
 	 */
 	private String fdStatus;
+	
+	/**
+	 * 章节
+	 */
+	private List<CourseCatalog> catalogList;
+
+	@OneToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "courseInfo")
+	public List<CourseCatalog> getCatalogList() {
+		return catalogList;
+	}
+
+	public void setCatalogList(List<CourseCatalog> catalogList) {
+		this.catalogList = catalogList;
+	}
 
 	public String getFdTitle() {
 		return fdTitle;
