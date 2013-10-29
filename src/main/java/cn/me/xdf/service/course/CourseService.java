@@ -64,7 +64,7 @@ public class CourseService  extends BaseService{
 		Finder finder = Finder
 				.create("select course.*,score.fdscore from IXDF_NTP_COURSE course ");
 		finder.append(" left join IXDF_NTP_SCORE score " );
-		finder.append(" on course.fdid=score.fdmodelid ");
+		finder.append(" on course.fdid=score.fdmodelid  and score.fdmodelname='class cn.me.xdf.model.course.CourseInfo' ");
 		finder.append("where course.fdcreatorid=:userId  and  course.isavailable='1'");/*发布*/
 		finder.setParam("userId", userId);
 		//设置页码

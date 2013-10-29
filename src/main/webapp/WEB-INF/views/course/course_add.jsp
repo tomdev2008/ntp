@@ -266,6 +266,7 @@
 						 <div style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
 						     <button id="upMovie" class="btn btn-primary btn-large" type="button" >上传</button>
 						 </div>
+							<input type="hidden"  name="attId" id="attIdID">
 					</div>		
 	       </div>		  
 		   <div class="courseSkins">
@@ -277,7 +278,7 @@
 					{{~}}                    	                  
 				</ul>
 			</div>
-           <button class="btn btn-block btn-submit btn-inverse" type="submit"  onclick="saveCoursePic();">保存</button>
+           <button class="btn btn-block btn-submit btn-inverse" type="button"  onclick="saveCoursePic();">保存</button>
        </form>	  
 	 </div> 	
 </script>
@@ -791,10 +792,14 @@
 			attId: $("#attIdID").val(),
 			})
 		.success(function(){
-			//提交成功跳转课程推广
-       	   // urlRouter("promotion");
+			if ($('#upMovie').length > 0) { 
+				//注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+			     $('#upMovie').uploadify('destroy'); 
+			}
+       	    urlRouter("accessRight");
 		});
     }
+
 </script>
 </body>
 </html>
