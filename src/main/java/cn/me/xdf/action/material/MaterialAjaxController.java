@@ -119,11 +119,12 @@ public class MaterialAjaxController {
 		if(StringUtil.isBlank(fdId)){
 			SysOrgPerson creator = new SysOrgPerson();
 			creator.setFdId(ShiroUtils.getUser().getId());
+			info.setFdType(request.getParameter("fdType"));
 			info.setCreator(creator);
 			info.setFdCreateTime(new Date());
 			info.setIsAvailable(true);
 			materialService.save(info);
-			materialService.saveMaterAuth(kingUser,null);
+			materialService.saveMaterAuth(kingUser,info.getFdId());
 		} else {
 			materialService.updateMaterial(info, fdId);
 			materialService.saveMaterAuth(kingUser,fdId);
@@ -140,7 +141,7 @@ public class MaterialAjaxController {
 	public String getAuthInfoByMaterId(HttpServletRequest request) {
 		// 获取课程ID
 		String MaterialId = request.getParameter("MaterialId");
-		List<Map> list = materialAuthService.findAuthInfoByMaterialId(MaterialId);
+		List<Map> list = materialService.findAuthInfoByMaterialId(MaterialId);
 		Map map = new HashMap();
 		map.put("user", list);
 		return JsonUtils.writeObjectToJson(map);

@@ -1,12 +1,9 @@
 package cn.me.xdf.service.material;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
 
@@ -17,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
-import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.organization.User;
 import cn.me.xdf.service.BaseService;
 import cn.me.xdf.utils.ShiroUtils;
 /**
@@ -43,7 +40,31 @@ public class MaterialService extends BaseService {
 		return MaterialInfo.class;
 	}
 	
-	
+	/**
+	 * 根据素材id获取素材权限信息
+	 * @param MaterialId yuhz
+	 * @return
+	 */
+	public List<Map> findAuthInfoByMaterialId(String MaterialId){
+		//获取课程ID
+		List<MaterialAuth> auths = materialAuthService.findByProperty("material.fdId", MaterialId);
+		List<Map> list = new ArrayList<Map>();
+		User user = null;
+		for (int i=0;i<auths.size();i++) {
+			MaterialAuth materialAuth = auths.get(i);
+			SysOrgPerson  person = materialAuth.getFdUser();
+			Map map= new HashMap();
+			map.put("id", person.getFdId());
+			map.put("index", i);
+			map.put("imgUrl",person.getPoto());
+			map.put("name",person.getRealName());
+			map.put("mail",person.getFdEmail());
+			map.put("tissuePreparation", materialAuth.getIsReader());
+			map.put("editingCourse",materialAuth.getIsEditer());
+			list.add(map);
+		}
+		return list;
+	}
 	/**
 	 * 编辑视频素材
 	 * @param material
@@ -122,7 +143,7 @@ public class MaterialService extends BaseService {
 		finder.append(" left join IXDF_NTP_SCORE score on info.FDID = score.fdModelId and 'cn.me.xdf.model.material.MaterialInfo'=score.fdmodelname");
 		finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1 ");
 		finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' ");
-		finder.append(" ) or info.FDAUTHOR='"+ShiroUtils.getUser().getId()+"') ");
+		finder.append(" ) or info.fdCreatorId='"+ShiroUtils.getUser().getId()+"') ");
 		finder.setParam("fdType", fdType);
 		if(StringUtil.isNotBlank(fdName)&&StringUtil.isNotEmpty(fdName)){
 			finder.append(" and info.FDNAME like :fdName");

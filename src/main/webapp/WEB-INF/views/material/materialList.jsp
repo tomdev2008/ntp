@@ -20,9 +20,11 @@
 
 <section class="container">
 	<section class="clearfix mt20">
-	  <section class="col-left pull-left">
-    	 <%@ include file="/WEB-INF/views/group/menu.jsp" %>
+	
+     <section class="col-left pull-left">
+	  <%@ include file="/WEB-INF/views/group/menu.jsp" %>
 	  </section>
+    	 
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
 	           <c:if test="${param.fdType!=1000}">

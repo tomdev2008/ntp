@@ -34,68 +34,7 @@
 <section class="container">
 	<section class="clearfix mt20">
 	  <section class="col-left pull-left">
-    	<ul class="nav nav-list sidenav" id="sideNav">
-                <li class="nav-header first"><a href="#">学习跟踪</a></li>
-                <li class="nav-header"><a href="#">授权学习</a></li>
-	            <li class="nav-header">
-                    <span>课程管理</span>
-	            </li>
-	            <li><a href="#"><i class="icon-course-series"></i>我的系列课程</a></li>
-	            <c:if test="${param.fdType==1000}">
-	            <li class="active">
-	             </c:if>
-	             <c:if test="${param.fdType!=1000}">
-	            <li>
-	             </c:if>
-	             
-	              <a href="${ctx}/course/findcourseInfos?fdType=1000" id="courseInfos">
-	              <i class="icon-course"></i>我的课程</a>
-	             </li>
-	             <li class="nav-header">
-                     <span>课程素材库</span>
-	            </li>
-                <c:if test="${param.fdType==01}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=01}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=01"><i class="icon-video">
-                </i>视频</a></li>
-                </li>
-	            <c:if test="${param.fdType==04}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=04}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=04"><i class="icon-doc">
-                </i>文档</a></li>
-                <c:if test="${param.fdType==05}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=05}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=05"><i class="icon-ppt">
-                </i>幻灯片</a></li>
-                <c:if test="${param.fdType==08}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=08}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=08"><i class="icon-exam">
-                </i>测试</a></li>
-                
-                <c:if test="${param.fdType==10}">
-                 <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=10}">
-                 <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=10"><i class="icon-task"></i>作业</a></li>
-	    </ul>
+    	<%@ include file="/WEB-INF/views/group/menu.jsp" %>
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
@@ -159,7 +98,7 @@
                             <label class="control-label" for="videoUrl">播放地址</label>
                             <div class="controls">
                              <input value="${materialInfo.fdLink}" 
-                                  readonly placeholder="请认真填写该章节的 建议学习时长"
+                                  placeholder="请认真填写该章节的 建议学习时长"
                                 id="videoUrl" class="input-block-level" name="fdLink" type="text">
                             </div>
                         </div>
@@ -206,12 +145,14 @@
                     <section class="section">
                         <label>权限设置<input type="hidden" id="permission" name="permission" value="open"></label>
                         <ul class="nav nav-pills">
-                            <li class="active">
-                               <a data-toggle="tab" href="#open">
-                                                                                     公开
-                               </a>
-                           </li>
+                        <c:if test="${materialInfo.isPublish==true}">
+                            <li class="active"><a data-toggle="tab" href="#open">公开</a></li>
                             <li><a data-toggle="tab" href="#encrypt">加密</a></li>
+                         </c:if>
+                         <c:if test="${materialInfo.isPublish!=true}">
+                            <li><a data-toggle="tab" href="#open">公开</a></li>
+                            <li class="active"><a data-toggle="tab" href="#encrypt">加密</a></li>
+                         </c:if>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="open">
@@ -270,7 +211,7 @@ $(function(){
     
     //初始化权限列表
     $.ajax({
-		  url: $("#ctx").val()+"/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
+		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
 		  async:false,
 		  dataType : 'json',
 		  success: function(rsult){
@@ -310,7 +251,7 @@ $(function(){
             //ajax
             $.post("${ctx}/ajax/material/saveOrUpdateVideo",data)
              .success(function(){
-                   alert("保存成功");
+                   alert("编辑成功");
              }); 
         }
     });

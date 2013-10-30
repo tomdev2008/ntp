@@ -34,72 +34,11 @@
 <section class="container">
 	<section class="clearfix mt20">
 	  <section class="col-left pull-left">
-    	<ul class="nav nav-list sidenav" id="sideNav">
-                <li class="nav-header first"><a href="#">学习跟踪</a></li>
-                <li class="nav-header"><a href="#">授权学习</a></li>
-	            <li class="nav-header">
-                    <span>课程管理</span>
-	            </li>
-	            <li><a href="#"><i class="icon-course-series"></i>我的系列课程</a></li>
-	            <c:if test="${param.fdType==1000}">
-	            <li class="active">
-	             </c:if>
-	             <c:if test="${param.fdType!=1000}">
-	            <li>
-	             </c:if>
-	             
-	              <a href="${ctx}/course/findcourseInfos?fdType=1000" id="courseInfos">
-	              <i class="icon-course"></i>我的课程</a>
-	             </li>
-	             <li class="nav-header">
-                     <span>课程素材库</span>
-	            </li>
-                <c:if test="${param.fdType==01}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=01}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=01"><i class="icon-video">
-                </i>视频</a></li>
-                </li>
-	            <c:if test="${param.fdType==04}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=04}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=04"><i class="icon-doc">
-                </i>文档</a></li>
-                <c:if test="${param.fdType==05}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=05}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=05"><i class="icon-ppt">
-                </i>幻灯片</a></li>
-                <c:if test="${param.fdType==08}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=08}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=08"><i class="icon-exam">
-                </i>测试</a></li>
-                
-                <c:if test="${param.fdType==10}">
-                 <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=10}">
-                 <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=10"><i class="icon-task"></i>作业</a></li>
-	    </ul>
+	  <%@ include file="/WEB-INF/views/group/menu.jsp" %>
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="素材库-视频.html" class="backParent">返回视频列表</a>
+                <a href="${ctx}/material/findList?fdType=01" class="backParent">返回视频列表</a>
                 <h4>${materialInfo.fdName}</h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button">保存</button>
@@ -114,7 +53,8 @@
                             <div class="controls">
                                 <input value="" placeholder="请输入素材名称"
                                     id="videoName" required class="span6" name="videoName" type="text">
-                                <span class="date"></span>
+                                    
+                                <input type="hidden" id="fdType" value="${param.fdType}">
                             </div>
                         </div>
                         <div class="control-group">
@@ -239,6 +179,7 @@ $(function(){
                 author: $("#author").val(),
                 authorIntro: $("#authorIntro").val(),
                 permission:$("#permission").val(),
+                fdType:$("#fdType").val(),
                 kingUser: null
             };
             if(data.permission === "encrypt"){
@@ -258,7 +199,7 @@ $(function(){
             //ajax
             $.post("${ctx}/ajax/material/saveOrUpdateVideo",data)
              .success(function(){
-            	 $.fn.jalert2("保存成功!");
+            	 alert("保存成功!");
              }); 
         }
     });

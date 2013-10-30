@@ -6,7 +6,7 @@
 	<section class="section box-control">
 		<div class="hd">
 			<div class="btn-toolbar">
-				<a class="btn" href="${ctx}/material/addVideo">添加</a>
+				<a class="btn" href="${ctx}/material/addVideo?fdType=${param.fdType}">添加</a>
 				<div class="btn-group">
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 						操作 <span class="caret"></span>
@@ -67,12 +67,17 @@
 						   1 - ${page.getTotalCount()}
 						 </c:if>  
 						 <c:if test="${page.getTotalPage()>1}">
-							<c:if test="${page.getPageNo()<page.getTotalPage()}">
-						   ${page.getPageNo()*10+1} - ${page.getPageNo()*20}
-						 </c:if>
+						   <c:if test="${page.getPageNo()==1}">
+						    1-10
+						   </c:if>
+						   <c:if test="${page.getPageNo()!=1}">
+						    <c:if test="${page.getPageNo()<page.getTotalPage()}">
+						     ${page.getPageNo()*10+1} - ${page.getPageNo()*20}
+						    </c:if>
 							<c:if test="${page.getPageNo()==page.getTotalPage()}">
-						   ${page.getPageNo()*10+1} - ${page.getTotalCount()}
-						 </c:if>
+						     ${page.getPageNo()*10-10+1} - ${page.getTotalCount()}
+						   </c:if>
+						  </c:if>
 						</c:if>
 					   </span> 
 						 / <span>${page.getTotalCount()}</span> 条 
@@ -195,12 +200,9 @@
 				</c:if> 
 				<c:if test="${page.getTotalPage()>1}">
 					<c:if test="${page.getPageNo()<page.getTotalPage()}">
-						  ${page.getPageNo()*10+1} - ${page.getPageNo()*20}
+						  ${page.getPageNo()*i*10-10+1} - ${page.getPageNo()*10*i}
 					</c:if>
-				    <c:if test="${page.getPageNo()==page.getTotalPage()}">
-						   ${page.getPageNo()*10+1} - ${page.getTotalCount()}
-					</c:if>
-				</c:if> <%-- ${i*10+1}-${i*20+1} --%>
+				</c:if> 
 				</a></li>
 			</c:forEach>
 			</ul>
