@@ -445,40 +445,45 @@ public class CourseAjaxController {
 	@ResponseBody
 	public void deleteCourse(HttpServletRequest request) {
 		// 获取课程ID
-		String courseId = request.getParameter("courseId");
-		if (StringUtil.isNotEmpty(courseId)) {
-			CourseInfo course = courseService.get(courseId);
-			if (course != null && course.getIsAvailable()) {
-				// 需要判断课程状态是发布还是草稿，如果是发布，则只改是否有效的状态，如果是草稿，则删除课程及课程相关数据。
-				if (Constant.COURSE_TEMPLATE_STATUS_DRAFT.equals(course
-						.getFdStatus())) {
-					// 删除课程与关键字的关系
-					courseTagService.deleteByCourseId(courseId);
-					// 删除课程权限
-					courseAuthService.deleCourseAuthByCourseId(courseId);
-					// 获取课程下的所有章节
-					List<CourseCatalog> list = courseCatalogService
-							.getCatalogsByCourseId(courseId);
-					if (list != null && list.size() > 0) {
-						for (CourseCatalog catalog : list) {
-							if (Constant.CATALOG_TYPE_LECTURE == catalog
-									.getFdType()) {
-								// 删除节与内容的关系
-								courseContentService.deleteByCatalogId(catalog
-										.getFdId());
+		String fdIds = request.getParameter("courseId");
+		if (StringUtil.isNotEmpty(fdIds)) {
+			String[] courses = fdIds.split(",");
+			String courseId = "";
+			for(int i=0;i<courses.length;i++){
+				courseId = courses[i];
+				CourseInfo course = courseService.get(courseId);
+				if (course != null && course.getIsAvailable()) {
+					// 需要判断课程状态是发布还是草稿，如果是发布，则只改是否有效的状态，如果是草稿，则删除课程及课程相关数据。
+					if (Constant.COURSE_TEMPLATE_STATUS_DRAFT.equals(course
+							.getFdStatus())) {
+						// 删除课程与关键字的关系
+						courseTagService.deleteByCourseId(courseId);
+						// 删除课程权限
+						courseAuthService.deleCourseAuthByCourseId(courseId);
+						// 获取课程下的所有章节
+						List<CourseCatalog> list = courseCatalogService
+								.getCatalogsByCourseId(courseId);
+						if (list != null && list.size() > 0) {
+							for (CourseCatalog catalog : list) {
+								if (Constant.CATALOG_TYPE_LECTURE == catalog
+										.getFdType()) {
+									// 删除节与内容的关系
+									courseContentService.deleteByCatalogId(catalog
+											.getFdId());
+								}
 							}
 						}
+						// 删除章节
+						courseCatalogService.deleteByCourseId(courseId);
+						// 删除课程
+						courseService.delete(courseId);
+					} else {
+						// 删除已发布课程模板时，需要删除课程与系列的关系，则否会在系列中显示该课程，其他关系保持不变。
+						seriesCoursesService.deleteByCourseId(courseId);
+						// 修改课程模板有效状态
+						course.setIsAvailable(false);
+						courseService.update(course);
 					}
-					// 删除章节
-					courseCatalogService.deleteByCourseId(courseId);
-					// 删除课程
-					courseService.delete(courseId);
-				} else {
-					// 删除已发布课程模板时，需要删除课程与系列的关系，则否会在系列中显示该课程，其他关系保持不变。
-					seriesCoursesService.deleteByCourseId(courseId);
-					// 修改课程模板有效状态
-					course.setIsAvailable(false);
-					courseService.update(course);
 				}
 			}
 		}
