@@ -232,6 +232,10 @@ public class CourseAjaxController {
 			if (course != null) {
 				// 课程摘要
 				map.put("courseAbstract", course.getFdSummary());
+				// 课程作者
+				map.put("courseAuthor", course.getFdAuthor());
+				// 作者描述
+				map.put("authorDescrip", course.getFdAuthorDescription());
 				// 学习目标
 				String learnObjectives = course.getFdLearnAim() == null ? ""
 						: course.getFdLearnAim();
@@ -279,6 +283,10 @@ public class CourseAjaxController {
 		String courseId = request.getParameter("courseId");
 		// 课程摘要
 		String courseAbstract = request.getParameter("courseAbstract");
+		// 课程作者
+		String courseAuthor = request.getParameter("courseAuthor");
+		// 作者描述
+		String authorDescrip = request.getParameter("authorDescrip");
 		// 学习目标
 		String learnObjectives = request.getParameter("learnObjectives");
 		// 建议群体
@@ -290,6 +298,10 @@ public class CourseAjaxController {
 			if (course != null) {
 				// 课程摘要
 				course.setFdSummary(courseAbstract);
+				// 课程作者
+				course.setFdAuthor(courseAuthor);
+				// 作者描述
+				course.setFdAuthorDescription(authorDescrip);
 				// 学习目标
 				course.setFdLearnAim(learnObjectives);
 				// 建议群体

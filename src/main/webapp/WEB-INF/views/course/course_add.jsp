@@ -202,9 +202,12 @@
     <div class="page-body detail-content">    	
         <form id="formDetailInfo" method="post" action="{{=it.action || '##'}}">  	
 	    	<div class="section" >   
-	            	
 					<label for="courseAbstract">课程摘要</label>
 					<textarea id="courseAbstract" name="courseAbstract" required minlength="20" class="input-block-level" rows="4">{{=it.courseTit || ''}}</textarea>
+					<label for="courseAuthor">作者</label>
+					<input type="text" id="courseAuthor" name="courseAuthor"  class="span5" value="{{=it.courseAuthor || ''}}">
+					<label for="authorDescrip">作者描述</label>
+					<textarea id="authorDescrip" name="authorDescrip"  class="input-block-level" rows="4">{{=it.authorDescrip || ''}}</textarea>
 					<label for="learnObjectives">学习目标</label>
 					<input type="hidden" id="learnObjectives" name="learnObjectives" value="{{= it.learnObjectives || '' }}" />
 					<ul class="list_alert nav">						
@@ -756,6 +759,8 @@
 			 learnObjectives:  $("#learnObjectives").val(),
 			 suggestedGroup: $("#suggestedGroup").val(),
 			 courseRequirements: $("#courseRequirements").val(),
+			 courseAuthor: $("#courseAuthor").val(),
+			 authorDescrip: $("#authorDescrip").val()
 			})
 		.success(function(){
 			//提交成功跳转到详细信息
