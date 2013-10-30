@@ -735,6 +735,9 @@
 
 	//ajax保存课程基本信息
 	function saveBaseInfo(){
+		if(!$("#formBasicInfo").valid()){
+			return;
+		}
 		$.post('${ctx}/ajax/course/saveBaseInfo',{
 			 courseId : $("#courseId").val(),
 			 courseTitle: $("#courseTitle").val(),
@@ -753,6 +756,9 @@
 	
 	//ajax保存课程详细信息
 	function saveDetailInfo(){
+		if(!$("#formDetailInfo").valid()){
+			return;
+		}
 		$.post('${ctx}/ajax/course/saveDetailInfo',{
 			 courseId : $("#courseId").val(),
 			 courseAbstract: $("#courseAbstract").val(),
