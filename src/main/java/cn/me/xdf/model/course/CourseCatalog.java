@@ -67,9 +67,9 @@ public class CourseCatalog extends IdEntity {
 	private Integer fdTotalContent;
 	
 	/**
-	 * 学习时长（为分钟形式）
+	 * 学习时长
 	 */
-	private Integer fdStudyTime;
+	private String fdStudyTime;
 	
 	/**
 	 * 章节序号
@@ -177,11 +177,11 @@ public class CourseCatalog extends IdEntity {
 		this.fdTotalContent = fdTotalContent;
 	}
 
-	public Integer getFdStudyTime() {
+	public String getFdStudyTime() {
 		return fdStudyTime;
 	}
 
-	public void setFdStudyTime(Integer fdStudyTime) {
+	public void setFdStudyTime(String fdStudyTime) {
 		this.fdStudyTime = fdStudyTime;
 	}
 

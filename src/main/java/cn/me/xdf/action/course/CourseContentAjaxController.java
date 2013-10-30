@@ -105,7 +105,7 @@ public class CourseContentAjaxController {
 					catalog.setFdName(pageTitle);
 				}
 				if(StringUtil.isNotEmpty(learnTime)){
-					catalog.setFdStudyTime(Integer.valueOf(learnTime));
+					catalog.setFdStudyTime(learnTime);
 				}
 				if(StringUtil.isNotEmpty(sectionsIntro)){
 					catalog.setFdDescription(sectionsIntro);

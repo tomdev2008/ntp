@@ -396,7 +396,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="learnTime">学习时长</label>
-                    <div class="controls"><input value="{{=it.learnTime || ''}}" required digits="true" placeholder="请认真填写该章节的建议学习时长(分钟)" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
+                    <div class="controls"><input value="{{=it.learnTime || ''}}" required placeholder="请认真填写该章节的建议学习时长" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="sectionsIntro">章节说明</label>
