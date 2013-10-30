@@ -162,7 +162,7 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 		this.authList = authList;
 	}
 
-	@OneToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "exam")
+	@OneToMany(cascade = { CascadeType.REFRESH, CascadeType.REMOVE }, fetch = FetchType.LAZY, mappedBy = "exam")
 	public List<ExamQuestion> getQuestions() {
 		return questions;
 	}

@@ -35,6 +35,19 @@ public class ExamOpinion extends IdEntity{
 	 * 选项
 	 */
 	private String opinion;
+	
+	/**
+	 * 排序号
+	 */
+	private Integer fdOrder;
+
+	public Integer getFdOrder() {
+		return fdOrder;
+	}
+
+	public void setFdOrder(Integer fdOrder) {
+		this.fdOrder = fdOrder;
+	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdQuestionId")

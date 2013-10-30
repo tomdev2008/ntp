@@ -516,11 +516,13 @@
 	<div class="clearfix">
 		<div class="tit-bar">    	
 	        <div class="page-title section" id="page-title">
-	        	<input type='hidden' id='courseId' value='141e95ecce5ba4f578742b0482bb3d07' />
-	        	<h5>集团英联邦项目雅思强化口语备课课程</h5>
+	        	<input type='hidden' id='courseId' value='${course.fdId}' />
+	        	<h5>${course.fdTitle}</h5>
 	            <div class="btn-group">
-		            <button class="btn btn-primary btn-large" disabled type="button">预览</button>
+	                <c:if test="${course.fdStatus==null || course.fdStatus=='00'}">
+		            <button class="btn btn-primary btn-large" disabled type="button" onclick="previewCourse()">预览</button>
 		            <button class="btn btn-primary btn-large" disabled type="button" onclick="releaseCourse()">发布</button>
+		            </c:if>
 	            </div>
 	        </div>
 	        <img src="${ctx}/resources/images/admin-leftImg.png" width="187" height="60">
@@ -789,6 +791,12 @@
 	function releaseCourse(){
 		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
 	}
+	
+	//课程预览
+	function previewCourse(){
+		window.open("${ctx}/course/previewCourse?courseId="+$("#courseId").val(),'_blank');
+	}
+	
 	//课程封页图片保存
     function saveCoursePic(){
     	$.post('${ctx}/ajax/course/cover',{

@@ -3,6 +3,8 @@ package cn.me.xdf.action.course;
 
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
@@ -17,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
+import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.utils.ShiroUtils;
 
@@ -37,6 +41,9 @@ public class CourseController {
 	
     @Autowired
     private AttMainService attMainService;
+    
+    @Autowired
+	private CourseCatalogService courseCatalogService;
 	/*
 	 * 
 	 * 获取课程列表
@@ -54,7 +61,15 @@ public class CourseController {
 	}
 	
 	@RequestMapping(value = "add")
-	public String addCourse() {
+	public String editCourse(HttpServletRequest request) {
+		//获取课程ID
+		String courseId = request.getParameter("courseId");
+		if(StringUtil.isNotEmpty(courseId)){
+			CourseInfo course = courseService.get(courseId);
+			if(course!=null){
+				request.setAttribute("course", course);
+			}
+		}
 		return "/course/course_add";
 	}
 	
@@ -75,4 +90,24 @@ public class CourseController {
 		}
 		return "redirect:/course/findcourseInfos";
 	}
+	
+	/**
+	 * 预览课程
+	 * @param request
+	 */
+	@RequestMapping(value = "previewCourse")
+	public String previewCourse(HttpServletRequest request) {
+		//获取课程ID
+		String courseId = request.getParameter("courseId");
+		if(StringUtil.isNotEmpty(courseId)){
+			CourseInfo course = courseService.get(courseId);
+			if(course!=null){
+				List<CourseCatalog> catalog = courseCatalogService.getCatalogsByCourseId(courseId);
+				request.setAttribute("course", course);
+				request.setAttribute("catalog", catalog);
+			}
+		}
+		return "/course/course_preview";
+	}
+	
 }

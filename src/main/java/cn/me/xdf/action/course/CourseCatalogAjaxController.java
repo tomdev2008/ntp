@@ -21,6 +21,7 @@ import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.service.course.CourseCatalogService;
+import cn.me.xdf.service.course.CourseContentService;
 import cn.me.xdf.service.course.CourseService;
 
 
@@ -41,6 +42,9 @@ public class CourseCatalogAjaxController {
 	
 	@Autowired
 	private CourseService courseService;
+	
+	@Autowired
+	private CourseContentService courseContentService;
 	
 	/**
 	 * 获取当前课程的章节信息
@@ -99,6 +103,8 @@ public class CourseCatalogAjaxController {
 		CourseCatalog courseCatalog = courseCatalogService.get(fdId);
 		//如果删除的是节，那么需要重新计算课程的总节数
 		if(Constant.CATALOG_TYPE_LECTURE==courseCatalog.getFdType()){
+			//需要删除节与素材的关系
+			courseContentService.deleteByCatalogId(fdId);
 			//重新计算课程总节数
 			reCalculateCourseInfo(courseCatalog.getCourseInfo().getFdId(),courseCatalog.getCourseInfo().getFdTotalPart()-1);
 		}else{
