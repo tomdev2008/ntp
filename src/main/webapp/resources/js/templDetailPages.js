@@ -566,7 +566,11 @@
 				  async:false,
 				  dataType:'json',
 				  success: function(rsult){
-					  data.coverUrl =  $('#ctx').val()+"/common/file/image/"+rsult.coverUrl;
+					  if(rsult.coverUrl==""){
+						  data.coverUrl = "";
+					  }else{
+						  data.coverUrl =  $('#ctx').val()+"/common/file/image/"+rsult.coverUrl;
+					  }
 					  data.courseSkinList = [
 					     			{title: "国外考试", imgUrl:  $('#ctx').val()+"/resources/images/courseSkin-01.png"},
 					    			{title: "国内考试", imgUrl:  $('#ctx').val()+"/resources/images/courseSkin-02.png"},

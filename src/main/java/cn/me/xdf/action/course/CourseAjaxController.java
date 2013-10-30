@@ -392,7 +392,7 @@ public class CourseAjaxController {
 		Pagination page = courseService.findCourseInfosByName(userId, fdTitle,
 				pageNoStr, orderbyStr);
 		model.addAttribute("page", page);
-		return "/course/course_list";
+		return "/course/divcourselist";
 	}
 
 	/**
@@ -500,11 +500,13 @@ public class CourseAjaxController {
 
 	request) {
 		String courseId = request.getParameter("courseId");
-		AttMain attMain = attMainService.getByModelId
-
-		(courseId);
+		AttMain attMain = attMainService.getByModelId(courseId);
 		Map map = new HashMap();
+		if(attMain!=null){
 		map.put("coverUrl", attMain.getFdId());
+		}else{
+			map.put("coverUrl", "");	
+		}
 		return JsonUtils.writeObjectToJson(map);
 	}
 }

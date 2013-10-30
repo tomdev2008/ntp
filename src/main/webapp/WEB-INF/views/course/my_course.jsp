@@ -52,7 +52,7 @@ function findeCoursesByKey(pageNo,order){
 		},
 		cache: false, 
 		dataType: "html",
-		success:function(data){		
+		success:function(data){
 			$("#pageBody").html(data);
 		}
 	}); 

@@ -62,9 +62,9 @@ public class CourseService  extends BaseService{
 	 * */
 	public  Pagination findCourseInfosByName(String userId,String fdName,String pageNo ,String orderbyStr){
 		Finder finder = Finder
-				.create("select course.*,score.fdscore from IXDF_NTP_COURSE course ");
-		finder.append(" left join IXDF_NTP_SCORE score " );
-		finder.append(" on course.fdid=score.fdmodelid  and score.fdmodelname='class cn.me.xdf.model.course.CourseInfo' ");
+				.create("select course.*,scorestatis.fdaverage from IXDF_NTP_COURSE course ");
+		finder.append(" left join IXDF_NTP_SCORE_STATISTICS scorestatis " );
+		finder.append(" on course.fdid=scorestatis.fdmodelid  and scorestatis.fdmodelname='cn.me.xdf.model.course.CourseInfo' ");
 		finder.append("where course.fdcreatorid=:userId  and  course.isavailable='1'");/*发布*/
 		finder.setParam("userId", userId);
 		//设置页码
@@ -87,7 +87,7 @@ public class CourseService  extends BaseService{
 	        }else if(orderbyStr.equalsIgnoreCase("fdcreatetime")){
 	        	finder.append(" order by course.fdcreatetime");
 	        }else if(orderbyStr.equalsIgnoreCase("fdscorce")){
-	        	finder.append(" order by score.fdscorce");
+	        	finder.append(" order by scorestatis.fdaverage desc");
 	        }
 		}else{
 			finder.append(" order by course.fdcreatetime");
