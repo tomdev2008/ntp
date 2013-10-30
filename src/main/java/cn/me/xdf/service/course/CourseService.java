@@ -65,7 +65,7 @@ public class CourseService  extends BaseService{
 				.create("select course.*,scorestatis.fdaverage from IXDF_NTP_COURSE course ");
 		finder.append(" left join IXDF_NTP_SCORE_STATISTICS scorestatis " );
 		finder.append(" on course.fdid=scorestatis.fdmodelid  and scorestatis.fdmodelname='cn.me.xdf.model.course.CourseInfo' ");
-		finder.append("where course.fdcreatorid=:userId  and  course.isavailable='1'");/*发布*/
+		finder.append("where course.fdcreatorid=:userId  and  course.isavailable='1'");/*有效的*/
 		finder.setParam("userId", userId);
 		//设置页码
 		int pageNoI=0;
@@ -76,7 +76,7 @@ public class CourseService  extends BaseService{
 		}
 		//根据关键字搜索
 		if(!("").equals(fdName)&&fdName!=null){
-			finder.append("and  ( course.fdtitle = :ft  or course.fdsubtitle like :fs )");
+			finder.append("and  ( course.fdtitle like :ft  or course.fdsubtitle like :fs )");
 			finder.setParam("ft", "%"+fdName+"%");
 			finder.setParam("fs", "%"+fdName+"%");
 		}
