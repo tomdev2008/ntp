@@ -258,6 +258,9 @@
                     })
                         .success(function(){
                             // 提交成功
+	                        if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+	                   		     $('#upMaterial').uploadify('destroy'); 
+	                   		}
                         	urlRouter("sectionsDirectory");
                         });
                 }
