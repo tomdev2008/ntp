@@ -50,7 +50,7 @@ public class CourseController {
 		String orderbyStr = request.getParameter("order");
 		Pagination page=courseService.findCourseInfosByName(userId, fdTitle, pageNoStr, orderbyStr);
 		model.addAttribute("page", page);
-		return "/material/materialList";
+		return "/course/my_course";
 	}
 	
 	@RequestMapping(value = "add")

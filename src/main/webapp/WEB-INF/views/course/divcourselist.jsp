@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
-	        <div class="page-body" id="pageBody">
 	<section class="section box-control">
 		<div class="hd">
 			<div class="btn-toolbar">
@@ -205,5 +204,4 @@
 		</c:if>
 
 	</div>
-	</div>
-    </div>         
+	</div>      
