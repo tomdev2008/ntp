@@ -109,6 +109,7 @@
                 	<div class="box-pd20">
                     	<div class="larning-sections">
                     	<j:iter items="${catalog}" var="bean" status="vstatus">
+                    	    <c:set var="i" value="1"/>
                     		<c:if test="${bean.fdType==0}">
                     		<dl>
                     			<dt>
@@ -124,7 +125,7 @@
                                 	<c:if test="${lecture.fdType==1 && lecture.hbmParent!=null && lecture.hbmParent.fdId==bean.fdId}">
 		                    			<dd>
 		                                	<div class="span5">
-		                                    	<span class="tit">${bean.fdNo}.${stauts.index}&nbsp;${lecture.fdName}</span>
+		                                    	<span class="tit">${bean.fdNo}.${i}&nbsp;${lecture.fdName}</span>
 		                                    	<!--  
 		                                        <button class="btn">再次学习</button>
 		                                        -->
@@ -134,6 +135,7 @@
 		                                    <div class="span1"><i class="icon-circle-progress"><i class="icon-progress"></i></i></div>
 		                                    -->
 		                                </dd>
+		                                <c:set var="i" value="${i+1}"/>
 		                            </c:if>
                                 </j:iter>
                                 </dl>
