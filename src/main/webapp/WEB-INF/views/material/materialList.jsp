@@ -21,68 +21,7 @@
 <section class="container">
 	<section class="clearfix mt20">
 	  <section class="col-left pull-left">
-    	<ul class="nav nav-list sidenav" id="sideNav">
-                <li class="nav-header first"><a href="#">学习跟踪</a></li>
-                <li class="nav-header"><a href="#">授权学习</a></li>
-	            <li class="nav-header">
-                    <span>课程管理</span>
-	            </li>
-	            <li><a href="#"><i class="icon-course-series"></i>我的系列课程</a></li>
-	            <c:if test="${param.fdType==1000}">
-	            <li class="active">
-	             </c:if>
-	             <c:if test="${param.fdType!=1000}">
-	            <li>
-	             </c:if>
-	             
-	              <a href="${ctx}/course/findcourseInfos?fdType=1000" id="courseInfos">
-	              <i class="icon-course"></i>我的课程</a>
-	             </li>
-	             <li class="nav-header">
-                     <span>课程素材库</span>
-	            </li>
-                <c:if test="${param.fdType==01}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=01}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=01"><i class="icon-video">
-                </i>视频</a></li>
-                </li>
-	            <c:if test="${param.fdType==04}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=04}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=04"><i class="icon-doc">
-                </i>文档</a></li>
-                <c:if test="${param.fdType==05}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=05}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=05"><i class="icon-ppt">
-                </i>幻灯片</a></li>
-                <c:if test="${param.fdType==08}">
-                <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=08}">
-                <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=08"><i class="icon-exam">
-                </i>测试</a></li>
-                
-                <c:if test="${param.fdType==10}">
-                 <li class="active">
-                </c:if>
-                <c:if test="${param.fdType!=10}">
-                 <li>
-                </c:if>
-                  <a href="${ctx}/material/findList?fdType=10"><i class="icon-task"></i>作业</a></li>
-	    </ul>
+    	 <%@ include file="/WEB-INF/views/group/menu.jsp" %>
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
@@ -95,40 +34,17 @@
                  <c:if test="${param.fdType==08}">测试</c:if> 
                  <c:if test="${param.fdType==10}">作业包</c:if> 
                 </c:if> 
-                <c:if test="${param.fdType==1000}">
-                   <div class="page-header">
-                   <span class="muted">我的课程</span> 
-	        </div>
-                </c:if>
+              
                 <div class="backHome">
                     <a href="#"><span class="muted">返回</span>主管<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
                 </div>
 	        </div>
 	        <div class="page-body" id="pageBody">
-	         <c:if test="${param.fdType!=1000}">
-             <%@ include file="/WEB-INF/views/material/divMatList.jsp" %>
-             </c:if>
-             <c:if test="${param.fdType==1000}">
-               <%@ include file="/WEB-INF/views/course/course_list.jsp" %>
-               </c:if>  
+	        <%@ include file="/WEB-INF/views/material/divMatList.jsp" %>
             </div>           
 	    </section>
 	</section>
 
-<!--底部 S-->
-	<%-- <footer>
-		<div class="navbar clearfix">
-			<div class="nav">
-				<li><a href="http://www.xdf.cn/" target="_blank">新东方网</a></li>
-				<li><a href="http://me.xdf.cn/" target="_blank">知识管理平台</a></li>
-				<li><a href="${ctx }/login">登录</a></li>
-				<li><a href="${ctx }/self_register">注册</a></li>
-				<li class="last"><a href="mailto:yangyifeng@xdf.cn">帮助</a></li>
-			</div>
-            <p style="font-size:13px">&copy; 2013 新东方教育科技集团&nbsp;知识管理中心</p>
-		</div>
-	</footer> --%>
-<!--底部 E-->
 </section>
 
 <script type="text/javascript">	
@@ -153,25 +69,43 @@ function pageNavClick(fdType,pageNo,order){
 }
 </script>
 <script type="text/javascript">	
-
-function findeCoursesByKey(pageNo,order){
-	var fdTitle = document.getElementById("serach").value;
-	$("#pageBody").html("");
-	$.ajax({
-		type: "post",
-		 url: "${ctx}/ajax/course/getCoureInfosOrByKey",
-		data : {
-			"fdTitle" : fdTitle,
-			"pageNo" : pageNo,
-			"order" : order,
-		},
-		cache: false, 
-		dataType: "html",
-		success:function(data){		
-			$("#pageBody").html(data);
-		}
-	}); 
+//jquery获取复选框值  
+function batchDelete() {
+	var chk_value = [];
+	$('input[name="ids"]:checked').each(function() {
+		chk_value.push($(this).val());
+	});
+	if (chk_value.length == 0) {
+		alert('请选择需要批量删除的内容。');
+		return false;
+	}
+	if (!confirm('您确定要批量删除吗？')) {
+		return false;
+	}
+	document.form.method = "post";
+	document.form.action = '${ctx}/material/batchDelete';
+	document.form.submit();
+	return;
 }
+
+function selectAll(){ 
+	//设置变量form的值为name等于select的表单 
+	 var form=document.select;
+	 alert(form);
+	//取得触发事件的按钮的name属性值 
+	var action=event.srcElement.name;
+	alert(form.elements.length);
+	for (var i=0;i<form.elements.length;i++){//遍历表单项 
+		alert("11113333");
+	    //将当前表单项form.elements[i]对象简写为e 
+	   var e = form.elements[i];
+	   //如果当前表单项的name属性值为iTo， 
+	   //执行下一行代码。限定脚本处理的表单项范围。 
+	   if (e.name == "iTo") 
+	    /*如果单击事件发生在name为selectall的按钮上，就将当前表单项的checked属性设为true(即选中)，否则设置为当前设置的相反值(反选)*/ 
+	         e.checked =(action=="selectCheckbox")?(form.selectall.checked):(!e.checked); 
+	   } 
+} 
 </script>
 </body>
 </html>

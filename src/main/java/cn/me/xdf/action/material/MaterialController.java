@@ -1,7 +1,5 @@
 package cn.me.xdf.action.material;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
@@ -17,12 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.model.material.MaterialInfo;
-import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.ScoreStatistics;
+import cn.me.xdf.service.material.MaterialAuthService;
 import cn.me.xdf.service.material.MaterialService;
-import cn.me.xdf.service.score.ScoreService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
-import cn.me.xdf.utils.ShiroUtils;
 
 /**
  * 材料信息
@@ -35,6 +31,9 @@ public class MaterialController {
 	
 	@Autowired
 	private MaterialService materialService;
+	
+	@Autowired
+	private MaterialAuthService materialAuthService;
 	
 	@Autowired
 	private ScoreStatisticsService scoreStatisticsService;

@@ -15,7 +15,6 @@ import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.User;
 import cn.me.xdf.service.BaseService;
-import cn.me.xdf.service.course.CourseAuthService;
 /**
  * 
  * 资源权限service
