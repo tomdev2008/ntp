@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-	  <section class="col-left pull-left">
     	<ul class="nav nav-list sidenav" id="sideNav">
                 <li class="nav-header first"><a href="#">学习跟踪</a></li>
                 <li class="nav-header"><a href="#">授权学习</a></li>
@@ -64,5 +63,4 @@
                 </c:if>
                   <a href="${ctx}/material/findList?fdType=10"><i class="icon-task"></i>作业</a></li>
 	    </ul>
-	  </section>
 
