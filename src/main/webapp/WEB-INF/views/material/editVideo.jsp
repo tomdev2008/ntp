@@ -203,6 +203,9 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
 <script type="text/javascript">
+
+</script>
+<script type="text/javascript">
 $(function(){
     $.Placeholder.init();
     //授权管理 用户列表 模板函数
