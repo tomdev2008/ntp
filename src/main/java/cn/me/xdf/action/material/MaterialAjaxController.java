@@ -40,6 +40,12 @@ public class MaterialAjaxController {
 	@Autowired
 	private MaterialAuthService materialAuthService;
 	
+	/**
+	 * ajax找出素材列表
+	 * @param model
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "findList")
 	@ResponseBody
 	public ModelAndView findList(Model model , HttpServletRequest request) {

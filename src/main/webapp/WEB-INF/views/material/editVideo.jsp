@@ -155,41 +155,40 @@
                          </c:if>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="open">
-                                提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
-                            </div>
-                            <div class="tab-pane" id="encrypt">
+                          <c:if test="${materialInfo.isPublish==true}">
+                             <div class="tab-pane active" id="open">
+                                	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
+                             </div>
+                             <div class="tab-pane" id="encrypt">
                                 <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th>授权用户</th>
-                                        <th>可使用</th>
-                                        <th>可编辑</th>
-                                        <th>删除</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="list_user">
-                                  <!--   <tr data-fdid="fdid325" draggable="true">
-                                        <td class="tdTit">
-                                            <div class="pr">
-                                                <div class="state-dragable"><span class="icon-bar"></span><span
-                                                        class="icon-bar"></span><span class="icon-bar"></span><span
-                                                        class="icon-bar"></span><span class="icon-bar"></span></div>
-                                                <img src="http://img.staff.xdf.cn/Photo/06/3A/a911e1178bf3725acd75ddbb9c7e3a06_9494.jpg"
-                                                 alt="">杨义锋（yangyifeng@xdf.cn），集团总公司 知识管理中心
-                                            </div>
-                                        </td>
-                                        <td><input type="checkbox" checked="" class="tissuePreparation"></td>
-                                        <td><input type="checkbox" class="editingCourse"></td>
-                                        <td><a href="#" class="icon-remove-blue"></a></td>
-                                    </tr>  -->        
-                                  </tbody>
+                                    <thead><tr><th>授权用户</th><th>可使用</th>
+                                     <th>可编辑</th><th>删除</th></tr></thead>
+                                    <tbody id="list_user"></tbody>
                                 </table>
                                 <div class="pr">
                                     <input type="text" id="addUser" class="autoComplete input-block-level" placeholder="请输入人名、邮箱、机构或者部门查找用户">
                                     <i class="icon-search"></i>
                                 </div>
                             </div>
+                          </c:if>
+                          <c:if test="${materialInfo.isPublish!=true}">
+                             <div class="tab-pane" id="open">
+                                	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
+                             </div>
+                             <div class="tab-pane active" id="encrypt">
+                                <table class="table table-bordered">
+                                    <thead><tr><th>授权用户</th><th>可使用</th>
+                                     <th>可编辑</th><th>删除</th></tr></thead>
+                                    <tbody id="list_user"></tbody>
+                                </table>
+                                <div class="pr">
+                                    <input type="text" id="addUser" class="autoComplete input-block-level" placeholder="请输入人名、邮箱、机构或者部门查找用户">
+                                    <i class="icon-search"></i>
+                                </div>
+                            </div>
+                          </c:if>
+                            
+                            
                         </div>
                     </section>
                     <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
@@ -208,20 +207,20 @@ $(function(){
     $.Placeholder.init();
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
-    
+   
     //初始化权限列表
     $.ajax({
 		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
 		  async:false,
 		  dataType : 'json',
-		  success: function(rsult){
-			  data = rsult;
+		  success: function(result){
+			  var html = "";
+			  for(var i in result.user){
+				  html += listUserKinguserFn(result.user[i]);
+			  }
+			  $("#list_user").html(html); 
 		  }
 	});
-    data.pageTitle = title;	
-	$("#list_user").html(listUserKinguserFn(data));
-	
-
     $("#formEditDTotal").validate({
         submitHandler: function(form){
             var data = {
@@ -234,6 +233,7 @@ $(function(){
                 permission:$("#permission").val(),
                 kingUser: null
             };
+          
             if(data.permission === "encrypt"){
                 //push人员授权数据
                 data.kingUser = [];
@@ -255,6 +255,8 @@ $(function(){
              }); 
         }
     });
+    
+    
     $('#formEditDTotal a[data-toggle="tab"]').on('shown', function (e) {
         var href = 	e.target.href.split("#").pop();
         $("#permission").val(href);

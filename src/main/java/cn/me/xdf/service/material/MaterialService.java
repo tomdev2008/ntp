@@ -59,6 +59,8 @@ public class MaterialService extends BaseService {
 			map.put("imgUrl",person.getPoto());
 			map.put("name",person.getRealName());
 			map.put("mail",person.getFdEmail());
+			map.put("org","");
+			map.put("department",person.getDeptName());
 			map.put("tissuePreparation", materialAuth.getIsReader());
 			map.put("editingCourse",materialAuth.getIsEditer());
 			list.add(map);
