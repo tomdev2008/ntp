@@ -110,7 +110,8 @@ public class MaterialAjaxController {
 	 * @param materialInfo
 	 * @return
 	 */
-	@RequestMapping(value="saveOrUpdateVideo", method = RequestMethod.POST)
+	@RequestMapping(value="saveOrUpdateVideo")
+	@ResponseBody
 	public void saveOrUpdateVideo(HttpServletRequest request){
 		MaterialInfo info = new MaterialInfo();
 		info.setFdAuthor(request.getParameter("author"));
