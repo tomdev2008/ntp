@@ -20,11 +20,11 @@
 				</div>
 				<form class="toolbar-search">
 					<input type="text" id="serach" class="search" placeholder="搜索条目"
-					   onblur="pageNavClick('${param.fdType}');" > 
+					   onblur="pageNavClick('${param.fdType}');"  onkeydown="showSearch();" onkeyup="showSearch();"> 
 					<i class="icon-search"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>含“<a
-					href="#">雅思</a>”的条目
+					href="#"><span id="show">雅思</span></a>”的条目
 				</span> <a class="btn btn-link" href="#rightCont">清空搜索结果</a>
 			</div>
 		</div>
@@ -214,7 +214,12 @@
 			</a>
 		</c:if>
 	</div>
-	</div>
+</div>
+<script type="text/javascript">
+function showSearch(){
+	$("#show").html($("#serach").val());
+}
+</script>
 <script type="text/javascript">	
 //jquery获取复选框值  
 function batchDelete() {
