@@ -139,13 +139,20 @@ public class MaterialAjaxController {
 			//保存权限信息
 			materialService.saveMaterAuth(kingUser,info.getFdId());
 			//保存附件信息
-			saveAtt(attId,info.getFdId());
+			if(StringUtil.isNotBlank(attId)){
+				saveAtt(attId,info.getFdId());
+			}
 		} else {
 			materialService.updateMaterial(info, fdId);
 			materialService.saveMaterAuth(kingUser,fdId);
+			if(StringUtil.isNotBlank(attId)){
+				attMainService.deleteAttMainByModelId(info.getFdId());
+				saveAtt(attId,info.getFdId());
+			}
 		}
 	}
 	/**
+	 * 保存附件关系
 	 * @param attId
 	 * @param modelId
 	 */
@@ -154,16 +161,6 @@ public class MaterialAjaxController {
 		att.setFdModelId(modelId);
 		att.setFdModelName("cn.me.xdf.model.material.MaterialInfo");
 		attMainService.update(att);
-	}
-	/**
-	 * 更新附件信息
-	 * @param attId
-	 * @param modelId
-	 */
-	public void updateAtt(String attId,String modelId){
-		//先清除以前的附件
-		attMainService.deleteAttMainByModelId(modelId);
-		saveAtt(attId,modelId);
 	}
 	
 	/**
