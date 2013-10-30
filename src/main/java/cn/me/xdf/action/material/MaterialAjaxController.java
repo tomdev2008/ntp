@@ -57,7 +57,7 @@ public class MaterialAjaxController {
 			Pagination page = materialService.findMaterialList(fdType, pageNo,SimplePage.DEF_COUNT,fdName, order);
 			model.addAttribute("page", page);
 		}
-		return new ModelAndView("forward:/WEB-INF/views/base/material/divMatList.jsp");
+		return new ModelAndView("forward:/WEB-INF/views/material/divMatList.jsp");
 	}
 	
 	@RequestMapping(value = "getMaterialBykey")

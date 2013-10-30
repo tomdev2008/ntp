@@ -106,7 +106,7 @@
 	        </div>
 	        <div class="page-body" id="pageBody">
 	         <c:if test="${param.fdType!=1000}">
-             <%@ include file="/WEB-INF/views/base/material/divMatList.jsp" %>
+             <%@ include file="/WEB-INF/views/material/divMatList.jsp" %>
              </c:if>
              <c:if test="${param.fdType==1000}">
                <%@ include file="/WEB-INF/views/course/course_list.jsp" %>

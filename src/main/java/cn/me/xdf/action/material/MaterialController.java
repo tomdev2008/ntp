@@ -48,7 +48,7 @@ public class MaterialController {
 	 */
 	@RequestMapping(value="addVideo")
 	public String addVideo(Model model ,HttpServletRequest request){
-		return "/base/material/addVideo";
+		return "/material/addVideo";
 	}
 	/**
 	 * 返回编辑视频页面
@@ -63,7 +63,7 @@ public class MaterialController {
 					           ("cn.me.xdf.model.material.MaterialInfo",materialInfo.getFdId());
 		    model.addAttribute("score", score);
 		}
-		return "/base/material/editVideo";
+		return "/material/editVideo";
 	}
 	/**
 	 * 批量删除素材（注：将素材置为无效）
@@ -112,7 +112,7 @@ public class MaterialController {
 			Pagination page = materialService.findMaterialList(fdType, pageNo, SimplePage.DEF_COUNT,fdName,order);
 			model.addAttribute("page", page);
 		}
-		return "/base/material/materialList";
+		return "/material/materialList";
 	}
 
 }
