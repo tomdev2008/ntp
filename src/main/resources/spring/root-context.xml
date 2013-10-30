@@ -70,6 +70,9 @@
 
                 <!--测试-->
                 <value>cn.me.xdf.model.demo</value>
+                
+                <!-- 日志 -->
+                <value>cn.me.xdf.model.log</value>
 
             </list>
         </property>

@@ -195,15 +195,8 @@
 			</button>
 			<ul class="dropdown-menu pull-right">
 			  <c:forEach var="i" begin="1" end="${page.totalPage}">
-				<li><a onclick="pageNavClick('${param.fdType}','${i}')"> 
-				<c:if test="${page.totalPage==1}">
-						   1 - ${page.totalCount}
-				</c:if> 
-				<c:if test="${page.totalPage>1}">
-					<c:if test="${page.pageNo<page.totalPage}">
-						  ${page.pageNo*i*10-10+1} - ${page.pageNo*10*i}
-					</c:if>
-				</c:if> 
+				<li><a onclick="pageNavClick('${param.fdType}','${i}')">
+				${i*10-10+1} - ${i*10} 
 				</a></li>
 			</c:forEach>
 			</ul>
