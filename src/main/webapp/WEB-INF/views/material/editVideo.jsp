@@ -10,7 +10,59 @@
 <title>新东方在线教师备课平台</title>
 <link href="${ctx}/resources/css/DTotal.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
-
+<link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
+<!--上传附件的"浏览"按钮样式-->
+<style type="text/css">
+.uploadify-button {
+    background-color:rgb(67,145,187);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(67,145,187)),
+		color-stop(1, rgb(67,145,187))
+	);
+	max-width:70px;
+	max-height:30px;
+	border-radius: 1px;
+	border: 0px;
+	font: bold 12px Arial, Helvetica, sans-serif;
+	display: block;
+	text-align: center;
+	text-shadow: 0 0px 0 rgba(0,0,0,0.25);
+    
+}
+.uploadify:hover .uploadify-button {
+    background-color:rgb(67,145,187);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(67,145,187)),
+		color-stop(1, rgb(67,145,187))
+	);
+}
+.uploadify-queue-item {
+	background-color: #FFFFFF;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font: 11px Verdana, Geneva, sans-serif;
+	margin-top: 1px;
+	max-width: 1000px;
+	padding: 5px;
+}
+.uploadify-progress {
+	background-color: #E5E5E5;
+	margin-top: 10px;
+	width: 100%;
+}
+.uploadify-progress-bar {
+	background-color: rgb(67,145,187);
+	height: 27px;
+	width: 1px;
+}
+</style> 
 <!-- 授权管理 用户列表 模板 -->
 <script id="listUserKinguserTemplate" type="text/x-dot-template">
     <tr data-fdid="{{=it.id}}">
@@ -114,9 +166,11 @@
                     <section class="section mt20">
                         <label>上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。</label>
                         <div class="control-upload">
-                            <span class="progress"> <div class="bar" style="width:20%;"></div> </span>
-                            <span class="txt"><span>20%</span>，剩余时间：<span>00:00:29</span></span>
-                            <button class="btn btn-primary btn-large" type="button">上传</button>
+                           <div id="upMaterialDiv" style="height:20px;width:650px;display:block;"></div>
+						   <div style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
+						     <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>
+						  </div>
+						  <input type="hidden"  name="attId" id="attId" value="">
                         </div>
                     </section>
                     <section class="section mt20">
@@ -202,7 +256,44 @@
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
 <script type="text/javascript">
+jQuery("#upMaterial").uploadify({
+    'height' : 27,
+    'width' : 80,
+    'multi' : true,
+    'simUploadLimit' : 1,
+    'swf' : '${ctx}/resources/uploadify/uploadify.swf',
+    'buttonText' : '上传',
+    'uploader' : '${ctx}/common/file/o_upload',
+    'auto' : true,
+    'queueID': 'upMaterialDiv',
+    'fileTypeExts' : '*.AVI;*.MP4;*.WMV;',
+    'onUploadStart' : function (file) {
+        jQuery("#upMaterial").uploadify("settings", "formData");
+    },
+    'onUploadSuccess' : function (file, data, Response) {
+        if (Response) {
+            var objvalue = eval("(" + data + ")");
+            jQuery("#attId").val(objvalue.attId);
+        }
+    },
+    
+    'onSelect':function(file){
+    	// 选择新文件时,先清文件列表
+    	var queuedFile = {};
+		for (var n in this.queueData.files) {
+				queuedFile = this.queueData.files[n];
+				if(queuedFile.id!=file.id){
+					delete this.queueData.files[queuedFile.id]
+					$('#' + queuedFile.id).fadeOut(0, function() {
+						$(this).remove();
+					});
+				}
+			}
+    },
+    'removeCompleted':false
+});
 
 </script>
 <script type="text/javascript">
