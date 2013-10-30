@@ -25,6 +25,7 @@ import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.material.MaterialAuthService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.utils.ShiroUtils;
@@ -39,6 +40,9 @@ public class MaterialAjaxController {
 	
 	@Autowired
 	private MaterialAuthService materialAuthService;
+	
+	@Autowired
+	private AttMainService attMainService;
 	
 	/**
 	 * ajax找出素材列表
@@ -116,6 +120,7 @@ public class MaterialAjaxController {
 		info.setFdDescription(request.getParameter("videoIntro"));
 		String permission = request.getParameter("permission");
 		String kingUser = request.getParameter("kingUser");
+		String attId = request.getParameter("attId");
 		if(permission.equals("open")){
 			info.setIsPublish(true);
 		} else {
@@ -129,13 +134,38 @@ public class MaterialAjaxController {
 			info.setCreator(creator);
 			info.setFdCreateTime(new Date());
 			info.setIsAvailable(true);
+			//保存素材信息
 			materialService.save(info);
+			//保存权限信息
 			materialService.saveMaterAuth(kingUser,info.getFdId());
+			//保存附件信息
+			saveAtt(attId,info.getFdId());
 		} else {
 			materialService.updateMaterial(info, fdId);
 			materialService.saveMaterAuth(kingUser,fdId);
 		}
 	}
+	/**
+	 * @param attId
+	 * @param modelId
+	 */
+	public void saveAtt(String attId,String modelId){
+		AttMain att = attMainService.get(attId);
+		att.setFdModelId(modelId);
+		att.setFdModelName("cn.me.xdf.model.material.MaterialInfo");
+		attMainService.update(att);
+	}
+	/**
+	 * 更新附件信息
+	 * @param attId
+	 * @param modelId
+	 */
+	public void updateAtt(String attId,String modelId){
+		//先清除以前的附件
+		attMainService.deleteAttMainByModelId(modelId);
+		saveAtt(attId,modelId);
+	}
+	
 	/**
 	 * 得到指定课程的权限信息
 	 * 

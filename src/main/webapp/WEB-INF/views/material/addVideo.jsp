@@ -129,7 +129,6 @@
                         <div class="control-upload">
                         
                           <div id="upMaterialDiv" style="height:20px;width:650px;display:block;">
-							 
  						  </div>
 						  <div  style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
 						     <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>
@@ -226,7 +225,6 @@ jQuery("#upMaterial").uploadify({
         if (Response) {
             var objvalue = eval("(" + data + ")");
             jQuery("#attId").val(objvalue.attId);
-            alert(jQuery("#attId").val());
         }
     },
     
@@ -264,6 +262,7 @@ $(function(){
                 authorIntro: $("#authorIntro").val(),
                 permission:$("#permission").val(),
                 fdType:$("#fdType").val(),
+                attId:$("#attId").val(),
                 kingUser: null
             };
             if(data.permission === "encrypt"){
