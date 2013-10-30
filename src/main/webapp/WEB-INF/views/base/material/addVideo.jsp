@@ -99,12 +99,11 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="${ctx}/material/findList?fdType=01" class="backParent">返回视频列表</a>
+                <a href="素材库-视频.html" class="backParent">返回视频列表</a>
                 <h4>${materialInfo.fdName}</h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button">保存</button>
                     <button class="btn btn-large btn-primary" type="button">下载</button>
-                    <button class="btn btn-white btn-large " type="button">删除</button>
                 </div>
 	        </div>
             <div class="page-body editingBody">
@@ -113,53 +112,15 @@
                         <div class="control-group">
                             <label class="control-label" for="videoName">视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频</label>
                             <div class="controls">
-                                <input value="${materialInfo.fdName}" 
+                                <input value="" placeholder="请输入素材名称"
                                     id="videoName" required class="span6" name="videoName" type="text">
-                                <span class="date">${materialInfo.fdCreateTime}</span>
-                                <input type="hidden" id="fdId" value="${materialInfo.fdId}">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" >统&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</label>
-                            <div class="controls controls-txt">
-                                <span class="rating-view">
-                                    <span class="rating-all">
-                                       <c:if test="${score.fdAverage!=null}">
-                                         <c:forEach var="i" begin="1" end="${score.fdAverage}">
-                                           <i class="icon-star active"></i>
-                                         </c:forEach>
-                                         <c:forEach var="i" begin="1" end="${5-score.fdAverage}">
-                                           <i class="icon-star"></i>
-                                         </c:forEach>
-                                       </c:if>
-                                       <c:if test="${score.fdAverage==null}">
-                                         <c:forEach var="i" begin="1" end="5">
-					   					   <i class="icon-star"></i>
-					  				     </c:forEach>
-                                       </c:if>
-                                       
-                                     </span>
-                                      <b class="text-warning">
-                                       <c:if test="${score.fdAverage==null}">
-                                          0
-                                       </c:if>
-                                       <c:if test="${score.fdAverage!=null}">
-                                          ${score.fdAverage}
-                                       </c:if>
-                                      </b>
-                                </span>
-                                <span class="btns-handle">
-                                    <button type="button" class="btn btn-link"><i class="icon-eye"></i>3315</button>
-                                    <button type="button" class="btn btn-link"><i class="icon-thumbs-up"></i>2940</button>
-                                    <button type="button" class="btn btn-link"><i class="icon-download"></i>0</button>
-                                </span>
+                                <span class="date"></span>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label" for="videoUrl">播放地址</label>
                             <div class="controls">
-                             <input value="${materialInfo.fdLink}" 
-                                  readonly placeholder="请认真填写该章节的 建议学习时长"
+                             <input value=""  placeholder="请认真填写该章节的 建议学习时长"
                                 id="videoUrl" class="input-block-level" name="fdLink" type="text">
                             </div>
                         </div>
@@ -168,7 +129,7 @@
                             <div class="controls">
                               <textarea placeholder="非必填项" rows="4"
                                         class="input-block-level" id="videoIntro"
-                                        name="fdDescription">${materialInfo.fdDescription}</textarea>
+                                        name="fdDescription"></textarea>
                             </div>
                         </div>
                     </section>
@@ -198,7 +159,7 @@
                             <div class="controls">
                              <textarea placeholder="非必填项" rows="4"
                                        class="input-block-level" id="authorIntro"
-                                       name="fdAuthorDescription" >${materialInfo.fdAuthorDescription}</textarea>
+                                       name="fdAuthorDescription" ></textarea>
                             </div>
                         </div>
                     </section>
@@ -268,19 +229,6 @@ $(function(){
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     
-    //初始化权限列表
-    $.ajax({
-		  url: $("#ctx").val()+"/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
-		  async:false,
-		  dataType : 'json',
-		  success: function(rsult){
-			  data = rsult;
-		  }
-	});
-    data.pageTitle = title;	
-	$("#list_user").html(listUserKinguserFn(data));
-	
-
     $("#formEditDTotal").validate({
         submitHandler: function(form){
             var data = {
@@ -310,7 +258,7 @@ $(function(){
             //ajax
             $.post("${ctx}/ajax/material/saveOrUpdateVideo",data)
              .success(function(){
-                   alert("保存成功");
+            	 $.fn.jalert2("保存成功!");
              }); 
         }
     });

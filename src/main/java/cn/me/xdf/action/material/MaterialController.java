@@ -39,11 +39,22 @@ public class MaterialController {
 	@Autowired
 	private ScoreStatisticsService scoreStatisticsService;
 	
+	
 	/**
-	 * 返回添加视频页面
+	 * 返回增加视频页面
+	 * @param model
+	 * @param request
+	 * @return
 	 */
-	@RequestMapping(value="addOrUpdateVideo")
-	public String addOrUpdateVideo(Model model ,HttpServletRequest request){
+	@RequestMapping(value="addVideo")
+	public String addVideo(Model model ,HttpServletRequest request){
+		return "/base/material/addVideo";
+	}
+	/**
+	 * 返回编辑视频页面
+	 */
+	@RequestMapping(value="updateVideo")
+	public String updateVideo(Model model ,HttpServletRequest request){
 		String fdId = request.getParameter("fdId");
 		if(StringUtil.isNotBlank(fdId)&&StringUtil.isNotEmpty(fdId)){
 			MaterialInfo materialInfo = materialService.get(fdId);
@@ -61,11 +72,22 @@ public class MaterialController {
 	 */
 	@RequestMapping(value="batchDelete", method = RequestMethod.POST)
 	public String batchDelete(RedirectAttributes redirectAttributes,HttpServletRequest request){
-		if (ShiroUtils.getUser() == null) {
-			return "redirect:/login";
-		}
 		String[] ids = request.getParameterValues("ids");
 		materialService.disableMaterial(ids);
+		return "redirect:/material/findList";
+	}
+	/**
+	 * 删除单个素材
+	 * @param redirectAttributes
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="deleteMaterial", method = RequestMethod.POST)
+	public String deleteMaterial(RedirectAttributes redirectAttributes,HttpServletRequest request){
+		String id = request.getParameter("id");
+		MaterialInfo material = materialService.get(id);
+		material.setIsAvailable(false);
+		materialService.update(material);
 		return "redirect:/material/findList";
 	}
 	/**

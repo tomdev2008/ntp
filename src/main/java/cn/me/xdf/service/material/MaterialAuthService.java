@@ -1,13 +1,21 @@
 package cn.me.xdf.service.material;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.material.MaterialAuth;
+import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.organization.User;
 import cn.me.xdf.service.BaseService;
+import cn.me.xdf.service.course.CourseAuthService;
 /**
  * 
  * 资源权限service
@@ -18,6 +26,9 @@ import cn.me.xdf.service.BaseService;
 @Service
 @Transactional(readOnly = false)
 public class MaterialAuthService extends BaseService{
+	
+	@Autowired
+	private MaterialService materialService;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -75,6 +86,33 @@ public class MaterialAuthService extends BaseService{
 		for (MaterialAuth materialAuth : list) {
 			delete(materialAuth);
 		}
+	}
+	/**
+	 * 根据素材id获取素材权限信息
+	 * @param MaterialId yuhz
+	 * @return
+	 */
+	public List<Map> findAuthInfoByMaterialId(String MaterialId){
+		//获取课程ID
+		List<CourseAuth> auths = materialService.findByProperty("course.fdId", MaterialId);
+		List<Map> list = new ArrayList<Map>();
+		User user = null;
+		for (int i=0;i<auths.size();i++) {
+			CourseAuth courseAuth = auths.get(i);
+			SysOrgPerson  person = courseAuth.getFdUser();
+			Map map= new HashMap();
+			map.put("id", person.getFdId());
+			map.put("index", i);
+			map.put("imgUrl",person.getPoto());
+			map.put("name",person.getRealName());
+			map.put("mail",person.getFdEmail());
+			map.put("org","");
+			map.put("department",person.getDeptName());
+			map.put("tissuePreparation", courseAuth.getIsAuthStudy());
+			map.put("editingCourse",courseAuth.getIsEditer());
+			list.add(map);
+		}
+		return list;
 	}
 
 }

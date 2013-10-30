@@ -31,7 +31,7 @@ import cn.me.xdf.utils.ShiroUtils;
  * 
  */
 @Service
-@Transactional(readOnly = false)
+@Transactional(readOnly = true)
 public class MaterialService extends BaseService {
 
 	@Autowired
@@ -73,7 +73,9 @@ public class MaterialService extends BaseService {
 		List<MaterialAuth> auths = new ArrayList<MaterialAuth>();
 		MaterialInfo info = this.get(materialId);
 		//删除素材的权限
-		materialAuthService.deleMaterialAuthByMaterialId(materialId);
+		if(StringUtil.isNotBlank(materialId)&&StringUtil.isNotEmpty(materialId)){
+			materialAuthService.deleMaterialAuthByMaterialId(materialId);
+		}
 		for (Map map : list) {
 			MaterialAuth auth = new MaterialAuth();
 			auth.setMaterial(info);
@@ -113,6 +115,7 @@ public class MaterialService extends BaseService {
 	 * @author yuhuizhe
 	 * @return
 	 */
+	@Transactional(readOnly = false)
 	public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName,String order){
 		Finder finder = Finder.create("select info.*,score.fdscore as materialScore from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
 		finder.append("on info.FDID=auth.FDMATERIALID ");
