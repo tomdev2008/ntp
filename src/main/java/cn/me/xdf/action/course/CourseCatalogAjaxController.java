@@ -1,10 +1,11 @@
 package cn.me.xdf.action.course;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
@@ -12,16 +13,15 @@ import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseContentService;
@@ -41,6 +41,10 @@ import cn.me.xdf.utils.ShiroUtils;
 @RequestMapping(value = "/ajax/catalog")
 @Scope("request")
 public class CourseCatalogAjaxController {
+	
+	@Autowired
+	private AccountService accountService;
+	
 	@Autowired
 	private CourseCatalogService courseCatalogService;
 	
@@ -49,8 +53,7 @@ public class CourseCatalogAjaxController {
 	
 	@Autowired
 	private CourseContentService courseContentService;
-	@Autowired
-    private SysOrgPersonService sysOrgPersonService;
+	
 	/**
 	 * 获取当前课程的章节信息
 	 * @param request
@@ -207,7 +210,7 @@ public class CourseCatalogAjaxController {
 		//获取章节名称
 		String fdName = request.getParameter("title");
 		//获取当前用户信息
-		SysOrgPerson sysOrgPerson=sysOrgPersonService.get(ShiroUtils.getUser().getId());
+		SysOrgPerson sysOrgPerson=accountService.load(ShiroUtils.getUser().getId());
 		//创建时间
 		Date createdate=new Date();
 		CourseCatalog courseCatalog = new CourseCatalog();
