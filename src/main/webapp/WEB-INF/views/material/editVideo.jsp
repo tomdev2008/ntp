@@ -90,19 +90,16 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="${ctx}/material/findList?fdType=01" class="backParent">返回
-                  <c:if test="${param.fdType == '01'}">视频</c:if>
+                <a href="${ctx}/material/findList?fdType=01" class="backParent">
+                                     返回<c:if test="${param.fdType == '01'}">视频</c:if>
                   <c:if test="${param.fdType == '02'}">音频</c:if>
                   <c:if test="${param.fdType == '04'}">文档</c:if>
-                  <c:if test="${param.fdType == '05'}">幻灯片</c:if>
-                                         列表</a>
+                  <c:if test="${param.fdType == '05'}">幻灯片</c:if>列表</a>
                 <h4>${materialInfo.fdName}</h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button">保存</button>
                     <button class="btn btn-large btn-primary" type="button">下载</button>
-                   <a onclick="confirmDel();">
-                    <button class="btn btn-white btn-large " type="button">删除</button>
-                   </a>
+                    <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
                 </div>
 	        </div>
             <div class="page-body editingBody">
