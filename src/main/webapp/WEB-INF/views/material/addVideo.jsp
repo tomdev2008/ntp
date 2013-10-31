@@ -90,25 +90,29 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="${ctx}/material/findList?fdType=01" class="backParent">返回视频列表</a>
-                <h4>${materialInfo.fdName}</h4>
+                <a href="${ctx}/material/findList?fdType=${param.fdType}" class="backParent">返回
+                  <c:if test="${param.fdType == '01'}">视频</c:if>
+                  <c:if test="${param.fdType == '02'}">音频</c:if>
+                  <c:if test="${param.fdType == '04'}">文档</c:if>
+                  <c:if test="${param.fdType == '05'}">幻灯片</c:if>
+                                          列表</a>
+                <h4></h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button">保存</button>
-                    <button class="btn btn-large btn-primary" type="button">下载</button>
                 </div>
 	        </div>
             <div class="page-body editingBody">
                 <form action="#" id="formEditDTotal" class="form-horizontal" method="post">
                     <section class="section">
                         <div class="control-group">
-                            <label class="control-label" for="videoName">视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频</label>
+                            <label class="control-label" for="videoName" id="typeTxt"></label>
                             <div class="controls">
                                 <input value="" placeholder="请输入素材名称"
                                     id="videoName" required class="span6" name="videoName" type="text">
                                 <input type="hidden" id="fdType" value="${param.fdType}">
                             </div>
                         </div>
-                        <div class="control-group">
+                        <div class="control-group" id="videoText">
                             <label class="control-label" for="videoUrl">播放地址</label>
                             <div class="controls">
                              <input value=""  placeholder="请认真填写该章节的 建议学习时长"
@@ -116,7 +120,7 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="videoIntro">视频简介</label>
+                            <label class="control-label" for="videoIntro" id="materialIntro"></label>
                             <div class="controls">
                               <textarea placeholder="非必填项" rows="4"
                                         class="input-block-level" id="videoIntro"
@@ -125,7 +129,7 @@
                         </div>
                     </section>
                     <section class="section mt20">
-                        <label>上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。</label>
+                        <label id="uploadIntro"></label>
                         <div class="control-upload">
                         
                           <div id="upMaterialDiv" style="height:20px;width:650px;display:block;">
@@ -146,7 +150,7 @@
                         <div class="control-group">
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
-                                <input value="${materialInfo.fdAuthor}" id="author" required class="input-block-level"
+                                <input value="" id="author" required class="input-block-level"
                                        name="fdAuthor" type="text">
                             </div>
                         </div>
@@ -207,42 +211,82 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
 <script type="text/javascript">
-jQuery("#upMaterial").uploadify({
-    'height' : 27,
-    'width' : 80,
-    'multi' : true,
-    'simUploadLimit' : 1,
-    'swf' : '${ctx}/resources/uploadify/uploadify.swf',
-    'buttonText' : '上传',
-    'uploader' : '${ctx}/common/file/o_upload',
-    'auto' : true,
-    'queueID': 'upMaterialDiv',
-    'fileTypeExts' : '*.AVI;*.MP4;*.WMV;',
-    'onUploadStart' : function (file) {
-        jQuery("#upMaterial").uploadify("settings", "formData");
-    },
-    'onUploadSuccess' : function (file, data, Response) {
-        if (Response) {
-            var objvalue = eval("(" + data + ")");
-            jQuery("#attId").val(objvalue.attId);
-        }
-    },
-    
-    'onSelect':function(file){
-    	// 选择新文件时,先清文件列表
-    	var queuedFile = {};
-		for (var n in this.queueData.files) {
-				queuedFile = this.queueData.files[n];
-				if(queuedFile.id!=file.id){
-					delete this.queueData.files[queuedFile.id]
-					$('#' + queuedFile.id).fadeOut(0, function() {
-						$(this).remove();
-					});
+$(function(){
+	var data_uploadIntro;
+	var uptype;
+	switch($("#fdType").val()){
+  	case "01":
+  		$("#materialIntro").html("视频简介");
+  		$("#typeTxt").html("视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
+  		data_uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
+  		$("#uploadIntro").html(data_uploadIntro);
+  		uptype='*.mp4;*.avi;*.wmv;';
+  		break;
+    case "02":
+    	$("#materialIntro").html("音频简介");
+    	$("#typeTxt").html("音&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
+    	data_uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的视频将会显示在下面的音频列表中。";
+    	$("#uploadIntro").html(data_uploadIntro);
+    	uptype='*.mp3;*.mv;';
+        break;
+    case "04":
+    	$("#materialIntro").html("文档简介");
+    	$("#typeTxt").html("文&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;档");
+    	$("#videoText").html("");
+    	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的视频将会显示在下面的文档列表中。";
+    	$("#uploadIntro").html(data_uploadIntro);
+    	uptype='*.doc;*.xls;';
+        break;
+    case "05":
+    	$("#materialIntro").html("ppt简介");
+    	$("#typeTxt").html("幻&nbsp;灯&nbsp;片");
+    	$("#videoText").html("");
+    	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的视频将会显示在下面的幻灯片列表中。";
+    	$("#uploadIntro").html(data_uploadIntro);
+    	uptype='*.ppt;';
+        break;
+  }
+	
+	jQuery("#upMaterial").uploadify({
+	    'height' : 27,
+	    'width' : 80,
+	    'multi' : true,
+	    'simUploadLimit' : 1,
+	    'swf' : '${ctx}/resources/uploadify/uploadify.swf',
+	    'buttonText' : '上传',
+	    'uploader' : '${ctx}/common/file/o_upload',
+	    'auto' : true,
+	    'queueID': 'upMaterialDiv',
+	    'fileTypeExts' : uptype,
+	    'onUploadStart' : function (file) {
+	        jQuery("#upMaterial").uploadify("settings", "formData");
+	    },
+	    'onUploadSuccess' : function (file, data, Response) {
+	        if (Response) {
+	            var objvalue = eval("(" + data + ")");
+	            jQuery("#attId").val(objvalue.attId);
+	        }
+	    },
+	    
+	    'onSelect':function(file){
+	    	// 选择新文件时,先清文件列表
+	    	var queuedFile = {};
+			for (var n in this.queueData.files) {
+					queuedFile = this.queueData.files[n];
+					if(queuedFile.id!=file.id){
+						delete this.queueData.files[queuedFile.id]
+						$('#' + queuedFile.id).fadeOut(0, function() {
+							$(this).remove();
+						});
+					}
 				}
-			}
-    },
-    'removeCompleted':false
+	    },
+	    'removeCompleted':false
+	});
+
 });
+
+
 
 </script>
 <script type="text/javascript">
@@ -282,7 +326,7 @@ $(function(){
             //ajax
             $.post("${ctx}/ajax/material/saveOrUpdateVideo",data)
              .success(function(){
-            	 alert("保存成功!");
+            	 window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
              }); 
         }
     });

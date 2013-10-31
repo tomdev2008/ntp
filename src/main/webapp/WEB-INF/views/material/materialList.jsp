@@ -29,12 +29,12 @@
 	        <div class="page-header">
 	           <c:if test="${param.fdType!=1000}">
                 <span class="muted">我正在看：</span> 
-                 <c:if test="${param.fdType==01}">视频</c:if>
-                 <c:if test="${param.fdType==02}">音频</c:if>
-                 <c:if test="${param.fdType==04}">文档</c:if> 
-                 <c:if test="${param.fdType==05}">幻灯片</c:if> 
-                 <c:if test="${param.fdType==08}">测试</c:if> 
-                 <c:if test="${param.fdType==10}">作业包</c:if> 
+                 <c:if test="${param.fdType=='01'}">视频</c:if>
+                 <c:if test="${param.fdType=='02'}">音频</c:if>
+                 <c:if test="${param.fdType=='04'}">文档</c:if> 
+                 <c:if test="${param.fdType=='05'}">幻灯片</c:if> 
+                 <c:if test="${param.fdType=='08'}">测试</c:if> 
+                 <c:if test="${param.fdType=='10'}">作业包</c:if> 
                 </c:if> 
               
                 <div class="backHome">

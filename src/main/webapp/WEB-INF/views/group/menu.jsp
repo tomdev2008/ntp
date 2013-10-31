@@ -8,10 +8,10 @@
                     <span>课程管理</span>
 	            </li>
 	            <li><a href="#"><i class="icon-course-series"></i>我的系列课程</a></li>
-	            <c:if test="${param.fdType==1000}">
+	            <c:if test="${param.fdType=='1000'}">
 	            <li class="active">
 	             </c:if>
-	             <c:if test="${param.fdType!=1000}">
+	             <c:if test="${param.fdType!='1000'}">
 	            <li>
 	             </c:if>
 	             
@@ -21,44 +21,44 @@
 	             <li class="nav-header">
                      <span>课程素材库</span>
 	            </li>
-                <c:if test="${param.fdType==01}">
+                <c:if test="${param.fdType=='01'}">
                 <li class="active">
                 </c:if>
-                <c:if test="${param.fdType!=01}">
+                <c:if test="${param.fdType!='01'}">
                 <li>
                 </c:if>
                   <a href="${ctx}/material/findList?fdType=01"><i class="icon-video">
                 </i>视频</a></li>
                 </li>
-	            <c:if test="${param.fdType==04}">
+	            <c:if test="${param.fdType=='04'}">
                 <li class="active">
                 </c:if>
-                <c:if test="${param.fdType!=04}">
+                <c:if test="${param.fdType!='04'}">
                 <li>
                 </c:if>
                   <a href="${ctx}/material/findList?fdType=04"><i class="icon-doc">
                 </i>文档</a></li>
-                <c:if test="${param.fdType==05}">
+                <c:if test="${param.fdType=='05'}">
                 <li class="active">
                 </c:if>
-                <c:if test="${param.fdType!=05}">
+                <c:if test="${param.fdType!='05'}">
                 <li>
                 </c:if>
                   <a href="${ctx}/material/findList?fdType=05"><i class="icon-ppt">
                 </i>幻灯片</a></li>
-                <c:if test="${param.fdType==08}">
+                <c:if test="${param.fdType=='08'}">
                 <li class="active">
                 </c:if>
-                <c:if test="${param.fdType!=08}">
+                <c:if test="${param.fdType!='08'}">
                 <li>
                 </c:if>
                   <a href="${ctx}/material/findList?fdType=08"><i class="icon-exam">
                 </i>测试</a></li>
                 
-                <c:if test="${param.fdType==10}">
+                <c:if test="${param.fdType=='10'}">
                  <li class="active">
                 </c:if>
-                <c:if test="${param.fdType!=10}">
+                <c:if test="${param.fdType!='10'}">
                  <li>
                 </c:if>
                   <a href="${ctx}/material/findList?fdType=10"><i class="icon-task"></i>作业</a></li>
