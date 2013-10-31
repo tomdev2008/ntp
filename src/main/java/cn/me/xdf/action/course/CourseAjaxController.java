@@ -28,6 +28,7 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseAuthService;
@@ -51,6 +52,7 @@ import cn.me.xdf.utils.ShiroUtils;
 @Scope("request")
 public class CourseAjaxController {
 
+	
 	@Autowired
 	private CourseService courseService;
 
@@ -74,10 +76,12 @@ public class CourseAjaxController {
 
 	@Autowired
 	private CourseAuthService courseAuthService;
+	
 	@Autowired
 	private AttMainService attMainService;
-    @Autowired
-    private SysOrgPersonService sysOrgPersonService;
+  
+	@Autowired
+	private AccountService accountService;
 	/**
 	 * 获取当前课程的基本信息
 	 * 
@@ -148,7 +152,7 @@ public class CourseAjaxController {
 		// 获取课程分类ID
 		String courseType = request.getParameter("courseType");
 		//获取当前用户信息
-		SysOrgPerson sysOrgPerson=sysOrgPersonService.get(ShiroUtils.getUser().getId());
+		SysOrgPerson sysOrgPerson=accountService.load(ShiroUtils.getUser().getId());
 		//创建时间
 		Date createdate=new Date();
 		
@@ -468,8 +472,7 @@ public class CourseAjaxController {
 		for (Map map : list) {
 			CourseAuth auth = new CourseAuth();
 			auth.setCourse(course);
-			SysOrgPerson fdUser = new SysOrgPerson();
-			fdUser.setFdId((String) map.get("id"));
+			SysOrgPerson fdUser = accountService.load((String) map.get("id"));
 			auth.setFdUser(fdUser);
 			auth.setIsAuthStudy((Boolean) map.get("tissuePreparation"));
 			auth.setIsEditer((Boolean) map.get("editingCourse"));

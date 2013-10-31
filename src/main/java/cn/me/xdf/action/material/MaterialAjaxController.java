@@ -3,7 +3,6 @@ package cn.me.xdf.action.material;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,21 +15,18 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.model.base.AttMain;
-import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
-import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseContentService;
@@ -42,6 +38,9 @@ import cn.me.xdf.utils.ShiroUtils;
 @RequestMapping(value = "/ajax/material")
 @Scope("request")
 public class MaterialAjaxController {
+	
+	@Autowired
+	private AccountService accountService;
 	
 	@Autowired
 	private MaterialService materialService;
@@ -83,6 +82,28 @@ public class MaterialAjaxController {
 			for(int i=0;i<materialId.length;i++){
 				fdId = materialId[i];
 				deleteMaterialData(fdId);
+			}
+		}
+	}
+	@RequestMapping(value = "deleteAllMaterial")
+	@ResponseBody
+	public void deleteAllMaterial(HttpServletRequest request){
+		String fdType = request.getParameter("fdType");
+		String fdName = request.getParameter("fdName");
+		String order = request.getParameter("order");
+		Pagination page = materialService.findMaterialList(fdType, 1,SimplePage.DEF_COUNT,fdName, order);
+		int i = page.getTotalPage();
+		if(i>0){
+			for(int j=0;j<i;j++){
+				page = materialService.findMaterialList(fdType, 1,1,fdName, order);
+				List list = page.getList();
+				if(list!=null && list.size()>0){
+					for(Object obj:list){
+						Map map = (Map)obj;
+						String materialId = (String)map.get("FDID");
+						deleteMaterialData(materialId);
+					}
+				}
 			}
 		}
 		
@@ -152,8 +173,7 @@ public class MaterialAjaxController {
 		materialInfo.setIsAvailable(true);
 		materialInfo.setIsPublish(true);
 		materialInfo.setIsDownload(true);
-		SysOrgPerson creator = new SysOrgPerson();
-		creator.setFdId(ShiroUtils.getUser().getId());
+		SysOrgPerson creator = accountService.load(ShiroUtils.getUser().getId());
 		materialInfo.setCreator(creator);
 		List<AttMain> attMains = new ArrayList<AttMain>();
 		AttMain attMain = new AttMain();
@@ -191,8 +211,7 @@ public class MaterialAjaxController {
 		}
 		String fdId = request.getParameter("fdId");
 		if(StringUtil.isBlank(fdId)){
-			SysOrgPerson creator = new SysOrgPerson();
-			creator.setFdId(ShiroUtils.getUser().getId());
+			SysOrgPerson creator = accountService.load(ShiroUtils.getUser().getId());
 			info.setFdType(request.getParameter("fdType"));
 			info.setCreator(creator);
 			info.setFdCreateTime(new Date());

@@ -58,9 +58,9 @@
 				</a> 
 				</div>
 				<label class="radio inline" for="selectCurrPage">
-				   <input type="radio" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()"/>选中本页</label>
+				   <input type="checkbox" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()"/>选中本页</label>
 				<label class="radio inline" for="selectAll">
-				   <input type="radio" id="selectAll" name="selectCheckbox" onclick="selectAll()"/>选中全部</label>
+				   <input type="checkbox" id="selectAll" name="selectCheckbox"  onclick="selectAll()"/>选中全部</label>
 				<div class="pages pull-right">
 					<div class="span2">
 						 第<span> 
@@ -216,6 +216,7 @@
 	</div>
 </div>
 <input type="hidden" id="fdType" value="${param.fdType}">
+
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 function showSearch(){
@@ -228,9 +229,63 @@ function clearserach(){
 }
 //选中当前页
 function checkcurrpage(){
-	$('input[name="ids"]').each(function(){
-		$(this).attr("checked",true);// 
-	});
+	if(document.getElementById("selectCurrPage").checked){
+		document.getElementById("selectAll").checked=false;
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",true);// 
+			$(this).attr("disabled",false);
+		});
+		$("#allFlag").attr("value",false);
+	} else {
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",false);// 
+		});
+		$("#allFlag").attr("value",false);
+	}
+}
+//全部选中
+function selectAll(){
+	if(document.getElementById("selectAll").checked){
+		document.getElementById("selectCurrPage").checked=false;
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",true);// disabled="disabled"
+			$(this).attr("disabled",true);
+		});
+		$("#allFlag").attr("value",true);
+	} else {
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",false);// 
+		});
+		$("#allFlag").attr("value",false);
+	}
+}
+</script>
+<script type="text/javascript">	
+function pageNavClick(fdType,pageNo,order){
+	var fdName = document.getElementById("serach").value;
+	$("#showkey").attr("value",fdName);//关键字赋值
+	$("#pageBody").html("");
+	$.ajax({
+		type: "post",
+		 url: "${ctx}/ajax/material/findList",
+		data : {
+			"fdName" : fdName,
+			"fdType" : fdType,
+			"pageNo" : pageNo,
+			"order" : order,
+		},
+		cache: false, 
+		dataType: "html",
+		success:function(data){		
+			$("#pageBody").html(data);
+			$("#show").html($("#showkey").val());
+			$("#serach").attr("value",$("#showkey").val());
+			if($("#allFlag").val()=='true'){
+				document.getElementById("selectAll").checked=true;
+				selectAll();
+			}
+		}
+	}); 
 }
 </script>
 <script type="text/javascript">	
@@ -240,15 +295,16 @@ function batchDelete() {
 	$('input[name="ids"]:checked').each(function() {
 		delekey+=$(this).val()+",";
 	});
+	
 	if(delekey==""){
-		$.fn.jalert("当前没有选择要删除的数据!");
+		$.fn.jalert("当前没有选择要删除的数据？",function(){return;});
 		return;
 	}
-	if(delekey==""){
-		$.fn.jalert("当前没有选择要删除的数据!",function(){return;});
-		return;
-	}
-	$.ajax({
+	//是否全部选中
+	if($("#allFlag").val()=='true'){
+		$.fn.jalert("是否删除所有素材？",deleteAllMaterial);
+	}else {
+		$.ajax({
 			type: "post",
 			url: "${ctx}/ajax/material/batchDelete",
 			data : {
@@ -257,8 +313,24 @@ function batchDelete() {
 			success:function(data){
 				window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
 			}
+	  }); 
+	}
+	
+}
+//删除所有
+function deleteAllMaterial(){
+	var fdName = document.getElementById("serach").value;
+	 $.ajax({
+		type: "post",
+		url: "${ctx}/ajax/material/deleteAllMaterial",
+		data : {
+			"fdName":fdName,
+			"fdType":$("#fdType").val(),
+		},
+		success:function(data){
+			window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
+		}
 	}); 
 }
-
 
 </script>

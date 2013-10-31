@@ -12,6 +12,7 @@ import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.Score;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.BaseService;
 import cn.me.xdf.service.ShiroDbRealm.ShiroUser;
 import cn.me.xdf.utils.ShiroUtils;
@@ -27,6 +28,9 @@ import cn.me.xdf.utils.ShiroUtils;
 @Transactional(readOnly = false)
 public class MessageService extends BaseService{
 
+	@Autowired
+	private AccountService accountService;
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public  Class<Message> getEntityClass() {
@@ -75,8 +79,7 @@ public class MessageService extends BaseService{
 		}
 		MessageReply messageReply = new MessageReply();
 		messageReply.setMessage(message);
-		SysOrgPerson orgPerson = new SysOrgPerson();
-		orgPerson.setFdId(userId);
+		SysOrgPerson orgPerson = accountService.load(userId);
 		messageReply.setFdUser(orgPerson);
 		messageReply.setFdCreateTime(new Date());
 		messageReply.setFdType(fdType);

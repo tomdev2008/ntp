@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.management.RuntimeErrorException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.Score;
 import cn.me.xdf.model.score.ScoreStatistics;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.BaseService;
 /**
  * 
@@ -24,6 +26,9 @@ import cn.me.xdf.service.BaseService;
 @Transactional(readOnly = false)
 public class ScoreService extends BaseService{
 
+	@Autowired
+	private AccountService accountService;
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public  Class<Score> getEntityClass() {
@@ -82,8 +87,7 @@ public class ScoreService extends BaseService{
 		if(s!=null){
 			throw new RuntimeException("不能重复评分");
 		}
-		SysOrgPerson orgPerson = new SysOrgPerson();
-		orgPerson.setFdId(userId);
+		SysOrgPerson orgPerson = accountService.load(userId);
 		Score score = new Score();
 		score.setFdModelName(fdModelName);
 		score.setFdModelId(fdModelId);

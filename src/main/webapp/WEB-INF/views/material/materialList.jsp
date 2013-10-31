@@ -47,28 +47,9 @@
 	</section>
 
 </section>
+<input type="hidden" id="showkey" name="showkey">
+<input type="hidden" id="allFlag" >
 
-<script type="text/javascript">	
-function pageNavClick(fdType,pageNo,order){
-	var fdName = document.getElementById("serach").value;
-	$("#pageBody").html("");
-	$.ajax({
-		type: "post",
-		 url: "${ctx}/ajax/material/findList",
-		data : {
-			"fdName" : fdName,
-			"fdType" : fdType,
-			"pageNo" : pageNo,
-			"order" : order,
-		},
-		cache: false, 
-		dataType: "html",
-		success:function(data){		
-			$("#pageBody").html(data);
-		}
-	}); 
-}
-</script>
 
 </body>
 </html>
