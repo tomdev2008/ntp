@@ -95,7 +95,7 @@ public class FileController {
     /**
      * 查看图片
      *
-     * @param modelId  对应业务表主键，也就是AttMain的modelId
+     * @param id  对应业务表主键，也就是AttMain的modelId
      * @param request
      * @param response
      */
