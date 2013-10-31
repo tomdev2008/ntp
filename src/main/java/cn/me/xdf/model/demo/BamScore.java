@@ -13,8 +13,6 @@ import java.util.List;
 import static cn.me.xdf.common.json.JsonUtils.*;
 
 /**
- *
- *
  * Created with IntelliJ IDEA.
  * User: xiaobin268
  * Date: 13-10-29
@@ -38,9 +36,16 @@ public class BamScore extends IdEntity implements BamProcess {
      */
     private String courseContentJson;
 
+    /**
+     * 是否通过
+     */
     private boolean through;
 
 
+    /**
+     *
+     * @return
+     */
     public CourseInfo getCourseInfo() {
         return courseInfo;
     }
