@@ -276,12 +276,14 @@
 			 */
             $("#addMedia").autocomplete($("#ctx").val()+"/ajax/material/getMaterialBykey",{
                 formatItem: function(item) {
+                	$("#addMedia").next(".help-block").remove();
                     return item.name;
                 },
                 extraParams : {
 					type : type
 				},
                 parse : function(data) {
+                	$("#addMedia").next(".help-block").remove();
 					var rows = [];
 					for ( var i = 0; i < data.length; i++) {
 						rows[rows.length] = {
@@ -430,12 +432,14 @@
 					return item.name + item.mail + item.org + item.department; 
 				},
 				formatItem: function(item) { 
+					$("#addUser").next(".help-block").remove();
 					return '<img src="' 
 						+ (item.imgUrl || 'images/temp-face36.jpg') + '" alt="">' 
 						+ item.name + '（' + item.mail + '），' 
 						+ item.org + '  ' + item.department; 
 				},
 				parse : function(data) {
+					$("#addUser").next(".help-block").remove();
 					var rows = [];
 					for ( var i = 0; i < data.length; i++) {
 						rows[rows.length] = {
@@ -770,14 +774,15 @@
 					});
 				}
 				$("#addKey").autocomplete($("#ctx").val()+"/ajax/course/findTagInfosByKey",{
-					formatMatch: function(item) { 
+					formatMatch: function(item) {
 						return item.fdName + item.fdDescription; 
 					},
-					formatItem: function(item) { 
+					formatItem: function(item) {
+						$("#addKey").parent().removeClass("warning").find(".help-block").remove();
 						return item.fdName; 
 					},
 					parse : function(data) {
-						$("#addKey").parent().removeClass("warning");
+						$("#addKey").parent().removeClass("warning").find(".help-block").remove();
 						var rows = [];
 						for ( var i = 0; i < data.length; i++) {
 							rows[rows.length] = {
