@@ -3,11 +3,14 @@ package cn.me.xdf.action.common;
 import cn.me.xdf.common.download.DownloadHelper;
 import cn.me.xdf.common.upload.FileModel;
 import cn.me.xdf.common.upload.FileRepository;
+import cn.me.xdf.common.utils.Zipper;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.service.base.AttMainService;
 import jodd.io.StreamUtil;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,6 +24,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author xiaobin
@@ -29,6 +34,7 @@ import java.io.*;
 @RequestMapping("/common/file")
 public class FileController {
 
+    private static final Logger log = LoggerFactory.getLogger(FileController.class);
 
     /**
      * 上传文件
@@ -86,6 +92,47 @@ public class FileController {
         return dh;
     }
 
+
+    /**
+     * 文件下载
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("/download/{modelId}/{zipname}")
+    public String downloadZip(@PathVariable("modelId") String modelId, @PathVariable("zipname") String zipname,
+                              HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        DownloadHelper dh = new DownloadHelper();
+        dh.setRequest(request);
+        List<AttMain> attMains = attMainService.getAttsByModelId(modelId);
+        String agent = request.getHeader("USER-AGENT");
+        if (attMains != null && !attMains.isEmpty()) {
+            String temp = "";
+            // 设置文件头，文件名称或编码格式
+            if (null != agent && -1 != agent.indexOf("MSIE")) {// IE
+                temp = java.net.URLEncoder.encode(zipname, "UTF-8");
+            } else {
+                temp = new String(zipname.getBytes("UTF-8"), "ISO8859-1");
+            }
+
+            List<Zipper.FileEntry> fileEntrys = new ArrayList<Zipper.FileEntry>();
+            response.setContentType("application/x-download;charset=UTF-8");
+            response.addHeader("Content-disposition", "filename=" + temp + ".zip");
+
+            for (AttMain attMain : attMains) {
+                File file = new File(attMain.getFdFilePath());
+                fileEntrys.add(new Zipper.FileEntry(attMain.getFdFileName(), "", file));
+            }
+            try {
+                // 模板一般都在windows下编辑，所以默认编码为GBK
+                Zipper.zip(response.getOutputStream(), fileEntrys, "GBK");
+            } catch (IOException e) {
+                log.error("export db error!", e);
+            }
+        }
+        return null;
+    }
+
     @RequestMapping("/delete/{id}")
     @ResponseBody
     public String delete(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
@@ -95,7 +142,7 @@ public class FileController {
     /**
      * 查看图片
      *
-     * @param id  对应业务表主键，也就是AttMain的modelId
+     * @param id       对应业务表主键，也就是AttMain的modelId
      * @param request
      * @param response
      */
