@@ -788,6 +788,9 @@
 		if($(':radio[name="encryptType"]:checked').val()=="passwordProtect"&&!$("#formAccessRight").valid()){
 			return;
 		}
+		if($(':radio[name="encryptType"]:checked').val()=="authorized"){
+			 $("#coursePwd").val("");
+		}
 		$.post('${ctx}/ajax/course/updateIsPublish',{
 			courseId : $("#courseId").val(),
 			isPublish: $("#permission").val(),

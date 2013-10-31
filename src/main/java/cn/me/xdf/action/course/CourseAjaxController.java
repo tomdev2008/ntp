@@ -544,15 +544,16 @@ public class CourseAjaxController {
 	public void courseCover(HttpServletRequest request) {
 		String courseId = request.getParameter("courseId");
 		String attMainId = request.getParameter("attId");
-		// 先清理附件库(清理该课程下的原始附件)
-		attMainService.deleteAttMainByModelId(courseId);
-		AttMain attMain = attMainService.get(attMainId);
-		attMain.setFdModelId(courseId);
-		attMain.setFdModelName("cn.me.xdf.model.course.CourseInfo");
-		attMain.setFdKey("Course");
-		// 保存最新的附件
-		attMainService.update(attMain);
-
+		if(StringUtil.isNotBlank(attMainId)){
+			// 先清理附件库(清理该课程下的原始附件)
+			attMainService.deleteAttMainByModelId(courseId);
+			AttMain attMain = attMainService.get(attMainId);
+			attMain.setFdModelId(courseId);
+			attMain.setFdModelName("cn.me.xdf.model.course.CourseInfo");
+			attMain.setFdKey("Course");
+			// 保存最新的附件
+			attMainService.update(attMain);
+		}
 	}
 
 	/*
