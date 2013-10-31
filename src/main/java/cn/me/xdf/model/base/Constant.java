@@ -121,4 +121,19 @@ public class Constant {
 	 * 章节类型：1表示节
 	 */
 	public static final Integer CATALOG_TYPE_LECTURE = 1;
+	
+	/**
+	 * 素材综述类型：01表示下载
+	 */
+	public static final String MATERIALDISCUSSINFO_TYPE_DOWNLOAD = "01";
+	
+	/**
+	 * 素材综述类型：02表示播放
+	 */
+	public static final String MATERIALDISCUSSINFO_TYPE_PLAY = "02";
+	
+	/**
+	 * 素材综述类型：03表示攒
+	 */
+	public static final String MATERIALDISCUSSINFO_TYPE_LAUD = "03";
 }

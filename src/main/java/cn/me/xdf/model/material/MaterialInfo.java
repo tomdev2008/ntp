@@ -122,6 +122,16 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 	private Integer fdStudyTime;
 	
 	/**
+	 * 播放次数
+	 */
+	private Integer fdPlays;
+	
+	/**
+	 * 攒次数
+	 */
+	private Integer fdLauds;
+	
+	/**
 	 * 完成条件类型：
 	 * 01系统自动
 	 * 02学员手工结束
@@ -322,5 +332,23 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 	public void setIsAvailable(Boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
+
+	public Integer getFdPlays() {
+		return fdPlays;
+	}
+
+	public void setFdPlays(Integer fdPlays) {
+		this.fdPlays = fdPlays;
+	}
+
+	public Integer getFdLauds() {
+		return fdLauds;
+	}
+
+	public void setFdLauds(Integer fdLauds) {
+		this.fdLauds = fdLauds;
+	}
+	
+	
 	
 }
