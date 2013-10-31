@@ -21,6 +21,7 @@ import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.User;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.BaseService;
 import cn.me.xdf.utils.ShiroUtils;
 /**
@@ -33,6 +34,9 @@ import cn.me.xdf.utils.ShiroUtils;
 @Transactional(readOnly = true)
 public class MaterialService extends BaseService {
 
+	@Autowired
+	private AccountService accountService;
+	
 	@Autowired
 	private MaterialAuthService materialAuthService;
 
@@ -119,8 +123,7 @@ public class MaterialService extends BaseService {
 			for (Map map : list) {
 				MaterialAuth auth = new MaterialAuth();
 				auth.setMaterial(info);
-				SysOrgPerson fdUser = new SysOrgPerson();
-				fdUser.setFdId((String)map.get("id"));
+				SysOrgPerson fdUser = accountService.load((String)map.get("id"));
 				auth.setFdUser(fdUser);
 				auth.setIsReader((Boolean)map.get("tissuePreparation"));
 				auth.setIsEditer((Boolean)map.get("editingCourse"));
