@@ -17,7 +17,9 @@ request.setAttribute("path", path[path.length-1]);
     	<div class="container pr">
 			<a href="#" class="logo"></a>
 	        <ul class="nav">
-	          <li><a href="#">系统管理</a></li>
+	          <shiro:hasAnyRoles name="admin,group">
+	          <li><a href="${ctx}/admin/role/list">系统管理</a></li>
+	          </shiro:hasAnyRoles>
 	          <li><a href="#">我是导师</a></li>
 	          <li><a href="${ctx}/material/findList?fdType=01&order=FDNAME">我是主管</a></li>
 	        </ul>
