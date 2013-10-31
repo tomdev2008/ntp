@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE dynamic-hibernate-statement PUBLIC
-    "-//LANDRAY/SQL Hibernate Dynamic Statement DTD 1.0//EN"
-    "http://www.dynamic.com/dtd/dtd/dynamic-hibernate-statement-1.0.dtd">
 <dynamic-hibernate-statement>
 
 	<sql-query name="insertToXdfDB">
