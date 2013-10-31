@@ -576,7 +576,6 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/bootstrap.min.js"></script>
 <script src="${ctx}/resources/js/jquery.sortable.js"></script>
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
