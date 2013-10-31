@@ -686,7 +686,11 @@
 	  				}
 	  				break;
 				case "deleteCourse":
-	  				rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
+					if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
+						rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
+	  				}else{
+	  					rightCont.loadBasicInfoPage("基本信息");
+	  				}
 	  				break;
                 case "video":
                     if(opt) {
