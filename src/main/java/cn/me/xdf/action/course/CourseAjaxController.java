@@ -1,6 +1,7 @@
 package cn.me.xdf.action.course;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseAuthService;
 import cn.me.xdf.service.course.CourseCatalogService;
@@ -74,7 +76,8 @@ public class CourseAjaxController {
 	private CourseAuthService courseAuthService;
 	@Autowired
 	private AttMainService attMainService;
-
+    @Autowired
+    private SysOrgPersonService sysOrgPersonService;
 	/**
 	 * 获取当前课程的基本信息
 	 * 
@@ -144,6 +147,11 @@ public class CourseAjaxController {
 		String keyword = request.getParameter("keyword");
 		// 获取课程分类ID
 		String courseType = request.getParameter("courseType");
+		//获取当前用户信息
+		SysOrgPerson sysOrgPerson=sysOrgPersonService.get(ShiroUtils.getUser().getId());
+		//创建时间
+		Date createdate=new Date();
+		
 		Map map = new HashMap();
 		CourseInfo course = new CourseInfo();
 		if (StringUtil.isNotEmpty(courseId)) {
@@ -162,6 +170,8 @@ public class CourseAjaxController {
 							.get(courseType);
 					course.setFdCategory(category);
 				}
+				course.setCreator(sysOrgPerson);
+				course.setFdCreateTime(createdate);
 				course = courseService.save(course);
 			} else {
 				course.setFdTitle(courseTitle);
@@ -187,6 +197,8 @@ public class CourseAjaxController {
 				CourseCategory category = courseCategoryService.get(courseType);
 				course.setFdCategory(category);
 			}
+			course.setCreator(sysOrgPerson);
+			course.setFdCreateTime(createdate);
 			course = courseService.save(course);
 			courseId = course.getFdId();
 		}
@@ -406,6 +418,36 @@ public class CourseAjaxController {
 		model.addAttribute("page", page);
 		return "/course/divcourselist";
 	}
+	
+	/*
+	 * 查询课程列表 或者根据关键字搜索 author hanhl
+	 */
+	@RequestMapping(value = "deleteAllCoursesByKey")
+	public String deleteAllCoursesByKey(Model model, HttpServletRequest request) {
+		String userId = ShiroUtils.getUser().getId();
+		String fdTitle = request.getParameter("fdTitle");
+		String pageNoStr = request.getParameter("pageNo");
+		String orderbyStr = request.getParameter("order");
+		Pagination page = courseService.findCourseInfosByName(userId, fdTitle,
+				pageNoStr, orderbyStr);
+		int i = page.getTotalPage();
+		if(i>0){
+			for(int j=0;j<i;j++){
+				page = courseService.findCourseInfosByName(userId, fdTitle,
+						"1", orderbyStr);
+				List list = page.getList();
+				if(list!=null && list.size()>0){
+					for(Object obj:list){
+						Map map = (Map)obj;
+						String courseId = (String)map.get("FDID");
+						delCourseById(courseId);
+					}
+				}
+			}
+		}
+		
+		return "redirect:/ajax/course/getCoureInfosOrByKey";
+	}
 
 	/**
 	 * 修改课程授权信息
@@ -451,40 +493,45 @@ public class CourseAjaxController {
 			String courseId = "";
 			for(int i=0;i<courses.length;i++){
 				courseId = courses[i];
-				CourseInfo course = courseService.get(courseId);
-				if (course != null && course.getIsAvailable()) {
-					// 需要判断课程状态是发布还是草稿，如果是发布，则只改是否有效的状态，如果是草稿，则删除课程及课程相关数据。
-					if (Constant.COURSE_TEMPLATE_STATUS_DRAFT.equals(course
-							.getFdStatus())) {
-						// 删除课程与关键字的关系
-						courseTagService.deleteByCourseId(courseId);
-						// 删除课程权限
-						courseAuthService.deleCourseAuthByCourseId(courseId);
-						// 获取课程下的所有章节
-						List<CourseCatalog> list = courseCatalogService
-								.getCatalogsByCourseId(courseId);
-						if (list != null && list.size() > 0) {
-							for (CourseCatalog catalog : list) {
-								if (Constant.CATALOG_TYPE_LECTURE == catalog
-										.getFdType()) {
-									// 删除节与内容的关系
-									courseContentService.deleteByCatalogId(catalog
-											.getFdId());
-								}
-							}
+				delCourseById(courseId);
+			}
+		}
+	}
+	
+	//删除课程
+	private void delCourseById(String courseId){
+		CourseInfo course = courseService.get(courseId);
+		if (course != null && course.getIsAvailable()) {
+			// 需要判断课程状态是发布还是草稿，如果是发布，则只改是否有效的状态，如果是草稿，则删除课程及课程相关数据。
+			if (Constant.COURSE_TEMPLATE_STATUS_DRAFT.equals(course
+					.getFdStatus())) {
+				// 删除课程与关键字的关系
+				courseTagService.deleteByCourseId(courseId);
+				// 删除课程权限
+				courseAuthService.deleCourseAuthByCourseId(courseId);
+				// 获取课程下的所有章节
+				List<CourseCatalog> list = courseCatalogService
+						.getCatalogsByCourseId(courseId);
+				if (list != null && list.size() > 0) {
+					for (CourseCatalog catalog : list) {
+						if (Constant.CATALOG_TYPE_LECTURE == catalog
+								.getFdType()) {
+							// 删除节与内容的关系
+							courseContentService.deleteByCatalogId(catalog
+									.getFdId());
 						}
-						// 删除章节
-						courseCatalogService.deleteByCourseId(courseId);
-						// 删除课程
-						courseService.delete(courseId);
-					} else {
-						// 删除已发布课程模板时，需要删除课程与系列的关系，则否会在系列中显示该课程，其他关系保持不变。
-						seriesCoursesService.deleteByCourseId(courseId);
-						// 修改课程模板有效状态
-						course.setIsAvailable(false);
-						courseService.update(course);
 					}
 				}
+				// 删除章节
+				courseCatalogService.deleteByCourseId(courseId);
+				// 删除课程
+				courseService.delete(courseId);
+			} else {
+				// 删除已发布课程模板时，需要删除课程与系列的关系，则否会在系列中显示该课程，其他关系保持不变。
+				seriesCoursesService.deleteByCourseId(courseId);
+				// 修改课程模板有效状态
+				course.setIsAvailable(false);
+				courseService.update(course);
 			}
 		}
 	}
