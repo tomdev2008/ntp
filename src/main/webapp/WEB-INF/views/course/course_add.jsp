@@ -203,7 +203,7 @@
         <form id="formDetailInfo" method="post" action="{{=it.action || '##'}}">  	
 	    	<div class="section" >   
 					<label for="courseAbstract">课程摘要</label>
-					<textarea id="courseAbstract" name="courseAbstract" required minlength="20" class="input-block-level" rows="4">{{=it.courseTit || ''}}</textarea>
+					<textarea id="courseAbstract" name="courseAbstract" required minlength="20" class="input-block-level" rows="4">{{=it.courseAbstract || ''}}</textarea>
 					<label for="courseAuthor">作者</label>
 					<input type="text" id="courseAuthor" name="courseAuthor"  class="span5" value="{{=it.courseAuthor || ''}}">
 					<label for="authorDescrip">作者描述</label>
