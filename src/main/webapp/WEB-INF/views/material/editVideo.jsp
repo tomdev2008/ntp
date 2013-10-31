@@ -90,11 +90,9 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="${ctx}/material/findList?fdType=01" class="backParent">
-                                     返回<c:if test="${param.fdType == '01'}">视频</c:if>
-                  <c:if test="${param.fdType == '02'}">音频</c:if>
-                  <c:if test="${param.fdType == '04'}">文档</c:if>
-                  <c:if test="${param.fdType == '05'}">幻灯片</c:if>列表</a>
+                <a href="${ctx}/material/findList?fdType=${materialInfo.fdType}" class="backParent">
+                <span id="back"></span>
+               </a>
                 <h4>${materialInfo.fdName}</h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button">保存</button>
@@ -287,6 +285,7 @@ $(function(){
 	switch($("#fdType").val()){
   	case "01":
   		$("#materialIntro").html("视频简介");
+  		$("#back").html("返回视频列表");
   		$("#typeTxt").html("视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
   		data_uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
   		$("#uploadIntro").html(data_uploadIntro);
@@ -294,6 +293,7 @@ $(function(){
   		break;
     case "02":
     	$("#materialIntro").html("音频简介");
+    	$("#back").html("返回音频列表");
     	$("#typeTxt").html("音&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
     	data_uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的视频将会显示在下面的音频列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
@@ -301,6 +301,7 @@ $(function(){
         break;
     case "04":
     	$("#materialIntro").html("文档简介");
+    	$("#back").html("返回文档列表");
     	$("#typeTxt").html("文&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;档");
     	$("#videoText").html("");
     	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的视频将会显示在下面的文档列表中。";
@@ -308,8 +309,9 @@ $(function(){
     	uptype='*.doc;*.xls;';
         break;
     case "05":
-    	$("#materialIntro").html("ppt简介");
-    	$("#typeTxt").html("幻&nbsp;灯&nbsp;片");
+    	$("#materialIntro").html("幻灯片简介");
+    	$("#back").html("返回幻灯片列表");
+    	$("#typeTxt").html("幻&nbsp;&nbsp;灯&nbsp;&nbsp;片");
     	$("#videoText").html("");
     	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的视频将会显示在下面的幻灯片列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
