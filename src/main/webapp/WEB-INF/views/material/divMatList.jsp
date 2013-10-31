@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 	<section class="section box-control">
 		<div class="hd">
@@ -19,11 +20,11 @@
 				</div>
 				<form class="toolbar-search">
 					<input type="text" id="serach" class="search" placeholder="搜索条目"
-					   onblur="pageNavClick('${param.fdType}');" > 
+					   onblur="pageNavClick('${param.fdType}');"  onkeydown="showSearch();" onkeyup="showSearch();"> 
 					<i class="icon-search"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>含“<a
-					href="#">雅思</a>”的条目
+					href="#"><span id="show">雅思</span></a>”的条目
 				</span> <a class="btn btn-link" href="#rightCont">清空搜索结果</a>
 			</div>
 		</div>
@@ -63,46 +64,46 @@
 				<div class="pages pull-right">
 					<div class="span2">
 						 第<span> 
-						 <c:if test="${page.getTotalPage()==1}">
-						   1 - ${page.getTotalCount()}
+						 <c:if test="${page.totalPage==1}">
+						   1 - ${page.totalCount}
 						 </c:if>  
-						 <c:if test="${page.getTotalPage()>1}">
-						   <c:if test="${page.getPageNo()==1}">
+						 <c:if test="${page.totalPage>1}">
+						   <c:if test="${page.pageNo==1}">
 						    1-10
 						   </c:if>
-						   <c:if test="${page.getPageNo()!=1}">
-						    <c:if test="${page.getPageNo()<page.getTotalPage()}">
-						     ${page.getPageNo()*10+1} - ${page.getPageNo()*20}
+						   <c:if test="${page.pageNo!=1}">
+						    <c:if test="${page.pageNo<page.totalPage}">
+						     ${page.pageNo*10+1} - ${page.pageNo*20}
 						    </c:if>
-							<c:if test="${page.getPageNo()==page.getTotalPage()}">
-						     ${page.getPageNo()*10-10+1} - ${page.getTotalCount()}
+							<c:if test="${page.pageNo==page.totalPage}">
+						     ${page.pageNo*10-10+1} - ${page.totalCount}
 						   </c:if>
 						  </c:if>
 						</c:if>
 					   </span> 
-						 / <span>${page.getTotalCount()}</span> 条 
+						 / <span>${page.totalCount}</span> 条 
 					</div>
 					<div class="btn-group">
 
-					<c:if test="${page.isFirstPage()==true}">
+					<c:if test="${page.pageNo <= 1}">
 						<button class="btn btn-primary btn-ctrl" type="button" disabled>
 							<i class="icon-chevron-left icon-white"></i>
 						</button>
 					</c:if>
-					<c:if test="${page.isFirstPage()==false}">
-						<a onclick="pageNavClick('${param.fdType}','${page.getPrePage()}')">
+					<c:if test="${page.pageNo > 1}">
+						<a onclick="pageNavClick('${param.fdType}','${page.prePage}')">
 							<button class="btn btn-primary btn-ctrl" type="button">
 								<i class="icon-chevron-left icon-white"></i>
 							</button>
 						</a>
 					</c:if>
-					<c:if test="${page.isLastPage()==true}">
+					<c:if test="${page.pageNo >= page.totalPage}">
 						<button class="btn btn-primary btn-ctrl" type="button" disabled>
 							<i class="icon-chevron-right icon-white"></i>
 						</button>
 					</c:if>
-					<c:if test="${page.isLastPage()!=true}">
-						<a onclick="pageNavClick('${param.fdType}','${page.getNextPage()}')">
+					<c:if test="${page.pageNo < page.totalPage}">
+						<a onclick="pageNavClick('${param.fdType}','${page.nextPage}')">
 							<button class="btn btn-primary btn-ctrl" type="button">
 								<i class="icon-chevron-right icon-white"></i>
 							</button>
@@ -141,7 +142,7 @@
 					  <b class="text-warning">0</b>
 					  </c:if>
 					  
-					</span> <span class="date"><i class="icon-time"></i>${bean.FDCREATETIME}</span>
+					</span> <span class="date"><i class="icon-time"></i><fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
 						<span class="btns">
 							<button type="button" class="btn btn-link">
 								<i class="icon-eye"></i>3315
@@ -165,22 +166,22 @@
 	</section>
 	<div class="pages">
 		<div class="btn-group dropup">
-		<c:if test="${page.isFirstPage()==true}">
+		<c:if test="${page.firstPage==true}">
 			<button class="btn btn-primary btn-ctrl" type="button" disabled>
 				<i class="icon-chevron-left icon-white"></i>
 			</button>
 		</c:if>
-		<c:if test="${page.isFirstPage()==false}">
-			<a onclick="pageNavClick('${param.fdType}','${page.getPrePage()}')">
+		<c:if test="${page.firstPage==false}">
+			<a onclick="pageNavClick('${param.fdType}','${page.prePage}')">
 				<button class="btn btn-primary btn-ctrl" type="button">
 					<i class="icon-chevron-left icon-white"></i>
 				</button>
 			</a>
 		</c:if>
 
-		<c:forEach var="i" begin="1" end="${page.getTotalPage()}">
+		<c:forEach var="i" begin="1" end="${page.totalPage}">
             <c:choose>
-                <c:when test="${page.getPageNo() == i}">
+                <c:when test="${page.pageNo == i}">
                     <button class="btn btn-primary btn-num active" type="button" >${i}</button>
                 </c:when>
                 <c:otherwise>
@@ -193,34 +194,32 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu pull-right">
-			  <c:forEach var="i" begin="1" end="${page.getTotalPage()}">
-				<li><a onclick="pageNavClick('${param.fdType}','${i}')"> 
-				<c:if test="${page.getTotalPage()==1}">
-						   1 - ${page.getTotalCount()}
-				</c:if> 
-				<c:if test="${page.getTotalPage()>1}">
-					<c:if test="${page.getPageNo()<page.getTotalPage()}">
-						  ${page.getPageNo()*i*10-10+1} - ${page.getPageNo()*10*i}
-					</c:if>
-				</c:if> 
+			  <c:forEach var="i" begin="1" end="${page.totalPage}">
+				<li><a onclick="pageNavClick('${param.fdType}','${i}')">
+				${i*10-10+1} - ${i*10} 
 				</a></li>
 			</c:forEach>
 			</ul>
 
-		<c:if test="${page.isLastPage()==true}">
+		<c:if test="${page.lastPage==true}">
 			<button class="btn btn-primary btn-ctrl" type="button" disabled>
 				<i class="icon-chevron-right icon-white"></i>
 			</button>
 		</c:if>
-		<c:if test="${page.isLastPage()!=true}">
-			<a onclick="pageNavClick('${param.fdType}','${page.getNextPage()}')">
+		<c:if test="${page.lastPage!=true}">
+			<a onclick="pageNavClick('${param.fdType}','${page.nextPage}')">
 				<button class="btn btn-primary btn-ctrl" type="button">
 					<i class="icon-chevron-right icon-white"></i>
 				</button>
 			</a>
 		</c:if>
 	</div>
-	</div>
+</div>
+<script type="text/javascript">
+function showSearch(){
+	$("#show").html($("#serach").val());
+}
+</script>
 <script type="text/javascript">	
 //jquery获取复选框值  
 function batchDelete() {
@@ -249,7 +248,6 @@ function selectAll(){
 	var action=event.srcElement.name;
 	alert(form.elements.length);
 	for (var i=0;i<form.elements.length;i++){//遍历表单项 
-		alert("11113333");
 	    //将当前表单项form.elements[i]对象简写为e 
 	   var e = form.elements[i];
 	   //如果当前表单项的name属性值为iTo， 
