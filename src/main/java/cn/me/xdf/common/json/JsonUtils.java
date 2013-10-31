@@ -1,11 +1,13 @@
 package cn.me.xdf.common.json;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import cn.me.xdf.common.json.hibernate4.Hibernate4Module;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.JavaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +66,27 @@ public class JsonUtils {
                 objectMapper = new ObjectMapper();
             }
             return objectMapper.readValue(json, clazz);
+        } catch (JsonParseException e) {
+            log.error("json==" + json + ",error(JsonParseException):"
+                    + e.getMessage());
+            throw new RuntimeException(e);
+        } catch (JsonMappingException e) {
+            log.error("json==" + json + ",error(JsonMappingExcption):"
+                    + e.getMessage());
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            log.error("json==" + json + ",error(IOException):" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T readObjectByJson(String json, Type type) {
+        try {
+            if (objectMapper == null) {
+                objectMapper = new ObjectMapper();
+            }
+            JavaType javaType = objectMapper.constructType(type);
+            return objectMapper.readValue(json, javaType);
         } catch (JsonParseException e) {
             log.error("json==" + json + ",error(JsonParseException):"
                     + e.getMessage());
