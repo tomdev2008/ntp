@@ -99,7 +99,6 @@
         </ul>
       </div>
       <div class="span9">
-        <sitemesh:body />
       </div>
     </div>
   </div>
