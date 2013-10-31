@@ -52,6 +52,7 @@ import cn.me.xdf.utils.ShiroUtils;
 @Scope("request")
 public class CourseAjaxController {
 
+	
 	@Autowired
 	private CourseService courseService;
 
@@ -471,8 +472,7 @@ public class CourseAjaxController {
 		for (Map map : list) {
 			CourseAuth auth = new CourseAuth();
 			auth.setCourse(course);
-			SysOrgPerson fdUser = new SysOrgPerson();
-			fdUser.setFdId((String) map.get("id"));
+			SysOrgPerson fdUser = accountService.load((String) map.get("id"));
 			auth.setFdUser(fdUser);
 			auth.setIsAuthStudy((Boolean) map.get("tissuePreparation"));
 			auth.setIsEditer((Boolean) map.get("editingCourse"));
