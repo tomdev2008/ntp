@@ -33,19 +33,6 @@ public class MaterialAuthService extends BaseService{
 	}
 	
 	/**
-	 * 添加或修改资源权限
-	 * 
-	 */
-	@Transactional(readOnly = false)
-	public MaterialAuth saveOrUpdateMaterialAuth(MaterialAuth materialAuth){
-		MaterialAuth auth =findByMaterialIdAndUserId(materialAuth.getMaterial().getFdId(), materialAuth.getFdUser().getFdId());
-		if(auth==null){
-			return save(materialAuth);
-		}else{
-			return update(materialAuth);
-		}
-	}
-	/**
 	 * 删除资源权限
 	 * 
 	 */

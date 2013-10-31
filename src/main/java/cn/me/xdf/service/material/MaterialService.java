@@ -142,9 +142,9 @@ public class MaterialService extends BaseService {
 	 */
 	@Transactional(readOnly = false)
 	public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName,String order){
-		Finder finder = Finder.create("select info.*,score.fdaverage as materialScore from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
+		Finder finder = Finder.create("select info.*,score.fdaverage from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
 		finder.append("on info.FDID=auth.FDMATERIALID ");
-		finder.append(" left join IXDF_NTP_SCORE_STATISTICS score on info.FDID = score.fdModelId and 'cn.me.xdf.model.material.MaterialInfo'=score.fdmodelname");
+		finder.append(" left join IXDF_NTP_SCORE_STATISTICS score on info.FDID = score.fdModelId and score.fdmodelname = 'cn.me.xdf.model.material.MaterialInfo' ");
 		finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1 ");
 		finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' ");
 		finder.append(" ) or info.fdCreatorId='"+ShiroUtils.getUser().getId()+"') ");
@@ -161,7 +161,7 @@ public class MaterialService extends BaseService {
 				finder.append(" order by info.FDCREATETIME ");
 			}
 			if(order.equalsIgnoreCase("FDSCORE")){
-				finder.append(" order by score.FDSCORE ");
+				finder.append(" order by score.fdaverage ");
 			}
 			
 		}

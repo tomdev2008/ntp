@@ -117,23 +117,23 @@
 	<section class="section listWrap">
 		<ul class="nav list">
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
-				<li><a href="${ctx}/material/updateVideo?fdId=${bean.FDID}&fdType=01"> 
+				<li><a href="${ctx}/material/updateVideo?fdId=${bean.FDID}&fdType=${bean.FDTYPE}"> 
 				<input type="checkbox" name="ids" value="${bean.FDID}"/> 
 				    <span class="title">${bean.FDNAME}</span> 
 				    <span class="rating-view">
-				      <c:if test="${materialScore!=null}">
+				      <c:if test="${bean.FDAVERAGE!=null}">
 					  <span class="rating-all">
-					  <c:forEach var="i" begin="1" end="${materialScore}">
+					  <c:forEach var="i" begin="1" end="${bean.FDAVERAGE}">
 					   <i class="icon-star active"></i>
 					  </c:forEach>
-					  <c:forEach var="i" begin="1" end="${5-materialScore}">
+					  <c:forEach var="i" begin="1" end="${5-bean.FDAVERAGE}">
 					   <i class="icon-star"></i>
 					  </c:forEach>
 					  </span> 
-					  <b class="text-warning">${materialScore}</b>
+					  <b class="text-warning">${bean.FDAVERAGE}</b>
 					  </c:if>
 					  
-					  <c:if test="${materialScore==null}">
+					  <c:if test="${bean.FDAVERAGE==null}">
 					  <span class="rating-all">
 					  <c:forEach var="i" begin="1" end="5">
 					   <i class="icon-star"></i>
