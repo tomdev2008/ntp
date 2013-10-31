@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import cn.me.xdf.model.base.IdEntity;
+import cn.me.xdf.model.organization.SysOrgPerson;
 /**
  * 
  * 素材详述信息实体的定义（下载、播放、攒）
@@ -20,8 +22,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @author zhaoq
  * 
  */
-import cn.me.xdf.model.base.IdEntity;
-import cn.me.xdf.model.organization.SysOrgPerson;
 @SuppressWarnings("serial")
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
