@@ -4,6 +4,7 @@ import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.base.BamProcess;
 import cn.me.xdf.model.base.IdEntity;
 import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -43,7 +44,6 @@ public class BamScore extends IdEntity implements BamProcess {
 
 
     /**
-     *
      * @return
      */
     public CourseInfo getCourseInfo() {
@@ -80,6 +80,10 @@ public class BamScore extends IdEntity implements BamProcess {
         this.through = through;
     }
 
+    /***************************************************************************************************
+     * 各种行为
+     ****************************************************************************************************/
+
     /**
      * 获取课程流程里所有章节
      *
@@ -89,6 +93,18 @@ public class BamScore extends IdEntity implements BamProcess {
     public List<CourseCatalog> getCatalogs() {
         if (StringUtils.isNotBlank(catalogJson)) {
             return readObjectByJson(catalogJson, List.class);
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @JsonIgnore
+    public List<CourseContent> getCourseContents() {
+        if (StringUtils.isNotBlank(courseContentJson)) {
+            return readObjectByJson(courseContentJson, List.class);
         }
         return null;
     }

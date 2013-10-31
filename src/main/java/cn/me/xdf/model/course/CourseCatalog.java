@@ -18,234 +18,232 @@ import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.base.IdEntity;
 
 /**
- * 
  * 课程章节实体的定义
- * 
- * @author zuoyi
  *
- * 
+ * @author zuoyi
  */
 @SuppressWarnings("serial")
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_COURSE_CATALOG")
 public class CourseCatalog extends IdEntity {
-	
-	/**
-	 * 所属课程
-	 */
-	private CourseInfo courseInfo;
-	
-	/**
-	 * 上级章节
-	 */
-	private CourseCatalog hbmParent;
-	
-	/**
-	 * 章节名称
-	 */
-	private String fdName;
-	
-	/**
-	 * 章节描述
-	 */
-	private String fdDescription;
-	
-	/**
-	 * 备注
-	 */
-	private String fdRemark;
-	
-	/**
-	 * 总节数
-	 */
-	private Integer fdTotalPart;
-	
-	/**
-	 * 总内容项
-	 */
-	private Integer fdTotalContent;
-	
-	/**
-	 * 学习时长
-	 */
-	private String fdStudyTime;
-	
-	/**
-	 * 章节序号
-	 */
-	private Integer fdNo;
-	
-	/**
-	 * 总序号
-	 */
-	private Integer fdTotalNo;
-	
-	/**
-	 * 过关条件（%）
-	 */
-	private Double fdPassCondition;
-	
-	/**
-	 * 素材类型：
-	 * 01视频
-	 * 02音频
-	 * 03图片
-	 * 04文档
-	 * 05幻灯片
-	 * 06网页(链接)
-	 * 07富文本
-	 * 08测试
-	 * 09测评
-	 * 10作业
-	 * 11日程
-	 */
-	private String fdMaterialType;
-	
-	/**
-	 * 章节类型 0表示章，1表示节
-	 */
-	private Integer fdType;
-	
-	public Integer getFdType() {
-		return fdType;
-	}
 
-	public void setFdType(Integer fdType) {
-		this.fdType = fdType;
-	}
+    /**
+     * 所属课程
+     */
+    private CourseInfo courseInfo;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdCourseId")
-	public CourseInfo getCourseInfo() {
-		return courseInfo;
-	}
+    /**
+     * 上级章节
+     */
+    private CourseCatalog hbmParent;
 
-	public void setCourseInfo(CourseInfo courseInfo) {
-		this.courseInfo = courseInfo;
-	}
+    /**
+     * 章节名称
+     */
+    private String fdName;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdParentId")
-	public CourseCatalog getHbmParent() {
-		return hbmParent;
-	}
+    /**
+     * 章节描述
+     */
+    private String fdDescription;
 
-	public void setHbmParent(CourseCatalog hbmParent) {
-		this.hbmParent = hbmParent;
-	}
+    /**
+     * 备注
+     */
+    private String fdRemark;
 
-	public String getFdName() {
-		return fdName;
-	}
+    /**
+     * 总节数
+     */
+    private Integer fdTotalPart;
 
-	public void setFdName(String fdName) {
-		this.fdName = fdName;
-	}
+    /**
+     * 总内容项
+     */
+    private Integer fdTotalContent;
 
-	@Column(length = 2000)
-	public String getFdDescription() {
-		return fdDescription;
-	}
+    /**
+     * 学习时长
+     */
+    private String fdStudyTime;
 
-	public void setFdDescription(String fdDescription) {
-		this.fdDescription = fdDescription;
-	}
+    /**
+     * 章节序号
+     */
+    private Integer fdNo;
 
-	@Column(length = 2000)
-	public String getFdRemark() {
-		return fdRemark;
-	}
+    /**
+     * 总序号
+     */
+    private Integer fdTotalNo;
 
-	public void setFdRemark(String fdRemark) {
-		this.fdRemark = fdRemark;
-	}
+    /**
+     * 过关条件（%）
+     */
+    private Double fdPassCondition;
 
-	public Integer getFdTotalPart() {
-		return fdTotalPart;
-	}
+    /**
+     * 素材类型：
+     * 01视频
+     * 02音频
+     * 03图片
+     * 04文档
+     * 05幻灯片
+     * 06网页(链接)
+     * 07富文本
+     * 08测试
+     * 09测评
+     * 10作业
+     * 11日程
+     */
+    private String fdMaterialType;
 
-	public void setFdTotalPart(Integer fdTotalPart) {
-		this.fdTotalPart = fdTotalPart;
-	}
+    /**
+     * 章节类型 0表示章，1表示节
+     */
+    private Integer fdType;
 
-	public Integer getFdTotalContent() {
-		return fdTotalContent;
-	}
+    public Integer getFdType() {
+        return fdType;
+    }
 
-	public void setFdTotalContent(Integer fdTotalContent) {
-		this.fdTotalContent = fdTotalContent;
-	}
+    public void setFdType(Integer fdType) {
+        this.fdType = fdType;
+    }
 
-	public String getFdStudyTime() {
-		return fdStudyTime;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fdCourseId")
+    @JsonIgnore
+    public CourseInfo getCourseInfo() {
+        return courseInfo;
+    }
 
-	public void setFdStudyTime(String fdStudyTime) {
-		this.fdStudyTime = fdStudyTime;
-	}
+    public void setCourseInfo(CourseInfo courseInfo) {
+        this.courseInfo = courseInfo;
+    }
 
-	public Integer getFdNo() {
-		return fdNo;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fdParentId")
+    public CourseCatalog getHbmParent() {
+        return hbmParent;
+    }
 
-	public void setFdNo(Integer fdNo) {
-		this.fdNo = fdNo;
-	}
+    public void setHbmParent(CourseCatalog hbmParent) {
+        this.hbmParent = hbmParent;
+    }
 
-	public Integer getFdTotalNo() {
-		return fdTotalNo;
-	}
+    public String getFdName() {
+        return fdName;
+    }
 
-	public void setFdTotalNo(Integer fdTotalNo) {
-		this.fdTotalNo = fdTotalNo;
-	}
+    public void setFdName(String fdName) {
+        this.fdName = fdName;
+    }
 
-	public Double getFdPassCondition() {
-		return fdPassCondition;
-	}
+    @Column(length = 2000)
+    public String getFdDescription() {
+        return fdDescription;
+    }
 
-	public void setFdPassCondition(Double fdPassCondition) {
-		this.fdPassCondition = fdPassCondition;
-	}
+    public void setFdDescription(String fdDescription) {
+        this.fdDescription = fdDescription;
+    }
 
-	public String getFdMaterialType() {
-		return fdMaterialType;
-	}
+    @Column(length = 2000)
+    public String getFdRemark() {
+        return fdRemark;
+    }
 
-	public void setFdMaterialType(String fdMaterialType) {
-		this.fdMaterialType = fdMaterialType;
-	}
+    public void setFdRemark(String fdRemark) {
+        this.fdRemark = fdRemark;
+    }
+
+    public Integer getFdTotalPart() {
+        return fdTotalPart;
+    }
+
+    public void setFdTotalPart(Integer fdTotalPart) {
+        this.fdTotalPart = fdTotalPart;
+    }
+
+    public Integer getFdTotalContent() {
+        return fdTotalContent;
+    }
+
+    public void setFdTotalContent(Integer fdTotalContent) {
+        this.fdTotalContent = fdTotalContent;
+    }
+
+    public String getFdStudyTime() {
+        return fdStudyTime;
+    }
+
+    public void setFdStudyTime(String fdStudyTime) {
+        this.fdStudyTime = fdStudyTime;
+    }
+
+    public Integer getFdNo() {
+        return fdNo;
+    }
+
+    public void setFdNo(Integer fdNo) {
+        this.fdNo = fdNo;
+    }
+
+    public Integer getFdTotalNo() {
+        return fdTotalNo;
+    }
+
+    public void setFdTotalNo(Integer fdTotalNo) {
+        this.fdTotalNo = fdTotalNo;
+    }
+
+    public Double getFdPassCondition() {
+        return fdPassCondition;
+    }
+
+    public void setFdPassCondition(Double fdPassCondition) {
+        this.fdPassCondition = fdPassCondition;
+    }
+
+    public String getFdMaterialType() {
+        return fdMaterialType;
+    }
+
+    public void setFdMaterialType(String fdMaterialType) {
+        this.fdMaterialType = fdMaterialType;
+    }
 
     @JsonIgnore
-	@Transient
-	public String getMaterialType() {
-		String materialType = getFdMaterialType();
-		if(Constant.MATERIAL_TYPE_VIDEO.equals(materialType)){
-			return "video";
-		}
-		if(Constant.MATERIAL_TYPE_AUDIO.equals(materialType)){
-			return "audio";
-		}
-		if(Constant.MATERIAL_TYPE_DOC.equals(materialType)){
-			return "doc";
-		}
-		if(Constant.MATERIAL_TYPE_PPT.equals(materialType)){
-			return "ppt";
-		}
-		if(Constant.MATERIAL_TYPE_PIC.equals(materialType)){
-			return "img";
-		}
-		if(Constant.MATERIAL_TYPE_TEST.equals(materialType)){
-			return "exam";
-		}
-		if(Constant.MATERIAL_TYPE_JOBPACKAGE.equals(materialType)){
-			return "task";
-		}
-		if(Constant.MATERIAL_TYPE_SCHEDULE.equals(materialType)){
-			return "calendar";
-		}
-		return "none";
-	}
-	
+    @Transient
+    public String getMaterialType() {
+        String materialType = getFdMaterialType();
+        if (Constant.MATERIAL_TYPE_VIDEO.equals(materialType)) {
+            return "video";
+        }
+        if (Constant.MATERIAL_TYPE_AUDIO.equals(materialType)) {
+            return "audio";
+        }
+        if (Constant.MATERIAL_TYPE_DOC.equals(materialType)) {
+            return "doc";
+        }
+        if (Constant.MATERIAL_TYPE_PPT.equals(materialType)) {
+            return "ppt";
+        }
+        if (Constant.MATERIAL_TYPE_PIC.equals(materialType)) {
+            return "img";
+        }
+        if (Constant.MATERIAL_TYPE_TEST.equals(materialType)) {
+            return "exam";
+        }
+        if (Constant.MATERIAL_TYPE_JOBPACKAGE.equals(materialType)) {
+            return "task";
+        }
+        if (Constant.MATERIAL_TYPE_SCHEDULE.equals(materialType)) {
+            return "calendar";
+        }
+        return "none";
+    }
+
 }
