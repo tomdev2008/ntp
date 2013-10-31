@@ -2,7 +2,13 @@ package cn.me.xdf.model.log;
 
 import java.util.Date;
 
-
+/**
+ * 
+ * 登录日志
+ * 
+ * @author zhaoq
+ * 
+ */
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,12 +27,24 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Table(name = "IXDF_NTP_LOGLOGIN")
 public class LogLogin extends IdEntity{
 
+	/**
+	 * 登录人
+	 */
 	private SysOrgPerson person;
 	
+	/**
+	 * 登录时间
+	 */
 	private Date time;
 	
+	/**
+	 * 登录ip
+	 */
 	private String ip;
 	
+	/**
+	 * 登录SessionId
+	 */
 	private String sessionId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

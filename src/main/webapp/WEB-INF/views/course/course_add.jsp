@@ -358,10 +358,10 @@
 <script id="listUserKinguserTemplate" type="text/x-dot-template">
 <tr data-fdid="{{=it.id}}">
 	<td class="tdTit">
-     <div class="pr">
+    
 		<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 		<img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
-     <div>	
+
     </td>
 	<td><input type="checkbox" checked class="tissuePreparation" /></td>
 	<td><input type="checkbox" class="editingCourse" /></td>
