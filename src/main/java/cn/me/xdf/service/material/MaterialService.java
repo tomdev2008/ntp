@@ -207,9 +207,10 @@ public class MaterialService extends BaseService {
 		finder.append(" on info.FDID=auth.FDMATERIALID ");
 		finder.append(" where info.FDTYPE=:fdType and info.ISAVAILABLE=1 and lower(info.FDNAME) like :key ");
 		finder.append(" and ( (auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' and auth.ISREADER=1 ) ");
-		finder.append("  or info.ISPUBLISH=1) ");
+		finder.append("  or info.ISPUBLISH=1 or info.FDCREATORID = :user) ");
 		finder.setParam("fdType", type);
 		finder.setParam("key", "%"+key+"%");
+		finder.setParam("user", ShiroUtils.getUser().getId());
 		List<Map> list =(List<Map>)(getPageBySql(finder, 1,10).getList());
 		if(list==null){
 			return null;
