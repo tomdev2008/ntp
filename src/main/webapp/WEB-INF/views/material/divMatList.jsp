@@ -91,7 +91,7 @@
 						</button>
 					</c:if>
 					<c:if test="${page.pageNo > 1}">
-						<a onclick="pageNavClick('${param.fdType}','${page.prePage}')">
+						<a onclick="pageNavClick('${param.fdType}','${page.prePage}','${param.order}')">
 							<button class="btn btn-primary btn-ctrl" type="button">
 								<i class="icon-chevron-left icon-white"></i>
 							</button>
@@ -103,7 +103,7 @@
 						</button>
 					</c:if>
 					<c:if test="${page.pageNo < page.totalPage}">
-						<a onclick="pageNavClick('${param.fdType}','${page.nextPage}')">
+						<a onclick="pageNavClick('${param.fdType}','${page.nextPage}','${param.order}')">
 							<button class="btn btn-primary btn-ctrl" type="button">
 								<i class="icon-chevron-right icon-white"></i>
 							</button>
@@ -142,7 +142,8 @@
 					  <b class="text-warning">0</b>
 					  </c:if>
 					  
-					</span> <span class="date"><i class="icon-time"></i><fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
+					</span> <span class="date"><i class="icon-time"></i>
+					<fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
 						<span class="btns">
 							<button type="button" class="btn btn-link">
 								<i class="icon-eye"></i>3315
@@ -172,7 +173,7 @@
 			</button>
 		</c:if>
 		<c:if test="${page.firstPage==false}">
-			<a onclick="pageNavClick('${param.fdType}','${page.prePage}')">
+			<a onclick="pageNavClick('${param.fdType}','${page.prePage}','${param.order}')">
 				<button class="btn btn-primary btn-ctrl" type="button">
 					<i class="icon-chevron-left icon-white"></i>
 				</button>
@@ -195,7 +196,7 @@
 			</button>
 			<ul class="dropdown-menu pull-right">
 			  <c:forEach var="i" begin="1" end="${page.totalPage}">
-				<li><a onclick="pageNavClick('${param.fdType}','${i}')">
+				<li><a onclick="pageNavClick('${param.fdType}','${i}','${param.order}')">
 				${i*10-10+1} - ${i*10} 
 				</a></li>
 			</c:forEach>
@@ -207,7 +208,7 @@
 			</button>
 		</c:if>
 		<c:if test="${page.lastPage!=true}">
-			<a onclick="pageNavClick('${param.fdType}','${page.nextPage}')">
+			<a onclick="pageNavClick('${param.fdType}','${page.nextPage}','${param.order}')">
 				<button class="btn btn-primary btn-ctrl" type="button">
 					<i class="icon-chevron-right icon-white"></i>
 				</button>
@@ -215,6 +216,7 @@
 		</c:if>
 	</div>
 </div>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 function showSearch(){
 	$("#show").html($("#serach").val());
@@ -228,7 +230,7 @@ function batchDelete() {
 		chk_value.push($(this).val());
 	});
 	if (chk_value.length == 0) {
-		alert('请选择需要批量删除的内容。');
+		$.fn.jalert("当前没有选择要删除的数据!");
 		return false;
 	}
 	if (!confirm('您确定要批量删除吗？')) {

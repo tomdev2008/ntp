@@ -388,7 +388,7 @@ $(function(){
             //ajax
             $.post("${ctx}/ajax/material/saveOrUpdateVideo",data)
              .success(function(){
-                   alert("编辑成功");
+            	 window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
              }); 
         }
     });

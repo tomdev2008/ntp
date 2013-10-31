@@ -158,10 +158,10 @@ public class MaterialService extends BaseService {
 				finder.append(" order by info.fdName ");
 			}
 			if(order.equalsIgnoreCase("FDCREATETIME")){
-				finder.append(" order by info.FDCREATETIME ");
+				finder.append(" order by info.FDCREATETIME desc ");
 			}
 			if(order.equalsIgnoreCase("FDSCORE")){
-				finder.append(" order by score.fdaverage ");
+				finder.append(" order by score.fdaverage desc ");
 			}
 			
 		}
