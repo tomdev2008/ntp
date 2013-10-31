@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.me.xdf.model.material.MaterialEnum;
+import cn.me.xdf.service.material.source.ISourceService;
 import jodd.util.StringUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,18 +30,31 @@ import cn.me.xdf.utils.ShiroUtils;
  * @author 
  * 
  */
-@Service
 @Transactional(readOnly = true)
 public class MaterialService extends BaseService {
 
 	@Autowired
 	private MaterialAuthService materialAuthService;
-	
-	@SuppressWarnings("unchecked")
+
+    private Map<String,ISourceService> sourceMap;
+
+    public Map<String,ISourceService> getSourceMap() {
+        return sourceMap;
+    }
+
+    public void setSourceMap(Map<String,ISourceService> sourceMap) {
+        this.sourceMap = sourceMap;
+    }
+
+    @SuppressWarnings("unchecked")
 	@Override
 	public  Class<MaterialInfo> getEntityClass() {
 		return MaterialInfo.class;
 	}
+
+    public void find_test(String value){
+        sourceMap.get(MaterialEnum.valueOf(value));
+    }
 	
 	/**
 	 * 根据素材id获取素材权限信息

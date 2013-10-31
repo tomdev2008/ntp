@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -172,6 +173,7 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 		this.authList = authList;
 	}
 
+    @JsonIgnore
 	@OneToMany(cascade = { CascadeType.REFRESH, CascadeType.REMOVE }, fetch = FetchType.LAZY, mappedBy = "exam")
 	public List<ExamQuestion> getQuestions() {
 		return questions;
@@ -230,6 +232,7 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 		this.fdDescription = fdDescription;
 	}
 
+    @JsonIgnore
 	@Transient
 	public List<AttMain> getAttMains() {
 		return attMains;

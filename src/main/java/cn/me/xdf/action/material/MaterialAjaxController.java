@@ -85,6 +85,28 @@ public class MaterialAjaxController {
 				deleteMaterialData(fdId);
 			}
 		}
+	}
+	@RequestMapping(value = "deleteAllMaterial")
+	@ResponseBody
+	public void deleteAllMaterial(HttpServletRequest request){
+		String fdType = request.getParameter("fdType");
+		String fdName = request.getParameter("fdName");
+		String order = request.getParameter("order");
+		Pagination page = materialService.findMaterialList(fdType, 1,SimplePage.DEF_COUNT,fdName, order);
+		int i = page.getTotalPage();
+		if(i>0){
+			for(int j=0;j<i;j++){
+				page = materialService.findMaterialList(fdType, 1,1,fdName, order);
+				List list = page.getList();
+				if(list!=null && list.size()>0){
+					for(Object obj:list){
+						Map map = (Map)obj;
+						String materialId = (String)map.get("FDID");
+						deleteMaterialData(materialId);
+					}
+				}
+			}
+		}
 		
 	}
 	
