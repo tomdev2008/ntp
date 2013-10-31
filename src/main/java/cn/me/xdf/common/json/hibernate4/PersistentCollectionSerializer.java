@@ -42,8 +42,12 @@ public class PersistentCollectionSerializer
     @Override
     public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider)
             throws IOException, JsonProcessingException {
+
+        System.out.println("---------------------");
         if (value instanceof PersistentCollection) {
             PersistentCollection coll = (PersistentCollection) value;
+
+            System.out.println("---------------------");
             if (!_forceLazyLoading && !coll.wasInitialized()) {
                 provider.defaultSerializeNull(jgen);
                 return;
