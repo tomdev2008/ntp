@@ -305,20 +305,22 @@ function batchDelete() {
 	//是否全部选中
 	if($("#allFlag").val()=='true'){
 		$.fn.jalert("是否删除所有素材？",deleteAllMaterial);
-	}else {
-		$.ajax({
-			type: "post",
-			url: "${ctx}/ajax/material/batchDelete",
-			data : {
-				"materialIds":delekey,
-			},
-			success:function(data){
-				window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
-			}
-	  }); 
+	}else{
+		$.fn.jalert("是否删除所选素材？",function deleteMaterial(){
+			$.ajax({
+				type: "post",
+				url: "${ctx}/ajax/material/batchDelete",
+				data : {
+					"materialIds":delekey,
+				},
+				success:function(data){
+					window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
+				}
+		  }); 
+		});
 	}
-	
 }
+
 //删除所有
 function deleteAllMaterial(){
 	var fdName = document.getElementById("serach").value;

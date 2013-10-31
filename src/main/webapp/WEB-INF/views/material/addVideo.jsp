@@ -90,19 +90,16 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="${ctx}/material/findList?fdType=${param.fdType}" class="backParent">返回
-                  <c:if test="${param.fdType == '01'}">视频</c:if>
-                  <c:if test="${param.fdType == '02'}">音频</c:if>
-                  <c:if test="${param.fdType == '04'}">文档</c:if>
-                  <c:if test="${param.fdType == '05'}">幻灯片</c:if>
-                                          列表</a>
+                <a href="${ctx}/material/findList?fdType=${param.fdType}" class="backParent">
+                <span id="back"></span>
+                </a>
                 <h4></h4>
                 <div class="btn-group">
-                    <button class="btn btn-large btn-primary" type="button">保存</button>
+                    <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
                 </div>
 	        </div>
             <div class="page-body editingBody">
-                <form action="#" id="formEditDTotal" class="form-horizontal" method="post">
+                <form action="#" id="formEditDTotal"  class="form-horizontal" method="post">
                     <section class="section">
                         <div class="control-group">
                             <label class="control-label" for="videoName" id="typeTxt"></label>
@@ -151,7 +148,7 @@
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
                                 <input value="" id="author" required class="input-block-level"
-                                       name="fdAuthor" type="text">
+                                       name="fdAuthor" placeholder="请输入作者姓名(必填)" type="text">
                             </div>
                         </div>
                         <div class="control-group">
@@ -217,6 +214,7 @@ $(function(){
 	switch($("#fdType").val()){
   	case "01":
   		$("#materialIntro").html("视频简介");
+  		$("#back").html("返回视频列表");
   		$("#typeTxt").html("视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
   		data_uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
   		$("#uploadIntro").html(data_uploadIntro);
@@ -224,6 +222,7 @@ $(function(){
   		break;
     case "02":
     	$("#materialIntro").html("音频简介");
+    	$("#back").html("返回音频列表");
     	$("#typeTxt").html("音&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
     	data_uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的视频将会显示在下面的音频列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
@@ -231,6 +230,7 @@ $(function(){
         break;
     case "04":
     	$("#materialIntro").html("文档简介");
+    	$("#back").html("返回文档列表");
     	$("#typeTxt").html("文&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;档");
     	$("#videoText").html("");
     	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的视频将会显示在下面的文档列表中。";
@@ -239,6 +239,7 @@ $(function(){
         break;
     case "05":
     	$("#materialIntro").html("ppt简介");
+    	$("#back").html("返回幻灯片列表");
     	$("#typeTxt").html("幻&nbsp;灯&nbsp;片");
     	$("#videoText").html("");
     	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的视频将会显示在下面的幻灯片列表中。";
@@ -296,39 +297,7 @@ $(function(){
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     
     $("#formEditDTotal").validate({
-        submitHandler: function(form){
-            var data = {
-                videoName: $("#videoName").val(),
-                fdId: $("#fdId").val(),
-                videoUrl: $("#videoUrl").val(),
-                videoIntro: $("#videoIntro").val(),
-                author: $("#author").val(),
-                authorIntro: $("#authorIntro").val(),
-                permission:$("#permission").val(),
-                fdType:$("#fdType").val(),
-                attId:$("#attId").val(),
-                kingUser: null
-            };
-            if(data.permission === "encrypt"){
-                //push人员授权数据
-                data.kingUser = [];
-                $("#list_user>tr").each(function(){
-                    data.kingUser.push({
-                        id: $(this).attr("data-fdid"),
-                        index: $(this).index(),
-                        tissuePreparation: $(this).find(".tissuePreparation").is(":checked"),
-                        editingCourse: $(this).find(".editingCourse").is(":checked")
-                    });
-                });
-                data.kingUser = JSON.stringify(data.kingUser);
-            }
-            //console.log(JSON.stringify(data));
-            //ajax
-            $.post("${ctx}/ajax/material/saveOrUpdateVideo",data)
-             .success(function(){
-            	 window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
-             }); 
-        }
+        submitHandler:saveMaterial
     });
     $('#formEditDTotal a[data-toggle="tab"]').on('shown', function (e) {
         var href = 	e.target.href.split("#").pop();
@@ -395,6 +364,44 @@ $(function(){
 		}
 	});
 });
+function saveMaterial(){
+	if(!$("#formEditDTotal").valid()){
+		return;
+	}
+    var data = {
+        videoName: $("#videoName").val(),
+        fdId: $("#fdId").val(),
+        videoUrl: $("#videoUrl").val(),
+        videoIntro: $("#videoIntro").val(),
+        author: $("#author").val(),
+        authorIntro: $("#authorIntro").val(),
+        permission:$("#permission").val(),
+        fdType:$("#fdType").val(),
+        attId:$("#attId").val(),
+        kingUser: null
+    };
+    if(data.permission === "encrypt"){
+        //push人员授权数据
+        data.kingUser = [];
+        $("#list_user>tr").each(function(){
+            data.kingUser.push({
+                id: $(this).attr("data-fdid"),
+                index: $(this).index(),
+                tissuePreparation: $(this).find(".tissuePreparation").is(":checked"),
+                editingCourse: $(this).find(".editingCourse").is(":checked")
+            });
+        });
+        data.kingUser = JSON.stringify(data.kingUser);
+    }
+    $.post("${ctx}/ajax/material/saveOrUpdateVideo",data)
+     .success(function(){
+    	 window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
+     }); 
+}
+function saveMater(){
+	$("#formEditDTotal").trigger("submit");
+}
+
 </script>
 </body>
 </html>

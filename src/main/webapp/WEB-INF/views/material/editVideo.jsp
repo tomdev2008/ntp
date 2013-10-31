@@ -95,7 +95,7 @@
                </a>
                 <h4>${materialInfo.fdName}</h4>
                 <div class="btn-group">
-                    <button class="btn btn-large btn-primary" type="button">保存</button>
+                    <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
                     <button class="btn btn-large btn-primary" type="button">下载</button>
                     <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
                 </div>
@@ -377,41 +377,10 @@ $(function(){
 			  $("#list_user").html(html); 
 		  }
 	});
-    $("#formEditDTotal").validate({
-        submitHandler: function(form){
-            var data = {
-                videoName: $("#videoName").val(),
-                fdId: $("#fdId").val(),
-                videoUrl: $("#videoUrl").val(),
-                videoIntro: $("#videoIntro").val(),
-                author: $("#author").val(),
-                authorIntro: $("#authorIntro").val(),
-                permission:$("#permission").val(),
-                kingUser: null
-            };
-          
-            if(data.permission === "encrypt"){
-                //push人员授权数据
-                data.kingUser = [];
-                $("#list_user>tr").each(function(){
-                    data.kingUser.push({
-                        id: $(this).attr("data-fdid"),
-                        index: $(this).index(),
-                        tissuePreparation: $(this).find(".tissuePreparation").is(":checked"),
-                        editingCourse: $(this).find(".editingCourse").is(":checked")
-                    });
-                });
-                data.kingUser = JSON.stringify(data.kingUser);
-            }
-            //console.log(JSON.stringify(data));
-            //ajax
-            $.post("${ctx}/ajax/material/saveOrUpdateVideo",data)
-             .success(function(){
-            	 window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
-             }); 
-        }
-    });
     
+    $("#formEditDTotal").validate({
+        submitHandler:saveMaterial
+    });
     
     $('#formEditDTotal a[data-toggle="tab"]').on('shown', function (e) {
         var href = 	e.target.href.split("#").pop();
@@ -478,6 +447,43 @@ $(function(){
 		}
 	});
 });
+function saveMaterial(){
+	if(!$("#formEditDTotal").valid()){
+		return;
+	}
+    var data = {
+        videoName: $("#videoName").val(),
+        fdId: $("#fdId").val(),
+        videoUrl: $("#videoUrl").val(),
+        videoIntro: $("#videoIntro").val(),
+        author: $("#author").val(),
+        authorIntro: $("#authorIntro").val(),
+        permission:$("#permission").val(),
+        fdType:$("#fdType").val(),
+        attId:$("#attId").val(),
+        kingUser: null
+    };
+    if(data.permission === "encrypt"){
+        //push人员授权数据
+        data.kingUser = [];
+        $("#list_user>tr").each(function(){
+            data.kingUser.push({
+                id: $(this).attr("data-fdid"),
+                index: $(this).index(),
+                tissuePreparation: $(this).find(".tissuePreparation").is(":checked"),
+                editingCourse: $(this).find(".editingCourse").is(":checked")
+            });
+        });
+        data.kingUser = JSON.stringify(data.kingUser);
+    }
+    $.post("${ctx}/ajax/material/saveOrUpdateVideo",data)
+     .success(function(){
+    	 window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
+     }); 
+}
+function saveMater(){
+	$("#formEditDTotal").trigger("submit");
+}
 </script>
 </body>
 </html>
