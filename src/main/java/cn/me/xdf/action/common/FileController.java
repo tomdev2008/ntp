@@ -99,7 +99,7 @@ public class FileController {
      * @param
      * @return
      */
-    @RequestMapping("/download/{modelId}/{zipname}")
+    @RequestMapping("/downloadZip/{modelId}/{zipname}")
     public String downloadZip(@PathVariable("modelId") String modelId, @PathVariable("zipname") String zipname,
                               HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         DownloadHelper dh = new DownloadHelper();
