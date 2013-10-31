@@ -80,7 +80,7 @@ public class MaterialAuthService extends BaseService{
 		finder.setParam("materialId", materialId);
 		List<MaterialAuth> list = super.find(finder);
 		for (MaterialAuth materialAuth : list) {
-			delete(materialAuth);
+			delete(materialAuth.getFdId());
 		}
 	}
 
