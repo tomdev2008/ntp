@@ -7,14 +7,14 @@
 	 <section class="section box-control">
 					     <div class="hd">
 						<div class="btn-toolbar">
-							<a class="btn" href="${ctx}/course/add">发布新课程</a>
+							<a class="btn" style="padding-left: 10px;padding-right: 10px;" href="${ctx}/course/add">发布新课程</a>
 							<div class="btn-group">
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 									操作 <span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="#rightCont">导出列表</a></li>
-									<li><a href="#rightCont">打包下载</a></li>
+									<!-- <li><a href="#rightCont">导出列表</a></li>
+									<li><a href="#rightCont">打包下载</a></li> -->
 									<li><a href="#" onclick="confirmDel();">批量删除</a></li>
 								</ul>
 							</div>
@@ -92,7 +92,7 @@
 						</button>
 					</c:if>
 					<c:if test="${page.pageNo > 1}">
-						<a onclick="findeCoursesByKey('${page.prePage}')">
+						<a onclick="findeCoursesByKey('${page.prePage}','${param.order}')">
 							<button class="btn btn-primary btn-ctrl" type="button">
 								<i class="icon-chevron-left icon-white"></i>
 							</button>
@@ -104,7 +104,7 @@
 						</button>
 					</c:if>
 					<c:if test="${page.pageNo < page.totalPage}">
-						<a onclick="findeCoursesByKey('${page.nextPage}')">
+						<a onclick="findeCoursesByKey('${page.nextPage}','${param.order}')">
 							<button class="btn btn-primary btn-ctrl" type="button">
 								<i class="icon-chevron-right icon-white"></i>
 							</button>
@@ -154,7 +154,7 @@
 						</button>
 					</c:if>
 					<c:if test="${page.firstPage==false}">
-						<a onclick="findeCoursesByKey('${page.prePage}')">
+						<a onclick="findeCoursesByKey('${page.prePage}','${param.order}')">
 							<button class="btn btn-primary btn-ctrl" type="button">
 								<i class="icon-chevron-left icon-white"></i>
 							</button>
@@ -176,7 +176,7 @@
 						</button>
 						<ul class="dropdown-menu pull-right">
 						  <c:forEach var="i" begin="1" end="${page.totalPage}">
-							<li><a onclick="findeCoursesByKey('${i}')">
+							<li><a onclick="findeCoursesByKey('${i}','${param.order}')">
 							${i*10-10+1} - ${i*10} 
 							</a></li>
 						</c:forEach>
@@ -188,7 +188,7 @@
 						</button>
 					</c:if>
 					<c:if test="${page.lastPage!=true}">
-						<a onclick="findeCoursesByKey('${page.nextPage}')">
+						<a onclick="findeCoursesByKey('${page.nextPage}','${param.order}')">
 							<button class="btn btn-primary btn-ctrl" type="button">
 								<i class="icon-chevron-right icon-white"></i>
 							</button>

@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import jodd.util.StringUtil;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -77,7 +79,11 @@ public class Finder {
 	private String rowCountSql;
 
 	public String getRowCountSql() {
-		return rowCountSql;
+		if (StringUtils.isNotBlank(rowCountSql)) {
+			return rowCountSql;
+		}
+		String sql = hqlBuilder.toString();
+		return ROW_COUNT + " from ("+ sql +")";
 	}
 
 	public void setRowCountSql(String rowCountSql) {

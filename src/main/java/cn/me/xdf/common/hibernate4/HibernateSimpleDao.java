@@ -135,21 +135,7 @@ public abstract class HibernateSimpleDao {
 	 * @return
 	 */
 	protected int countQueryResultBySql(Finder finder) {
-		if (finder.getOrigHql().contains("group by")) {
-			Query query = getSession().createSQLQuery(finder.getOrigHql());
-			finder.setParamsToQuery(query);
-			if (finder.isCacheable()) {
-				query.setCacheable(true);
-			}
-			Iterator<?> iterator = query.iterate();
-			int sum = 0;
-			while (iterator.hasNext()) {
-				sum++;
-				iterator.next();
-			}
-			return sum;
-		}
-		Query query = getSession().createSQLQuery(finder.getRowCountHql());
+		Query query = getSession().createSQLQuery(finder.getRowCountSql());
 		finder.setParamsToQuery(query);
 		if (finder.isCacheable()) {
 			query.setCacheable(true);

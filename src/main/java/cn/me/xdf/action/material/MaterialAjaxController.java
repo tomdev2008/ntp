@@ -38,78 +38,84 @@ import cn.me.xdf.utils.ShiroUtils;
 @RequestMapping(value = "/ajax/material")
 @Scope("request")
 public class MaterialAjaxController {
-	
+
 	@Autowired
 	private AccountService accountService;
-	
+
 	@Autowired
 	private MaterialService materialService;
-	
+
 	@Autowired
 	private MaterialAuthService materialAuthService;
-	
+
 	@Autowired
 	private AttMainService attMainService;
-	
+
 	@Autowired
 	private CourseContentService courseContentService;
-	
+
 	@Autowired
 	private CourseCatalogService courseCatalogService;
-	
+
 	/**
 	 * 删除素材相关信息==>素材==>课程内容==>节
+	 * 
 	 * @param request
 	 */
 	@RequestMapping(value = "deleteMaterial")
 	@ResponseBody
-	public void deleteMaterial(HttpServletRequest request){
+	public void deleteMaterial(HttpServletRequest request) {
 		String materialId = request.getParameter("materialId");
-		//删除素材
+		// 删除素材
 		deleteMaterialData(materialId);
 	}
+
 	/**
 	 * 批量删除素材的方法
+	 * 
 	 * @param request
 	 */
 	@RequestMapping(value = "batchDelete")
 	@ResponseBody
-	public void batchDelete(HttpServletRequest request){
+	public void batchDelete(HttpServletRequest request) {
 		String fdIds = request.getParameter("materialIds");
 		if (StringUtil.isNotEmpty(fdIds)) {
 			String[] materialId = fdIds.split(",");
 			String fdId = "";
-			for(int i=0;i<materialId.length;i++){
+			for (int i = 0; i < materialId.length; i++) {
 				fdId = materialId[i];
 				deleteMaterialData(fdId);
 			}
 		}
 	}
+
 	@RequestMapping(value = "deleteAllMaterial")
 	@ResponseBody
-	public void deleteAllMaterial(HttpServletRequest request){
+	public void deleteAllMaterial(HttpServletRequest request) {
 		String fdType = request.getParameter("fdType");
 		String fdName = request.getParameter("fdName");
 		String order = request.getParameter("order");
-		Pagination page = materialService.findMaterialList(fdType, 1,SimplePage.DEF_COUNT,fdName, order);
+		Pagination page = materialService.findMaterialList(fdType, 1,
+				SimplePage.DEF_COUNT, fdName, order);
 		int i = page.getTotalPage();
-		if(i>0){
-			for(int j=0;j<i;j++){
-				page = materialService.findMaterialList(fdType, 1,1,fdName, order);
+		if (i > 0) {
+			for (int j = 0; j < i; j++) {
+				page = materialService.findMaterialList(fdType, 1, 1, fdName,
+						order);
 				List list = page.getList();
-				if(list!=null && list.size()>0){
-					for(Object obj:list){
-						Map map = (Map)obj;
-						String materialId = (String)map.get("FDID");
+				if (list != null && list.size() > 0) {
+					for (Object obj : list) {
+						Map map = (Map) obj;
+						String materialId = (String) map.get("FDID");
 						deleteMaterialData(materialId);
 					}
 				}
 			}
 		}
-		
+
 	}
-	
-	public void deleteMaterialData(String materialId){
+
+	public void deleteMaterialData(String materialId) {
 		List<CourseContent> courseList = courseContentService.findByProperty(
 				"material.fdId", materialId);
 		if (courseList != null && courseList.size() > 0) {
@@ -121,49 +127,53 @@ public class MaterialAjaxController {
 				}
 				courseContentService.delete(courseContent);
 			}
-        }
+		}
 		MaterialInfo material = materialService.load(materialId);
 		material.setIsAvailable(false);
 		materialService.update(material);
 	}
-	
+
 	/**
 	 * ajax找出素材列表
+	 * 
 	 * @param model
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "findList")
 	@ResponseBody
-	public ModelAndView findList(Model model , HttpServletRequest request) {
+	public ModelAndView findList(Model model, HttpServletRequest request) {
 		String fdType = request.getParameter("fdType");
 		String pageNoStr = request.getParameter("pageNo");
 		String fdName = request.getParameter("fdName");
 		String order = request.getParameter("order");
 		int pageNo;
-		if(StringUtil.isNotBlank(pageNoStr)&&StringUtil.isNotEmpty(pageNoStr)){
+		if (StringUtil.isNotBlank(pageNoStr)
+				&& StringUtil.isNotEmpty(pageNoStr)) {
 			pageNo = Integer.parseInt(pageNoStr);
 		} else {
 			pageNo = 1;
 		}
-		if(StringUtil.isNotBlank(fdType)&&StringUtil.isNotEmpty(fdType)){
-			Pagination page = materialService.findMaterialList(fdType, pageNo,SimplePage.DEF_COUNT,fdName, order);
+		if (StringUtil.isNotBlank(fdType) && StringUtil.isNotEmpty(fdType)) {
+			Pagination page = materialService.findMaterialList(fdType, pageNo,
+					SimplePage.DEF_COUNT, fdName, order);
 			model.addAttribute("page", page);
 		}
-		return new ModelAndView("forward:/WEB-INF/views/material/divMatList.jsp");
+		return new ModelAndView(
+				"forward:/WEB-INF/views/material/divMatList.jsp");
 	}
-	
+
 	@RequestMapping(value = "getMaterialBykey")
 	@ResponseBody
-	public List<Map> getMaterialBykey(HttpServletRequest request){
+	public List<Map> getMaterialBykey(HttpServletRequest request) {
 		String key = request.getParameter("q");
 		String type = request.getParameter("type");
 		return materialService.getMaterialsTop10Bykey(key, type);
 	}
-	
+
 	@RequestMapping(value = "saveMaterial")
 	@ResponseBody
-	public Map saveMaterial(HttpServletRequest request){
+	public Map saveMaterial(HttpServletRequest request) {
 		String type = request.getParameter("type");
 		String fileName = request.getParameter("fileName");
 		String attId = request.getParameter("attId");
@@ -173,7 +183,8 @@ public class MaterialAjaxController {
 		materialInfo.setIsAvailable(true);
 		materialInfo.setIsPublish(true);
 		materialInfo.setIsDownload(true);
-		SysOrgPerson creator = accountService.load(ShiroUtils.getUser().getId());
+		SysOrgPerson creator = accountService
+				.load(ShiroUtils.getUser().getId());
 		materialInfo.setCreator(creator);
 		List<AttMain> attMains = new ArrayList<AttMain>();
 		AttMain attMain = new AttMain();
@@ -186,15 +197,16 @@ public class MaterialAjaxController {
 		map.put("name", materialInfo.getFdName());
 		return map;
 	}
-	
+
 	/**
 	 * 更新或保存素材(共用)
+	 * 
 	 * @param materialInfo
 	 * @return
 	 */
-	@RequestMapping(value="saveOrUpdateVideo")
+	@RequestMapping(value = "saveOrUpdateVideo")
 	@ResponseBody
-	public void saveOrUpdateVideo(HttpServletRequest request){
+	public void saveOrUpdateVideo(HttpServletRequest request) {
 		MaterialInfo info = new MaterialInfo();
 		info.setFdAuthor(request.getParameter("author"));
 		info.setFdAuthorDescription(request.getParameter("authorIntro"));
@@ -204,47 +216,50 @@ public class MaterialAjaxController {
 		String permission = request.getParameter("permission");
 		String kingUser = request.getParameter("kingUser");
 		String attId = request.getParameter("attId");
-		if(permission.equals("open")){
+		if (permission.equals("open")) {
 			info.setIsPublish(true);
 		} else {
 			info.setIsPublish(false);
 		}
 		String fdId = request.getParameter("fdId");
-		if(StringUtil.isBlank(fdId)){
-			SysOrgPerson creator = accountService.load(ShiroUtils.getUser().getId());
+		if (StringUtil.isBlank(fdId)) {
+			SysOrgPerson creator = accountService.load(ShiroUtils.getUser()
+					.getId());
 			info.setFdType(request.getParameter("fdType"));
 			info.setCreator(creator);
 			info.setFdCreateTime(new Date());
 			info.setIsAvailable(true);
-			//保存素材信息
+			// 保存素材信息
 			materialService.save(info);
-			//保存权限信息
-			materialService.saveMaterAuth(kingUser,info.getFdId());
-			//保存附件信息
-			if(StringUtil.isNotBlank(attId)){
-				saveAtt(attId,info.getFdId());
+			// 保存权限信息
+			materialService.saveMaterAuth(kingUser, info.getFdId());
+			// 保存附件信息
+			if (StringUtil.isNotBlank(attId)) {
+				saveAtt(attId, info.getFdId());
 			}
 		} else {
 			materialService.updateMaterial(info, fdId);
-			materialService.saveMaterAuth(kingUser,fdId);
-			if(StringUtil.isNotBlank(attId)){
+			materialService.saveMaterAuth(kingUser, fdId);
+			if (StringUtil.isNotBlank(attId)) {
 				attMainService.deleteAttMainByModelId(info.getFdId());
-				saveAtt(attId,info.getFdId());
+				saveAtt(attId, info.getFdId());
 			}
 		}
 	}
+
 	/**
 	 * 保存附件关系
+	 * 
 	 * @param attId
 	 * @param modelId
 	 */
-	public void saveAtt(String attId,String modelId){
+	public void saveAtt(String attId, String modelId) {
 		AttMain att = attMainService.get(attId);
 		att.setFdModelId(modelId);
 		att.setFdModelName("cn.me.xdf.model.material.MaterialInfo");
 		attMainService.update(att);
 	}
-	
+
 	/**
 	 * 得到指定素材的权限信息
 	 * 
@@ -262,4 +277,28 @@ public class MaterialAjaxController {
 		return JsonUtils.writeObjectToJson(map);
 	}
 
+	/*
+	 * 查询试题列表 或者根据关键字搜索 author hanhl
+	 */
+	@RequestMapping(value = "getMatQuestionsOrByKey")
+	public String getMatQuestionsOrByKey(Model model,
+
+	HttpServletRequest request) {
+		String fdType = request.getParameter("fdType");
+		String pageNoStr = request.getParameter("pageNo");
+		String fdName = request.getParameter("fdName");
+		String order = request.getParameter("order");
+		int pageNo;
+		if (StringUtil.isNotBlank(pageNoStr)
+				&& StringUtil.isNotEmpty(pageNoStr)) {
+			pageNo = Integer.parseInt(pageNoStr);
+		} else {
+			pageNo = 1;
+		}
+		if (StringUtil.isNotBlank(fdType)&& StringUtil.isNotEmpty(fdType)) {
+			Pagination page =materialService.findMaterialList(fdType,pageNo, SimplePage.DEF_COUNT, fdName, order);
+			model.addAttribute("page", page);
+		}
+		return "/material/divMatQuestList";
+	}
 }

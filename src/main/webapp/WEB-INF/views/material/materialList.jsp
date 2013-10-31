@@ -41,7 +41,8 @@
                 </div>
 	        </div>
 	        <div class="page-body" id="pageBody">
-	        <%@ include file="/WEB-INF/views/material/divMatList.jsp" %>
+	       <c:if test="${param.fdType!='08'}"><%@ include file="/WEB-INF/views/material/divMatList.jsp" %></c:if> 
+                 <c:if test="${param.fdType=='08'}"><%@ include file="/WEB-INF/views/material/divMatQuestList.jsp" %></c:if> 
             </div>           
 	    </section>
 	</section>
