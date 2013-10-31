@@ -64,11 +64,6 @@ public class Zipper {
 	 * 创建Zipper对象
 	 * 
 	 * @param out
-	 *            输出流
-	 * @param filter
-	 *            文件过滤，不过滤可以为null。
-	 * @param srcFilename
-	 *            源文件名。可以有多个源文件，如果源文件是目录，那么所有子目录都将被包含。
 	 */
 	protected Zipper(OutputStream out, List<FileEntry> fileEntrys,
 			String encoding) {
