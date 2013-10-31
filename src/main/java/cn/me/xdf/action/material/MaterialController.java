@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
@@ -64,31 +63,7 @@ public class MaterialController {
 		}
 		return "/material/editVideo";
 	}
-	/**
-	 * 批量删除素材（注：将素材置为无效）
-	 * @param str
-	 * @return
-	 */
-	@RequestMapping(value="batchDelete", method = RequestMethod.POST)
-	public String batchDelete(RedirectAttributes redirectAttributes,HttpServletRequest request){
-		String[] ids = request.getParameterValues("ids");
-		materialService.disableMaterial(ids);
-		return "redirect:/material/findList";
-	}
-	/**
-	 * 删除单个素材
-	 * @param redirectAttributes
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="deleteMaterial", method = RequestMethod.POST)
-	public String deleteMaterial(RedirectAttributes redirectAttributes,HttpServletRequest request){
-		String id = request.getParameter("id");
-		MaterialInfo material = materialService.get(id);
-		material.setIsAvailable(false);
-		materialService.update(material);
-		return "redirect:/material/findList";
-	}
+
 	/**
 	 * 查找素材列表
 	 * fdType 类型 01视频 02音频 03图片 04文档等
