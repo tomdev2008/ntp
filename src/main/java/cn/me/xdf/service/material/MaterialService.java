@@ -38,10 +38,6 @@ public class MaterialService extends BaseService {
 
     private Map<String,ISourceService> sourceMap;
 
-    public Map<String,ISourceService> getSourceMap() {
-        return sourceMap;
-    }
-
     public void setSourceMap(Map<String,ISourceService> sourceMap) {
         this.sourceMap = sourceMap;
     }
@@ -53,7 +49,8 @@ public class MaterialService extends BaseService {
 	}
 
     public void find_test(String value){
-        sourceMap.get(MaterialEnum.valueOf(value));
+        ISourceService sourceService = sourceMap.get(MaterialEnum.valueOf(value).getBean());
+        sourceService.findSourceByMaterial(null);
     }
 	
 	/**
