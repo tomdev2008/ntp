@@ -13,9 +13,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import cn.me.xdf.model.base.IdEntity;
 import cn.me.xdf.model.organization.SysOrgPerson;
+
 /**
  * 
- * 在线用户
+ * 操作日志
  * 
  * @author zhaoq
  * 
@@ -23,33 +24,38 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @SuppressWarnings("serial")
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Table(name = "IXDF_NTP_LOGONLINE")
-public class LogOnline extends IdEntity{
+@Table(name = "IXDF_NTP_LOGAPP")
+public class LogApp extends IdEntity{
 
 	/**
-	 * 在线记录用户
+	 * 操作人
 	 */
 	private SysOrgPerson person;
 	
 	/**
-	 * 登录时间
+	 * 操作时间
 	 */
-	private Date loginTime;
+	private Date time;
 	
 	/**
-	 * ip
+	 * ip地址
 	 */
 	private String ip;
 	
 	/**
-	 * 登录次数
+	 * url
 	 */
-	private Integer loginNum;
+	private String url;
 	
 	/**
-	 * 是否在线
+	 * 请求类型
 	 */
-	private Boolean isOnline;
+	private String method;
+	
+	/**
+	 * SessionId
+	 */
+	private String sessionId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdPersonId")
@@ -61,12 +67,12 @@ public class LogOnline extends IdEntity{
 		this.person = person;
 	}
 
-	public Date getLoginTime() {
-		return loginTime;
+	public Date getTime() {
+		return time;
 	}
 
-	public void setLoginTime(Date loginTime) {
-		this.loginTime = loginTime;
+	public void setTime(Date time) {
+		this.time = time;
 	}
 
 	public String getIp() {
@@ -77,24 +83,30 @@ public class LogOnline extends IdEntity{
 		this.ip = ip;
 	}
 
-	public Integer getLoginNum() {
-		return loginNum;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setLoginNum(Integer loginNum) {
-		this.loginNum = loginNum;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-	public Boolean getIsOnline() {
-		return isOnline;
+	public String getMethod() {
+		return method;
 	}
 
-	public void setIsOnline(Boolean isOnline) {
-		this.isOnline = isOnline;
+	public void setMethod(String method) {
+		this.method = method;
 	}
 
-	
-	
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
 	
 	
 }

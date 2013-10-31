@@ -358,10 +358,10 @@
 <script id="listUserKinguserTemplate" type="text/x-dot-template">
 <tr data-fdid="{{=it.id}}">
 	<td class="tdTit">
-     <div class="pr">
+        <div class="pr">
 		<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 		<img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
-     <div>	
+		</div>
     </td>
 	<td><input type="checkbox" checked class="tissuePreparation" /></td>
 	<td><input type="checkbox" class="editingCourse" /></td>
@@ -661,32 +661,41 @@
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadDetailInfoPage("详细信息");
 	  				}else{
-	  					rightCont.loadBasicInfoPage("基本信息");
+	  					$.fn.jalert2("请先设置基本信息");
+	  					urlRouter("basicInfo");
 	  				}
 	  				break;
 	  			case "promotion":
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadPromotionPage("课程推广");
 	  				}else{
-	  					rightCont.loadBasicInfoPage("基本信息");
+	  					$.fn.jalert2("请先设置基本信息");
+	  					urlRouter("basicInfo");
 	  				}
 	  				break;
 	  			case "accessRight":
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadAccessRightPage("权限设置");
 	  				}else{
-	  					rightCont.loadBasicInfoPage("基本信息");
+	  					$.fn.jalert2("请先设置基本信息");
+	  					urlRouter("basicInfo");
 	  				}
 	  				break;
 	  			case "kinguser":
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadKinguserPage("授权管理");
 	  				}else{
-	  					rightCont.loadBasicInfoPage("基本信息");
+	  					$.fn.jalert2("请先设置基本信息");
+	  					urlRouter("basicInfo");
 	  				}
 	  				break;
 				case "deleteCourse":
-	  				rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
+					if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
+						rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
+	  				}else{
+	  					$.fn.jalert2("请先设置基本信息");
+	  					urlRouter("basicInfo");
+	  				}
 	  				break;
                 case "video":
                     if(opt) {

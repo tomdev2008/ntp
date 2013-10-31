@@ -100,11 +100,13 @@
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button">保存</button>
                     <button class="btn btn-large btn-primary" type="button">下载</button>
+                   <a onclick="confirmDel();">
                     <button class="btn btn-white btn-large " type="button">删除</button>
+                   </a>
                 </div>
 	        </div>
             <div class="page-body editingBody">
-                <form action="${ctx}/material/addOrUpdateVideo" id="formEditDTotal" class="form-horizontal" method="post">
+                <form action="#" id="formEditDTotal" class="form-horizontal" method="post">
                     <section class="section">
                         <div class="control-group">
                             <label class="control-label" for="videoName" id="typeTxt"></label>
@@ -263,6 +265,24 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
+<script type="text/javascript">
+function confirmDel(){
+	$.fn.jalert("您确认要删除该素材吗？",deleteMaterial);
+}
+function deleteMaterial(){
+	 $.ajax({
+		type: "post",
+		url: "${ctx}/ajax/material/deleteMaterial",
+		data : {
+			"materialId":$("#fdId").val(),
+		},
+		success:function(){
+			window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
+		}
+	}); 
+}
+</script>
 <script type="text/javascript">
 $(function(){
 	var data_uploadIntro;

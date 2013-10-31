@@ -3,7 +3,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<j:set name="ctx" value="${pageContext.request.contextPath}" />
 	<section class="section box-control">
 		<div class="hd">
 			<div class="btn-toolbar">
@@ -24,8 +24,8 @@
 					<i class="icon-search"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>含“<a
-					href="#"><span id="show">雅思</span></a>”的条目
-				</span> <a class="btn btn-link" href="#rightCont">清空搜索结果</a>
+					href="#"><span id="show"></span></a>”的条目
+				</span> <a class="btn btn-link" href="#rightCont" onclick="clearserach();">清空搜索结果</a>
 			</div>
 		</div>
 		<div class="bd">
@@ -58,7 +58,7 @@
 				</a> 
 				</div>
 				<label class="radio inline" for="selectCurrPage">
-				   <input type="radio" id="selectCurrPage" name="selectCheckbox" checked />选中本页</label>
+				   <input type="radio" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()"/>选中本页</label>
 				<label class="radio inline" for="selectAll">
 				   <input type="radio" id="selectAll" name="selectCheckbox" onclick="selectAll()"/>选中全部</label>
 				<div class="pages pull-right">
@@ -145,21 +145,20 @@
 					</span> <span class="date"><i class="icon-time"></i>
 					<fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
 						<span class="btns">
-							<button type="button" class="btn btn-link">
-								<i class="icon-eye"></i>3315
-							</button>
-							<button type="button" class="btn btn-link">
-								<i class="icon-thumbs-up"></i>2940
-							</button>
-							<button type="button" class="btn btn-link">
+						
+						 <button type="button" class="btn btn-link">
+						 <i class="icon-eye"></i><strong>3315</strong></button><b>|</b>
+                         <button type="button" class="btn btn-link">
+                         <i class="icon-thumbs-up"></i><strong>1530</strong></button><b>|</b>
+							   <button type="button" class="btn btn-link">
 								<i class="icon-download"></i>
 								<c:if test="${bean.FDDOWNLOADS==null}">
-								  0
+								 <strong>0</strong>
 								</c:if>
 								<c:if test="${bean.FDDOWNLOADS!=null}">
-								  ${bean.FDDOWNLOADS}
+								  <strong>${bean.FDDOWNLOADS}</strong>
 								</c:if>
-							</button>
+							  </button>
 					</span>
 				</a></li>
 			</j:iter> 
@@ -216,47 +215,50 @@
 		</c:if>
 	</div>
 </div>
+<input type="hidden" id="fdType" value="${param.fdType}">
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 function showSearch(){
 	$("#show").html($("#serach").val());
 }
+function clearserach(){
+	$("#serach").attr("value","");
+	$("#show").html("");
+	pageNavClick('${param.fdType}',1,'fdcreatetime');
+}
+//选中当前页
+function checkcurrpage(){
+	$('input[name="ids"]').each(function(){
+		$(this).attr("checked",true);// 
+	});
+}
 </script>
 <script type="text/javascript">	
 //jquery获取复选框值  
 function batchDelete() {
-	var chk_value = [];
+	var delekey="";
 	$('input[name="ids"]:checked').each(function() {
-		chk_value.push($(this).val());
+		delekey+=$(this).val()+",";
 	});
-	if (chk_value.length == 0) {
+	if(delekey==""){
 		$.fn.jalert("当前没有选择要删除的数据!");
-		return false;
+		return;
 	}
-	if (!confirm('您确定要批量删除吗？')) {
-		return false;
+	if(delekey==""){
+		$.fn.jalert("当前没有选择要删除的数据!",function(){return;});
+		return;
 	}
-	document.form.method = "post";
-	document.form.action = '${ctx}/material/batchDelete';
-	document.form.submit();
-	return;
+	$.ajax({
+			type: "post",
+			url: "${ctx}/ajax/material/batchDelete",
+			data : {
+				"materialIds":delekey,
+			},
+			success:function(data){
+				window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
+			}
+	}); 
 }
 
-function selectAll(){ 
-	//设置变量form的值为name等于select的表单 
-	 var form=document.select;
-	 alert(form);
-	//取得触发事件的按钮的name属性值 
-	var action=event.srcElement.name;
-	alert(form.elements.length);
-	for (var i=0;i<form.elements.length;i++){//遍历表单项 
-	    //将当前表单项form.elements[i]对象简写为e 
-	   var e = form.elements[i];
-	   //如果当前表单项的name属性值为iTo， 
-	   //执行下一行代码。限定脚本处理的表单项范围。 
-	   if (e.name == "iTo") 
-	    /*如果单击事件发生在name为selectall的按钮上，就将当前表单项的checked属性设为true(即选中)，否则设置为当前设置的相反值(反选)*/ 
-	         e.checked =(action=="selectCheckbox")?(form.selectall.checked):(!e.checked); 
-	   } 
-} 
+
 </script>

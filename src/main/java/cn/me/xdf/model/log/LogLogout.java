@@ -1,9 +1,13 @@
 package cn.me.xdf.model.log;
 
 import java.util.Date;
-
-
-
+/**
+ * 
+ * 登出日志
+ * 
+ * @author zhaoq
+ * 
+ */
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -21,12 +25,24 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Table(name = "IXDF_NTP_LOGLOGOUT")
 public class LogLogout extends IdEntity{
 	
+	/**
+	 * 登出人
+	 */
 	private SysOrgPerson person;
 	
+	/**
+	 * 登出时间
+	 */
 	private Date time;
 	
+	/**
+	 * 登出ip
+	 */
 	private String ip;
 	
+	/**
+	 * 登出SessionId
+	 */
 	private String sessionId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

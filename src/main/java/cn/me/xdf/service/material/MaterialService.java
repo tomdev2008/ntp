@@ -116,18 +116,6 @@ public class MaterialService extends BaseService {
 			}
 	  }
 	}
-	/**
-	 * 使材料置为无效
-	 * @param str
-	 */
-	@Transactional(readOnly = false)
-	public void disableMaterial(String[] ids){
-		for (String id : ids) {
-			MaterialInfo material = this.get(id);
-			material.setIsAvailable(false);
-			this.update(material);
-		}
-	}
 
 	
 	/**

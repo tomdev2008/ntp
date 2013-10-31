@@ -3,6 +3,7 @@ package cn.me.xdf.action.material;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,14 +19,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.Constant;
+import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.course.CourseContent;
+import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.course.CourseCatalogService;
+import cn.me.xdf.service.course.CourseContentService;
 import cn.me.xdf.service.material.MaterialAuthService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.utils.ShiroUtils;
@@ -43,6 +51,60 @@ public class MaterialAjaxController {
 	
 	@Autowired
 	private AttMainService attMainService;
+	
+	@Autowired
+	private CourseContentService courseContentService;
+	
+	@Autowired
+	private CourseCatalogService courseCatalogService;
+	
+	/**
+	 * 删除素材相关信息==>素材==>课程内容==>节
+	 * @param request
+	 */
+	@RequestMapping(value = "deleteMaterial")
+	@ResponseBody
+	public void deleteMaterial(HttpServletRequest request){
+		String materialId = request.getParameter("materialId");
+		//删除素材
+		deleteMaterialData(materialId);
+	}
+	/**
+	 * 批量删除素材的方法
+	 * @param request
+	 */
+	@RequestMapping(value = "batchDelete")
+	@ResponseBody
+	public void batchDelete(HttpServletRequest request){
+		String fdIds = request.getParameter("materialIds");
+		if (StringUtil.isNotEmpty(fdIds)) {
+			String[] materialId = fdIds.split(",");
+			String fdId = "";
+			for(int i=0;i<materialId.length;i++){
+				fdId = materialId[i];
+				deleteMaterialData(fdId);
+			}
+		}
+		
+	}
+	
+	public void deleteMaterialData(String materialId){
+		List<CourseContent> courseList = courseContentService.findByProperty(
+				"material.fdId", materialId);
+		if (courseList != null && courseList.size() > 0) {
+			for (CourseContent courseContent : courseList) {
+				CourseCatalog catalog = courseContent.getCatalog();
+				if (catalog != null && catalog.getFdTotalContent() != null) {
+					catalog.setFdTotalContent(catalog.getFdTotalContent() - 1);
+					courseCatalogService.save(catalog);
+				}
+				courseContentService.delete(courseContent);
+			}
+        }
+		MaterialInfo material = materialService.load(materialId);
+		material.setIsAvailable(false);
+		materialService.update(material);
+	}
 	
 	/**
 	 * ajax找出素材列表
@@ -106,7 +168,7 @@ public class MaterialAjaxController {
 	}
 	
 	/**
-	 * 更新或保存素材
+	 * 更新或保存素材(共用)
 	 * @param materialInfo
 	 * @return
 	 */
@@ -165,7 +227,7 @@ public class MaterialAjaxController {
 	}
 	
 	/**
-	 * 得到指定课程的权限信息
+	 * 得到指定素材的权限信息
 	 * 
 	 * @param request
 	 * @return

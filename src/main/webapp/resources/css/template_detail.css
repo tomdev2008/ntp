@@ -80,8 +80,9 @@
 .kinguser-content .autoComplete{width:668px;}
 .kinguser-content .table td,.kinguser-content .table th{text-align:center;line-height:36px;padding:12px;}
 .kinguser-content .table .tdTit img{width:36px;height:36px;margin-right:8px;}
-.kinguser-content .table .tdTit {text-align:left;position:relative;padding-left:50px;}
-.kinguser-content .table .tdTit .state-dragable{left:18px;top:24px;}
+.kinguser-content .table .tdTit {text-align:left;}
+.kinguser-content .table .tdTit .pr{padding-left:50px;}
+.kinguser-content .table .tdTit .state-dragable{left:18px;top:12px;}
 .kinguser-content .table .sortable-placeholder{border:dashed #4391bb 1px;height:60px;padding:0;}
 .kinguser-content .table tbody a.icon-remove-blue,.kinguser-content .table tbody input{vertical-align:middle;}
 

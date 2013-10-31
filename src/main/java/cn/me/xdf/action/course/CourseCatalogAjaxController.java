@@ -1,5 +1,6 @@
 package cn.me.xdf.action.course;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -20,9 +21,12 @@ import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseContentService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.utils.ShiroUtils;
 
 
 
@@ -45,7 +49,8 @@ public class CourseCatalogAjaxController {
 	
 	@Autowired
 	private CourseContentService courseContentService;
-	
+	@Autowired
+    private SysOrgPersonService sysOrgPersonService;
 	/**
 	 * 获取当前课程的章节信息
 	 * @param request
@@ -201,6 +206,10 @@ public class CourseCatalogAjaxController {
 		int fdNo = Integer.parseInt(request.getParameter("fdno"));	
 		//获取章节名称
 		String fdName = request.getParameter("title");
+		//获取当前用户信息
+		SysOrgPerson sysOrgPerson=sysOrgPersonService.get(ShiroUtils.getUser().getId());
+		//创建时间
+		Date createdate=new Date();
 		CourseCatalog courseCatalog = new CourseCatalog();
 		//如果页面没有传课程ID,说明是新增的课程模板，并且新增第一章，则需要先保存课程
 		CourseInfo course = new CourseInfo();
@@ -212,6 +221,8 @@ public class CourseCatalogAjaxController {
 			course.setFdTotalPart(0);
 			course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
 			course.setIsAvailable(true);
+			course.setCreator(sysOrgPerson);
+			course.setFdCreateTime(createdate);
 			courseService.save(course);
 			courseCatalog.setCourseInfo(course);
 		}

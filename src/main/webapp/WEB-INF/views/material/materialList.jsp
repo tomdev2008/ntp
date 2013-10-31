@@ -14,7 +14,6 @@
 <title>新东方在线教师备课平台</title>
 
 <link href="${ctx}/resources/css/DTotal.css" rel="stylesheet" type="text/css">
-
 </head>
 <body>
 
@@ -70,44 +69,6 @@ function pageNavClick(fdType,pageNo,order){
 	}); 
 }
 </script>
-<script type="text/javascript">	
-//jquery获取复选框值  
-function batchDelete() {
-	var chk_value = [];
-	$('input[name="ids"]:checked').each(function() {
-		chk_value.push($(this).val());
-	});
-	if (chk_value.length == 0) {
-		alert('请选择需要批量删除的内容。');
-		return false;
-	}
-	if (!confirm('您确定要批量删除吗？')) {
-		return false;
-	}
-	document.form.method = "post";
-	document.form.action = '${ctx}/material/batchDelete';
-	document.form.submit();
-	return;
-}
 
-function selectAll(){ 
-	//设置变量form的值为name等于select的表单 
-	 var form=document.select;
-	 alert(form);
-	//取得触发事件的按钮的name属性值 
-	var action=event.srcElement.name;
-	alert(form.elements.length);
-	for (var i=0;i<form.elements.length;i++){//遍历表单项 
-		alert("11113333");
-	    //将当前表单项form.elements[i]对象简写为e 
-	   var e = form.elements[i];
-	   //如果当前表单项的name属性值为iTo， 
-	   //执行下一行代码。限定脚本处理的表单项范围。 
-	   if (e.name == "iTo") 
-	    /*如果单击事件发生在name为selectall的按钮上，就将当前表单项的checked属性设为true(即选中)，否则设置为当前设置的相反值(反选)*/ 
-	         e.checked =(action=="selectCheckbox")?(form.selectall.checked):(!e.checked); 
-	   } 
-} 
-</script>
 </body>
 </html>
