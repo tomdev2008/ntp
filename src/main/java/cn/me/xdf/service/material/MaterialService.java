@@ -62,7 +62,7 @@ public class MaterialService extends BaseService {
 
 	/**
 	 * 根据素材id获取素材权限信息
-	 * 
+	 *                                                               T
 	 * @param MaterialId
 	 *            yuhz
 	 * @return
