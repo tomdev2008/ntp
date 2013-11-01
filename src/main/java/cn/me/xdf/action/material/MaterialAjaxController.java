@@ -237,11 +237,6 @@ public class MaterialAjaxController {
 		String permission = request.getParameter("permission");
 		String kingUser = request.getParameter("kingUser");
 		String attId = request.getParameter("attId");
-		if (permission.equals("open")) {
-			info.setIsPublish(true);
-		} else {
-			info.setIsPublish(false);
-		}
 		String fdId = request.getParameter("fdId");
 		if (StringUtil.isBlank(fdId)) {
 			SysOrgPerson creator = accountService.load(ShiroUtils.getUser()
@@ -250,17 +245,32 @@ public class MaterialAjaxController {
 			info.setCreator(creator);
 			info.setFdCreateTime(new Date());
 			info.setIsAvailable(true);
+			if (permission.equals("open")) {
+				info.setIsPublish(true);
+			} else {
+				info.setIsPublish(false);
+				// 保存权限信息
+				materialService.saveMaterAuth(kingUser, info.getFdId());
+			}
 			// 保存素材信息
 			materialService.save(info);
-			// 保存权限信息
-			materialService.saveMaterAuth(kingUser, info.getFdId());
 			// 保存附件信息
 			if (StringUtil.isNotBlank(attId)) {
 				saveAtt(attId, info.getFdId());
 			}
 		} else {
+			if (permission.equals("open")) {
+				info.setIsPublish(true);
+				// 删除素材的权限
+				if (StringUtil.isNotBlank(fdId)
+						&& StringUtil.isNotEmpty(fdId)) {
+					materialAuthService.deleMaterialAuthByMaterialId(fdId);
+				}
+			} else {
+				info.setIsPublish(false);
+				materialService.saveMaterAuth(kingUser, fdId);
+			}
 			materialService.updateMaterial(info, fdId);
-			materialService.saveMaterAuth(kingUser, fdId);
 			if (StringUtil.isNotBlank(attId)) {
 				attMainService.deleteAttMainByModelId(info.getFdId());
 				saveAtt(attId, info.getFdId());
