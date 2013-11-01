@@ -13,7 +13,7 @@
 						操作 <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="#rightCont">导出列表</a></li>
+						<!-- <li><a href="#rightCont">导出列表</a></li> -->
 						<li><a href="#rightCont">打包下载</a></li>
 						<li><a href="#rightCont" onclick="batchDelete();">批量删除</a></li>
 					</ul>
