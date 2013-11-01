@@ -1,6 +1,5 @@
 package cn.me.xdf.model.bam;
 
-import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.utils.array.ArrayUtils;
 import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.model.base.BamProcess;
@@ -12,12 +11,10 @@ import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
