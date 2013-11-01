@@ -147,9 +147,23 @@
 						<span class="btns">
 						
 						 <button type="button" class="btn btn-link">
-						 <i class="icon-eye"></i><strong>3315</strong></button><b>|</b>
+						 <i class="icon-eye"></i><strong>
+						    <c:if test="${bean.FDPLAYS==null}">
+                                   0
+                             </c:if>
+                             <c:if test="${bean.FDPLAYS!=null}">
+                                  ${bean.FDPLAYS}
+                             </c:if>
+						 </strong></button><b>|</b>
                          <button type="button" class="btn btn-link">
-                         <i class="icon-thumbs-up"></i><strong>1530</strong></button><b>|</b>
+                         <i class="icon-thumbs-up"></i><strong>
+                              <c:if test="${bean.FDLAUDS==null}">
+                                          0
+                              </c:if>
+                              <c:if test="${bean.FDLAUDS!=null}">
+                                          ${bean.FDLAUDS}
+                              </c:if>
+                         </strong></button><b>|</b>
 							   <button type="button" class="btn btn-link">
 								<i class="icon-download"></i>
 								<c:if test="${bean.FDDOWNLOADS==null}">

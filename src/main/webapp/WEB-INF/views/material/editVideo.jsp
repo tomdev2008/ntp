@@ -96,7 +96,7 @@
                 <h4>${materialInfo.fdName}</h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
-                    <button class="btn btn-large btn-primary" type="button">下载</button>
+                    <button class="btn btn-large btn-primary" type="button" onclick="downloadMater();">下载</button>
                     <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
                 </div>
 	        </div>
@@ -142,8 +142,22 @@
                                       </b>
                                 </span>
                                 <span class="btns-handle">
-                                    <button type="button" class="btn btn-link"><i class="icon-eye"></i>3315</button>
-                                    <button type="button" class="btn btn-link"><i class="icon-thumbs-up"></i>2940</button>
+                                    <button type="button" class="btn btn-link"><i class="icon-eye"></i>
+                                       <c:if test="${materialInfo.fdPlays==null}">
+                                          0
+                                       </c:if>
+                                       <c:if test="${materialInfo.fdPlays!=null}">
+                                          ${materialInfo.fdPlays}
+                                       </c:if>
+                                     </button>
+                                    <button type="button" class="btn btn-link"><i class="icon-thumbs-up"></i>
+                                      <c:if test="${materialInfo.fdLauds==null}">
+                                          0
+                                       </c:if>
+                                       <c:if test="${materialInfo.fdLauds!=null}">
+                                          ${materialInfo.fdLauds}
+                                       </c:if>
+                                    </button>
                                     <button type="button" class="btn btn-link"><i class="icon-download"></i>0</button>
                                 </span>
                             </div>
@@ -276,6 +290,16 @@ function deleteMaterial(){
 			window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
 		}
 	}); 
+}
+//下载素材
+function downloadMater(){
+	 $.ajax({
+			type: "post",
+			url: "${ctx}/common/file/download/",
+			success:function(){
+				alert("下载成功");
+			}
+		});
 }
 </script>
 <script type="text/javascript">
