@@ -41,9 +41,9 @@
                 </div>
 	        </div>
 	        <div class="page-body" id="pageBody">
-	          <c:if test="${param.fdType=='08'}"><%@ include file="/WEB-INF/views/material/divMatQuestList.jsp" %></c:if>  
+		 <c:if test="${param.fdType=='08'}"><%@ include file="/WEB-INF/views/material/divMatQuestList.jsp" %></c:if>  
                   <c:if test="${param.fdType=='10'}"><%@ include file="/WEB-INF/views/material/divMatTaskList.jsp" %></c:if> 
-	              <c:if test="${param.fdType!='08'}"><%@ include file="/WEB-INF/views/material/divMatList.jsp" %></c:if> 
+	              <c:if test="${param.fdType!='08'&&param.fdType!='10'}"><%@ include file="/WEB-INF/views/material/divMatList.jsp" %></c:if>
             </div>           
 	    </section>
 	</section>

@@ -20,8 +20,8 @@
 							</div>
 							<form class="toolbar-search">
 								<input type="text" id="serach" class="search" placeholder="搜索课程"
-								   onblur="findeCoursesByKey('1','${param.fdTitle}');" onkeydown="showSearch();" onkeyup="showSearch();" > 
-								<i class="icon-search"></i>
+								   onblur="" onkeydown="showSearch();" onkeyup="showSearch();" > 
+								<i class="icon-search" onclick="findeCoursesByKey('1','${param.fdTitle}');"></i>
 							</form>
 							<span class="showState"> <span class="muted">当前显示：</span>
 							 <span id="markshow">

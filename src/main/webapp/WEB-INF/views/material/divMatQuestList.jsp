@@ -50,14 +50,14 @@
 					<button class="btn btn-large" type="button">时间</button>
 				   </c:if>
 				</a>
-			    <a onclick="pageNavClick('${param.fdType}','1','FDSCORE')">
+<%-- 			    <a onclick="pageNavClick('${param.fdType}','1','FDSCORE')">
 			      <c:if test="${param.order=='FDSCORE'}">
 					<button class="btn btn-large active" type="button">评分</button>
 				   </c:if>
 				   <c:if test="${param.order!='FDSCORE'}">
 					<button class="btn btn-large" type="button">评分</button>
 				   </c:if>
-				</a> 
+				</a>  --%>
 				</div>
 				<label class="checkbox inline" for="selectCurrPage">
 				   <input type="checkbox" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()"/>选中本页</label>
