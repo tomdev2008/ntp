@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
 <html class="">
@@ -108,7 +109,9 @@
                             <div class="controls">
                                 <input value="${materialInfo.fdName}" 
                                     id="videoName" required class="span6" name="videoName" type="text">
-                                <span class="date">${materialInfo.fdCreateTime}</span>
+                                <span class="date">
+                                <fmt:formatDate value="${materialInfo.fdCreateTime}" pattern="yyyy/MM/dd hh:mm aa"/>
+                                </span>
                                 <input type="hidden" id="fdId" value="${materialInfo.fdId}">
                             </div>
                         </div>
@@ -258,7 +261,6 @@
                             </div>
                           </c:if>
                             
-                            
                         </div>
                     </section>
                     <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
@@ -293,13 +295,11 @@ function deleteMaterial(){
 }
 //下载素材
 function downloadMater(){
-	 $.ajax({
-			type: "post",
-			url: "${ctx}/common/file/download/",
-			success:function(){
-				alert("下载成功");
-			}
-		});
+  if('${attId !=null}'){
+	  window.location.href="${ctx}/common/file/download/${attId}";  
+  } else {
+	  $.fn.jalert("您好！该视频没有对应附件");
+  }
 }
 </script>
 <script type="text/javascript">
