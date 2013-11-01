@@ -133,6 +133,18 @@ public class MaterialAjaxController {
 		material.setIsAvailable(false);
 		materialService.update(material);
 	}
+	@RequestMapping(value = "updateDownloadNum")
+	@ResponseBody
+	public void updateDownloadNum(HttpServletRequest request){
+		String fdId = request.getParameter("materialId");
+		MaterialInfo materialInfo = materialService.load(fdId);
+		if(materialInfo.getFdDownloads()==null){
+			materialInfo.setFdDownloads(1);
+		}else{
+			materialInfo.setFdDownloads(materialInfo.getFdDownloads()+1);
+		}
+		materialService.update(materialInfo);
+	}
 
 	/**
 	 * ajax找出素材列表

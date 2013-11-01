@@ -296,9 +296,19 @@ function deleteMaterial(){
 //下载素材
 function downloadMater(){
   if('${attId !=null}'){
-	  window.location.href="${ctx}/common/file/download/${attId}";  
+	  window.location.href="${ctx}/common/file/download/${attId}";
+	  $.ajax({
+			type: "post",
+			url: "${ctx}/ajax/material/updateDownloadNum",
+			data : {
+				"materialId":$("#fdId").val(),
+			},
+			success:function(){
+				alert("lkkll");
+			}
+		}); 
   } else {
-	  $.fn.jalert2("您好！该视频没有对应附件");
+	  $.fn.jalert("您好！该视频没有对应附件");
   }
 }
 </script>
