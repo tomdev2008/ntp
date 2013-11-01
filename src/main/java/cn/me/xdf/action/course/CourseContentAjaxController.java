@@ -113,7 +113,6 @@ public class CourseContentAjaxController {
 				//先将课程与素材的关系清空，然后再进行保存
 				courseContentService.deleteByCatalogId(catalogId);
 				catalog.setFdTotalContent(0);
-				catalog.setFdMaterialType(null);
 				if(StringUtil.isNotEmpty(mediaList)){
 					//解析页面传递的素材列表
 					List<Map> contents = JsonUtils.readObjectByJson(mediaList, List.class);
