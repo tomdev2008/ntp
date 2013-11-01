@@ -50,7 +50,7 @@ public class BamScore extends IdEntity implements BamProcess {
     }
 
 
-    public BamScore(String perTeachId, String guideTeachId, String courseId, String courseJson, String catalogJson, String courseContentJson,
+    public BamScore(String preTeachId, String guideTeachId, String courseId, String courseJson, String catalogJson, String courseContentJson,
                     boolean through, boolean isOpen) {
         this.preTeachId = preTeachId;
         this.guideTeachId = guideTeachId;
