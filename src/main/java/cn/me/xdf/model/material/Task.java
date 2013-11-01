@@ -45,6 +45,19 @@ public class Task extends IdEntity{
 	 * 标准分
 	 */
 	private Double fdStandardScore;
+	
+	/**
+	 * 排序号
+	 */
+	private Integer fdOrder;
+
+	public Integer getFdOrder() {
+		return fdOrder;
+	}
+
+	public void setFdOrder(Integer fdOrder) {
+		this.fdOrder = fdOrder;
+	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdMaterialId")

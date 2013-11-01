@@ -57,6 +57,19 @@ public class ExamQuestion extends IdEntity{
 	private Double fdStandardScore;
 	
 	/**
+	 * 排序号
+	 */
+	private Integer fdOrder;
+
+	public Integer getFdOrder() {
+		return fdOrder;
+	}
+
+	public void setFdOrder(Integer fdOrder) {
+		this.fdOrder = fdOrder;
+	}
+	
+	/**
 	 * 选项
 	 */
 	private List<ExamOpinion> opinions;
