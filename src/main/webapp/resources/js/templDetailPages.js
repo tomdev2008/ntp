@@ -85,13 +85,13 @@
             case "02":
             	data_type = "audio";
             	data_typeTxt = "音频";
-            	data_uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的视频将会显示在下面的音频列表中。";
+            	data_uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的音频将会显示在下面的音频列表中。";
             	uptype='*.mp3;*.mv;';
 	            break;
             case "04":
             	data_type = "doc";
             	data_typeTxt = "文档";
-            	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的视频将会显示在下面的文档列表中。";
+            	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的文档将会显示在下面的文档列表中。";
             	uptype='*.doc;*.xls;';
 	            break;
             case "05":
@@ -103,7 +103,7 @@
             case "03":
             	data_type = "img";
             	data_typeTxt = "图片";
-            	data_uploadIntro = "上传视频（支持JPG、PNG、BMP格式的图片，建议小于10G）：成功上传的视频将会显示在下面的图片列表中。";
+            	data_uploadIntro = "上传图片（支持JPG、PNG、BMP格式的图片，建议小于10G）：成功上传的图片将会显示在下面的图片列表中。";
             	uptype='*.jpg;*.png;';
 	            break;
             case "08":
