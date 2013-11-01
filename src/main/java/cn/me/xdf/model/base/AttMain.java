@@ -65,8 +65,6 @@ public class AttMain extends IdEntity {
 
     /**
      * 文件的URL路径
-     *
-     *
      */
     private String fileUrl;
 
@@ -104,6 +102,11 @@ public class AttMain extends IdEntity {
      * 创建者
      */
     private String fdCreatorId;
+
+    /**
+     * 文档转化标志
+     */
+    private Integer flag;
 
     public String getFdFileName() {
         return fdFileName;
@@ -227,4 +230,11 @@ public class AttMain extends IdEntity {
         this.fdCreatorId = fdCreatorId;
     }
 
+    public Integer getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Integer flag) {
+        this.flag = flag;
+    }
 }
