@@ -7,6 +7,7 @@
 <%
  String fdType = request.getParameter("fdType");
  String order = request.getParameter("order");
+ String mark=request.getParameter("mark");
 %>
  <html class=""> 
 <head>
@@ -45,11 +46,12 @@
 function clearserach(){
 	//alert('ss');
 	$("#serach").attr("value","");
-	$("#containkey").html("");
+	$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
 	findeCoursesByKey(1,'fdcreatetime');
 }
 function showSearch(){
 	var fdTitle = document.getElementById("serach").value;
+	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
 	$("#containkey").html(fdTitle);
 }
 function findeCoursesByKey(pageNo,order){
@@ -73,7 +75,15 @@ function findeCoursesByKey(pageNo,order){
 			//alert(data);
 			var serachkey=$("#coursekey").val();
 			$("#pageBody").html(data);
-			$("#containkey").html(serachkey);
+			if(fdTitle!=""&&fdTitle!=null){
+				$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
+				$("#containkey").html(fdTitle);
+			}
+			else{
+				$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
+				
+			}
+			
 			$("#serach").attr("value",serachkey);
 			if($("#allFlag").val()=='true'){
 				document.getElementById("selectAll").checked=true;

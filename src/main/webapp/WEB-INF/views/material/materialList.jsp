@@ -53,11 +53,12 @@
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 function showSearch(){
-	$("#show").html($("#serach").val());
+	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
+	$("#containkey").html($("#serach").val());
 }
 function clearserach(){
 	$("#serach").attr("value","");
-	$("#show").html("");
+	$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
 	pageNavClick('${param.fdType}',1,'fdcreatetime');
 }
 //选中当前页
@@ -112,6 +113,15 @@ function pageNavClick(fdType,pageNo,order){
 		success:function(data){		
 			$("#pageBody").html(data);
 			$("#show").html($("#showkey").val());
+			if(fdName!=""&&fdName!=null){
+				$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
+				$("#containkey").html(fdName);
+			}
+			else{
+				$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
+				
+			}
+			
 			$("#serach").attr("value",$("#showkey").val());
 			if($("#allFlag").val()=='true'){
 				document.getElementById("selectAll").checked=true;
