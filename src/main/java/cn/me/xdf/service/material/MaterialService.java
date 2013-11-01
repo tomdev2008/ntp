@@ -169,7 +169,7 @@ public class MaterialService extends BaseService {
 		}
 		finder.append(" from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
 		finder.append("on info.FDID=auth.FDMATERIALID ");
-		finder.append(" left join IXDF_NTP_SCORE_STATISTICS score on info.FDID = score.fdModelId and score.fdmodelname = 'cn.me.xdf.model.material.MaterialInfo' ");
+		finder.append(" left join IXDF_NTP_SCORE_STATISTICS score on info.FDID = score.fdModelId and score.fdmodelname = '"+MaterialInfo.class.getName()+"' ");
 		if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
 			finder.append(" left join ( ");
 			finder.append(" select count(*) as questionNum,sum(fdstandardscore) as fdtotalnum,fdmaterialid from IXDF_NTP_EXAM_QUESTION group by fdmaterialid) a ");
