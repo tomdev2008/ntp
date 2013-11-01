@@ -13,7 +13,7 @@
 						操作 <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="#rightCont">导出列表</a></li>
+						<!-- <li><a href="#rightCont">导出列表</a></li> -->
 						<li><a href="#rightCont">打包下载</a></li>
 						<li><a href="#rightCont" onclick="batchDelete();">批量删除</a></li>
 					</ul>
@@ -147,9 +147,23 @@
 						<span class="btns">
 						
 						 <button type="button" class="btn btn-link">
-						 <i class="icon-eye"></i><strong>3315</strong></button><b>|</b>
+						 <i class="icon-eye"></i><strong>
+						    <c:if test="${bean.FDPLAYS==null}">
+                                   0
+                             </c:if>
+                             <c:if test="${bean.FDPLAYS!=null}">
+                                  ${bean.FDPLAYS}
+                             </c:if>
+						 </strong></button><b>|</b>
                          <button type="button" class="btn btn-link">
-                         <i class="icon-thumbs-up"></i><strong>1530</strong></button><b>|</b>
+                         <i class="icon-thumbs-up"></i><strong>
+                              <c:if test="${bean.FDLAUDS==null}">
+                                          0
+                              </c:if>
+                              <c:if test="${bean.FDLAUDS!=null}">
+                                          ${bean.FDLAUDS}
+                              </c:if>
+                         </strong></button><b>|</b>
 							   <button type="button" class="btn btn-link">
 								<i class="icon-download"></i>
 								<c:if test="${bean.FDDOWNLOADS==null}">
@@ -219,122 +233,3 @@
 </div>
 <input type="hidden" id="fdType" value="${param.fdType}">
 
-<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
-<script type="text/javascript">
-function showSearch(){
-	$("#show").html($("#serach").val());
-}
-function clearserach(){
-	$("#serach").attr("value","");
-	$("#show").html("");
-	pageNavClick('${param.fdType}',1,'fdcreatetime');
-}
-//选中当前页
-function checkcurrpage(){
-	if(document.getElementById("selectCurrPage").checked){
-		document.getElementById("selectAll").checked=false;
-		$('input[name="ids"]').each(function(){
-			$(this).attr("checked",true);// 
-			$(this).attr("disabled",false);
-		});
-		$("#allFlag").attr("value",false);
-	} else {
-		$('input[name="ids"]').each(function(){
-			$(this).attr("checked",false);// 
-		});
-		$("#allFlag").attr("value",false);
-	}
-}
-//全部选中
-function selectAll(){
-	if(document.getElementById("selectAll").checked){
-		document.getElementById("selectCurrPage").checked=false;
-		$('input[name="ids"]').each(function(){
-			$(this).attr("checked",true);// disabled="disabled"
-			$(this).attr("disabled",true);
-		});
-		$("#allFlag").attr("value",true);
-	} else {
-		$('input[name="ids"]').each(function(){
-			$(this).attr("checked",false);// 
-		});
-		$("#allFlag").attr("value",false);
-	}
-}
-</script>
-<script type="text/javascript">	
-function pageNavClick(fdType,pageNo,order){
-	var fdName = document.getElementById("serach").value;
-	$("#showkey").attr("value",fdName);//关键字赋值
-	$("#pageBody").html("");
-	$.ajax({
-		type: "post",
-		 url: "${ctx}/ajax/material/findList",
-		data : {
-			"fdName" : fdName,
-			"fdType" : fdType,
-			"pageNo" : pageNo,
-			"order" : order,
-		},
-		cache: false, 
-		dataType: "html",
-		success:function(data){		
-			$("#pageBody").html(data);
-			$("#show").html($("#showkey").val());
-			$("#serach").attr("value",$("#showkey").val());
-			if($("#allFlag").val()=='true'){
-				document.getElementById("selectAll").checked=true;
-				selectAll();
-			}
-		}
-	}); 
-}
-</script>
-<script type="text/javascript">	
-//jquery获取复选框值  
-function batchDelete() {
-	var delekey="";
-	$('input[name="ids"]:checked').each(function() {
-		delekey+=$(this).val()+",";
-	});
-	
-	if(delekey==""){
-		$.fn.jalert("当前没有选择要删除的数据？",function(){return;});
-		return;
-	}
-	//是否全部选中
-	if($("#allFlag").val()=='true'){
-		$.fn.jalert("是否删除所有素材？",deleteAllMaterial);
-	}else{
-		$.fn.jalert("是否删除所选素材？",function deleteMaterial(){
-			$.ajax({
-				type: "post",
-				url: "${ctx}/ajax/material/batchDelete",
-				data : {
-					"materialIds":delekey,
-				},
-				success:function(data){
-					window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
-				}
-		  }); 
-		});
-	}
-}
-
-//删除所有
-function deleteAllMaterial(){
-	var fdName = document.getElementById("serach").value;
-	 $.ajax({
-		type: "post",
-		url: "${ctx}/ajax/material/deleteAllMaterial",
-		data : {
-			"fdName":fdName,
-			"fdType":$("#fdType").val(),
-		},
-		success:function(data){
-			window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
-		}
-	}); 
-}
-
-</script>

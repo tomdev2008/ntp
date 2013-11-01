@@ -172,8 +172,8 @@ public class MaterialService extends BaseService {
 		finder.append(" left join IXDF_NTP_SCORE_STATISTICS score on info.FDID = score.fdModelId and score.fdmodelname = 'cn.me.xdf.model.material.MaterialInfo' ");
 		if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
 			finder.append(" left join ( ");
-			finder.append(" select count(*) as questionNum,sum(fdstandardscore) as fdtotalnum,fdExamId from IXDF_NTP_EXAM_QUESTION group by fdExamId) a ");
-			finder.append(" on a.fdexamid=info.fdid  ");
+			finder.append(" select count(*) as questionNum,sum(fdstandardscore) as fdtotalnum,fdmaterialid from IXDF_NTP_EXAM_QUESTION group by fdmaterialid) a ");
+			finder.append(" on a.fdmaterialid=info.fdid  ");
 		}
 		finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1 ");
 		finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' ");

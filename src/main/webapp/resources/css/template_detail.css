@@ -26,7 +26,7 @@
 .page-body form label{margin:17px 0 12px;}
 .page-body form .control-group label.control-label{ margin: 0;}
 .page-body .btn-submit{padding:19px 0;margin-top:20px;}
-.state-dragable{position:absolute;}
+.state-dragable{position:absolute;cursor:move;}
 .state-dragable .icon-bar{display:block;width:20px;height:1px;margin-bottom:3px;background-color:#75777a}
 .sortable-placeholder{border: 1px dashed #f39800; background:none;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
 

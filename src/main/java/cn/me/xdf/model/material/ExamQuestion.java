@@ -57,6 +57,19 @@ public class ExamQuestion extends IdEntity{
 	private Double fdStandardScore;
 	
 	/**
+	 * 排序号
+	 */
+	private Integer fdOrder;
+
+	public Integer getFdOrder() {
+		return fdOrder;
+	}
+
+	public void setFdOrder(Integer fdOrder) {
+		this.fdOrder = fdOrder;
+	}
+	
+	/**
 	 * 选项
 	 */
 	private List<ExamOpinion> opinions;
@@ -71,7 +84,7 @@ public class ExamQuestion extends IdEntity{
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdExamId")
+	@JoinColumn(name = "fdMaterialId")
 	public MaterialInfo getExam() {
 		return exam;
 	}

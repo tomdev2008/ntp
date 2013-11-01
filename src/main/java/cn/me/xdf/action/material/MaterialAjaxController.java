@@ -22,6 +22,7 @@ import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.material.MaterialInfo;
@@ -159,8 +160,13 @@ public class MaterialAjaxController {
 					SimplePage.DEF_COUNT, fdName, order);
 			model.addAttribute("page", page);
 		}
-		return new ModelAndView(
-				"forward:/WEB-INF/views/material/divMatList.jsp");
+		if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
+			return new ModelAndView(
+					"forward:/WEB-INF/views/material/divMatQuestList.jsp");	
+		}else{
+			return new ModelAndView(
+					"forward:/WEB-INF/views/material/divMatList.jsp");
+		}
 	}
 
 	@RequestMapping(value = "getMaterialBykey")
@@ -256,7 +262,7 @@ public class MaterialAjaxController {
 	public void saveAtt(String attId, String modelId) {
 		AttMain att = attMainService.get(attId);
 		att.setFdModelId(modelId);
-		att.setFdModelName("cn.me.xdf.model.material.MaterialInfo");
+		att.setFdModelName(MaterialInfo.class.getName());
 		attMainService.update(att);
 	}
 

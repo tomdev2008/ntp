@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
 <html class="">
@@ -96,7 +97,7 @@
                 <h4>${materialInfo.fdName}</h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
-                    <button class="btn btn-large btn-primary" type="button">下载</button>
+                    <button class="btn btn-large btn-primary" type="button" onclick="downloadMater();">下载</button>
                     <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
                 </div>
 	        </div>
@@ -108,7 +109,9 @@
                             <div class="controls">
                                 <input value="${materialInfo.fdName}" 
                                     id="videoName" required class="span6" name="videoName" type="text">
-                                <span class="date">${materialInfo.fdCreateTime}</span>
+                                <span class="date">
+                                <fmt:formatDate value="${materialInfo.fdCreateTime}" pattern="yyyy/MM/dd hh:mm aa"/>
+                                </span>
                                 <input type="hidden" id="fdId" value="${materialInfo.fdId}">
                             </div>
                         </div>
@@ -142,8 +145,22 @@
                                       </b>
                                 </span>
                                 <span class="btns-handle">
-                                    <button type="button" class="btn btn-link"><i class="icon-eye"></i>3315</button>
-                                    <button type="button" class="btn btn-link"><i class="icon-thumbs-up"></i>2940</button>
+                                    <button type="button" class="btn btn-link"><i class="icon-eye"></i>
+                                       <c:if test="${materialInfo.fdPlays==null}">
+                                          0
+                                       </c:if>
+                                       <c:if test="${materialInfo.fdPlays!=null}">
+                                          ${materialInfo.fdPlays}
+                                       </c:if>
+                                     </button>
+                                    <button type="button" class="btn btn-link"><i class="icon-thumbs-up"></i>
+                                      <c:if test="${materialInfo.fdLauds==null}">
+                                          0
+                                       </c:if>
+                                       <c:if test="${materialInfo.fdLauds!=null}">
+                                          ${materialInfo.fdLauds}
+                                       </c:if>
+                                    </button>
                                     <button type="button" class="btn btn-link"><i class="icon-download"></i>0</button>
                                 </span>
                             </div>
@@ -244,7 +261,6 @@
                             </div>
                           </c:if>
                             
-                            
                         </div>
                     </section>
                     <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
@@ -276,6 +292,14 @@ function deleteMaterial(){
 			window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
 		}
 	}); 
+}
+//下载素材
+function downloadMater(){
+  if('${attId !=null}'){
+	  window.location.href="${ctx}/common/file/download/${attId}";  
+  } else {
+	  $.fn.jalert("您好！该视频没有对应附件");
+  }
 }
 </script>
 <script type="text/javascript">

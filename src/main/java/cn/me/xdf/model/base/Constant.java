@@ -136,4 +136,16 @@ public class Constant {
 	 * 素材综述类型：03表示攒
 	 */
 	public static final String MATERIALDISCUSSINFO_TYPE_LAUD = "03";
+	
+	/**
+	 * 作业作答方式：
+	 * 01上传作业
+	 */
+	public static final String TASK_TYPE_UPLOAD = "01";
+	
+	/**
+	 * 作业作答方式：
+	 * 02在线作答
+	 */
+	public static final String TASK_TYPE_ONLINE = "02";
 }
