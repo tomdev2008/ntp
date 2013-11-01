@@ -1015,10 +1015,12 @@
 							}			
 						}		
 						$sections.append(addSectionsFn(data));			
-					} else {			
+					} else {
+						$sections.children(".chapter").last().find(".form-edit-title .control-group:first").removeClass("warning").find(".help-block").remove();
 						$sections.children(".chapter").last().find(".form-edit-title .control-group:first").addClass("warning").find(":text").after('<span class="help-block">请先完成未保存的章！</span>');
 					}		
-				} else {			
+				} else {
+					$sections.children(".lecture").last().find(".form-edit-title .control-group:first").removeClass("warning").find(".help-block").remove();
 					$sections.children(".lecture").last().find(".form-edit-title .control-group:first").addClass("warning").find(":text").after('<span class="help-block">请先完成未保存的节！</span>');
 				}	
 					
@@ -1034,10 +1036,12 @@
 							}
 						}		
 						$sections.append(addSectionsFn(data));			
-					} else {			
+					} else {
+						$sections.children(".lecture").last().find(".form-edit-title .control-group:first").removeClass("warning").find(".help-block").remove();
 						$sections.children(".lecture").last().find(".form-edit-title .control-group:first").addClass("warning").find(":text").after('<span class="help-block">请先完成未保存的节！</span>');
 					}			
-				} else {			
+				} else {
+					$sections.children(".chapter").last().find(".form-edit-title .control-group:first").removeClass("warning").find(".help-block").remove();
 					$sections.children(".chapter").last().find(".form-edit-title .control-group:first").addClass("warning").find(":text").after('<span class="help-block">请先完成未保存的章！</span>');
 				}
 			});
