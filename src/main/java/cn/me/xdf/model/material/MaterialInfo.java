@@ -160,6 +160,11 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 	private List<ExamQuestion> questions;
 	
 	/**
+	 * 作业
+	 */
+	private List<Task> tasks;
+	
+	/**
 	 * 权限
 	 */
 	private List<MaterialAuth> authList;
@@ -183,6 +188,16 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 		this.questions = questions;
 	}
 	
+	@JsonIgnore
+	@OneToMany(cascade = { CascadeType.REFRESH, CascadeType.REMOVE }, fetch = FetchType.LAZY, mappedBy = "taskPackage")
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
+
 	public String getFdName() {
 		return fdName;
 	}

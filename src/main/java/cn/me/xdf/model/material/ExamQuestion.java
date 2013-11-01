@@ -71,7 +71,7 @@ public class ExamQuestion extends IdEntity{
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdExamId")
+	@JoinColumn(name = "fdMaterialId")
 	public MaterialInfo getExam() {
 		return exam;
 	}
