@@ -1,5 +1,6 @@
 package cn.me.xdf.service.material.source;
 
+import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.material.MaterialInfo;
 
 import java.util.List;
@@ -19,6 +20,25 @@ public interface ISourceService {
      * @param materialInfo
      * @return
      */
-    public List<?> findSourceByMaterial(MaterialInfo materialInfo);
+    public Object findSourceByMateral(MaterialInfo materialInfo);
+
+
+    /**
+     * 获取章节下的所有素材
+     *
+     * @param catalog
+     * @return
+     */
+    public Object findSourceByCourseCatalog(CourseCatalog catalog);
+
+
+    /**
+     * 获取具体的素材信息
+     * 如根据materialInf获取AttMain
+     *
+     * @param materialInfos
+     * @return
+     */
+    public Object findSourceByMaterials(List<MaterialInfo> materialInfos);
 
 }

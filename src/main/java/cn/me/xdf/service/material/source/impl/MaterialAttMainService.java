@@ -1,5 +1,6 @@
 package cn.me.xdf.service.material.source.impl;
 
+import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.material.source.ISourceService;
@@ -15,9 +16,21 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Service("materialAttmainService")
-public class MaterialAttMainService extends SimpleService implements ISourceService{
+public class MaterialAttMainService extends SimpleService implements ISourceService {
+
+
     @Override
-    public List<?> findSourceByMaterial(MaterialInfo materialInfo) {
+    public Object findSourceByMateral(MaterialInfo materialInfo) {
         return null;
+    }
+
+    @Override
+    public Object findSourceByCourseCatalog(CourseCatalog catalog) {
+        return null;
+    }
+
+    @Override
+    public Object findSourceByMaterials(List<MaterialInfo> materialInfos) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
