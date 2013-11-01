@@ -52,7 +52,7 @@
                 <c:if test="${param.fdType!='08'}">
                 <li>
                 </c:if>
-                    <a href="${ctx}/course/findcourseInfos?fdType=1000&order=fdtitle"><i class="icon-exam">
+                    <a href="${ctx}/material/findList?fdType=08&order=FDNAME"><i class="icon-exam">
                 </i>测试</a></li>
                 
                 <c:if test="${param.fdType=='10'}">
