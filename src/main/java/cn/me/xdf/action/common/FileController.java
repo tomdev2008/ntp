@@ -5,7 +5,9 @@ import cn.me.xdf.common.upload.FileModel;
 import cn.me.xdf.common.upload.FileRepository;
 import cn.me.xdf.common.utils.Zipper;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.material.MaterialService;
 import jodd.io.StreamUtil;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,6 +36,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/common/file")
 public class FileController {
+	
+	@Autowired
+	private MaterialService materialService;
 
     private static final Logger log = LoggerFactory.getLogger(FileController.class);
 
@@ -128,6 +134,65 @@ public class FileController {
         downloadAttMain(attMains, agent, zipname, response);
         return null;
     }
+    /**
+     * 按文件modelId进行批量Download(打包) yuhz
+     * @param ids
+     * @param zipname
+     * @param request
+     * @param response
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping("/batchDownloadZip/{modelIds}/{zipname}")
+    public String batchDownloadZip(@PathVariable("modelIds") String[] modelIds, @PathVariable("zipname") String zipname,
+                 HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
+    	DownloadHelper dh = new DownloadHelper();
+        dh.setRequest(request);
+        List<AttMain> attMainList = new ArrayList<AttMain>();
+        for(int i=0;i<modelIds.length;i++){
+        	List<AttMain> attMains = attMainService.getAttsByModelId(modelIds[i]);
+        	if(attMains!=null&&attMains.size()>0){
+        		for (AttMain attMain : attMains) {
+        			attMainList.add(attMain);
+				}
+        	}
+        }
+        String agent = request.getHeader("USER-AGENT");
+        downloadAttMain(attMainList, agent, zipname, response);     
+    	return null;
+    }
+    /**
+     * 根据素材类型进行附件全部下载 yuhz
+     * @param fdType
+     * @param zipname
+     * @param request
+     * @param response
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping("/allDownloadZip/{fdType}/{zipname}")
+    public String allDownloadZip(@PathVariable("fdType") String fdType, @PathVariable("zipname") String zipname,
+                 HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
+    	DownloadHelper dh = new DownloadHelper();
+        dh.setRequest(request);
+        List<AttMain> attMainList = new ArrayList<AttMain>();
+        List<MaterialInfo> list = materialService.findByProperty("fdType", fdType);
+        if(list!=null&&list.size()>0){
+        	for (MaterialInfo materialInfo : list) {
+        		List<AttMain> attMains = attMainService.getAttsByModelId(materialInfo.getFdId());
+        		if(attMains!=null&&attMains.size()>0){
+        			for (AttMain attMain : attMains) {
+            			attMainList.add(attMain);
+    				}
+        		}
+			}
+        	
+        }
+        String agent = request.getHeader("USER-AGENT");
+        downloadAttMain(attMainList, agent, zipname, response);     
+    	return null;
+    }
+    
 
     private void downloadAttMain(List<AttMain> attMains, String agent, String zipname, HttpServletResponse response) throws UnsupportedEncodingException {
         if (attMains != null && !attMains.isEmpty()) {
