@@ -57,10 +57,10 @@
 							   </c:if>
 							</a> 
 							</div>
-							<label class="radio inline" for="selectCurrPage"><input
-								type="radio" id="selectCurrPage" name="selectCheckbox"  onclick="checkcurrpage();" value="0"/>选中本页</label>
-							<label class="radio inline" for="selectAll"><input
-								type="radio" id="selectAll" name="selectCheckbox" onclick="checkcurrpage()" value="1"/>选中全部</label>
+							<label class="checkbox inline" for="selectCurrPage">
+							   <input type="checkbox" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()"/>选中本页</label>
+							<label class="checkbox inline" for="selectAll">
+				  			 <input type="checkbox" id="selectAll" name="selectCheckbox"  onclick="selectAll()"/>选中全部</label>
 								
 							<div class="pages pull-right">
 								<div class="span2">
@@ -74,7 +74,7 @@
 									   </c:if>
 									   <c:if test="${page.pageNo!=1}">
 									    <c:if test="${page.pageNo<page.totalPage}">
-									     ${page.pageNo*10+1} - ${page.pageNo*20}
+									     ${page.pageNo*10-10+1} - ${page.pageNo*10}
 									    </c:if>
 										<c:if test="${page.pageNo==page.totalPage}">
 									     ${page.pageNo*10-10+1} - ${page.totalCount}
@@ -166,7 +166,9 @@
 			                    <button class="btn btn-primary btn-num active" type="button" >${i}</button>
 			                </c:when>
 			                <c:otherwise>
+			                    <a onclick="findeCoursesByKey('${i}','${param.order}')">
 			                    <button class="btn btn-primary btn-num" type="button">${i}</button>
+			                	</a>
 			                </c:otherwise>
 			            </c:choose>
 			          </c:forEach>

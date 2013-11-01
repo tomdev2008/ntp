@@ -36,6 +36,8 @@
 		       </div>
             <!-- 缓存插叙关键字 -->
 			<input type="hidden" id="coursekey" name="coursekey">
+			<input type="hidden" id="allFlag" >
+
 	    </section>
 	</section>
 </section>
@@ -48,11 +50,13 @@ function clearserach(){
 }
 function showSearch(){
 	var fdTitle = document.getElementById("serach").value;
-
 	$("#containkey").html(fdTitle);
 }
 function findeCoursesByKey(pageNo,order){
 	var fdTitle = document.getElementById("serach").value;
+	if($('input[name="selectCheckbox"]:checked').val()==1){
+		$("#allkey").attr("value",1);
+	}
 	$("#coursekey").attr("value",fdTitle);//关键字赋值
 	$("#pageBody").html("");
 	$.ajax({
@@ -71,6 +75,10 @@ function findeCoursesByKey(pageNo,order){
 			$("#pageBody").html(data);
 			$("#containkey").html(serachkey);
 			$("#serach").attr("value",serachkey);
+			if($("#allFlag").val()=='true'){
+				document.getElementById("selectAll").checked=true;
+				selectAll();
+			}
 		}
 	}); 
 }
@@ -123,18 +131,35 @@ function deleteAllCourse(){
 }
 //选中当前页
 function checkcurrpage(){
+	if(document.getElementById("selectCurrPage").checked){
+		document.getElementById("selectAll").checked=false;
 		$('input[name="ids"]').each(function(){
 			$(this).attr("checked",true);// 
+			$(this).attr("disabled",false);
 		});
-		
+		$("#allFlag").attr("value",false);
+	} else {
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",false);// 
+		});
+		$("#allFlag").attr("value",false);
+	}
 }
-//选中所有数据,如果关键字有值则根据关键字查出需要操作的list,如果没有关键字则表示全部内容.
-function checkall(){
-	$('input[name="ids"]').each(function(){
-		$(this).attr("checked",true);// 
-	});
-	return 1;
-
+//全部选中
+function selectAll(){
+	if(document.getElementById("selectAll").checked){
+		document.getElementById("selectCurrPage").checked=false;
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",true);// disabled="disabled"
+			$(this).attr("disabled",true);
+		});
+		$("#allFlag").attr("value",true);
+	} else {
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",false);// 
+		});
+		$("#allFlag").attr("value",false);
+	}
 }
 </script>
 </body>
