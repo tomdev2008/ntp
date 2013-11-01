@@ -62,7 +62,7 @@ request.setAttribute("path", path[path.length-1]);
             </shiro:authenticated>
              <shiro:notAuthenticated>            
             <ul class="nav pull-right">
-            <j:ifelse test="${path == 'login' || path=='self_register'}">
+            <j:ifelse test="${path == 'login' || path=='add'}">
 				<j:then>
 					<li><a href="${ctx}/">首页</a></li>
 				</j:then>
@@ -70,7 +70,7 @@ request.setAttribute("path", path[path.length-1]);
 					<li><a href="${ctx}/login">登录</a></li>
 				</j:else>
 			</j:ifelse>
-             <j:ifelse test="${path=='self_register'}">
+             <j:ifelse test="${path=='add'}">
 				<j:then>
 					<li><a href="${ctx}/login">登录</a></li>
 				</j:then>
