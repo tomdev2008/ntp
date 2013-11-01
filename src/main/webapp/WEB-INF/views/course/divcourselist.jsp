@@ -23,9 +23,13 @@
 								   onblur="findeCoursesByKey('1','${param.fdTitle}');" onkeydown="showSearch();" onkeyup="showSearch();" > 
 								<i class="icon-search"></i>
 							</form>
-							<span class="showState"> <span class="muted">当前显示：</span>含“<a id="containkey"
-								href="#"></a>”的条目
-							</span> <a class="btn btn-link" href="#" onclick="clearserach();" >清空搜索结果</a>
+							<span class="showState"> <span class="muted">当前显示：</span>
+							 <span id="markshow">
+							 	<a id="containkey"href="#">全部条目</a>
+							 </span>
+							 </span>
+							
+							 <a class="btn btn-link" href="#" onclick="clearserach();" >清空搜索结果</a>
 						</div>
 					</div>
 					<div class="bd">

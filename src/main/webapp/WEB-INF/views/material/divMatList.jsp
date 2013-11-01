@@ -14,7 +14,7 @@
 					</a>
 					<ul class="dropdown-menu">
 						<!-- <li><a href="#rightCont">导出列表</a></li> -->
-						<li><a href="#rightCont">打包下载</a></li>
+						<li><a href="#rightCont" onclick="downloadMater();">打包下载</a></li>
 						<li><a href="#rightCont" onclick="batchDelete();">批量删除</a></li>
 					</ul>
 				</div>
@@ -23,8 +23,10 @@
 					   onblur="pageNavClick('${param.fdType}');"  onkeydown="showSearch();" onkeyup="showSearch();"> 
 					<i class="icon-search"></i>
 				</form>
-				<span class="showState"> <span class="muted">当前显示：</span>含“<a
-					href="#"><span id="show"></span></a>”的条目
+				<span class="showState"> <span class="muted">当前显示：</span>
+					<span id="markshow">
+							 	<a id="containkey"href="#">全部条目</a>
+					</span>
 				</span> <a class="btn btn-link" href="#rightCont" onclick="clearserach();">清空搜索结果</a>
 			</div>
 		</div>
@@ -232,4 +234,26 @@
 	</div>
 </div>
 <input type="hidden" id="fdType" value="${param.fdType}">
+<script type="text/javascript">
+//下载素材
+function downloadMater(){
+	  var chk_value = [];
+	  $('input[name="ids"]:checked').each(function() {
+			chk_value.push($(this).val());
+	  });
+	  if (chk_value.length == 0) {
+		  $.fn.jalert("您好!当前没有选择要下载的数据？",function(){return;});
+	  }
+	  if($("#allFlag").val()=='true'){
+		  $.fn.jalert("您确定全部下载吗？",function(){
+			  window.location.href="${ctx}/common/file/allDownloadZip/${param.fdType}/xdf";
+			  return;
+		  });
+	  } else {
+		  window.location.href="${ctx}/common/file/batchDownloadZip/"+chk_value+"/xdf";
+	  }
+}
+</script>
+
+
 

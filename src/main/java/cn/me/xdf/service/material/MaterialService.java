@@ -57,7 +57,7 @@ public class MaterialService extends BaseService {
 	public void find_test(String value) {
 		ISourceService sourceService = sourceMap.get(MaterialEnum
 				.valueOf(value).getBean());
-		sourceService.findSourceByMaterial(null);
+		sourceService.findSourceByMaterials(null);
 	}
 
 	/**
