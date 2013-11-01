@@ -107,6 +107,10 @@ public class AttMainService extends SimpleService {
                 Value.eq("fdModelId", modelId));
     }
 
+    public List<AttMain> getAttsByIds(String[] ids) {
+        return findByCriteria(AttMain.class, Value.in("fdId", ids));
+    }
+
 
     public List<String> getFdIdsAttsByModelId(String modelId) {
         List<AttMain> attMains = getAttsByModelId(modelId);

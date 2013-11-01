@@ -92,9 +92,28 @@ public class FileController {
         return dh;
     }
 
+    /**
+     * 文件下载（打包）
+     * @param ids
+     * @param zipname
+     * @param request
+     * @param response
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping("/downloadZip/{ids}/{zipname}")
+    public String downloadZips(@PathVariable("ids") String[] ids, @PathVariable("zipname") String zipname,
+                               HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        DownloadHelper dh = new DownloadHelper();
+        dh.setRequest(request);
+        List<AttMain> attMains = attMainService.getAttsByIds(ids);
+        String agent = request.getHeader("USER-AGENT");
+        downloadAttMain(attMains, agent, zipname, response);
+        return null;
+    }
 
     /**
-     * 文件下载
+     * 文件下载 （打包）
      *
      * @param
      * @return
@@ -106,6 +125,11 @@ public class FileController {
         dh.setRequest(request);
         List<AttMain> attMains = attMainService.getAttsByModelId(modelId);
         String agent = request.getHeader("USER-AGENT");
+        downloadAttMain(attMains, agent, zipname, response);
+        return null;
+    }
+
+    private void downloadAttMain(List<AttMain> attMains, String agent, String zipname, HttpServletResponse response) throws UnsupportedEncodingException {
         if (attMains != null && !attMains.isEmpty()) {
             String temp = "";
             // 设置文件头，文件名称或编码格式
@@ -130,7 +154,6 @@ public class FileController {
                 log.error("export db error!", e);
             }
         }
-        return null;
     }
 
     @RequestMapping("/delete/{id}")
