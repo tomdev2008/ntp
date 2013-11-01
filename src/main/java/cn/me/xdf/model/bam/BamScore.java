@@ -183,6 +183,8 @@ public class BamScore extends IdEntity implements BamProcess {
      * 各种行为 (充血)
      * **************************************************************************************************
      */
+
+
     /**
      * 备课老师
      */
@@ -226,7 +228,6 @@ public class BamScore extends IdEntity implements BamProcess {
         this.guideTeach = guideTeach;
     }
 
-    @JsonIgnore
     @Transient
     public CourseInfo getCourseInfo() {
         if (StringUtils.isNotBlank(courseJson)) {
@@ -240,7 +241,6 @@ public class BamScore extends IdEntity implements BamProcess {
      *
      * @return
      */
-    @JsonIgnore
     @Transient
     public List<CourseCatalog> getCatalogs() {
         if (StringUtils.isNotBlank(catalogJson)) {
@@ -254,7 +254,6 @@ public class BamScore extends IdEntity implements BamProcess {
      *
      * @return
      */
-    @JsonIgnore
     @Transient
     public List<CourseContent> getCourseContents() {
         if (StringUtils.isNotBlank(courseContentJson)) {
@@ -270,7 +269,6 @@ public class BamScore extends IdEntity implements BamProcess {
      * @param catalog
      * @return
      */
-    @JsonIgnore
     @Transient
     public List<MaterialInfo> getMaterialByCatalog(CourseCatalog catalog) {
         List<CourseContent> courseContents = getCourseContents();
