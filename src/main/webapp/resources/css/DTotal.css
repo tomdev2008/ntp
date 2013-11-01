@@ -61,12 +61,13 @@
 .listWrap .list>li>a{position:relative;padding: 17px 0 10px 50px;background-color: #f9f9f9;border-top: solid #dcdcdc 1px; }
 .listWrap .list>li>a:hover{background-color: #eff4f7;}
 .listWrap .list>li>a>input[type="checkbox"]{float: left;margin-left: -20px;}
-.listWrap .list>li>a .date{color: #bbbbbb;margin-top: 3px; font-size: 12px;display: block;}
+.listWrap .list>li>a .date{color: #bbbbbb;margin-top: 6px; font-size: 12px;display: block;}
 .listWrap .list>li>a .date > i{margin-right: 8px;}
 .listWrap .list>li>a .rating-view{position: relative;top: -1px;}
-.listWrap .list>li>a .btns{position: absolute;right: 20px;top: 22px;}
-.listWrap .list>li>a .btns .btn,.btns-handle .btn{padding: 0 6px;color: #4391bb;text-decoration: none;border: none;}
-.listWrap .list>li>a .btns .btn + .btn,.btns-handle .btn + .btn{border-left: solid #a6a6a6 1px;}
+.listWrap .list>li>a .btns{position: absolute;right: 20px;bottom: 12px;}
+.listWrap .list>li>a .btns > b,.btns-handle > b{color:#999999;font-size: 12px;}
+.listWrap .list>li>a .btns .btn,.btns-handle .btn{padding: 0 6px;color: #999;text-decoration: none;border: none;}
+.listWrap .list>li>a .btns .btn strong,.btns-handle .btn strong{color: #4391bb;font-weight: normal;}
 .listWrap .list>li>a .btns .btn i,.btns-handle .btn i{margin-right: 5px;}
 .btns-handle .active.btn {    background-color: transparent;}
 .listWrap .list>li>a:hover .icon-thumbs-up,.btn:hover .icon-thumbs-up,.active.btn .icon-thumbs-up {background-position: right -296px;}
@@ -74,11 +75,11 @@
 .listWrap .list>li>a:hover .icon-download,.btn:hover .icon-download,.active.btn .icon-download{background-position: right -336px;}
 .page-body > .pages{text-align: right;margin-top: 20px;}
 .media-placeholder{color:#fff;font-size:16px;height:510px;text-align:center;line-height:700px;overflow:hidden;background: #a0c9db url("../images/video-transform-type.png") no-repeat 50% 50%;*background-position: 50% 180px;}
-.state-dragable{position:absolute;}
+.state-dragable{position:absolute;cursor:move;z-index:10;}
 .state-dragable .icon-bar{display:block;width:20px;height:1px;margin-bottom:3px;background-color:#75777a}
 .page-body .btn-submit{padding:19px 0;margin-top:20px;}
 
-/*视频编辑页面*/
+/*编辑页面*/
 .editingBody .section{padding: 20px;}
 .editingBody .section .control-group .control-label{width: 60px;text-align: left;}
 .editingBody .section .control-group .controls{
@@ -95,9 +96,49 @@
 .editingBody #open.tab-pane{padding:16px;background-color:#efefef;border:solid #d7d6d6 1px;}
 .editingBody .tab-content .autoComplete{*width: 728px}
 .editingBody .tab-content .autoComplete + .icon-search{position: absolute;right: 10px;top: 10px;}
-.editingBody .tab-content .table td,.kinguser-content .table th{text-align:center;line-height:36px;padding:12px;}
-.editingBody .tab-content .table .tdTit img{width:36px;height:36px;margin-right:8px;}
-.editingBody .tab-content .table .tdTit .pr{text-align:left;padding-left:50px;}
-.editingBody .tab-content .table .tdTit .state-dragable{left:18px;top:12px;}
-.editingBody .tab-content .table .sortable-placeholder{border:dashed #4391bb 1px;height:60px;padding:0;}
-.editingBody .tab-content .table tbody a.icon-remove-blue,.kinguser-content .table tbody input{vertical-align:middle;}
+.editingBody  .table td,.editingBody .table th{text-align:center;line-height:36px;padding:12px;}
+.editingBody  .table .tdTit img{width:36px;height:36px;margin-right:8px;}
+.editingBody  .table .tdTit .pr{text-align:left;padding-left:50px;}
+.editingBody  .table .tdTit .pr a{color: #000000;}
+.editingBody  .table .tdTit .state-dragable{left:18px;top:12px;}
+.editingBody  .table .sortable-placeholder{border:dashed #4391bb 1px;height:60px;padding:0;}
+.editingBody  .table tbody a.icon-remove-blue,.editingBody  .table tbody input{vertical-align:middle;}
+.editingBody .section .hd{position: relative;overflow: hidden}
+.editingBody .section .hd h5{font-weight: normal;}
+.editingBody .section .hd .pos-right{position: absolute;right: 0;top: 0;}
+.editingBody .section .bd .table{margin: 18px 0 20px;}
+.editingBody .section .bd .table .tooltip{line-height: 20px;}
+.editingBody .section .bd .table .itemScore{margin-right: 5px}
+.editingBody .section .input-mini{text-align: center;}
+.editingBody .section .hd #addExam{position: absolute;right: 0;top: -3px;}
+
+/*试卷详情页面*/
+.timeLine{font-size: 0;}
+.timeLine > a{width: 82px;display: inline-block;position: relative;margin-top: 1px;height:17px;background-color:#efefef;border-right: solid #e5e5e5 1px;border-top: solid #FFFFFF 6px;}
+.timeLine > a.first{border-left: solid #e5e5e5 1px;}
+.timeLine .num{font-size: 12px;color: #999;}
+.timeLine a .num{position: absolute;right:-6px;top: -27px;}
+.timeLine a.active{background-color:#99c0d5;}
+.scoreLine{}
+.list-attachment{margin: 20px 0;}
+.list-attachment li{border:solid #e4e4e4 1px;display: block;min-height: 58px;position: relative;overflow: hidden}
+.list-attachment li + li{border-top: none;}
+.list-attachment li.sortable-placeholder{border:dashed #4391bb 1px;}
+.list-attachment li:hover{background-color: #eff4f7;}
+.list-attachment li .state-dragable{left:18px;top:22px;}
+.list-attachment li .name{margin: 19px 58px 0 0;padding-left: 60px;color:#000000;display: block;position: relative;z-index: 0;}
+.list-attachment li .name input[type="text"]{display: block;width: 610px;margin-top: -7px;}
+.list-attachment li .name .action-btn{position: absolute;right: 0;top:50px;}
+.list-attachment li .name label{margin: 20px 0;}
+.list-attachment li .item-ctrl{position: absolute;right: 24px;top: 14px;}
+.list-attachment li .item-ctrl label.inline{margin-right: 25px;}
+.list-attachment li .item-ctrl .icon-pencil-blue {margin: 5px 15px 0 0;}
+.list-attachment li .item-ctrl .icon-remove-blue {margin-top: 5px;}
+.formAddItem{border: solid #d7d6d6 1px;background-color: #efefef;margin-top:20px;padding: 16px;}
+.formAddItem .control-group{margin-bottom: 10px;}
+.formAddItem .control-group + .control-group{margin-bottom: 0;}
+.formAddItem .control-label{width: 64px;}
+.formAddItem .controls{margin-left: 84px;*margin-left: 0;}
+.formAddItem .controls label{margin-top: 6px}
+.formAddItem .controls .action-btn{position: absolute;right: 12px; top:-3px;}
+#nameExamItem{width: 600px;background-color: #FFFFFF;}

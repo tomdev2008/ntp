@@ -89,4 +89,14 @@ public class MaterialController {
 		return "/material/materialList";
 	}
 
+	/**
+	 * 跳转至测试添加页面
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="addExam")
+	public String addExam(HttpServletRequest request){
+		return "/material/exam_add";
+	}
 }
