@@ -60,7 +60,7 @@ function showSearch(){
 function clearserach(){
 	$("#serach").attr("value","");
 	$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
-	pageNavClick('${param.fdType}',1,'fdcreatetime');
+	pageNavClick('${param.fdType}',1,'FDNAME');
 }
 //选中当前页
 function checkcurrpage(){
@@ -98,6 +98,9 @@ function selectAll(){
 <script type="text/javascript">	
 function pageNavClick(fdType,pageNo,order){
 	var fdName = document.getElementById("serach").value;
+	if(order==null){
+		order = fdName;
+	}
 	$("#showkey").attr("value",fdName);//关键字赋值
 	$("#pageBody").html("");
 	$.ajax({

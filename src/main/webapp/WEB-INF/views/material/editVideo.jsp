@@ -73,8 +73,8 @@
             <img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
           <div>
          </td>
-        <td><input type="checkbox" checked class="tissuePreparation" /></td>
-        <td><input type="checkbox" class="editingCourse" /></td>
+        <td><input type="checkbox" {{?it.tissuePreparation==true}}checked{{?}} class="tissuePreparation" /></td>
+        <td><input type="checkbox" {{?it.editingCourse==true}}checked{{?}} class="editingCourse" /></td>
         <td><a href="#" class="icon-remove-blue"></a></td>
     </tr>
 </script>
@@ -216,15 +216,17 @@
                     </section>
                     <div class="page-header mt20"> <h4>权限设置</h4> </div>
                     <section class="section">
-                        <label>权限设置<input type="hidden" id="permission" name="permission" value="open"></label>
+                        <label>权限设置</label>
                         <ul class="nav nav-pills">
                         <c:if test="${materialInfo.isPublish==true}">
                             <li class="active"><a data-toggle="tab" href="#open">公开</a></li>
                             <li><a data-toggle="tab" href="#encrypt">加密</a></li>
+                            <input type="hidden" id="permission" name="permission" value="open">
                          </c:if>
                          <c:if test="${materialInfo.isPublish!=true}">
                             <li><a data-toggle="tab" href="#open">公开</a></li>
                             <li class="active"><a data-toggle="tab" href="#encrypt">加密</a></li>
+                            <input type="hidden" id="permission" name="permission" value="close">
                          </c:if>
                         </ul>
                         <div class="tab-content">
@@ -304,7 +306,7 @@ function downloadMater(){
 				"materialId":$("#fdId").val(),
 			},
 			success:function(){
-				alert("lkkll");
+				
 			}
 		}); 
   } else {

@@ -20,7 +20,7 @@
 				</div>
 				<form class="toolbar-search">
 					<input type="text" id="serach" class="search" placeholder="搜索条目"
-					   onblur="pageNavClick('${param.fdType}');"  onkeydown="showSearch();" onkeyup="showSearch();"> 
+					  onblur="pageNavClick('${param.fdType}','1',FDNAME);"  onkeydown="showSearch();" onkeyup="showSearch();"> 
 					<i class="icon-search"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>
