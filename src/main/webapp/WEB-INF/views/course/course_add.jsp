@@ -381,7 +381,7 @@
 3. 本课程中的内容资料（包括视频、文档等）请前往 课程素材库 进行查阅。
 					</div>
 	       </div>		 
-           <button class="btn btn-block btn-warning btn-submit" id="deleteCourse" type="button" onClick="confirmDel()">删除</button>         
+           <button class="btn btn-block btn-warning btn-submit" id="deleteCourse" type="button">删除</button>         
 	 </div> 	
 </script>
 
@@ -573,7 +573,6 @@
 	</footer> --%>
 <!--底部 E-->
 </section>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script src="${ctx}/resources/js/jquery.sortable.js"></script>
