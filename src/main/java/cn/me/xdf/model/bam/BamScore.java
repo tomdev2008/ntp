@@ -16,9 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,6 +80,23 @@ public class BamScore extends IdEntity implements BamProcess {
      * 对应课程的ID
      */
     private String courseId;
+
+
+    /**
+     * 对应课程的信息(初始化)
+     */
+    private String initCourseJson;
+
+    /**
+     * 对应章节的JSON（初始化）
+     */
+    private String initCatalogJson;
+
+    /**
+     * 对应章节和素材的JSON（初始化）
+     */
+    private String initCourseContentJson;
+
     /**
      * 对应课程的信息
      */
@@ -115,6 +130,38 @@ public class BamScore extends IdEntity implements BamProcess {
         this.courseId = courseId;
     }
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    public String getInitCourseJson() {
+        return initCourseJson;
+    }
+
+    public void setInitCourseJson(String initCourseJson) {
+        this.initCourseJson = initCourseJson;
+    }
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    public String getInitCatalogJson() {
+        return initCatalogJson;
+    }
+
+    public void setInitCatalogJson(String initCatalogJson) {
+        this.initCatalogJson = initCatalogJson;
+    }
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    public String getInitCourseContentJson() {
+        return initCourseContentJson;
+    }
+
+    public void setInitCourseContentJson(String initCourseContentJson) {
+        this.initCourseContentJson = initCourseContentJson;
+    }
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     public String getCourseJson() {
         return courseJson;
     }
@@ -123,6 +170,8 @@ public class BamScore extends IdEntity implements BamProcess {
         this.courseJson = courseJson;
     }
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     public String getCatalogJson() {
         return catalogJson;
     }
@@ -131,6 +180,8 @@ public class BamScore extends IdEntity implements BamProcess {
         this.catalogJson = catalogJson;
     }
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     public String getCourseContentJson() {
         return courseContentJson;
     }
