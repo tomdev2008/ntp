@@ -552,7 +552,7 @@ public class CourseAjaxController {
 			attMainService.deleteAttMainByModelId(courseId);
 			AttMain attMain = attMainService.get(attMainId);
 			attMain.setFdModelId(courseId);
-			attMain.setFdModelName("cn.me.xdf.model.course.CourseInfo");
+			attMain.setFdModelName(CourseInfo.class.getName());
 			attMain.setFdKey("Course");
 			// 保存最新的附件
 			attMainService.update(attMain);

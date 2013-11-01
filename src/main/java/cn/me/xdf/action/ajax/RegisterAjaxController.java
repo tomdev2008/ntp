@@ -113,7 +113,7 @@ public class RegisterAjaxController {
 								sysOrgPersonTemp.getFdIdentityCard());
 				AttMain attMain = attMainService.get(attMainId);
 		    	attMain.setFdModelId(personTemp.getFdId());
-		    	attMain.setFdModelName("cn.me.xdf.model.organization.SysOrgPersonTemp");
+		    	attMain.setFdModelName(SysOrgPersonTemp.class.getName());
 		    	attMain.setFdKey("Person");
 		    	attMainService.update(attMain);
 			}

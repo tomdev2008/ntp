@@ -262,7 +262,7 @@ public class MaterialAjaxController {
 	public void saveAtt(String attId, String modelId) {
 		AttMain att = attMainService.get(attId);
 		att.setFdModelId(modelId);
-		att.setFdModelName("cn.me.xdf.model.material.MaterialInfo");
+		att.setFdModelName(MaterialInfo.class.getName());
 		attMainService.update(att);
 	}
 

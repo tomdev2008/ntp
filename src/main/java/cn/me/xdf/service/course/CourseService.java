@@ -90,7 +90,7 @@ public class CourseService  extends BaseService{
 	        	finder.append(" order by scorestatis.fdaverage desc");
 	        }
 		}else{
-			finder.append(" order by course.fdcreatetime");
+			finder.append(" order by course.fdtitle");
 		}
 		Pagination pagination=getPageBySql(finder, pageNoI, SimplePage.DEF_COUNT);
 		return pagination;
