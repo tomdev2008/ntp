@@ -272,7 +272,8 @@ function downloadMater(){
 			chk_value.push($(this).val());
 	});
 	if (chk_value.length == 0) {
-		  $.fn.jalert("您好!当前没有选择要下载的数据？",function(){return;});
+		  $.fn.jalert2("请选择要下载的数据!");
+		  return;
 	}
 	if($("#allFlag").val()=='true'){
 		$.fn.jalert("您确定全部下载吗？",function(){
