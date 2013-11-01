@@ -233,25 +233,55 @@
 		</c:if>
 	</div>
 </div>
+
 <input type="hidden" id="fdType" value="${param.fdType}">
 <script type="text/javascript">
 //下载素材
 function downloadMater(){
-	  var chk_value = [];
-	  $('input[name="ids"]:checked').each(function() {
+	 var day=new Date();
+	 var Year = day.getFullYear();
+	 var  Month = day.getMonth()+1;
+	 var  Day  = day.getDate();
+	 var CurrentDate="";
+	 CurrentDate = Year + "-";
+	 if (Month >= 10 ){
+	    CurrentDate = CurrentDate + Month + "-";
+	 }else{
+	    CurrentDate = CurrentDate + "0" + Month + "-";
+	 }
+	 if (Day >= 10 ){
+	    CurrentDate = CurrentDate + Day ;
+	 }else{
+	    CurrentDate = CurrentDate + "0" + Day ;
+	 }
+	 var fdType='';
+	 if($("#fdType").val()=='01'){
+		 fdType = "视频";
+	 }
+	 if($("#fdType").val()=='02'){
+		 fdType = "音频";
+	 }
+	 if($("#fdType").val()=='04'){
+		 fdType = "文档";
+	 }
+	 if($("#fdType").val()=='05'){
+		 fdType = "幻灯片";
+	 }
+	var chk_value = [];
+	$('input[name="ids"]:checked').each(function() {
 			chk_value.push($(this).val());
-	  });
-	  if (chk_value.length == 0) {
+	});
+	if (chk_value.length == 0) {
 		  $.fn.jalert("您好!当前没有选择要下载的数据？",function(){return;});
-	  }
-	  if($("#allFlag").val()=='true'){
-		  $.fn.jalert("您确定全部下载吗？",function(){
-			  window.location.href="${ctx}/common/file/allDownloadZip/${param.fdType}/xdf";
+	}
+	if($("#allFlag").val()=='true'){
+		$.fn.jalert("您确定全部下载吗？",function(){
+			  window.location.href="${ctx}/common/file/allDownloadZip/${param.fdType}/xdf_"+fdType+"素材_"+CurrentDate;
 			  return;
-		  });
-	  } else {
-		  window.location.href="${ctx}/common/file/batchDownloadZip/"+chk_value+"/xdf";
-	  }
+		});
+	} else {
+		window.location.href="${ctx}/common/file/batchDownloadZip/"+chk_value+"/xdf_"+fdType+"素材_"+CurrentDate;
+	}
 }
 </script>
 
