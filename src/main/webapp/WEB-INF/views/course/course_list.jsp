@@ -47,7 +47,7 @@ function clearserach(){
 	//alert('ss');
 	$("#serach").attr("value","");
 	$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
-	findeCoursesByKey(1,'fdcreatetime');
+	findeCoursesByKey(1,'fdtitle');
 }
 function showSearch(){
 	var fdTitle = document.getElementById("serach").value;
@@ -110,7 +110,7 @@ function deleteCourse(){
 		delekey+=$(this).val()+",";
 	}); 	
 	if(delekey==""){
-		$.fn.jalert("当前没有选择要删除的数据!",function(){return;});
+		$.fn.jalert2("当前没有选择要删除的数据!");
 		return;
 	}
 	// return;

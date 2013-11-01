@@ -161,42 +161,50 @@ public class MaterialService extends BaseService {
 	 * @author yuhuizhe
 	 * @return
 	 */
-	@Transactional(readOnly = false)
-	public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName,String order){
-		Finder finder = Finder.create("select info.*,score.fdaverage ");
-		if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
-			finder.append(" ,a.questionNum,a.fdtotalnum");
-		}
-		finder.append(" from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
-		finder.append("on info.FDID=auth.FDMATERIALID ");
-		finder.append(" left join IXDF_NTP_SCORE_STATISTICS score on info.FDID = score.fdModelId and score.fdmodelname = '"+MaterialInfo.class.getName()+"' ");
-		if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
-			finder.append(" left join ( ");
-			finder.append(" select count(*) as questionNum,sum(fdstandardscore) as fdtotalnum,fdmaterialid from IXDF_NTP_EXAM_QUESTION group by fdmaterialid) a ");
-			finder.append(" on a.fdmaterialid=info.fdid  ");
-		}
-		finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1 ");
-		finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' ");
-		finder.append(" ) or info.fdCreatorId='"+ShiroUtils.getUser().getId()+"') ");
-		finder.setParam("fdType", fdType);
-		if(StringUtil.isNotBlank(fdName)&&StringUtil.isNotEmpty(fdName)){
-			finder.append(" and info.FDNAME like :fdName");
-			finder.setParam("fdName", '%' + fdName + '%');
-		}
-		if(StringUtil.isNotBlank(order)&&StringUtil.isNotEmpty(order)){
-			if(order.equalsIgnoreCase("fdName")){
-				finder.append(" order by info.fdName ");
+	  @Transactional(readOnly = false)
+		public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName,String order){
+			Finder finder = Finder.create("select info.*,score.fdaverage ");
+			if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){//测试统计
+				finder.append(" ,a.questionNum,a.fdtotalnum");
 			}
-			if(order.equalsIgnoreCase("FDCREATETIME")){
-				finder.append(" order by info.FDCREATETIME desc ");
+			if(Constant.MATERIAL_TYPE_JOBPACKAGE.equals(fdType)){//作业类统计
+				finder.append(" ,t.tasknum,t.fullmarks ");
 			}
-			if(order.equalsIgnoreCase("FDSCORE")){
-				finder.append(" order by score.fdaverage desc ");
+			finder.append(" from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
+			finder.append("on info.FDID=auth.FDMATERIALID ");
+			finder.append(" left join IXDF_NTP_SCORE_STATISTICS score on info.FDID = score.fdModelId and score.fdmodelname = '"+MaterialInfo.class.getName()+"' ");
+			if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
+				finder.append(" left join ( ");
+				finder.append(" select count(*) as questionNum,sum(fdstandardscore) as fdtotalnum,fdmaterialid from IXDF_NTP_EXAM_QUESTION group by fdmaterialid) a ");
+				finder.append(" on a.fdmaterialid=info.fdid  ");
 			}
+			if(Constant.MATERIAL_TYPE_JOBPACKAGE.equals(fdType)){
+				finder.append(" left join ( ");
+				finder.append(" select count(*) as tasknum,sum(fdstandardscore) as fullmarks,fdmaterialid from ixdf_ntp_task group by fdmaterialid) t ");
+				finder.append(" on t.fdmaterialid=info.fdid  ");
+			}
+			finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1 ");
+			finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' ");
+			finder.append(" ) or info.fdCreatorId='"+ShiroUtils.getUser().getId()+"') ");
+			finder.setParam("fdType", fdType);
+			if(StringUtil.isNotBlank(fdName)&&StringUtil.isNotEmpty(fdName)){
+				finder.append(" and info.FDNAME like :fdName");
+				finder.setParam("fdName", '%' + fdName + '%');
+			}
+			if(StringUtil.isNotBlank(order)&&StringUtil.isNotEmpty(order)){
+				if(order.equalsIgnoreCase("fdName")){
+					finder.append(" order by info.fdName ");
+				}
+				if(order.equalsIgnoreCase("FDCREATETIME")){
+					finder.append(" order by info.FDCREATETIME desc ");
+				}
+				if(order.equalsIgnoreCase("FDSCORE")){
+					finder.append(" order by score.fdaverage desc ");
+				}
+			}
+			Pagination page = getPageBySql(finder, pageNo, pageSize);
+			return page;
 		}
-		Pagination page = getPageBySql(finder, pageNo, pageSize);
-		return page;
-	}
 
 	/**
 	 * 查看当前用户可用的资源

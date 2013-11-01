@@ -175,6 +175,9 @@ public class MaterialAjaxController {
 		if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
 			return new ModelAndView(
 					"forward:/WEB-INF/views/material/divMatQuestList.jsp");	
+		}else if(Constant.MATERIAL_TYPE_JOBPACKAGE.equals(fdType)){
+			return new ModelAndView(
+					"forward:/WEB-INF/views/material/divMatTaskList.jsp");	
 		}else{
 			return new ModelAndView(
 					"forward:/WEB-INF/views/material/divMatList.jsp");
@@ -295,28 +298,5 @@ public class MaterialAjaxController {
 		return JsonUtils.writeObjectToJson(map);
 	}
 
-	/*
-	 * 查询试题列表 或者根据关键字搜索 author hanhl
-	 */
-	@RequestMapping(value = "getMatQuestionsOrByKey")
-	public String getMatQuestionsOrByKey(Model model,
-
-	HttpServletRequest request) {
-		String fdType = request.getParameter("fdType");
-		String pageNoStr = request.getParameter("pageNo");
-		String fdName = request.getParameter("fdName");
-		String order = request.getParameter("order");
-		int pageNo;
-		if (StringUtil.isNotBlank(pageNoStr)
-				&& StringUtil.isNotEmpty(pageNoStr)) {
-			pageNo = Integer.parseInt(pageNoStr);
-		} else {
-			pageNo = 1;
-		}
-		if (StringUtil.isNotBlank(fdType)&& StringUtil.isNotEmpty(fdType)) {
-			Pagination page =materialService.findMaterialList(fdType,pageNo, SimplePage.DEF_COUNT, fdName, order);
-			model.addAttribute("page", page);
-		}
-		return "/material/divMatQuestList";
-	}
+	
 }
