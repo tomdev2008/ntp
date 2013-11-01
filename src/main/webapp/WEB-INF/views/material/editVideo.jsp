@@ -298,7 +298,7 @@ function downloadMater(){
   if('${attId !=null}'){
 	  window.location.href="${ctx}/common/file/download/${attId}";  
   } else {
-	  $.fn.jalert("您好！该视频没有对应附件");
+	  $.fn.jalert2("您好！该视频没有对应附件");
   }
 }
 </script>

@@ -140,7 +140,7 @@ function batchDelete() {
 	});
 	
 	if(delekey==""){
-		$.fn.jalert("当前没有选择要删除的数据？",function(){return;});
+		$.fn.jalert2("当前没有选择要删除的数据!");
 		return;
 	}
 	//是否全部选中
