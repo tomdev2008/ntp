@@ -126,7 +126,9 @@ public class MaterialController {
 	 * @return
 	 */
 	@RequestMapping(value="addExam")
-	public String addExam(HttpServletRequest request){
+	public String addExam(Model model,HttpServletRequest request){
+		String materIalId = request.getParameter("materIalId");
+		model.addAttribute("materIalId", materIalId);
 		return "/material/exam_add";
 	}
 	

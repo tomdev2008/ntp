@@ -222,27 +222,11 @@
 		</div>
     </div>
 </header> --%>
-<input type='hidden' id='materIalId' value='14220b965c8b55ef35ac3564953b7ca5' />
+<input type='hidden' id='materIalId' value='${materIalId}' />
 <section class="container">
 	<section class="clearfix mt20">
 	  <section class="col-left pull-left">
-    	<ul class="nav nav-list sidenav" id="sideNav">
-                <li class="nav-header first"><a href="#">学习跟踪</a></li>
-                <li class="nav-header"><a href="#">授权学习</a></li>
-	            <li class="nav-header">
-                    <span>课程管理</span>
-	            </li>
-	            <li><a href="#"><i class="icon-course-series"></i>我的系列课程</a></li>
-	            <li><a href="#"><i class="icon-course"></i>我的课程</a></li>
-	             <li class="nav-header">
-                     <span>课程素材库</span>
-	            </li>
-                <li><a href="#"><i class="icon-video"></i>视频</a></li>
-                <li><a href="#"><i class="icon-doc"></i>文档</a></li>
-                <li><a href="#"><i class="icon-ppt"></i>幻灯片</a></li>
-                <li class="active"><a href="#"><i class="icon-exam"></i>测试</a></li>
-                <li><a href="#"><i class="icon-task"></i>作业</a></li>
-	    </ul>
+    	 <%@ include file="/WEB-INF/views/group/menu.jsp" %>
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
@@ -499,22 +483,7 @@ $(function(){
             });
 
     //初始化试题列表
-     var examQuestionTemplate = doT.template(document.getElementById("examQuestionTemplate").text);
-   
-    $.ajax({
-		  url: "${ctx}/ajax/material/getExamQuestionByMaterId?materialId=14220b965c8b55ef35ac3564953b7ca5",
-		  async:false,
-		  dataType : 'json',
-		  success: function(result){
-			  var html = "";
-			  for(var i in result.qusetions){
-				  html += examQuestionTemplate(result.qusetions[i]);
-			  }
-			  $("#list_exam").html(html); 
-			  alert(result.name);
-			  $("#examPaperName").val(result.name);
-		  }
-	});
+   initExamQuestions();
     
     
     //授权管理 用户列表 模板函数
@@ -572,7 +541,6 @@ $(function(){
                 });
             });
         }
-        alert(JSON.stringify(data));
         //console.log(JSON.stringify(data));
         //ajax
         /*$.post("url?updata",data)
@@ -690,9 +658,21 @@ $(function(){
             
         	//materIalId
         	// ajax 获取已存在的试题数据
-			 $.get("${ctx}/ajax/examquestion/getExamsByMaterialId",{id: fdid}).success(function(result){
-             data = result;
-             });
+			 /* $.get("${ctx}/ajax/examquestion/getExamsByMaterialId",{id: fdid},"json").success(function(result){
+             	 alert(JSON.stringify(result));
+				 data = JSON.stringify(result);
+             }); */
+        	
+			 $.ajax({
+				  url:"${ctx}/ajax/examquestion/getExamsByMaterialId",
+				  async:false,
+				  data:{id: fdid},
+				  dataType:'json',
+				  success: function(rsult){
+						 alert(JSON.stringify(rsult));
+						 data = rsult;
+				  },
+			});
 
            /*  data = {// ajax 后删除
                 examType: "completion",//multiple, single, completion
@@ -743,7 +723,7 @@ $(function(){
                 ]
             }; */
         } 
-        data.examPaperName = "雅思口语强化课程教案解读试卷";  //当前试卷名称
+        data.examPaperName = $("#examPaperName").val();  //当前试卷名称
         $("#rightCont").html(examDetailFn(data));
 
         //应用拖放效果
@@ -846,7 +826,6 @@ $(function(){
 
         /*提交试题详情表单函数*/
         function submitForm(form){
-            alert("--------");
         	var data = {
                 examType: $("#examType").val(),
                 examStem: $("#examStem").val(),
@@ -888,15 +867,15 @@ $(function(){
             }
             //ajax
         	$.ajax({
-				  url: "${ctx}/ajax/examquestion/saveOrUpdateExamQuestion?materialName="+materialName,
+				  url: "${ctx}/ajax/examquestion/saveOrUpdateExamQuestion?questionId="+fdid+"&materIalId=${materIalId}&materialName="+materialName,
 				  async:false,
 				  data:data,
 				  type: "POST",
 				  dataType:'json',
 				  success: function(rsult){
 					 //alert("保存修改成功");
-					 alert(JSON.stringify(rsult));
 					 $("#rightCont").html(itemExamDetailFn(data));
+					 initExamQuestions();
 				  },
 			});
         }
@@ -946,6 +925,28 @@ $(function(){
         });
     }
 });
+    
+function initExamQuestions(){
+	var id = $("#materIalId").val();
+	if(id!==null&&id!=""){
+		var examQuestionTemplate = doT.template(document.getElementById("examQuestionTemplate").text);
+	    $.ajax({
+			  url: "${ctx}/ajax/material/getExamQuestionByMaterId?materialId=${materIalId}",
+			  async:false,
+			  dataType : 'json',
+			  success: function(result){
+				  var html = "";
+				  for(var i in result.qusetions){
+					  html += examQuestionTemplate(result.qusetions[i]);
+				  }
+				  $("#list_exam").html(html); 
+				  $("#examPaperName").val(result.name);
+			  }
+		});
+	}
+	  
+}
+
 </script>
 </body>
 </html>

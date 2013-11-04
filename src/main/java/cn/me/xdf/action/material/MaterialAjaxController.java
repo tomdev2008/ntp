@@ -320,6 +320,9 @@ public class MaterialAjaxController {
 		// 获取课程ID
 		String MaterialId = request.getParameter("materialId");
 		MaterialInfo info = materialService.get(MaterialId);
+		if(info==null){
+			return null;
+		}
 		List<Map> list = materialService.getExamQuestionByMaterId(info);
 		Map map = new HashMap();
 		map.put("qusetions", list);
