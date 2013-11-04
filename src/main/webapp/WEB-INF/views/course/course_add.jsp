@@ -364,7 +364,7 @@
 		</div>
     </td>
 	<td><input type="checkbox" checked class="tissuePreparation" /></td>
-	<td><input type="checkbox" class="editingCourse" /></td>
+	<td><input type="checkbox" checked class="editingCourse" /></td>
 	<td><a href="#" class="icon-remove-blue"></a></td>
 </tr>
 </script>
