@@ -60,7 +60,7 @@ function showSearch(){
 function clearserach(){
 	$("#serach").attr("value","");
 	$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
-	pageNavClick('${param.fdType}',1,'FDNAME');
+	pageNavClick('${param.fdType}',1,'FDCREATETIME');
 }
 //选中当前页
 function checkcurrpage(){

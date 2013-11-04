@@ -15,7 +15,7 @@
 	            <li>
 	             </c:if>
 	             
-	              <a href="${ctx}/course/findcourseInfos?fdType=1000&order=fdtitle">
+	              <a href="${ctx}/course/findcourseInfos?fdType=1000&order=fdcreatetime">
 	              <i class="icon-course"></i>我的课程</a>
 	             </li>
 	             <li class="nav-header">
@@ -27,7 +27,7 @@
                 <c:if test="${param.fdType!='01'}">
                 <li>
                 </c:if>
-                  <a href="${ctx}/material/findList?fdType=01&order=FDNAME"><i class="icon-video">
+                  <a href="${ctx}/material/findList?fdType=01&order=FDCREATETIME"><i class="icon-video">
                 </i>视频</a></li>
                 </li>
 	            <c:if test="${param.fdType=='04'}">
@@ -36,7 +36,7 @@
                 <c:if test="${param.fdType!='04'}">
                 <li>
                 </c:if>
-                  <a href="${ctx}/material/findList?fdType=04&order=FDNAME"><i class="icon-doc">
+                  <a href="${ctx}/material/findList?fdType=04&order=FDCREATETIME"><i class="icon-doc">
                 </i>文档</a></li>
                 <c:if test="${param.fdType=='05'}">
                 <li class="active">
@@ -44,7 +44,7 @@
                 <c:if test="${param.fdType!='05'}">
                 <li>
                 </c:if>
-                  <a href="${ctx}/material/findList?fdType=05&order=FDNAME"><i class="icon-ppt">
+                  <a href="${ctx}/material/findList?fdType=05&order=FDCREATETIME"><i class="icon-ppt">
                 </i>幻灯片</a></li>
                 <c:if test="${param.fdType=='08'}">
                 <li class="active">
@@ -52,7 +52,7 @@
                 <c:if test="${param.fdType!='08'}">
                 <li>
                 </c:if>
-                    <a href="${ctx}/material/findList?fdType=08&order=FDNAME"><i class="icon-exam">
+                    <a href="${ctx}/material/findList?fdType=08&order=FDCREATETIME"><i class="icon-exam">
                 </i>测试</a></li>
                 
                 <c:if test="${param.fdType=='10'}">
@@ -61,6 +61,6 @@
                 <c:if test="${param.fdType!='10'}">
                  <li>
                 </c:if>
-                  <a href="${ctx}/material/findList?fdType=10&order=FDNAME"><i class="icon-task"></i>作业</a></li>
+                  <a href="${ctx}/material/findList?fdType=10&order=FDCREATETIME"><i class="icon-task"></i>作业</a></li>
 	    </ul>
 

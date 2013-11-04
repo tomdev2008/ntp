@@ -36,14 +36,6 @@
 						<div class="btn-toolbar">
 							<label class="muted">排序</label>
 							<div class="btn-group btns-radio" data-toggle="buttons-radio">
-							 <a onclick="findeCoursesByKey('1','fdtitle')">
-							   <c:if test="${param.order=='fdtitle'}">
-								<button class="btn btn-large active" type="button">名称</button>
-							   </c:if>
-							   <c:if test="${param.order!='fdtitle'}">
-								<button class="btn btn-large" type="button">名称</button>
-							   </c:if>
-							 </a>
 							 <a onclick="findeCoursesByKey('1','fdcreatetime')">
 							   <c:if test="${param.order=='fdcreatetime'}">
 								<button class="btn btn-large active" type="button">时间</button>
@@ -52,6 +44,14 @@
 								<button class="btn btn-large" type="button">时间</button>
 							   </c:if>
 							</a>
+							 <a onclick="findeCoursesByKey('1','fdtitle')">
+							   <c:if test="${param.order=='fdtitle'}">
+								<button class="btn btn-large active" type="button">名称</button>
+							   </c:if>
+							   <c:if test="${param.order!='fdtitle'}">
+								<button class="btn btn-large" type="button">名称</button>
+							   </c:if>
+							 </a>
 						    <a onclick="findeCoursesByKey('1','fdscorce')">
 						      <c:if test="${param.order=='fdscorce'}">
 								<button class="btn btn-large active" type="button">评分</button>
