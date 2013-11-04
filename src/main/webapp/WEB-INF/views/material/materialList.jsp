@@ -125,7 +125,6 @@ function pageNavClick(fdType,pageNo,order){
 				$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
 				
 			}
-			
 			$("#serach").attr("value",$("#showkey").val());
 			if($("#allFlag").val()=='true'){
 				document.getElementById("selectAll").checked=true;
@@ -142,7 +141,6 @@ function batchDelete() {
 	$('input[name="ids"]:checked').each(function() {
 		delekey+=$(this).val()+",";
 	});
-	
 	if(delekey==""){
 		$.fn.jalert2("当前没有选择要删除的数据!");
 		return;
@@ -151,26 +149,75 @@ function batchDelete() {
 	if($("#allFlag").val()=='true'){
 		$.fn.jalert("是否删除所有素材？",deleteAllMaterial);
 	}else{
-		$.fn.jalert("是否删除所选素材？",function deleteMaterial(){
-			$.ajax({
-				type: "post",
-				url: "${ctx}/ajax/material/batchDelete",
-				data : {
-					"materialIds":delekey,
-				},
-				success:function(data){
-					window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
-				}
-		  }); 
-		});
+		prepareDelete(delekey);
 	}
 }
-
+function deleteMater(){
+	var delekeyAuth="";
+	$('input[name="ids"]:checked').each(function() {
+		delekeyAuth+=$(this).val()+",";
+	});
+	if(delekeyAuth==""){
+		$.fn.jalert2("当前没有选择要删除的数据!");
+		return;
+	}
+	$.fn.jalert("是否删除所选素材？",$.ajax({
+		type: "post",
+		async: false,
+		url: "${ctx}/ajax/material/batchDelete",
+		data : {
+			"materialIds":delekeyAuth,
+		},
+		success:function(data){
+			window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
+		}
+    })  
+  );
+}
+function test(){
+	
+}
+function prepareDelete(delekey){
+	$.ajax({
+		type: "post",
+		async: false,
+		url: "${ctx}/ajax/material/prepareDelete",
+		data : {
+			"materialIds":delekey,
+		},
+		success:function(data){
+			var res = eval(data);
+			if(res.length==0){
+				$('input[name="ids"]').each(function(){
+					$(this).attr("checked",false);
+					$(this).attr("disabled",true);
+				});
+				
+			}else{
+			  for (var i = 0; i < res.length; i++) {
+				$('input[name="ids"]').each(function(){
+					if($(this).val()==res[i]){
+						$(this).attr("checked",true);
+						$(this).attr("disabled",false);
+				    }else{
+						$(this).attr("checked",false);
+						$(this).attr("disabled",true);
+					}
+						
+				});
+			  } 
+				
+			}
+			setTimeout(deleteMater(),1000);
+		}
+    });
+}
 //删除所有
 function deleteAllMaterial(){
 	var fdName = document.getElementById("serach").value;
 	 $.ajax({
 		type: "post",
+		async: false,
 		url: "${ctx}/ajax/material/deleteAllMaterial",
 		data : {
 			"fdName":fdName,

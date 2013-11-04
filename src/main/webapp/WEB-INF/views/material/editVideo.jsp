@@ -78,6 +78,19 @@
         <td><a href="#" class="icon-remove-blue"></a></td>
     </tr>
 </script>
+<script id="addUserKinguserTemplate" type="text/x-dot-template">
+    <tr data-fdid="{{=it.id}}">
+        <td class="tdTit">
+          <div class="pr">
+            <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+            <img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
+          <div>
+         </td>
+        <td><input type="checkbox" checked class="tissuePreparation" /></td>
+        <td><input type="checkbox" checked class="editingCourse" /></td>
+        <td><a href="#" class="icon-remove-blue"></a></td>
+    </tr>
+</script>
 
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
@@ -401,6 +414,7 @@ $(function(){
     $.Placeholder.init();
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
+    var addUserKinguserFn = doT.template(document.getElementById("addUserKinguserTemplate").text);
    
     //初始化权限列表
     $.ajax({
@@ -472,7 +486,7 @@ $(function(){
 		});
 		if(flag){
 			$(this).val(item.name);
-			$("#list_user").append(listUserKinguserFn(item))
+			$("#list_user").append(addUserKinguserFn(item))
 			.sortable({
 				handle: '.state-dragable',
 				forcePlaceholderSize: true
