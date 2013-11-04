@@ -80,10 +80,16 @@
             <section class="section mt20">
                 <label>辅助材料（上传辅助材料，建议小于2G）</label>
                 <div class="control-upload">
-                    <div class="upload-fileName">高新技术产业各领域增加值饼形图（单位：亿元）.jpg <i class="icon-paperClip"></i></div>
-                    <span class="progress"> <div class="bar" style="width:20%;"></div> </span>
-                    <span class="txt"><span>20%</span>，剩余时间：<span>00:00:29</span></span>
-                    <button class="btn btn-primary btn-large" type="button">上传</button>
+                    <div class="upload-fileName"><span id="attName"><span><i class="icon-paperClip"></i></div>
+
+						<div id="qdiv" style="height:20px;width:650px;display:block;"> 
+ 						 </div>
+						 <div style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
+						     <button id="upMovie" class="btn btn-primary btn-large" type="button" >上传</button>
+						 </div>
+							<input type="hidden"  name="attId" id="attId">
+
+
                 </div>
                 <ul class="unstyled list-attachment" id="listAttachment">
                     {{~it.listAttachment :att:index}}
@@ -167,12 +173,26 @@
             </div>
         </section>
     </script>
+    <script id="examQuestionTemplate" type="text/x-dot-template">
+	    <tr data-fdid="{{=it.id}}" >
+		    <td class="tdTit">
+		        <div class="pr">
+		            <div class="state-dragable"><span class="icon-bar"></span><span
+		                    class="icon-bar"></span><span class="icon-bar"></span><span
+		                    class="icon-bar"></span><span class="icon-bar"></span></div>
+		            <a href="#">{{=it.subject}}</a>
+		        </div>
+		    </td>
+		    <td><input type="text" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为分值" class="itemScore input-mini">分</td>
+		    <td><a href="#" class="icon-remove-blue"></a></td>
+		</tr>
+    </script>
 
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
 <body>
-<header class="navbar navbar-inverse navbar-fixed-top">
+<%-- <header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
     	<div class="container">
 			<a href="#" class="logo"></a>
@@ -201,8 +221,8 @@
             </ul>
 		</div>
     </div>
-</header>
-
+</header> --%>
+<input type='hidden' id='materIalId' value='14220b965c8b55ef35ac3564953b7ca5' />
 <section class="container">
 	<section class="clearfix mt20">
 	  <section class="col-left pull-left">
@@ -239,7 +259,7 @@
                         <div class="control-group">
                             <label class="control-label" for="examPaperName">试&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卷</label>
                             <div class="controls">
-                                <input value="雅思口语强化课程教案解读试卷" id="examPaperName" required class="span6"
+                                <input id="examPaperName" required class="span6"
                                        name="examPaperName" type="text"><span class="date">2013/02/14 10:01 AM</span>
                             </div>
                         </div>
@@ -286,42 +306,10 @@
                                 </tr>
                                 </thead>
                                 <tbody id="list_exam">
-                                <tr data-fdid="fdid325" >
-                                    <td class="tdTit">
-                                        <div class="pr">
-                                            <div class="state-dragable"><span class="icon-bar"></span><span
-                                                    class="icon-bar"></span><span class="icon-bar"></span><span
-                                                    class="icon-bar"></span><span class="icon-bar"></span></div>
-                                            <a href="#">口语强化段课程中雅思口语考试流程应该在什么时候对学生进行讲解？</a>
-                                        </div>
-                                    </td>
-                                    <td><input type="text" value="5" data-toggle="tooltip" title="输入数字做为分值" class="itemScore input-mini">分</td>
-                                    <td><a href="#" class="icon-remove-blue"></a></td>
-                                </tr>
-                                <tr data-fdid="fdid324" >
-                                    <td class="tdTit">
-                                        <div class="pr">
-                                            <div class="state-dragable"><span class="icon-bar"></span><span
-                                                    class="icon-bar"></span><span class="icon-bar"></span><span
-                                                    class="icon-bar"></span><span class="icon-bar"></span></div>
-                                            <a href="#">强化段讲解到考试流程哪一部分的时候应该放相应视频给学生看？</a>
-                                        </div>
-                                    </td>
-                                    <td><input type="text" value="5" data-toggle="tooltip" title="输入数字做为分值" class="itemScore input-mini">分</td>
-                                    <td><a href="#" class="icon-remove-blue"></a></td>
-                                </tr>
-                                <tr data-fdid="fdid323" >
-                                    <td class="tdTit">
-                                        <div class="pr">
-                                            <div class="state-dragable"><span class="icon-bar"></span><span
-                                                    class="icon-bar"></span><span class="icon-bar"></span><span
-                                                    class="icon-bar"></span><span class="icon-bar"></span></div>
-                                            <a href="#">要成为一位好的口语老师最重要的是什么？</a>
-                                        </div>
-                                    </td>
-                                    <td><input type="text" value="5" data-toggle="tooltip" title="输入数字做为分值" class="itemScore input-mini">分</td>
-                                    <td><a href="#" class="icon-remove-blue"></a></td>
-                                </tr>
+                               
+                               
+                               
+                               
                                 </tbody>
                             </table>
                         </div>
@@ -420,7 +408,7 @@
 	</section>
 
 <!--底部 S-->
-	<footer>
+<%-- 	<footer>
 		<div class="navbar clearfix">
 			<div class="nav">
 				<li><a href="http://www.xdf.cn/" target="_blank">新东方网</a></li>
@@ -431,9 +419,10 @@
 			</div>
             <p style="font-size:13px">&copy; 2013 新东方教育科技集团&nbsp;知识管理中心</p>
 		</div>
-	</footer>
+	</footer> --%>
 <!--底部 E-->
 </section>
+
 <script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap.min.js"></script>
@@ -441,6 +430,60 @@
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
+<link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
+<style type="text/css">
+.uploadify-button {
+    background-color:rgb(67,145,187);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(67,145,187)),
+		color-stop(1, rgb(67,145,187))
+	);
+	max-width:70px;
+	max-height:30px;
+	border-radius: 1px;
+	border: 0px;
+	font: bold 12px Arial, Helvetica, sans-serif;
+	display: block;
+	text-align: center;
+	text-shadow: 0 0px 0 rgba(0,0,0,0.25);
+    
+}
+.uploadify:hover .uploadify-button {
+    background-color:rgb(67,145,187);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(67,145,187)),
+		color-stop(1, rgb(67,145,187))
+	);
+}
+.uploadify-queue-item {
+	background-color: #FFFFFF;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font: 11px Verdana, Geneva, sans-serif;
+	margin-top: 1px;
+	max-width: 1000px;
+	padding: 5px;
+}
+.uploadify-progress {
+	background-color: #E5E5E5;
+	margin-top: 10px;
+	width: 100%;
+}
+.uploadify-progress-bar {
+	background-color: rgb(67,145,187);
+	height: 27px;
+	width: 1px;
+}
+</style>
 <script type="text/javascript">
 $(function(){
     $.Placeholder.init();
@@ -455,6 +498,25 @@ $(function(){
                 $("#examPaperTime").val( $(this).children(".num").text());
             });
 
+    //初始化试题列表
+     var examQuestionTemplate = doT.template(document.getElementById("examQuestionTemplate").text);
+   
+    $.ajax({
+		  url: "${ctx}/ajax/material/getExamQuestionByMaterId?materialId=14220b965c8b55ef35ac3564953b7ca5",
+		  async:false,
+		  dataType : 'json',
+		  success: function(result){
+			  var html = "";
+			  for(var i in result.qusetions){
+				  html += examQuestionTemplate(result.qusetions[i]);
+			  }
+			  $("#list_exam").html(html); 
+			  alert(result.name);
+			  $("#examPaperName").val(result.name);
+		  }
+	});
+    
+    
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
 
@@ -510,6 +572,7 @@ $(function(){
                 });
             });
         }
+        alert(JSON.stringify(data));
         //console.log(JSON.stringify(data));
         //ajax
         /*$.post("url?updata",data)
@@ -612,14 +675,21 @@ $(function(){
 
     /*加载试题页面*/
     function loadExamPage(fdid){
-        var data = {};
+        var materialName = $("#examPaperName").val();
+        if(materialName==""||materialName==null){
+        	$.fn.jalert2("请先设置试卷名称");
+        	return;
+        }
+    	var data = {};
         if( !fdid){//添加试题数据
             data = {
                 examScoreTotal: 20,
                 examType: "multiple"
             };
         } else {
-            // ajax 获取已存在的试题数据
+            
+        	materIalId
+        	// ajax 获取已存在的试题数据
             /*$.get("url",{id: fdid}).success(function(result){
              data = result;
              })*/
@@ -672,7 +742,7 @@ $(function(){
                     }
                 ]
             };
-        }
+        } 
         data.examPaperName = "雅思口语强化课程教案解读试卷";  //当前试卷名称
         $("#rightCont").html(examDetailFn(data));
 
@@ -776,7 +846,8 @@ $(function(){
 
         /*提交试题详情表单函数*/
         function submitForm(form){
-            var data = {
+            alert("--------");
+        	var data = {
                 examType: $("#examType").val(),
                 examStem: $("#examStem").val(),
                 examScore: $("#examScore").val(),
@@ -792,25 +863,87 @@ $(function(){
                         url: $(this).find(".name").attr("href")
                     });
                 });
+                data.listAttachment =  JSON.stringify(data.listAttachment);
             }
             if(data.examType != "completion" && $("#listExamAnswer>li").length){
                 //push 试题答案列表数据
                 $("#listExamAnswer>li").each(function(i){
-                    data.listExamAnswer.push({
+                	data.listExamAnswer.push({
                         id: $(this).attr("data-fdid"),
                         index: i,
                         name: $(this).find(".name").text(),
-                        isAnswer: $(this).find("input:checked")
+                        isAnswer: $(this).find("input:checked").is(":checked")
                     });
                 });
+                data.listExamAnswer =  JSON.stringify(data.listExamAnswer);
             }
-            //console.log(data);
+            if(JSON.stringify(data.examScore)=='""')
+            {
+            	$.fn.jalert2("请设置分数");
+            	return;
+            }
+            if(JSON.stringify(data.examType)!='"completion"'&&JSON.stringify(data.listExamAnswer)=="[]"){
+            	$.fn.jalert2("请输入试题答案");
+            	return;
+            }
             //ajax
-            /*$.post("url?updata",data)
-             .success(function(){
-             alert("保存成功");
-             });*/
+        	$.ajax({
+				  url: "${ctx}/ajax/examquestion/saveOrUpdateExamQuestion?materialName="+materialName,
+				  async:false,
+				  data:data,
+				  type: "POST",
+				  dataType:'json',
+				  success: function(rsult){
+					 //alert("保存修改成功");
+					 alert(JSON.stringify(rsult));
+					 $("#rightCont").html(itemExamDetailFn(data));
+				  },
+			});
         }
+        jQuery("#upMovie").uploadify({
+            'height' : 27,
+            'width' : 80,
+            'multi' : false,// 是否可上传多个文件
+            'simUploadLimit' : 1,
+            'swf' : '${ctx}/resources/uploadify/uploadify.swf',
+            'buttonText' : '上 传',
+            'uploader' : '${ctx}/common/file/o_upload',
+            'auto' : true,// 选中后自动上传文件
+            'queueID': 'qdiv',// 文件队列div
+            'fileSizeLimit':2048,// 限制文件大小为2m
+            'queueSizeLimit':1,
+            'onUploadStart' : function (file) {
+                jQuery("#upMovie").uploadify("settings", "formData");
+            },
+            'onUploadSuccess' : function (file, datas, Response) {
+                if (Response) {
+                    var objvalue = eval("(" + datas + ")");
+                    jQuery("#attName").html(objvalue.fileName);
+                    $("#listAttachment").append(itemExamDetailFn({
+                   	 	flag: "add" ,
+                   	 	id: objvalue.attId,
+                        name: objvalue.fileName,
+                        url: "#"
+                   })).sortable({
+                           handle: ".state-dragable"
+                   });
+                }
+            },
+            'onSelect':function(file){
+            	// 选择新文件时,先清文件列表,因为此处是课程封页,所以只需要一个图片附件
+            	var queuedFile = {};
+    			for (var n in this.queueData.files) {
+    					queuedFile = this.queueData.files[n];
+    					if(queuedFile.id!=file.id){
+    						delete this.queueData.files[queuedFile.id]
+    						$('#' + queuedFile.id).fadeOut(0, function() {
+    							$(this).remove();
+    						});
+    					}
+    				}
+            },
+            'removeCompleted':false // 进度条不消失
+        });
     }
 });
 </script>

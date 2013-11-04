@@ -108,4 +108,5 @@ public class MaterialController {
 	public String addExam(HttpServletRequest request){
 		return "/material/exam_add";
 	}
+	
 }
