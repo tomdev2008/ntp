@@ -10,8 +10,8 @@ package cn.me.xdf.model.material;
  * 资源枚举类
  * 素材类型：
  * 01视频 attmain
- * 02音频 attmain
- * 03图片 attmain
+ * 02音频 attmain  不管，没这个需求
+ * 03图片 attmain  不管，没这个需求
  * 04文档 attmain
  * 05幻灯片  attmain
  * 06网页(链接)不管，没这个需求
@@ -19,7 +19,7 @@ package cn.me.xdf.model.material;
  * 08测试    questions
  * 09测评   不管，没这个需求
  * 10作业 work
- * 11日程
+ * 11日程  不管，没这个需求
  */
 public enum MaterialEnum {
 

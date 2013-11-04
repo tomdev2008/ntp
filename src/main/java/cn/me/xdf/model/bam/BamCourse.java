@@ -21,6 +21,8 @@ import java.util.List;
 import static cn.me.xdf.common.json.JsonUtils.*;
 
 /**
+ *
+ *
  * Created with IntelliJ IDEA.
  * User: xiaobin268
  * Date: 13-10-29
@@ -38,10 +40,15 @@ public class BamCourse extends IdEntity implements BamProcess {
     }
 
 
-    public BamCourse(String preTeachId, String guideTeachId, String courseId, String courseJson, String catalogJson, String courseContentJson) {
+
+    public BamCourse(String preTeachId, String guideTeachId, String courseId, String courseJson,
+                     String catalogJson, String courseContentJson) {
         this.preTeachId = preTeachId;
         this.guideTeachId = guideTeachId;
         this.courseId = courseId;
+        this.initCourseJson = courseJson;
+        this.initCourseContentJson = courseContentJson;
+        this.initCatalogJson = catalogJson;
         this.courseJson = courseJson;
         this.catalogJson = catalogJson;
         this.courseContentJson = courseContentJson;
@@ -50,11 +57,15 @@ public class BamCourse extends IdEntity implements BamProcess {
     }
 
 
-    public BamCourse(String preTeachId, String guideTeachId, String courseId, String courseJson, String catalogJson, String courseContentJson,
-                    boolean through, boolean isOpen) {
+    public BamCourse(String preTeachId, String guideTeachId, String courseId,
+                     String courseJson, String catalogJson, String courseContentJson,
+                     boolean through, boolean isOpen) {
         this.preTeachId = preTeachId;
         this.guideTeachId = guideTeachId;
         this.courseId = courseId;
+        this.initCourseJson = courseJson;
+        this.initCourseContentJson = courseContentJson;
+        this.initCatalogJson = catalogJson;
         this.courseJson = courseJson;
         this.catalogJson = catalogJson;
         this.courseContentJson = courseContentJson;

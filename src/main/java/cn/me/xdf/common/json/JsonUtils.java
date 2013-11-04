@@ -23,21 +23,6 @@ public class JsonUtils {
     private static ObjectMapper objectMapper = null;
 
     /**
-     *    为了防止Hibernate的Lazy加载和代理对象出现HibernateException
-     *  * @param entity
-     * @return
-     */
-    public static String writeObjectToJsonWithHibernate(Object entity) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new Hibernate4Module());
-            return mapper.writeValueAsString(entity);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * 把对象转化为json
      *
      * @param entity
@@ -47,6 +32,7 @@ public class JsonUtils {
         try {
             if (objectMapper == null)
                 objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new Hibernate4Module());
             return objectMapper.writeValueAsString(entity);
         } catch (IOException e) {
             throw new RuntimeException(e);

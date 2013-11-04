@@ -25,9 +25,9 @@ public interface BamProcess {
 
     public static final String PRI_THROUGH = "through";
 
-    public String getFdId();
-
     public boolean getThrough();
 
     public void setThrough(boolean through);
+    public String getFdId();
+
 }

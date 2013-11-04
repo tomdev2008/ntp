@@ -49,7 +49,6 @@ public class HibernateProxySerializer
             throws IOException, JsonProcessingException
     {
         Object proxiedValue = findProxied(value);
-        // TODO: figure out how to suppress nulls, if necessary? (too late for that here)
         if (proxiedValue == null) {
             provider.defaultSerializeNull(jgen);
             return;
