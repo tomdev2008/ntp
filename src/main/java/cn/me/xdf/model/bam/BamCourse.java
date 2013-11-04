@@ -31,14 +31,14 @@ import static cn.me.xdf.common.json.JsonUtils.*;
 @Entity
 @Table(name = "IXDF_NTP_BAM_SCORE")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class BamScore extends IdEntity implements BamProcess {
+public class BamCourse extends IdEntity implements BamProcess {
 
 
-    public BamScore() {
+    public BamCourse() {
     }
 
 
-    public BamScore(String preTeachId, String guideTeachId, String courseId, String courseJson, String catalogJson, String courseContentJson) {
+    public BamCourse(String preTeachId, String guideTeachId, String courseId, String courseJson, String catalogJson, String courseContentJson) {
         this.preTeachId = preTeachId;
         this.guideTeachId = guideTeachId;
         this.courseId = courseId;
@@ -50,7 +50,7 @@ public class BamScore extends IdEntity implements BamProcess {
     }
 
 
-    public BamScore(String preTeachId, String guideTeachId, String courseId, String courseJson, String catalogJson, String courseContentJson,
+    public BamCourse(String preTeachId, String guideTeachId, String courseId, String courseJson, String catalogJson, String courseContentJson,
                     boolean through, boolean isOpen) {
         this.preTeachId = preTeachId;
         this.guideTeachId = guideTeachId;
