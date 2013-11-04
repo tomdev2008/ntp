@@ -54,6 +54,14 @@ public class MaterialController {
 		return "/material/addVideo";
 	}
 	/**
+	 * 返回添加作业包的页面
+	 * @return
+	 */
+	@RequestMapping(value="addExamPaper")
+	public String addWorkPacket(){
+		return "/material/addExamPaper";
+	}
+	/**
 	 * 返回编辑视频页面
 	 */
 	@RequestMapping(value="updateVideo")
@@ -108,4 +116,5 @@ public class MaterialController {
 	public String addExam(HttpServletRequest request){
 		return "/material/exam_add";
 	}
+	
 }

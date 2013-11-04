@@ -330,6 +330,9 @@
 // addFlag = false;
 // }
 // });
+            $("#gotoMaterial").bind("click",function(){
+            	window.open($('#ctx').val()+"/material/findList?fdType="+type+"&order=FDCREATETIME",'_blank');
+            });
         }
 
         function numParseCN(n){
