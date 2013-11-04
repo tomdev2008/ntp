@@ -38,7 +38,7 @@
             <!-- 缓存插叙关键字 -->
 			<input type="hidden" id="coursekey" name="coursekey">
 			<input type="hidden" id="allFlag" >
-
+            
 	    </section>
 	</section>
 </section>
@@ -59,6 +59,7 @@ function findeCoursesByKey(pageNo,order){
 	if($('input[name="selectCheckbox"]:checked').val()==1){
 		$("#allkey").attr("value",1);
 	}
+	
 	$("#coursekey").attr("value",fdTitle);//关键字赋值
 	$("#pageBody").html("");
 	$.ajax({

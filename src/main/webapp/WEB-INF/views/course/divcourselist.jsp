@@ -21,7 +21,7 @@
 							<form class="toolbar-search">
 								<input type="text" id="serach" class="search" placeholder="搜索课程"
 								   onblur="" onkeydown="showSearch();" onkeyup="showSearch();" > 
-								<i class="icon-search" onclick="findeCoursesByKey('1','fdcreatetime');"></i>
+								<i class="icon-search" onclick="findeCoursesByKey('1','${param.order}');"></i>
 							</form>
 							<span class="showState"> <span class="muted">当前显示：</span>
 							 <span id="markshow">
