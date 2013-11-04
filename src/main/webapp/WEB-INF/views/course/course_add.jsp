@@ -305,7 +305,7 @@
 						</div>
 						<div class="tab-pane{{?it.permission == 'encrypt'}} active{{?}}" id="encrypt">
 							<label  class="radio" for="authorized"><input type="radio" onclick="removePass()" value="authorized" {{?it.encryptType == 'authorized' || it.encryptType == ''}}checked{{?}} name="encryptType" id="authorized" /><span class="labelTxt">授权组织备课</span>前往 <a href="#kinguser" onClick="urlRouter()" >授权管理</a> 本课程的用户列表</label>
-							<label  class="radio" id="passRadio" for="passwordProtect"><input type="radio" value="passwordProtect" {{?it.encryptType == 'passwordProtect'}}checked{{?}} name="encryptType" id="passwordProtect" /><span class="labelTxt">密码保护</span><input type="password" id="coursePwd"  name="coursePwd" {{?it.encryptType !='passwordProtect'}}disabled{{?}} placeholder="请填写课程访问的密码" value="{{=it.coursePwd}}" /></label>
+							<label  class="radio" id="passRadio" for="passwordProtect"><input type="radio" value="passwordProtect" {{?it.encryptType == 'passwordProtect'}}checked{{?}} name="encryptType" id="passwordProtect" /><span class="labelTxt">密码保护</span><input type="password" id="coursePwd"  name="coursePwd" {{?it.encryptType !='passwordProtect'}}disabled{{?}} placeholder="请填写课程访问的密码" value="{{=it.coursePwd || ''}}" /></label>
 						</div>
 					</div>					
 	       </div>		 
@@ -441,7 +441,7 @@
 	        </div>
 			{{?}}
             <div class="section" >
-                <label>或者从 <a href="#">课程素材库</a> 中选择{{=it.typeTxt}}</label>
+                <label>或者从 <a id="gotoMaterial" href="#">课程素材库</a> 中选择{{=it.typeTxt}}</label>
                 <div class="autoCompleteWrap">
 					<input id="addMedia" type="text" />
 					<!--
