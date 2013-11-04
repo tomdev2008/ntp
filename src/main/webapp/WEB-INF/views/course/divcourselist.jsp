@@ -124,7 +124,14 @@
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
 				<li><a href="${ctx}/course/add?courseId=${bean.FDID}"> 
 				<input type="checkbox" name="ids" value="${bean.FDID}"/>
-				    <span class="title">${bean.FDTITLE}</span> 
+				    <span class="title">
+					<c:if test="${bean.FDTITLE!=null && bean.FDTITLE!=''}">
+						${bean.FDTITLE}
+					</c:if>
+					<c:if test="${bean.FDTITLE==null || bean.FDTITLE==''}">
+						未命名
+					</c:if>
+					</span> 
 				    <span class="rating-view">
 				    <c:if test="${bean.FDAVERAGE!=null}">
 					  <span class="rating-all">
