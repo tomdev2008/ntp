@@ -40,6 +40,11 @@ public class ExamOpinion extends IdEntity{
 	 * 排序号
 	 */
 	private Integer fdOrder;
+	
+	/**
+	 * 是否是答案（只针对选择）
+	 */
+	private Boolean isAnswer;
 
 	public Integer getFdOrder() {
 		return fdOrder;
@@ -66,4 +71,14 @@ public class ExamOpinion extends IdEntity{
 	public void setOpinion(String opinion) {
 		this.opinion = opinion;
 	}
+
+	public Boolean getIsAnswer() {
+		return isAnswer;
+	}
+
+	public void setIsAnswer(Boolean isAnswer) {
+		this.isAnswer = isAnswer;
+	}
+	
+	
 }

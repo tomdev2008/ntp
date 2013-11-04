@@ -140,8 +140,33 @@ public class ExamQuestionAjaxController {
 	@RequestMapping(value = "getExamsByMaterialId")
 	@ResponseBody
 	public Map getExamsByMaterialId(HttpServletRequest request) {
-		String materIalId = request.getParameter("materIalId");
-		MaterialInfo info = materialService.get(materIalId);
+		String questionId = request.getParameter("materIalId");
+		ExamQuestion question = examQuestionService.get(questionId);
+		Map map = new HashMap();
+		int type = question.getFdType();
+		String questionType = "";
+		if(type==1){
+			questionType="multiple";
+		}else if(type==2){
+			questionType="single";
+		}else{
+			questionType="completion";
+		}
+		map.put("examType", questionType);
+		map.put("examScoreTotal", question.getFdStandardScore());
+		map.put("examScore", question.getFdStandardScore());
+		map.put("examStem", question.getFdSubject());
+		List<ExamOpinion> examOpinions = question.getOpinions();
+		List<Map> examOpinionsList = new ArrayList<Map>();
+		for (ExamOpinion examOpinion : examOpinions) {
+			Map map1 = new HashMap();
+			map1.put("id", examOpinion.getFdId());
+			map1.put("index", examOpinion.getFdOrder());
+			map1.put("name", examOpinion.getOpinion());
+			map1.put("isAnswer", examOpinion.getIsAnswer());
+			examOpinionsList.add(map1);
+		}
+		map.put("qusetions", JsonUtils.writeObjectToJson(examOpinionsList));
 		return null;
 	}
 	

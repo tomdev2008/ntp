@@ -688,13 +688,13 @@ $(function(){
             };
         } else {
             
-        	materIalId
+        	//materIalId
         	// ajax 获取已存在的试题数据
-            /*$.get("url",{id: fdid}).success(function(result){
+			 $.get("${ctx}/ajax/examquestion/getExamsByMaterialId",{id: fdid}).success(function(result){
              data = result;
-             })*/
+             });
 
-            data = {// ajax 后删除
+           /*  data = {// ajax 后删除
                 examType: "completion",//multiple, single, completion
                 examScoreTotal: 20,
                 examScore: 10,
@@ -741,7 +741,7 @@ $(function(){
                         isAnswer: true
                     }
                 ]
-            };
+            }; */
         } 
         data.examPaperName = "雅思口语强化课程教案解读试卷";  //当前试卷名称
         $("#rightCont").html(examDetailFn(data));
