@@ -25,35 +25,23 @@ import java.util.HashMap;
 public class HibernateProxySerializer
         extends JsonSerializer<HibernateProxy>
 {
-
+    /**
+     * Property that has proxy value to handle
+     */
     protected final BeanProperty _property;
 
     protected final boolean _forceLazyLoading;
-    protected final boolean _serializeIdentifier;
-    protected final Mapping _mapping;
 
 
     protected PropertySerializerMap _dynamicSerializers;
 
 
-
-    public HibernateProxySerializer(boolean forceLazyLoading)
+    public HibernateProxySerializer(BeanProperty property, boolean forceLazyLoading)
     {
-        this(forceLazyLoading, false, null);
-    }
-
-    public HibernateProxySerializer(boolean forceLazyLoading, boolean serializeIdentifier) {
-        this(forceLazyLoading, serializeIdentifier, null);
-    }
-
-    public HibernateProxySerializer(boolean forceLazyLoading, boolean serializeIdentifier, Mapping mapping) {
+        _property = property;
         _forceLazyLoading = forceLazyLoading;
-        _serializeIdentifier = serializeIdentifier;
-        _mapping = mapping;
         _dynamicSerializers = PropertySerializerMap.emptyMap();
-        _property = null;
     }
-
 
 
     @Override
@@ -69,7 +57,6 @@ public class HibernateProxySerializer
         findSerializer(provider, proxiedValue).serialize(proxiedValue, jgen, provider);
     }
 
-    @Override
     public void serializeWithType(HibernateProxy value, JsonGenerator jgen, SerializerProvider provider,
                                   TypeSerializer typeSer)
             throws IOException, JsonProcessingException
@@ -79,46 +66,38 @@ public class HibernateProxySerializer
             provider.defaultSerializeNull(jgen);
             return;
         }
+
         findSerializer(provider, proxiedValue).serializeWithType(proxiedValue, jgen, provider, typeSer);
     }
 
-
+    /*
+    /**********************************************************************
+    /* Helper methods
+    /**********************************************************************
+     */
 
     protected JsonSerializer<Object> findSerializer(SerializerProvider provider, Object value)
             throws IOException, JsonProcessingException
     {
+        /* TODO: if Hibernate did use generics, or we wanted to allow use of Jackson
+         *  annotations to indicate type, should take that into account.
+         */
         Class<?> type = value.getClass();
 
-        PropertySerializerMap.SerializerAndMapResult result =
-                _dynamicSerializers.findAndAddSerializer(type, provider, _property);
+        PropertySerializerMap.SerializerAndMapResult result = _dynamicSerializers.findAndAddSerializer(type,
+                provider, _property);
         if (_dynamicSerializers != result.map) {
             _dynamicSerializers = result.map;
         }
         return result.serializer;
     }
 
-    @SuppressWarnings("serial")
+
     protected Object findProxied(HibernateProxy proxy)
     {
         LazyInitializer init = proxy.getHibernateLazyInitializer();
         if (!_forceLazyLoading && init.isUninitialized()) {
-            if(_serializeIdentifier){
-                final String idName;
-                if (_mapping != null) {
-                    idName = _mapping.getIdentifierPropertyName(init.getEntityName());
-                } else {
-                    final SessionImplementor session = init.getSession();
-                    if (session != null) {
-                        idName = session.getFactory().getIdentifierPropertyName(init.getEntityName());
-                    } else {
-                        idName = init.getEntityName();
-                    }
-                }
-                final Object idValue = init.getIdentifier();
-                return new HashMap<String, Object>(){{ put(idName, idValue); }};
-            } else {
-                return null;
-            }
+            return null;
         }
         return init.getImplementation();
     }

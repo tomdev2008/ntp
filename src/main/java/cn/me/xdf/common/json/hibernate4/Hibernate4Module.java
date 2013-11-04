@@ -1,10 +1,8 @@
 package cn.me.xdf.common.json.hibernate4;
 
 import org.codehaus.jackson.Version;
-import org.codehaus.jackson.impl.Indenter;
 import org.codehaus.jackson.map.AnnotationIntrospector;
 import org.codehaus.jackson.map.Module;
-import org.hibernate.engine.spi.Mapping;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,26 +12,23 @@ import org.hibernate.engine.spi.Mapping;
  * To change this template use File | Settings | File Templates.
  * 为了兼容Hibernate一对多和多对一的关联建立的Json和Hibernate的桥联
  */
-public class Hibernate4Module extends Module {
+public class Hibernate4Module extends Module
+{
+    private final String NAME = "HibernateModule";
 
+    // Should externalize this somehow
+    private final static Version VERSION = new Version(0, 1, 0, null); // 0.1.0
 
-    /**
-     * 枚举定义的所有功能模块集合
-     */
     public enum Feature {
 
         FORCE_LAZY_LOADING(false),
 
 
-        USE_TRANSIENT_ANNOTATION(true),
-
-
-        SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS(false)
+        USE_TRANSIENT_ANNOTATION(true)
         ;
 
         final boolean _defaultState;
         final int _mask;
-
 
         public static int collectDefaults()
         {
@@ -61,20 +56,10 @@ public class Hibernate4Module extends Module {
     protected int _moduleFeatures = DEFAULT_FEATURES;
 
 
-    protected final Mapping _mapping;
+    public Hibernate4Module() { }
 
-
-
-    public Hibernate4Module() {
-        this(null);
-    }
-
-    public Hibernate4Module(Mapping mapping) {
-        _mapping = mapping;
-    }
-
-    @Override public String getModuleName() { return "ntp"; }
-    @Override public Version version() { return ModuleVersion.versionFor(Indenter.class);}
+    @Override public String getModuleName() { return NAME; }
+    @Override public Version version() { return VERSION; }
 
     @Override
     public void setupModule(SetupContext context)
@@ -84,9 +69,7 @@ public class Hibernate4Module extends Module {
         if (ai != null) {
             context.appendAnnotationIntrospector(ai);
         }
-        boolean forceLoading = isEnabled(Feature.FORCE_LAZY_LOADING);
-        context.addSerializers(new HibernateSerializers(forceLoading, isEnabled(Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS), _mapping));
-        context.addBeanSerializerModifier(new HibernateSerializerModifier(forceLoading));
+        context.addSerializers(new HibernateSerializers(_moduleFeatures));
     }
 
 
@@ -95,6 +78,7 @@ public class Hibernate4Module extends Module {
         ai.setUseTransient(isEnabled(Feature.USE_TRANSIENT_ANNOTATION));
         return ai;
     }
+
 
     public Hibernate4Module enable(Feature f) {
         _moduleFeatures |= f.getMask();
@@ -118,4 +102,5 @@ public class Hibernate4Module extends Module {
         }
         return this;
     }
+
 }
