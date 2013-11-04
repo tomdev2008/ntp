@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.material.MaterialAuthService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
+import cn.me.xdf.utils.ShiroUtils;
 
 /**
  * 材料信息
@@ -77,8 +79,19 @@ public class MaterialController {
 		    if(main!=null){
 		    	model.addAttribute("attId", main.getFdId());
 		    }
+		    if(materialInfo.getCreator().getFdId().equals(ShiroUtils.getUser().getId())){
+		    	return "/material/editVideo";
+		    }
+		    if(materialInfo.getIsPublish()==false){
+		    	MaterialAuth auth = materialAuthService.findByMaterialIdAndUserId(fdId,ShiroUtils.getUser().getId());
+			    if(auth.getIsEditer()==true){
+				   return "/material/editVideo";
+				}else{
+				   return "/material/viewVideo";
+				}
+		    }
 		}
-		return "/material/editVideo";
+		return "/material/viewVideo";
 	}
 
 	/**
