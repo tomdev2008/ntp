@@ -15,7 +15,7 @@
 	            <li>
 	             </c:if>
 	             
-	              <a href="${ctx}/course/findcourseInfos?fdType=1000" id="courseInfos">
+	              <a href="${ctx}/course/findcourseInfos?fdType=1000&order=fdtitle">
 	              <i class="icon-course"></i>我的课程</a>
 	             </li>
 	             <li class="nav-header">
