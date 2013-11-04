@@ -185,8 +185,9 @@ public class MaterialService extends BaseService {
 				finder.append(" on t.fdmaterialid=info.fdid  ");
 			}
 			finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1 ");
-			finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' ");
-			finder.append(" ) or info.fdCreatorId='"+ShiroUtils.getUser().getId()+"') ");
+			finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' )");
+			finder.append(" or(info.ISPUBLISH=1) or( auth.ISREADER=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"') ");
+			finder.append(" or info.fdCreatorId='"+ShiroUtils.getUser().getId()+"') ");
 			finder.setParam("fdType", fdType);
 			if(StringUtil.isNotBlank(fdName)&&StringUtil.isNotEmpty(fdName)){
 				finder.append(" and info.FDNAME like :fdName");

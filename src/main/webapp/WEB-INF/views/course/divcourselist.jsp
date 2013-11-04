@@ -21,7 +21,7 @@
 							<form class="toolbar-search">
 								<input type="text" id="serach" class="search" placeholder="搜索课程"
 								   onblur="" onkeydown="showSearch();" onkeyup="showSearch();" > 
-								<i class="icon-search" onclick="findeCoursesByKey('1','fdcreatetime');"></i>
+								<i class="icon-search" onclick="findeCoursesByKey('1','${param.order}');"></i>
 							</form>
 							<span class="showState"> <span class="muted">当前显示：</span>
 							 <span id="markshow">
@@ -124,7 +124,14 @@
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
 				<li><a href="${ctx}/course/add?courseId=${bean.FDID}"> 
 				<input type="checkbox" name="ids" value="${bean.FDID}"/>
-				    <span class="title">${bean.FDTITLE}</span> 
+				    <span class="title">
+					<c:if test="${bean.FDTITLE!=null && bean.FDTITLE!=''}">
+						${bean.FDTITLE}
+					</c:if>
+					<c:if test="${bean.FDTITLE==null || bean.FDTITLE==''}">
+						未命名
+					</c:if>
+					</span> 
 				    <span class="rating-view">
 				    <c:if test="${bean.FDAVERAGE!=null}">
 					  <span class="rating-all">

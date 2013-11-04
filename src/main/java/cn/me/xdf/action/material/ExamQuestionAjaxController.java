@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
@@ -37,95 +38,112 @@ public class ExamQuestionAjaxController {
 
 	@Autowired
 	private MaterialService materialService;
-	
+
 	@Autowired
 	private ExamOpinionService examOpinionService;
-	
+
 	@Autowired
 	private ExamQuestionService examQuestionService;
-	
+
 	@Autowired
-	private  AttMainService attMainService;
-	
+	private AttMainService attMainService;
+
 	@Autowired
-	private  AccountService accountService;
-	
+	private AccountService accountService;
+
 	@RequestMapping(value = "saveOrUpdateExamQuestion")
 	@ResponseBody
 	public Map saveOrUpdateExamQuestion(HttpServletRequest request) {
-		
+
 		String materialName = request.getParameter("materialName");
-		MaterialInfo exam = new MaterialInfo();
-		exam.setCreator((SysOrgPerson)accountService.load(ShiroUtils.getUser().getId()));
-		exam.setFdType(Constant.MATERIAL_TYPE_TEST);
-		exam.setFdName(materialName);
-		exam.setFdCreateTime(new Date());
-		exam.setIsPublish(true);
-		exam.setIsDownload(true);
-		exam.setIsAvailable(true);
-		///////////////////////保存测试
-		materialService.save(exam);
-		ExamQuestion examQuestion = new ExamQuestion();
+		String materIalId = request.getParameter("materIalId");
+		MaterialInfo exam;
+		if(StringUtil.isBlank(materIalId)){
+			exam = new MaterialInfo();
+			exam.setCreator((SysOrgPerson) accountService.load(ShiroUtils.getUser()
+					.getId()));
+			exam.setFdType(Constant.MATERIAL_TYPE_TEST);
+			exam.setFdName(materialName);
+			exam.setFdCreateTime(new Date());
+			exam.setIsPublish(true);
+			exam.setIsDownload(true);
+			exam.setIsAvailable(true);
+			// /////////////////////保存测试
+			materialService.save(exam);
+		}else{
+			exam = materialService.get(materIalId);
+		}
+		String questionId = request.getParameter("questionId");
+		ExamQuestion examQuestion;
+		if(StringUtil.isEmpty(questionId)||questionId.equals("undefined")){
+			examQuestion = new ExamQuestion();
+		}else{
+			examQuestion = examQuestionService.get(questionId);
+		}
 		List<ExamOpinion> opinions = new ArrayList<ExamOpinion>();
 		List<AttMain> attMains = new ArrayList<AttMain>();
 		String fdType = request.getParameter("examType");
 		String fdSubject = request.getParameter("examStem");
 		String fdStandardScore = request.getParameter("examScore");
 		String attString = request.getParameter("listAttachment");
-		String answer="";
+		String answer = "";
 		String opinionString = request.getParameter("listExamAnswer");
 		examQuestion.setExam(exam);
 		examQuestion.setFdStandardScore(new Double(fdStandardScore));
 		examQuestion.setFdSubject(fdSubject);
-		if(fdType.equals("multiple")){
-			//单选
+		if (fdType.equals("multiple")) {
+			// 单选
 			examQuestion.setFdType(Constant.EXAM_QUESTION_SINGLE_SELECTION);
-		}else if(fdType.equals("single")){
-			//多选
+		} else if (fdType.equals("single")) {
+			// 多选
 			examQuestion.setFdType(Constant.EXAM_QUESTION_MULTIPLE_SELECTION);
-		}else{
-			//填空
+		} else {
+			// 填空
 			examQuestion.setFdType(Constant.EXAM_QUESTION_CLOZE);
 		}
-		/////////////////////////////////保存试题
+		// ///////////////////////////////保存试题
 		examQuestionService.save(examQuestion);
-		if(StringUtil.isBlank(opinionString)){
+		if (StringUtil.isBlank(opinionString)) {
 			String[] s = fdSubject.split("#");
 			String res = "";
-			for(int i=0;i<s.length;i++){
-				if(i%2==0){
-					res = res+s[i];
-				}else{
-					res = res+"____";
+			for (int i = 0; i < s.length; i++) {
+				if (i % 2 == 0) {
+					res = res + s[i];
+				} else {
+					res = res + "____";
 				}
 			}
 			examQuestion.setFdQuestion(res);
-		}else{
-			List<Map> poinion = JsonUtils.readObjectByJson(opinionString, List.class);
+		} else {
+			List<Map> poinion = JsonUtils.readObjectByJson(opinionString,
+					List.class);
 			for (Map map : poinion) {
 				ExamOpinion e = new ExamOpinion();
 				e.setFdOrder(new Integer(map.get("index").toString()));
-				e.setOpinion((String)map.get("name"));
+				e.setOpinion((String) map.get("name"));
 				e.setQuestion(examQuestion);
 				examOpinionService.save(e);
 				opinions.add(e);
-				//得到答案
+				// 得到答案
 				String isAnswer = map.get("isAnswer").toString();
-				if(isAnswer.equals("true")){
-					answer+=e.getFdId()+"#";
+				if (isAnswer.equals("true")) {
+					answer += e.getFdId() + "#";
 				}
 			}
 			examQuestion.setFdQuestion(answer);
 		}
-		//更新答案
-		if(StringUtil.isNotBlank(attString)){
+		// 更新答案
+		if (StringUtil.isNotBlank(attString)) {
 			examQuestionService.save(examQuestion);
 			List<Map> att = JsonUtils.readObjectByJson(attString, List.class);
 			for (Map map : att) {
 				AttMain e = new AttMain();
+				e.setFdId(map.get("id").toString());
 				e.setFdModelId(examQuestion.getFdId());
 				e.setFdModelName(ExamQuestion.class.getName());
 				e.setFdKey(map.get("index").toString());
+				e.setFdCreateTime(new Date());
+				e.setFdCreatorId(ShiroUtils.getUser().getId());
 				attMains.add(e);
 				attMainService.update(e);
 			}
@@ -136,21 +154,21 @@ public class ExamQuestionAjaxController {
 		retMap.put("examQuestionSub", examQuestion.getFdSubject());
 		return retMap;
 	}
-	
+
 	@RequestMapping(value = "getExamsByMaterialId")
 	@ResponseBody
-	public Map getExamsByMaterialId(HttpServletRequest request) {
-		String questionId = request.getParameter("materIalId");
+	public String getExamsByMaterialId(HttpServletRequest request) {
+		String questionId = request.getParameter("id");
 		ExamQuestion question = examQuestionService.get(questionId);
 		Map map = new HashMap();
 		int type = question.getFdType();
 		String questionType = "";
-		if(type==1){
-			questionType="multiple";
-		}else if(type==2){
-			questionType="single";
-		}else{
-			questionType="completion";
+		if (type == 1) {
+			questionType = "multiple";
+		} else if (type == 2) {
+			questionType = "single";
+		} else {
+			questionType = "completion";
 		}
 		map.put("examType", questionType);
 		map.put("examScoreTotal", question.getFdStandardScore());
@@ -166,22 +184,21 @@ public class ExamQuestionAjaxController {
 			map1.put("isAnswer", examOpinion.getIsAnswer());
 			examOpinionsList.add(map1);
 		}
-		map.put("qusetions", JsonUtils.writeObjectToJson(examOpinionsList));
-		return null;
+		map.put("listExamAnswer", examOpinionsList);
+		List<AttMain> atts = attMainService.findByCriteria(AttMain.class,
+				Value.eq("fdModelId", question.getFdId()),
+				Value.eq("fdModelName", ExamQuestion.class.getName()));
+		List<Map> attList = new ArrayList<Map>();
+		for (AttMain attMain : atts) {
+			Map map2 = new HashMap();
+			map2.put("id", attMain.getFdId());
+			map2.put("index", attMain.getFdKey());
+			map2.put("name", attMain.getFdFileName());
+			map2.put("url", attMain.getFdFilePath());
+			attList.add(map2);
+		}
+		map.put("listAttachment",  attList);
+		return JsonUtils.writeObjectToJson(map);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
