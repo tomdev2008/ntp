@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
@@ -258,6 +259,21 @@ public class MaterialService extends BaseService {
 			maps.add(map);
 		}
 		return maps;
+	}
+	
+	
+	public List<Map> getExamQuestionByMaterId( MaterialInfo info){
+		
+		 List<ExamQuestion> examQuestions = info.getQuestions();
+		 List<Map> list = new ArrayList<Map>();
+		 for (ExamQuestion examQuestion : examQuestions) {
+			 Map map = new HashMap();
+			 map.put("id", examQuestion.getFdId());
+			 map.put("subject", examQuestion.getFdSubject());
+			 map.put("score", examQuestion.getFdStandardScore());
+			 list.add(map);
+		}
+		 return list;
 	}
 
 }

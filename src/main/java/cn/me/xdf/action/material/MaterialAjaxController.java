@@ -308,5 +308,22 @@ public class MaterialAjaxController {
 		return JsonUtils.writeObjectToJson(map);
 	}
 
-	
+	/**
+	 * 得到指定素材的试题信息（只针对测试）
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getExamQuestionByMaterId")
+	@ResponseBody
+	public String getExamQuestionByMaterId(HttpServletRequest request) {
+		// 获取课程ID
+		String MaterialId = request.getParameter("materialId");
+		MaterialInfo info = materialService.get(MaterialId);
+		List<Map> list = materialService.getExamQuestionByMaterId(info);
+		Map map = new HashMap();
+		map.put("qusetions", list);
+		map.put("name", info.getFdName());
+		return JsonUtils.writeObjectToJson(map);
+	}
 }
