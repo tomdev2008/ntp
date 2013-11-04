@@ -34,6 +34,14 @@
 			<div class="btn-toolbar">
 				<label class="muted">排序</label>
 				<div class="btn-group btns-radio" data-toggle="buttons-radio">
+			   <a onclick="pageNavClick('${param.fdType}','1','FDCREATETIME')">
+				   <c:if test="${param.order=='FDCREATETIME'}">
+					<button class="btn btn-large active" type="button">时间</button>
+				   </c:if>
+				   <c:if test="${param.order!='FDCREATETIME'}">
+					<button class="btn btn-large" type="button">时间</button>
+				   </c:if>
+				</a>
 				 <a onclick="pageNavClick('${param.fdType}','1','FDNAME')">
 				   <c:if test="${param.order=='FDNAME'}">
 					<button class="btn btn-large active" type="button">名称</button>
@@ -42,14 +50,7 @@
 					<button class="btn btn-large" type="button">名称</button>
 				   </c:if>
 				 </a>
-				 <a onclick="pageNavClick('${param.fdType}','1','FDCREATETIME')">
-				   <c:if test="${param.order=='FDCREATETIME'}">
-					<button class="btn btn-large active" type="button">时间</button>
-				   </c:if>
-				   <c:if test="${param.order!='FDCREATETIME'}">
-					<button class="btn btn-large" type="button">时间</button>
-				   </c:if>
-				</a>
+	
 			    <a onclick="pageNavClick('${param.fdType}','1','FDSCORE')">
 			      <c:if test="${param.order=='FDSCORE'}">
 					<button class="btn btn-large active" type="button">评分</button>

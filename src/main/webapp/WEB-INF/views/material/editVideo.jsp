@@ -272,6 +272,7 @@
 	</section>
 </section>
 <input type="hidden" id="fdType" value="${param.fdType}">
+<input type="hidden" id="fdattId" value="${attId}">
 <script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
@@ -297,8 +298,9 @@ function deleteMaterial(){
 }
 //下载素材
 function downloadMater(){
-  if('${attId !=null}'){
-	  window.location.href="${ctx}/common/file/download/${attId}";
+  var attId = $("#fdattId").val();
+  if(attId!=null&&attId!=""){
+	  window.location.href="${ctx}/common/file/download/"+attId;
 	  $.ajax({
 			type: "post",
 			url: "${ctx}/ajax/material/updateDownloadNum",
@@ -310,8 +312,8 @@ function downloadMater(){
 			}
 		}); 
   } else {
-	  $.fn.jalert("您好！该视频没有对应附件");
-  }
+	  $.fn.jalert2("您好！该视频没有对应附件");
+  } 
 }
 </script>
 <script type="text/javascript">

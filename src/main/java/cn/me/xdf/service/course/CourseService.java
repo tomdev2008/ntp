@@ -83,14 +83,14 @@ public class CourseService  extends BaseService{
 		//排序
 		if(StringUtil.isNotBlank(orderbyStr)&&StringUtil.isNotEmpty(orderbyStr)){
 	        if(orderbyStr.equalsIgnoreCase("fdtitle")){
-	        	finder.append(" order by course.fdtitle");
+	        	finder.append(" order by course.fdtitle desc ");
 	        }else if(orderbyStr.equalsIgnoreCase("fdcreatetime")){
-	        	finder.append(" order by course.fdcreatetime");
+	        	finder.append(" order by course.fdcreatetime desc");
 	        }else if(orderbyStr.equalsIgnoreCase("fdscorce")){
 	        	finder.append(" order by scorestatis.fdaverage desc");
 	        }
 		}else{
-			finder.append(" order by course.fdtitle");
+			finder.append(" order by course.fdcreatetime desc");
 		}
 		Pagination pagination=getPageBySql(finder, pageNoI, SimplePage.DEF_COUNT);
 		return pagination;
