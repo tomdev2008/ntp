@@ -41,7 +41,7 @@
                 </div>
 	        </div>
 	        <div class="page-body" id="pageBody">
-		 <c:if test="${param.fdType=='08'}"><%@ include file="/WEB-INF/views/material/divMatQuestList.jsp" %></c:if>  
+		          <c:if test="${param.fdType=='08'}"><%@ include file="/WEB-INF/views/material/divMatQuestList.jsp" %></c:if>  
                   <c:if test="${param.fdType=='10'}"><%@ include file="/WEB-INF/views/material/divMatTaskList.jsp" %></c:if> 
 	              <c:if test="${param.fdType!='08'&&param.fdType!='10'}"><%@ include file="/WEB-INF/views/material/divMatList.jsp" %></c:if>
             </div>           
@@ -99,7 +99,7 @@ function selectAll(){
 function pageNavClick(fdType,pageNo,order){
 	var fdName = document.getElementById("serach").value;
 	if(order==null){
-		order = fdName;
+		order = FDCREATETIME;
 	}
 	$("#showkey").attr("value",fdName);//关键字赋值
 	$("#pageBody").html("");
@@ -159,7 +159,7 @@ function batchDelete() {
 					"materialIds":delekey,
 				},
 				success:function(data){
-					window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
+					window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
 				}
 		  }); 
 		});
@@ -177,7 +177,7 @@ function deleteAllMaterial(){
 			"fdType":$("#fdType").val(),
 		},
 		success:function(data){
-			window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
+			window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
 		}
 	}); 
 }
