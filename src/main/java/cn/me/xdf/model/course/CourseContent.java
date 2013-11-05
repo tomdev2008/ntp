@@ -68,7 +68,7 @@ public class CourseContent extends IdEntity{
 		this.catalog = catalog;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "fdMaterialId")
 	public MaterialInfo getMaterial() {
 		return material;

@@ -55,12 +55,6 @@ public class MaterialService extends BaseService {
 		return MaterialInfo.class;
 	}
 
-	public void find_test(String value) {
-		ISourceService sourceService = sourceMap.get(MaterialEnum
-				.valueOf(value).getBean());
-		sourceService.findSourceByMaterials(null);
-	}
-
 	/**
 	 * 根据素材id获取素材权限信息
 	 *                                                               T

@@ -19,6 +19,6 @@ public class MaterialServiceTest extends BaseTest {
 
     @Test
     public void testFind_test(){
-        materialService.find_test("m_01");
+        //materialService.find_test("m_01");
     }
 }
