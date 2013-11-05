@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
@@ -131,6 +132,23 @@ public class CourseService  extends BaseService{
 		}
 		return list;
 	}
-	
-	
+
+	/**
+	 * 分页获取最新课程列表
+	 * 
+	 * @param userId 用户ID
+	 * @param pageNo 当前页数
+	 * @param pageSize 每页记录数
+	 * @return Pagination
+	 */
+	@Transactional(readOnly = true)
+	public Pagination discoverCourses(String userId, int pageNo, int pageSize) {
+		Finder finder = Finder.create(" select c.* from ixdf_ntp_course c where c.isAvailable=1 and c.fdStatus=:fdStatus and ( ");
+		finder.append(" c.isPublish=1 or (fdPassword is not null and fdPassword <> '') or exists ( ");
+		finder.append(" select p.fdid from ixdf_ntp_course_partici_auth p where p.fdcourseid = c.fdid and p.fduserid = :userId  )) order by c.fdCreateTime desc ");
+		finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
+		finder.setParam("userId", userId);
+		Pagination page = getPageBySql(finder, pageNo, pageSize);
+		return page;
+	}
 }
