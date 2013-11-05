@@ -215,6 +215,30 @@ public class CourseCatalog extends IdEntity {
         this.fdMaterialType = fdMaterialType;
     }
 
+
+    /**
+     * *******************************************************************************************************************
+     * /* NOT DB PROPERTY
+     * /*
+     * /********************************************************************************************************************
+     */
+
+    public boolean through;
+
+    /**
+     * 是否通过
+     *
+     * @return
+     */
+    @Transient
+    public boolean getThrough() {
+        return through;
+    }
+
+    public void setThrough(boolean through) {
+        this.through = through;
+    }
+
     @JsonIgnore
     @Transient
     public String getMaterialType() {

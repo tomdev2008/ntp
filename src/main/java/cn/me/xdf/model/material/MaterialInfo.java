@@ -363,7 +363,28 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 	public void setFdLauds(Integer fdLauds) {
 		this.fdLauds = fdLauds;
 	}
-	
-	
+
+    /**
+     * *******************************************************************************************************************
+     * /* NOT DB PROPERTY
+     * /*
+     * /********************************************************************************************************************
+     */
+
+    public boolean through;
+
+    /**
+     * 是否通过
+     *
+     * @return
+     */
+    @Transient
+    public boolean getThrough() {
+        return through;
+    }
+
+    public void setThrough(boolean through) {
+        this.through = through;
+    }
 	
 }

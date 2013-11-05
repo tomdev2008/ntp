@@ -29,7 +29,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class BamCourseService extends SimpleService {
 
-
     /**
      * *******************************************************************************************
      * writer
