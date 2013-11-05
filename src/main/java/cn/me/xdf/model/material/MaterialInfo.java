@@ -92,7 +92,7 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 	private String fdAuthor;
 	
 	/**
-	 * 作者描述
+	 * 作者描述                          R
 	 */
 	private String fdAuthorDescription;
 	

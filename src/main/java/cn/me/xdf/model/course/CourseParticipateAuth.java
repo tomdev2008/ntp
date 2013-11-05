@@ -17,7 +17,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_COURSE_PARTICI_AUTH", uniqueConstraints = {@UniqueConstraint(columnNames = {
-        "course", "fdUser"})})
+        "fdCourseId", "fdUserId"})})
 public class CourseParticipateAuth extends IdEntity {
 
     /**
