@@ -2,6 +2,8 @@ package cn.me.xdf.model.course;
 
 
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.IdEntity;
+import cn.me.xdf.model.organization.SysOrgPerson;
 
 /**
  * 
@@ -50,7 +53,15 @@ public class SeriesInfo extends IdEntity{
 	 * 是否有效
 	 */
 	private Boolean isAvailable;
+	/**
+	 * 创建时间
+	 */
+	private Date fdCreateTime;
 	
+	/**
+	 * 创建者
+	 */
+	private SysOrgPerson creator;
 	/**
 	 * 对应封面存储的附件
 	 */
@@ -98,6 +109,24 @@ public class SeriesInfo extends IdEntity{
 
 	public void setIsAvailable(Boolean isAvailable) {
 		this.isAvailable = isAvailable;
+	}
+
+	public Date getFdCreateTime() {
+		return fdCreateTime;
+	}
+
+	public void setFdCreateTime(Date fdCreateTime) {
+		this.fdCreateTime = fdCreateTime;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fdCreatorId")
+	public SysOrgPerson getCreator() {
+		return creator;
+	}
+
+	public void setCreator(SysOrgPerson creator) {
+		this.creator = creator;
 	}
 	
 }

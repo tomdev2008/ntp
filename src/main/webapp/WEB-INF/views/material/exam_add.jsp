@@ -35,7 +35,7 @@
 <!-- 试题详情编辑 模板 -->
 <script id="examDetailTemplate" type="text/x-dot-template">
     <div class="page-header">
-        <a href="./素材库-试卷详情页.html" class="backParent">返回当前试卷</a>
+        <a href="${ctx}/material/addExam?materIalId=${materIalId}" class="backParent">返回当前试卷</a>
         <h4>{{=it.examPaperName}}</h4>
         <div class="btn-group">
             <button class="btn btn-large btn-primary" id="saveExam" type="button">保存</button>
@@ -69,8 +69,8 @@
                         <input name="examScore" id="examScore" value="{{=it.examScore || ''}}" type="hidden"/>
                             <div class="timeLine scoreLine">
                                 <div class="num">0</div>
-                                {{ for(var i=1; i<=it.examScoreTotal; i++){ }}
-                                <a title="{{=i}}分" href="#" style="width: {{=(670-it.examScoreTotal-1)/it.examScoreTotal + 'px'}}"
+                                {{ for(var i=1; i<=20; i++){ }}
+                                <a title="{{=i}}分" href="#" style="width: {{=(670-20-1)/20 + 'px'}}"
                                    class="{{?i==1}}first {{?}}{{?it.examScore && i<=it.examScore}}active{{?}}"><span class="num">{{=i}}</span></a>
                                 {{ } }}
                             </div>
@@ -192,36 +192,6 @@
 </head>
 
 <body>
-<%-- <header class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-    	<div class="container">
-			<a href="#" class="logo"></a>
-	        <ul class="nav">
-	          <li><a href="#">系统管理</a></li>
-	          <li><a href="#">我是导师</a></li>
-	          <li><a href="#">我是主管</a></li>
-	        </ul>
-			
-            <ul class="nav pull-right">
-              <li class="dropdown">
-              	<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                	<span class="top-face"><img src="${ctx}/resources/images/temp-face.jpg" alt=""><i class="icon-disc"></i></span>
-                    <span class="name">杨义锋</span>
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                	<li><a href="#"><i class="icon-home"></i>备课首页</a></li>
-                    <li><a href="#"><i class="icon-envelope"></i>我的私信<span class="icon-disc-bg">2</span></a></li>
-                    <li><a href="profile.html"><i class="icon-user"></i>个人资料</a></li>
-                    <li><a href="changePwd.html"><i class="icon-pencil"></i>修改密码</a></li>
-                    <li><a href="#"><i class="icon-off"></i>退出平台</a></li>
-                </ul>
-              </li>
-              <li><a href="#" class="btn-off"></a></li>
-            </ul>
-		</div>
-    </div>
-</header> --%>
 <input type='hidden' id='materIalId' value='${materIalId}' />
 <section class="container">
 	<section class="clearfix mt20">
@@ -230,8 +200,8 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="素材库-测试列表.html" class="backParent">返回测试列表</a>
-                <h4>雅思口语强化课程教案解读试卷</h4>
+                <a href="${ctx}/material/findList?fdType=08" class="backParent">返回测试列表</a>
+                <h4 id="examMainName"></h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" id="saveExamPaper" type="button">保存</button>
                     <button class="btn btn-white btn-large " id="delExamPaper" type="button">删除</button>
@@ -258,7 +228,7 @@
                             <label class="control-label" >建议时间 <small>(单位分钟)</small></label>
                             <div class="controls">
                                 <input name="examPaperTime" id="examPaperTime" value="30" type="hidden"/>
-                                    <div class="timeLine">
+                                    <div id="mainTimeLine" class="timeLine">
                                         <div class="num">0</div>
                                         <a title="15分钟" href="#" class="first"><span class="num">15</span></a>
                                         <a title="30分钟" href="#" ><span class="num">30</span></a>
@@ -276,8 +246,9 @@
                     <section class="section mt20">
                         <div class="hd">
                             <label for="passScore" class="miniInput-label">
-                                试题列表（共计10题，满分50分，及格 <input class="input-mini" id="passScore" name="passScore" value="40" type="text"/>      分）
+                                试题列表（共计<span id="questionCount"></span>题，满分<span id="questionScore"></span>分，及格 <input class="input-mini" required number="true" id="passScore" name="passScore" value="40" type="text"/>      分）
                             </label>
+                            <label for="passScore" class="error"></label>
                             <button class="btn btn-primary btn-large" id="addExam" type="button">添加试题</button>
                         </div>
                         <div class="bd">
@@ -318,8 +289,8 @@
                     <section class="section">
                         <label>权限设置<input type="hidden" id="permission" name="permission" value="open"></label>
                         <ul class="nav nav-pills">
-                            <li class="active"><a data-toggle="tab" href="#open">公开</a></li>
-                            <li><a data-toggle="tab" href="#encrypt">加密</a></li>
+                            <li class="active"><a id="open1" data-toggle="tab" href="#open">公开</a></li>
+                            <li ><a id="close1" data-toggle="tab" href="#encrypt">加密</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="open">
@@ -336,19 +307,7 @@
                                     </tr>
                                     </thead>
                                     <tbody id="list_user">
-                                    <tr data-fdid="fdid325" draggable="true">
-                                        <td class="tdTit">
-                                            <div class="pr">
-                                                <div class="state-dragable"><span class="icon-bar"></span><span
-                                                        class="icon-bar"></span><span class="icon-bar"></span><span
-                                                        class="icon-bar"></span><span class="icon-bar"></span></div>
-                                                <img src="images/temp-face36.jpg" alt="">魏紫（weizi5@xdf.cn），广州学校 国外考试部
-                                            </div>
-                                        </td>
-                                        <td><input type="checkbox" checked="" class="tissuePreparation"></td>
-                                        <td><input type="checkbox" class="editingCourse"></td>
-                                        <td><a href="#" class="icon-remove-blue"></a></td>
-                                    </tr>
+                                   
                                     </tbody>
                                 </table>
                                 <div class="pr">
@@ -454,27 +413,48 @@ $(function(){
                 $(this).nextAll("a").removeClass("active");
                 $("#examPaperTime").val( $(this).children(".num").text());
             });
-
-    //初始化试题列表
-   initExamQuestions();
-    
-    
-    //授权管理 用户列表 模板函数
-    var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
-
-    //初始化权限列表
-    $.ajax({
-		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materIalId}",
-		  async:false,
-		  dataType : 'json',
-		  success: function(result){
-			  var html = "";
-			  for(var i in result.user){
-				  html += listUserKinguserFn(result.user[i]);
+	//初始化页面
+	if("${materIalId}"!=null&&"${materIalId}"!=""){
+		 $.ajax({
+			  url: "${ctx}/ajax/material/getMaterial?materialId=${materIalId}",
+			  async:false,
+			  dataType : 'json',
+			  success: function(result){
+				  $("#examPaperIntro").val(result.description);
+				  $("#passScore").val(result.score);
+				  $("#author").val(result.fdAuthor);
+				  $("#authorIntro").val(result.fdAuthorDescription);
+				  
+				  if(result.isPublish==true){
+					  $("#open1").trigger("click");
+					  $("#permission").val("open");
+				  }else{
+					  $("#close1").trigger("click");
+					  $("#permission").val("encrypt");
+				  }
+				  var n = result.time/15;
+				  $("#mainTimeLine a :lt("+n+")").attr("class","active");
 			  }
-			  $("#list_user").html(html); 
-		  }
-	});
+		});
+	    //初始化试题列表
+	   initExamQuestions();
+	   //初始化权限列表
+	    var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
+	    $.ajax({
+			  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materIalId}",
+			  async:false,
+			  dataType : 'json',
+			  success: function(result){
+				  var html = "";
+				  for(var i in result.user){
+					  html += listUserKinguserFn(result.user[i]);
+				  }
+				  $("#list_user").html(html); 
+				  
+			  }
+		});
+	}
+	
     //试题详情编辑页面 模板函数
     var examDetailFn = doT.template(document.getElementById("examDetailTemplate").text
             + document.getElementById("itemExamDetailTemplate").text,undefined,{
@@ -521,8 +501,6 @@ $(function(){
             data.listExam = JSON.stringify(data.listExam);
         }
         if(data.permission === "encrypt"){
-            //push人员授权数据
-           
             $("#list_user>tr").each(function(i){
                 data.kingUser.push({
                     id: $(this).attr("data-fdid"),
@@ -539,9 +517,6 @@ $(function(){
         if(data.permission === "encrypt"&&data.kingUser.length==0){
         	$.fn.jalert2("请输入试题");
         }
-        
-        alert(JSON.stringify(data));
-        
         $.ajax({
 			  url:"${ctx}/ajax/examquestion/UpdateExamQuestionAndMaterial",
 			  async:false,
@@ -871,11 +846,19 @@ function initExamQuestions(){
 			  dataType : 'json',
 			  success: function(result){
 				  var html = "";
+				  var totalScore = 0;
+				  var count = 0;
 				  for(var i in result.qusetions){
 					  html += examQuestionTemplate(result.qusetions[i]);
+					  totalScore = totalScore+result.qusetions[i].score;
+					  count++;
 				  }
 				  $("#list_exam").html(html); 
 				  $("#examPaperName").val(result.name);
+				  $("#examMainName").html(result.name);
+				  $("#questionCount").html(count);
+				  $("#questionScore").html(totalScore);
+				  
 			  }
 		});
 	}

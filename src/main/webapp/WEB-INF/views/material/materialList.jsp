@@ -2,11 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
+<%@page import="cn.me.xdf.utils.ShiroUtils"%>
+<%@page import="cn.me.xdf.service.ShiroDbRealm.ShiroUser"%>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
 <%
  String fdType = request.getParameter("fdType");
  String order = request.getParameter("order");
+ boolean isAdmin = ShiroUtils.isAdmin();
+ request.setAttribute("isAdmin", isAdmin);
 %>
  <html class=""> 
 <head>
@@ -51,6 +55,7 @@
 </section>
 <input type="hidden" id="showkey" name="showkey">
 <input type="hidden" id="allFlag" >
+<input type="hidden" id="isAdmin" value="${isAdmin}">
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 function showSearch(){
@@ -123,7 +128,6 @@ function pageNavClick(fdType,pageNo,order){
 			}
 			else{
 				$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
-				
 			}
 			$("#serach").attr("value",$("#showkey").val());
 			if($("#allFlag").val()=='true'){
@@ -147,9 +151,19 @@ function batchDelete() {
 	}
 	//是否全部选中
 	if($("#allFlag").val()=='true'){
-		$.fn.jalert("是否删除所有素材？",deleteAllMaterial);
+		if($("#isAdmin").val()=='true'){
+			$.fn.jalert("是否删除所有素材？",deleteAllMaterial);
+		}else{
+			prepareDelete(delekey);
+			$.fn.jalert("是否删除所有素材？",deleteAllMaterial);
+		}
 	}else{
-		prepareDelete(delekey);
+		if($("#isAdmin").val()=='true'){
+			deleteMater();
+		}else{
+			prepareDelete(delekey);
+			setTimeout(deleteMater(),1000);
+		}
 	}
 }
 function deleteMater(){
@@ -161,7 +175,14 @@ function deleteMater(){
 		$.fn.jalert2("当前没有选择要删除的数据!");
 		return;
 	}
-	$.fn.jalert("是否删除所选素材？",$.ajax({
+	$.fn.jalert("是否删除所选素材？",ajaxDelete);
+}
+function ajaxDelete(){
+	var delekeyAuth="";
+	$('input[name="ids"]:checked').each(function() {
+		delekeyAuth+=$(this).val()+",";
+	});
+	$.ajax({
 		type: "post",
 		async: false,
 		url: "${ctx}/ajax/material/batchDelete",
@@ -171,11 +192,7 @@ function deleteMater(){
 		success:function(data){
 			window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
 		}
-    })  
-  );
-}
-function test(){
-	
+    });
 }
 function prepareDelete(delekey){
 	$.ajax({
@@ -206,9 +223,7 @@ function prepareDelete(delekey){
 						
 				});
 			  } 
-				
 			}
-			setTimeout(deleteMater(),1000);
 		}
     });
 }
@@ -228,7 +243,6 @@ function deleteAllMaterial(){
 		}
 	}); 
 }
-
 </script>
 </body>
 </html>

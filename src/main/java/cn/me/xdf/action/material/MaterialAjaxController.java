@@ -146,8 +146,12 @@ public class MaterialAjaxController {
 					for (Object obj : list) {
 						Map map = (Map) obj;
 						String materialId = (String) map.get("FDID");
-						if(StringUtil.isNotBlank(findEditAuth(materialId))){
+						if(ShiroUtils.isAdmin()){
 							deleteMaterialData(materialId);
+						} else{
+							if(StringUtil.isNotBlank(findEditAuth(materialId))){
+								deleteMaterialData(materialId);
+							}
 						}
 					}
 				}
@@ -348,6 +352,28 @@ public class MaterialAjaxController {
 		return JsonUtils.writeObjectToJson(map);
 	}
 
+	/**
+	 * 得到测试信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getMaterial")
+	@ResponseBody
+	public String getMaterial(HttpServletRequest request){
+		// 获取课程ID
+		String materialId = request.getParameter("materialId");
+		MaterialInfo info = materialService.findUniqueByProperty("fdId", materialId);
+		Map map = new HashMap();
+		map.put("description", info.getFdDescription());
+		map.put("time", info.getFdStudyTime());
+		map.put("score", info.getFdScore());
+		map.put("fdAuthor", info.getFdAuthor());
+		map.put("fdAuthorDescription", info.getFdAuthorDescription());
+		map.put("isPublish", info.getIsPublish());
+		return JsonUtils.writeObjectToJson(map);
+	}
+	
 	/**
 	 * 得到指定素材的试题信息（只针对测试）
 	 * 

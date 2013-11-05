@@ -1,8 +1,14 @@
 package cn.me.xdf.service.course;
 
+import jodd.util.StringUtil;
+
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.BaseService;
 @Service
@@ -13,6 +19,39 @@ public class SeriesInfoService extends BaseService {
 	public  Class<SeriesInfo> getEntityClass() {
 		return SeriesInfo.class;
 	}
-
+	/*
+	 * 查询系列课程
+	 * 
+	 * 
+	 * author hanhl
+	 * */
+	public  Pagination findSeriesInfosOrByName(String fdName,String pageNo ,String orderbyStr){
+		Finder finder = Finder.create("select *  from ixdf_ntp_series seriesInfo ");
+		finder.append(" where seriesInfo.isavailable=1 " );
+		//设置页码
+		int pageNoI=0;
+		if(StringUtil.isNotBlank(pageNo)&&StringUtil.isNotEmpty(pageNo)){
+			pageNoI = NumberUtils.createInteger(pageNo);
+		} else {
+			pageNoI = 1;
+		}
+		//根据关键字搜索
+		if(!("").equals(fdName)&&fdName!=null){
+			finder.append("and  seriesInfo.fdname like :ft ");
+			finder.setParam("ft", "%"+fdName+"%");
+		}
+		//排序
+		if(StringUtil.isNotBlank(orderbyStr)&&StringUtil.isNotEmpty(orderbyStr)){
+	        if(orderbyStr.equalsIgnoreCase("fdname")){
+	        	finder.append(" order by seriesInfo.fdname desc ");
+	        }else if(orderbyStr.equalsIgnoreCase("fdcreatetime")){
+	        	finder.append(" order by seriesInfo.fdcreatetime desc");
+	        }
+		}else{
+			finder.append(" order by seriesInfo.fdcreatetime desc");
+		}
+		Pagination pagination=getPageBySql(finder, pageNoI, SimplePage.DEF_COUNT);
+		return pagination;
+	}
 
 }
