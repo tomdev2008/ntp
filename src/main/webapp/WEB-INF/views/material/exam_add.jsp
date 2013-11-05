@@ -349,33 +349,6 @@
                                         <td><input type="checkbox" class="editingCourse"></td>
                                         <td><a href="#" class="icon-remove-blue"></a></td>
                                     </tr>
-                                    <tr data-fdid="fdid324" draggable="true">
-                                        <td class="tdTit">
-                                            <div class="pr">
-                                                <div class="state-dragable"><span class="icon-bar"></span><span
-                                                        class="icon-bar"></span><span class="icon-bar"></span><span
-                                                        class="icon-bar"></span><span class="icon-bar"></span></div>
-                                                <img src="images/temp-face36.jpg" alt="">刘鹍（liukun@xdf.cn），集团总公司 知识管理中心
-                                            </div>
-                                        </td>
-                                        <td><input type="checkbox" class="tissuePreparation"></td>
-                                        <td><input type="checkbox" checked="" class="editingCourse"></td>
-                                        <td><a href="#" class="icon-remove-blue"></a></td>
-                                    </tr>
-                                    <tr data-fdid="fdid323" draggable="true">
-                                        <td class="tdTit">
-                                            <div class="pr">
-                                                <div class="state-dragable"><span class="icon-bar"></span><span
-                                                        class="icon-bar"></span><span class="icon-bar"></span><span
-                                                        class="icon-bar"></span><span class="icon-bar"></span></div>
-                                                <img src="http://img.staff.xdf.cn/Photo/06/3A/a911e1178bf3725acd75ddbb9c7e3a06_9494.jpg"
-                                                 alt="">杨义锋（yangyifeng@xdf.cn），集团总公司 知识管理中心
-                                            </div>
-                                        </td>
-                                        <td><input type="checkbox" checked="" class="tissuePreparation"></td>
-                                        <td><input type="checkbox" checked="" class="editingCourse"></td>
-                                        <td><a href="#" class="icon-remove-blue"></a></td>
-                                    </tr>
                                     </tbody>
                                 </table>
                                 <div class="pr">
@@ -489,6 +462,19 @@ $(function(){
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
 
+    //初始化权限列表
+    $.ajax({
+		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materIalId}",
+		  async:false,
+		  dataType : 'json',
+		  success: function(result){
+			  var html = "";
+			  for(var i in result.user){
+				  html += listUserKinguserFn(result.user[i]);
+			  }
+			  $("#list_user").html(html); 
+		  }
+	});
     //试题详情编辑页面 模板函数
     var examDetailFn = doT.template(document.getElementById("examDetailTemplate").text
             + document.getElementById("itemExamDetailTemplate").text,undefined,{
@@ -512,11 +498,14 @@ $(function(){
     /*提交表单函数*/
     function submitForm(form){
         var data = {
+        	id:"${materIalId}",
             examPaperName: $("#examPaperName").val(),
             examPaperIntro: $("#examPaperIntro").val(),
             author: $("#author").val(),
             authorIntro: $("#authorIntro").val(),
             permission:$("#permission").val(),
+            score:$("#passScore").val(),
+            studyTime:$("#examPaperTime").val(),
             listExam: [],
             kingUser: []
         };
@@ -529,9 +518,11 @@ $(function(){
                     editingCourse: $(this).find(".itemScore").val()
                 });
             });
+            data.listExam = JSON.stringify(data.listExam);
         }
         if(data.permission === "encrypt"){
             //push人员授权数据
+           
             $("#list_user>tr").each(function(i){
                 data.kingUser.push({
                     id: $(this).attr("data-fdid"),
@@ -540,15 +531,30 @@ $(function(){
                     editingCourse: $(this).find(".editingCourse").is(":checked")
                 });
             });
+            data.kingUser = JSON.stringify(data.kingUser);
         }
-        //console.log(JSON.stringify(data));
-        //ajax
-        /*$.post("url?updata",data)
-         .success(function(){
-         alert("保存成功");
-         });*/
+        if(data.listExam.length==0){
+        	$.fn.jalert2("请输入试题");
+        }
+        if(data.permission === "encrypt"&&data.kingUser.length==0){
+        	$.fn.jalert2("请输入试题");
+        }
+        
+        alert(JSON.stringify(data));
+        
+        $.ajax({
+			  url:"${ctx}/ajax/examquestion/UpdateExamQuestionAndMaterial",
+			  async:false,
+			  data:data,
+			  dataType:'json',
+			  success: function(rsult){
+				  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType=08";
+			  },
+		});
     }
-    $('#formEditDTotal a[data-toggle="tab"]').on('shown', function (e) {
+    
+    
+    $('#formEditDTotal a[data-toggle="tab"]').on('click', function (e) {
         var href = 	e.target.href.split("#").pop();
         $("#permission").val(href);
     });
@@ -560,46 +566,8 @@ $(function(){
                 $(this).closest("tr").remove();
             });
 
-    var allUserData ;
 
-    allUserData = [
-        {
-            id: "fdid3232323",
-            imgUrl: "http://img.staff.xdf.cn/Photo/06/3A/a911e1178bf3725acd75ddbb9c7e3a06_9494.jpg",
-            name: "杨小锋",
-            mail: "yangyifeng@xdf.cn",
-            org: "集团总公司",
-            department: "知识管理中心"
-        },
-        {
-            id: "fdid32234",
-            imgUrl: "",
-            name: "刘小鹍",
-            mail: "liukun@xdf.cn",
-            org: "集团总公司",
-            department: "知识管理中心"
-        },
-        {
-            id: "fdid328",
-            imgUrl: "",
-            name: "魏小紫",
-            mail: "weizi5@xdf.cn",
-            org: "广州学校",
-            department: "国外考试部"
-        }
-    ]
-    /*$("#addUser").autocomplete("url.jsp",{
-     dataType: "json",
-     parse: function(data) {
-     return $.map(data, function(row) {
-     return {
-     data: row,
-     value: row.name,
-     result: row.name + " <" + row.mail + ">"
-     }
-     });
-     },*/
-    $("#addUser").autocomplete(allUserData,{
+    $("#addUser").autocomplete("${ctx}/ajax/user/findByName",{
         formatMatch: function(item) {
             return item.name + item.mail + item.org + item.department;
         },
@@ -609,21 +577,46 @@ $(function(){
                     + item.name + '（' + item.mail + '），'
                     + item.org + '  ' + item.department;
         },
-        matchContains:true ,
-        max: 10,
-        scroll: false,
-        width:748
+        parse : function(data) {
+        	var rows = [];
+			for ( var i = 0; i < data.length; i++) {
+				rows[rows.length] = {
+					data : data[i],
+					value : data[i].name,
+					result : data[i].name
+				//显示在输入文本框里的内容 ,
+				};
+			}
+			return rows;
+		},
+		dataType : 'json',
+		matchContains:true ,
+		max: 10,
+		scroll: false,
+		width:688
     }).result(function(e,item){
-                $(this).val(item.name);
-                $("#list_user").append(listUserKinguserFn(item))
-                        .sortable({
-                            handle: '.state-dragable',
-                            forcePlaceholderSize: true
-                        })
-                        .find("a.icon-remove-blue").bind("click",function(e){
-                            e.preventDefault();
-                            $(this).closest("tr").remove();
-                        });
+		var flag = true;
+		$("#addUser").next(".help-block").remove();
+		$("#list_user>tr").each(function(){
+			if($(this).attr("data-fdid")==item.id){
+				$("#addUser").after('<span class="help-block">不能添加重复的用户！</span>');;
+				$("#addUser").val("");
+				flag = false;
+			}
+		});
+		if(flag){
+			$(this).val(item.name);
+			$("#list_user").append(listUserKinguserFn(item))
+			.sortable({
+				handle: '.state-dragable',
+				forcePlaceholderSize: true
+			})
+			.find("a.icon-remove-blue").bind("click",function(e){
+				e.preventDefault();
+				$(this).closest("tr").remove();
+			});
+			$("#addUser").val("");
+		}
 
             });
 
@@ -655,13 +648,6 @@ $(function(){
                 examType: "multiple"
             };
         } else {
-            
-        	//materIalId
-        	// ajax 获取已存在的试题数据
-			 /* $.get("${ctx}/ajax/examquestion/getExamsByMaterialId",{id: fdid},"json").success(function(result){
-             	 alert(JSON.stringify(result));
-				 data = JSON.stringify(result);
-             }); */
         	
 			 $.ajax({
 				  url:"${ctx}/ajax/examquestion/getExamsByMaterialId",
@@ -669,59 +655,10 @@ $(function(){
 				  data:{id: fdid},
 				  dataType:'json',
 				  success: function(rsult){
-						 alert(JSON.stringify(rsult));
 						 data = rsult;
 				  },
 			});
 
-           /*  data = {// ajax 后删除
-                examType: "completion",//multiple, single, completion
-                examScoreTotal: 20,
-                examScore: 10,
-                examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，" +
-                        "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。" +
-                        "高新技术产业各领域的增加值如下图所示：  （5 分）  PASS ",
-                listAttachment: [
-                    {
-                        id:"fdid4205325wef",
-                        index: 0,
-                        name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                        url: "#"
-                    },
-                    {
-                        id:"fdid97867",
-                        index: 3,
-                        name: "高新技术产业各领域咨询报告.pdf",
-                        url: "#"
-                    },
-                    {
-                        id:"fdid11111443432",
-                        index: 2,
-                        name: "高新技术产业各领域专家分析讲座.mp4",
-                        url: "#"
-                    },
-                    {
-                        id:"fdid9849284",
-                        index: 1,
-                        name: "高新技术产业各领域咨询报告2.pdf",
-                        url: "#"
-                    }
-                ],
-                listExamAnswer:[
-                    {
-                        id: "fdid12332323",
-                        index: "0",
-                        name: "第一课最开始的时候",
-                        isAnswer: false
-                    },
-                    {
-                        id: "fdid546565",
-                        index: "1",
-                        name: "第二课最开始的时候",
-                        isAnswer: true
-                    }
-                ]
-            }; */
         } 
         data.examPaperName = $("#examPaperName").val();  //当前试卷名称
         $("#rightCont").html(examDetailFn(data));
@@ -873,9 +810,7 @@ $(function(){
 				  type: "POST",
 				  dataType:'json',
 				  success: function(rsult){
-					 //alert("保存修改成功");
-					 $("#rightCont").html(itemExamDetailFn(data));
-					 initExamQuestions();
+					 window.location.href="${ctx}/material/addExam?materIalId="+rsult.materIalId;
 				  },
 			});
         }

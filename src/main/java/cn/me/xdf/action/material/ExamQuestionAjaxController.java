@@ -22,6 +22,7 @@ import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.material.ExamOpinion;
 import cn.me.xdf.model.material.ExamQuestion;
+import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
@@ -200,5 +201,67 @@ public class ExamQuestionAjaxController {
 		map.put("listAttachment",  attList);
 		return JsonUtils.writeObjectToJson(map);
 	}
-
+	
+	@RequestMapping(value = "UpdateExamQuestionAndMaterial")
+	@ResponseBody
+	public void UpdateExamQuestionAndMaterial(HttpServletRequest request){
+		//获取数据
+		String id = request.getParameter("id");
+		String examPaperName = request.getParameter("examPaperName");
+		String examPaperIntro = request.getParameter("examPaperIntro");
+		String author = request.getParameter("author");
+		String authorIntro = request.getParameter("authorIntro");
+		String permission = request.getParameter("permission");
+		String listExam = request.getParameter("listExam");
+		String kingUser = request.getParameter("kingUser");
+		String score = request.getParameter("score");
+		String studyTime = request.getParameter("studyTime");
+		List<Map> exams;
+		MaterialInfo info = materialService.get(id);
+		if(StringUtil.isBlank(kingUser)){
+			exams = new ArrayList<Map>();
+		}else{
+			exams = JsonUtils.readObjectByJson(listExam, List.class);
+		}
+		List<Map> users;
+		if(StringUtil.isBlank(kingUser)){
+			users = new ArrayList<Map>();
+		}else{
+			users = JsonUtils.readObjectByJson(kingUser, List.class);
+		}
+		//更新试题分数
+		List<ExamQuestion> examQuestions = new ArrayList<ExamQuestion>();
+		for (Map map : exams) {
+			ExamQuestion q =examQuestionService.get(map.get("id").toString());
+			q.setFdStandardScore(new Double(map.get("editingCourse").toString()));
+			examQuestionService.update(q);
+			examQuestions.add(q);
+		}
+		List<MaterialAuth> materialAuths = new ArrayList<MaterialAuth>();
+		if(!permission.equals("open")){
+			for (Map map : users) {
+				MaterialAuth materialAuth = new MaterialAuth();
+				materialAuth.setFdUser((SysOrgPerson)accountService.load(map.get("id").toString()));
+				materialAuth.setIsEditer(map.get("tissuePreparation").toString().equals("true")?true:false);
+				materialAuth.setIsReader(map.get("editingCourse").toString().equals("true")?true:false);
+				materialAuth.setMaterial(info);
+				materialAuths.add(materialAuth);
+			}
+		}
+		//跟新权限
+		materialService.updateMaterialAuth(id, materialAuths);
+		//更改测试信息
+		info.setFdName(examPaperName);
+		info.setFdDescription(examPaperIntro);
+		info.setFdCreateTime(new Date());
+		info.setFdAuthor(author);
+		info.setFdAuthorDescription(authorIntro);
+		info.setFdScore(new Double(score));
+		info.setIsDownload(true);
+		info.setIsAvailable(true);
+		info.setIsPublish(permission.equals("open")?true:false);
+		info.setFdStudyTime(new Integer(studyTime));
+		info.setQuestions(examQuestions);
+		materialService.update(info);
+	}
 }

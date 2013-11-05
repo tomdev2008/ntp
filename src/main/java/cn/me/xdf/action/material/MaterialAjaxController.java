@@ -25,6 +25,7 @@ import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
+import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
@@ -89,6 +90,43 @@ public class MaterialAjaxController {
 			}
 		}
 	}
+	@RequestMapping(value = "prepareDelete")
+	@ResponseBody
+	public List<String> prepareDelete(HttpServletRequest request){
+		String fdIds = request.getParameter("materialIds");
+		List<String> list=new ArrayList<String>();
+		if (StringUtil.isNotEmpty(fdIds)) {
+			String[] materialId = fdIds.split(",");
+			String fdId = "";
+			String auth = "";
+			for (int i = 0; i < materialId.length; i++) {
+				fdId = materialId[i];
+				auth = findEditAuth(fdId);
+				if(StringUtil.isBlank(auth)){
+					continue;
+				}else{
+					list.add(auth);
+				}
+			}
+		}
+		return list;
+	}
+	
+	private String findEditAuth(String materialId){
+		MaterialInfo materialInfo = materialService.load(materialId);
+		if(materialInfo.getCreator().getFdId().equals(ShiroUtils.getUser().getId())){
+			return materialInfo.getFdId();
+		}
+		if(materialInfo.getIsPublish()==false){
+		    MaterialAuth auth = materialAuthService
+				  .findByMaterialIdAndUserId(materialId,ShiroUtils.getUser().getId());
+		    if(auth.getIsEditer()==true){
+		    	return materialInfo.getFdId();
+		    }
+		}
+		return null;
+		   
+	}
 
 	@RequestMapping(value = "deleteAllMaterial")
 	@ResponseBody
@@ -108,7 +146,9 @@ public class MaterialAjaxController {
 					for (Object obj : list) {
 						Map map = (Map) obj;
 						String materialId = (String) map.get("FDID");
-						deleteMaterialData(materialId);
+						if(StringUtil.isNotBlank(findEditAuth(materialId))){
+							deleteMaterialData(materialId);
+						}
 					}
 				}
 			}
@@ -126,7 +166,7 @@ public class MaterialAjaxController {
 					catalog.setFdTotalContent(catalog.getFdTotalContent() - 1);
 					courseCatalogService.save(catalog);
 				}
-				courseContentService.delete(courseContent);
+				courseContentService.delete(courseContent.getFdId());
 			}
 		}
 		MaterialInfo material = materialService.load(materialId);
