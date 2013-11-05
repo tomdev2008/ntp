@@ -146,8 +146,12 @@ public class MaterialAjaxController {
 					for (Object obj : list) {
 						Map map = (Map) obj;
 						String materialId = (String) map.get("FDID");
-						if(StringUtil.isNotBlank(findEditAuth(materialId))){
+						if(ShiroUtils.isAdmin()){
 							deleteMaterialData(materialId);
+						} else{
+							if(StringUtil.isNotBlank(findEditAuth(materialId))){
+								deleteMaterialData(materialId);
+							}
 						}
 					}
 				}
