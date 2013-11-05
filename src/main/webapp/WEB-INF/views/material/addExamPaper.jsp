@@ -2,17 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
 <html class=""> 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>新东方在线教师备课平台</title>
 <link href="${ctx}/resources/css/DTotal.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
-<!--[if lt IE 9]>
-<script src="js/html5.js"></script>
-<![endif]-->
 
 <!-- 授权管理 用户列表 模板 -->
 <script id="listUserKinguserTemplate" type="text/x-dot-template">
@@ -32,7 +29,7 @@
 <!-- 作业详情编辑 模板 -->
 <script id="examDetailTemplate" type="text/x-dot-template">
     <div class="page-header">
-        <a href="./素材库-作业包详情页.html" class="backParent">返回当前作业包</a>
+        <a href="${ctx}/material/addExamPaper?fdType=10" class="backParent">返回当前作业包</a>
         <h4>{{=it.examPaperName}}</h4>
         <div class="btn-group">
             <button class="btn btn-large btn-primary" id="saveExam" type="button">保存</button>
@@ -139,7 +136,20 @@
             </li>
         #}}
     </script>
-
+    <script id="taskPaperListTemplate" type="text/x-dot-template">
+	    <tr data-fdid="{{=it.id}}" >
+		    <td class="tdTit">
+		        <div class="pr">
+		            <div class="state-dragable"><span class="icon-bar"></span><span
+		                    class="icon-bar"></span><span class="icon-bar"></span><span
+		                    class="icon-bar"></span><span class="icon-bar"></span></div>
+		            <a href="#">{{=it.subject}}</a>
+		        </div>
+		    </td>
+		    <td><input type="text" onblur="initScore()" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为分值" class="itemScore input-mini">分</td>
+		    <td><a href="#" class="icon-remove-blue"></a></td>
+		</tr>
+    </script>
 
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
@@ -167,22 +177,23 @@
                         <div class="control-group">
                             <label class="control-label" for="examPaperName">作业包</label>
                             <div class="controls">
-                                <input value="雅思口语强化课程教案解读作业包" id="examPaperName" required class="span6"
-                                       name="examPaperName" type="text"><span class="date">2013/02/14 10:01 AM</span>
+                                <input value="${materialInfo.fdName}" id="examPaperName" required class="span6"
+                                       name="examPaperName" type="text">
+                                <span class="date"><fmt:formatDate value="${materialInfo.fdCreateTime}" pattern="yyyy/MM/dd hh:mm aa"/></span>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label" for="examPaperIntro">作业包<div>简介</div></label>
-                            <div class="controls"><textarea placeholder="非必填项" rows="4"
-                                                            class="input-block-level" id="examPaperIntro"
-                                                            name="examPaperIntro"></textarea>
+                            <div class="controls">
+                            <textarea placeholder="非必填项" rows="4"
+                                      class="input-block-level" id="examPaperIntro"
+                                      name="examPaperIntro">${materialInfo.fdDescription}</textarea>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label" >建议时间 <small>(单位天)</small></label>
-                            <div class="controls">
+                            <div class="controls">${materialInfo.fdStudyTime}
                                 <input name="examPaperTime" id="examPaperTime" value="30" type="hidden"/>
-
                             </div>
                         </div>
 
@@ -205,7 +216,7 @@
                                 </thead>
                                 <tbody id="list_exam">
                                
-                                <tr data-fdid="fdid324" >
+                                <!-- <tr data-fdid="fdid324" >
                                     <td class="tdTit">
                                         <div class="pr">
                                             <div class="state-dragable"><span class="icon-bar"></span><span
@@ -216,7 +227,7 @@
                                     </td>
                                     <td><input type="text" value="5" data-toggle="tooltip" title="输入数字做为分值" class="itemScore input-mini">分</td>
                                     <td><a href="#" class="icon-remove-blue"></a></td>
-                                </tr>
+                                </tr> -->
                                 
                                 </tbody>
                             </table>
@@ -226,15 +237,16 @@
                         <div class="control-group">
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
-                                <input value="集团国外考试推广管理中心" id="author" required class="input-block-level"
+                                <input value="${materialInfo.fdAuthor}" id="author" required class="input-block-level"
                                        name="author" type="text">
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label" for="authorIntro">作者简介</label>
-                            <div class="controls"><textarea placeholder="非必填项" rows="4"
-                                                            class="input-block-level" id="authorIntro"
-                                                            name="authorIntro"></textarea>
+                            <div class="controls">
+                            <textarea placeholder="非必填项" rows="4"
+                                      class="input-block-level" id="authorIntro"
+                                      name="authorIntro">${materialInfo.fdDescription}</textarea>
                             </div>
                         </div>
                     </section>
@@ -314,7 +326,7 @@
             </div>
 	    </section>
 	</section>
-
+<input type="hidden" id="materialId" value="${materialInfo.fdId}"/>
 </section>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
@@ -338,6 +350,9 @@ $(function(){
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //时间轴 模板函数
     var timeLineFn = doT.template(document.getElementById("timeLineTemplate").text);
+    
+   //初始化作业列表
+    initExamPaperList();
 
     $("#examPaperTime").after(timeLineFn({//时间轴控件 配置数据
         width: 670, //时间轴控件 宽度
@@ -504,7 +519,6 @@ $(function(){
         loadExamPage(id);
         //
     });
-
     /*加载作业页面*/
     function loadExamPage(fdid){
         var data = {};
@@ -537,18 +551,6 @@ $(function(){
                         id:"fdid97867",
                         index: 3,
                         name: "高新技术产业各领域咨询报告.pdf",
-                        url: "#"
-                    },
-                    {
-                        id:"fdid11111443432",
-                        index: 2,
-                        name: "高新技术产业各领域专家分析讲座.mp4",
-                        url: "#"
-                    },
-                    {
-                        id:"fdid9849284",
-                        index: 1,
-                        name: "高新技术产业各领域咨询报告2.pdf",
                         url: "#"
                     }
                 ]
@@ -598,6 +600,7 @@ $(function(){
         /*提交作业详情表单函数*/
         function submitForm(form){
             var data = {
+            	materialId:$("#materialId").val(),
                 examType: $("#examType").val(),
                 examName: $("#examName").val(),
                 examStem: $("#examStem").val(),
@@ -614,16 +617,43 @@ $(function(){
                     });
                 });
             }
-
             //console.log(data);
             //ajax
-            /*$.post("url?updata",data)
-             .success(function(){
-             alert("保存成功");
-             });*/
+            $.ajax({
+				  url: "${ctx}/ajax/taskPaper/saveOrUpdateTaskPaper?taskId="+fdid+"&materialId="+$("#materialId").val(),
+				  async:false,
+				  data:data,
+				  type: "POST",
+				  dataType:'json',
+				  success: function(result){
+					  window.location.href="${ctx}/material/addExamPaper?materialId="+result.materialId;
+				  },
+			});
         }
     }
 });
+    
+function initExamPaperList(){
+	var id = $("#materialId").val();
+	if(id!==null&&id!=""){
+		var itemExamDetailFn = doT.template(document.getElementById("taskPaperListTemplate").text);
+	    $.ajax({
+			  url: "${ctx}/ajax/taskPaper/getTaskByMaterialId?materialId="+id,
+			  async:false,
+			  dataType : 'json',
+			  success: function(result){
+				  var data = JSON.stringify(result);
+				  alert(data);
+				  var html = "";
+				 for(var i in result){
+					  html += itemExamDetailFn(result[i]);
+				  }
+				  $("#list_exam").html(html); 
+				  //initScore();
+			  }
+		});
+	}
+}
 </script>
 </body>
 </html>

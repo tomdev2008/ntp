@@ -61,7 +61,12 @@ public class MaterialController {
 	 * @return
 	 */
 	@RequestMapping(value="addExamPaper")
-	public String addWorkPacket(){
+	public String addWorkPacket(Model model ,HttpServletRequest request){
+		String materialId  = request.getParameter("materialId");
+		if(StringUtil.isNotBlank(materialId)){
+			MaterialInfo materialInfo = materialService.get(materialId);
+			model.addAttribute("materialInfo", materialInfo);
+		}
 		return "/material/addExamPaper";
 	}
 	/**
@@ -70,11 +75,12 @@ public class MaterialController {
 	@RequestMapping(value="updateVideo")
 	public String updateVideo(Model model ,HttpServletRequest request){
 		String fdId = request.getParameter("fdId");
+		String fdType = request.getParameter("fdType");
 		if(StringUtil.isNotBlank(fdId)&&StringUtil.isNotEmpty(fdId)){
 			MaterialInfo materialInfo = materialService.get(fdId);
 			model.addAttribute("materialInfo", materialInfo);
 			ScoreStatistics score = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId
-					           ("cn.me.xdf.model.material.MaterialInfo",materialInfo.getFdId());
+					           (MaterialInfo.class.getName(),materialInfo.getFdId());
 		    model.addAttribute("score", score);
 		    AttMain main = attMainService.getByModelId(fdId);
 		    if(main!=null){

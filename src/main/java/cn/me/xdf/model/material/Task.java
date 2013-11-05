@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.model.base.IdEntity;
 
 /**
@@ -24,13 +25,16 @@ import cn.me.xdf.model.base.IdEntity;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_TASK")
-public class Task extends IdEntity{
+public class Task extends IdEntity implements IAttMain{
 
 	/**
 	 * 所属作业包
 	 */
 	private MaterialInfo taskPackage;
-	
+	/**
+	 * 作业名称
+	 */
+	private String fdName;
 	/**
 	 * 作业作答方式：01上传作业，02在线作答
 	 */
@@ -67,6 +71,14 @@ public class Task extends IdEntity{
 
 	public void setTaskPackage(MaterialInfo taskPackage) {
 		this.taskPackage = taskPackage;
+	}
+	
+	public String getFdName() {
+		return fdName;
+	}
+	
+	public void setFdName(String fdName) {
+		this.fdName = fdName;
 	}
 
 	public String getFdType() {
