@@ -69,8 +69,8 @@
                         <input name="examScore" id="examScore" value="{{=it.examScore || ''}}" type="hidden"/>
                             <div class="timeLine scoreLine">
                                 <div class="num">0</div>
-                                {{ for(var i=1; i<=it.examScoreTotal; i++){ }}
-                                <a title="{{=i}}分" href="#" style="width: {{=(670-it.examScoreTotal-1)/it.examScoreTotal + 'px'}}"
+                                {{ for(var i=1; i<=20; i++){ }}
+                                <a title="{{=i}}分" href="#" style="width: {{=(670-20-1)/20 + 'px'}}"
                                    class="{{?i==1}}first {{?}}{{?it.examScore && i<=it.examScore}}active{{?}}"><span class="num">{{=i}}</span></a>
                                 {{ } }}
                             </div>
@@ -258,7 +258,7 @@
                             <label class="control-label" >建议时间 <small>(单位分钟)</small></label>
                             <div class="controls">
                                 <input name="examPaperTime" id="examPaperTime" value="30" type="hidden"/>
-                                    <div class="timeLine">
+                                    <div id="mainTimeLine" class="timeLine">
                                         <div class="num">0</div>
                                         <a title="15分钟" href="#" class="first"><span class="num">15</span></a>
                                         <a title="30分钟" href="#" ><span class="num">30</span></a>
@@ -318,8 +318,8 @@
                     <section class="section">
                         <label>权限设置<input type="hidden" id="permission" name="permission" value="open"></label>
                         <ul class="nav nav-pills">
-                            <li class="active"><a data-toggle="tab" href="#open">公开</a></li>
-                            <li><a data-toggle="tab" href="#encrypt">加密</a></li>
+                            <li class="active"><a id="open1" data-toggle="tab" href="#open">公开</a></li>
+                            <li ><a id="close1" data-toggle="tab" href="#encrypt">加密</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="open">
@@ -336,19 +336,7 @@
                                     </tr>
                                     </thead>
                                     <tbody id="list_user">
-                                    <tr data-fdid="fdid325" draggable="true">
-                                        <td class="tdTit">
-                                            <div class="pr">
-                                                <div class="state-dragable"><span class="icon-bar"></span><span
-                                                        class="icon-bar"></span><span class="icon-bar"></span><span
-                                                        class="icon-bar"></span><span class="icon-bar"></span></div>
-                                                <img src="images/temp-face36.jpg" alt="">魏紫（weizi5@xdf.cn），广州学校 国外考试部
-                                            </div>
-                                        </td>
-                                        <td><input type="checkbox" checked="" class="tissuePreparation"></td>
-                                        <td><input type="checkbox" class="editingCourse"></td>
-                                        <td><a href="#" class="icon-remove-blue"></a></td>
-                                    </tr>
+                                   
                                     </tbody>
                                 </table>
                                 <div class="pr">
@@ -454,25 +442,42 @@ $(function(){
                 $(this).nextAll("a").removeClass("active");
                 $("#examPaperTime").val( $(this).children(".num").text());
             });
-
+	//初始化页面
+	 $.ajax({
+		  url: "${ctx}/ajax/material/getMaterial?materialId=${materIalId}",
+		  async:false,
+		  dataType : 'json',
+		  success: function(result){
+			  $("#examPaperIntro").val(result.description);
+			  $("#passScore").val(result.score);
+			  $("#author").val(result.fdAuthor);
+			  $("#authorIntro").val(result.fdAuthorDescription);
+			  if(result.isPublish==true){
+				  $("#open1").trigger("click");
+			  }else{
+				  $("#close1").trigger("click");
+			  }
+			  var n = result.time/15;
+			  $("#mainTimeLine a :lt("+n+")").attr("class","active");
+			  alert(JSON.stringify(result));
+		  }
+	});
     //初始化试题列表
    initExamQuestions();
-    
-    
-    //授权管理 用户列表 模板函数
+   //初始化权限列表
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
-
-    //初始化权限列表
     $.ajax({
 		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materIalId}",
 		  async:false,
 		  dataType : 'json',
 		  success: function(result){
+			  alert(JSON.stringify(result));
 			  var html = "";
 			  for(var i in result.user){
 				  html += listUserKinguserFn(result.user[i]);
 			  }
 			  $("#list_user").html(html); 
+			  
 		  }
 	});
     //试题详情编辑页面 模板函数

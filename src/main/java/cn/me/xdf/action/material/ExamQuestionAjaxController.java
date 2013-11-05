@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
 
+import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -116,6 +117,12 @@ public class ExamQuestionAjaxController {
 			}
 			examQuestion.setFdQuestion(res);
 		} else {
+			//删除之前的选项
+			List<ExamOpinion> oldPoinions = examOpinionService.findByProperty("question.fdId", examQuestion.getFdId());
+			for (ExamOpinion examOpinion : oldPoinions) {
+				examOpinionService.delete(examOpinion.getFdId());
+			}
+			//保存新选项
 			List<Map> poinion = JsonUtils.readObjectByJson(opinionString,
 					List.class);
 			for (Map map : poinion) {
@@ -123,17 +130,18 @@ public class ExamQuestionAjaxController {
 				e.setFdOrder(new Integer(map.get("index").toString()));
 				e.setOpinion((String) map.get("name"));
 				e.setQuestion(examQuestion);
+				String isAnswer = map.get("isAnswer").toString();
+				e.setIsAnswer(isAnswer.equals("true"));
 				examOpinionService.save(e);
 				opinions.add(e);
 				// 得到答案
-				String isAnswer = map.get("isAnswer").toString();
 				if (isAnswer.equals("true")) {
 					answer += e.getFdId() + "#";
 				}
 			}
 			examQuestion.setFdQuestion(answer);
 		}
-		// 更新答案
+		// 更新选项附件
 		if (StringUtil.isNotBlank(attString)) {
 			examQuestionService.save(examQuestion);
 			List<Map> att = JsonUtils.readObjectByJson(attString, List.class);
@@ -218,7 +226,7 @@ public class ExamQuestionAjaxController {
 		String studyTime = request.getParameter("studyTime");
 		List<Map> exams;
 		MaterialInfo info = materialService.get(id);
-		if(StringUtil.isBlank(kingUser)){
+		if(StringUtil.isBlank(listExam)){
 			exams = new ArrayList<Map>();
 		}else{
 			exams = JsonUtils.readObjectByJson(listExam, List.class);

@@ -353,24 +353,24 @@ public class MaterialAjaxController {
 	}
 
 	/**
-	 * 得到指定素材的试题信息（只针对测试）
+	 * 得到测试信息
 	 * 
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "getExamQuestionByMaterId")
+	@RequestMapping(value = "getMaterial")
 	@ResponseBody
-	public String getExamQuestionByMaterId(HttpServletRequest request) {
+	public String getMaterial(HttpServletRequest request){
 		// 获取课程ID
-		String MaterialId = request.getParameter("materialId");
-		MaterialInfo info = materialService.get(MaterialId);
-		if(info==null){
-			return null;
-		}
-		List<Map> list = materialService.getExamQuestionByMaterId(info);
+		String materialId = request.getParameter("materialId");
+		MaterialInfo info = materialService.findUniqueByProperty("fdId", materialId);
 		Map map = new HashMap();
-		map.put("qusetions", list);
-		map.put("name", info.getFdName());
+		map.put("description", info.getFdDescription());
+		map.put("time", info.getFdStudyTime());
+		map.put("score", info.getFdScore());
+		map.put("fdAuthor", info.getFdAuthor());
+		map.put("fdAuthorDescription", info.getFdAuthorDescription());
+		map.put("isPublish", info.getIsPublish());
 		return JsonUtils.writeObjectToJson(map);
 	}
 }
