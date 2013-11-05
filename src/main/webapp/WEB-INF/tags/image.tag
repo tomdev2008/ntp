@@ -5,7 +5,7 @@
 <%@ attribute name="href" type="java.lang.String" required="true"%>
 <%@ attribute name="width" type="java.lang.String" required="false"%>
 <%@ attribute name="height" type="java.lang.String" required="false"%>
-<%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
+<%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <%
 	boolean ishttp = false;

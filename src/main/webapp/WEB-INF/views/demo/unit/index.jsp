@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>
-<%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld" %>
+<%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <j:set name="ctx" value="${pageContext.request.contextPath}"/>
 <html>

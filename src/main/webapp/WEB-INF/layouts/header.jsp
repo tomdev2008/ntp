@@ -1,7 +1,7 @@
 <%@page import="cn.me.xdf.utils.ShiroUtils"%>
 <%@page import="cn.me.xdf.service.ShiroDbRealm.ShiroUser"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
+<%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <%

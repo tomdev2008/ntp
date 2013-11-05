@@ -4,7 +4,7 @@
 <%@ attribute name="url" type="java.lang.String" required="true"%>
 <%@ attribute name="text" type="java.lang.String" required="true"%>
 <%@ attribute name="iconName" type="java.lang.String" required="true"%>
-<%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
+<%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <j:ifelse test="${active eq para}">
 	<j:then>

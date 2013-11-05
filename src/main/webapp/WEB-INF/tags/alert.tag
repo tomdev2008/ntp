@@ -4,7 +4,7 @@
 <%@ attribute name="function" type="java.lang.String"%>
 <%@ attribute name="href" type="java.lang.String"%>
 <%@ attribute name="tagIndex" type="java.lang.String"%>
-<%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
+<%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <div id="${alertId}" class="modal hide fade" tabindex="${tagIndex}" style="display: none;">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">x</button>

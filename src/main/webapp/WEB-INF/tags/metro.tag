@@ -8,7 +8,7 @@
 <%@ attribute name="width" type="java.lang.String"%>
 <%@ attribute name="height" type="java.lang.String"%>
 <%@ attribute name="cssClass" type="java.lang.String"%>
-<%@ taglib prefix="j" uri="/WEB-INF/tags/formtag.tld"%>
+<%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <%
 	String css_class = "tile";
