@@ -158,7 +158,7 @@ function initExamQuestions(){
 	if(id!==null&&id!=""){
 		var examQuestionTemplate = doT.template(document.getElementById("examQuestionTemplate").text);
 	    $.ajax({
-			  url: "${ctx}/ajax/material/getExamQuestionByMaterId?materialId=${materIalId}",
+			  url: "${ctx}/ajax/material/getExamQuestionSrcByMaterId?materialId=${materIalId}",
 			  async:false,
 			  dataType : 'json',
 			  success: function(result){

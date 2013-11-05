@@ -395,4 +395,26 @@ public class MaterialAjaxController {
 		map.put("name", info.getFdName());
 		return JsonUtils.writeObjectToJson(map);
 	}
+	
+	/**
+	 * 得到指定素材的试题信息（只针对测试）
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getExamQuestionSrcByMaterId")
+	@ResponseBody
+	public String getExamQuestionSrcByMaterId(HttpServletRequest request) {
+		// 获取课程ID
+		String MaterialId = request.getParameter("materialId");
+		MaterialInfo info = materialService.get(MaterialId);
+		if(info==null){
+			return null;
+		}
+		List<Map> list = materialService.getExamQuestionSrcByMaterId(info);
+		Map map = new HashMap();
+		map.put("qusetions", list);
+		map.put("name", info.getFdName());
+		return JsonUtils.writeObjectToJson(map);
+	}
 }

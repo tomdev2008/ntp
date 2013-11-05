@@ -266,5 +266,28 @@ public class MaterialService extends BaseService {
 		}
 		 return list;
 	}
+	
+	public List<Map> getExamQuestionSrcByMaterId(MaterialInfo info){
+		 List<ExamQuestion> examQuestions = info.getQuestions();
+		 List<Map> list = new ArrayList<Map>();
+		 for (ExamQuestion examQuestion : examQuestions) {
+			 Map map = new HashMap();
+			 map.put("id", examQuestion.getFdId());
+			 String subject = examQuestion.getFdSubject();
+			 String[] s = subject.split("#");
+			 String res = "";
+			 for (int i = 0; i < s.length; i++) {
+				if (i % 2 ==0) {
+					res = res + s[i];
+				}else{
+					res = res + "____";
+				}
+			 }
+			 map.put("subject", res);
+			 map.put("score", examQuestion.getFdStandardScore());
+			 list.add(map);
+		}
+		 return list;
+	}
 
 }
