@@ -253,7 +253,7 @@ public class MaterialService extends BaseService {
 	}
 	
 	
-	public List<Map> getExamQuestionByMaterId( MaterialInfo info){
+	public List<Map> getExamQuestionByMaterId(MaterialInfo info){
 		
 		 List<ExamQuestion> examQuestions = info.getQuestions();
 		 List<Map> list = new ArrayList<Map>();

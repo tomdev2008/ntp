@@ -133,4 +133,17 @@ public class MaterialController {
 		return "/material/exam_add";
 	}
 	
+	/**
+	 * 跳转至测试添加页面
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="viewExam")
+	public String viewExam(Model model,HttpServletRequest request){
+		String materIalId = request.getParameter("materIalId");
+		model.addAttribute("materIalId", materIalId);
+		return "/material/exam_view";
+	}
+	
 }
