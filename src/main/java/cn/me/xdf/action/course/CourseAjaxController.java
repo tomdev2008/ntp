@@ -27,6 +27,8 @@ import cn.me.xdf.model.course.CourseCategory;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
+import cn.me.xdf.model.material.MaterialAuth;
+import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.SysOrgPersonService;
@@ -413,11 +415,10 @@ public class CourseAjaxController {
 	 */
 	@RequestMapping(value = "getCoureInfosOrByKey")
 	public String getCoureInfosOrByKey(Model model, HttpServletRequest request) {
-		String userId = ShiroUtils.getUser().getId();
 		String fdTitle = request.getParameter("fdTitle");
 		String pageNoStr = request.getParameter("pageNo");
 		String orderbyStr = request.getParameter("order");
-		Pagination page = courseService.findCourseInfosByName(userId, fdTitle,
+		Pagination page = courseService.findCourseInfosByName( fdTitle,
 				pageNoStr, orderbyStr);
 		model.addAttribute("page", page);
 		return "/course/divcourselist";
@@ -428,23 +429,27 @@ public class CourseAjaxController {
 	 */
 	@RequestMapping(value = "deleteAllCoursesByKey")
 	public String deleteAllCoursesByKey(Model model, HttpServletRequest request) {
-		String userId = ShiroUtils.getUser().getId();
 		String fdTitle = request.getParameter("fdTitle");
 		String pageNoStr = request.getParameter("pageNo");
 		String orderbyStr = request.getParameter("order");
-		Pagination page = courseService.findCourseInfosByName(userId, fdTitle,
+		Pagination page = courseService.findCourseInfosByName( fdTitle,
 				pageNoStr, orderbyStr);
 		int i = page.getTotalPage();
 		if(i>0){
 			for(int j=0;j<i;j++){
-				page = courseService.findCourseInfosByName(userId, fdTitle,
+				page = courseService.findCourseInfosByName( fdTitle,
 						"1", orderbyStr);
 				List list = page.getList();
 				if(list!=null && list.size()>0){
 					for(Object obj:list){
 						Map map = (Map)obj;
 						String courseId = (String)map.get("FDID");
-						delCourseById(courseId);
+						if(ShiroUtils.isAdmin()){//管理员删除不判断权限
+							delCourseById(courseId);
+						}
+						if(StringUtil.isNotBlank(findEditAuth(courseId))){//非管理员删除
+							delCourseById(courseId);
+						}
 					}
 				}
 			}
@@ -496,7 +501,8 @@ public class CourseAjaxController {
 			String courseId = "";
 			for(int i=0;i<courses.length;i++){
 				courseId = courses[i];
-				delCourseById(courseId);
+				//delCourseById(courseId);
+				System.out.println(courseId);
 			}
 		}
 	}
@@ -577,4 +583,68 @@ public class CourseAjaxController {
 		}
 		return JsonUtils.writeObjectToJson(map);
 	}
+	@RequestMapping(value = "deleFiter")
+	@ResponseBody
+	public String deleteFiter(HttpServletRequest request){
+		String fdIds = request.getParameter("courseId");
+		String fdName= request.getParameter("fdName");
+		String deleType=request.getParameter("deleType");
+		if("0".equals(deleType)){//选择删除
+			if(ShiroUtils.isAdmin()){
+				return "redirect:/ajaxt/course/deleteCourse?courseId"+fdIds;
+			}else{
+				return getDeleteKeys(fdIds);
+			}
+		}else{//删除全部
+			if(ShiroUtils.isAdmin()){//管理员删除
+				return "redirect:/ajaxt/course/deleteAllCoursesByKey?fdTitle="+fdName;
+			}else{
+				return getDeleteKeys(fdIds);
+			}
+		}
+	}
+	/*
+	 * 根据课程id查找课程权限
+	 * author hanhl
+	 * 1.当前课程创建者
+	 * 2.拥有编辑权限
+	 */
+	private String findEditAuth(String couserId){
+		CourseInfo courseInfo =courseService .load(couserId);
+		if(courseInfo.getCreator().getFdId().equals(ShiroUtils.getUser().getId())){
+			return courseInfo.getFdId();
+		}
+		CourseAuth auth = courseAuthService.findByCourseIdAndUserId(couserId,ShiroUtils.getUser().getId());
+	    if(auth.getIsEditer()==true){
+	    	return courseInfo.getFdId();
+	    }
+		
+		return null;
+		   
+	}
+	/*
+	 * 获取可执行删除的课程id
+	 * 
+	 */
+	@SuppressWarnings("rawtypes")
+	private String getDeleteKeys(String fdIds){
+		List deltes=new ArrayList();
+		Map delekeys = new HashMap();
+		String[] courseIds = fdIds.split(",");
+		String fdId = "";
+		String auth = "";
+		for (int i = 0; i < courseIds.length; i++) {
+			fdId = courseIds[i];
+			auth = findEditAuth(fdId);
+			if(StringUtil.isBlank(auth)){
+				continue;
+			}else{
+				delekeys.put("id",auth);
+				deltes.add(delekeys);
+			}
+		}
+		return JsonUtils.writeObjectToJson(deltes);
+		 
+	}
+
 }

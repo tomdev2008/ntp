@@ -51,11 +51,10 @@ public class CourseController {
 	 * */
 	@RequestMapping(value="findcourseInfos")
 	public String findcourseInfos(Model model,HttpServletRequest request){
-		String userId = ShiroUtils.getUser().getId();
 		String fdTitle = request.getParameter("fdTitle");
 		String pageNoStr = request.getParameter("pageNo");
 		String orderbyStr = request.getParameter("order");
-		Pagination page=courseService.findCourseInfosByName(userId, fdTitle, pageNoStr, orderbyStr);
+		Pagination page=courseService.findCourseInfosByName(fdTitle, pageNoStr, orderbyStr);
 		model.addAttribute("page", page);
 		return "/course/course_list";
 	}

@@ -7,23 +7,23 @@
 	            <li class="nav-header">
                     <span>课程管理</span>
 	            </li>
-	             <c:if test="${param.fdType=='2000'}">
+	             <c:if test="${param.fdType=='11'}">
 	            <li class="active">
 	             </c:if>
-	             <c:if test="${param.fdType!='2000'}">
+	             <c:if test="${param.fdType!='11'}">
 	            <li>
 	             </c:if>
-	             <a href="${ctx}/course/findeSeriesInfos?fdType=2000&order=fdcreatetime"">
+	             <a href="${ctx}/course/findeSeriesInfos?fdType=11&order=fdcreatetime"">
 	             <i class="icon-course-series"></i>我的系列课程</a></li>
 	            
-	            <c:if test="${param.fdType=='1000'}">
+	            <c:if test="${param.fdType=='12'}">
 	            <li class="active">
 	             </c:if>
-	             <c:if test="${param.fdType!='1000'}">
+	             <c:if test="${param.fdType!='12'}">
 	            <li>
 	             </c:if>
 	             
-	              <a href="${ctx}/course/findcourseInfos?fdType=1000&order=fdcreatetime">
+	              <a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime">
 	              <i class="icon-course"></i>我的课程</a>
 	             </li>
 	             <li class="nav-header">

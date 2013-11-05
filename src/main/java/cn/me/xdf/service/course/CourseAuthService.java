@@ -63,7 +63,7 @@ public class CourseAuthService extends BaseService{
 	public CourseAuth findByCourseIdAndUserId(String courseId,String userId){
 		Finder finder = Finder
 				.create("from CourseAuth anth ");
-		finder.append("where anth.courseInfo.fdId = :courseId and anth.fdUser.fdId = :userId");
+		finder.append("where anth.course.fdId = :courseId and anth.fdUser.fdId = :userId");
 		finder.setParam("courseId", courseId);
 		finder.setParam("userId", userId);
 		return (CourseAuth) super.find(finder).get(0);

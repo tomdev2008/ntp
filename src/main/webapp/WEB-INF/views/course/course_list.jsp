@@ -33,10 +33,10 @@
 			        </div>
 			     
 				<div class="page-body" id="pageBody">
-				<c:if test="${param.fdType=='1000' }">
+				<c:if test="${param.fdType=='12' }">
 		        <%@ include file="/WEB-INF/views/course/divcourselist.jsp" %>
 		        </c:if>
-		        <c:if test="${param.fdType!='1000' }">
+		        <c:if test="${param.fdType=='11' }">
 		        <%@ include file="/WEB-INF/views/course/divserieslist.jsp" %>
 		        </c:if>
 		       </div>
@@ -68,7 +68,7 @@ function findeCoursesByKey(pageNo,order){
 	
 	$("#coursekey").attr("value",fdTitle);//关键字赋值
 	$("#pageBody").html("");
-	if($("#cousetype").val()=='1000'){
+	if($("#cousetype").val()=='12'){//课程列表
 	$.ajax({
 		type: "post",
 		 url: "${ctx}/ajax/course/getCoureInfosOrByKey",
@@ -99,7 +99,7 @@ function findeCoursesByKey(pageNo,order){
 			}
 		}
 	}); 
-	}else{
+	 }else{
 		$.ajax({
 			type: "post",
 			 url: "${ctx}/ajax/series/getSeriesInfosOrByKey",
@@ -134,12 +134,24 @@ function findeCoursesByKey(pageNo,order){
 }
 //
 function confirmDel(){
+	var delekey="";
+	$('input[name="ids"]:checked').each(function() {
+		delekey+=$(this).val()+",";
+	}); 	
+	if(delekey==""){
+		$.fn.jalert2("当前没有选择要删除的数据!");
+		return;
+	}
 	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
+		fiterDelete(delekey,1);
 		$.fn.jalert("您确认要删除所有课程？",deleteAllCourse);
 	}else if($('input[name="selectCheckbox"]:checked').val()==0){
+		fiterDelete(delekey,0);
 		$.fn.jalert("您确认要删除本页课程？",deleteCourse);
 	}else{
+		fiterDelete(delekey,0);
 		$.fn.jalert("您确认要删除所选课程？",deleteCourse);
+		
 	}
 		
 }
@@ -149,19 +161,21 @@ function deleteCourse(){
 	$('input[name="ids"]:checked').each(function() {
 		delekey+=$(this).val()+",";
 	}); 	
-	if(delekey==""){
+	/* if(delekey==""){
 		$.fn.jalert2("当前没有选择要删除的数据!");
 		return;
-	}
+	} */
 	// return;
 	 $.ajax({
 		type: "post",
-		 url: "${ctx}/ajax/course/deleFiter",
+		async:false,
+		 url: "${ctx}/ajax/course/deleteCourse",
 		data : {
 			"courseId":delekey,
 		},
 		success:function(data){
-			window.location.href="${ctx}/course/findcourseInfos";
+			
+			window.location.href="${ctx}/course/findcourseInfos?order=fdcreatetime&fdType="+$('#cousetype').val();
 		}
 	}); 
 }
@@ -170,12 +184,13 @@ function deleteAllCourse(){
 	var delekey = document.getElementById("serach").value;
 	 $.ajax({
 		type: "post",
+		async:false,
 		 url: "${ctx}/ajax/course/deleteAllCoursesByKey",
 		data : {
 			"fdTitle":delekey,
 		},
 		success:function(data){
-			window.location.href="${ctx}/course/findcourseInfos";
+			window.location.href="${ctx}/course/findcourseInfos?order=fdcreatetime&fdType="+$('#cousetype').val();
 		}
 	}); 
 }
@@ -211,6 +226,39 @@ function selectAll(){
 		$("#allFlag").attr("value",false);
 	}
 }
+function fiterDelete(delekey,deleType){
+	$.ajax({
+		async:false,
+		dataType:'json',
+		url: "${ctx}/ajax/course/deleFiter?deleType="+deleType,
+		data : {
+			"courseId":delekey,
+		},
+		success:function(data){
+			if(data.length==0){
+				$('input[name="ids"]').each(function(){
+					$(this).attr("checked",false);
+					$(this).attr("disabled",true);
+				});
+				
+			}else{
+			  for (var i = 0; i < data.length; i++) {
+				$('input[name="ids"]').each(function(){
+					if($(this).val()==data[i].id){
+						$(this).attr("checked",true);
+						$(this).attr("disabled",false);
+				    }else{
+						$(this).attr("checked",false);
+						$(this).attr("disabled",true);
+					}
+						
+				});
+			  } 
+			} 
+		}
+    });
+}
+
 </script>
 </body>
 </html>

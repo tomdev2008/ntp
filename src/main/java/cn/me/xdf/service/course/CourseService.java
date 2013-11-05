@@ -20,6 +20,7 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.User;
 import cn.me.xdf.service.BaseService;
+import cn.me.xdf.utils.ShiroUtils;
 /**
  * 
  * 课程service
@@ -60,13 +61,25 @@ public class CourseService  extends BaseService{
 	 * 
 	 * author hanhl
 	 * */
-	public  Pagination findCourseInfosByName(String userId,String fdName,String pageNo ,String orderbyStr){
-		Finder finder = Finder
-				.create("select course.*,scorestatis.fdaverage from IXDF_NTP_COURSE course ");
+	public  Pagination findCourseInfosByName(String fdName,String pageNo ,String orderbyStr){
+
+		String userId = ShiroUtils.getUser().getId();
+		Finder finder = Finder.create("select course.*,scorestatis.fdaverage from IXDF_NTP_COURSE course ");
 		finder.append(" left join IXDF_NTP_SCORE_STATISTICS scorestatis " );
 		finder.append(" on course.fdid=scorestatis.fdmodelid  and scorestatis.fdmodelname='"+CourseInfo.class.getName()+"' ");
-		finder.append("where course.fdcreatorid=:userId  and  course.isavailable='1'");/*有效的*/
+		//课程列表中有效的
+		finder.append("where course.isavailable='1'");/*有效的*/
+		//如果是管理员就显示所有有效的
+		if(!ShiroUtils.isAdmin()){
+		//已发布的课程
+		finder.append("and ( course.fdstatus='01' or ");
+		//当前登录用户自己创建的
+		finder.append("  course.fdcreatorid=:createId  or");
+		//有编辑权限的
+		finder.append("	exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and auth.isediter=1 and fduserid=:userId)	)");
 		finder.setParam("userId", userId);
+		finder.setParam("createId", userId);
+		}
 		//设置页码
 		int pageNoI=0;
 		if(StringUtil.isNotBlank(pageNo)&&StringUtil.isNotEmpty(pageNo)){
@@ -118,4 +131,6 @@ public class CourseService  extends BaseService{
 		}
 		return list;
 	}
+	
+	
 }
