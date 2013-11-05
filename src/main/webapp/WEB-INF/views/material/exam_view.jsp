@@ -23,11 +23,10 @@
 		            <div class="state-dragable"><span class="icon-bar"></span><span
 		                    class="icon-bar"></span><span class="icon-bar"></span><span
 		                    class="icon-bar"></span><span class="icon-bar"></span></div>
-		            <a href="#">{{=it.subject}}</a>
+		            {{=it.subject}}
 		        </div>
 		    </td>
 		    <td><span class="spans">{{=it.score}}</span>分</td>
-		    <td><a href="#" class="icon-remove-blue"></a></td>
 		</tr>
     </script>
 
@@ -95,7 +94,6 @@
                                 <tr>
                                     <th>试题</th>
                                     <th>分数</th>
-                                    <th>删除</th>
                                 </tr>
                                 </thead>
                                 <tbody id="list_exam">
@@ -163,7 +161,6 @@ function initExamQuestions(){
 			  dataType : 'json',
 			  success: function(result){
 				  var html = "";
-				  
 				  for(var i in result.qusetions){
 					  html += examQuestionTemplate(result.qusetions[i]);
 				  }
