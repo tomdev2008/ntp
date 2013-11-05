@@ -109,10 +109,8 @@ public class ExamQuestionAjaxController {
 			String[] s = fdSubject.split("#");
 			String res = "";
 			for (int i = 0; i < s.length; i++) {
-				if (i % 2 == 0) {
-					res = res + s[i];
-				} else {
-					res = res + "____";
+				if (i % 2 == 1) {
+					res = res + s[i]+"#";
 				}
 			}
 			examQuestion.setFdQuestion(res);
