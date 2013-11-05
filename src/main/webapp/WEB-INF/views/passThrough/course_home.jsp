@@ -165,9 +165,11 @@
                         <button class="btn btn-primary btn-block">我来说两句</button>
                     </div>                    
 		        </div>
+		        <!-- 学习当前课程的新教师列表 -->
                 <c:import url="/WEB-INF/views/passThrough/learning_teacher_list.jsp">
                 	<c:param name="courseId" value="${course.fdId}" />
                 </c:import>
+                <!-- 发现课程之最新课程列表 -->
                 <c:import url="/WEB-INF/views/passThrough/new_course_list.jsp"></c:import>
 	        </div>
         </div>
