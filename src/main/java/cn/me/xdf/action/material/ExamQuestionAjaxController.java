@@ -141,18 +141,24 @@ public class ExamQuestionAjaxController {
 			}
 			examQuestion.setFdQuestion(answer);
 		}
+		examQuestionService.save(examQuestion);
 		// 更新选项附件
 		if (StringUtil.isNotBlank(attString)) {
-			examQuestionService.save(examQuestion);
+			//删除之前的选项
+			List<AttMain> oldAttMains = attMainService.findByCriteria(AttMain.class,
+	                Value.eq("fdModelId", examQuestion.getFdId()),
+	                Value.eq("fdModelName", ExamQuestion.class.getName()));
+			for (AttMain attMain : oldAttMains) {
+				attMain.setFdModelId("");
+				attMain.setFdModelName("");
+				attMainService.update(attMain);
+			}
 			List<Map> att = JsonUtils.readObjectByJson(attString, List.class);
 			for (Map map : att) {
-				AttMain e = new AttMain();
-				e.setFdId(map.get("id").toString());
+				AttMain e = attMainService.get(map.get("id").toString());
 				e.setFdModelId(examQuestion.getFdId());
 				e.setFdModelName(ExamQuestion.class.getName());
 				e.setFdKey(map.get("index").toString());
-				e.setFdCreateTime(new Date());
-				e.setFdCreatorId(ShiroUtils.getUser().getId());
 				attMains.add(e);
 				attMainService.update(e);
 			}
@@ -245,6 +251,13 @@ public class ExamQuestionAjaxController {
 			examQuestionService.update(q);
 			examQuestions.add(q);
 		}
+		//删除多余的试题
+		List<ExamQuestion> oldExamQuestions = examQuestionService.findByProperty("exam.fdId", info.getFdId());
+		for (ExamQuestion examQuestion : oldExamQuestions) {
+			if(!examQuestions.contains(examQuestion)){
+				examQuestionService.deleQuestion(examQuestion.getFdId());
+			}
+		}
 		List<MaterialAuth> materialAuths = new ArrayList<MaterialAuth>();
 		if(!permission.equals("open")){
 			for (Map map : users) {
@@ -271,5 +284,17 @@ public class ExamQuestionAjaxController {
 		info.setFdStudyTime(new Integer(studyTime));
 		info.setQuestions(examQuestions);
 		materialService.update(info);
+	}
+	
+	@RequestMapping(value = "deleExamsByMaterialId")
+	@ResponseBody
+	public void deleExamsByMaterialId(HttpServletRequest request) {
+		String materIalId = request.getParameter("materialId");
+		MaterialInfo info = materialService.findUniqueByProperty("fdId", materIalId);
+		List<ExamQuestion> examQuestions = info.getQuestions();
+		for (ExamQuestion examQuestion : examQuestions) {
+			examQuestionService.deleQuestion(examQuestion.getFdId());
+		}
+		
 	}
 }

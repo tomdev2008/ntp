@@ -183,7 +183,7 @@
 		            <a href="#">{{=it.subject}}</a>
 		        </div>
 		    </td>
-		    <td><input type="text" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为分值" class="itemScore input-mini">分</td>
+		    <td><input type="text" onblur="initScore()" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为分值" class="itemScore input-mini">分</td>
 		    <td><a href="#" class="icon-remove-blue"></a></td>
 		</tr>
     </script>
@@ -246,9 +246,9 @@
                     <section class="section mt20">
                         <div class="hd">
                             <label for="passScore" class="miniInput-label">
-                                试题列表（共计<span id="questionCount"></span>题，满分<span id="questionScore"></span>分，及格 <input class="input-mini" required number="true" id="passScore" name="passScore" value="40" type="text"/>      分）
+                                试题列表（共计<span id="questionCount"></span>题，满分<span id="questionScore"></span>分，及格 <input class="input-mini" required number="true" id="passScore" name="passScore" type="text"/>      分）
                             </label>
-                            <label for="passScore" class="error"></label>
+                            <label for="passScore" id="passScoreErr" class="error"></label>
                             <button class="btn btn-primary btn-large" id="addExam" type="button">添加试题</button>
                         </div>
                         <div class="bd">
@@ -273,7 +273,7 @@
                         <div class="control-group">
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
-                                <input value="集团国外考试推广管理中心" id="author" required class="input-block-level"
+                                <input value="" id="author" required class="input-block-level"
                                        name="author" type="text">
                             </div>
                         </div>
@@ -472,11 +472,23 @@ $(function(){
     });
     //删除试卷事件
     $("#delExamPaper").click(function(e){
-        //
+    	$.ajax({
+			  url: "${ctx}/ajax/material/deleteMaterial?materialId=${materIalId}",
+			  async:false,
+			  success: function(result){
+				  $.fn.jalert2("删除成功");
+				  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType=08";
+			  }
+		});
     });
 
     /*提交表单函数*/
     function submitForm(form){
+    	if(parseInt($("#passScore").val())>parseInt($("#questionScore").html())){
+    		$("#passScoreErr").css("display","block");
+    		$("#passScoreErr").html("及格分数不能大于满分");
+    		return;
+    	}
         var data = {
         	id:"${materIalId}",
             examPaperName: $("#examPaperName").val(),
@@ -539,6 +551,7 @@ $(function(){
             .find("a.icon-remove-blue").bind("click",function(e){
                 e.preventDefault();
                 $(this).closest("tr").remove();
+                initScore();
             });
 
 
@@ -589,6 +602,7 @@ $(function(){
 			.find("a.icon-remove-blue").bind("click",function(e){
 				e.preventDefault();
 				$(this).closest("tr").remove();
+				initScore();
 			});
 			$("#addUser").val("");
 		}
@@ -646,6 +660,7 @@ $(function(){
                 .delegate(".item-ctrl>.icon-remove-blue","click",function(e){
                     e.preventDefault();
                     $(this).closest("li").remove();
+                    initScore();                    
                 })
                 .delegate(".item-ctrl>.icon-pencil-blue","click",function(e){
                     e.preventDefault();
@@ -751,7 +766,8 @@ $(function(){
                     data.listAttachment.push({
                         id: $(this).attr("data-fdid"),
                         index: i,
-                        url: $(this).find(".name").attr("href")
+                        url: $(this).find(".name").attr("href"),
+                        name:$(this).find(".name").html(),
                     });
                 });
                 data.listAttachment =  JSON.stringify(data.listAttachment);
@@ -812,7 +828,7 @@ $(function(){
                    	 	flag: "add" ,
                    	 	id: objvalue.attId,
                         name: objvalue.fileName,
-                        url: "#"
+                        url: objvalue.filePath
                    })).sortable({
                            handle: ".state-dragable"
                    });
@@ -846,23 +862,30 @@ function initExamQuestions(){
 			  dataType : 'json',
 			  success: function(result){
 				  var html = "";
-				  var totalScore = 0;
-				  var count = 0;
+				  
 				  for(var i in result.qusetions){
 					  html += examQuestionTemplate(result.qusetions[i]);
-					  totalScore = totalScore+result.qusetions[i].score;
-					  count++;
 				  }
 				  $("#list_exam").html(html); 
 				  $("#examPaperName").val(result.name);
 				  $("#examMainName").html(result.name);
-				  $("#questionCount").html(count);
-				  $("#questionScore").html(totalScore);
+				  initScore();
 				  
 			  }
 		});
 	}
 	  
+}
+
+function initScore(){
+	var totalScore = 0;
+	var count = 0;
+	for(var i=0 ; i<$("#list_exam input").length ;i++){
+		count++;
+		totalScore = totalScore +parseInt($("#list_exam input :eq("+i+")").val());
+	}
+	 $("#questionCount").html(count);
+	  $("#questionScore").html(totalScore);
 }
 
 </script>
