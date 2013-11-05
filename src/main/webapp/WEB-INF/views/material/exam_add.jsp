@@ -26,8 +26,8 @@
                 <img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
             </div>
         </td>
-        <td><input type="checkbox" checked class="tissuePreparation" /></td>
-        <td><input type="checkbox" class="editingCourse" /></td>
+       <td><input type="checkbox" {{?it.tissuePreparation!=false}}checked{{?}}  class="tissuePreparation" /></td>
+        <td><input type="checkbox" {{?it.editingCourse!=false}}checked{{?}} class="editingCourse" /></td>
         <td><a href="#" class="icon-remove-blue"></a></td>
     </tr>
 </script>
@@ -439,13 +439,29 @@ $(function(){
 	    //初始化试题列表
 	   initExamQuestions();
 	   //初始化权限列表
+	   var creater="";
+	   var url="";
+	    $.ajax({
+			  url: "${ctx}/ajax/material/getCreater?materialId=${materIalId}",
+			  async:false,
+			  dataType : 'json',
+			  success: function(result){
+				  creater = result.name+"（"+result.email+"），"+result.dept;
+				  url=result.url;
+			  }
+		});
 	    var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
 	    $.ajax({
 			  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materIalId}",
 			  async:false,
 			  dataType : 'json',
 			  success: function(result){
-				  var html = "";
+				  var html = "<tr data-fdid='creater' draggable='true'> "+
+				  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
+				  "<img src='"+url+"' alt=''>"+creater+" </div> </td>"+
+				  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
+				  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
+				  "</td> </tr>";
 				  for(var i in result.user){
 					  html += listUserKinguserFn(result.user[i]);
 				  }

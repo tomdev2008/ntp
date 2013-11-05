@@ -397,7 +397,7 @@ public class MaterialAjaxController {
 	}
 	
 	/**
-	 * 得到指定素材的试题信息（只针对测试）
+	 * 得到指定素材的试题信息（只针对测试）加密
 	 * 
 	 * @param request
 	 * @return
@@ -415,6 +415,31 @@ public class MaterialAjaxController {
 		Map map = new HashMap();
 		map.put("qusetions", list);
 		map.put("name", info.getFdName());
+		return JsonUtils.writeObjectToJson(map);
+	}
+	
+	/**
+	 * 获得创建者
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getCreater")
+	@ResponseBody
+	public String getCreater(HttpServletRequest request) {
+		// 获取课程ID
+		String MaterialId = request.getParameter("materialId");
+		MaterialInfo info = materialService.get(MaterialId);
+		SysOrgPerson person = info.getCreator();
+		if(info==null){
+			return null;
+		}
+		Map map = new HashMap();
+		map.put("fdId", person.getFdId());
+		map.put("name", person.getRealName());
+		map.put("email", person.getFdEmail());
+		map.put("dept", person.getDeptName());
+		map.put("url", person.getFdPhotoUrl());
 		return JsonUtils.writeObjectToJson(map);
 	}
 }

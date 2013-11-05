@@ -259,10 +259,14 @@ public class ExamQuestionAjaxController {
 		List<MaterialAuth> materialAuths = new ArrayList<MaterialAuth>();
 		if(!permission.equals("open")){
 			for (Map map : users) {
+				String personid =map.get("id").toString();
+				if(personid.equals("creater")){
+					continue;
+				}
 				MaterialAuth materialAuth = new MaterialAuth();
-				materialAuth.setFdUser((SysOrgPerson)accountService.load(map.get("id").toString()));
-				materialAuth.setIsEditer(map.get("tissuePreparation").toString().equals("true")?true:false);
-				materialAuth.setIsReader(map.get("editingCourse").toString().equals("true")?true:false);
+				materialAuth.setFdUser((SysOrgPerson)accountService.load(personid));
+				materialAuth.setIsReader(map.get("tissuePreparation").toString().equals("true")?true:false);
+				materialAuth.setIsEditer(map.get("editingCourse").toString().equals("true")?true:false);
 				materialAuth.setMaterial(info);
 				materialAuths.add(materialAuth);
 			}
