@@ -148,31 +148,24 @@ public class MaterialService extends BaseService {
 
 	/**
 	 * 查看可使用的资源（分页操作）
-	 * 
-	 * @param fdType
-	 *            资源类型
-	 * @param pageNo
-	 *            页码
-	 * @param pageSize
-	 *            每页几条数据
-	 * @param fdName
-	 *            不为空是表示搜索
-	 * @param order
-	 *            排序规则
+	 * @param fdType 资源类型
+	 * @param pageNo 页码
+	 * @param pageSize 每页几条数据
+	 * @param fdName 不为空是表示搜索
+	 * @param order 排序规则
 	 * @author yuhuizhe
 	 * @return
 	 */
 	  @Transactional(readOnly = false)
 		public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName,String order){
-			Finder finder = Finder.create("select info.*,score.fdaverage ");
+			Finder finder = Finder.create("select * from ( select info.*,score.fdaverage ");
 			if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){//测试统计
 				finder.append(" ,a.questionNum,a.fdtotalnum");
 			}
 			if(Constant.MATERIAL_TYPE_JOBPACKAGE.equals(fdType)){//作业类统计
 				finder.append(" ,t.tasknum,t.fullmarks ");
 			}
-			finder.append(" from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
-			finder.append("on info.FDID=auth.FDMATERIALID ");
+			finder.append(" from IXDF_NTP_MATERIAL info ");
 			finder.append(" left join IXDF_NTP_SCORE_STATISTICS score on info.FDID = score.fdModelId and score.fdmodelname = '"+MaterialInfo.class.getName()+"' ");
 			if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
 				finder.append(" left join ( ");
@@ -185,9 +178,11 @@ public class MaterialService extends BaseService {
 				finder.append(" on t.fdmaterialid=info.fdid  ");
 			}
 			finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1 ");
-			finder.append(" and ( ( auth.isEditer=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"' )");
-			finder.append(" or(info.ISPUBLISH=1) or( auth.ISREADER=1 and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"') ");
-			finder.append(" or info.fdCreatorId='"+ShiroUtils.getUser().getId()+"') ");
+			if(!ShiroUtils.isAdmin()){
+			    finder.append(" and ( info.fdCreatorId='"+ShiroUtils.getUser().getId()+"' or info.ispublish=1 ");
+				finder.append(" or exists ( select auth.fdid from IXDF_NTP_MATERIAL_AUTH auth where auth.fdmaterialId = info.fdid ");
+				finder.append(" and ( auth.isEditer=1 or auth.isreader=1) and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"')  )");
+			}
 			finder.setParam("fdType", fdType);
 			if(StringUtil.isNotBlank(fdName)&&StringUtil.isNotEmpty(fdName)){
 				finder.append(" and info.FDNAME like :fdName");
@@ -204,6 +199,7 @@ public class MaterialService extends BaseService {
 					finder.append(" order by score.fdaverage desc ");
 				}
 			}
+			finder.append(" ) ");
 			Pagination page = getPageBySql(finder, pageNo, pageSize);
 			return page;
 		}
