@@ -22,28 +22,27 @@ import java.util.List;
  * Date: 13-11-4
  * Time: 上午9:47
  * 备课老师对应课程存储的service
- *
+ * <p/>
  * 一定要小心操作BamCourse类，危险！
- *
  */
 @Service
 @Transactional(readOnly = true)
 public class BamCourseService extends SimpleService {
 
 
-    /**********************************************************************************************
-     *writer
-     **********************************************************************************************
-     */
-
     /**
-     * 1：对应授权课程
+     * *******************************************************************************************
+     * writer
+     * *********************************************************************************************
+     */
+    /**
+     * 对备课老师授权课程
      *
-     * @param course                 对应课程
-     * @param courseParticipateAuths 课程参与人员
+     * @param course 课程信息
+     * @param userId 备课老师ID
      */
     @Transactional(readOnly = false)
-    public void saveBamCourse(CourseInfo course, CourseParticipateAuth... courseParticipateAuths) {
+    public void saveBamCourse(CourseInfo course, String userId) {
         //课程章节
         List<CourseCatalog> courseCatalogs = findByCriteria(CourseCatalog.class, Value.eq("courseInfo.fdId", course.getFdId()));
         List<Object> catalogId = getCatalogIds(courseCatalogs);
@@ -55,18 +54,16 @@ public class BamCourseService extends SimpleService {
         String courseContentJson = JsonUtils.writeObjectToJson(courseContents);
 
         BamCourse bamCourse;
-
-        if (courseParticipateAuths != null && courseParticipateAuths.length > 0) {
-            for (CourseParticipateAuth auth : courseParticipateAuths) {
-                if (!auth.getCourse().getFdId().equals(course.getFdId())) {
-                    continue;
-                }
-                bamCourse = new BamCourse(auth.getFdUser().getFdId(), auth.getFdTeacher().getFdId(), auth.getCourse().getFdId(),
-                        courseJson, courseCatalogJson, courseContentJson);
-                save(bamCourse);
-            }
+        //公开课
+        if (course.getIsPublish()) {
+            bamCourse = new BamCourse(userId, null, course.getFdId(),
+                    courseJson, courseCatalogJson, courseContentJson);
+        } else {
+            CourseParticipateAuth auth = findUniqueByProperty(CourseParticipateAuth.class, Value.eq("course.fdId", course.getFdId()), Value.eq("fdUser.fdId", userId));
+            bamCourse = new BamCourse(auth.getFdUser().getFdId(), auth.getFdTeacher().getFdId(), course.getFdId(),
+                    courseJson, courseCatalogJson, courseContentJson);
         }
-
+        save(bamCourse);
     }
 
 
