@@ -5,9 +5,9 @@
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
 <%
- String fdType = request.getParameter("fdType");
  String order = request.getParameter("order");
- String mark=request.getParameter("mark");
+//String fdType = request.getParameter("fdType");
+
 %>
  <html class=""> 
 <head>
@@ -33,11 +33,17 @@
 			        </div>
 			     
 				<div class="page-body" id="pageBody">
+				<c:if test="${param.fdType=='1000' }">
 		        <%@ include file="/WEB-INF/views/course/divcourselist.jsp" %>
+		        </c:if>
+		        <c:if test="${param.fdType!='1000' }">
+		        <%@ include file="/WEB-INF/views/course/divserieslist.jsp" %>
+		        </c:if>
 		       </div>
             <!-- 缓存插叙关键字 -->
 			<input type="hidden" id="coursekey" name="coursekey">
 			<input type="hidden" id="allFlag" >
+			<input type="hidden"  id="cousetype" value="${param.fdType}">
             
 	    </section>
 	</section>
@@ -62,6 +68,7 @@ function findeCoursesByKey(pageNo,order){
 	
 	$("#coursekey").attr("value",fdTitle);//关键字赋值
 	$("#pageBody").html("");
+	if($("#cousetype").val()=='1000'){
 	$.ajax({
 		type: "post",
 		 url: "${ctx}/ajax/course/getCoureInfosOrByKey",
@@ -92,6 +99,38 @@ function findeCoursesByKey(pageNo,order){
 			}
 		}
 	}); 
+	}else{
+		$.ajax({
+			type: "post",
+			 url: "${ctx}/ajax/series/getSeriesInfosOrByKey",
+			data : {
+				"fdName" : fdTitle,
+				"pageNo" : pageNo,
+				"order" : order,
+			},
+			cache: false, 
+			dataType: "html",
+			success:function(data){
+				//alert(data);
+				var serachkey=$("#coursekey").val();
+				$("#pageBody").html(data);
+				if(fdTitle!=""&&fdTitle!=null){
+					$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
+					$("#containkey").html(fdTitle);
+				}
+				else{
+					$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
+					
+				}
+				
+				$("#serach").attr("value",serachkey);
+				if($("#allFlag").val()=='true'){
+					document.getElementById("selectAll").checked=true;
+					selectAll();
+				}
+			}
+		}); 
+	}
 }
 //
 function confirmDel(){
@@ -117,7 +156,7 @@ function deleteCourse(){
 	// return;
 	 $.ajax({
 		type: "post",
-		 url: "${ctx}/ajax/course/deleteCourse",
+		 url: "${ctx}/ajax/course/deleFiter",
 		data : {
 			"courseId":delekey,
 		},

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.base.AttMainService;
@@ -26,6 +27,7 @@ public class SeriesController {
 	private AttMainService attMainService;
 	/*
 	 * 保存系列
+	 * author hanhl
 	 */
 	@RequestMapping(value="saveSeries")
 	public String  saveSeries(HttpServletRequest request){
@@ -61,6 +63,7 @@ public class SeriesController {
 	}
 	/*
 	 * 修改系列或阶段信息
+	 * author hanhl
 	 */
 	@RequestMapping(value="updateSeries")
 	public String updateSeries(HttpServletRequest request){
@@ -76,14 +79,28 @@ public class SeriesController {
 	}
 	/*
 	 * 删除系列 设置系列状态为无效即可;
+	 * author hanhl
 	 */
-	@RequestMapping(value="/course/deleteSeries")
+	@RequestMapping(value="deleteSeries")
 	public String deleteSeries(HttpServletRequest request){
 		String seriesId=request.getParameter("seriesId");
 		SeriesInfo seriesInfo=seriesInfoService.get(seriesId);
 		seriesInfo.setIsAvailable(false);
 		seriesInfoService.update(seriesInfo);
 		return "";
+	}
+	/*
+	 * 查询系列课程;
+	 * author hanhl
+	 */
+	@RequestMapping(value="findeSeriesInfos")
+	public String findSeries(Model model,HttpServletRequest request){
+		String fdName = request.getParameter("fdName");
+		String pageNo = request.getParameter("pageNo");
+		String orderbyStr = request.getParameter("order");
+		Pagination page=seriesInfoService.findSeriesInfosOrByName(fdName, pageNo, orderbyStr);
+		model.addAttribute("page", page);
+		return "/course/course_list";
 	}
 	
 }
