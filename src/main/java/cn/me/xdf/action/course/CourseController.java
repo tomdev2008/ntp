@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
+import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.course.CourseAuthService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.utils.ShiroUtils;
@@ -44,6 +46,9 @@ public class CourseController {
     
     @Autowired
 	private CourseCatalogService courseCatalogService;
+    
+    @Autowired
+	private CourseAuthService courseAuthService;
 	/*
 	 * 
 	 * 获取课程列表
@@ -107,6 +112,35 @@ public class CourseController {
 			}
 		}
 		return "/course/course_preview";
+	}
+	/*
+	 * 根据权限判定跳转
+	 */
+	@RequestMapping(value="pagefoward")
+	public String pagefoward(HttpServletRequest request){
+		String courseId = request.getParameter("courseId");
+		if(getUserAuth(courseId)){
+			return "redirect:/course/add?courseId="+courseId;//有编辑权限(当然用户是课程创建者)到编辑页面
+		}else{
+			return "redirect:/course/previewCourse?courseId="+courseId;//到视图页面
+		}
+	}
+	/*
+	 * 查询当前用户课程权限
+	 */
+	private Boolean getUserAuth(String courseId){
+		if(ShiroUtils.isAdmin()){//超管直接到edit
+			return true;
+		}
+		CourseInfo courseInfo =courseService .load(courseId);
+		if(courseInfo.getCreator().getFdId().equals(ShiroUtils.getUser().getId())){//当前创建者
+			return true;
+		}
+		CourseAuth auth = courseAuthService.findByCourseIdAndUserId(courseId,ShiroUtils.getUser().getId());//有编辑权限
+	    if(auth!=null&&auth.getIsEditer()==true){
+	    	return true;
+	    }
+		return false;//公开的
 	}
 	
 }

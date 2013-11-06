@@ -66,7 +66,12 @@ public class CourseAuthService extends BaseService{
 		finder.append("where anth.course.fdId = :courseId and anth.fdUser.fdId = :userId");
 		finder.setParam("courseId", courseId);
 		finder.setParam("userId", userId);
-		return (CourseAuth) super.find(finder).get(0);
+		List list=super.find(finder);
+		if(list!=null&&list.size()>0){
+			return (CourseAuth) super.find(finder).get(0);
+		}else{
+			return null;
+		}
 	}
 
 	/**

@@ -583,6 +583,10 @@ public class CourseAjaxController {
 		}
 		return JsonUtils.writeObjectToJson(map);
 	}
+	/*
+	 * 删除数据过滤:
+	 */
+	
 	@RequestMapping(value = "deleFiter")
 	@ResponseBody
 	public String deleteFiter(HttpServletRequest request){
@@ -591,13 +595,13 @@ public class CourseAjaxController {
 		String deleType=request.getParameter("deleType");
 		if("0".equals(deleType)){//选择删除
 			if(ShiroUtils.isAdmin()){
-				return "redirect:/ajaxt/course/deleteCourse?courseId"+fdIds;
+				return "redirect:/ajaxt/course/deleteCourse?courseId"+fdIds;//超管直接跳到删除方法删除
 			}else{
-				return getDeleteKeys(fdIds);
+				return getDeleteKeys(fdIds);//获取可删除id
 			}
 		}else{//删除全部
 			if(ShiroUtils.isAdmin()){//管理员删除
-				return "redirect:/ajaxt/course/deleteAllCoursesByKey?fdTitle="+fdName;
+				return "redirect:/ajaxt/course/deleteAllCoursesByKey?fdTitle="+fdName;//超管直接跳到删除方法删除
 			}else{
 				return getDeleteKeys(fdIds);
 			}
@@ -615,7 +619,7 @@ public class CourseAjaxController {
 			return courseInfo.getFdId();
 		}
 		CourseAuth auth = courseAuthService.findByCourseIdAndUserId(couserId,ShiroUtils.getUser().getId());
-	    if(auth.getIsEditer()==true){
+	    if(auth!=null&&auth.getIsEditer()==true){
 	    	return courseInfo.getFdId();
 	    }
 		
@@ -623,7 +627,7 @@ public class CourseAjaxController {
 		   
 	}
 	/*
-	 * 获取可执行删除的课程id
+	 * 获取可执行删除的课程id返回页面
 	 * 
 	 */
 	@SuppressWarnings("rawtypes")
