@@ -3,9 +3,7 @@ package cn.me.xdf.model.process;
 import java.util.Date;
 
 import cn.me.xdf.model.base.IdEntity;
-import cn.me.xdf.model.course.CourseCatalog;
-import cn.me.xdf.model.material.MaterialInfo;
-import cn.me.xdf.model.organization.SysOrgPerson;
+
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -13,9 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -32,21 +28,25 @@ import javax.persistence.Table;
 @Table(name = "IXDF_NTP_SOURCE_NOTE")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SourceNote extends IdEntity{
+	/**
+     * 所属课程Id
+     */
+    private String fdCourseId;
 	
 	/**
-     * 所属章节
+     * 所属节Id
      */
-    private CourseCatalog fdCatalog;
+    private String fdCatalogId;
     
     /**
-	 * 所属素材
+	 * 所属素材Id
 	 */
-	private MaterialInfo fdMaterial;
+	private String fdMaterialId;
 	
 	/**
-	 * 用户
+	 * 用户Id
 	 */
-	private SysOrgPerson fdUser;
+	private String fdUserId;
 
 	/**
 	 * 学习素材状态
@@ -59,16 +59,6 @@ public class SourceNote extends IdEntity{
 	private Date fdOperationDate;
 	
 	/**
-	 * 作业审核结果
-	 */
-	private String fdAudit;
-	
-	/**
-	 * 作业上传状态
-	 */
-	private Integer fdUploadStatus;
-	
-	/**
 	 * 分数
 	 */
 	private Double fdScore;
@@ -79,43 +69,21 @@ public class SourceNote extends IdEntity{
 	private Integer fdExamTime;
 	
 	/**
-	 * 评分人
+	 * 评分人Id
 	 */
-	private SysOrgPerson fdAppraiser;
+	private String fdAppraiserId;
 	
 	/**
 	 * 评语
 	 */
 	private String fdComment;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdCatalogId")
-	public CourseCatalog getFdCatalog() {
-		return fdCatalog;
+	public String getFdCourseId() {
+		return fdCourseId;
 	}
 
-	public void setFdCatalog(CourseCatalog fdCatalog) {
-		this.fdCatalog = fdCatalog;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdMaterialId")
-	public MaterialInfo getFdMaterial() {
-		return fdMaterial;
-	}
-
-	public void setFdMaterial(MaterialInfo fdMaterial) {
-		this.fdMaterial = fdMaterial;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdUserId")
-	public SysOrgPerson getFdUser() {
-		return fdUser;
-	}
-
-	public void setFdUser(SysOrgPerson fdUser) {
-		this.fdUser = fdUser;
+	public void setFdCourseId(String fdCourseId) {
+		this.fdCourseId = fdCourseId;
 	}
 
 	public Boolean getIsStudy() {
@@ -134,22 +102,6 @@ public class SourceNote extends IdEntity{
 		this.fdOperationDate = fdOperationDate;
 	}
 
-	public String getFdAudit() {
-		return fdAudit;
-	}
-
-	public void setFdAudit(String fdAudit) {
-		this.fdAudit = fdAudit;
-	}
-
-	public Integer getFdUploadStatus() {
-		return fdUploadStatus;
-	}
-
-	public void setFdUploadStatus(Integer fdUploadStatus) {
-		this.fdUploadStatus = fdUploadStatus;
-	}
-
 	public Double getFdScore() {
 		return fdScore;
 	}
@@ -166,16 +118,6 @@ public class SourceNote extends IdEntity{
 		this.fdExamTime = fdExamTime;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdAppraiserId")
-	public SysOrgPerson getFdAppraiser() {
-		return fdAppraiser;
-	}
-
-	public void setFdAppraiser(SysOrgPerson fdAppraiser) {
-		this.fdAppraiser = fdAppraiser;
-	}
-
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	public String getFdComment() {
@@ -184,6 +126,38 @@ public class SourceNote extends IdEntity{
 
 	public void setFdComment(String fdComment) {
 		this.fdComment = fdComment;
+	}
+
+	public String getFdCatalogId() {
+		return fdCatalogId;
+	}
+
+	public void setFdCatalogId(String fdCatalogId) {
+		this.fdCatalogId = fdCatalogId;
+	}
+
+	public String getFdMaterialId() {
+		return fdMaterialId;
+	}
+
+	public void setFdMaterialId(String fdMaterialId) {
+		this.fdMaterialId = fdMaterialId;
+	}
+
+	public String getFdUserId() {
+		return fdUserId;
+	}
+
+	public void setFdUserId(String fdUserId) {
+		this.fdUserId = fdUserId;
+	}
+
+	public String getFdAppraiserId() {
+		return fdAppraiserId;
+	}
+
+	public void setFdAppraiserId(String fdAppraiserId) {
+		this.fdAppraiserId = fdAppraiserId;
 	}
 	
 }
