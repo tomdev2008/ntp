@@ -387,6 +387,13 @@ public class CourseAjaxController {
 		List<Map> list = courseService.findAuthInfoByCourseId(courseId);
 		Map map = new HashMap();
 		map.put("user", list);
+		CourseInfo course = courseService.get(courseId);
+		SysOrgPerson orgPerson = course.getCreator();
+		map.put("createrid", orgPerson.getFdId());
+		map.put("createrimgUrl", orgPerson.getFdPhotoUrl());
+		map.put("creatername", orgPerson.getRealName());
+		map.put("creatermail", orgPerson.getFdEmail());
+		map.put("createrdepartment", orgPerson.getDeptName());
 		return JsonUtils.writeObjectToJson(map);
 	}
 

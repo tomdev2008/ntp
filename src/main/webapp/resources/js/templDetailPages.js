@@ -489,12 +489,14 @@
 			$("#submitUser").click(function(){
 				var data = [];
 				$("#list_user>tr").each(function(){
-					data.push({
-						id: $(this).attr("data-fdid"),
-						index: $(this).index(),
-						tissuePreparation: $(this).find(".tissuePreparation").is(":checked"),
-						editingCourse: $(this).find(".editingCourse").is(":checked")
-					});
+					if($(this).attr("data-fdid")!="creater"){ 
+						data.push({
+							id: $(this).attr("data-fdid"),
+							index: $(this).index(),
+							tissuePreparation: $(this).find(".tissuePreparation").is(":checked"),
+							editingCourse: $(this).find(".editingCourse").is(":checked")
+						});
+					}
 				});
 				// console.log(JSON.stringify(data));
 				// alert(JSON.stringify(data));

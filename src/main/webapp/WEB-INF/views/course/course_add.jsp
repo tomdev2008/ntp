@@ -329,6 +329,17 @@
 							</tr>
 						</thead>
 						<tbody id="list_user">
+									<tr data-fdid="creater">
+										<td class="tdTit">
+                                          <div class="pr">
+											<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+											<img src="{{=it.createrimgUrl}}" alt="">{{=it.creatername}}（{{=it.creatermail}}）， {{=it.createrdepartment}}
+										 </div>
+                                          </td>
+										<td><input type="checkbox" checked onclick="return false" class="tissuePreparation" /></td>
+										<td><input type="checkbox" checked onclick="return false" class="editingCourse" /></td>
+										<td></td>
+									</tr>
 							{{~it.user :user:index}}
 								{{~it.user :user:index2}}
 									{{?index == user.index}}
