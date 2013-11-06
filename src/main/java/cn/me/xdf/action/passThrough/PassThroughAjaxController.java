@@ -1,4 +1,4 @@
-package cn.me.xdf.action.passthrough;
+package cn.me.xdf.action.passThrough;
 
 import java.util.ArrayList;
 import java.util.HashMap;
