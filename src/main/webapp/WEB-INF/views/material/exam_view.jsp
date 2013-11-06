@@ -26,7 +26,7 @@
 		            {{=it.subject}}
 		        </div>
 		    </td>
-		    <td><span class="spans">{{=it.score}}</span>分</td>
+		    <td><span class="spans">{{=it.score}}<span>分</td>
 		</tr>
     </script>
 
@@ -34,7 +34,7 @@
 </head>
 
 <body>
-<input type='hidden' id='materIalId' value='${materIalId}' />
+<input type='hidden' id='materIalId' value='${param.fdId}' />
 <section class="container">
 	<section class="clearfix mt20">
 	  <section class="col-left pull-left">
@@ -93,7 +93,7 @@
                                 <thead>
                                 <tr>
                                     <th>试题</th>
-                                    <th>分数</th>
+                                    <th width="20%">分数</th>
                                 </tr>
                                 </thead>
                                 <tbody id="list_exam">
@@ -137,7 +137,7 @@
 <script type="text/javascript">
 
 $.ajax({
-	  url: "${ctx}/ajax/material/getMaterial?materialId=${materIalId}",
+	  url: "${ctx}/ajax/material/getMaterial?materialId=${param.fdId}",
 	  async:false,
 	  dataType : 'json',
 	  success: function(result){
@@ -156,7 +156,7 @@ function initExamQuestions(){
 	if(id!==null&&id!=""){
 		var examQuestionTemplate = doT.template(document.getElementById("examQuestionTemplate").text);
 	    $.ajax({
-			  url: "${ctx}/ajax/material/getExamQuestionSrcByMaterId?materialId=${materIalId}",
+			  url: "${ctx}/ajax/material/getExamQuestionSrcByMaterId?materialId=${param.fdId}",
 			  async:false,
 			  dataType : 'json',
 			  success: function(result){

@@ -35,7 +35,7 @@
 <!-- 试题详情编辑 模板 -->
 <script id="examDetailTemplate" type="text/x-dot-template">
     <div class="page-header">
-        <a href="${ctx}/material/addExam?materIalId=${materIalId}" class="backParent">返回当前试卷</a>
+        <a href="${ctx}/material/addExam?materIalId=${param.fdId}" class="backParent">返回当前试卷</a>
         <h4>{{=it.examPaperName}}</h4>
         <div class="btn-group">
             <button class="btn btn-large btn-primary" id="saveExam" type="button">保存</button>
@@ -192,7 +192,7 @@
 </head>
 
 <body>
-<input type='hidden' id='materIalId' value='${materIalId}' />
+<input type='hidden' id='materIalId' value='${param.fdId}' />
 <section class="container">
 	<section class="clearfix mt20">
 	  <section class="col-left pull-left">
@@ -414,9 +414,9 @@ $(function(){
                 $("#examPaperTime").val( $(this).children(".num").text());
             });
 	//初始化页面
-	if("${materIalId}"!=null&&"${materIalId}"!=""){
+	if("${param.fdId}"!=null&&"${param.fdId}"!=""){
 		 $.ajax({
-			  url: "${ctx}/ajax/material/getMaterial?materialId=${materIalId}",
+			  url: "${ctx}/ajax/material/getMaterial?materialId=${param.fdId}",
 			  async:false,
 			  dataType : 'json',
 			  success: function(result){
@@ -442,7 +442,7 @@ $(function(){
 	   var creater="";
 	   var url="";
 	    $.ajax({
-			  url: "${ctx}/ajax/material/getCreater?materialId=${materIalId}",
+			  url: "${ctx}/ajax/material/getCreater?materialId=${param.fdId}",
 			  async:false,
 			  dataType : 'json',
 			  success: function(result){
@@ -452,7 +452,7 @@ $(function(){
 		});
 	    var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
 	    $.ajax({
-			  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materIalId}",
+			  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${param.fdId}",
 			  async:false,
 			  dataType : 'json',
 			  success: function(result){
@@ -489,7 +489,7 @@ $(function(){
     //删除试卷事件
     $("#delExamPaper").click(function(e){
     	$.ajax({
-			  url: "${ctx}/ajax/material/deleteMaterial?materialId=${materIalId}",
+			  url: "${ctx}/ajax/material/deleteMaterial?materialId=${param.fdId}",
 			  async:false,
 			  success: function(result){
 				  $.fn.jalert2("删除成功");
@@ -506,7 +506,7 @@ $(function(){
     		return;
     	}
         var data = {
-        	id:"${materIalId}",
+        	id:"${param.fdId}",
             examPaperName: $("#examPaperName").val(),
             examPaperIntro: $("#examPaperIntro").val(),
             author: $("#author").val(),
@@ -811,7 +811,7 @@ $(function(){
             }
             //ajax
         	$.ajax({
-				  url: "${ctx}/ajax/examquestion/saveOrUpdateExamQuestion?questionId="+fdid+"&materIalId=${materIalId}&materialName="+materialName,
+				  url: "${ctx}/ajax/examquestion/saveOrUpdateExamQuestion?questionId="+fdid+"&materIalId=${param.fdId}&materialName="+materialName,
 				  async:false,
 				  data:data,
 				  type: "POST",
@@ -873,7 +873,7 @@ function initExamQuestions(){
 	if(id!==null&&id!=""){
 		var examQuestionTemplate = doT.template(document.getElementById("examQuestionTemplate").text);
 	    $.ajax({
-			  url: "${ctx}/ajax/material/getExamQuestionByMaterId?materialId=${materIalId}",
+			  url: "${ctx}/ajax/material/getExamQuestionByMaterId?materialId=${param.fdId}",
 			  async:false,
 			  dataType : 'json',
 			  success: function(result){

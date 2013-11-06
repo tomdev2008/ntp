@@ -134,8 +134,8 @@ public class MaterialController {
 	 */
 	@RequestMapping(value="addExam")
 	public String addExam(Model model,HttpServletRequest request){
-		String materIalId = request.getParameter("materIalId");
-		model.addAttribute("materIalId", materIalId);
+//		String materIalId = request.getParameter("materIalId");
+//		model.addAttribute("materIalId", materIalId);
 		return "/material/exam_add";
 	}
 	
@@ -147,8 +147,8 @@ public class MaterialController {
 	 */
 	@RequestMapping(value="viewExam")
 	public String viewExam(Model model,HttpServletRequest request){
-		String materIalId = request.getParameter("materIalId");
-		model.addAttribute("materIalId", materIalId);
+//		String materIalId = request.getParameter("materIalId");
+//		model.addAttribute("materIalId", materIalId);
 		return "/material/exam_view";
 	}
 	

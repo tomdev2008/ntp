@@ -114,7 +114,7 @@
 		<ul class="nav list">
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
 			
-				<li><a href="${ctx}/material/addExam?materIalId=${bean.FDID}&fdType=${param.fdType}"> 
+				<li><a href="${ctx}/material/addExam?fdId=${bean.FDID}&fdType=${param.fdType}"> 
 				<input type="checkbox" name="ids" value="${bean.FDID}"/> 
 				    <span class="title">${bean.FDNAME}</span> 
 				     <span class="date"><i class="icon-time"></i>
