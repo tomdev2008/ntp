@@ -48,13 +48,12 @@ public class MaterialController {
 	
 	
 	/**
-	 * 返回编辑，添加，查看素材页面
+	 * 返回编辑，查看素材页面
 	 */
 	@RequestMapping(value="materialFoward")
 	public String materialFoward(Model model ,HttpServletRequest request){
 		String fdId = request.getParameter("fdId");
-		String fdType = request.getParameter("fdType");
-		if(StringUtil.isNotBlank(fdId)&&StringUtil.isNotBlank(fdType)){
+		if(StringUtil.isNotBlank(fdId)){
 			MaterialInfo materialInfo = materialService.get(fdId);
 			model.addAttribute("materialInfo", materialInfo);
 			ScoreStatistics score = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId
@@ -69,28 +68,33 @@ public class MaterialController {
 		    String creatorId = materialInfo.getCreator().getFdId();
 		    String loginUserId = ShiroUtils.getUser().getId();
 		    if(creatorId.equals(loginUserId)||ShiroUtils.isAdmin()){
-		    	return fowardEdit(fdType);//返回的是素材edit页面
+		    	return fowardEdit(materialInfo.getFdType());//返回的是素材edit页面
 		    }
 		    if(materialInfo.getIsPublish()==false){
 		    	MaterialAuth auth = materialAuthService.findByMaterialIdAndUserId(fdId,ShiroUtils.getUser().getId());
 			    if(auth.getIsEditer()==true){
-			    	return fowardEdit(fdType);
+			    	return fowardEdit(materialInfo.getFdType());
 				}else{
-					return fowardView(fdType);
+					return fowardView(materialInfo.getFdType());
 				}
 		    }
 		}
-		if(StringUtil.isNotBlank(fdType)){
-			return fowardEdit(fdType);
-		}else{
-			return null;
-		}
-		
+		return null;
+	}
+	/**
+	 * 返回添加素材的页面
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="materialAddFoward")
+	public String materialAddFoward(HttpServletRequest request){
+		String fdType = request.getParameter("fdType");
+		return fowardEdit(fdType);
 	}
 	//返回的是view页面
 	private String fowardView(String fdType){
 		//测试
-    	if(fdType.equals(Constant.MATERIAL_TYPE_ASSESSMENT)){
+    	if(fdType.equals(Constant.MATERIAL_TYPE_TEST)){
     		return "/material/exam_view";
     	}
     	//作业包
@@ -103,7 +107,7 @@ public class MaterialController {
 	}
 	private String fowardEdit(String fdType){
 		//测试
-    	if(fdType.equals(Constant.MATERIAL_TYPE_ASSESSMENT)){
+    	if(fdType.equals(Constant.MATERIAL_TYPE_TEST)){
     		return "/material/exam_add";
     	}
     	//作业包
