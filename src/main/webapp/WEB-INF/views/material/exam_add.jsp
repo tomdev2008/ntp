@@ -60,7 +60,7 @@
                     <label class="control-label" for="examStem">试题题干</label>
                     <div class="controls"><textarea placeholder="请使用#...#标记填空题的答案，例如：新教师在线备课课程的第三章学习内容是#标准化教案#" rows="4"
                                                     class="input-block-level" required id="examStem"
-                                                    name="examStem">{{=it.examStem || ''}}</textarea>
+                                                    name="examStem">{{=it.examStem || ''}}</textarea><label id="examStemErr" for="examStem" class="error"></label>
                     </div>
                 </div>
                 <div class="control-group">
@@ -74,6 +74,7 @@
                                    class="{{?i==1}}first {{?}}{{?it.examScore && i<=it.examScore}}active{{?}}"><span class="num">{{=i}}</span></a>
                                 {{ } }}
                             </div>
+					<label id="questionScoreErr" class="error" style="display: none;"></label>
                     </div>
                 </div>
             </section>
@@ -139,6 +140,7 @@
                 <h5>
                     试题选项答案
                 </h5>
+<label id="answerErr" class="error" style="display: block;"></label>
                  <button class="btn btn-primary btn-large pos-right" id="addExamItem" type="button">填加选项</button>
             </div>
             <div class="bd">
@@ -214,8 +216,9 @@
                             <label class="control-label" for="examPaperName">试&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卷</label>
                             <div class="controls">
                                 <input id="examPaperName" required class="span6"
-                                       name="examPaperName" type="text"><span class="date">2013/02/14 10:01 AM</span>
+                                       name="examPaperName" type="text"> <label id="examPaperNameErr" for="examPaperName" class="error" style="display: none;"></label><span class="date">2013/02/14 10:01 AM</span>
                             </div>
+                           
                         </div>
                         <div class="control-group">
                             <label class="control-label" for="examPaperIntro">试卷简介</label>
@@ -412,6 +415,7 @@ $(function(){
                 $(this).prevAll("a").add(this).addClass("active");
                 $(this).nextAll("a").removeClass("active");
                 $("#examPaperTime").val( $(this).children(".num").text());
+                $("#questionScoreErr").css("display","none");
             });
 	//初始化页面
 	if("${param.fdId}"!=null&&"${param.fdId}"!=""){
@@ -543,7 +547,7 @@ $(function(){
         	$.fn.jalert2("请输入试题");
         }
         if(data.permission === "encrypt"&&data.kingUser.length==0){
-        	$.fn.jalert2("请输入试题");
+        	$.fn.jalert2("请输入用户");
         }
         $.ajax({
 			  url:"${ctx}/ajax/examquestion/UpdateExamQuestionAndMaterial",
@@ -643,7 +647,8 @@ $(function(){
     function loadExamPage(fdid){
         var materialName = $("#examPaperName").val();
         if(materialName==""||materialName==null){
-        	$.fn.jalert2("请先设置试卷名称");
+        	$("#examPaperNameErr").html("请先设置试卷名称");
+        	$("#examPaperNameErr").css("display","block");
         	return;
         }
     	var data = {};
@@ -713,6 +718,7 @@ $(function(){
                     $(this).prevAll("a").add(this).addClass("active");
                     $(this).nextAll("a").removeClass("active");
                     $("#examScore").val( $(this).children(".num").text());
+                    $("#questionScoreErr").css("display","none");
                 });
 
 
@@ -769,6 +775,14 @@ $(function(){
 
         /*提交试题详情表单函数*/
         function submitForm(form){
+        	if($("#examType").val()=="completion"){
+        		var examSub=$("#examStem").val();
+            	if((examSub.split("#").length%2==0)){
+            		$("#examStemErr").html("题干输入有误，请仔细查看修改后再提交");
+            		$("#examStemErr").css("display","block");
+            		return;
+            	}
+        	}
         	var data = {
                 examType: $("#examType").val(),
                 examStem: $("#examStem").val(),
@@ -802,11 +816,13 @@ $(function(){
             }
             if(JSON.stringify(data.examScore)=='""')
             {
-            	$.fn.jalert2("请设置分数");
+            	$("#questionScoreErr").html("请设置分数");
+            	$("#questionScoreErr").css("display","block");
             	return;
             }
             if(JSON.stringify(data.examType)!='"completion"'&&JSON.stringify(data.listExamAnswer)=="[]"){
-            	$.fn.jalert2("请输入试题答案");
+            	$("#answerErr").html("请输入试题答案");
+            	$("#answerErr").css("display","block");
             	return;
             }
             //ajax
