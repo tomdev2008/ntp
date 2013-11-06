@@ -308,8 +308,5 @@
 <!--底部 E-->
 </section>
 <!--主体 E-->
-<script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/bootstrap.min.js"></script>
-
 </body>
 </html>
