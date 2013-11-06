@@ -83,7 +83,7 @@ public class PassThroughController {
 				//课程评分统计
 				request.setAttribute("courseScore", scoreStatistics==null?0:scoreStatistics.getFdAverage());
 				//章节信息
-				request.setAttribute("catalog", JsonUtils.readObjectByJson(bamCourse.getCatalogJson(), CourseCatalog.class));
+				request.setAttribute("catalog", bamCourse.getCatalogs());
 			}
 		}
 		return "/passThrough/course_home";
