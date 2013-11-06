@@ -21,11 +21,28 @@
               </div>
 	</div>
           <div class="bd comment-form box-pd15">
-          	<textarea name="" id="" class="input-block-level" placeholder="感谢您的宝贵意见与建议" cols="10" rows="4"></textarea>
-              <button class="btn btn-primary btn-block">我来说两句</button>
+          	<textarea name="" id="courseMessage" class="input-block-level" placeholder="感谢您的宝贵意见与建议" cols="10" rows="4"></textarea>
+              <button class="btn btn-primary btn-block" id="addMessage">我来说两句</button>
           </div>                    
 </div>
 <script type="text/javascript">
+//初始化评论按钮
+$("#addMessage").bind("click",function(){
+	$.ajax({
+		  url: "${ctx}/ajax/message/addCourseMessage",
+		  async:false,
+		  dataType : 'json',
+		  data:{
+			  courseId:"14221e4d16b8d6bf0b3c68541e38814b",
+			  fdContent:$("#courseMessage").val(),
+		  },
+		  success: function(result){
+			  $.fn.jalert2("评论发布成功");
+		  }
+	});
+	
+});
+//初始化分数列表
 $.ajax({
 	  url: "${ctx}/ajax/score/canPushScoreToCourse",
 	  async:false,
@@ -53,6 +70,8 @@ $.ajax({
 	  }
 });
 
+
+//课程打分
 function scoreing(){
 	 $.ajax({
 		  url: "${ctx}/ajax/score/pushScoreToCourse",

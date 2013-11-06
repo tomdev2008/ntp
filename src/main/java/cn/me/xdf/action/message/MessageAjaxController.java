@@ -1,5 +1,6 @@
 package cn.me.xdf.action.message;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.me.xdf.model.base.Constant;
+import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
+import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.message.MessageReplyService;
 import cn.me.xdf.service.message.MessageService;
+import cn.me.xdf.utils.ShiroUtils;
 
 /**
  * 消息
@@ -28,6 +35,9 @@ public class MessageAjaxController {
 	
 	@Autowired
 	private MessageReplyService messageReplyService ;
+	
+	@Autowired
+	private AccountService accountService;
 	
 	/**
 	 * 支持或反对评论
@@ -65,4 +75,31 @@ public class MessageAjaxController {
 	public String canSupportOrOppose(String userId, String messageId) {
 		return messageService.canSupportOrOppose(userId, messageId)+"";
 	}
+	
+	/**
+	 * 添加评论
+	 * 
+	 */
+	private void addMessage(String fdModelName,String fdModelId,String fdContent,String fdType,boolean isAnonymous,String userId) {
+		Message message = new Message();
+		message.setFdModelName(fdModelName);
+		message.setFdModelId(fdModelId);
+		message.setFdContent(fdContent);
+		message.setFdCreateTime(new Date());
+		message.setFdType(fdType);
+		message.setIsAnonymous(isAnonymous);
+		message.setFdUser((SysOrgPerson)accountService.load(userId));
+		messageService.save(message);
+	}
+	
+	/**
+	 * 添加评论(针对课程，当前用户)
+	 * 
+	 */
+	@RequestMapping(value = "addCourseMessage")
+	@ResponseBody
+	private void addCourseMessage(String courseId,String fdContent) {
+		addMessage(CourseInfo.class.getName(), courseId, fdContent, Constant.MESSAGE_TYPE_REVIEW, false, ShiroUtils.getUser().getId());
+	}
+
 }
