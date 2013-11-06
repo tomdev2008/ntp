@@ -1,7 +1,6 @@
 package cn.me.xdf.action.score;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.json.JsonUtils;
-import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.score.Score;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.score.ScoreService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
+import cn.me.xdf.utils.ShiroUtils;
 
 /**
  * 评分
@@ -117,12 +117,42 @@ public class ScoreAjaxController {
 	 * @param fdModelName   业务Name
 	 * @param userId      评分人Id
 	 * 
-	 * @return  String(true:可以评分；false：不可以评分)
+	 * @return  String(true:可以评分；“...”：已评分数)
 	 */
 	@RequestMapping(value = "canPushScore")
 	@ResponseBody
 	public String canPushScore(String fdModelName, String fdModelId,String userId) {
 		Score score = scoreService.findByModelIdAndUserId(fdModelName,fdModelId, userId);
-		return (score == null) ? "false" : "true";
+		return (score == null) ? "true" : score.getFdScore()+"";
 	}
+	
+	/**
+	 * 为课程打分（当前用户）
+	 */
+	@RequestMapping(value = "pushScoreToCourse")
+	@ResponseBody
+	public String pushScoreToCourse(String fdModelId,String fdScore){
+		return pushScore(CourseInfo.class.getName(), fdModelId, fdScore,ShiroUtils.getUser().getId());
+	}
+	
+	/**
+	 * 是否可以为课程评分（当前用户）
+	 */
+	@RequestMapping(value = "canPushScoreToCourse")
+	@ResponseBody
+	public String canPushScoreToCourse(String fdModelId){
+		return canPushScore(CourseInfo.class.getName() ,fdModelId ,ShiroUtils.getUser().getId());
+	}
+	
+	/**
+	 * 根据业务Id和业务Name得到评分统计信息
+	 * 
+	 * @return 评分统计信息json
+	 */
+	@RequestMapping(value = "getCourseScoreStatisticsByfdModelId")
+	@ResponseBody
+	public String getCourseScoreStatisticsByfdModelId(String fdModelId){
+		return getScoreStatisticsByfdModelId(fdModelId, CourseInfo.class.getName());
+	}
+
 }
