@@ -33,7 +33,7 @@ $("#addMessage").bind("click",function(){
 		  async:false,
 		  dataType : 'json',
 		  data:{
-			  courseId:"14221e4d16b8d6bf0b3c68541e38814b",
+			  courseId:"${course.fdId}",
 			  fdContent:$("#courseMessage").val(),
 		  },
 		  success: function(result){
@@ -48,7 +48,7 @@ $.ajax({
 	  async:false,
 	  dataType : 'json',
 	  data:{
-		  fdModelId:"14221e4d16b8d6bf0b3c68541e38814b",
+		  fdModelId:"${course.fdId}",
 	  },
 	  success: function(result){
 		  //alert(result);
@@ -78,7 +78,7 @@ function scoreing(){
 		  async:false,
 		  dataType : 'json',
 		  data:{
-			  fdModelId:"14221e4d16b8d6bf0b3c68541e38814b",
+			  fdModelId:"${course.fdId}",
 			  fdScore:$("#myScore").html(),
 		  },
 		  success: function(result){
@@ -108,7 +108,7 @@ function setCourseScore(){
 		  async:false,
 		  dataType : 'json',
 		  data:{
-			  fdModelId:"14221e4d16b8d6bf0b3c68541e38814b",
+			  fdModelId:"${course.fdId}",
 		  },
 		  success: function(result){
 			  courseScore=result[0].fdAverage;
