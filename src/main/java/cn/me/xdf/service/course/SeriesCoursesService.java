@@ -33,8 +33,23 @@ public class SeriesCoursesService  extends BaseService{
 	@Transactional(readOnly = false)
 	public void deleteByCourseId(String courseId) {
 		Finder finder = Finder
-				.create(" from SeriesCourses series where  series.courses.fdId=:courseId");	
+				.create(" from SeriesCourses seriesCourse where  seriesCourse.courses.fdId=:courseId");	
 		finder.setParam("courseId", courseId);
+		List<SeriesCourses> list = super.find(finder);
+		if(list!=null && list.size()>0){
+			for(SeriesCourses series:list){
+				super.deleteEntity(series);
+			}
+		}
+	}
+	/*根据系列ID删除课程与系列的关系
+	 * author hanhl
+	 */
+	@Transactional(readOnly = false)
+	public void deleteBySeriesId(String seriesId) {
+		Finder finder = Finder
+				.create(" from SeriesCourses seriesCourse where  seriesCourse.series.fdId=:seriesId");	
+		finder.setParam("seriesId", seriesId);
 		List<SeriesCourses> list = super.find(finder);
 		if(list!=null && list.size()>0){
 			for(SeriesCourses series:list){

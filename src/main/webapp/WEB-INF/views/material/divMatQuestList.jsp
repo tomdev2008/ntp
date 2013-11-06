@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
+<j:set name="ctx" value="${pageContext.request.contextPath}" />
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 	<section class="section box-control">
 		<div class="hd">

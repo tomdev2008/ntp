@@ -54,9 +54,9 @@
 							 </a>
 							</div>
 							<label class="checkbox inline" for="selectCurrPage">
-							   <input type="checkbox" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()"/>选中本页</label>
+							   <input type="checkbox" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()" value="0"/>选中本页</label>
 							<label class="checkbox inline" for="selectAll">
-				  			 <input type="checkbox" id="selectAll" name="selectCheckbox"  onclick="selectAll()"/>选中全部</label>
+				  			 <input type="checkbox" id="selectAll" name="selectCheckbox"  onclick="selectAll()" value="1"/>选中全部</label>
 								
 							<div class="pages pull-right">
 								<div class="span2">

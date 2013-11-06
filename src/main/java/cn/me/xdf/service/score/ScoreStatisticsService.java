@@ -80,7 +80,7 @@ public class ScoreStatisticsService extends BaseService{
 		int score_5 = scoreService.getCountByModelIdAndScore(fdModelName,fdModelId, 5);
 		int num = score_1+score_2+score_3+score_4+score_5;
 		Double average = (score_1+score_2*2+score_3*3+score_4*4+score_5*5)/new Double(num);
-		scoreStatistics.setFdAverage(average);
+		scoreStatistics.setFdAverage(Math.round(average)/1.0);
 		scoreStatistics.setFdScoreNum(num);
 		scoreStatistics.setFdOneScoreNum(score_1);
 		scoreStatistics.setFdTwoScoreNum(score_2);

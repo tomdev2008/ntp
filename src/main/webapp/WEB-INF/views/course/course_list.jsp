@@ -49,12 +49,13 @@
 	</section>
 </section>
 <script type="text/javascript">	
-function clearserach(){
+function clearserach(){//清理搜索栏并显示数据列表
 	//alert('ss');
 	$("#serach").attr("value","");
-	$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
+	$("#markshow").html('<a id="containkey"href="#">全部条目</a>');
 	findeCoursesByKey(1,'fdcreatetime');
 }
+
 function showSearch(){
 	var fdTitle = document.getElementById("serach").value;
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
@@ -134,26 +135,29 @@ function findeCoursesByKey(pageNo,order){
 }
 //
 function confirmDel(){
-	var delekey="";
-	$('input[name="ids"]:checked').each(function() {
-		delekey+=$(this).val()+",";
-	}); 	
-	if(delekey==""){
-		$.fn.jalert2("当前没有选择要删除的数据!");
-		return;
-	}
-	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
-		fiterDelete(delekey,1);
-		$.fn.jalert("您确认要删除所有课程？",deleteAllCourse);
-	}else if($('input[name="selectCheckbox"]:checked').val()==0){
-		fiterDelete(delekey,0);
-		$.fn.jalert("您确认要删除本页课程？",deleteCourse);
+	if($("#cousetype").val()=='12'){
+		var delekey="";
+		$('input[name="ids"]:checked').each(function() {
+			delekey+=$(this).val()+",";
+		}); 	
+		if(delekey==""){
+			$.fn.jalert2("当前没有选择要删除的数据!");
+			return;
+		}
+		if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
+			fiterDelete(delekey,1);
+			$.fn.jalert("您确认要删除所有课程？",deleteAllCourse);
+		}else if($('input[name="selectCheckbox"]:checked').val()==0){
+			fiterDelete(delekey,0);
+			$.fn.jalert("您确认要删除本页课程？",deleteCourse);
+		}else{
+			fiterDelete(delekey,0);
+			$.fn.jalert("您确认要删除所选课程？",deleteCourse);
+			
+		}
 	}else{
-		fiterDelete(delekey,0);
-		$.fn.jalert("您确认要删除所选课程？",deleteCourse);
-		
+		confirmDelseries();
 	}
-		
 }
 //删除选中列表
 function deleteCourse(){
@@ -257,6 +261,55 @@ function fiterDelete(delekey,deleType){
 			} 
 		}
     });
+}
+/* --系列信息-- */
+function confirmDelseries(){
+	var delekey="";
+	$('input[name="ids"]:checked').each(function() {
+		delekey+=$(this).val()+",";
+	}); 	
+	if(delekey==""){
+		$.fn.jalert2("当前没有选择要删除的数据!");
+		return;
+	}
+	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
+		$.fn.jalert("您确认要删除系列以及系列下课程信息？",deleteAllSeries);
+	}else if($('input[name="selectCheckbox"]:checked').val()==0){
+		$.fn.jalert("您确认要删除本页系列信息？",deleteSeries);
+	}else{
+		$.fn.jalert("您确认要删除所选系列信息？",deleteSeries);
+	}
+}
+function deleteSeries(){
+	var delekey="";
+	$('input[name="ids"]:checked').each(function() {
+		delekey+=$(this).val()+",";
+	}); 	
+	 $.ajax({
+		type: "post",
+		async:false,
+		 url: "${ctx}/ajax/series/deleteSeries",
+		data : {
+			"seriesId":delekey,
+		},
+		success:function(data){
+			window.location.href="${ctx}/series/findeSeriesInfos?order=fdcreatetime&fdType="+$('#cousetype').val();
+		}
+	}); 
+}
+function deleteAllSeries(){
+	var delekey = document.getElementById("serach").value;
+	 $.ajax({
+		type: "post",
+		async:false,
+		 url: "${ctx}/ajax/series/deleteAllSeries",
+		data : {
+			"fdTitle":delekey,
+		},
+		success:function(data){
+			window.location.href="${ctx}/series/findeSeriesInfos?order=fdcreatetime&fdType="+$('#cousetype').val();
+		}
+	}); 
 }
 
 </script>

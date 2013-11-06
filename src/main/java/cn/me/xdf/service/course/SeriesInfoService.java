@@ -1,9 +1,17 @@
 package cn.me.xdf.service.course;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import jodd.util.StringUtil;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.page.Pagination;
@@ -12,6 +20,7 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.BaseService;
 @Service
+@Transactional(readOnly = true)
 public class SeriesInfoService extends BaseService {
 
 	@SuppressWarnings("unchecked")
@@ -25,9 +34,10 @@ public class SeriesInfoService extends BaseService {
 	 * 
 	 * author hanhl
 	 * */
+	@Transactional(readOnly = false)
 	public  Pagination findSeriesInfosOrByName(String fdName,String pageNo ,String orderbyStr){
 		Finder finder = Finder.create("select *  from ixdf_ntp_series seriesInfo ");
-		finder.append(" where seriesInfo.isavailable=1 " );
+		finder.append(" where seriesInfo.isavailable=1 and seriesInfo.fdparentid is null " );
 		//设置页码
 		int pageNoI=0;
 		if(StringUtil.isNotBlank(pageNo)&&StringUtil.isNotEmpty(pageNo)){
@@ -53,5 +63,16 @@ public class SeriesInfoService extends BaseService {
 		Pagination pagination=getPageBySql(finder, pageNoI, SimplePage.DEF_COUNT);
 		return pagination;
 	}
+	/*
+	 * 删除系列:设置系列为无效
+	 */
+	@Transactional(readOnly = false)
+	public void deleteSeries(String seriesId){
+		SeriesInfo seriesInfo=get(seriesId);
+		seriesInfo.setIsAvailable(false);
+		update(seriesInfo);
+
+	}
+	
 
 }

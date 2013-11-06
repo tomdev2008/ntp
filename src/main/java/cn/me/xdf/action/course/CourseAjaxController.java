@@ -437,7 +437,7 @@ public class CourseAjaxController {
 	 * 查询课程列表 或者根据关键字搜索 author hanhl
 	 */
 	@RequestMapping(value = "deleteAllCoursesByKey")
-	public String deleteAllCoursesByKey(Model model, HttpServletRequest request) {
+	public void deleteAllCoursesByKey(Model model, HttpServletRequest request) {
 		String fdTitle = request.getParameter("fdTitle");
 		String pageNoStr = request.getParameter("pageNo");
 		String orderbyStr = request.getParameter("order");
@@ -464,7 +464,6 @@ public class CourseAjaxController {
 			}
 		}
 		
-		return "redirect:/ajax/course/getCoureInfosOrByKey";
 	}
 
 	/**
@@ -510,8 +509,7 @@ public class CourseAjaxController {
 			String courseId = "";
 			for(int i=0;i<courses.length;i++){
 				courseId = courses[i];
-				//delCourseById(courseId);
-				System.out.println(courseId);
+				delCourseById(courseId);
 			}
 		}
 	}

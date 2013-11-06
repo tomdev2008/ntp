@@ -62,7 +62,7 @@
         		</div>
               <p>${course.fdAuthor}
               </p>
-              	<div class="rating-view">
+              	<div class="rating-view" id="courseScore">
                 		<span class="rating-all">
                 		  <c:forEach var="i" begin="1" end="${courseScore}">
 						   <i class="icon-star active"></i>
@@ -150,21 +150,10 @@
                 </div>
 			</div>
 			<div class="pull-right w225">
-	        	<div class="section">
-	       	  		<div class="hd">
-		        		<h2 class="h2_r">评分 </h2>
-                      	<div class="ab_l rating-view">
-                        	<span class="rating-all">
-			                    		<i class="icon-star active"></i><i class="icon-star active"></i><i class="icon-star active"></i><i class="icon-star active"></i><i class="icon-star"></i>
-			                         </span>
-			                         <span class="text-warning">很好</span>
-                        </div>
-		        	</div>
-                    <div class="bd comment-form box-pd15">
-                    	<textarea name="" id="" class="input-block-level" placeholder="感谢您的宝贵意见与建议" cols="10" rows="4"></textarea>
-                        <button class="btn btn-primary btn-block">我来说两句</button>
-                    </div>                    
-		        </div>
+				 <!-- 评分评论页面 -->
+	        	 <c:import url="/WEB-INF/views/passThrough/score_course.jsp">
+                	<c:param name="courseId" value="${course.fdId}" />
+                </c:import>
 		        <!-- 学习当前课程的新教师列表 -->
                 <c:import url="/WEB-INF/views/passThrough/learning_teacher_list.jsp">
                 	<c:param name="courseId" value="${course.fdId}" />

@@ -17,7 +17,7 @@ import cn.me.xdf.service.course.SeriesInfoService;
  * 系列
  */
 @Controller
-@RequestMapping(value = "/course")
+@RequestMapping(value = "/series")
 @Scope("request")
 public class SeriesController {
 	
