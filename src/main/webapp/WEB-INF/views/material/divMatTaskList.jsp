@@ -6,7 +6,7 @@
 	<section class="section box-control">
 		<div class="hd">
 			<div class="btn-toolbar">
-				<a class="btn" href="${ctx}/material/addExamPaper?fdType=${param.fdType}">添加</a>
+				<a class="btn" href="${ctx}/material/materialFoward?fdType=${param.fdType}">添加</a>
 				<div class="btn-group">
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 						操作 <span class="caret"></span>
@@ -112,7 +112,7 @@
 		<ul class="nav list">
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
 			
-				<li><a href="${ctx}/material/addExamPaper?materialId=${bean.FDID}&fdType=${param.fdType}"> 
+				<li><a href="${ctx}/material/materialFoward?fdId=${bean.FDID}&fdType=${param.fdType}"> 
 				<input type="checkbox" name="ids" value="${bean.FDID}"/> 
 				    <span class="title">${bean.FDNAME}</span> 
 				     <span class="date"><i class="icon-time"></i>

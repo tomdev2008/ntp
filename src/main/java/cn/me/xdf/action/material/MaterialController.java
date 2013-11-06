@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.score.ScoreStatistics;
@@ -47,58 +48,71 @@ public class MaterialController {
 	
 	
 	/**
-	 * 返回增加视频页面
-	 * @param model
-	 * @param request
-	 * @return
+	 * 返回编辑，添加，查看素材页面
 	 */
-	@RequestMapping(value="addVideo")
-	public String addVideo(Model model ,HttpServletRequest request){
-		return "/material/addVideo";
-	}
-	/**
-	 * 返回添加作业包的页面
-	 * @return
-	 */
-	@RequestMapping(value="addExamPaper")
-	public String addWorkPacket(Model model ,HttpServletRequest request){
-		String materialId  = request.getParameter("materialId");
-		if(StringUtil.isNotBlank(materialId)){
-			MaterialInfo materialInfo = materialService.get(materialId);
-			model.addAttribute("materialInfo", materialInfo);
-		}
-		return "/material/addExamPaper";
-	}
-	/**
-	 * 返回编辑视频页面
-	 */
-	@RequestMapping(value="updateVideo")
-	public String updateVideo(Model model ,HttpServletRequest request){
+	@RequestMapping(value="materialFoward")
+	public String materialFoward(Model model ,HttpServletRequest request){
 		String fdId = request.getParameter("fdId");
 		String fdType = request.getParameter("fdType");
-		if(StringUtil.isNotBlank(fdId)&&StringUtil.isNotEmpty(fdId)){
+		if(StringUtil.isNotBlank(fdId)&&StringUtil.isNotBlank(fdType)){
 			MaterialInfo materialInfo = materialService.get(fdId);
 			model.addAttribute("materialInfo", materialInfo);
 			ScoreStatistics score = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId
 					           (MaterialInfo.class.getName(),materialInfo.getFdId());
-		    model.addAttribute("score", score);
+			if(score!=null){
+				model.addAttribute("score", score);
+			}
 		    AttMain main = attMainService.getByModelId(fdId);
 		    if(main!=null){
 		    	model.addAttribute("attId", main.getFdId());
 		    }
-		    if(materialInfo.getCreator().getFdId().equals(ShiroUtils.getUser().getId())){
-		    	return "/material/editVideo";
+		    String creatorId = materialInfo.getCreator().getFdId();
+		    String loginUserId = ShiroUtils.getUser().getId();
+		    if(creatorId.equals(loginUserId)||ShiroUtils.isAdmin()){
+		    	return fowardEdit(fdType);//返回的是素材edit页面
 		    }
 		    if(materialInfo.getIsPublish()==false){
 		    	MaterialAuth auth = materialAuthService.findByMaterialIdAndUserId(fdId,ShiroUtils.getUser().getId());
 			    if(auth.getIsEditer()==true){
-				   return "/material/editVideo";
+			    	return fowardEdit(fdType);
 				}else{
-				   return "/material/viewVideo";
+					return fowardView(fdType);
 				}
 		    }
 		}
-		return "/material/viewVideo";
+		if(StringUtil.isNotBlank(fdType)){
+			return fowardEdit(fdType);
+		}else{
+			return null;
+		}
+		
+	}
+	//返回的是view页面
+	private String fowardView(String fdType){
+		//测试
+    	if(fdType.equals(Constant.MATERIAL_TYPE_ASSESSMENT)){
+    		return "/material/exam_view";
+    	}
+    	//作业包
+    	if(fdType.equals(Constant.MATERIAL_TYPE_JOBPACKAGE)){
+    		return "/material/viewExamPaper";
+    	}else{
+    		//其它素材种类
+    		return "/material/viewVideo";
+    	}
+	}
+	private String fowardEdit(String fdType){
+		//测试
+    	if(fdType.equals(Constant.MATERIAL_TYPE_ASSESSMENT)){
+    		return "/material/exam_add";
+    	}
+    	//作业包
+    	if(fdType.equals(Constant.MATERIAL_TYPE_JOBPACKAGE)){
+    		return "/material/addExamPaper";
+    	}else{
+    		//其它素材种类
+    		return "/material/editVideo";
+    	}
 	}
 
 	/**
