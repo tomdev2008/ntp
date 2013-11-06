@@ -13,7 +13,7 @@
 	             <c:if test="${param.fdType!='11'}">
 	            <li>
 	             </c:if>
-	             <a href="${ctx}/course/findeSeriesInfos?fdType=11&order=fdcreatetime"">
+	             <a href="${ctx}/series/findeSeriesInfos?fdType=11&order=fdcreatetime"">
 	             <i class="icon-course-series"></i>我的系列课程</a></li>
 	            
 	            <c:if test="${param.fdType=='12'}">
