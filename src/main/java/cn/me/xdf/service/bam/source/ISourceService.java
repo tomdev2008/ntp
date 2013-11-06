@@ -1,10 +1,9 @@
-package cn.me.xdf.service.material.source;
+package cn.me.xdf.service.bam.source;
 
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.course.CourseCatalog;
-import cn.me.xdf.model.material.MaterialInfo;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,5 +20,12 @@ public interface ISourceService {
      * @return
      */
     public Object findSourceByMaterials(BamCourse bamCourse, CourseCatalog catalog);
+
+    /**
+     * 保存素材学习进度
+     * @param request
+     * @return
+     */
+    public Object saveSourceNode(HttpServletRequest request);
 
 }

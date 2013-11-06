@@ -5,18 +5,29 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd"
        default-lazy-init="true">
 
-  <bean id="materialService" class="cn.me.xdf.service.material.MaterialService">
+    <bean id="materialService" class="cn.me.xdf.service.material.MaterialService">
+        <property name="sourceMap">
+            <map>
+                <entry key="materialAttmainService">
+                    <ref bean="materialAttmainService"></ref>
+                </entry>
+                <entry key="materialQuestionsService">
+                    <ref bean="materialQuestionsService"></ref>
+                </entry>
+            </map>
+        </property>
+    </bean>
 
-      <property name="sourceMap">
-         <map>
-             <entry key="materialAttmainService">
-                 <ref bean="materialAttmainService"></ref>
-             </entry>
-             <entry key="materialQuestionsService">
-                 <ref bean="materialQuestionsService"></ref>
-             </entry>
-         </map>
-
-      </property>
-  </bean>
+    <bean id="bamMaterialService" class="cn.me.xdf.service.bam.BamMaterialService">
+        <property name="sourceMap">
+            <map>
+                <entry key="materialAttmainService">
+                    <ref bean="materialAttmainService"></ref>
+                </entry>
+                <entry key="materialQuestionsService">
+                    <ref bean="materialQuestionsService"></ref>
+                </entry>
+            </map>
+        </property>
+    </bean>
 </beans>

@@ -341,6 +341,7 @@ public class BamCourse extends IdEntity implements BamProcess {
             }
         }
         return informs;
-
     }
+
+
 }

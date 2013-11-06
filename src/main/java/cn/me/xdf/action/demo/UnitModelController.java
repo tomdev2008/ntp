@@ -23,6 +23,10 @@ import java.util.List;
 @RequestMapping(value = "/demo/unit")
 public class UnitModelController {
 
+    public void queryUnit() {
+        System.out.println("查询所有的Unit------------------------------");
+    }
+
     @Autowired
     private UnitModelService unitModelService;
 
