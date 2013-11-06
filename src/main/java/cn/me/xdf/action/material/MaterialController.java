@@ -77,7 +77,9 @@ public class MaterialController {
 				}else{
 					return fowardView(materialInfo.getFdType());
 				}
-		    }
+		    }else{
+				return fowardView(materialInfo.getFdType());
+			}
 		}
 		return null;
 	}
