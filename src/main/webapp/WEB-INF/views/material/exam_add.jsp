@@ -35,7 +35,7 @@
 <!-- 试题详情编辑 模板 -->
 <script id="examDetailTemplate" type="text/x-dot-template">
     <div class="page-header">
-        <a href="${ctx}/material/addExam?materIalId=${param.fdId}" class="backParent">返回当前试卷</a>
+        <a href="${ctx}/material/materialAddFoward?fdId=${param.fdId}&fdType=${param.fdType}" class="backParent">返回当前试卷</a>
         <h4>{{=it.examPaperName}}</h4>
         <div class="btn-group">
             <button class="btn btn-large btn-primary" id="saveExam" type="button">保存</button>
@@ -817,7 +817,7 @@ $(function(){
 				  type: "POST",
 				  dataType:'json',
 				  success: function(rsult){
-					 window.location.href="${ctx}/material/addExam?materIalId="+rsult.materIalId;
+					 window.location.href="${ctx}/material/materialFoward?fdId="+rsult.materIalId+"&fdType=08";
 				  },
 			});
         }
