@@ -52,10 +52,10 @@
 							   </c:if>
 							</a> 
 							</div>
-							<label class="checkbox inline" for="selectCurrPage">
+						<!-- 	<label class="checkbox inline" for="selectCurrPage">
 							    <input type="checkbox" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()" value="0"/>选中本页</label>
 							<label class="checkbox inline" for="selectAll">
-				  			 <input type="checkbox" id="selectAll" name="selectCheckbox"  onclick="selectAll()" value="1"/>选中全部</label>
+				  			 <input type="checkbox" id="selectAll" name="selectCheckbox"  onclick="selectAll()" value="1"/>选中全部</label> -->
 
 							<div class="pages pull-right">
 								<div class="span2">
@@ -113,8 +113,8 @@
 	<section class="section listWrap">
 		<ul class="nav list">
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
-				 <li><a href="#">
-				<input type="checkbox" name="ids" value="${bean.FDID}"/>
+				 <li><a href="#"><i class="icon-exam-num"></i>
+				
 				    <span class="title">
 					<c:if test="${bean.FDTITLE!=null && bean.FDTITLE!=''}">
 						${bean.FDTITLE}
