@@ -246,6 +246,7 @@ public class ExamQuestionAjaxController {
 		for (Map map : exams) {
 			ExamQuestion q =examQuestionService.get(map.get("id").toString());
 			q.setFdStandardScore(new Double(map.get("editingCourse").toString()));
+			q.setFdOrder(new Integer(map.get("index").toString()));
 			examQuestionService.update(q);
 			examQuestions.add(q);
 		}

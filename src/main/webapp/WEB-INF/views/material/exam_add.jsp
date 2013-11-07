@@ -898,7 +898,6 @@ $(function(){
 	          				  examId :"${param.fdId}",
 	          			  },
 	          			  success: function(result){
-	          				  
 	          			  }
 	          			});
 					    window.location.href="${ctx}/material/materialFoward?fdId=${param.fdId}&fdType=08";

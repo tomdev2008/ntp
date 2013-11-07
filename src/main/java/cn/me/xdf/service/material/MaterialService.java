@@ -1,12 +1,12 @@
 package cn.me.xdf.service.material;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.me.xdf.model.base.Constant;
-import cn.me.xdf.service.bam.source.ISourceService;
 import jodd.util.StringUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.common.utils.array.ArrayUtils;
+import cn.me.xdf.common.utils.array.SortType;
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
@@ -22,6 +25,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.User;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.BaseService;
+import cn.me.xdf.service.bam.source.ISourceService;
 import cn.me.xdf.utils.ShiroUtils;
 
 /**
@@ -251,14 +255,26 @@ public class MaterialService extends BaseService {
 	
 	
 	public List<Map> getExamQuestionByMaterId(MaterialInfo info){
-		
 		 List<ExamQuestion> examQuestions = info.getQuestions();
+		 ArrayUtils.sortListByProperty(examQuestions, "fdOrder", SortType.HIGHT);
+		/* Collections.sort(examQuestions, new Comparator<ExamQuestion>() {  
+	          public int compare(ExamQuestion a, ExamQuestion b) {  
+	        	  try {
+	        		  int one = a.getFdOrder();  
+		              int two = b.getFdOrder ();   
+		              return one- two ;  
+				  } catch (Exception e) {
+						return -1;
+				  }
+	            }  
+	     });*/
 		 List<Map> list = new ArrayList<Map>();
 		 for (ExamQuestion examQuestion : examQuestions) {
 			 Map map = new HashMap();
 			 map.put("id", examQuestion.getFdId());
 			 map.put("subject", examQuestion.getFdSubject());
 			 map.put("score", examQuestion.getFdStandardScore());
+			 map.put("index", examQuestion.getFdOrder());
 			 list.add(map);
 		}
 		 return list;
@@ -288,3 +304,5 @@ public class MaterialService extends BaseService {
 	}
 
 }
+
+
