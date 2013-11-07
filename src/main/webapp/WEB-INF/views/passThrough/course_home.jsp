@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
@@ -86,7 +87,7 @@
 	       	  		<div class="hd">
 		        		<h2>作者  ${course.fdAuthor}</h2>
                         <div class="ab_r">
-                        	<span class="pub_time"><i class="icon-time"></i>15分钟前</span>
+                        	<span class="pub_time"><i class="icon-time"></i><tags:datetime value="${course.fdCreateTime}" pattern="yyyy-MM-dd hh:mm aa"/></span>
                         </div>
 		        	</div>
                     <div class="bd">

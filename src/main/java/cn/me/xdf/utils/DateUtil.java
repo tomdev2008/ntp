@@ -5,6 +5,8 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class DateUtil {
 	
 	public static final String DEFAULT_PATTERN="yyyy-MM-dd HH:mm:ss";
@@ -30,10 +32,9 @@ public class DateUtil {
 		
 	}
 	
-	public static String getInterval(String createtime) { //传入的时间格式必须类似于2012-8-21 17:53:20这样的格式  
+	public static String getInterval(String createtime,String pattern) { //传入的时间格式必须类似于2012-8-21 17:53:20这样的格式  
         String interval = null;  
-          
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+        SimpleDateFormat sd = new SimpleDateFormat(DEFAULT_PATTERN);  
         ParsePosition pos = new ParsePosition(0);  
         Date d1 = (Date) sd.parse(createtime, pos);        
         // 得出的时间间隔是毫秒  
@@ -53,7 +54,9 @@ public class DateUtil {
             int m = (int) ((time%3600000)/60000);
             interval = m + "分钟前";  
               
-        }else if(time/3600000 < 24 && time/3600000 > 0) {  
+        }
+        /*
+        else if(time/3600000 < 24 && time/3600000 > 0) {  
         //如果时间间隔小于24小时则显示多少小时前  
             int h = (int) (time/3600000);
             interval = h + "小时前";  
@@ -73,13 +76,15 @@ public class DateUtil {
             int h = (int) (time/3600000/24/365);
             interval = h + "年前";  
               
-        }else {  
+        }
+        */
+        else {  
             //大于24小时，则显示正常的时间，但是不显示秒  
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");  
-            ParsePosition pos2 = new ParsePosition(0);  
-            Date d2 = (Date) sdf.parse(createtime, pos2);  
-  
-            interval = sdf.format(d2);  
+        	if(StringUtils.isBlank(pattern)){
+        		pattern = DEFAULT_PATTERN;
+        	}
+            SimpleDateFormat sdf = new SimpleDateFormat(pattern);  
+            interval = sdf.format(d1);  
         }  
         return interval;  
     }  
