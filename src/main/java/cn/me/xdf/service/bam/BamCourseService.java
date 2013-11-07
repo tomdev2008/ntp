@@ -29,6 +29,18 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class BamCourseService extends SimpleService {
 
+
+    /**
+     * 根据备课老师和课程的ID获取此次备课的信息
+     *
+     * @param userId
+     * @param courseId
+     * @return
+     */
+    public BamCourse getCourseByUserIdAndCourseId(String userId, String courseId) {
+        return findUniqueByProperty(BamCourse.class, Value.eq("preTeachId", userId), Value.eq("courseId", courseId));
+    }
+
     /**
      * *******************************************************************************************
      * writer

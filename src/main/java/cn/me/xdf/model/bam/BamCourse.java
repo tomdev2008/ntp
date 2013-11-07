@@ -1,5 +1,6 @@
 package cn.me.xdf.model.bam;
 
+import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.utils.array.ArrayUtils;
 import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.model.base.BamProcess;
@@ -341,6 +342,26 @@ public class BamCourse extends IdEntity implements BamProcess {
             }
         }
         return informs;
+    }
+
+
+    /**
+     * 设置当前素材通过
+     *
+     * @param id
+     */
+    @Transient
+    public void toMateridThroughById(String id) {
+        List<CourseContent> courseContents = getCourseContents();
+        if (courseContents == null)
+            return;
+
+        for (CourseContent content : courseContents) {
+            if (content.getMaterial().getFdId().equals(id)) {
+                content.getMaterial().setThrough(true);
+            }
+        }
+        this.courseContentJson = JsonUtils.writeObjectToJson(courseContents);
     }
 
 
