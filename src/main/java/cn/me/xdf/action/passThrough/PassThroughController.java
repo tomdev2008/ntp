@@ -63,7 +63,7 @@ public class PassThroughController {
 		String courseId = request.getParameter("courseId");
 		if(StringUtil.isNotEmpty(courseId)){
 			CourseInfo course = courseService.get(courseId);
-			if(course!=null){
+			if(course!=null && course.getIsAvailable()){
 				//从进程表中取当前用户所选课程的进程信息
 				BamCourse bamCourse = bamCourseService.findUniqueByProperty(BamCourse.class, Value.eq("courseId", course.getFdId()),Value.eq("preTeachId", ShiroUtils.getUser().getId()));
 				if(bamCourse==null){
@@ -84,7 +84,13 @@ public class PassThroughController {
 				request.setAttribute("courseScore", scoreStatistics==null?0:scoreStatistics.getFdAverage());
 				//章节信息
 				request.setAttribute("catalog", bamCourse.getCatalogs());
+			}else{
+				//否则需要跳转到发现课程
+				
 			}
+		}else{
+			//否则需要跳转到发现课程
+			
 		}
 		return "/passThrough/course_home";
 	}
