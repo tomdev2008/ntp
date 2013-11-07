@@ -1,3 +1,4 @@
+<%@page import="cn.me.xdf.model.course.CourseInfo"%>
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
@@ -33,11 +34,13 @@ $("#addMessage").bind("click",function(){
 		  async:false,
 		  dataType : 'json',
 		  data:{
-			  courseId:"${course.fdId}",
+			  courseId:"${param.courseId}",
 			  fdContent:$("#courseMessage").val(),
 		  },
 		  success: function(result){
-			  $.fn.jalert2("评论发布成功");
+			  //$.fn.jalert2("评论发布成功");
+			initCommentLines("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
+			initCommentPageInfo("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
 		  }
 	});
 	
@@ -48,7 +51,7 @@ $.ajax({
 	  async:false,
 	  dataType : 'json',
 	  data:{
-		  fdModelId:"${course.fdId}",
+		  fdModelId:"${param.courseId}",
 	  },
 	  success: function(result){
 		  //alert(result);
@@ -78,7 +81,7 @@ function scoreing(){
 		  async:false,
 		  dataType : 'json',
 		  data:{
-			  fdModelId:"${course.fdId}",
+			  fdModelId:"${param.courseId}",
 			  fdScore:$("#myScore").html(),
 		  },
 		  success: function(result){
@@ -108,7 +111,7 @@ function setCourseScore(){
 		  async:false,
 		  dataType : 'json',
 		  data:{
-			  fdModelId:"${course.fdId}",
+			  fdModelId:"${param.courseId}",
 		  },
 		  success: function(result){
 			  courseScore=result[0].fdAverage;

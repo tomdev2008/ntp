@@ -18,9 +18,9 @@
               <div class="media-footing clearfix">
               	<span class="pull-left"><i class="icon-time"></i>{{=it.fdCreateTime}}</span>
                 <div class="pull-right btns-comt">
-                	<a href="#" ><i class="icon-thumbs-up"></i>45</a>
-                	<a href="#" ><i class="icon-thumbs-down"></i>12</a>
-                	<a href="#" ><i class="icon-share-alt"></i>12</a>
+                	<a href="#" ><i class="icon-thumbs-up"></i>0</a>
+                	<a href="#" ><i class="icon-thumbs-down"></i>0</a>
+                	<a href="#" ><i class="icon-share-alt"></i>0</a>
                 </div>
               </div>
             </div>
@@ -58,18 +58,18 @@
     </div>
 </div>
 <script type="text/javascript">
-var pageSize=2;
-var modelId = "14221e4d16b8d6bf0b3c68541e38814b";
-initCommentLines(modelId,1);
-initCommentPageInfo(modelId,1);
+var pageSize=10;
+initCommentLines("${param.modelName}","${param.modelId}",1);
+initCommentPageInfo("${param.modelName}","${param.modelId}",1);
 //初始评论列表化页面
-function initCommentLines(modelId,pageNo){
+function initCommentLines(modelName,modelId,pageNo){
 	$.ajax({
-		  url: "${ctx}/ajax/message/findCourseCommentByCourseId",
+		  url: "${ctx}/ajax/message/findCommentByModelId",
 		  async:false,
 		  dataType : 'json',
 		  data:{
-			  courseId :modelId,
+			  modelName :modelName,
+			  modelId :modelId,
 			  pageNo:pageNo,
 			  pageSize:pageSize,
 		  },
@@ -84,13 +84,14 @@ function initCommentLines(modelId,pageNo){
 	});
 }
 //初始化分页信息
-function initCommentPageInfo(modelId,pageNo){
+function initCommentPageInfo(modelName,modelId,pageNo){
 	$.ajax({
-		  url: "${ctx}/ajax/message/initCourseCommentPageInfo",
+		  url: "${ctx}/ajax/message/getCommentPageInfo",
 		  async:false,
 		  dataType : 'json',
 		  data:{
-			  courseId :modelId,
+			  modelName:modelName,
+			  modelId :modelId,
 			  pageNo:pageNo,
 			  pageSize:pageSize,
 		  },
@@ -145,13 +146,13 @@ function initCommentPageInfo(modelId,pageNo){
 }
 //进入下一页方法
 function gotoBefore(pageNo){
-	initCommentLines(modelId,pageNo-1);
-	initCommentPageInfo(modelId,pageNo-1);
+	initCommentLines("${param.modelName}","${param.modelId}",pageNo-1);
+	initCommentPageInfo("${param.modelName}","${param.modelId}",pageNo-1);
 }
 //进入上一页方法
 function gotoNext(pageNo){
-	initCommentLines(modelId,pageNo+1);
-	initCommentPageInfo(modelId,pageNo+1);
+	initCommentLines("${param.modelName}","${param.modelId}",pageNo+1);
+	initCommentPageInfo("${param.modelName}","${param.modelId}",pageNo+1);
 }
 
 </script>

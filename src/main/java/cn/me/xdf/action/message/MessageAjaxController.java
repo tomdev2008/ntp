@@ -113,13 +113,13 @@ public class MessageAjaxController {
 	}
 	
 	/**
-	 * 根据课程Id查找课程的评论分页信息
+	 * 根据Id评论分页信息
 	 * 
 	 */
-	@RequestMapping(value = "findCourseCommentByCourseId")
+	@RequestMapping(value = "findCommentByModelId")
 	@ResponseBody
-	private String findCourseCommentByCourseId(String courseId,int pageNo,int pageSize) {
-		List<Message> messages = (List<Message>) messageService.findCommentPage(CourseInfo.class.getName(), courseId, pageNo, pageSize).getList();
+	private String findCommentByModelId(String modelName,String modelId,int pageNo,int pageSize) {
+		List<Message> messages = (List<Message>) messageService.findCommentPage(modelName, modelId, pageNo, pageSize).getList();
 		List<Map> list = new ArrayList<Map>();
 		for (Message message : messages){
 			Map map = new HashMap();
@@ -142,13 +142,13 @@ public class MessageAjaxController {
 	 * 根据课程Id查找分页信息
 	 * 
 	 */
-	@RequestMapping(value = "initCourseCommentPageInfo")
+	@RequestMapping(value = "getCommentPageInfo")
 	@ResponseBody
-	private String initCourseCommentPageInfo(String courseId,int pageNo,int pageSize) {
-		Pagination pagination = messageService.findCommentPage(CourseInfo.class.getName(), courseId, pageNo, pageSize);
+	private String getCommentPageInfo(String modelName , String modelId,int pageNo,int pageSize) {
+		Pagination pagination = messageService.findCommentPage(modelName, modelId, pageNo, pageSize);
 		int totalSize = messageService.findByCriteria(Message.class,
                 Value.eq("fdModelName", CourseInfo.class.getName()),
-                Value.eq("fdModelId", courseId)).size();
+                Value.eq("fdModelId", modelId)).size();
 		int startLine = (pageNo-1)*(pageSize)+1;
 		int totalPage = pagination.getTotalPage();
 		int endLine = 0;

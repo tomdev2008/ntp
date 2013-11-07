@@ -138,7 +138,9 @@ public class MessageService extends BaseService{
 	public Pagination findCommentPage(String fdModelName,String fdModelId ,int pageNo, int pageSize){
 		Finder finder = Finder
 				.create("from Message message ");
-		finder.append("where message.fdModelName=:fdModelName and message.fdModelId=:fdModelId and message.fdType=:fdType");
+		finder.append("where message.fdModelName=:fdModelName and message.fdModelId=:fdModelId and message.fdType=:fdType ");
+		finder.append("order by message.fdCreateTime desc ");
+		
 		finder.setParam("fdModelName", fdModelName);
 		finder.setParam("fdModelId", fdModelId);
 		finder.setParam("fdType", Constant.MESSAGE_TYPE_REVIEW);

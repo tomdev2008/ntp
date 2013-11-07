@@ -1,3 +1,4 @@
+<%@page import="cn.me.xdf.model.course.CourseInfo"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
@@ -149,13 +150,15 @@
                     </div>
                    
                 </div>
-                 <c:import url="/WEB-INF/views/comment.jsp">
+                 <c:import url="/WEB-INF/views/base/comment/comment.jsp">
+                 	<c:param name="modelName" value="<%=CourseInfo.class.getName()%>" />
+                 	<c:param name="modelId" value="14221e4d16b8d6bf0b3c68541e38814b" />
                 </c:import>
 			</div>
 			<div class="pull-right w225">
 				 <!-- 评分评论页面 -->
 	        	 <c:import url="/WEB-INF/views/passThrough/score_course.jsp">
-                	<c:param name="courseId" value="${course.fdId}" />
+                	<c:param name="courseId" value="14221e4d16b8d6bf0b3c68541e38814b" />
                 </c:import>
 		        <!-- 学习当前课程的新教师列表 -->
                 <c:import url="/WEB-INF/views/passThrough/learning_teacher_list.jsp">
