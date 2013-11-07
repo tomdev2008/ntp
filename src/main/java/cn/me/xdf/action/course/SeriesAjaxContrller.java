@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import jodd.util.*;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -16,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.page.Pagination;
-import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.course.SeriesCoursesService;
 import cn.me.xdf.service.course.SeriesInfoService;
-import cn.me.xdf.utils.ShiroUtils;
 @Controller
 @RequestMapping(value = "/ajax/series")
 @Scope("request")
