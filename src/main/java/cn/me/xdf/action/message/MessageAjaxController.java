@@ -1,7 +1,11 @@
 package cn.me.xdf.action.message;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -9,14 +13,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.me.xdf.common.hibernate4.Value;
+import cn.me.xdf.common.json.JsonUtils;
+import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.message.MessageReplyService;
 import cn.me.xdf.service.message.MessageService;
+import cn.me.xdf.utils.DateUtil;
 import cn.me.xdf.utils.ShiroUtils;
 
 /**
@@ -100,6 +110,61 @@ public class MessageAjaxController {
 	@ResponseBody
 	private void addCourseMessage(String courseId,String fdContent) {
 		addMessage(CourseInfo.class.getName(), courseId, fdContent, Constant.MESSAGE_TYPE_REVIEW, false, ShiroUtils.getUser().getId());
+	}
+	
+	/**
+	 * 根据课程Id查找课程的评论分页信息
+	 * 
+	 */
+	@RequestMapping(value = "findCourseCommentByCourseId")
+	@ResponseBody
+	private String findCourseCommentByCourseId(String courseId,int pageNo,int pageSize) {
+		List<Message> messages = (List<Message>) messageService.findCommentPage(CourseInfo.class.getName(), courseId, pageNo, pageSize).getList();
+		List<Map> list = new ArrayList<Map>();
+		for (Message message : messages){
+			Map map = new HashMap();
+			map.put("fdId", message.getFdId());
+			map.put("content", message.getFdContent());
+			map.put("isAnonymous", message.getIsAnonymous());
+			map.put("fdCreateTime", DateUtil.getInterval(DateUtil.convertDateToString(message.getFdCreateTime()), "yyyy/MM/dd hh:mm aa"));
+			map.put("fdUserName", message.getFdUser().getRealName());
+			map.put("fdUserURL", message.getFdUser().getFdPhotoUrl());
+			map.put("fdUserEmail", message.getFdUser().getFdEmail());
+			map.put("fdUserDept", message.getFdUser().getDeptName());
+			list.add(map);
+		}
+		Map maps = new HashMap();
+		maps.put("listComments", list);
+		return JsonUtils.writeObjectToJson(maps);
+	}
+	
+	/**
+	 * 根据课程Id查找分页信息
+	 * 
+	 */
+	@RequestMapping(value = "initCourseCommentPageInfo")
+	@ResponseBody
+	private String initCourseCommentPageInfo(String courseId,int pageNo,int pageSize) {
+		Pagination pagination = messageService.findCommentPage(CourseInfo.class.getName(), courseId, pageNo, pageSize);
+		int totalSize = messageService.findByCriteria(Message.class,
+                Value.eq("fdModelName", CourseInfo.class.getName()),
+                Value.eq("fdModelId", courseId)).size();
+		int startLine = (pageNo-1)*(pageSize)+1;
+		int totalPage = pagination.getTotalPage();
+		int endLine = 0;
+		if(totalPage==pageNo){
+			endLine = startLine + totalSize%pageSize-1;
+		}else{
+			endLine = startLine + pageSize-1;
+		}
+		Map map = new HashMap();
+		map.put("totalSize", totalSize);
+		map.put("pageNo", pageNo);
+		map.put("pageSize", pageSize);
+		map.put("startLine",startLine);
+		map.put("endLine", endLine);
+		map.put("totalPage", totalPage);
+		return JsonUtils.writeObjectToJson(map);
 	}
 
 }

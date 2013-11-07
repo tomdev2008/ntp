@@ -8,14 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
 import cn.me.xdf.model.organization.SysOrgPerson;
-import cn.me.xdf.model.score.Score;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.BaseService;
-import cn.me.xdf.service.ShiroDbRealm.ShiroUser;
-import cn.me.xdf.utils.ShiroUtils;
 
 /**
  * 
@@ -131,5 +130,21 @@ public class MessageService extends BaseService{
 		return messageReplyService.find(finder);
 	}
 	
+	/**
+	 * 分页查找Message
+	 * 
+	 * @return List
+	 */
+	public Pagination findCommentPage(String fdModelName,String fdModelId ,int pageNo, int pageSize){
+		Finder finder = Finder
+				.create("from Message message ");
+		finder.append("where message.fdModelName=:fdModelName and message.fdModelId=:fdModelId and message.fdType=:fdType");
+		finder.setParam("fdModelName", fdModelName);
+		finder.setParam("fdModelId", fdModelId);
+		finder.setParam("fdType", Constant.MESSAGE_TYPE_REVIEW);
+		List<Message> messages = (List<Message>) getPage(finder, pageNo, pageSize).getList();
+		return getPage(finder, pageNo, pageSize);
+	}
+
 	
 }

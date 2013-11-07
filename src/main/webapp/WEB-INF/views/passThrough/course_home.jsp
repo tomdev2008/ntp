@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
@@ -87,7 +86,7 @@
 	       	  		<div class="hd">
 		        		<h2>作者  ${course.fdAuthor}</h2>
                         <div class="ab_r">
-                        	<span class="pub_time"><i class="icon-time"></i><tags:datetime value="${course.fdCreateTime}" pattern="yyyy-MM-dd hh:mm aa"/></span>
+                        	<span class="pub_time"><i class="icon-time"></i>15分钟前</span>
                         </div>
 		        	</div>
                     <div class="bd">
@@ -148,7 +147,10 @@
                     		</j:iter>
                     	</div>
                     </div>
+                   
                 </div>
+                 <c:import url="/WEB-INF/views/comment.jsp">
+                </c:import>
 			</div>
 			<div class="pull-right w225">
 				 <!-- 评分评论页面 -->
@@ -159,6 +161,7 @@
                 <c:import url="/WEB-INF/views/passThrough/learning_teacher_list.jsp">
                 	<c:param name="courseId" value="${course.fdId}" />
                 </c:import>
+                
                 <!-- 发现课程之最新课程列表 -->
                 <c:import url="/WEB-INF/views/passThrough/new_course_list.jsp"></c:import>
 	        </div>
