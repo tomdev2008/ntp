@@ -262,7 +262,7 @@
                                                                        作业列表（共计<span id="count"></span>题，满分<span id="totalScore"></span>分，及格 
                                 <input class="input-mini" id="passScore" number="true" required="required"  name="passScore"  type="text"/>      分）
                             </label>
-                            <label for="passScore" id="passScoreErr" class="error"></label>
+                            <label for="passScore" id="passScoreErr" class="error" ></label>
                             <button class="btn btn-primary btn-large" id="addExam" type="button">添加作业</button>
                         </div>
                         <div class="bd">
@@ -396,7 +396,7 @@ $(function(){
      });
 });
 function deleteMaterial(){
-	$.fn.jalert("您确认要删除该素材吗？",confirmDeletePaper);
+	$.fn.jalert("您确认要删除该作业包吗？",confirmDeletePaper);
 }
 function confirmDeletePaper(){
 	$.ajax({
@@ -408,7 +408,7 @@ function confirmDeletePaper(){
 	}); 
 }
 function deleteTask(){
-	$.fn.jalert("您确认要删除该素材吗？",confirmDeleteTask);
+	$.fn.jalert("您确认要删除该作业吗？",confirmDeleteTask);
 }
 function confirmDeleteTask(){
 	$.ajax({
@@ -434,17 +434,19 @@ $(function(){
     initExamPaperList();
     //初始化授权人员列表
     //初始化权限列表
-	var creator="";
-	var url="";
-	$.ajax({
-		url: "${ctx}/ajax/material/getCreater?materialId=${param.fdId}",
-		async:false,
-		dataType : 'json',
-		success: function(result){
-		  creator = result.name+"（"+result.email+"），"+result.dept;
+    if("${param.fdId}"!=null&&"${param.fdId}"!=""){
+	   var creator="";
+	   var url="";
+	   $.ajax({
+		 url: "${ctx}/ajax/material/getCreater?materialId=${param.fdId}",
+		 async:false,
+		 dataType : 'json',
+		 success: function(result){
+		    creator = result.name+"（"+result.email+"），"+result.dept;
 				  url=result.url;
-		}
-	});
+		 }
+	   });
+    }
     $.ajax({
 		url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${param.fdId}",
 		async:false,
@@ -557,8 +559,6 @@ $(function(){
         $("#permission").val(href);
     });
     
-    
-
     var allUserData ;
     
     $("#addUser").autocomplete("${ctx}/ajax/user/findByName",{
@@ -612,8 +612,7 @@ $(function(){
 			});
 			$("#addUser").val("");
 		}
-
-            });
+     });
 
 
     //添加作业事件
