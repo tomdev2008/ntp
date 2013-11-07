@@ -1,5 +1,6 @@
 package cn.me.xdf.action.demo;
 
+import cn.me.xdf.common.web.RequestUtils;
 import cn.me.xdf.model.demo.UnitModel;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.demo.UnitModelService;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 
@@ -39,9 +41,13 @@ public class UnitModelController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(UnitModel unitModel) {
+    public String save(WebRequest request) {
+       /* UnitModel unitModel = cn.me.xdf.common.web.
         unitModelService.save(unitModel);
-        attMainService.saveAttMainMachine(unitModel);
+        attMainService.saveAttMainMachine(unitModel);*/
+        UnitModel unitModel = new UnitModel();
+        RequestUtils.getBeanByAttr(request, unitModel);
+        System.out.println("unitModel="+unitModel.getFdName());
         return "redirect:/demo/unit/index";
     }
 

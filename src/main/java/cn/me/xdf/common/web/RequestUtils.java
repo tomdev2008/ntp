@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletRequest;
  * Time: 下午5:30
  * To change this template use File | Settings | File Templates.
  */
-public class ReuqstUtils {
+public class RequestUtils {
 
 
-    public static void getBeanByAttr(Object entity,WebRequest servletRequest){
+    public static void getBeanByAttr(WebRequest servletRequest,Object entity){
         WebRequestDataBinder dataBinder = new WebRequestDataBinder(entity);
         dataBinder.bind(servletRequest);
     }
