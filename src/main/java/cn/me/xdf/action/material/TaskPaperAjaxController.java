@@ -144,6 +144,10 @@ public class TaskPaperAjaxController {
 		String kingUser = request.getParameter("kingUser");//授权人员
 		String passScore = request.getParameter("passScore");//及格分
 		String studyTime = request.getParameter("studyTime");//学习时长
+		Integer time = 0;
+		if(StringUtil.isNotBlank(studyTime)){
+			time = new Integer(studyTime);
+		}
 		List<Map> taskPaper;
 		MaterialInfo info = materialService.load(id);
 		if(StringUtil.isBlank(listExam)){
@@ -194,7 +198,7 @@ public class TaskPaperAjaxController {
 		info.setIsDownload(true);
 		info.setIsAvailable(true);
 		info.setIsPublish(permission.equals("open")?true:false);
-		info.setFdStudyTime(new Integer(studyTime));
+		info.setFdStudyTime(time);
 		info.setTasks(taskList);
 		materialService.update(info);
 	}
