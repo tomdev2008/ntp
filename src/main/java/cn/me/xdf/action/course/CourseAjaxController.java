@@ -654,5 +654,17 @@ public class CourseAjaxController {
 		return JsonUtils.writeObjectToJson(deltes);
 		 
 	}
-
+	/*
+	 * 查询授权课程列表 或者根据关键字搜索 author hanhl
+	 */
+	@RequestMapping(value = "getCoureAuthInfosOrByKey")
+	public String getCoureAuthInfosOrByKey(Model model, HttpServletRequest request) {
+		String fdTitle = request.getParameter("fdTitle");
+		String pageNoStr = request.getParameter("pageNo");
+		String orderbyStr = request.getParameter("order");
+		Pagination page = courseService.findCourseInfosByName( fdTitle,
+				pageNoStr, orderbyStr,Constant.COUSER_AUTH_MANAGE);
+		model.addAttribute("page", page);
+		return "/course/divcourseauthlist";
+	}
 }

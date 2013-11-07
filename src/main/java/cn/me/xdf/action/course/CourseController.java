@@ -142,5 +142,19 @@ public class CourseController {
 	    }
 		return false;//公开的
 	}
-	
+	/*
+	 * 课程授权列表
+	 * author hanhl
+	 */
+    @RequestMapping(value="getCourseAuthInfos")
+    public String getCourseAuthInfos(Model model,HttpServletRequest request){
+    	String fdTitle = request.getParameter("fdTitle");
+		String pageNoStr = request.getParameter("pageNo");
+		String orderbyStr = request.getParameter("order");
+		Pagination page = courseService.findCourseInfosByName( fdTitle,
+				pageNoStr, orderbyStr,Constant.COUSER_AUTH_MANAGE);
+		model.addAttribute("page", page);
+    	return "/course/courseauth_list";
+    	
+    }
 }

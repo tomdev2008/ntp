@@ -83,7 +83,7 @@ public class CourseService  extends BaseService{
 			finder.setParam("createId", userId);
 			}
 			if(Constant.COUSER_AUTH_MANAGE.equals(seleType)){//课程授权
-				finder.append(" and exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and auth.isauthstudy=1 and fduserid=:userId)	)");
+				finder.append(" and exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and auth.isauthstudy=1 and fduserid=:userId)");
 				finder.setParam("userId", userId);
 			}
 		}

@@ -92,7 +92,7 @@ public class SeriesController {
 	 * 查询系列课程;
 	 * author hanhl
 	 */
-	@RequestMapping(value="findeSeriesInfos")
+	@RequestMapping(value="findSeriesInfos")
 	public String findSeries(Model model,HttpServletRequest request){
 		String fdName = request.getParameter("fdName");
 		String pageNo = request.getParameter("pageNo");

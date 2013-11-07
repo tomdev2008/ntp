@@ -3,7 +3,15 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
     	<ul class="nav nav-list sidenav" id="sideNav">
                 <li class="nav-header first"><a href="#">学习跟踪</a></li>
-                <li class="nav-header"><a href="#">授权学习</a></li>
+                
+	            <c:if test="${param.fdType=='13'}">
+	            <li class="active">
+	            </c:if>
+	            <c:if test="${param.fdType!='13'}">
+	            <li>
+	            </c:if>
+	            <a href="${ctx}/course/getCourseAuthInfos?fdType=13&order=fdcreatetime">
+	            <i class="icon-course-series"></i>授权学习</a></li>
 	            <li class="nav-header">
                     <span>课程管理</span>
 	            </li>
@@ -13,7 +21,7 @@
 	             <c:if test="${param.fdType!='11'}">
 	            <li>
 	             </c:if>
-	             <a href="${ctx}/series/findeSeriesInfos?fdType=11&order=fdcreatetime"">
+	             <a href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime">
 	             <i class="icon-course-series"></i>我的系列课程</a></li>
 	            
 	            <c:if test="${param.fdType=='12'}">
