@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
+import cn.me.xdf.common.utils.array.ArrayUtils;
+import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.material.MaterialAuth;
@@ -132,6 +134,7 @@ public class TaskPaperAjaxController {
 	 * 更改作业包素材信息
 	 * @param request
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "updateTaskPaperMaterial")
 	@ResponseBody
 	public void updateTaskPaperMaterial(HttpServletRequest request){
@@ -165,9 +168,11 @@ public class TaskPaperAjaxController {
 		
 		List<Task> taskList = new ArrayList<Task>();
 		//添加作业列表
+		int index=0;
 		for (Map<?, ?> map : taskPaper) {
 			Task task = taskService.get(map.get("id").toString());
 			task.setFdStandardScore(new Double(map.get("editingCourse").toString()));
+			task.setFdOrder(index++);
 			taskService.update(task);
 			taskList.add(task);
 		}
@@ -257,6 +262,8 @@ public class TaskPaperAjaxController {
 		String materialId = request.getParameter("materialId");
 		MaterialInfo info = materialService.load(materialId);
 		List<Task> taskList = info.getTasks();
+		//进行排序
+		ArrayUtils.sortListByProperty(taskList, "fdOrder", SortType.HIGHT);
 		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
 		Map<String,String> map;
 		for(Task task:taskList){

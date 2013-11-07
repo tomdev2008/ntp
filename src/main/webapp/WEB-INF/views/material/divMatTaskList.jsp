@@ -3,6 +3,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
+<j:set name="ctx" value="${pageContext.request.contextPath}" />
 	<section class="section box-control">
 		<div class="hd">
 			<div class="btn-toolbar">

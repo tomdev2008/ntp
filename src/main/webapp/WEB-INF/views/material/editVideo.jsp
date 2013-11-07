@@ -97,9 +97,11 @@
                 <h4>${materialInfo.fdName}</h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
+                    <c:if test="${materialInfo.fdId!=null}">
                     <button class="btn btn-large btn-primary" type="button" onclick="downloadMater();">下载</button>
                     <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
-                </div>
+                    </c:if> 
+               </div>
 	        </div>
             <div class="page-body editingBody">
                 <form action="#" id="formEditDTotal" class="form-horizontal" method="post">

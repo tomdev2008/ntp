@@ -85,8 +85,10 @@
         <h4>{{=it.examPaperName}}</h4>
         <div class="btn-group">
             <button class="btn btn-large btn-primary" id="saveExam" type="button">保存</button>
+            {{?it.taskId!=null}}
             <button class="btn btn-large btn-primary" disabled id="exportExam" type="button">导出</button>
             <button class="btn btn-white btn-large " onclick="deleteTask();" id="delExam" type="button">删除</button>
+            {{?}}
         </div>
     </div>
     <div class="page-body editingBody">
@@ -224,8 +226,10 @@
                 <h4 id="fdName"></h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" id="saveExamPaper" type="button">保存</button>
+                    <c:if test="${param.fdId!=null}">
                     <button class="btn btn-large btn-primary" disabled id="exportExamPaper" type="button">导出</button>
                     <button class="btn btn-white btn-large " onclick="deleteMaterial();" id="delExamPaper" type="button">删除</button>
+                    </c:if>
                 </div>
 	        </div>
             <div class="page-body editingBody">
@@ -434,9 +438,9 @@ $(function(){
     initExamPaperList();
     //初始化授权人员列表
     //初始化权限列表
+    var creator="";
+	var url="";
     if("${param.fdId}"!=null&&"${param.fdId}"!=""){
-	   var creator="";
-	   var url="";
 	   $.ajax({
 		 url: "${ctx}/ajax/material/getCreater?materialId=${param.fdId}",
 		 async:false,
@@ -469,7 +473,6 @@ $(function(){
         handle: '.state-dragable'
     })
             .find("a.icon-remove-blue").bind("click",function(e){
-            	alert("kkkk");
                 e.preventDefault();
                 $(this).closest("tr").remove();
                 initScore();
@@ -775,7 +778,7 @@ $(function(){
         });
     }
 });
-    
+//初始化作业列表
 function initExamPaperList(){
 	var id = $("#materialId").val();
 	if(id!==null&&id!=""){

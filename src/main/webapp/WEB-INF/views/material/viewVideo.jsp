@@ -131,16 +131,6 @@
                             </div>
                         </div>
                     </section>
-                    <!-- <section class="section mt20">
-                        <label id="uploadIntro"></label>
-                        <div class="control-upload">
-                           <div id="upMaterialDiv" style="height:20px;width:650px;display:block;"></div>
-						   <div style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
-						     <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>
-						  </div>
-						  <input type="hidden"  name="attId" id="attId" value="">
-                        </div>
-                    </section> -->
                     <section class="section mt20">
                         <div class="media-placeholder">
                            		 格式转换中 ... ...
@@ -161,50 +151,6 @@
                                        class="input-block-level" id="authorIntro"
                                        name="fdAuthorDescription" >${materialInfo.fdAuthorDescription}</textarea>
                             </div>
-                        </div>
-                    </section>
-                    <div class="page-header mt20"> <h4>权限设置</h4> </div>
-                    <section class="section">
-                        <label>权限设置</label>
-                        <ul class="nav nav-pills">
-                        <c:if test="${materialInfo.isPublish==true}">
-                            <li class="active"><a>公开</a></li>
-                            <li><a>加密</a></li>
-                            <input type="hidden" id="permission" name="permission" value="open">
-                         </c:if>
-                         <c:if test="${materialInfo.isPublish!=true}">
-                            <li><a>公开</a></li>
-                            <li class="active"><a  >加密</a></li>
-                            <input type="hidden" id="permission" name="permission" value="close">
-                         </c:if>
-                        </ul>
-                        <div class="tab-content">
-                          <c:if test="${materialInfo.isPublish==true}">
-                             <div class="tab-pane active" >
-                                	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
-                             </div>
-                             <div class="tab-pane" >
-                                <table class="table table-bordered">
-                                    <thead><tr><th>授权用户</th><th>可使用</th>
-                                     <th>可编辑</th></tr></thead>
-                                    <tbody id="list_user"></tbody>
-                                </table>
-                                
-                            </div>
-                          </c:if>
-                          <c:if test="${materialInfo.isPublish!=true}">
-                             <div class="tab-pane" id="open">
-                                	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
-                             </div>
-                             <div class="tab-pane active" id="encrypt">
-                                <table class="table table-bordered">
-                                    <thead><tr><th>授权用户</th><th>可使用</th>
-                                     <th>可编辑</th></tr></thead>
-                                    <tbody id="list_user"></tbody>
-                                </table>
-                            </div>
-                          </c:if>
-                            
                         </div>
                     </section>
                 </form>
@@ -289,63 +235,7 @@ $(function(){
 
 </script>
 <script type="text/javascript">
-$(function(){
-    $.Placeholder.init();
-    //授权管理 用户列表 模板函数
-    var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
-   
-    //初始化权限列表
-    $.ajax({
-		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
-		  async:false,
-		  dataType : 'json',
-		  success: function(result){
-			  var html = "";
-			  for(var i in result.user){
-				  html += listUserKinguserFn(result.user[i]);
-			  }
-			  $("#list_user").html(html); 
-		  }
-	});
-    
-    $("#formEditDTotal").validate({
-        submitHandler:saveMaterial
-    });
-    
-    var allUserData ;
 
-    
-});
-function saveMaterial(){
-	if(!$("#formEditDTotal").valid()){
-		return;
-	}
-    var data = {
-        videoName: $("#videoName").val(),
-        fdId: $("#fdId").val(),
-        videoUrl: $("#videoUrl").val(),
-        videoIntro: $("#videoIntro").val(),
-        author: $("#author").val(),
-        authorIntro: $("#authorIntro").val(),
-        permission:$("#permission").val(),
-        fdType:$("#fdType").val(),
-        attId:$("#attId").val(),
-        kingUser: null
-    };
-    if(data.permission === "close"){
-        //push人员授权数据
-        data.kingUser = [];
-        $("#list_user>tr").each(function(){
-            data.kingUser.push({
-                id: $(this).attr("data-fdid"),
-                index: $(this).index(),
-                tissuePreparation: $(this).find(".tissuePreparation").is(":checked"),
-                editingCourse: $(this).find(".editingCourse").is(":checked")
-            });
-        });
-        data.kingUser = JSON.stringify(data.kingUser);
-    }
-}
 </script>
 </body>
 </html>
