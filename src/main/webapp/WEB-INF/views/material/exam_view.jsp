@@ -52,7 +52,7 @@
                             <label class="control-label" for="examPaperName">试&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卷</label>
                             <div class="controls">
                                 <input id="examPaperName" required class="span6" readonly="true"
-                                       name="examPaperName" type="text"><span class="date">2013/02/14 10:01 AM</span>
+                                       name="examPaperName" type="text"><span class="date" id="createTime"></span>
                             </div>
                         </div>
                         <div class="control-group">
@@ -145,6 +145,7 @@ $.ajax({
 		  $("#passScore").html(result.score);
 		  $("#author").val(result.fdAuthor);
 		  $("#authorIntro").val(result.fdAuthorDescription);
+		  $("#createTime").html(result.createTime);
 		  var n = result.time/15;
 		  $("#mainTimeLine a :lt("+n+")").attr("class","active");
 	  }
