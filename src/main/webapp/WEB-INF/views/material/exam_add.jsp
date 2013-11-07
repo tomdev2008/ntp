@@ -216,7 +216,7 @@
                             <label class="control-label" for="examPaperName">试&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卷</label>
                             <div class="controls">
                                 <input id="examPaperName" required class="span6"
-                                       name="examPaperName" type="text"> <label id="examPaperNameErr" for="examPaperName" class="error" style="display: none;"></label><span class="date">2013/02/14 10:01 AM</span>
+                                       name="examPaperName" type="text"> <label id="examPaperNameErr" for="examPaperName" class="error" style="display: none;"></label><span class="date" id="createTime"></span>
                             </div>
                            
                         </div>
@@ -428,6 +428,7 @@ $(function(){
 				  $("#passScore").val(result.score);
 				  $("#author").val(result.fdAuthor);
 				  $("#authorIntro").val(result.fdAuthorDescription);
+				  $("#createTime").html(result.createTime);
 				  
 				  if(result.isPublish==true){
 					  $("#open1").trigger("click");

@@ -1,5 +1,6 @@
 package cn.me.xdf.action.material;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -365,12 +366,15 @@ public class MaterialAjaxController {
 		String materialId = request.getParameter("materialId");
 		MaterialInfo info = materialService.findUniqueByProperty("fdId", materialId);
 		Map map = new HashMap();
+		map.put("fdName",info.getFdName());
 		map.put("description", info.getFdDescription());
 		map.put("time", info.getFdStudyTime());
 		map.put("score", info.getFdScore());
 		map.put("fdAuthor", info.getFdAuthor());
 		map.put("fdAuthorDescription", info.getFdAuthorDescription());
 		map.put("isPublish", info.getIsPublish());
+		map.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:MM:ss").format(info.getFdCreateTime()));
+		
 		return JsonUtils.writeObjectToJson(map);
 	}
 	

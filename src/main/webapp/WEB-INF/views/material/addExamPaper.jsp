@@ -220,7 +220,7 @@
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
                 <a href="${ctx}/material/findList?fdType=10&order=FDCREATETIME" class="backParent">返回作业包列表</a>
-                <h4>${materialInfo.fdName}</h4>
+                <h4 id="fdName"></h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" id="saveExamPaper" type="button">保存</button>
                     <button class="btn btn-large btn-primary" disabled id="exportExamPaper" type="button">导出</button>
@@ -233,9 +233,9 @@
                         <div class="control-group">
                             <label class="control-label" for="examPaperName">作业包</label>
                             <div class="controls">
-                                <input value="${materialInfo.fdName}" id="examPaperName" required class="span6"
+                                <input  id="examPaperName" required class="span6"
                                        name="examPaperName" type="text">
-                                <span class="date"><fmt:formatDate value="${materialInfo.fdCreateTime}" pattern="yyyy/MM/dd hh:mm aa"/></span>
+                                <span class="date" id="createTime"></span>
                             </div>
                         </div>
                         <div class="control-group">
@@ -243,13 +243,13 @@
                             <div class="controls">
                             <textarea placeholder="非必填项" rows="4"
                                       class="input-block-level" id="examPaperIntro"
-                                      name="examPaperIntro">${materialInfo.fdDescription}</textarea>
+                                      name="examPaperIntro"></textarea>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label" >建议时间 <small>(单位天)</small></label>
                             <div class="controls">
-                                <input name="examPaperTime" id="examPaperTime" value="${materialInfo.fdStudyTime}" type="hidden"/>
+                                <input name="examPaperTime" id="examPaperTime"  type="hidden"/>
                             </div>
                         </div>
 
@@ -258,7 +258,7 @@
                         <div class="hd">
                             <label for="passScore" class="miniInput-label">
                                                                        作业列表（共计<span id="count"></span>题，满分<span id="totalScore"></span>分，及格 
-                                <input class="input-mini" id="passScore" number="true" required="required" value="${materialInfo.fdScore}" name="passScore"  type="text"/>      分）
+                                <input class="input-mini" id="passScore" number="true" required="required"  name="passScore"  type="text"/>      分）
                             </label>
                             <label for="passScore" id="passScoreErr" class="error"></label>
                             <button class="btn btn-primary btn-large" id="addExam" type="button">添加作业</button>
@@ -281,7 +281,7 @@
                         <div class="control-group">
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
-                                <input value="${materialInfo.fdAuthor}" id="author" required class="input-block-level"
+                                <input id="author" required class="input-block-level"
                                        name="author" type="text">
                             </div>
                         </div>
@@ -290,58 +290,40 @@
                             <div class="controls">
                             <textarea placeholder="非必填项" rows="4"
                                       class="input-block-level" id="authorIntro"
-                                      name="authorIntro">${materialInfo.fdDescription}</textarea>
+                                      name="authorIntro"></textarea>
                             </div>
                         </div>
                     </section>
                     <div class="page-header mt20"> <h4>权限设置</h4> </div>
                     <section class="section">
-                        <label>权限设置</label>
+                        <label>权限设置<input type="hidden" id="permission" name="permission" value="open"></label>
                         <ul class="nav nav-pills">
-                            <c:if test="${materialInfo.isPublish!=false}">
-                            <li class="active"><a data-toggle="tab" href="#open">公开</a></li>
-                            <li><a data-toggle="tab" href="#encrypt">加密</a></li>
-                            <input type="hidden" id="permission" name="permission" value="open">
-                         </c:if>
-                         <c:if test="${materialInfo.isPublish==false}">
-                            <li><a data-toggle="tab" href="#open">公开</a></li>
-                            <li class="active"><a data-toggle="tab" href="#encrypt">加密</a></li>
-                            <input type="hidden" id="permission" name="permission" value="close">
-                         </c:if>
+                            <li class="active"><a id="open1" data-toggle="tab" href="#open">公开</a></li>
+                            <li ><a id="close1" data-toggle="tab" href="#encrypt">加密</a></li>
                         </ul>
                         <div class="tab-content">
-                          <c:if test="${materialInfo.isPublish!=false}">
-                             <div class="tab-pane active" id="open">
-                                	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
-                             </div>
-                             <div class="tab-pane" id="encrypt">
+                            <div class="tab-pane active" id="open">
+                                提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
+                            </div>
+                            <div class="tab-pane" id="encrypt">
                                 <table class="table table-bordered">
-                                    <thead><tr><th>授权用户</th><th>可使用</th>
-                                     <th>可编辑</th><th>删除</th></tr></thead>
-                                    <tbody id="list_user"></tbody>
+                                    <thead>
+                                    <tr>
+                                        <th>授权用户</th>
+                                        <th>组织备课</th>
+                                        <th>编辑课程</th>
+                                        <th>删除</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="list_user">
+                                   
+                                    </tbody>
                                 </table>
                                 <div class="pr">
                                     <input type="text" id="addUser" class="autoComplete input-block-level" placeholder="请输入人名、邮箱、机构或者部门查找用户">
                                     <i class="icon-search"></i>
                                 </div>
                             </div>
-                          </c:if>
-                          <c:if test="${materialInfo.isPublish==false}">
-                             <div class="tab-pane" id="open">
-                                	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
-                             </div>
-                             <div class="tab-pane active" id="encrypt">
-                                <table class="table table-bordered">
-                                    <thead><tr><th>授权用户</th><th>可使用</th>
-                                     <th>可编辑</th><th>删除</th></tr></thead>
-                                    <tbody id="list_user"></tbody>
-                                </table>
-                                <div class="pr">
-                                    <input type="text" id="addUser" class="autoComplete input-block-level" placeholder="请输入人名、邮箱、机构或者部门查找用户">
-                                    <i class="icon-search"></i>
-                                </div>
-                            </div>
-                          </c:if>
                         </div>
                     </section>
                     <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
@@ -366,6 +348,41 @@ $(function(){
     $('.itemScore[data-toggle="tooltip"]').tooltip({
         trigger: "focus"
     });
+  //初始化页面
+  //时间轴 模板函数
+    var timeLineFn = doT.template(document.getElementById("timeLineTemplate").text);
+	if("${param.fdId}"!=null&&"${param.fdId}"!=""){
+		 $.ajax({
+			  url: "${ctx}/ajax/material/getMaterial?materialId=${param.fdId}",
+			  async:false,
+			  dataType : 'json',
+			  success: function(result){
+				  $("#examPaperIntro").val(result.description);
+				  $("#fdName").html(result.fdName);
+				  $("#examPaperName").val(result.fdName);
+				  $("#passScore").val(result.score);
+				  $("#examPaperTime").val(result.time);
+				  $("#author").val(result.fdAuthor);
+				  $("#authorIntro").val(result.fdAuthorDescription);
+				  $("#createTime").html(result.createTime);
+				  
+				  if(result.isPublish==true){
+					  $("#open1").trigger("click");
+					  $("#permission").val("open");
+				  }else{
+					  $("#close1").trigger("click");
+					  $("#permission").val("encrypt");
+				  }
+				  $("#examPaperTime").after(timeLineFn({//时间轴控件 配置数据
+				        width: 670, //时间轴控件 宽度
+				        total: 7, //总格数
+				        curPos: result.time, //当前位置
+				        span: 1, //每格的进制
+				        unit: "天"
+				    }));
+			  }
+		});
+	}
 });
 /**
  * Created by wqh on 13-11-1.
@@ -375,7 +392,6 @@ $(function(){
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //时间轴 模板函数
     var timeLineFn = doT.template(document.getElementById("timeLineTemplate").text);
-    
     //初始化作业列表
     initExamPaperList();
     //初始化授权人员列表
@@ -384,7 +400,7 @@ $(function(){
 	var url="";
 	$.ajax({
 		url: "${ctx}/ajax/material/getCreater?materialId=${param.fdId}",
-		async:false,
+		async:true,
 		dataType : 'json',
 		success: function(result){
 		  creator = result.name+"（"+result.email+"），"+result.dept;
@@ -393,7 +409,7 @@ $(function(){
 	});
     $.ajax({
 		url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${param.fdId}",
-		async:false,
+		async:true,
 		dataType : 'json',
 		success: function(result){
 			var html = "<tr data-fdid='creator' draggable='true'> "+
@@ -408,14 +424,7 @@ $(function(){
 			$("#list_user").html(html); 
 		  }
 	});
-
-    $("#examPaperTime").after(timeLineFn({//时间轴控件 配置数据
-        width: 670, //时间轴控件 宽度
-        total: 7, //总格数
-        curPos: 4, //当前位置
-        span: 1, //每格的进制
-        unit: "天"
-    }));
+   
     $(".timeLine>a").tooltip()
             .click(function(e){
                 e.preventDefault();

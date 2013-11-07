@@ -15,7 +15,7 @@ import java.lang.annotation.*;
  *
  * URL:/demo/user.do?user={name: 'demo', email: 'demo@126.com'}
  *
- * Arg: @RequestJsonParam("user") user
+ * Arg: @RequestJsonParam("user") User user
  *
  */
 @Target(ElementType.PARAMETER)
