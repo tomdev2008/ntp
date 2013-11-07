@@ -52,8 +52,8 @@ public class MessageAjaxController {
 	 */
 	@RequestMapping(value = "supportOrOpposeMessage")
 	@ResponseBody
-	public String supportOrOpposeMessage(String userId, String messageId,String fdType) {
-		return messageService.supportOrOpposeMessage(userId, messageId, fdType);
+	public String supportOrOpposeMessage(String messageId,String fdType) {
+		return messageService.supportOrOpposeMessage(ShiroUtils.getUser().getId(), messageId, fdType);
 	}
 	
 	/**

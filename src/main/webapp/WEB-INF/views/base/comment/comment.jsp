@@ -11,15 +11,15 @@
 <script id="commentLineTemplate" type="text/x-dot-template">
        <li class="media" dataId="{{=it.fdId}}">
             <a href="#" class="pull-left"><tags:image href="{{=it.fdUserURL}}" clas="media-object"/></a>
-            <div class="media-body" style="height: 100px">
+            <div class="media-body">
               <div class="media-heading"> {{=it.no}}# {{=it.fdUserName}}（{{=it.fdUserEmail}}）    来自 {{=it.fdUserDept}}
               </div>
               <p class="comt-content">{{=it.content}}</p>
               <div class="media-footing clearfix">
               	<span class="pull-left"><i class="icon-time"></i>{{=it.fdCreateTime}}</span>
                 <div class="pull-right btns-comt">
-                	<a href="#" ><i class="icon-thumbs-up"></i>0</a>
-                	<a href="#" ><i class="icon-thumbs-down"></i>0</a>
+                	<a href="javascript:void(0)" dataId="{{=it.fdId}}" class="suport" ><i class="icon-thumbs-up"></i>0</a>
+                	<a href="javascript:void(0)" dataId="{{=it.fdId}}" class="oppose" ><i class="icon-thumbs-down"></i>0</a>
                 	<a href="#" ><i class="icon-share-alt"></i>0</a>
                 </div>
               </div>
@@ -58,9 +58,28 @@
     </div>
 </div>
 <script type="text/javascript">
+////////////////////////初始化开始
 var pageSize=10;
 initCommentLines("${param.modelName}","${param.modelId}",1);
 initCommentPageInfo("${param.modelName}","${param.modelId}",1);
+$(".suport").bind("click",function(){
+	$.ajax({
+		  url: "${ctx}/ajax/message/supportOrOpposeMessage",
+		  async:false,
+		  dataType : 'json',
+		  data:{
+			  messageId :$(this).attr("dataId"),
+			  fdType :"01",
+		  },
+		  success: function(result){
+			  alert("成功");
+		  }
+	});
+});
+$(".oppose").bind("click",function(){
+	alert($(this).attr("dataId"));
+});
+////////////////////////初始化结束
 //初始评论列表化页面
 function initCommentLines(modelName,modelId,pageNo){
 	$.ajax({

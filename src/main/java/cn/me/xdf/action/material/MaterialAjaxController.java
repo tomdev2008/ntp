@@ -373,7 +373,7 @@ public class MaterialAjaxController {
 		map.put("fdAuthor", info.getFdAuthor());
 		map.put("fdAuthorDescription", info.getFdAuthorDescription());
 		map.put("isPublish", info.getIsPublish());
-		map.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:MM:ss").format(info.getFdCreateTime()));
+		map.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:MM aa").format(info.getFdCreateTime()));
 		
 		return JsonUtils.writeObjectToJson(map);
 	}
