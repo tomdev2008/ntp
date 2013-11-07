@@ -225,6 +225,7 @@ public class CourseCatalogAjaxController {
 			course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
 			course.setIsAvailable(true);
 			course.setIsPublish(true);
+			course.setIsOrder(true);
 			course.setCreator(sysOrgPerson);
 			course.setFdCreateTime(createdate);
 			courseService.save(course);

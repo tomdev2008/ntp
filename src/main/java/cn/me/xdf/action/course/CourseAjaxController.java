@@ -168,6 +168,7 @@ public class CourseAjaxController {
 				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
 				course.setIsAvailable(true);
 				course.setIsPublish(true);
+				course.setIsOrder(true);
 				// 将分类保存到课程中
 				if (StringUtil.isNotEmpty(courseType)) {
 					CourseCategory category = courseCategoryService
@@ -197,6 +198,7 @@ public class CourseAjaxController {
 			course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
 			course.setIsAvailable(true);
 			course.setIsPublish(true);
+			course.setIsOrder(true);
 			// 将分类保存到课程中
 			if (StringUtil.isNotEmpty(courseType)) {
 				CourseCategory category = courseCategoryService.get(courseType);
