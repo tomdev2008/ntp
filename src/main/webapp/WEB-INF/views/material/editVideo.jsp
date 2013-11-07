@@ -226,7 +226,7 @@
                          <c:if test="${materialInfo.isPublish==false}">
                             <li><a data-toggle="tab" href="#open">公开</a></li>
                             <li class="active"><a data-toggle="tab" href="#encrypt">加密</a></li>
-                            <input type="hidden" id="permission" name="permission" value="close">
+                            <input type="hidden" id="permission" name="permission" value="encrypt">
                          </c:if>
                         </ul>
                         <div class="tab-content">
@@ -419,7 +419,7 @@ $(function(){
         submitHandler:saveMaterial
     });
     
-    $('#formEditDTotal a[data-toggle="tab"]').on('shown', function (e) {
+    $('#formEditDTotal a[data-toggle="tab"]').on('click', function (e) {
         var href = 	e.target.href.split("#").pop();
         $("#permission").val(href);
     });
@@ -500,7 +500,7 @@ function saveMaterial(){
         attId:$("#attId").val(),
         kingUser: null
     };
-    if(data.permission === "close"){
+    if(data.permission === "encrypt"){
         //push人员授权数据
         data.kingUser = [];
         $("#list_user>tr").each(function(){

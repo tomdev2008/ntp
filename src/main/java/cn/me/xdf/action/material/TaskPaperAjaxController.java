@@ -3,7 +3,6 @@ package cn.me.xdf.action.material;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,15 +20,14 @@ import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
-import cn.me.xdf.model.material.ExamOpinion;
-import cn.me.xdf.model.material.ExamQuestion;
+import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.material.Task;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.service.material.TaskService;
-
 import cn.me.xdf.utils.ShiroUtils;
 
 @Controller
@@ -44,6 +42,9 @@ public class TaskPaperAjaxController {
 	private TaskService taskService;
 	
 	@Autowired
+	private AttMainService attMainService;
+	
+	@Autowired
 	private AccountService accountService;
 	
 	@RequestMapping(value = "saveOrUpdateTaskPaper")
@@ -54,11 +55,12 @@ public class TaskPaperAjaxController {
 		MaterialInfo info;
 		String taskId = request.getParameter("taskId");
 		Task task;
-		if(StringUtil.isBlank(materialId)){
+		if(StringUtil.isBlank(materialId)){//先进行作业包素材的保存
 			info = new MaterialInfo();
 			info.setCreator((SysOrgPerson) accountService.load(ShiroUtils.getUser().getId()));
 			info.setFdType(Constant.MATERIAL_TYPE_JOBPACKAGE);
 			info.setFdCreateTime(new Date());
+			info.setFdName(request.getParameter("materialName"));
 			info.setIsPublish(true);
 			info.setIsDownload(true);
 			info.setIsAvailable(true);
@@ -66,18 +68,18 @@ public class TaskPaperAjaxController {
 		}else{
 			info = materialService.load(materialId);
 		}
-		if(StringUtil.isBlank(taskId)||taskId.equals("undefined")){
+		String examType = request.getParameter("examType");//题型 01上传作业，02在线作答
+		String examName = request.getParameter("examName");//作业题目
+		String fdSubject = request.getParameter("examStem");//作业简介
+		String examScore = request.getParameter("examScore");//作业总分
+		double score=0.0;
+		if(StringUtil.isNotBlank(examScore)){
+		  score = Double.parseDouble(examScore);
+		}
+		if(StringUtil.isBlank(taskId)||taskId.equals("undefined")){//作业id为空时新建
 			task = new Task();
-			//题型 01上传作业，02在线作答
-			String examType = request.getParameter("examType");
-			//作业题目
-			String examName = request.getParameter("examName");
-			//作业简介
-			String fdSubject = request.getParameter("examStem");
-			//作业总分
-			String examScore = request.getParameter("examScore");
 			task.setFdName(examName);
-			task.setFdStandardScore(Double.parseDouble(examScore));
+			task.setFdStandardScore(score);
 			if(examType.equals("uploadWork")){
 				task.setFdType(Constant.TASK_TYPE_UPLOAD);//上传作业
 			} else {
@@ -86,11 +88,156 @@ public class TaskPaperAjaxController {
 			task.setFdSubject(fdSubject);
 			task.setTaskPackage(info);
 			taskService.save(task);
+		} else {//更改
+			task = taskService.load(taskId);
+			task.setFdName(examName);
+			task.setFdStandardScore(score);
+			if(examType.equals("uploadWork")){
+				task.setFdType(Constant.TASK_TYPE_UPLOAD);//上传作业
+			} else {
+				task.setFdType(Constant.TASK_TYPE_ONLINE);//在线作答
+			}
+			task.setFdSubject(fdSubject);
+			task.setTaskPackage(info);
+			taskService.update(task);
+		}
+		List<AttMain> attMains = new ArrayList<AttMain>();
+		String attString = request.getParameter("listAttachment");
+		// 更新选项附件
+		if (StringUtil.isNotBlank(attString)) {
+			//删除之前的选项
+			List<AttMain> oldAttMains = attMainService.findByCriteria(AttMain.class,
+			                Value.eq("fdModelId", task.getFdId()),
+			                Value.eq("fdModelName", Task.class.getName()));
+			for (AttMain attMain : oldAttMains) {
+				attMain.setFdModelId("");
+				attMain.setFdModelName("");
+				attMainService.update(attMain);
+			}
+			List<Map> att = JsonUtils.readObjectByJson(attString, List.class);
+			for (Map map : att) {
+				AttMain e = attMainService.get(map.get("id").toString());
+				e.setFdModelId(task.getFdId());
+				e.setFdModelName(Task.class.getName());
+				e.setFdKey(map.get("index").toString());
+				attMains.add(e);
+				attMainService.update(e);
+			}
 		}
 		resultMap.put("materialId", info.getFdId());
 		return resultMap;
 	}
-	
+	/**
+	 * 更改作业包素材信息
+	 * @param request
+	 */
+	@RequestMapping(value = "updateTaskPaperMaterial")
+	@ResponseBody
+	public void updateTaskPaperMaterial(HttpServletRequest request){
+		String id = request.getParameter("materialId");//素材id
+		String examPaperName = request.getParameter("examPaperName");//作业包名称
+		String examPaperIntro = request.getParameter("examPaperIntro");//作业包介绍
+		String author = request.getParameter("author");
+		String authorIntro = request.getParameter("authorIntro");
+		String permission = request.getParameter("permission");//是否公开
+		String listExam = request.getParameter("listExam");//作业列表
+		String kingUser = request.getParameter("kingUser");//授权人员
+		String passScore = request.getParameter("passScore");//及格分
+		String studyTime = request.getParameter("studyTime");//学习时长
+		List<Map> taskPaper;
+		MaterialInfo info = materialService.load(id);
+		if(StringUtil.isBlank(listExam)){
+			taskPaper = new ArrayList<Map>();
+		}else{
+			taskPaper = JsonUtils.readObjectByJson(listExam, List.class);
+		}
+		List<Map> users;
+		if(StringUtil.isBlank(kingUser)){
+			users = new ArrayList<Map>();
+		}else{
+			users = JsonUtils.readObjectByJson(kingUser, List.class);
+		}
+		
+		List<Task> taskList = new ArrayList<Task>();
+		//添加作业列表
+		for (Map<?, ?> map : taskPaper) {
+			Task task = taskService.get(map.get("id").toString());
+			task.setFdStandardScore(new Double(map.get("editingCourse").toString()));
+			taskService.update(task);
+			taskList.add(task);
+		}
+		
+		List<MaterialAuth> materialAuths = new ArrayList<MaterialAuth>();
+		//添加授权人员信息
+		if(!permission.equals("open")){
+			for (Map map : users) {
+				String personid =map.get("id").toString();
+				if(personid.equals("creator")){
+					continue;
+				}
+				MaterialAuth materialAuth = new MaterialAuth();
+				materialAuth.setFdUser((SysOrgPerson)accountService.load(personid));
+				materialAuth.setIsReader(map.get("tissuePreparation").toString().equals("true")?true:false);
+				materialAuth.setIsEditer(map.get("editingCourse").toString().equals("true")?true:false);
+				materialAuth.setMaterial(info);
+				materialAuths.add(materialAuth);
+			}
+		}
+		//更新权限
+		materialService.updateMaterialAuth(id, materialAuths);
+		info.setFdName(examPaperName);
+		info.setFdDescription(examPaperIntro);
+		info.setFdCreateTime(new Date());
+		info.setFdAuthor(author);
+		info.setFdAuthorDescription(authorIntro);
+		info.setFdScore(new Double(passScore));
+		info.setIsDownload(true);
+		info.setIsAvailable(true);
+		info.setIsPublish(permission.equals("open")?true:false);
+		info.setFdStudyTime(new Integer(studyTime));
+		info.setTasks(taskList);
+		materialService.update(info);
+	}
+	/**
+	 * 根据作业id找作业 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getTaskByTaskId")
+	@ResponseBody
+	public String getTaskByTaskId(HttpServletRequest request){
+		String taskId = request.getParameter("id");
+		Task task = taskService.load(taskId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(task.getFdType().equals(Constant.TASK_TYPE_UPLOAD)){
+			map.put("examType", "uploadWork");
+		}else if(task.getFdType().equals(Constant.TASK_TYPE_ONLINE)){
+			map.put("examType", "onlineAnswer");
+		}
+		map.put("examName", task.getFdName());
+		map.put("examScore", task.getFdStandardScore());
+		map.put("examStem", task.getFdSubject());
+		
+		List<AttMain> atts = attMainService.findByCriteria(AttMain.class,
+				Value.eq("fdModelId", task.getFdId()),
+				Value.eq("fdModelName", Task.class.getName()));
+		List<Map<String,String>> attList = new ArrayList<Map<String,String>>();
+		for (AttMain attMain : atts) {
+			Map<String,String> mapAtt = new HashMap<String,String>();
+			mapAtt.put("id", attMain.getFdId());
+			mapAtt.put("index", attMain.getFdKey());
+			mapAtt.put("name", attMain.getFdFileName());
+			mapAtt.put("url", attMain.getFdFilePath());
+			attList.add(mapAtt);
+		}
+		map.put("listAttachment",  attList);
+		return JsonUtils.writeObjectToJson(map);
+	}
+	/**
+	 * 根据素材(作业包)id获取作业 初始化作业包页面
+	 * @param request
+	 * @return 
+	 */
 	@RequestMapping(value = "getTaskByMaterialId")
 	@ResponseBody
 	public String getTaskByMaterialId(HttpServletRequest request) {
@@ -98,8 +245,9 @@ public class TaskPaperAjaxController {
 		MaterialInfo info = materialService.load(materialId);
 		List<Task> taskList = info.getTasks();
 		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
-		Map<String,String> map = new HashMap<String,String>();
+		Map<String,String> map;
 		for(Task task:taskList){
+			map = new HashMap<String,String>();
 			map.put("id", task.getFdId());
 			map.put("subject", task.getFdName());
 			map.put("score", task.getFdStandardScore()+"");
