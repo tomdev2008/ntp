@@ -218,19 +218,19 @@
                     <section class="section">
                         <label>权限设置</label>
                         <ul class="nav nav-pills">
-                        <c:if test="${materialInfo.isPublish==true}">
+                        <c:if test="${materialInfo.isPublish!=false}">
                             <li class="active"><a data-toggle="tab" href="#open">公开</a></li>
                             <li><a data-toggle="tab" href="#encrypt">加密</a></li>
                             <input type="hidden" id="permission" name="permission" value="open">
                          </c:if>
-                         <c:if test="${materialInfo.isPublish!=true}">
+                         <c:if test="${materialInfo.isPublish==false}">
                             <li><a data-toggle="tab" href="#open">公开</a></li>
                             <li class="active"><a data-toggle="tab" href="#encrypt">加密</a></li>
                             <input type="hidden" id="permission" name="permission" value="close">
                          </c:if>
                         </ul>
                         <div class="tab-content">
-                          <c:if test="${materialInfo.isPublish==true}">
+                          <c:if test="${materialInfo.isPublish!=false}">
                              <div class="tab-pane active" id="open">
                                 	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
                              </div>
@@ -246,7 +246,7 @@
                                 </div>
                             </div>
                           </c:if>
-                          <c:if test="${materialInfo.isPublish!=true}">
+                          <c:if test="${materialInfo.isPublish==false}">
                              <div class="tab-pane" id="open">
                                 	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
                              </div>
