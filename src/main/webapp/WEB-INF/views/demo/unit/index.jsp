@@ -22,10 +22,10 @@
 </head>
 <body>
 <form class="form-horizontal" id="inputForm" method="post" action="${ctx}/demo/unit/save" name="form">
-             名称：   <input type="text" id="fdName" name="fdName"/>
+             名称：   <input type="text" id="fdName" name="unit.fdName"/>
     <br/>
 
-          备注：    <input type="text" name="fdContext">
+          备注：    <input type="text" name="unit.fdContext">
     <br/>
     <tags:simpleupload filename="fdName"
                        filevalue="" id="upMovie" exts="*.jpg;" attIdName="attIds[0].fdId" attIdID="attIdID" attIdValue="attIds[0].fdId">

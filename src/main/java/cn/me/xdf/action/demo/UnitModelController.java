@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
@@ -40,18 +41,19 @@ public class UnitModelController {
     public String init() {
         return "/demo/unit/index";
     }
-/*
-    public String save2(@FormBean("bean1") bEAN1 B,@FormBean("bean3") bEAN3 B2) {
 
-    }*/
+    /*
+        public String save2(@FormBean("bean1") bEAN1 B,@FormBean("bean3") bEAN3 B2) {
+
+        }*/
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(WebRequest request) {
+    public String save(NativeWebRequest request) {
        /* UnitModel unitModel = cn.me.xdf.common.web.
         unitModelService.save(unitModel);
         attMainService.saveAttMainMachine(unitModel);*/
         UnitModel unitModel = new UnitModel();
-        RequestUtils.getBeanByAttr(request, unitModel);
-        System.out.println("unitModel="+unitModel.getFdName());
+        RequestUtils.getBeanByAttr(request, "unit", unitModel);
+        System.out.println("unitModel=" + unitModel.getFdName());
         return "redirect:/demo/unit/index";
     }
 
