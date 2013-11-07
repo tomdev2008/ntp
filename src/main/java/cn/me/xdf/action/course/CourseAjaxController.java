@@ -428,7 +428,7 @@ public class CourseAjaxController {
 		String pageNoStr = request.getParameter("pageNo");
 		String orderbyStr = request.getParameter("order");
 		Pagination page = courseService.findCourseInfosByName( fdTitle,
-				pageNoStr, orderbyStr);
+				pageNoStr, orderbyStr,Constant.COUSER_TEMPLATE_MANAGE);
 		model.addAttribute("page", page);
 		return "/course/divcourselist";
 	}
@@ -442,12 +442,12 @@ public class CourseAjaxController {
 		String pageNoStr = request.getParameter("pageNo");
 		String orderbyStr = request.getParameter("order");
 		Pagination page = courseService.findCourseInfosByName( fdTitle,
-				pageNoStr, orderbyStr);
+				pageNoStr, orderbyStr,Constant.COUSER_TEMPLATE_MANAGE);
 		int i = page.getTotalPage();
 		if(i>0){
 			for(int j=0;j<i;j++){
 				page = courseService.findCourseInfosByName( fdTitle,
-						"1", orderbyStr);
+						"1", orderbyStr,Constant.COUSER_TEMPLATE_MANAGE);
 				List list = page.getList();
 				if(list!=null && list.size()>0){
 					for(Object obj:list){

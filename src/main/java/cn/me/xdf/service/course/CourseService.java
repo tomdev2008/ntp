@@ -62,7 +62,7 @@ public class CourseService  extends BaseService{
 	 * 
 	 * author hanhl
 	 * */
-	public  Pagination findCourseInfosByName(String fdName,String pageNo ,String orderbyStr){
+	public  Pagination findCourseInfosByName(String fdName,String pageNo ,String orderbyStr,String seleType){
 
 		String userId = ShiroUtils.getUser().getId();
 		Finder finder = Finder.create("select course.*,scorestatis.fdaverage from IXDF_NTP_COURSE course ");
@@ -72,14 +72,20 @@ public class CourseService  extends BaseService{
 		finder.append("where course.isavailable='1'");/*有效的*/
 		//如果是管理员就显示所有有效的
 		if(!ShiroUtils.isAdmin()){
-		//已发布的课程
-		finder.append("and ( course.fdstatus='01' or ");
-		//当前登录用户自己创建的
-		finder.append("  course.fdcreatorid=:createId  or");
-		//有编辑权限的
-		finder.append("	exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and auth.isediter=1 and fduserid=:userId)	)");
-		finder.setParam("userId", userId);
-		finder.setParam("createId", userId);
+			if(Constant.COUSER_TEMPLATE_MANAGE.equals(seleType)){//课程模版查询
+			//已发布的课程
+			finder.append("and ( course.fdstatus='01' or ");
+			//当前登录用户自己创建的
+			finder.append("  course.fdcreatorid=:createId  or");
+			//有编辑权限的
+			finder.append("	exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and auth.isediter=1 and fduserid=:userId)	)");
+			finder.setParam("userId", userId);
+			finder.setParam("createId", userId);
+			}
+			if(Constant.COUSER_AUTH_MANAGE.equals(seleType)){//课程授权
+				finder.append(" and exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and auth.isauthstudy=1 and fduserid=:userId)	)");
+				finder.setParam("userId", userId);
+			}
 		}
 		//设置页码
 		int pageNoI=0;
@@ -151,4 +157,5 @@ public class CourseService  extends BaseService{
 		Pagination page = getPageBySql(finder, pageNo, pageSize);
 		return page;
 	}
+	
 }

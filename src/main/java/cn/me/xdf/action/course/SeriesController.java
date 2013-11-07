@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.me.xdf.common.page.Pagination;
-import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.SeriesInfoService;

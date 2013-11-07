@@ -59,7 +59,7 @@ public class CourseController {
 		String fdTitle = request.getParameter("fdTitle");
 		String pageNoStr = request.getParameter("pageNo");
 		String orderbyStr = request.getParameter("order");
-		Pagination page=courseService.findCourseInfosByName(fdTitle, pageNoStr, orderbyStr);
+		Pagination page=courseService.findCourseInfosByName(fdTitle, pageNoStr, orderbyStr,Constant.COUSER_TEMPLATE_MANAGE);
 		model.addAttribute("page", page);
 		return "/course/course_list";
 	}

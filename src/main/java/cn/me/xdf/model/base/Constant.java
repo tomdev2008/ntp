@@ -148,4 +148,14 @@ public class Constant {
 	 * 02在线作答
 	 */
 	public static final String TASK_TYPE_ONLINE = "02";
+	/**
+	 * 查询方式:
+	 * 01课程模版管理
+	 */
+	public static final String COUSER_TEMPLATE_MANAGE ="01";
+	/**
+	 * 查询方式:
+	 * 02课程授权管理
+	 */
+	public static final String COUSER_AUTH_MANAGE ="02";
 }
