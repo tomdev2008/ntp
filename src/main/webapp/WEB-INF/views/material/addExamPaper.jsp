@@ -72,8 +72,8 @@
                 <img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
             </div>
         </td>
-        <td><input type="checkbox" checked class="tissuePreparation" /></td>
-        <td><input type="checkbox" class="editingCourse" /></td>
+        <td><input type="checkbox" {{?it.tissuePreparation!=false}}checked{{?}}  class="tissuePreparation" /></td>
+        <td><input type="checkbox" {{?it.editingCourse!=false}}checked{{?}}  class="editingCourse" /></td>
         <td><a href="#" class="icon-remove-blue"></a></td>
     </tr>
 </script>
@@ -81,12 +81,12 @@
 <!-- 作业详情编辑 模板 -->
 <script id="examDetailTemplate" type="text/x-dot-template">
     <div class="page-header">
-        <a href="${ctx}/material/materialFoward?fdId=${materialInfo.fdId}&fdType=10" class="backParent">返回当前作业包</a>
+        <a href="${ctx}/material/materialAddFoward?fdId=${materialInfo.fdId}&fdType=10" class="backParent">返回当前作业包</a>
         <h4>{{=it.examPaperName}}</h4>
         <div class="btn-group">
             <button class="btn btn-large btn-primary" id="saveExam" type="button">保存</button>
             <button class="btn btn-large btn-primary" disabled id="exportExam" type="button">导出</button>
-            <button class="btn btn-white btn-large " id="delExam" type="button">删除</button>
+            <button class="btn btn-white btn-large " onclick="deleteTask();" id="delExam" type="button">删除</button>
         </div>
     </div>
     <div class="page-body editingBody">
@@ -95,6 +95,7 @@
                 <div class="control-group">
                     <label class="control-label" >题型设置</label>
                     <div class="controls">
+                        <input name="taskId" id="taskId" value="{{=it.taskId || ''}}" type="hidden" />
                         <input name="examType" id="examType" value="{{=it.examType || 'uploadWork'}}" type="hidden" />
                         <div class="btn-group btns-radio" data-toggle="buttons-radio">
                             <button class="btn btn-large{{?!it.examType || it.examType == 'uploadWork'}} active{{?}}" id="uploadWork" type="button">上传作业</button>
@@ -224,7 +225,7 @@
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" id="saveExamPaper" type="button">保存</button>
                     <button class="btn btn-large btn-primary" disabled id="exportExamPaper" type="button">导出</button>
-                    <button class="btn btn-white btn-large " id="delExamPaper" type="button">删除</button>
+                    <button class="btn btn-white btn-large " onclick="deleteMaterial();" id="delExamPaper" type="button">删除</button>
                 </div>
 	        </div>
             <div class="page-body editingBody">
@@ -235,6 +236,7 @@
                             <div class="controls">
                                 <input  id="examPaperName" required class="span6"
                                        name="examPaperName" type="text">
+                                <label id="examPaperNameErr" for="examPaperName" class="error" style="display: none;"></label>
                                 <span class="date" id="createTime"></span>
                             </div>
                         </div>
@@ -331,7 +333,7 @@
             </div>
 	    </section>
 	</section>
-<input type="hidden" id="materialId" value="${materialInfo.fdId}"/>
+<input type="hidden" id="materialId" value="${param.fdId}"/>
 </section>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
@@ -351,6 +353,7 @@ $(function(){
   //初始化页面
   //时间轴 模板函数
     var timeLineFn = doT.template(document.getElementById("timeLineTemplate").text);
+    var curTime = 4;
 	if("${param.fdId}"!=null&&"${param.fdId}"!=""){
 		 $.ajax({
 			  url: "${ctx}/ajax/material/getMaterial?materialId=${param.fdId}",
@@ -365,6 +368,7 @@ $(function(){
 				  $("#author").val(result.fdAuthor);
 				  $("#authorIntro").val(result.fdAuthorDescription);
 				  $("#createTime").html(result.createTime);
+				  curTime = result.time;
 				  
 				  if(result.isPublish==true){
 					  $("#open1").trigger("click");
@@ -373,17 +377,51 @@ $(function(){
 					  $("#close1").trigger("click");
 					  $("#permission").val("encrypt");
 				  }
-				  $("#examPaperTime").after(timeLineFn({//时间轴控件 配置数据
-				        width: 670, //时间轴控件 宽度
-				        total: 7, //总格数
-				        curPos: result.time, //当前位置
-				        span: 1, //每格的进制
-				        unit: "天"
-				    }));
 			  }
 		});
 	}
+	
+	 $("#examPaperTime").after(timeLineFn({//时间轴控件 配置数据
+	        width: 670, //时间轴控件 宽度
+	        total: 7, //总格数
+	        curPos: curTime, //当前位置
+	        span: 1, //每格的进制
+	        unit: "天"
+	    }));
+	 $(".timeLine>a").tooltip().click(function(e){
+         e.preventDefault();
+         $(this).prevAll("a").add(this).addClass("active");
+         $(this).nextAll("a").removeClass("active");
+         $("#examPaperTime").val( $(this).children(".num").text());
+     });
 });
+function deleteMaterial(){
+	$.fn.jalert("您确认要删除该素材吗？",confirmDeletePaper);
+}
+function confirmDeletePaper(){
+	$.ajax({
+		  url: "${ctx}/ajax/material/deleteMaterial?materialId=${param.fdId}",
+		  async:false,
+		  success: function(result){
+			  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+'${param.fdType}';
+		  }
+	}); 
+}
+function deleteTask(){
+	$.fn.jalert("您确认要删除该素材吗？",confirmDeleteTask);
+}
+function confirmDeleteTask(){
+	$.ajax({
+		type: "post",
+		url: "${ctx}/ajax/taskPaper/deleteTaskByTaskId",
+		data : {
+			"taskId":$("#taskId").val(),
+		},
+		success:function(){
+			window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType=10";
+		}
+	});
+}
 /**
  * Created by wqh on 13-11-1.
  */
@@ -400,7 +438,7 @@ $(function(){
 	var url="";
 	$.ajax({
 		url: "${ctx}/ajax/material/getCreater?materialId=${param.fdId}",
-		async:true,
+		async:false,
 		dataType : 'json',
 		success: function(result){
 		  creator = result.name+"（"+result.email+"），"+result.dept;
@@ -409,7 +447,7 @@ $(function(){
 	});
     $.ajax({
 		url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${param.fdId}",
-		async:true,
+		async:false,
 		dataType : 'json',
 		success: function(result){
 			var html = "<tr data-fdid='creator' draggable='true'> "+
@@ -422,15 +460,17 @@ $(function(){
 				  html += listUserKinguserFn(result.user[i]);
 			}
 			$("#list_user").html(html); 
+			
 		  }
 	});
-   
-    $(".timeLine>a").tooltip()
-            .click(function(e){
+    $("#list_user,#list_exam").sortable({
+        handle: '.state-dragable'
+    })
+            .find("a.icon-remove-blue").bind("click",function(e){
+            	alert("kkkk");
                 e.preventDefault();
-                $(this).prevAll("a").add(this).addClass("active");
-                $(this).nextAll("a").removeClass("active");
-                $("#examPaperTime").val( $(this).children(".num").text());
+                $(this).closest("tr").remove();
+                initScore();
             });
 
     //作业详情编辑页面 模板函数
@@ -449,14 +489,7 @@ $(function(){
     });
     //删除作业包事件
     $("#delExamPaper").click(function(e){
-    	$.ajax({
-			  url: "${ctx}/ajax/material/deleteMaterial?materialId=${param.fdId}",
-			  async:false,
-			  success: function(result){
-				  $.fn.jalert2("删除成功");
-				  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+'${param.fdType}';
-			  }
-		});
+    	
     });
 
     /*提交表单函数*/
@@ -503,7 +536,7 @@ $(function(){
         }
         
         if(data.listExam.length==0){
-        	$.fn.jalert2("请输入试题");
+        	$.fn.jalert2("请添加作业");
         }
         if(data.permission === "encrypt"&&data.kingUser.length==0){
         	$.fn.jalert2("请输入人员信息");
@@ -523,16 +556,10 @@ $(function(){
         var href = 	e.target.href.split("#").pop();
         $("#permission").val(href);
     });
-    $("#list_user,#list_exam").sortable({
-        handle: '.state-dragable'
-    })
-            .find("a.icon-remove-blue").bind("click",function(e){
-                e.preventDefault();
-                $(this).closest("tr").remove();
-            });
+    
+    
 
     var allUserData ;
-
     
     $("#addUser").autocomplete("${ctx}/ajax/user/findByName",{
         formatMatch: function(item) {
@@ -586,7 +613,7 @@ $(function(){
 			$("#addUser").val("");
 		}
 
-    });
+            });
 
 
     //添加作业事件
@@ -605,7 +632,8 @@ $(function(){
     function loadExamPage(fdid){
     	var materialName = $("#examPaperName").val();
         if(materialName==""||materialName==null){
-        	$.fn.jalert2("请先作业包名称");
+        	$("#examPaperNameErr").html("请先设置作业包名称");
+        	$("#examPaperNameErr").css("display","block");
         	return;
         }
         var data = {};
@@ -768,6 +796,7 @@ function initExamPaperList(){
 		});
 	}
 }
+
 function initScore(){
 	var totalScore = 0;
 	var count = 0;

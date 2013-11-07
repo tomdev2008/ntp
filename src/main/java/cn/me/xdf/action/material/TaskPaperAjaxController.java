@@ -3,6 +3,7 @@ package cn.me.xdf.action.material;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -170,6 +171,13 @@ public class TaskPaperAjaxController {
 			taskService.update(task);
 			taskList.add(task);
 		}
+		//删除多余作业
+		List<Task> oldTaskList = taskService.findByProperty("taskPackage.fdId", info.getFdId());
+		for (Task task : oldTaskList) {
+			if(!taskList.contains(task)){
+				deleteTask(task.getFdId());
+			}
+		}
 		
 		List<MaterialAuth> materialAuths = new ArrayList<MaterialAuth>();
 		//添加授权人员信息
@@ -218,6 +226,7 @@ public class TaskPaperAjaxController {
 		}else if(task.getFdType().equals(Constant.TASK_TYPE_ONLINE)){
 			map.put("examType", "onlineAnswer");
 		}
+		map.put("taskId", task.getFdId());
 		map.put("examName", task.getFdName());
 		map.put("examScore", task.getFdStandardScore());
 		map.put("examStem", task.getFdSubject());
@@ -260,34 +269,18 @@ public class TaskPaperAjaxController {
 		return JsonUtils.writeObjectToJson(list);
 	}
 
-	
-	@RequestMapping(value = "saveOrUpdate")
+	/**
+	 * 根据作业包id删除作业
+	 * @param materialId
+	 */
+	@RequestMapping(value = "deleteTaskByTaskId")
 	@ResponseBody
-	public void saveOrUpdate(HttpServletRequest request){
+	public void deleteTaskByTaskId(HttpServletRequest request){
 		String taskId = request.getParameter("taskId");
-		Task task;
-		if(StringUtil.isBlank(taskId)){
-			task = new Task();
-			//题型 01上传作业，02在线作答
-			String examType = request.getParameter("examType");
-			//作业题目
-			String examName = request.getParameter("examName");
-			//作业简介
-			String fdSubject = request.getParameter("examStem");
-			//作业总分
-			String examScore = request.getParameter("examScore");
-			task.setFdName(examName);
-			task.setFdStandardScore(Double.parseDouble(examScore));
-			if(examType.equals("uploadWork")){
-				task.setFdType(Constant.TASK_TYPE_UPLOAD);//上传作业
-			} else {
-				task.setFdType(Constant.TASK_TYPE_ONLINE);//在线作答
-			}
-			task.setFdSubject(fdSubject);
-			taskService.save(task);
-		}
+		deleteTask(taskId);
 	}
-	
-	
-	
+	private void deleteTask(String fdId){
+		attMainService.deleteAttMainByModelId(fdId);
+		taskService.delete(fdId);
+	}
 }
