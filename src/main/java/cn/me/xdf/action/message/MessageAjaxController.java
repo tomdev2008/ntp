@@ -1,6 +1,5 @@
 package cn.me.xdf.action.message;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,13 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
-import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseInfo;
-import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
 import cn.me.xdf.model.organization.SysOrgPerson;
@@ -119,9 +115,12 @@ public class MessageAjaxController {
 	@RequestMapping(value = "findCommentByModelId")
 	@ResponseBody
 	private String findCommentByModelId(String modelName,String modelId,int pageNo,int pageSize) {
-		List<Message> messages = (List<Message>) messageService.findCommentPage(modelName, modelId, pageNo, pageSize).getList();
+		
+		Pagination pagination =messageService.findCommentPage(modelName, modelId, pageNo, pageSize);
+		List<Message> messages = (List<Message>) pagination.getList();
 		List<Map> list = new ArrayList<Map>();
-		for (Message message : messages){
+		for (int i=0;i<messages.size();i++){
+			Message message =messages.get(i);
 			Map map = new HashMap();
 			map.put("fdId", message.getFdId());
 			map.put("content", message.getFdContent());
@@ -131,6 +130,8 @@ public class MessageAjaxController {
 			map.put("fdUserURL", message.getFdUser().getFdPhotoUrl());
 			map.put("fdUserEmail", message.getFdUser().getFdEmail());
 			map.put("fdUserDept", message.getFdUser().getDeptName());
+			int no = pagination.getTotalCount()-i-(pageNo-1)*pageSize;
+			map.put("no", no);
 			list.add(map);
 		}
 		Map maps = new HashMap();
@@ -146,9 +147,7 @@ public class MessageAjaxController {
 	@ResponseBody
 	private String getCommentPageInfo(String modelName , String modelId,int pageNo,int pageSize) {
 		Pagination pagination = messageService.findCommentPage(modelName, modelId, pageNo, pageSize);
-		int totalSize = messageService.findByCriteria(Message.class,
-                Value.eq("fdModelName", CourseInfo.class.getName()),
-                Value.eq("fdModelId", modelId)).size();
+		int totalSize = pagination.getTotalCount();
 		int startLine = (pageNo-1)*(pageSize)+1;
 		int totalPage = pagination.getTotalPage();
 		int endLine = 0;

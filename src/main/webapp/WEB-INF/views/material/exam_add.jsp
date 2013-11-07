@@ -493,14 +493,16 @@ $(function(){
     });
     //删除试卷事件
     $("#delExamPaper").click(function(e){
-    	$.ajax({
-			  url: "${ctx}/ajax/material/deleteMaterial?materialId=${param.fdId}",
-			  async:false,
-			  success: function(result){
-				  $.fn.jalert2("删除成功");
-				  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType=08";
-			  }
-		});
+    	$.fn.jalert("您确认要删除当前测试？",function(){
+    		$.ajax({
+  			  url: "${ctx}/ajax/material/deleteMaterial?materialId=${param.fdId}",
+  			  async:false,
+  			  success: function(result){
+  				  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType=08";
+  			  }
+  		});
+    	});
+    	
     });
 
     /*提交表单函数*/
@@ -882,6 +884,28 @@ $(function(){
             },
             'removeCompleted':false // 进度条不消失
         });
+        if(fdid==null||fdid==""){
+        	$("#delExam").remove();
+        }else{
+        	$("#delExam").bind("click",function(){
+        		$.fn.jalert("确认删除试题？",function(){
+	        			$.ajax({
+	          			  url: "${ctx}/ajax/examquestion/deleQuestionToExam",
+	          			  async:false,
+	          			  dataType : 'json',
+	          			  data:{
+	          				  questionId : fdid,
+	          				  examId :"${param.fdId}",
+	          			  },
+	          			  success: function(result){
+	          				  
+	          			  }
+	          			});
+					    window.location.href="${ctx}/material/materialFoward?fdId=${param.fdId}&fdType=08";
+				  });
+        		
+        	});
+        }
     }
 });
     

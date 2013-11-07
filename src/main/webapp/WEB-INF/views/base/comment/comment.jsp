@@ -9,10 +9,10 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
 <!-- 评论条目模板 -->
 <script id="commentLineTemplate" type="text/x-dot-template">
-       <li class="media">
+       <li class="media" dataId="{{=it.fdId}}">
             <a href="#" class="pull-left"><tags:image href="{{=it.fdUserURL}}" clas="media-object"/></a>
             <div class="media-body" style="height: 100px">
-              <div class="media-heading">{{=it.fdUserName}}（{{=it.fdUserEmail}}）    来自 {{=it.fdUserDept}}
+              <div class="media-heading"> {{=it.no}}# {{=it.fdUserName}}（{{=it.fdUserEmail}}）    来自 {{=it.fdUserDept}}
               </div>
               <p class="comt-content">{{=it.content}}</p>
               <div class="media-footing clearfix">

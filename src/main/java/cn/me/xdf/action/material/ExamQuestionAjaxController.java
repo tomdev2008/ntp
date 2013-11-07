@@ -299,4 +299,20 @@ public class ExamQuestionAjaxController {
 		}
 		
 	}
+	/**
+	 * 删除测试中的某个试题
+	 * @param request
+	 */
+	@RequestMapping(value = "deleQuestionToExam")
+	@ResponseBody
+	public void deleQuestionToExam(HttpServletRequest request){
+		String questionId = request.getParameter("questionId");
+		String examId = request.getParameter("examId");		
+		ExamQuestion delQuestion = examQuestionService.get(questionId);
+		MaterialInfo info = materialService.get(examId);
+		List<ExamQuestion> examQuestions = info.getQuestions();
+		examQuestions.remove(delQuestion);
+		info.setQuestions(examQuestions);
+		examQuestionService.deleQuestion(questionId);
+	}
 }
