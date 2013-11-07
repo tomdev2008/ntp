@@ -1,22 +1,14 @@
 package cn.me.xdf.service.course;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import jodd.util.StringUtil;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
-import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.BaseService;
 @Service
