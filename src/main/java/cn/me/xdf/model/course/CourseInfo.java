@@ -128,9 +128,9 @@ public class CourseInfo extends IdEntity implements IAttMain{
 	private Integer fdTotalPart;
 	
 	/**
-	 * 学习顺序
+	 * 学习顺序(true:顺序；false:无序)
 	 */
-	private String fdOrder;
+	private Boolean isOrder;
 	
 	/**
 	 * 是否有效
@@ -289,12 +289,12 @@ public class CourseInfo extends IdEntity implements IAttMain{
 		this.fdTotalPart = fdTotalPart;
 	}
 
-	public String getFdOrder() {
-		return fdOrder;
+	public Boolean getIsOrder() {
+		return isOrder;
 	}
 
-	public void setFdOrder(String fdOrder) {
-		this.fdOrder = fdOrder;
+	public void setIsOrder(Boolean isOrder) {
+		this.isOrder = isOrder;
 	}
 
 	public Boolean getIsAvailable() {
