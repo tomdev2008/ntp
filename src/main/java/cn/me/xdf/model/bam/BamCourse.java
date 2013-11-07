@@ -233,7 +233,7 @@ public class BamCourse extends IdEntity implements BamProcess {
         return isOpen;
     }
 
-    public void setOpen(boolean open) {
+    public void setIsOpen(boolean open) {
         isOpen = open;
     }
 

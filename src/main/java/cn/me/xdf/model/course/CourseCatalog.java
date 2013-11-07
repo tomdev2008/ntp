@@ -223,7 +223,7 @@ public class CourseCatalog extends IdEntity {
      * /********************************************************************************************************************
      */
 
-    public boolean through;
+    public Boolean through;
 
     /**
      * 是否通过
@@ -231,11 +231,11 @@ public class CourseCatalog extends IdEntity {
      * @return
      */
     @Transient
-    public boolean getThrough() {
+    public Boolean getThrough() {
         return through;
     }
 
-    public void setThrough(boolean through) {
+    public void setThrough(Boolean through) {
         this.through = through;
     }
 

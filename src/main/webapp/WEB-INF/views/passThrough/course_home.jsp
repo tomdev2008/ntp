@@ -1,6 +1,7 @@
 <%@page import="cn.me.xdf.model.course.CourseInfo"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
@@ -13,7 +14,6 @@
 <script src="js/html5.js"></script>
 <![endif]-->
 </head>
-
 <body>
 <!--头部 S-->
 <!--  
@@ -87,7 +87,7 @@
 	       	  		<div class="hd">
 		        		<h2>作者  ${course.fdAuthor}</h2>
                         <div class="ab_r">
-                        	<span class="pub_time"><i class="icon-time"></i>15分钟前</span>
+                        	<span class="pub_time"><i class="icon-time"></i><tags:datetime value="${course.fdCreateTime}" pattern="yyyy-MM-dd hh:mm aa"/></span>
                         </div>
 		        	</div>
                     <div class="bd">
@@ -109,6 +109,7 @@
                     	<div class="larning-sections">
                     		<j:iter items="${catalog}" var="bean" status="vstatus">
                     	    <c:set var="i" value="1"/>
+                    	    <c:set var="isorder" value="true"/>
                     		<c:if test="${bean.fdType==0}">
                     		<dl>
                     			<dt>
@@ -123,10 +124,46 @@
 		                    			<dd>
 		                                	<div class="span5">
 		                                    	<span class="tit">${bean.fdNo}.${i}&nbsp;${lecture.fdName}</span>
-		                                        <button class="btn">再次学习</button>
+		                                        	<c:if test="${lecture.through==null}">
+		                                        	  <c:if test="${course.isOrder==false}">
+		                                        	  	<button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        	  	  	开始学习
+		                                        	    </button>
+		                                        	  </c:if>
+		                                        	  <c:if test="${isorder==false && course.isOrder==true}">
+		                                        	  	<button data-fdid="${lecture.fdId}" class="btn btn-primary" disabled="disabled">
+		                                        	  	  	开始学习
+		                                        	    </button>
+		                                        	  </c:if>
+		                                        	  <c:if test="${isorder==true && course.isOrder==true}">
+		                                        	    <c:set var="isorder" value="false"/>
+		                                        	  	<button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        	  	  	开始学习
+		                                        	    </button>
+		                                        	  </c:if>
+		                                        	</c:if>
+		                                        	<c:if test="${lecture.through==true}">
+		                                        	  <button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        		再次学习
+		                                        	  </button>		                                        		
+		                                        	</c:if>
+		                                        	<c:if test="${lecture.through==false}">
+		                                        	  <button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        		继续学习
+		                                        	  </button>		
+		                                        	</c:if>
 		                                    </div>
 		                                    <div class="span2">${lecture.fdStudyTime}</div>
-		                                    <div class="span1"><i class="icon-circle-progress"><i class="icon-progress"></i></i></div>
+		                                    <div class="span1">
+		                                    	<i class="icon-circle-progress">
+		                                        	<c:if test="${lecture.through==true}">
+		                                        		<i class="icon-progress"></i>
+		                                        	</c:if>
+		                                        	<c:if test="${lecture.through==false}">
+		                                        		<i class="icon-progress half"></i>
+		                                        	</c:if>
+		                                    	</i>
+		                                    </div>
 		                                </dd>
 		                                <c:set var="i" value="${i+1}"/>
 		                            </c:if>
@@ -138,33 +175,67 @@
                     			<dd>
                                 	<div class="span5">
                                     	<span class="tit">${bean.fdNo}&nbsp;${bean.fdName}</span>
-                                        <button class="btn">再次学习</button>
+                                        	<c:if test="${lecture.through==null}">
+		                                      <c:if test="${course.isOrder==false}">
+		                                       	<button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        	开始学习
+		                                       	</button>
+		                                      </c:if>
+		                                      <c:if test="${isorder==false && course.isOrder==true}">
+		                                        <button data-fdid="${lecture.fdId}" class="btn btn-primary" disabled="disabled">
+		                                        	开始学习
+		                                        </button>
+		                                      </c:if>
+		                                      <c:if test="${isorder==true && course.isOrder==true}">
+		                                        <c:set var="isorder" value="false"/>
+		                                        <button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        	开始学习
+		                                        </button>
+		                                      </c:if>
+		                                    </c:if>
+		                                    <c:if test="${lecture.through==true}">
+		                                        <button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        	再次学习
+		                                        </button>		                                        		
+		                                    </c:if>
+		                                    <c:if test="${lecture.through==false}">
+		                                        <button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        	继续学习
+		                                        </button>		
+		                                    </c:if>
                                     </div>
                                     <div class="span2">${bean.fdStudyTime}</div>
-                                    <div class="span1"><i class="icon-circle-progress"><i class="icon-progress"></i></i></div>
+                                    <div class="span1">
+                                    	<i class="icon-circle-progress">
+                                    		<c:if test="${lecture.through==true}">
+		                                        <i class="icon-progress"></i>
+		                                    </c:if>
+		                                    <c:if test="${lecture.through==false}">
+		                                        <i class="icon-progress half"></i>
+		                                    </c:if>
+                                    	</i>
+                                    </div>
                                 </dd>
                              </dl>
                             </c:if>
                     		</j:iter>
                     	</div>
                     </div>
-                   
-                </div>
-                 <c:import url="/WEB-INF/views/base/comment/comment.jsp">
+                </div>               
+                <c:import url="/WEB-INF/views/base/comment/comment.jsp">
                  	<c:param name="modelName" value="<%=CourseInfo.class.getName()%>" />
-                 	<c:param name="modelId" value="14221e4d16b8d6bf0b3c68541e38814b" />
+                 	<c:param name="modelId" value="${course.fdId}" />
                 </c:import>
 			</div>
 			<div class="pull-right w225">
 				 <!-- 评分评论页面 -->
 	        	 <c:import url="/WEB-INF/views/passThrough/score_course.jsp">
-                	<c:param name="courseId" value="14221e4d16b8d6bf0b3c68541e38814b" />
+                	<c:param name="courseId" value="${course.fdId}" />
                 </c:import>
 		        <!-- 学习当前课程的新教师列表 -->
                 <c:import url="/WEB-INF/views/passThrough/learning_teacher_list.jsp">
                 	<c:param name="courseId" value="${course.fdId}" />
                 </c:import>
-                
                 <!-- 发现课程之最新课程列表 -->
                 <c:import url="/WEB-INF/views/passThrough/new_course_list.jsp"></c:import>
 	        </div>
@@ -188,5 +259,11 @@
 <!--底部 E-->
 </section>
 <!--主体 E-->
+<script type="text/javascript">
+	$("button.btn").bind("click",function(){
+		var fdid = $(this).attr("data-fdid");
+    	window.location.href = "${ctx}/passThrough/getStudyContent?bamId=${bamId}&catalogId="+fdid;
+	});
+</script>
 </body>
 </html>

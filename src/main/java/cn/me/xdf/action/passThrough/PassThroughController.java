@@ -94,6 +94,20 @@ public class PassThroughController {
 		}
 		return "/passThrough/course_home";
 	}
+	
+	/**
+	 * 获取课程学习内容
+	 * @param request
+	 */
+	@RequestMapping(value = "getStudyContent")
+	public String getStudyContent(HttpServletRequest request) {
+		//获取课程进程ID
+		String bamId = request.getParameter("bamId");
+		//获取课程节ID
+		String catalogId = request.getParameter("catalogId");
+		
+		return null;
+	}
 
 	/**
 	 * 从课程学习进程中获取当前学习的教师总数

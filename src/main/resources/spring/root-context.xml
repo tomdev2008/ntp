@@ -73,6 +73,9 @@
                 
                 <!-- 日志 -->
                 <value>cn.me.xdf.model.log</value>
+                
+                <!-- 进程 -->
+                <value>cn.me.xdf.model.bam</value>
 
             </list>
         </property>
