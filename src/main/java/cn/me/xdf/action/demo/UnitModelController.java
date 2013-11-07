@@ -1,6 +1,7 @@
 package cn.me.xdf.action.demo;
 
 import cn.me.xdf.common.web.RequestUtils;
+import cn.me.xdf.common.web.springmvc.annotation.FormBean;
 import cn.me.xdf.model.demo.UnitModel;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.demo.UnitModelService;
@@ -39,7 +40,10 @@ public class UnitModelController {
     public String init() {
         return "/demo/unit/index";
     }
+/*
+    public String save2(@FormBean("bean1") bEAN1 B,@FormBean("bean3") bEAN3 B2) {
 
+    }*/
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(WebRequest request) {
        /* UnitModel unitModel = cn.me.xdf.common.web.

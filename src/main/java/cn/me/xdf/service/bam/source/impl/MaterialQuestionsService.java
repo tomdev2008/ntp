@@ -5,8 +5,8 @@ import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.bam.source.ISourceService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +23,7 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
     }
 
     @Override
-    public Object saveSourceNode(HttpServletRequest request) {
+    public Object saveSourceNode(WebRequest request) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

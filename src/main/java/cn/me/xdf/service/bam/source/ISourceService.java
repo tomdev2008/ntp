@@ -2,8 +2,7 @@ package cn.me.xdf.service.bam.source;
 
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.course.CourseCatalog;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.context.request.WebRequest;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,6 +25,6 @@ public interface ISourceService {
      * @param request
      * @return
      */
-    public Object saveSourceNode(HttpServletRequest request);
+    public Object saveSourceNode(WebRequest request);
 
 }
