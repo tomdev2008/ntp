@@ -113,7 +113,7 @@
 	<section class="section listWrap">
 		<ul class="nav list">
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
-				<%-- <li><a href="${ctx}/course/pagefoward?courseId=${bean.FDID}">  --%>
+				 <li><a href="#">
 				<input type="checkbox" name="ids" value="${bean.FDID}"/>
 				    <span class="title">
 					<c:if test="${bean.FDTITLE!=null && bean.FDTITLE!=''}">
