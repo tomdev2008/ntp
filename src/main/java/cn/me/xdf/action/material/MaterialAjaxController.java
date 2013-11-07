@@ -366,6 +366,7 @@ public class MaterialAjaxController {
 		String materialId = request.getParameter("materialId");
 		MaterialInfo info = materialService.findUniqueByProperty("fdId", materialId);
 		Map map = new HashMap();
+		map.put("fdName",info.getFdName());
 		map.put("description", info.getFdDescription());
 		map.put("time", info.getFdStudyTime());
 		map.put("score", info.getFdScore());
