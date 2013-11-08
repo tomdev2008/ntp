@@ -27,7 +27,7 @@
 					<span id="markshow">
 							 	<a id="containkey"href="#">全部条目</a>
 					</span>
-				</span> <a class="btn btn-link" href="#rightCont" onclick="clearserach();">清空搜索结果</a>
+				</span> <a class="btn btn-link" href="#rightCont" style="position: absolute;right: 180px;padding-right:5px;padding-left:5px" onclick="clearserach();">清空搜索结果</a>
 			</div>
 		</div>
 		<div class="bd">

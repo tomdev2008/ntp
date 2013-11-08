@@ -229,7 +229,7 @@ public class ExamQuestionAjaxController {
 		String score = request.getParameter("score");
 		String studyTime = request.getParameter("studyTime");
 		List<Map> exams;
-		MaterialInfo info = materialService.get(id);
+		MaterialInfo info = materialService.findUniqueByProperty("fdId", id);
 		if(StringUtil.isBlank(listExam)){
 			exams = new ArrayList<Map>();
 		}else{
@@ -244,10 +244,10 @@ public class ExamQuestionAjaxController {
 		//更新试题分数
 		List<ExamQuestion> examQuestions = new ArrayList<ExamQuestion>();
 		for (Map map : exams) {
-			ExamQuestion q =examQuestionService.get(map.get("id").toString());
+			ExamQuestion q =examQuestionService.findUniqueByProperty("fdId",map.get("id").toString());
 			q.setFdStandardScore(new Double(map.get("editingCourse").toString()));
 			q.setFdOrder(new Integer(map.get("index").toString()));
-			examQuestionService.update(q);
+			examQuestionService.save(q);
 			examQuestions.add(q);
 		}
 		//删除多余的试题
@@ -286,7 +286,7 @@ public class ExamQuestionAjaxController {
 		info.setIsPublish(permission.equals("open")?true:false);
 		info.setFdStudyTime(new Integer(studyTime));
 		info.setQuestions(examQuestions);
-		materialService.update(info);
+		materialService.save(info);
 	}
 	
 	@RequestMapping(value = "deleExamsByMaterialId")
