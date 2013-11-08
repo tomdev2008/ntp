@@ -206,8 +206,9 @@
 		            <a href="#">{{=it.subject}}</a>
 		        </div>
 		    </td>
-		    <td><input type="text" onblur="initScore()" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为分值" class="itemScore input-mini">分</td>
-		    <td><a href="#" class="icon-remove-blue"></a></td>
+		    <td><input id="score_{{=it.id}}" type="text" digits="true" max="20" onblur="initScore()" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为整数且不能大于20分" class="itemScore input-mini">分
+		    <label for="score_{{=it.id}}" class="error" ></label></td>
+			<td><a href="#" class="icon-remove-blue"></a></td>
 		</tr>
     </script>
 
@@ -240,7 +241,7 @@
                             <label class="control-label" for="examPaperName">作业包</label>
                             <div class="controls">
                                 <input  id="examPaperName" required class="span6"
-                                       name="examPaperName" type="text" placeholder="请输入作业包名称">
+                                       name="examPaperName" type="text">
                                 <label id="examPaperNameErr" for="examPaperName" class="error" style="display: none;"></label>
                                 <span class="date" id="createTime"></span>
                             </div>
@@ -265,7 +266,7 @@
                         <div class="hd">
                             <label for="passScore" class="miniInput-label">
                                                                        作业列表（共计<span id="count"></span>题，满分<span id="totalScore"></span>分，及格 
-                                <input class="input-mini" id="passScore" number="true" required="required"  name="passScore"  type="text"/>      分）
+                                <input class="input-mini" id="passScore"  digits="true"  required="required"  name="passScore"  type="text"/>      分）
                             </label>
                             <label for="passScore" id="passScoreErr" class="error" ></label>
                             <button class="btn btn-primary btn-large" id="addExam" type="button">添加作业</button>
@@ -541,12 +542,10 @@ $(function(){
             });
             data.kingUser = JSON.stringify(data.kingUser);
         }
-        
-        if(data.listExam.length==0){
-        	$.fn.jalert2("请添加作业");
-        }
-        if(data.permission === "encrypt"&&data.kingUser.length==0){
-        	$.fn.jalert2("请输入人员信息");
+        if($("#list_exam").children("tr").length==0){
+        	$("#passScoreErr").css("display","block");
+    		$("#passScoreErr").html("请添加作业");
+    		return false;
         }
         ///保存作业包素材的方法
         $.ajax({
@@ -730,7 +729,7 @@ $(function(){
 				  type: "POST",
 				  dataType:'json',
 				  success: function(result){
-					  window.location.href="${ctx}/material/materialFoward?fdId="+result.materialId;
+					  window.location.href="${ctx}/material/materialFoward?fdId="+result.materialId+"&fdType="+$("#fdType").val();
 				  },
 			});
         }
@@ -744,7 +743,7 @@ $(function(){
             'uploader' : '${ctx}/common/file/o_upload',
             'auto' : true,// 选中后自动上传文件
             'queueID': 'qdiv',// 文件队列div
-            'fileSizeLimit':20480,// 限制文件大小为2m
+            'fileSizeLimit':2097152,// 限制文件大小为2G
             'queueSizeLimit':1,
             'onUploadStart' : function (file) {
                 jQuery("#upMovie").uploadify("settings", "formData");
@@ -806,7 +805,11 @@ function initScore(){
 	var count = 0;
 	for(var i=0 ; i<$("#list_exam input").length ;i++){
 		count++;
-		totalScore = totalScore +parseInt($("#list_exam input :eq("+i+")").val());
+		var isNum =  /^[0-9]*[0-9]$/;  
+		var inputValue = $("#list_exam input :eq("+i+")").val();
+		if(isNum.test(inputValue)){
+			totalScore = totalScore +parseInt(inputValue);
+		}
 	}
 	$("#count").html(count);
 	$("#totalScore").html(totalScore);

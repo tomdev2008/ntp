@@ -3,7 +3,6 @@ package cn.me.xdf.action.material;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -173,7 +172,7 @@ public class TaskPaperAjaxController {
 			Task task = taskService.get(map.get("id").toString());
 			task.setFdStandardScore(new Double(map.get("editingCourse").toString()));
 			task.setFdOrder(index++);
-			taskService.update(task);
+			taskService.save(task);
 			taskList.add(task);
 		}
 		//删除多余作业
@@ -213,7 +212,7 @@ public class TaskPaperAjaxController {
 		info.setIsPublish(permission.equals("open")?true:false);
 		info.setFdStudyTime(time);
 		info.setTasks(taskList);
-		materialService.update(info);
+		materialService.save(info);
 	}
 	/**
 	 * 根据作业id找作业 
@@ -270,7 +269,7 @@ public class TaskPaperAjaxController {
 			map = new HashMap<String,String>();
 			map.put("id", task.getFdId());
 			map.put("subject", task.getFdName());
-			map.put("score", task.getFdStandardScore()+"");
+			map.put("score", task.getFdStandardScore().intValue()+"");
 		    list.add(map);
 		}
 		return JsonUtils.writeObjectToJson(list);
