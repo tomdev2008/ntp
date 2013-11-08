@@ -24,8 +24,8 @@ public class SourceAspect extends SimpleService {
     @Autowired
     private BamCourseService bamCourseService;
 
-    @After(value = "execution(* cn.me.xdf.service.bam.process.SourceNodeService.saveSourceNode(sourceNote))")
-    public void saveBamScore(JoinPoint joinPoint,SourceNote sourceNote) {
+    @After(value = "execution(* cn.me.xdf.service.bam.process.SourceNodeService.saveSourceNode(..))")
+    public void saveBamScore(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         SourceNote note = (SourceNote) args[0];
         if (note == null || !note.getIsStudy())
