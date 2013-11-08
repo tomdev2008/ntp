@@ -18,7 +18,6 @@
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 </head>
 <body>
-
 		<section class="container">
 			<section class="clearfix mt20">
 			  <section class="col-left pull-left">
@@ -49,6 +48,11 @@
 	</section>
 </section>
 <script type="text/javascript">	
+function pressEnter(){//回车事件
+	if(event.keyCode==13){
+		findeCoursesByKey(1,'fdcreatetime');
+	}
+}
 function clearserach(){//清理搜索栏并显示数据列表
 	//alert('ss');
 	$("#serach").attr("value","");

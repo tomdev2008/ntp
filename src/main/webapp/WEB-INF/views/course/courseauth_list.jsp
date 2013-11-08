@@ -44,6 +44,11 @@
 	</section>
 </section>
 <script type="text/javascript">	
+function pressEnter(){//回车事件
+	if(event.keyCode==13){
+		findeCoursesByKey(1,'fdcreatetime');
+	}
+}
 function clearserach(){//清理搜索栏并显示数据列表
 	//alert('ss');
 	$("#serach").attr("value","");
