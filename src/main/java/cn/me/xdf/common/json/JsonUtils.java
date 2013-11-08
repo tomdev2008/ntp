@@ -2,12 +2,16 @@ package cn.me.xdf.common.json;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.me.xdf.common.json.hibernate4.Hibernate4Module;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.type.TypeFactory;
 import org.codehaus.jackson.type.JavaType;
+import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,6 +70,38 @@ public class JsonUtils {
         }
     }
 
+
+    /**
+     * 把json字符串转化为Object
+     *
+     * @param json
+     * @param collectionClass
+     * @param elementClasses
+     * @return
+     */
+    public static <T> T readBeanByJson(String json, Class<?> collectionClass, Class<?> elementClasses) {
+        try {
+            if (objectMapper == null) {
+                objectMapper = new ObjectMapper();
+            }
+            JavaType javaType = getCollectionType(ArrayList.class, elementClasses);
+            return objectMapper.readValue(json, javaType);
+
+        } catch (JsonParseException e) {
+            log.error("json==" + json + ",error(JsonParseException):"
+                    + e.getMessage());
+            throw new RuntimeException(e);
+        } catch (JsonMappingException e) {
+            log.error("json==" + json + ",error(JsonMappingExcption):"
+                    + e.getMessage());
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            log.error("json==" + json + ",error(IOException):" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public static <T> T readObjectByTypeJson(String json, Type type) {
         try {
             if (objectMapper == null) {
@@ -85,5 +121,10 @@ public class JsonUtils {
             log.error("json==" + json + ",error(IOException):" + e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+
+
+    private static JavaType getCollectionType(Class<?> collectionClass, Class<?> elementClasses) {
+        return objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
     }
 }

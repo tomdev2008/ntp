@@ -4,6 +4,8 @@ import cn.me.xdf.BaseTest;
 import cn.me.xdf.JunitBaseTest;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
+import org.codehaus.jackson.type.JavaType;
+import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -18,8 +20,7 @@ import java.util.List;
  */
 public class JsonModelUtils extends JunitBaseTest {
 
-    @Test
-    public void jsonToModelTest() {
+    public void testjsonToModel() {
         CourseInfo courseInfo = new CourseInfo();
         courseInfo.setFdId("courseInfo_id");
         courseInfo.setFdTitle("courseInfo_title");
@@ -38,8 +39,9 @@ public class JsonModelUtils extends JunitBaseTest {
 
 
         CourseCatalog catalog2 = new CourseCatalog();
-        catalog2.setFdId("catelog1_id");
-        catalog2.setFdName("第一节");
+
+        catalog2.setFdId("catelog2_id");
+        catalog2.setFdName("第2节");
         catalog2.setCourseInfo(courseInfo);
         catalog2.setFdDescription("说明");
         catalog2.setHbmParent(null);
@@ -47,7 +49,11 @@ public class JsonModelUtils extends JunitBaseTest {
 
         String jsonStr = JsonUtils.writeObjectToJson(items);
         System.out.println("json===" + jsonStr);
-        List<CourseCatalog> courseJson = JsonUtils.readObjectByJson(jsonStr, List.class);
-
+        // JavaType javaType = getCollectionType(ArrayList.class, YourBean.class);
+        List<CourseCatalog> courseJson = JsonUtils.readBeanByJson(jsonStr, List.class, CourseCatalog.class);
+        for (CourseCatalog catalog : courseJson) {
+            System.out.println("name===" + catalog.getFdName());
+            ;
+        }
     }
 }
