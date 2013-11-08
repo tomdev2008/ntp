@@ -1,7 +1,7 @@
 package cn.me.xdf.service.bam.process;
 
+import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.SimpleService;
-import com.sun.tools.internal.xjc.reader.gbind.SourceNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SourceNodeService extends SimpleService {
 
     @Transactional(readOnly = false)
-    public Object saveSourceNode(SourceNode sourceNode){
+    public Object saveSourceNode(SourceNote sourceNote){
         return null;
     }
 }
