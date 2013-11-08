@@ -18,7 +18,6 @@ public class SourceNodeService extends SimpleService {
 
     @Transactional(readOnly = false)
     public Object saveSourceNode(SourceNote sourceNote) {
-        //return this.save(sourceNote);
-        return null;
+        return this.save(sourceNote);
     }
 }
