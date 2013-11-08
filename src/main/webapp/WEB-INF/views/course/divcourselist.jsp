@@ -18,7 +18,7 @@
 									<li><a href="#" onclick="confirmDel();">批量删除</a></li>
 								</ul>
 							</div>
-							<form class="toolbar-search" onkeydown="pressEnter()"> 
+							<form class="toolbar-search" onkeydown="pressEnter();"> 
 								<input type="text" id="serach" class="search" placeholder="搜索课程"
 								    onkeydown="showSearch();" onkeyup="showSearch();" > 
 								<i class="icon-search" onclick="findeCoursesByKey('1','${param.order}');"></i>
