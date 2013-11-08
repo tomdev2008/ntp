@@ -58,6 +58,12 @@
 <input type="hidden" id="isAdmin" value="${isAdmin}">
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
+function pressEnter(){
+	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+	if (keyCode == 13) {
+		pageNavClick('${param.fdType}','1','FDCREATETIME'); 
+	}
+}
 function showSearch(){
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
 	$("#containkey").html($("#serach").val());

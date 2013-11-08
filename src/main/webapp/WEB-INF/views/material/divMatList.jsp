@@ -18,7 +18,7 @@
 						<li><a href="#rightCont" onclick="batchDelete();">批量删除</a></li>
 					</ul>
 				</div>
-				<form class="toolbar-search">
+				<form class="toolbar-search" onkeydown="pressEnter();">
 					<input type="text" id="serach" class="search" placeholder="搜索条目"
 					   onkeydown="showSearch();" onkeyup="showSearch();"> 
 					<i class="icon-search" onclick="pageNavClick('${param.fdType}','1','FDCREATETIME');"></i>
