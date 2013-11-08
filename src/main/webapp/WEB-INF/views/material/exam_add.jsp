@@ -547,7 +547,9 @@ $(function(){
             data.kingUser = JSON.stringify(data.kingUser);
         }
         if(data.listExam.length==0){
-        	$.fn.jalert2("请输入试题");
+        	$("#passScoreErr").css("display","block");
+        	$("#passScoreErr").html("请输入试题");
+        	return;
         }
         if(data.permission === "encrypt"&&data.kingUser.length==0){
         	$.fn.jalert2("请输入用户");
