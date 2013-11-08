@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SourceNodeService extends SimpleService {
 
     @Transactional(readOnly = false)
-    public Object saveSourceNode(SourceNote sourceNote){
-        return null;
+    public Object saveSourceNode(SourceNote sourceNote) {
+        return this.save(sourceNote);
     }
 }
