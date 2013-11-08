@@ -1,6 +1,7 @@
 package cn.me.xdf.common.json;
 
 import cn.me.xdf.BaseTest;
+import cn.me.xdf.JunitBaseTest;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import org.junit.Test;
@@ -15,7 +16,7 @@ import java.util.List;
  * Time: 下午4:24
  * To change this template use File | Settings | File Templates.
  */
-public class JsonModelUtils extends BaseTest {
+public class JsonModelUtils extends JunitBaseTest {
 
     @Test
     public void jsonToModelTest() {
@@ -34,6 +35,15 @@ public class JsonModelUtils extends BaseTest {
 
         items.add(catalog1);
         //courseInfo.setCatalogList(items);
+
+
+        CourseCatalog catalog2 = new CourseCatalog();
+        catalog2.setFdId("catelog1_id");
+        catalog2.setFdName("第一节");
+        catalog2.setCourseInfo(courseInfo);
+        catalog2.setFdDescription("说明");
+        catalog2.setHbmParent(null);
+        items.add(catalog2);
 
         String jsonStr = JsonUtils.writeObjectToJson(items);
         System.out.println("json===" + jsonStr);
