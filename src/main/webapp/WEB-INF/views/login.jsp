@@ -10,6 +10,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link href="${ctx}/resources/css/login.css?id=22" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="${ctx }/resources/js/placeholder.js"></script>
 </head>
