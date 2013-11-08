@@ -8,6 +8,7 @@
 <html class=""> 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link href="${ctx}/resources/css/DTotal.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
 

@@ -260,7 +260,7 @@
 </section>
 <!--主体 E-->
 <script type="text/javascript">
-	$("input[name='doButton']").bind("click",function(){
+	$("button[name='doButton']").bind("click",function(){
 		var fdid = $(this).attr("data-fdid");
     	window.location.href = "${ctx}/passThrough/getStudyContent?bamId=${bamId}&catalogId="+fdid;
 	});
