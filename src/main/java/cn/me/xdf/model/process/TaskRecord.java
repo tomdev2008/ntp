@@ -1,16 +1,22 @@
 package cn.me.xdf.model.process;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.model.base.IdEntity;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
@@ -27,7 +33,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_TASK_RECORD")
-public class TaskRecord extends IdEntity{
+public class TaskRecord extends IdEntity implements IAttMain{
 	
 	/**
 	 * 所属素材记录
@@ -55,9 +61,38 @@ public class TaskRecord extends IdEntity{
 	private String fdComment;
 	
 	/**
-	 * 作业状态
+	 * 通过状态
 	 */
-	private Integer fdTaskStatus;
+	private Boolean through;
+	
+	/**
+	 * 在线作答类型作业的答案
+	 */
+	private String fdAnswer;
+	
+	/**
+	 * 上传的作业
+	 */
+	private List<AttMain> attMains;
+	
+	@Transient
+	public List<AttMain> getAttMains() {
+		return attMains;
+	}
+
+	public void setAttMains(List<AttMain> attMains) {
+		this.attMains = attMains;
+	}
+	
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	public String getFdAnswer() {
+		return fdAnswer;
+	}
+
+	public void setFdAnswer(String fdAnswer) {
+		this.fdAnswer = fdAnswer;
+	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdSourceNodeId")	
@@ -101,13 +136,11 @@ public class TaskRecord extends IdEntity{
 		this.fdComment = fdComment;
 	}
 
-	public Integer getFdTaskStatus() {
-		return fdTaskStatus;
+	public Boolean getThrough() {
+		return through;
 	}
 
-	public void setFdTaskStatus(Integer fdTaskStatus) {
-		this.fdTaskStatus = fdTaskStatus;
+	public void setThrough(Boolean through) {
+		this.through = through;
 	}
-	
-	
 }
