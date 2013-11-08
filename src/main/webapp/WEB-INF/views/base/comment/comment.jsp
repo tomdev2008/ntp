@@ -6,20 +6,25 @@
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <link href="${ctx}/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/resources/css/emigrated.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <!-- 评论条目模板 -->
 <script id="commentLineTemplate" type="text/x-dot-template">
        <li class="media" dataId="{{=it.fdId}}">
             <a href="#" class="pull-left"><tags:image href="{{=it.fdUserURL}}" clas="media-object"/></a>
             <div class="media-body">
-              <div class="media-heading"> {{=it.no}}# {{=it.fdUserName}}（{{=it.fdUserEmail}}）    来自 {{=it.fdUserDept}}
+				{{?!it.isAnonymous}}
+					<div class="media-heading"> {{=it.no}}# {{=it.fdUserName}}（{{=it.fdUserEmail}}）    来自 {{=it.fdUserDept}}
+				{{?}}
+				{{?it.isAnonymous}}
+					<div class="media-heading"> {{=it.no}}# 匿名用户
+				{{?}}
               </div>
               <p class="comt-content">{{=it.content}}</p>
               <div class="media-footing clearfix">
               	<span class="pull-left"><i class="icon-time"></i>{{=it.fdCreateTime}}</span>
                 <div class="pull-right btns-comt">
-                	<a href="javascript:void(0)" dataId="{{=it.fdId}}" class="suport" ><i class="icon-thumbs-up"></i>0</a>
-                	<a href="javascript:void(0)" dataId="{{=it.fdId}}" class="oppose" ><i class="icon-thumbs-down"></i>0</a>
+                	<a href="javascript:void(0)" dataId="{{=it.fdId}}" class="suport" ><i class="icon-thumbs-up"></i><span>{{=it.supportCount}}</span></a>
+                	<a href="javascript:void(0)" dataId="{{=it.fdId}}" class="oppose" ><i class="icon-thumbs-down"></i><span>{{=it.opposeCount}}</span></a>
                 	<a href="#" ><i class="icon-share-alt"></i>0</a>
                 </div>
               </div>
@@ -57,28 +62,13 @@
         </div>
     </div>
 </div>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 ////////////////////////初始化开始
 var pageSize=10;
 initCommentLines("${param.modelName}","${param.modelId}",1);
 initCommentPageInfo("${param.modelName}","${param.modelId}",1);
-$(".suport").bind("click",function(){
-	$.ajax({
-		  url: "${ctx}/ajax/message/supportOrOpposeMessage",
-		  async:false,
-		  dataType : 'json',
-		  data:{
-			  messageId :$(this).attr("dataId"),
-			  fdType :"01",
-		  },
-		  success: function(result){
-			  alert("成功");
-		  }
-	});
-});
-$(".oppose").bind("click",function(){
-	alert($(this).attr("dataId"));
-});
+
 ////////////////////////初始化结束
 //初始评论列表化页面
 function initCommentLines(modelName,modelId,pageNo){
@@ -162,6 +152,7 @@ function initCommentPageInfo(modelName,modelId,pageNo){
 			 
 		  }
 	});
+	bindSOEvent();
 }
 //进入下一页方法
 function gotoBefore(pageNo){
@@ -172,6 +163,81 @@ function gotoBefore(pageNo){
 function gotoNext(pageNo){
 	initCommentLines("${param.modelName}","${param.modelId}",pageNo+1);
 	initCommentPageInfo("${param.modelName}","${param.modelId}",pageNo+1);
+}
+//绑定支持反对时间
+function bindSOEvent(){
+	$(".suport").bind("click",function(){
+		var canSuport=true;
+		var button = $(this);
+		$.ajax({
+			  url: "${ctx}/ajax/message/canSupportOrOppose",
+			  async:false,
+			  data:{
+				  messageId :$(this).attr("dataId"),
+			  },
+			  success: function(result){
+				 if(result=='"supportOrOpposeed"'){
+					 canSuport=false;
+					 $.fn.jalert2("您已经评分，不能重复评分");
+				 }
+				 if(result=='"isme"'){
+					 canSuport=false;
+					 $.fn.jalert2("不能评论自己的");
+				 }
+			  }
+		});
+		if(canSuport==false){
+			return;
+		}
+		$.ajax({
+			  url: "${ctx}/ajax/message/supportOrOpposeMessage",
+			  async:false,
+			  data:{
+				  messageId :$(this).attr("dataId"),
+				  fdType :"01",
+			  },
+			  success: function(result){
+					var n = parseInt(button.children("span")[0].innerHTML);
+					button.children("span")[0].innerHTML=n+1;
+			  }
+		});
+	});
+	$(".oppose").bind("click",function(){
+		var canSuport=true;
+		var button = $(this);
+		$.ajax({
+			  url: "${ctx}/ajax/message/canSupportOrOppose",
+			  async:false,
+			  data:{
+				  messageId :$(this).attr("dataId"),
+			  },
+			  success: function(result){
+				 if(result=='"supportOrOpposeed"'){
+					 canSuport=false;
+					 $.fn.jalert2("您已经评分，不能重复评分");
+				 }
+				 if(result=='"isme"'){
+					 canSuport=false;
+					 $.fn.jalert2("不能评论自己的");
+				 }
+			  }
+		});
+		if(canSuport==false){
+			return;
+		}
+		$.ajax({
+			  url: "${ctx}/ajax/message/supportOrOpposeMessage",
+			  async:false,
+			  data:{
+				  messageId :$(this).attr("dataId"),
+				  fdType :"02",
+			  },
+			  success: function(result){
+				  var n = parseInt(button.children("span")[0].innerHTML);
+				  button.children("span")[0].innerHTML=n+1;
+			  }
+		});
+	});
 }
 
 </script>

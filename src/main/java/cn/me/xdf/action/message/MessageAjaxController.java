@@ -74,12 +74,21 @@ public class MessageAjaxController {
 	/**
 	 * 查看用户是否可以支持或反对评论
 	 * 
-	 * @return String(true:能；false：不能)
+	 * @return String(true:能；supportOrOpposeed：评论过了；isme：自己的)
 	 */
 	@RequestMapping(value = "canSupportOrOppose")
 	@ResponseBody
-	public String canSupportOrOppose(String userId, String messageId) {
-		return messageService.canSupportOrOppose(userId, messageId)+"";
+	public String canSupportOrOppose(String messageId) {
+		String userId = ShiroUtils.getUser().getId();
+		if(messageReplyService.isContainMessageReply(userId, messageId)!=null){
+			return "supportOrOpposeed";
+		}else{
+			if(messageService.canSupportOrOppose(userId, messageId)){
+				return "true";
+			}else{
+				return "isme";
+			}
+		}
 	}
 	
 	/**
@@ -130,6 +139,9 @@ public class MessageAjaxController {
 			map.put("fdUserURL", message.getFdUser().getFdPhotoUrl());
 			map.put("fdUserEmail", message.getFdUser().getFdEmail());
 			map.put("fdUserDept", message.getFdUser().getDeptName());
+			map.put("supportCount", messageService.getSupportCount(message.getFdId()));
+			map.put("opposeCount", messageService.getOpposeCount(message.getFdId()));
+			
 			int no = pagination.getTotalCount()-i-(pageNo-1)*pageSize;
 			map.put("no", no);
 			list.add(map);

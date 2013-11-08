@@ -74,7 +74,7 @@ public class MessageService extends BaseService{
 			throw new RuntimeException("只有评论消息才能支持或反对");
 		}
 		if(!canSupportOrOppose(userId,messageId)){
-			throw new RuntimeException("不能支持或反对");
+			return "err";
 		}
 		MessageReply messageReply = new MessageReply();
 		messageReply.setMessage(message);
@@ -91,6 +91,7 @@ public class MessageService extends BaseService{
 	 * 
 	 * @return 支持数
 	 */
+	@Transactional(readOnly = true)
 	public int getSupportCount(String messageId){
 		Finder finder = Finder
 				.create("select count(*) from MessageReply messageReply ");
@@ -106,6 +107,7 @@ public class MessageService extends BaseService{
 	 * 
 	 * @return 反对数
 	 */
+	@Transactional(readOnly = true)
 	public int getOpposeCount(String messageId){
 		Finder finder = Finder
 				.create("select count(*) from MessageReply messageReply ");
