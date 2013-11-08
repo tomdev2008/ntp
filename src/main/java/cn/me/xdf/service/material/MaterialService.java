@@ -125,6 +125,10 @@ public class MaterialService extends BaseService {
 				materialAuthService.deleMaterialAuthByMaterialId(materialId);
 			}
 			for (Map map : list) {
+				String personid =map.get("id").toString();
+				if(personid.equals("creator")){
+					continue;
+				}
 				MaterialAuth auth = new MaterialAuth();
 				auth.setMaterial(info);
 				SysOrgPerson fdUser = accountService.load((String) map
