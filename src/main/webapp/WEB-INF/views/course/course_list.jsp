@@ -314,7 +314,7 @@ function deleteSeries(){
 			"seriesId":delekey,
 		},
 		success:function(data){
-			window.location.href="${ctx}/series/findeSeriesInfos?order=fdcreatetime&fdType="+$('#cousetype').val();
+			window.location.href="${ctx}/series/findSeriesInfos?order=fdcreatetime&fdType="+$('#cousetype').val();
 		}
 	}); 
 }
@@ -328,7 +328,7 @@ function deleteAllSeries(){
 			"fdTitle":delekey,
 		},
 		success:function(data){
-			window.location.href="${ctx}/series/findeSeriesInfos?order=fdcreatetime&fdType="+$('#cousetype').val();
+			window.location.href="${ctx}/series/findSeriesInfos?order=fdcreatetime&fdType="+$('#cousetype').val();
 		}
 	}); 
 }
