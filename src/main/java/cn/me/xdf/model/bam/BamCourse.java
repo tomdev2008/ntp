@@ -16,6 +16,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -304,7 +306,7 @@ public class BamCourse extends IdEntity implements BamProcess {
     @Transient
     public List<CourseCatalog> getCatalogs() {
         if (StringUtils.isNotBlank(catalogJson)) {
-            return readObjectByJson(catalogJson, List.class);
+             return Arrays.asList(readObjectByJson(catalogJson, CourseCatalog[].class));
         }
         return null;
     }
@@ -319,7 +321,7 @@ public class BamCourse extends IdEntity implements BamProcess {
     @Transient
     public List<CourseContent> getCourseContents() {
         if (StringUtils.isNotBlank(courseContentJson)) {
-            return readObjectByJson(courseContentJson, List.class);
+            return Arrays.asList(readObjectByJson(courseContentJson, CourseContent[].class));
         }
         return null;
     }
