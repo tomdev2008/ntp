@@ -43,6 +43,7 @@
 			<input type="hidden" id="coursekey" name="coursekey">
 			<input type="hidden" id="allFlag" >
 			<input type="hidden"  id="cousetype" value="${param.fdType}">
+			<input type="hidden" id="cachorder"/>
             
 	    </section>
 	</section>
@@ -50,7 +51,7 @@
 <script type="text/javascript">	
 function pressEnter(){//回车事件
 	if(event.keyCode==13){
-		findeCoursesByKey(1,'fdcreatetime');
+		findeCoursesByKey(1,$('#cachorder').val());
 	}
 }
 function clearserach(){//清理搜索栏并显示数据列表
@@ -70,7 +71,7 @@ function findeCoursesByKey(pageNo,order){
 	if($('input[name="selectCheckbox"]:checked').val()==1){
 		$("#allkey").attr("value",1);
 	}
-	
+	$('#cachorder').attr('value',order);
 	$("#coursekey").attr("value",fdTitle);//关键字赋值
 	$("#pageBody").html("");
 	if($("#cousetype").val()=='12'){//课程列表
