@@ -309,6 +309,8 @@ public class BamCourse extends IdEntity implements BamProcess {
         return null;
     }
 
+
+
     /**
      * 获取章节和素材的关系数据
      *

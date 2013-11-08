@@ -15,7 +15,7 @@
         <context:exclude-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
     <!-- JSR303 Validator定义 -->
     <bean id="validator"
           class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
