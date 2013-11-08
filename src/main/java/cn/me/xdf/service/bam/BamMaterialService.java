@@ -5,6 +5,7 @@ import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.bam.source.ISourceService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -34,7 +35,8 @@ public class BamMaterialService extends SimpleService {
      * @param request
      */
     @Transactional(readOnly = false)
-    public void saveSourceNode(HttpServletRequest request) {
+    public Object saveSourceNode(String sourceType,WebRequest request) {
+        return sourceMap.get("m_"+sourceType).saveSourceNode(request);
     }
 
 
