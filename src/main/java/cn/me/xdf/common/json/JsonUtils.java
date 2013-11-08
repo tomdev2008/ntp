@@ -84,7 +84,7 @@ public class JsonUtils {
             if (objectMapper == null) {
                 objectMapper = new ObjectMapper();
             }
-            JavaType javaType = getCollectionType(ArrayList.class, elementClasses);
+            JavaType javaType = getCollectionType(collectionClass, elementClasses);
             return objectMapper.readValue(json, javaType);
 
         } catch (JsonParseException e) {
