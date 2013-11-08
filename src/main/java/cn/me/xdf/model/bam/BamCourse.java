@@ -306,7 +306,7 @@ public class BamCourse extends IdEntity implements BamProcess {
     @Transient
     public List<CourseCatalog> getCatalogs() {
         if (StringUtils.isNotBlank(catalogJson)) {
-             return Arrays.asList(readObjectByJson(catalogJson, CourseCatalog[].class));
+             return readBeanByJson(catalogJson, List.class, CourseCatalog.class);
         }
         return null;
     }
@@ -321,7 +321,7 @@ public class BamCourse extends IdEntity implements BamProcess {
     @Transient
     public List<CourseContent> getCourseContents() {
         if (StringUtils.isNotBlank(courseContentJson)) {
-            return Arrays.asList(readObjectByJson(courseContentJson, CourseContent[].class));
+            return readBeanByJson(courseContentJson, List.class, CourseContent.class);
         }
         return null;
     }

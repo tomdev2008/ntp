@@ -38,7 +38,7 @@
                     {{~}}
                     {{~param.lecture :lecture:index}}
                         {{?lecture.index == i}}
-                            <li{{?lecture.status == 'doing'}} class="active"{{?}}>
+                            <li{{?lecture.id == param.currentId}} class="active"{{?}}>
                                 <a href="#" data-fdid="{{=lecture.id}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
                                     <span class="dt">节{{=lecture.num}} <b class="icon-circle-progress">
                                         {{?lecture.status != 'untreated'}}<i class="icon-progress{{?lecture.status == 'doing'}} half{{?}}"></i>{{?}}
@@ -259,8 +259,10 @@
         //课程进程中的节Id
         var catalogId = "${param.catalogId}";
         
+        //课程进行中节的内容类型
+        var fdMtype = "${param.fdMtype}";
         
-        var leftData = {
+        /* var leftData = {
             sidenav: {
                 chapter:[
                     {
@@ -323,20 +325,20 @@
                 ]
             }
         }
-        $("#sideBar").html(pageLeftBarFn(leftData));
-        //var leftData = {};
+        $("#sideBar").html(pageLeftBarFn(leftData)); */
+        var leftData = {};
 		//ajax获取左侧章节展示树
-        /* $.ajax({
+        $.ajax({
 			  url: "${ctx}/ajax/passThrough/getBamCatalogTree",
 			  async:false,
 			  data:{bamId:bamId},
 			  dataType:'json',
 			  success: function(rsult){
 				  leftData = rsult;
-				  alert(JSON.stringify(leftData));
+				  leftData.sidenav.currentId = catalogId;
 				  $("#sideBar").html(pageLeftBarFn(leftData));
 			  },
-		}); */
+		});
         //左侧菜单定位
         setTimeout(function(){
             $("#sidebar").affix({
@@ -345,7 +347,7 @@
                 }
             }).parent().height($("#sidebar").height());
         },100);
-
+		/*
         var rightData = {// 测试用 数据 ，ajax后删除
             type: "exam",
             status: "doing",
@@ -882,7 +884,8 @@
                 }
             ]
         }
-
+		*/
+		
         $("#sidenav>li>a").popover({
             trigger: "hover"
         })
@@ -890,18 +893,37 @@
                     e.preventDefault();
                     loadRightCont($(this).attr("data-fdid"));
                 });
-
-        loadRightCont("fdid0wfwef432");//默认加载章节 参数：节id
+        
+        loadRightCont(catalogId);//默认加载章节 参数：节id
 
         function loadRightCont(fdid){
+        	$.ajax({
+  			  url: "${ctx}/ajax/passThrough/getCourseContent",
+  			  async:false,
+  			  data:{
+  				  catalogId:fdid,
+  				  bamId:bamId,
+  				  fdMtype:fdMtype
+  			  },
+  			  dataType:'json',
+  			  success: function(result){
+  				  alert(JSON.stringify(result));
+  				$("#mainContent").html(rightContentFn(result));
+  				if(result.type == "exam"){
+  	                afterLoadExamPage(result);
+  	            } else if(result.type == "video"){
+  	                //afterLoadVideoPage(result);
+  	            }
+  			  },
+  			});
             //$.get("url",{id: fdid}).success(function(result){//  ajax
-            result = rightData;// 测试用 数据 ，ajax后删除
-            $("#mainContent").html(rightContentFn(result));
-            if(result.type == "exam"){
-                afterLoadExamPage(result);
-            } else if(result.type == "video"){
-                //afterLoadVideoPage(result);
-            }
+            //result = rightData;// 测试用 数据 ，ajax后删除
+            //$("#mainContent").html(rightContentFn(result));
+            //if(result.type == "exam"){
+            //    afterLoadExamPage(result);
+            // } else if(result.type == "video"){
+            //    //afterLoadVideoPage(result);
+            //}
             //});
 
             //可选章节按钮

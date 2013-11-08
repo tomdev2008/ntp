@@ -1,6 +1,8 @@
 package cn.me.xdf.action.passThrough;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
@@ -15,8 +17,11 @@ import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.common.utils.array.ArrayUtils;
+import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.score.ScoreStatistics;
@@ -83,7 +88,11 @@ public class PassThroughController {
 				//课程评分统计
 				request.setAttribute("courseScore", scoreStatistics==null?0:scoreStatistics.getFdAverage());
 				//章节信息
-				request.setAttribute("catalog", bamCourse.getCatalogs());
+				List<CourseCatalog> courseCatalogs = bamCourse.getCatalogs();
+				if(courseCatalogs!=null){
+					ArrayUtils.sortListByProperty(courseCatalogs, "fdTotalNo", SortType.HIGHT);
+				}
+				request.setAttribute("catalog", courseCatalogs);
 			}else{
 				//否则需要跳转到发现课程
 				
