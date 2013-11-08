@@ -134,7 +134,7 @@
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <tx:method name="save" propagation="REQUIRES_NEW"/>
+            <tx:method name="save*" propagation="REQUIRES_NEW"/>
             <tx:method name="update*" propagation="REQUIRES_NEW"/>
             <tx:method name="saveOrUpdate*" propagation="REQUIRES_NEW"/>
             <tx:method name="delete*" propagation="REQUIRES_NEW"/>
