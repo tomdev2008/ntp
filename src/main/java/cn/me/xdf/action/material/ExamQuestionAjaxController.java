@@ -254,7 +254,7 @@ public class ExamQuestionAjaxController {
 		List<ExamQuestion> oldExamQuestions = examQuestionService.findByProperty("exam.fdId", info.getFdId());
 		for (ExamQuestion examQuestion : oldExamQuestions) {
 			if(!examQuestions.contains(examQuestion)){
-				examQuestionService.deleQuestion(examQuestion.getFdId());
+				examQuestionService.deleteQuestion(examQuestion.getFdId());
 			}
 		}
 		List<MaterialAuth> materialAuths = new ArrayList<MaterialAuth>();
@@ -296,7 +296,7 @@ public class ExamQuestionAjaxController {
 		MaterialInfo info = materialService.findUniqueByProperty("fdId", materIalId);
 		List<ExamQuestion> examQuestions = info.getQuestions();
 		for (ExamQuestion examQuestion : examQuestions) {
-			examQuestionService.deleQuestion(examQuestion.getFdId());
+			examQuestionService.deleteQuestion(examQuestion.getFdId());
 		}
 		
 	}
@@ -314,6 +314,7 @@ public class ExamQuestionAjaxController {
 		List<ExamQuestion> examQuestions = info.getQuestions();
 		examQuestions.remove(delQuestion);
 		info.setQuestions(examQuestions);
-		examQuestionService.deleQuestion(questionId);
+		materialService.save(info);
+		examQuestionService.deleteQuestion(questionId);
 	}
 }

@@ -428,7 +428,7 @@
 	<script type="text/javascript">
 		$(function() {
 			jQuery.extend(jQuery.validator.messages, {
-				 digits: "只能输入整数"
+				digits : "只能输入整数"
 			});
 			$.Placeholder.init();
 			$('.itemScore[data-toggle="tooltip"]').tooltip({
@@ -598,7 +598,7 @@
 							});
 					data.kingUser = JSON.stringify(data.kingUser);
 				}
-				if (data.listExam.length == 0) {
+				if ($("#list_exam").children("tr").length == 0) {
 					$("#passScoreErr").css("display", "block");
 					$("#passScoreErr").html("请输入试题");
 					return;
@@ -874,8 +874,7 @@
 									} else {
 										$("#examAnswer").removeClass("hide");
 										if (this.id == "single") {
-											$(
-													"#listExamAnswer>li .checkbox,#formAddItem .checkbox")
+											$("#listExamAnswer>li .checkbox,#formAddItem .checkbox")
 													.removeClass("checkbox")
 													.addClass("radio")
 													.children(":checkbox")
@@ -954,8 +953,7 @@
 						return;
 					}
 					//ajax
-					$
-							.ajax({
+					$.ajax({
 								url : "${ctx}/ajax/examquestion/saveOrUpdateExamQuestion?questionId="
 										+ fdid
 										+ "&materIalId=${param.fdId}&materialName="
@@ -1079,8 +1077,8 @@
 			var count = 0;
 			for ( var i = 0; i < $("#list_exam input").length; i++) {
 				count++;
-				var score = $("#list_exam input :eq(" + i + ")").val();
-				if(score==""){
+				var score = $("#list_exam input :eq(" + i + ")").val() + "";
+				if (!/^\+?[1-9][0-9]*$/.test(score)) {
 					score = 0;
 				}
 				totalScore = totalScore + parseInt(score);

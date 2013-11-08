@@ -21,7 +21,7 @@ import cn.me.xdf.service.base.AttMainService;
  * 
  */
 @Service
-@Transactional(readOnly = false)
+@Transactional(readOnly = true)
 public class ExamQuestionService extends BaseService{
 
 	@Autowired
@@ -36,7 +36,7 @@ public class ExamQuestionService extends BaseService{
 		return ExamQuestion.class;
 	}
 	
-	public void deleQuestion(String questionId){
+	public void deleteQuestion(String questionId){
 		//删除选项
 		List<ExamOpinion> examOpinions = examOpinionService.findByProperty("question.fdId", questionId);
 		for (ExamOpinion examOpinion : examOpinions) {
