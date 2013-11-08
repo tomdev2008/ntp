@@ -222,15 +222,15 @@
                     	</div>
                     </div>
                 </div>               
-                <c:import url="/WEB-INF/views/base/comment/comment.jsp">
+                <%-- <c:import url="/WEB-INF/views/base/comment/comment.jsp">
                  	<c:param name="modelName" value="<%=CourseInfo.class.getName()%>" />
-                 	<c:param name="modelId" value="14221e4d16b8d6bf0b3c68541e38814b" />
-                </c:import>
+                 	<c:param name="modelId" value="${course.fdId}" />
+                </c:import> --%>
 			</div>
 			<div class="pull-right w225">
 				 <!-- 评分评论页面 -->
 	        	 <c:import url="/WEB-INF/views/passThrough/score_course.jsp">
-                	<c:param name="courseId" value="14221e4d16b8d6bf0b3c68541e38814b" />
+                	<c:param name="courseId" value="${course.fdId}" />
                 </c:import>
 		        <!-- 学习当前课程的新教师列表 -->
                 <c:import url="/WEB-INF/views/passThrough/learning_teacher_list.jsp">
