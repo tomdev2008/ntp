@@ -239,7 +239,7 @@
                             <label class="control-label" for="examPaperName">作业包</label>
                             <div class="controls">
                                 <input  id="examPaperName" required class="span6"
-                                       name="examPaperName" type="text">
+                                       name="examPaperName" type="text" placeholder="请输入作业包名称">
                                 <label id="examPaperNameErr" for="examPaperName" class="error" style="display: none;"></label>
                                 <span class="date" id="createTime"></span>
                             </div>
@@ -358,7 +358,7 @@ $(function(){
   //初始化页面
   //时间轴 模板函数
     var timeLineFn = doT.template(document.getElementById("timeLineTemplate").text);
-    var curTime = 4;
+    var curTime = 0;
 	if("${param.fdId}"!=null&&"${param.fdId}"!=""){
 		 $.ajax({
 			  url: "${ctx}/ajax/material/getMaterial?materialId="+$("#materialId").val(),

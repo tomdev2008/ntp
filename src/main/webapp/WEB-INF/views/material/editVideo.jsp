@@ -403,13 +403,32 @@ $(function(){
     $.Placeholder.init();
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
+    //初始化创建者
+    var creator="";
+	var url="";
+    if("${materialInfo.fdId!=null}"){
+	   $.ajax({
+		 url: "${ctx}/ajax/material/getCreater?materialId=${materialInfo.fdId}",
+		 async:false,
+		 dataType : 'json',
+		 success: function(result){
+		    creator = result.name+"（"+result.email+"），"+result.dept;
+				  url=result.url;
+		 }
+	   });
+    }
     //初始化权限列表
     $.ajax({
 		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
 		  async:false,
 		  dataType : 'json',
 		  success: function(result){
-			  var html = "";
+			  var html = "<tr data-fdid='creator' draggable='true'> "+
+			  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
+			  "<img src='"+url+"' alt=''>"+creator+" </div> </td>"+
+			  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
+			  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
+			  "</td> </tr>";
 			  for(var i in result.user){
 				  html += listUserKinguserFn(result.user[i]);
 			  }
