@@ -8,7 +8,8 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
        default-lazy-init="true">
-
+    <!-- 开启AOP监听 只对当前配置文件有效 -->
+    <aop:aspectj-autoproxy expose-proxy="true"/>
     <!-- Root Context: defines shared resources visible to all other web components -->
     <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
     <context:component-scan base-package="cn.me.xdf">
@@ -74,6 +75,11 @@
                 <!-- 日志 -->
                 <value>cn.me.xdf.model.log</value>
 
+                <!---->
+                <value>cn.me.xdf.model.process</value>
+
+                <value>cn.me.xdf.model.bam</value>
+
             </list>
         </property>
         <property name="hibernateProperties">
@@ -99,10 +105,7 @@
     <!-- <bean id="namingStrategy" class="cn.me.xdf.common.hibernate4.JpaNamingStrategy"/> -->
 
 
-    <bean id="transactionManager"
-          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+
 
     <bean id="dynamicAssembleBuilder"
           class="cn.me.xdf.common.hibernate4.dynamic.DefaultDynamicHibernateAssembleBuilder">
@@ -114,10 +117,41 @@
     </bean>
 
     <bean id="fileRepository" class="cn.me.xdf.common.upload.FileRepository"/>
-    <context:annotation-config/>
+
     <!-- 使用annotation定义事务 -->
-    <tx:annotation-driven transaction-manager="transactionManager"
-                          proxy-target-class="true"/>
+
+
+
+    <bean id="dataSourceProxy" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+        <property name="targetDataSource" ref="dataSource"/>
+    </bean>
+
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="save" propagation="REQUIRES_NEW"/>
+            <tx:method name="update*" propagation="REQUIRES_NEW"/>
+            <tx:method name="saveOrUpdate*" propagation="REQUIRES_NEW"/>
+            <tx:method name="delete*" propagation="REQUIRES_NEW"/>
+
+            <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="count*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="list*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config expose-proxy="true" proxy-target-class="true">
+        <!-- 只对业务逻辑层实施事务 -->
+        <aop:pointcut id="txPointcut" expression="execution(* cn.me.xdf..service..*+.*(..))"/>
+        <aop:advisor id="txAdvisor" advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
 
     <!-- production环境 -->
     <beans profile="production">

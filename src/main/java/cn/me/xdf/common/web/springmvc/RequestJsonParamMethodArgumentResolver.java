@@ -91,7 +91,7 @@ public class RequestJsonParamMethodArgumentResolver implements HandlerMethodArgu
                             realValue = JsonUtils.readObjectByJson((String) orignValue, valueType);
                         }
                         binder = binderFactory.createBinder(webRequest, realValue, name + "[" + key + "]");
-                        realValue = binder.convertIfNecessary(realValue, valueType, null);
+                        realValue = binder.convertIfNecessary(realValue, valueType);
                         validateIfApplicable(binder, parameter, annotations);
                         real.put(realKey, realValue);
                     }
