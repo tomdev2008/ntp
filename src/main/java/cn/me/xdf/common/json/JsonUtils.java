@@ -66,7 +66,7 @@ public class JsonUtils {
         }
     }
 
-    public static <T> T readObjectByJson(String json, Type type) {
+    public static <T> T readObjectByTypeJson(String json, Type type) {
         try {
             if (objectMapper == null) {
                 objectMapper = new ObjectMapper();

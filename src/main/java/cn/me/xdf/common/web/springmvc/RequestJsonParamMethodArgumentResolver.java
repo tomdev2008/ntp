@@ -99,7 +99,7 @@ public class RequestJsonParamMethodArgumentResolver implements HandlerMethodArgu
                 }
             } else {
                 Object target = null;
-                result = JsonUtils.readObjectByJson(value,parameter.getGenericParameterType());
+                result = JsonUtils.readObjectByTypeJson(value,parameter.getGenericParameterType());
                 if (paramType.isArray()) {
                     if (result != null) {
                         Object[] targets = (Object[]) result;
