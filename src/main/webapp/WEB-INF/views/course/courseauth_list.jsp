@@ -59,7 +59,11 @@ function clearserach(){//清理搜索栏并显示数据列表
 function showSearch(){
 	var fdTitle = document.getElementById("serach").value;
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
-	$("#containkey").html(fdTitle);
+	if(fdTitle.length>6){
+		$("#containkey").html(fdTitle.substr(0,6)+"...");
+		}else{
+			$("#containkey").html(fdTitle);
+		}
 }
 function findeCoursesByKey(pageNo,order){
 	var fdTitle = document.getElementById("serach").value;
@@ -85,7 +89,11 @@ function findeCoursesByKey(pageNo,order){
 			$("#pageBody").html(data);
 			if(fdTitle!=""&&fdTitle!=null){
 				$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
-				$("#containkey").html(fdTitle);
+				if(fdTitle.length>6){
+					$("#containkey").html(fdTitle.substr(0,6)+"...");
+					}else{
+						$("#containkey").html(fdTitle);
+					}
 			}
 			else{
 				$("#containkey").html('<a id="containkey"href="#">全部条目</a>');

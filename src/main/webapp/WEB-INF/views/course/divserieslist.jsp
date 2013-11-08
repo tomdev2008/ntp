@@ -29,7 +29,7 @@
 							 </span>
 							 </span>
 							
-							 <a class="btn btn-link" href="#" onclick="clearserach();" >清空搜索结果</a>
+							 <a class="btn btn-link"  style="position: absolute;right: 180px;padding-right:5px;padding-left:5px" href="#" onclick="clearserach();" >清空搜索结果</a>
 						</div>
 					</div>
 					<div class="bd">

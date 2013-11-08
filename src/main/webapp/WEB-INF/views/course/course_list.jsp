@@ -49,7 +49,7 @@
 	</section>
 </section>
 <script type="text/javascript">	
-function pressEnter(){//回车事件
+function pressEnter(){//回车事件 回车根据关键字查询;
 	if(event.keyCode==13){
 		findeCoursesByKey(1,$('#cachorder').val());
 	}
@@ -61,12 +61,49 @@ function clearserach(){//清理搜索栏并显示数据列表
 	findeCoursesByKey(1,'fdcreatetime');
 }
 
-function showSearch(){
+function showSearch(){//搜索内容操作
 	var fdTitle = document.getElementById("serach").value;
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
-	$("#containkey").html(fdTitle);
+	if(fdTitle.length>5){
+	$("#containkey").html(fdTitle.substr(0,5)+"...");
+	}else{
+		$("#containkey").html(fdTitle);
+	}
 }
-function findeCoursesByKey(pageNo,order){
+//选中当前页
+function checkcurrpage(){
+	if(document.getElementById("selectCurrPage").checked){
+		document.getElementById("selectAll").checked=false;
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",true);// 
+			$(this).attr("disabled",false);
+		});
+		$("#allFlag").attr("value",false);
+	} else {
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",false);// 
+		});
+		$("#allFlag").attr("value",false);
+	}
+}
+//全部选中
+function selectAll(){
+	if(document.getElementById("selectAll").checked){
+		document.getElementById("selectCurrPage").checked=false;
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",true);
+			$(this).attr("disabled",true);
+		});
+		$("#allFlag").attr("value",true);
+	} else {
+		$('input[name="ids"]').each(function(){
+			$(this).attr("checked",false);// 
+		});
+		$("#allFlag").attr("value",false);
+	}
+}
+//课程或系列数据查询
+function findeCoursesByKey(pageNo,order){//查询数据
 	var fdTitle = document.getElementById("serach").value;
 	if($('input[name="selectCheckbox"]:checked').val()==1){
 		$("#allkey").attr("value",1);
@@ -91,7 +128,11 @@ function findeCoursesByKey(pageNo,order){
 			$("#pageBody").html(data);
 			if(fdTitle!=""&&fdTitle!=null){
 				$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
-				$("#containkey").html(fdTitle);
+				if(fdTitle.length>5){
+						$("#containkey").html(fdTitle.substr(0,5)+"...");
+					}else{
+						$("#containkey").html(fdTitle);
+					}
 			}
 			else{
 				$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
@@ -105,7 +146,7 @@ function findeCoursesByKey(pageNo,order){
 			}
 		}
 	}); 
-	 }else{
+	 }else{//系列列表查询
 		$.ajax({
 			type: "post",
 			 url: "${ctx}/ajax/series/getSeriesInfosOrByKey",
@@ -122,7 +163,11 @@ function findeCoursesByKey(pageNo,order){
 				$("#pageBody").html(data);
 				if(fdTitle!=""&&fdTitle!=null){
 					$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
-					$("#containkey").html(fdTitle);
+						if(fdTitle.length>5){
+							$("#containkey").html(fdTitle.substr(0,5)+"...");
+						}else{
+							$("#containkey").html(fdTitle);
+						}
 				}
 				else{
 					$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
@@ -141,27 +186,30 @@ function findeCoursesByKey(pageNo,order){
 //
 function confirmDel(){
 	if($("#cousetype").val()=='12'){
-		var delekey="";
-		$('input[name="ids"]:checked').each(function() {
-			delekey+=$(this).val()+",";
-		}); 	
-		if(delekey==""){
-			$.fn.jalert2("当前没有选择要删除的数据!");
-			return;
-		}
-		if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
-			fiterDelete(delekey,1);
-			$.fn.jalert("您确认要删除所有课程？",deleteAllCourse);
-		}else if($('input[name="selectCheckbox"]:checked').val()==0){
-			fiterDelete(delekey,0);
-			$.fn.jalert("您确认要删除本页课程？",deleteCourse);
-		}else{
-			fiterDelete(delekey,0);
-			$.fn.jalert("您确认要删除所选课程？",deleteCourse);
-			
-		}
+		confirmDelecourse();//删除课程
 	}else{
-		confirmDelseries();
+		confirmDelseries();//删除系列
+	}
+}
+function confirmDelecourse(){
+	var delekey="";
+	$('input[name="ids"]:checked').each(function() {
+		delekey+=$(this).val()+",";
+	}); 	
+	if(delekey==""){
+		$.fn.jalert2("当前没有选择要删除的数据!");
+		return;
+	}
+	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
+		fiterDelete(delekey,1);
+		$.fn.jalert("您确认要删除所有数据？",deleteAllCourse);
+	}else if($('input[name="selectCheckbox"]:checked').val()==0){
+		fiterDelete(delekey,0);
+		$.fn.jalert("您确认要删除本页数据？",deleteCourse);
+	}else{
+		fiterDelete(delekey,0);
+		$.fn.jalert("您确认要删除所选数据？",deleteCourse);
+		
 	}
 }
 //删除选中列表
@@ -203,39 +251,7 @@ function deleteAllCourse(){
 		}
 	}); 
 }
-//选中当前页
-function checkcurrpage(){
-	if(document.getElementById("selectCurrPage").checked){
-		document.getElementById("selectAll").checked=false;
-		$('input[name="ids"]').each(function(){
-			$(this).attr("checked",true);// 
-			$(this).attr("disabled",false);
-		});
-		$("#allFlag").attr("value",false);
-	} else {
-		$('input[name="ids"]').each(function(){
-			$(this).attr("checked",false);// 
-		});
-		$("#allFlag").attr("value",false);
-	}
-}
-//全部选中
-function selectAll(){
-	if(document.getElementById("selectAll").checked){
-		document.getElementById("selectCurrPage").checked=false;
-		$('input[name="ids"]').each(function(){
-			$(this).attr("checked",true);// disabled="disabled"
-			$(this).attr("disabled",true);
-		});
-		$("#allFlag").attr("value",true);
-	} else {
-		$('input[name="ids"]').each(function(){
-			$(this).attr("checked",false);// 
-		});
-		$("#allFlag").attr("value",false);
-	}
-}
-function fiterDelete(delekey,deleType){
+function fiterDelete(delekey,deleType){//课程删除过滤
 	$.ajax({
 		async:false,
 		dataType:'json',
