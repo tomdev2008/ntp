@@ -110,12 +110,6 @@ function initCommentPageInfo(modelName,modelId,pageNo){
 			 $("#pageLine2").html(" "+result.startLine+" - "+result.endLine+" ");
 			 $("#pageTotal1").html(result.totalSize);
 			 $("#pageTotal2").html(result.totalSize);
-			 
-			 /* $("#gotoBefore1").bind("click",function (){gotoBefore(result.pageNo);});
-			 $("#gotoBefore2").bind("click",function (){gotoBefore(result.pageNo);});
-			 $("#gotoNext1").bind("click",function (){gotoNext(result.pageNo);});
-			 $("#gotoNext2").bind("click",function (){gotoNext(result.pageNo);}); */
-			
 			 //第一页
 			 if(result.pageNo==1){
 				 $("#gotoBefore1").unbind();
@@ -137,6 +131,17 @@ function initCommentPageInfo(modelName,modelId,pageNo){
 				 $("#gotoBefore2").bind("click",function (){gotoBefore(result.pageNo);});
 				 $("#gotoBefore1").removeAttr("disabled");
 				 $("#gotoBefore2").removeAttr("disabled");
+			 }
+			 //只有一页
+			 if(result.pageNo==result.totalPage&&result.pageNo==1){
+				 $("#gotoNext1").unbind();
+				 $("#gotoNext2").unbind();
+				 $("#gotoBefore1").unbind();
+				 $("#gotoBefore2").unbind();
+				 $("#gotoNext1").attr("disabled",true);
+				 $("#gotoNext2").attr("disabled",true);
+				 $("#gotoBefore1").attr("disabled",true);
+				 $("#gotoBefore2").attr("disabled",true);
 			 }
 			 //中间
 			 if(result.pageNo!=result.totalPage&&result.pageNo!=1){
