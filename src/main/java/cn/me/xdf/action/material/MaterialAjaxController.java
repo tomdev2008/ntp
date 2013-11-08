@@ -176,7 +176,7 @@ public class MaterialAjaxController {
 		}
 		MaterialInfo material = materialService.load(materialId);
 		material.setIsAvailable(false);
-		materialService.update(material);
+		materialService.save(material);
 	}
 	@RequestMapping(value = "updateDownloadNum")
 	@ResponseBody
