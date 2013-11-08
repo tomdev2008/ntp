@@ -126,29 +126,29 @@
 		                                    	<span class="tit">${bean.fdNo}.${i}&nbsp;${lecture.fdName}</span>
 		                                        	<c:if test="${lecture.through==null}">
 		                                        	  <c:if test="${course.isOrder==false}">
-		                                        	  	<button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" class="btn  btn-primary">
 		                                        	  	  	开始学习
 		                                        	    </button>
 		                                        	  </c:if>
 		                                        	  <c:if test="${isorder==false && course.isOrder==true}">
-		                                        	  	<button data-fdid="${lecture.fdId}" class="btn btn-primary" disabled="disabled">
+		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" class="btn btn-primary" disabled="disabled">
 		                                        	  	  	开始学习
 		                                        	    </button>
 		                                        	  </c:if>
 		                                        	  <c:if test="${isorder==true && course.isOrder==true}">
 		                                        	    <c:set var="isorder" value="false"/>
-		                                        	  	<button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" class="btn  btn-primary">
 		                                        	  	  	开始学习
 		                                        	    </button>
 		                                        	  </c:if>
 		                                        	</c:if>
 		                                        	<c:if test="${lecture.through==true}">
-		                                        	  <button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        	  <button name="doButton" data-fdid="${lecture.fdId}" class="btn  btn-primary">
 		                                        		再次学习
 		                                        	  </button>		                                        		
 		                                        	</c:if>
 		                                        	<c:if test="${lecture.through==false}">
-		                                        	  <button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        	  <button name="doButton" data-fdid="${lecture.fdId}" class="btn  btn-primary">
 		                                        		继续学习
 		                                        	  </button>		
 		                                        	</c:if>
@@ -177,29 +177,29 @@
                                     	<span class="tit">${bean.fdNo}&nbsp;${bean.fdName}</span>
                                         	<c:if test="${lecture.through==null}">
 		                                      <c:if test="${course.isOrder==false}">
-		                                       	<button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                       	<button name="doButton" data-fdid="${lecture.fdId}" class="btn  btn-primary">
 		                                        	开始学习
 		                                       	</button>
 		                                      </c:if>
 		                                      <c:if test="${isorder==false && course.isOrder==true}">
-		                                        <button data-fdid="${lecture.fdId}" class="btn btn-primary" disabled="disabled">
+		                                        <button name="doButton" data-fdid="${lecture.fdId}" class="btn btn-primary" disabled="disabled">
 		                                        	开始学习
 		                                        </button>
 		                                      </c:if>
 		                                      <c:if test="${isorder==true && course.isOrder==true}">
 		                                        <c:set var="isorder" value="false"/>
-		                                        <button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        <button name="doButton" data-fdid="${lecture.fdId}" class="btn  btn-primary">
 		                                        	开始学习
 		                                        </button>
 		                                      </c:if>
 		                                    </c:if>
 		                                    <c:if test="${lecture.through==true}">
-		                                        <button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        <button name="doButton" data-fdid="${lecture.fdId}" class="btn  btn-primary">
 		                                        	再次学习
 		                                        </button>		                                        		
 		                                    </c:if>
 		                                    <c:if test="${lecture.through==false}">
-		                                        <button data-fdid="${lecture.fdId}" class="btn  btn-primary">
+		                                        <button name="doButton" data-fdid="${lecture.fdId}" class="btn  btn-primary">
 		                                        	继续学习
 		                                        </button>		
 		                                    </c:if>
@@ -222,10 +222,10 @@
                     	</div>
                     </div>
                 </div>               
-                <c:import url="/WEB-INF/views/base/comment/comment.jsp">
+                <%-- <c:import url="/WEB-INF/views/base/comment/comment.jsp">
                  	<c:param name="modelName" value="<%=CourseInfo.class.getName()%>" />
                  	<c:param name="modelId" value="${course.fdId}" />
-                </c:import>
+                </c:import> --%>
 			</div>
 			<div class="pull-right w225">
 				 <!-- 评分评论页面 -->
@@ -260,7 +260,7 @@
 </section>
 <!--主体 E-->
 <script type="text/javascript">
-	$("button.btn").bind("click",function(){
+	$("input[name='doButton']").bind("click",function(){
 		var fdid = $(this).attr("data-fdid");
     	window.location.href = "${ctx}/passThrough/getStudyContent?bamId=${bamId}&catalogId="+fdid;
 	});
