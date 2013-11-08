@@ -114,7 +114,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="examStem">作业简介</label>
-                    <div class="controls"><textarea placeholder="请使用#...#标记填空题的答案，例如：新教师在线备课课程的第三章学习内容是#标准化教案#" rows="4"
+                    <div class="controls"><textarea placeholder="请输入作业简介" rows="4"
                                                     class="input-block-level" required id="examStem"
                                                     name="examStem">{{=it.examStem || ''}}</textarea>
                     </div>
@@ -338,6 +338,7 @@
 	    </section>
 	</section>
 <input type="hidden" id="materialId" value="${param.fdId}"/>
+<input type="hidden" id="fdType" value="${param.fdType}">
 </section>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
@@ -360,7 +361,7 @@ $(function(){
     var curTime = 4;
 	if("${param.fdId}"!=null&&"${param.fdId}"!=""){
 		 $.ajax({
-			  url: "${ctx}/ajax/material/getMaterial?materialId=${param.fdId}",
+			  url: "${ctx}/ajax/material/getMaterial?materialId="+$("#materialId").val(),
 			  async:false,
 			  dataType : 'json',
 			  success: function(result){
@@ -404,10 +405,10 @@ function deleteMaterial(){
 }
 function confirmDeletePaper(){
 	$.ajax({
-		  url: "${ctx}/ajax/material/deleteMaterial?materialId=${param.fdId}",
+		  url: "${ctx}/ajax/material/deleteMaterial?materialId="+$("#materialId").val(),
 		  async:false,
 		  success: function(result){
-			  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+'${param.fdType}';
+			  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
 		  }
 	}); 
 }
@@ -422,7 +423,7 @@ function confirmDeleteTask(){
 			"taskId":$("#taskId").val(),
 		},
 		success:function(){
-			window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType=10";
+			window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
 		}
 	});
 }
@@ -442,7 +443,7 @@ $(function(){
 	var url="";
     if("${param.fdId}"!=null&&"${param.fdId}"!=""){
 	   $.ajax({
-		 url: "${ctx}/ajax/material/getCreater?materialId=${param.fdId}",
+		 url: "${ctx}/ajax/material/getCreater?materialId="+$("#materialId").val(),
 		 async:false,
 		 dataType : 'json',
 		 success: function(result){
@@ -452,7 +453,7 @@ $(function(){
 	   });
     }
     $.ajax({
-		url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${param.fdId}",
+		url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId="+$("#materialId").val(),
 		async:false,
 		dataType : 'json',
 		success: function(result){
@@ -553,7 +554,7 @@ $(function(){
 			  data:data,
 			  dataType:'json',
 			  success: function(rsult){
-				  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+'${param.fdType}';
+				  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
 			  },
 		});
     }
