@@ -101,7 +101,7 @@ public class TaskPaperAjaxController {
 			}
 			task.setFdSubject(fdSubject);
 			task.setTaskPackage(info);
-			taskService.update(task);
+			taskService.save(task);
 		}
 		List<AttMain> attMains = new ArrayList<AttMain>();
 		String attString = request.getParameter("listAttachment");
@@ -114,7 +114,7 @@ public class TaskPaperAjaxController {
 			for (AttMain attMain : oldAttMains) {
 				attMain.setFdModelId("");
 				attMain.setFdModelName("");
-				attMainService.update(attMain);
+				attMainService.save(attMain);
 			}
 			List<Map> att = JsonUtils.readObjectByJson(attString, List.class);
 			for (Map map : att) {
