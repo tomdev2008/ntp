@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 @ContextConfiguration(locations = {"/spring/root-context.xml",
         "/spring/applicationContext-shiro.xml","/spring/applicationContext-service.xml"})
 @ActiveProfiles("production")
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public class BaseTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     private long starttime;

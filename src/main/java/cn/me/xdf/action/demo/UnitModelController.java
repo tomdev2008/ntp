@@ -39,6 +39,7 @@ public class UnitModelController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String init() {
+        unitModelService.saveTest();
         return "/demo/unit/index";
     }
 

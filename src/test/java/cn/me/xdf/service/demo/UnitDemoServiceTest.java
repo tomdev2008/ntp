@@ -18,6 +18,6 @@ public class UnitDemoServiceTest extends BaseTest {
 
     @Test
     public void testTransactionSaveAndUpdate() {
-        unitModelService.saveAndUpdateTest();
+        unitModelService.findTest();
     }
 }
