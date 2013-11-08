@@ -4,6 +4,7 @@ import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.bam.BamCourseService;
+import org.apache.commons.lang3.BooleanUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -28,7 +29,7 @@ public class SourceAspect extends SimpleService {
     public void saveBamScore(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         SourceNote note = (SourceNote) args[0];
-        if (note == null || !note.getIsStudy())
+        if (note == null || !BooleanUtils.toBoolean(note.getIsStudy()))
             return;
         //更新素材
         BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(note.getFdUserId(), note.getFdCourseId());
