@@ -32,7 +32,7 @@ public class SourceAspect extends SimpleService {
             return;
         //更新素材
         BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(note.getFdUserId(), note.getFdCourseId());
-        //bamCourse.toMateridThroughById(note.getFdMaterialId());
+        bamCourse.toMateridThroughById(note.getFdMaterialId());
         bamCourseService.update(bamCourse);
     }
 
