@@ -9,6 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>新东方在线教师备课平台</title>
+<link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link href="${ctx}/resources/css/settings.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 </head>
