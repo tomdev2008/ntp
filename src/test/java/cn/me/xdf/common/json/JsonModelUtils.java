@@ -53,7 +53,6 @@ public class JsonModelUtils extends JunitBaseTest {
         List<CourseCatalog> courseJson = JsonUtils.readBeanByJson(jsonStr, List.class, CourseCatalog.class);
         for (CourseCatalog catalog : courseJson) {
             System.out.println("name===" + catalog.getFdName());
-            ;
         }
     }
 }
