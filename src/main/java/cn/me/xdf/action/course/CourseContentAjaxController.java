@@ -137,7 +137,7 @@ public class CourseContentAjaxController {
 						}
 					}
 				}
-				courseCatalogService.update(catalog);
+				courseCatalogService.save(catalog);
 			}
 		}
 	}

@@ -149,7 +149,7 @@ public class ExamQuestionAjaxController {
 			for (AttMain attMain : oldAttMains) {
 				attMain.setFdModelId("");
 				attMain.setFdModelName("");
-				attMainService.update(attMain);
+				attMainService.save(attMain);
 			}
 			List<Map> att = JsonUtils.readObjectByJson(attString, List.class);
 			for (Map map : att) {

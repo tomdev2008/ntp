@@ -188,7 +188,7 @@ public class MaterialAjaxController {
 		}else{
 			materialInfo.setFdDownloads(materialInfo.getFdDownloads()+1);
 		}
-		materialService.update(materialInfo);
+		materialService.save(materialInfo);
 	}
 
 	/**
@@ -333,7 +333,7 @@ public class MaterialAjaxController {
 		AttMain att = attMainService.get(attId);
 		att.setFdModelId(modelId);
 		att.setFdModelName(MaterialInfo.class.getName());
-		attMainService.update(att);
+		attMainService.save(att);
 	}
 
 	/**

@@ -73,7 +73,7 @@ public class SeriesController {
 		seriesInfo.setFdName(fdName);
 		seriesInfo.setFdDescription(fdDescription);
 		//修改封面附件信息 先删除原始附件 然后更新为最新上传附件
-		seriesInfoService.update(seriesInfo);
+		seriesInfoService.save(seriesInfo);
 		return "";
 	}
 	/*
@@ -85,7 +85,7 @@ public class SeriesController {
 		String seriesId=request.getParameter("seriesId");
 		SeriesInfo seriesInfo=seriesInfoService.get(seriesId);
 		seriesInfo.setIsAvailable(false);
-		seriesInfoService.update(seriesInfo);
+		seriesInfoService.save(seriesInfo);
 		return "";
 	}
 	/*

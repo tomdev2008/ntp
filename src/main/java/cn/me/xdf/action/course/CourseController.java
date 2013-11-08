@@ -89,7 +89,7 @@ public class CourseController {
 			CourseInfo course = courseService.get(courseId);
 			if(course!=null && Constant.COURSE_TEMPLATE_STATUS_DRAFT.equals(course.getFdStatus())){
 				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_RELEASE);
-				courseService.update(course);
+				courseService.save(course);
 			}
 		}
 		return "redirect:/course/findcourseInfos";

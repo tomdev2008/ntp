@@ -188,7 +188,7 @@ public class CourseAjaxController {
 							.get(courseType);
 					course.setFdCategory(category);
 				}
-				course = courseService.update(course);
+				course = courseService.save(course);
 			}
 		} else {
 			course.setFdTitle(courseTitle);
@@ -327,7 +327,7 @@ public class CourseAjaxController {
 				course.setFdProposalsGroup(suggestedGroup);
 				// 课程要求
 				course.setFdDemand(courseRequirements);
-				courseService.update(course);
+				courseService.save(course);
 			}
 		}
 	}
@@ -369,7 +369,7 @@ public class CourseAjaxController {
 			courseInfo.setIsPublish(false);
 			courseInfo.setFdPassword(fdPassword);
 		}
-		courseService.update(courseInfo);
+		courseService.save(courseInfo);
 	}
 
 	/**
@@ -546,7 +546,7 @@ public class CourseAjaxController {
 				seriesCoursesService.deleteByCourseId(courseId);
 				// 修改课程模板有效状态
 				course.setIsAvailable(false);
-				courseService.update(course);
+				courseService.save(course);
 			}
 		}
 	}
@@ -567,7 +567,7 @@ public class CourseAjaxController {
 			attMain.setFdModelName(CourseInfo.class.getName());
 			attMain.setFdKey("Course");
 			// 保存最新的附件
-			attMainService.update(attMain);
+			attMainService.save(attMain);
 		}
 	}
 

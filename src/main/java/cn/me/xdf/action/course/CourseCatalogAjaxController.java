@@ -121,7 +121,7 @@ public class CourseCatalogAjaxController {
 			if(childList!=null && childList.size()>0){
 				for(CourseCatalog child : childList){
 					child.setHbmParent(null);
-					courseCatalogService.update(child);
+					courseCatalogService.save(child);
 				}
 			}
 		}
@@ -151,7 +151,7 @@ public class CourseCatalogAjaxController {
 						CourseCatalog courseCatalog = courseCatalogService.get(chapterId);
 						courseCatalog.setFdNo((Integer)chapterMap.get("num"));
 						courseCatalog.setFdTotalNo((Integer)chapterMap.get("index"));
-						courseCatalogService.update(courseCatalog);
+						courseCatalogService.save(courseCatalog);
 					}
 				}
 			}
@@ -166,7 +166,7 @@ public class CourseCatalogAjaxController {
 						CourseCatalog courseCatalog = courseCatalogService.get(lectureId);
 						courseCatalog.setFdNo((Integer)lectureMap.get("num"));
 						courseCatalog.setFdTotalNo((Integer)lectureMap.get("index"));
-						courseCatalogService.update(courseCatalog);
+						courseCatalogService.save(courseCatalog);
 					}
 				}
 			}
@@ -188,7 +188,7 @@ public class CourseCatalogAjaxController {
 		String fdName = request.getParameter("title");
 		CourseCatalog courseCatalog = courseCatalogService.get(fdId);
 		courseCatalog.setFdName(fdName);
-		courseCatalogService.update(courseCatalog);
+		courseCatalogService.save(courseCatalog);
 	}
 	
 	/**
@@ -260,7 +260,7 @@ public class CourseCatalogAjaxController {
 		CourseInfo courseInfo = courseService.get(courseId);
 		if(courseInfo!=null){
 			courseInfo.setFdTotalPart(totalPart);
-			courseService.update(courseInfo);
+			courseService.save(courseInfo);
 		}
 	}
 	
@@ -288,9 +288,9 @@ public class CourseCatalogAjaxController {
 					//如果记录的章ID不为空并且当前是节的话，根据章ID取出章，将总节数更新到章中，同时更新节的上级
 					CourseCatalog courseCatalog = courseCatalogService.get(hbmparentid);
 					courseCatalog.setFdTotalPart(totalPart);
-					courseCatalogService.update(courseCatalog);
+					courseCatalogService.save(courseCatalog);
 					catalog.setHbmParent(courseCatalog);
-					courseCatalogService.update(catalog);
+					courseCatalogService.save(catalog);
 				}
 			}
 		}
