@@ -101,12 +101,8 @@ public class PassThroughController {
 	 */
 	@RequestMapping(value = "getStudyContent")
 	public String getStudyContent(HttpServletRequest request) {
-		//获取课程进程ID
-		String bamId = request.getParameter("bamId");
-		//获取课程节ID
-		String catalogId = request.getParameter("catalogId");
-		
-		return null;
+		//页面跳转，跳转到课程学习页面
+		return "/passThrough/course_content_study";
 	}
 
 	/**

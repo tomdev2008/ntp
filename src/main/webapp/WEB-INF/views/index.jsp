@@ -5,6 +5,7 @@
 <!DOCTYPE HTML>
 
 <head>
+<link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link href="${ctx}/resources/css/home.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="${ctx}/resources/js/modernizr.custom.69142.js"></script> 
 </head>
