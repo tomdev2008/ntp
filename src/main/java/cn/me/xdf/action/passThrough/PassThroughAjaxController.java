@@ -298,24 +298,28 @@ public class PassThroughAjaxController {
 			map2.put("examType", examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_SINGLE_SELECTION)?"single":(examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_MULTIPLE_SELECTION)?"multiple":"completion"));
 			map2.put("examStem", examQuestion2.getFdSubject());
 			List<ExamOpinion> examOpinions = examQuestion2.getOpinions();
-			Map opinionMap = new HashMap();
+			List<Map> opinionlist = new ArrayList<Map>();
 			for (ExamOpinion examOpinion : examOpinions) {
+				Map opinionMap = new HashMap();
 				opinionMap.put("index", examOpinion.getFdOrder());
 				opinionMap.put("name", examOpinion.getOpinion());
 				opinionMap.put("isAnswer", examOpinion.getIsAnswer());
 				opinionMap.put("isChecked", false);
+				opinionlist.add(opinionMap);
 			}
-			map2.put("listExamAnswer", opinionMap);
+			map2.put("listExamAnswer", opinionlist);
 			List<AttMain> attMains = attMainService.findByCriteria(AttMain.class,
 	                Value.eq("fdModelId", examQuestion2.getFdId()),
 	                Value.eq("fdModelName", ExamQuestion.class.getName()));	
-			Map attMap = new HashMap();
+			List<Map> attlist = new ArrayList<Map>();
 			for (AttMain attMain : attMains) {
+				Map attMap = new HashMap();
 				attMap.put("index", attMain.getFdOrder());
 				attMap.put("name", attMain.getFdFileName());
 				attMap.put("url", attMain.getFdFilePath());
+				attlist.add(attMap);
 			}
-			map2.put("listAttachment", attMap);
+			map2.put("listAttachment", attlist);
 			listExam.add(map2);
 		}
 		map.put("listExam", listExam);
