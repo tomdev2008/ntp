@@ -226,8 +226,9 @@ public class PassThroughAjaxController {
 								Map materialTemp = new HashMap();
 								materialTemp.put("id", minfo.getFdId());
 								materialTemp.put("name", minfo.getFdName());
-								materialTemp.put("fullScore", materialService.getTotalSorce(minfo.getFdId()).get("totalscore"));
-								materialTemp.put("examCount", materialService.getTotalSorce(minfo.getFdId()).get("num"));
+								Map m = materialService.getTotalSorce(minfo.getFdId());
+								materialTemp.put("fullScore", m.get("totalscore"));
+								materialTemp.put("examCount", m.get("num"));
 								materialTemp.put("examPaperTime", minfo.getFdStudyTime());
 								materialTemp.put("examPaperIntro", minfo.getFdDescription());
 								materialTemp.put("examPaperStatus", getStatus(minfo, catalogId, ShiroUtils.getUser().getId()));

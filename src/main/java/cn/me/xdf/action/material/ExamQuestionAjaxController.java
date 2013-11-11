@@ -156,7 +156,8 @@ public class ExamQuestionAjaxController {
 				AttMain e = attMainService.get(map.get("id").toString());
 				e.setFdModelId(examQuestion.getFdId());
 				e.setFdModelName(ExamQuestion.class.getName());
-				e.setFdKey(map.get("index").toString());
+				e.setFdOrder(map.get("index").toString());
+				e.setFdKey("ExamQuestion");
 				attMains.add(e);
 				attMainService.update(e);
 			}
@@ -205,7 +206,7 @@ public class ExamQuestionAjaxController {
 		for (AttMain attMain : atts) {
 			Map map2 = new HashMap();
 			map2.put("id", attMain.getFdId());
-			map2.put("index", attMain.getFdKey());
+			map2.put("index", attMain.getFdOrder());
 			map2.put("name", attMain.getFdFileName());
 			map2.put("url", attMain.getFdFilePath());
 			attList.add(map2);
