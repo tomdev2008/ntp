@@ -289,7 +289,7 @@
         </div>
     </script>
 
-    <script src="js/doT.min.js"></script>
+    <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
 <body>
