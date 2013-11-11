@@ -68,8 +68,8 @@ function pressEnter(){
 function showSearch(){
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
 	var serach = $("#serach").val();
-	if(($("#serach").val()).length>7){
-		serach = ($("#serach").val()).substr(0,7);
+	if(($("#serach").val()).length>2){
+		serach = ($("#serach").val()).substr(0,2);
 		serach= serach+"...";
 	}
 	$("#containkey").html(serach);
@@ -137,8 +137,8 @@ function pageNavClick(fdType,pageNo,order){
 			$("#show").html($("#showkey").val());
 			if(fdName!=""&&fdName!=null){
 				$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
-				if(fdName.length>7){
-					fdName = fdName.substr(0,7);
+				if(fdName.length>2){
+					fdName = fdName.substr(0,2);
 					fdName= fdName+"...";
 				}
 				$("#containkey").html(fdName);

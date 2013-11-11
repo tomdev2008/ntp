@@ -21,14 +21,14 @@
 				<form class="toolbar-search" onkeydown="pressEnter();">
 					<input type="text" id="serach" class="search" placeholder="搜索条目"
 					   onblur="pageNavClick('${param.fdType}');"  onkeydown="showSearch();" onkeyup="showSearch();"> 
-					<i class="icon-search"></i>
+					<i class="icon-search"  onclick="pageNavClick('${param.fdType}','1','FDCREATETIME');"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>
 				 	<span id="markshow">
 						<a id="containkey"href="#">全部条目</a>
 					</span>
 				</span>
-				 <a class="btn btn-link" href="#rightCont">清空搜索结果</a>
+				 <a class="btn btn-link" style="position:relative;right: 5px;padding-right:1px;padding-left:1px" href="#rightCont">清空搜索结果</a>
 			</div>
 		</div>
 		<div class="bd">

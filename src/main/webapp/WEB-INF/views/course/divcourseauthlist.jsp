@@ -20,7 +20,7 @@
 							 </span>
 							 </span>
 							
-							 <a class="btn btn-link"  style="position: absolute;right: 180px;padding-right:5px;padding-left:5px" href="#" onclick="clearserach();" >清空搜索结果</a>
+							 <a class="btn btn-link"  style="position:relative;right: 5px;padding-right:1px;padding-left:1px" href="#" onclick="clearserach();" >清空搜索结果</a>
 						</div>
 					</div>
 					<div class="bd">
