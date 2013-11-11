@@ -38,10 +38,10 @@
                     {{~}}
                     {{~param.lecture :lecture:index}}
                         {{?lecture.index == i}}
-                            <li{{?lecture.id == param.currentId}} class="active"{{?}}>
-                                <a href="#" data-fdid="{{=lecture.id}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
+                            <li{{?lecture.status == 'doing'}} class="active"{{?}}>
+                                <a {{?lecture.status != 'unfinish'}}href="#" {{?}}data-fdid="{{=lecture.id}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
                                     <span class="dt">节{{=lecture.num}} <b class="icon-circle-progress">
-                                        {{?lecture.status != 'untreated'}}<i class="icon-progress{{?lecture.status == 'doing'}} half{{?}}"></i>{{?}}
+                                        {{?lecture.status != 'unfinish'}}<i class="icon-progress{{?lecture.status == 'doing'}} half{{?}}"></i>{{?}}
                                     </b></span>
                                     <span class="name"><i class="icon-{{=lecture.type}}"></i>
                                     {{=lecture.name || ''}}</span>
@@ -59,10 +59,9 @@
             {{#def.pageHeader}}
             <div class="page-body">
                 {{#def.pageIntro}}
-                {{?it.type == 'exam'}}
+                {{?it.type == 'exam' || it.type == 'task'}}
                     {{#def.examContent}}
-                {{?}}
-                {{?it.type == 'video'}}
+                {{??it.type == 'video'}}
                     {{#def.videoContent}}
                 {{?}}
             </div>
@@ -101,7 +100,9 @@
         <ul class="listIntro bdbt2">
             <li>
                 <div class="line">
-                    <div class="line"><span class="label-intro" >学习任务</span><small>建议您认真完成所有题目后提交试卷：</small></div>
+                    <div class="line">
+                        <span class="label-intro" >学习任务</span>
+                        <small>建议您认真完成所有{{?it.type=='exam'}}题目后提交试卷{{??it.type=='video'}}视频后提交{{??it.type=='task'}}作业后提交作业包{{??it.type=='doc'}}文档后提交{{??it.type=='ppt'}}幻灯片后提交{{?}}： </small></div>
                 </div>
             </li>
             <li>
@@ -127,11 +128,12 @@
             {{~it.listExamPaper :paper:index}}
                 <li class="accordion-group">
                     <a class="titBar" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=index+1}}">
-                        <h2>试卷{{=index+1}}. {{=paper.name}}</h2>
-                        <p class="muted">共计{{=paper.listExam.length}}题，满分{{=paper.fullScore}}分，建议答题时间为{{=paper.examPaperTime}}分钟。</p>
+                        <h2>{{?it.type == 'exam'}}试卷{{??it.type == 'task'}}作业包{{?}}{{=index+1}}. {{=paper.name}}</h2>
+                        <p class="muted">共计{{=paper.examCount}}{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=paper.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=paper.examPaperTime}}分钟。</p>
                         <span class="icon-state-bg{{?paper.examPaperStatus == 'fail'}} error">未通过
                         {{??paper.examPaperStatus == 'pass'}} success">通过
-                        {{??paper.examPaperStatus == 'untreated'}}">待答{{?}}</span>
+                        {{??paper.examPaperStatus == 'finish'}} info">答完
+                        {{??paper.examPaperStatus == 'unfinish'}}">待答{{?}}</span>
                     </a>
                     <div id="examPaper{{=index+1}}" data-fdid="{{=paper.id}}" class="accordion-body collapse">
 
@@ -149,19 +151,21 @@
                 <div class="hd">
                 <h2><span class="icon-state-bg{{?it.examPaperStatus == 'fail'}} error">未通过
                         {{??it.examPaperStatus == 'pass'}} success">通过
-                        {{??it.examPaperStatus == 'untreated'}}">待答{{?}}</span> 试卷{{=it.num}} {{=it.name}} 共计 <span class="total">{{=it.listExam.length}}</span>题，满分{{=it.fullScore}}分，建议答题时间为{{=it.examPaperTime}}分钟。</h2>
+                        {{??it.examPaperStatus == 'finish'}} info">答完
+                        {{??it.examPaperStatus == 'unfinish'}}">待答{{?}}</span> {{?it.type=='exam'}}试卷{{??it.type=='task'}}作业包{{?}}{{=it.num}} {{=it.name}} 共计 <span class="total">{{=it.examCount}}</span>{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=it.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=it.examPaperTime}}分钟。</h2>
         <p class="muted">{{=it.examPaperIntro}}</p>
         <a class="btn btn-link" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=it.num}}">收起<b class="caret"></b></a>
         </div>
         <form action="{{=it.action || '#'}}" post="post" id="formExam">
             <input name="fdid" value="{{=it.id}}" type="hidden" />
+            {{?it.type=='exam'}}
                 <div class="bd">
                 <dl class="listExam">
                 {{~it.listExam :exam1:index2}}
                     {{~it.listExam :exam:index}}
                     {{?index2 == exam.index}}
                         <dt class="examStem" id="examStem{{=index2+1}}">
-                            {{=index2+1}}. {{=exam.examStem}}
+                            {{=index2+1}}. {{=exam.examStem}} （{{=exam.examScore}}分）
                         </dt>
                         <dd>
                             <ul class="attachList unstyled">
@@ -187,8 +191,72 @@
                     {{?}}
                     {{~}}
                 {{~}}
-        </dl>
-        </div>
+                </dl>
+                </div>
+            {{??it.type=='task'}}
+                {{~it.listExam :task1:index2}}
+                {{~it.listExam :task}}
+                {{?index2 == task.index}}
+                    <div class="bd">
+                        <div class="pd20">
+                            <div id="examStem{{=index2+1}}">{{=index2+1}}. {{=task.examName}}（{{=task.examScore}}分）</div>
+                            <div>{{=task.examStem}}</div>
+                            <ul class="attachList unstyled">
+                                {{~task.listAttachment :att1:index1}}
+                                {{~task.listAttachment :att}}
+                                {{?index1 == att.index}}
+                                <li><a href="{{=att.url}}"><i class="icon-paperClip"></i>{{=att.name}}</a></li>
+                                {{?}}
+                                {{~}}
+                                {{~}}
+                            </ul>
+                        </div>
+                        <div class="bdt1 pd20">
+                            {{?task.examType == 'uploadWork'}}
+                                <label>上传作业（建议小于2G）</label>
+                                <div class="control-upload">
+                                    <div class="upload-fileName">高新技术产业各领域增加值饼形图（单位：亿元）.jpg <i class="icon-paperClip"></i></div>
+                                    <span class="progress"> <div class="bar" style="width:20%;"></div> </span>
+                                    <span class="txt"><span>20%</span>，剩余时间：<span>00:00:29</span></span>
+                                    <button class="btn btn-primary btn-large" type="button">上传</button>
+                                </div>
+                                <ul class="attachList unstyled" id="listTaskAttachment">
+                                    {{~task.listTaskAttachment :att2}}
+                                        <li id="attach{{=att2.id}}">
+                                            <a href="{{=att2.url}}"><i class="icon-paperClip"></i>{{=att2.name}}</a>
+                                            <a href="#" class="icon-remove-blue"></a>
+                                        </li>
+                                    {{~}}
+                                </ul>
+                            {{??task.examType == 'onlineAnswer'}}
+                                {{?task.answer}}
+                                    {{=task.answer}}
+                                {{?}}
+                                {{?task.status != 'success'}}
+                                    <label>答题</label>
+                                    <textarea name="answer{{=task.id}}" required class="input-block-level" placeholder="请必务填写" rows="4"></textarea>
+                                {{?}}
+                            {{?}}
+                        </div>
+                        {{?task.status == 'success' || task.status == 'error'}}
+                            <div class="bdt1 pd20">
+                                <div class="media teacherRating">
+                                    <div class="pull-left">
+                                        <a href="#"><img class="media-object" src="{{=task.teacherRating.teacher.imgUrl}}" alt="指导老师"/></a>
+                                        <h3>指导老师</h3>
+                                    </div>
+                                    <div class="media-body">
+                                        <div class="media-heading"><label class="label {{?task.status == 'success'}}label-success">通过{{??}}label-important">未通过{{?}}</label>｜ 满分 {{=task.examScore}} 分  ｜ 成绩 {{=task.teacherRating.score}} 分</div>
+                                        <p>{{=task.teacherRating.comment || ''}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {{?}}
+                    </div>
+                {{?}}
+                {{~}}
+                {{~}}
+            {{?}}
         <div class="ft">
                 <button class="btn btn-primary btn-large" type="submit">提交答案</button>
         <button class="btn btn-link" type="button" data-toggle="collapse" data-parent="#listExamPaper" data-target="#examPaper{{=it.num}}">收起<b class="caret"></b></button>
@@ -201,16 +269,19 @@
     <!--试卷状态栏模板-->
     <script id="examPaperStatusBarTemplate" type="x-dot-template">
         <div class="examPaperStat">
-            <div class="dt">试卷{{=it.num}}</div>
-            你已完成<span class="succ">{{=it.successCount}}</span>道题目，共计<span class="total">{{=it.examCount}}</span>题
-            <a href="#navExams" data-toggle="collapse" class="showList"><span class="txtShow">展开</span><span class="txtHide">收起</span>试题列表<b class="caret"></b></a>
+            <div class="dt">{{?it.type == 'exam'}}试卷{{??it.type == 'task'}}作业包{{?}}{{=it.num}}</div>
+            你已完成<span class="succ">{{=it.successCount}}</span>{{?it.type == 'exam'}}道题目{{??it.type == 'task'}}个作业{{?}}，
+            共计<span class="total">{{=it.examCount}}</span>{{?it.type == 'exam'}}题{{??it.type == 'task'}}个作业{{?}}
+            <a href="#navExams" data-toggle="collapse" class="showList"><span class="txtShow">展开</span><span class="txtHide">收起</span>{{?it.type == 'exam'}}试题{{??it.type == 'task'}}作业{{?}}列表<b class="caret"></b></a>
         </div>
         <div id="navExams" class="collapse in">
             <div class="collapse-inner">
                 {{~it.listExam :exam1:index1}}
                 {{~it.listExam :exam:index}}
                 {{?index1 == exam.index}}
-                    <a class="num{{?exam.status != 'null'}} active{{?}}" href="#examStem{{=index1+1}}">{{=index1+1}}<i class="icon-circle-{{?exam.status == 'error'}}error{{??exam.status == 'success'}}success{{?}}"></i></a>
+                    <a class="num{{?exam.status != 'null'}} active"{{??}}" title="待答"{{?}} {{?exam.status == 'error'}}title="答错"{{??exam.status == 'success'}}title="答对"{{??exam.status == 'finish'}}title="答过"{{?}} href="#examStem{{=index1+1}}">
+                    {{=index1+1}}
+                    <i class="icon-circle-{{?exam.status == 'error'}}error{{??exam.status == 'success'}}success{{?}}"></i></a>
                 {{?}}
                 {{~}}
                 {{~}}
@@ -218,7 +289,7 @@
         </div>
     </script>
 
-    <script src="${ctx}/resources/js/doT.min.js"></script>
+    <script src="js/doT.min.js"></script>
 </head>
 
 <body>
@@ -230,9 +301,8 @@
         <section class="col-right" id="mainContent">
         </section>
     </section>
-
-
 </section>
+
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script type="text/javascript">
@@ -252,8 +322,8 @@
 
         /*试卷状态栏模板函数*/
         var examPaperStatusBarFn = doT.template(document.getElementById("examPaperStatusBarTemplate").text);
-		
-        //课程进程Id
+
+				//课程进程Id
         var bamId = "${param.bamId}";
         
         //课程进程中的节Id
@@ -261,8 +331,9 @@
         
         //课程进行中节的内容类型
         var fdMtype = "${param.fdMtype}";
-        
-        /* var leftData = {
+				
+				/*
+        var leftData = {
             sidenav: {
                 chapter:[
                     {
@@ -293,16 +364,16 @@
                         type: "exam",
                         name: "在线测试",
                         intro: "本课程为您介绍在线考试流程和相关注意事项",
-                        status: "doing"
+                        status: "pass"
                     },
                     {
                         id: "fdid9094858345",
                         index: 3,
                         num: 3,
                         type: "task",
-                        name: "在线作业",
+                        name: "提交学术作业",
                         intro: "本课程为您介绍在线考试流程和相关注意事项",
-                        status: "untreated"
+                        status: "doing"
                     },
                     {
                         id: "fdid000000000",
@@ -311,7 +382,7 @@
                         type: "doc",
                         name: "文档",
                         intro: "本课程为您介绍在线考试流程和相关注意事项",
-                        status: "untreated"
+                        status: "unfinish"
                     },
                     {
                         id: "fdid32432432432",
@@ -320,25 +391,29 @@
                         type: "ppt",
                         name: "幻灯片",
                         intro: "本课程为您介绍在线考试流程和相关注意事项",
-                        status: "untreated"
+                        status: "unfinish"
                     }
                 ]
             }
         }
-        $("#sideBar").html(pageLeftBarFn(leftData)); */
-        var leftData = {};
-		//ajax获取左侧章节展示树
-        $.ajax({
-			  url: "${ctx}/ajax/passThrough/getBamCatalogTree",
-			  async:false,
-			  data:{bamId:bamId},
-			  dataType:'json',
-			  success: function(rsult){
-				  leftData = rsult;
-				  leftData.sidenav.currentId = catalogId;
-				  $("#sideBar").html(pageLeftBarFn(leftData));
-			  },
-		});
+
+        $("#sideBar").html(pageLeftBarFn(leftData));
+				*/
+				
+				var leftData = {};
+				//ajax获取左侧章节展示树
+		    $.ajax({
+					  url: "${ctx}/ajax/passThrough/getBamCatalogTree",
+					  async:false,
+					  data:{bamId:bamId},
+					  dataType:'json',
+					  success: function(rsult){
+						  leftData = rsult;
+						  leftData.sidenav.currentId = catalogId;
+						  $("#sideBar").html(pageLeftBarFn(leftData));
+					  },
+				});
+				
         //左侧菜单定位
         setTimeout(function(){
             $("#sidebar").affix({
@@ -347,8 +422,9 @@
                 }
             }).parent().height($("#sidebar").height());
         },100);
-		/*
-        var rightData = {// 测试用 数据 ，ajax后删除
+				
+				/*
+        var examData = {// 测试用 数据 ，ajax后删除
             type: "exam",
             status: "doing",
             courseName: "雅思口语新教师培训课程",
@@ -361,568 +437,125 @@
                     id: "fdid08582300324",
                     name: "雅思口语强化课程教案解读主试卷",
                     fullScore: 50,
+                    examCount: 3,
                     examPaperTime: 20,
                     examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                    examPaperStatus: "untreated",//untreated, pass, fail, finish
-                    listExam: [
-                        {
-                            id: "fdid00000000322",
-                            index: 0,
-                            status: "null",//success,error,null
-                            examType: "single",//single, multiple, completion
-                            examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
-                            listExamAnswer: [
-                                {
-                                    index: 3,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: true,
-                                    isChecked: false
-                                },
-                                {
-                                    index: 0,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 1,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 2,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: false,
-                                    isChecked:false
-                                }
-                            ],
-                            listAttachment: [
-                                {
-                                    index: 0,
-                                    name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                    url: "#"
-                                },
-                                {
-                                    index: 3,
-                                    name: "高新技术产业各领域咨询报告.pdf",
-                                    url: "#"
-                                },
-                                {
-                                    index: 2,
-                                    name: "高新技术产业各领域专家分析讲座.mp4",
-                                    url: "#"
-                                },
-                                {
-                                    index: 1,
-                                    name: "高新技术产业各领域咨询报告2.pdf",
-                                    url: "#"
-                                }
-                            ]
-                        },
-                        {
-                            id: "fdid000000003233",
-                            index: 1,
-                            status: "null",//success,error,null
-                            examType: "multiple",//single, multiple, completion
-                            examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
-                            listExamAnswer: [
-                                {
-                                    index: 3,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: true,
-                                    isChecked: false
-                                },
-                                {
-                                    index: 0,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 1,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 2,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: true,
-                                    isChecked:false
-                                }
-                            ],
-                            listAttachment: [
-                                {
-                                    index: 0,
-                                    name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                    url: "#"
-                                },
-                                {
-                                    index: 3,
-                                    name: "高新技术产业各领域咨询报告.pdf",
-                                    url: "#"
-                                },
-                                {
-                                    index: 2,
-                                    name: "高新技术产业各领域专家分析讲座.mp4",
-                                    url: "#"
-                                },
-                                {
-                                    index: 1,
-                                    name: "高新技术产业各领域咨询报告2.pdf",
-                                    url: "#"
-                                }
-                            ]
-                        },
-                        {
-                            id: "fdid0003233",
-                            index: 2,
-                            status: "null",//success,error,null
-                            examType: "single",//single, multiple, completion
-                            examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
-                            listExamAnswer: [
-                                {
-                                    index: 3,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: true,
-                                    isChecked: false
-                                },
-                                {
-                                    index: 0,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 1,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 2,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: false,
-                                    isChecked:false
-                                }
-                            ],
-                            listAttachment: [
-                                {
-                                    index: 0,
-                                    name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                    url: "#"
-                                },
-                                {
-                                    index: 3,
-                                    name: "高新技术产业各领域咨询报告.pdf",
-                                    url: "#"
-                                },
-                                {
-                                    index: 2,
-                                    name: "高新技术产业各领域专家分析讲座.mp4",
-                                    url: "#"
-                                },
-                                {
-                                    index: 1,
-                                    name: "高新技术产业各领域咨询报告2.pdf",
-                                    url: "#"
-                                }
-                            ]
-                        }
-                    ]
+                    examPaperStatus: "unfinish"//unfinish, pass, fail, finish
                 },
                 {
                     id: "fdid08580000432",
                     name: "雅思口语强化课程教案解读主试卷2",
                     fullScore: 50,
+                    examCount: 3,
                     examPaperTime: 20,
                     examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                    examPaperStatus: "pass",//untreated, pass, fail, finish
-                    listExam: [
-                        {
-                            id: "fdid00000000322",
-                            index: 0,
-                            status: "success",//success,error,null
-                            examType: "single",//single, multiple, completion
-                            examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
-                            listExamAnswer: [
-                                {
-                                    index: 3,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: true,
-                                    isChecked: true
-                                },
-                                {
-                                    index: 0,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 1,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 2,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: false,
-                                    isChecked:false
-                                }
-                            ],
-                            listAttachment: [
-                                {
-                                    index: 0,
-                                    name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                    url: "#"
-                                },
-                                {
-                                    index: 3,
-                                    name: "高新技术产业各领域咨询报告.pdf",
-                                    url: "#"
-                                },
-                                {
-                                    index: 2,
-                                    name: "高新技术产业各领域专家分析讲座.mp4",
-                                    url: "#"
-                                },
-                                {
-                                    index: 1,
-                                    name: "高新技术产业各领域咨询报告2.pdf",
-                                    url: "#"
-                                }
-                            ]
-                        },
-                        {
-                            id: "fdid000000003233",
-                            index: 1,
-                            status: "success",//success,error,null
-                            examType: "multiple",//single, multiple, completion
-                            examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
-                            listExamAnswer: [
-                                {
-                                    index: 3,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: true,
-                                    isChecked: true
-                                },
-                                {
-                                    index: 0,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: true,
-                                    isChecked:true
-                                },
-                                {
-                                    index: 1,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 2,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: true,
-                                    isChecked:true
-                                }
-                            ],
-                            listAttachment: [
-                                {
-                                    index: 0,
-                                    name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                    url: "#"
-                                },
-                                {
-                                    index: 3,
-                                    name: "高新技术产业各领域咨询报告.pdf",
-                                    url: "#"
-                                },
-                                {
-                                    index: 2,
-                                    name: "高新技术产业各领域专家分析讲座.mp4",
-                                    url: "#"
-                                },
-                                {
-                                    index: 1,
-                                    name: "高新技术产业各领域咨询报告2.pdf",
-                                    url: "#"
-                                }
-                            ]
-                        },
-                        {
-                            id: "fdid0003233",
-                            index: 2,
-                            status: "success",//success,error,null
-                            examType: "single",//single, multiple, completion
-                            examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
-                            listExamAnswer: [
-                                {
-                                    index: 3,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked: false
-                                },
-                                {
-                                    index: 0,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 1,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 2,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: true,
-                                    isChecked:true
-                                }
-                            ],
-                            listAttachment: [
-                                {
-                                    index: 0,
-                                    name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                    url: "#"
-                                },
-                                {
-                                    index: 3,
-                                    name: "高新技术产业各领域咨询报告.pdf",
-                                    url: "#"
-                                },
-                                {
-                                    index: 2,
-                                    name: "高新技术产业各领域专家分析讲座.mp4",
-                                    url: "#"
-                                },
-                                {
-                                    index: 1,
-                                    name: "高新技术产业各领域咨询报告2.pdf",
-                                    url: "#"
-                                }
-                            ]
-                        }
-                    ]
+                    examPaperStatus: "pass"//unfinish, pass, fail, finish
                 },
                 {
                     id: "fdid085800324324",
                     name: "雅思口语强化课程教案解读主试卷3",
                     fullScore: 50,
+                    examCount: 3,
                     examPaperTime: 20,
                     examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                    examPaperStatus: "fail",//untreated, pass, fail, finish
-                    listExam: [
-                        {
-                            id: "fdid00000000322",
-                            index: 0,
-                            status: "success",//success,error,null
-                            examType: "single",//single, multiple, completion
-                            examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
-                            listExamAnswer: [
-                                {
-                                    index: 3,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked: false
-                                },
-                                {
-                                    index: 0,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 1,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 2,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: true,
-                                    isChecked:true
-                                }
-                            ],
-                            listAttachment: [
-                                {
-                                    index: 0,
-                                    name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                    url: "#"
-                                },
-                                {
-                                    index: 3,
-                                    name: "高新技术产业各领域咨询报告.pdf",
-                                    url: "#"
-                                },
-                                {
-                                    index: 2,
-                                    name: "高新技术产业各领域专家分析讲座.mp4",
-                                    url: "#"
-                                },
-                                {
-                                    index: 1,
-                                    name: "高新技术产业各领域咨询报告2.pdf",
-                                    url: "#"
-                                }
-                            ]
-                        },
-                        {
-                            id: "fdid000000003233",
-                            index: 1,
-                            status: "error",//success,error,null
-                            examType: "multiple",//single, multiple, completion
-                            examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
-                            listExamAnswer: [
-                                {
-                                    index: 3,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: true,
-                                    isChecked: false
-                                },
-                                {
-                                    index: 0,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: true,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 1,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 2,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: true,
-                                    isChecked:true
-                                }
-                            ],
-                            listAttachment: [
-                                {
-                                    index: 0,
-                                    name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                    url: "#"
-                                },
-                                {
-                                    index: 3,
-                                    name: "高新技术产业各领域咨询报告.pdf",
-                                    url: "#"
-                                },
-                                {
-                                    index: 2,
-                                    name: "高新技术产业各领域专家分析讲座.mp4",
-                                    url: "#"
-                                },
-                                {
-                                    index: 1,
-                                    name: "高新技术产业各领域咨询报告2.pdf",
-                                    url: "#"
-                                }
-                            ]
-                        },
-                        {
-                            id: "fdid0003233",
-                            index: 2,
-                            status: "null",//success,error,null
-                            examType: "single",//single, multiple, completion
-                            examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
-                            listExamAnswer: [
-                                {
-                                    index: 3,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked: false
-                                },
-                                {
-                                    index: 0,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 1,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
-                                    isAnswer: false,
-                                    isChecked:false
-                                },
-                                {
-                                    index: 2,
-                                    name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
-                                    isAnswer: true,
-                                    isChecked:false
-                                }
-                            ],
-                            listAttachment: [
-                                {
-                                    index: 0,
-                                    name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                    url: "#"
-                                },
-                                {
-                                    index: 3,
-                                    name: "高新技术产业各领域咨询报告.pdf",
-                                    url: "#"
-                                },
-                                {
-                                    index: 2,
-                                    name: "高新技术产业各领域专家分析讲座.mp4",
-                                    url: "#"
-                                },
-                                {
-                                    index: 1,
-                                    name: "高新技术产业各领域咨询报告2.pdf",
-                                    url: "#"
-                                }
-                            ]
-                        }
-                    ]
+                    examPaperStatus: "fail"//unfinish, pass, fail, finish
                 }
             ]
         }
-		*/
-		
+
+        var taskData = {// 测试用 数据 ，ajax后删除
+            type: "task",
+            status: "doing",
+            courseName: "雅思口语新教师培训课程",
+            lectureName: "提交学术作业",
+            lectureIntro: "为获得更好的测试效果，建议您关闭IM聊天工具、视频音频等干扰源。测试过程中尽量不要离开。请勿关闭浏览器，否则测试结果将无法保存。",
+            num: 2,
+            isOptional: false,
+            listExamPaper: [//作业包 列表数据结构
+                {
+                    id: "fdid08582300324",
+                    name: "雅思口语强化课程教案解读作业包",
+                    fullScore: 50,
+                    examCount: 4,
+                    examPaperTime: 20,
+                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
+                    examPaperStatus: "unfinish"//unfinish, pass, fail, finish
+                },
+                {
+                    id: "fdid08582300324",
+                    name: "雅思口语强化课程教案解读作业包",
+                    fullScore: 50,
+                    examCount: 4,
+                    examPaperTime: 20,
+                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
+                    examPaperStatus: "pass"//unfinish, pass, fail, finish
+                },
+                {
+                    id: "fdid08582300324",
+                    name: "雅思口语强化课程教案解读作业包",
+                    fullScore: 50,
+                    examCount: 4,
+                    examPaperTime: 20,
+                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
+                    examPaperStatus: "fail"//unfinish, pass, fail, finish
+                },
+                {
+                    id: "fdid08582300324",
+                    name: "雅思口语强化课程教案解读作业包",
+                    fullScore: 50,
+                    examCount: 4,
+                    examPaperTime: 20,
+                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
+                    examPaperStatus: "finish"//unfinish, pass, fail, finish
+                }
+            ]
+        }
+        */
+        
+        
         $("#sidenav>li>a").popover({
             trigger: "hover"
         })
                 .click(function(e){
                     e.preventDefault();
-                    loadRightCont($(this).attr("data-fdid"));
+                    if($(this).attr("href")){//已通章节可点
+                        loadRightCont($(this).attr("data-fdid"));
+                    }
                 });
-        
-        loadRightCont(catalogId);//默认加载章节 参数：节id
+
+        loadRightCont("catalogId");//默认加载章节 参数：节id
 
         function loadRightCont(fdid){
-        	$.ajax({
-  			  url: "${ctx}/ajax/passThrough/getCourseContent",
-  			  async:false,
-  			  data:{
-  				  catalogId:fdid,
-  				  bamId:bamId,
-  				  fdMtype:fdMtype
-  			  },
-  			  dataType:'json',
-  			  success: function(result){
-  				  alert(JSON.stringify(result));
-  				$("#mainContent").html(rightContentFn(result));
-  				if(result.type == "exam"){
-  	                afterLoadExamPage(result);
-  	            } else if(result.type == "video"){
-  	                //afterLoadVideoPage(result);
-  	            }
-  			  },
-  			});
+	        $.ajax({
+		  			  url: "${ctx}/ajax/passThrough/getCourseContent",
+		  			  async:false,
+		  			  data:{
+		  				  catalogId:fdid,
+		  				  bamId:bamId,
+		  				  fdMtype:fdMtype
+		  			  },
+		  			  dataType:'json',
+		  			  success: function(result){
+		  				  alert(JSON.stringify(result));
+		  				$("#mainContent").html(rightContentFn(result));
+		  				if(result.type == "exam" || result.type == "task"){
+		  					afterLoadExamOrTaskPage(result);
+		  	            } else if(result.type == "video"){
+		  	            //    afterLoadVideoPage(result);
+		  	            //} else if(result.type == "doc"){
+		  	            //    afterLoadDocPage(result);
+		  	            }
+		  			  },
+	  			});
             //$.get("url",{id: fdid}).success(function(result){//  ajax
-            //result = rightData;// 测试用 数据 ，ajax后删除
+            //result = taskData;// 测试用 数据 ，ajax后删除
             //$("#mainContent").html(rightContentFn(result));
-            //if(result.type == "exam"){
-            //    afterLoadExamPage(result);
-            // } else if(result.type == "video"){
-            //    //afterLoadVideoPage(result);
+            //if(result.type == "exam" || result.type == "task"){
+            //    afterLoadExamOrTaskPage(result);
+            //} else if(result.type == "video"){
+            //    afterLoadVideoPage(result);
+            //} else if(result.type == "doc"){
+            //    afterLoadDocPage(result);
             //}
             //});
 
@@ -935,11 +568,8 @@
         }
 
 
-
-
-
-        function afterLoadExamPage(data){
-            var rightData = data;
+        /*测试页加载完成后执行方法*/
+        function afterLoadExamOrTaskPage(data){
 
             var $window = $(window);
 
@@ -947,25 +577,376 @@
             $("#listExamPaper>li>.collapse")
                     .bind("show",function(){
                         var $this = $(this);
-                        var data = {};
+                        var tempData = {};
                         $this.prev(".titBar").addClass("hide");
+                        if(data.type == "exam"){
+                            /*$.getJSON("url",{id: $this.attr("data-fdid")}).success(function(result){
+                             tempData = result;
+                             });*/
 
-                        for(var i in rightData.listExamPaper){
-                            if(rightData.listExamPaper[i].id == $this.attr("data-fdid")){
-                                data = rightData.listExamPaper[i];
-                                data.num = parseInt(i) + 1;
-                                data.examCount = rightData.listExamPaper[i].listExam.length;
-                                var count = 0;
-                                for( var j in rightData.listExamPaper[i].listExam){
-                                    if(rightData.listExamPaper[i].listExam[j].status == "success"){
-                                        count++;
+                            tempData = {//试卷假数据，完事儿删除
+                                id: "fdid08582300324",
+                                name: "雅思口语强化课程教案解读主试卷",
+                                fullScore: 50,
+                                examPaperTime: 20,
+                                examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
+                                examPaperStatus: "unfinish",//unfinish, pass, fail, finish
+                                listExam: [
+                                    {
+                                        id: "fdid00000000322",
+                                        index: 0,
+                                        status: "null",//success,error,null
+                                        examScore: 5,
+                                        examType: "single",//single, multiple, completion
+                                        examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
+                                        listExamAnswer: [
+                                            {
+                                                index: 3,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
+                                                isAnswer: true,
+                                                isChecked: false
+                                            },
+                                            {
+                                                index: 0,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
+                                                isAnswer: false,
+                                                isChecked:false
+                                            },
+                                            {
+                                                index: 1,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
+                                                isAnswer: false,
+                                                isChecked:false
+                                            },
+                                            {
+                                                index: 2,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
+                                                isAnswer: false,
+                                                isChecked:false
+                                            }
+                                        ],
+                                        listAttachment: [
+                                            {
+                                                index: 0,
+                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 3,
+                                                name: "高新技术产业各领域咨询报告.pdf",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 2,
+                                                name: "高新技术产业各领域专家分析讲座.mp4",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 1,
+                                                name: "高新技术产业各领域咨询报告2.pdf",
+                                                url: "#"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        id: "fdid000000003233",
+                                        index: 1,
+                                        status: "null",//success,error,null
+                                        examScore: 5,
+                                        examType: "multiple",//single, multiple, completion
+                                        examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
+                                        listExamAnswer: [
+                                            {
+                                                index: 3,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
+                                                isAnswer: true,
+                                                isChecked: false
+                                            },
+                                            {
+                                                index: 0,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
+                                                isAnswer: false,
+                                                isChecked:false
+                                            },
+                                            {
+                                                index: 1,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
+                                                isAnswer: false,
+                                                isChecked:false
+                                            },
+                                            {
+                                                index: 2,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
+                                                isAnswer: true,
+                                                isChecked:false
+                                            }
+                                        ],
+                                        listAttachment: [
+                                            {
+                                                index: 0,
+                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 3,
+                                                name: "高新技术产业各领域咨询报告.pdf",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 2,
+                                                name: "高新技术产业各领域专家分析讲座.mp4",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 1,
+                                                name: "高新技术产业各领域咨询报告2.pdf",
+                                                url: "#"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        id: "fdid0003233",
+                                        index: 2,
+                                        status: "null",//success,error,null
+                                        examScore: 5,
+                                        examType: "single",//single, multiple, completion
+                                        examStem: "2011年前十一个月，某省高新技术产业完成总产值3763.00亿元，实现增加值896.31亿元。增加值同比增长30.74%，比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%。高新技术产业各领域的增加值如下图所示： （5 分） PASS",
+                                        listExamAnswer: [
+                                            {
+                                                index: 3,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
+                                                isAnswer: true,
+                                                isChecked: false
+                                            },
+                                            {
+                                                index: 0,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
+                                                isAnswer: false,
+                                                isChecked:false
+                                            },
+                                            {
+                                                index: 1,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
+                                                isAnswer: false,
+                                                isChecked:false
+                                            },
+                                            {
+                                                index: 2,
+                                                name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
+                                                isAnswer: false,
+                                                isChecked:false
+                                            }
+                                        ],
+                                        listAttachment: [
+                                            {
+                                                index: 0,
+                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 3,
+                                                name: "高新技术产业各领域咨询报告.pdf",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 2,
+                                                name: "高新技术产业各领域专家分析讲座.mp4",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 1,
+                                                name: "高新技术产业各领域咨询报告2.pdf",
+                                                url: "#"
+                                            }
+                                        ]
                                     }
-                                }
-                                data.successCount = count;
+                                ]
+                            }
+                        } else if(data.type == "task"){
+                            /*$.getJSON("url",{id: $this.attr("data-fdid")}).success(function(result){
+                             tempData = result;
+                             });*/
+                            tempData = {//作业包假数据，完事儿删除
+                                id: "fdid08582300324",
+                                name: "雅思口语强化课程教案解读",
+                                fullScore: 50,
+                                examPaperTime: 20,
+                                examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
+                                examPaperStatus: "unfinish",//unfinish, pass, fail, finish
+                                listExam: [
+                                    {
+                                        id: "fdid00000000322",
+                                        index: 0,
+                                        status: "finish",//success,error,null,finish
+                                        examType: "uploadWork",//uploadWork, onlineAnswer
+                                        examScore: 5,
+                                        examName: "LA1-雅思听力评分细则",
+                                        examStem: "请仔细学习剑4-剑8、雅思全真模拟题试题，然后按照附件中的模板要求，提交雅思听力评分细则作业。本作业建议完成时间为 3 小时。",
+                                        listTaskAttachment: [
+                                            {
+                                                id: "fdid24123212",
+                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
+                                                url: "#"
+                                            },
+                                            {
+                                                id: "fdid0000023212",
+                                                name: "高新技术产业各领域咨询报告.pdf",
+                                                url: "#"
+                                            }
+                                        ],
+                                        listAttachment: [
+                                            {
+                                                index: 0,
+                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 3,
+                                                name: "高新技术产业各领域咨询报告.pdf",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 2,
+                                                name: "高新技术产业各领域专家分析讲座.mp4",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 1,
+                                                name: "高新技术产业各领域咨询报告2.pdf",
+                                                url: "#"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        id: "fdid00000000322",
+                                        index: 2,
+                                        status: "error",//success,error,null,finish
+                                        examType: "uploadWork",//uploadWork, onlineAnswer
+                                        examScore: 5,
+                                        examName: "LA1-雅思听力评分细则",
+                                        examStem: "请仔细学习剑4-剑8、雅思全真模拟题试题，然后按照附件中的模板要求，提交雅思听力评分细则作业。本作业建议完成时间为 3 小时。",
+                                        teacherRating:{
+                                            teacher: {
+                                                imgUrl: './images/temp-face.jpg',
+                                                link: "#"
+                                            },
+                                            score: 1,
+                                            comment: "作业不太好，加油吧。"
+                                        },
+                                        listTaskAttachment: [
+                                            {
+                                                id: "fdid24123212",
+                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
+                                                url: "#"
+                                            },
+                                            {
+                                                id: "fdid0000012",
+                                                name: "高新技术产业各领域咨询报告.pdf",
+                                                url: "#"
+                                            }
+                                        ],
+                                        listAttachment: [
+                                            {
+                                                index: 0,
+                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 3,
+                                                name: "高新技术产业各领域咨询报告.pdf",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 2,
+                                                name: "高新技术产业各领域专家分析讲座.mp4",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 1,
+                                                name: "高新技术产业各领域咨询报告2.pdf",
+                                                url: "#"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        id: "fdid00000000322",
+                                        index: 1,
+                                        status: "success",//success,error,null,finish
+                                        examType: "onlineAnswer",//uploadWork, onlineAnswer
+                                        examScore: 5,
+                                        examName: "LA1-雅思听力评分细则",
+                                        examStem: "请仔细学习剑4-剑8、雅思全真模拟题试题，然后按照附件中的模板要求，提交雅思听力评分细则作业。本作业建议完成时间为 3 小时。",
+                                        answer: "这里是答案这里是答案这里是答案这里是答案这里是答案",
+                                        teacherRating:{
+                                            teacher: {
+                                                imgUrl: './images/temp-face.jpg',
+                                                link: "#"
+                                            },
+                                            score: 4,
+                                            comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。"
+                                        },
+                                        listAttachment: [
+                                            {
+                                                index: 0,
+                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 3,
+                                                name: "高新技术产业各领域咨询报告.pdf",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 2,
+                                                name: "高新技术产业各领域专家分析讲座.mp4",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 1,
+                                                name: "高新技术产业各领域咨询报告2.pdf",
+                                                url: "#"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        id: "fdid098976000322",
+                                        index: 3,
+                                        status: "null",//success,error,null,finish
+                                        examType: "onlineAnswer",//uploadWork, onlineAnswer
+                                        examScore: 5,
+                                        examName: "LA1-雅思听力评分细则",
+                                        examStem: "请仔细学习剑4-剑8、雅思全真模拟题试题，然后按照附件中的模板要求，提交雅思听力评分细则作业。本作业建议完成时间为 3 小时。",
+                                        answer: null,
+                                        listAttachment: [
+                                            {
+                                                index: 0,
+                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
+                                                url: "#"
+                                            },
+                                            {
+                                                index: 1,
+                                                name: "高新技术产业各领域咨询报告.pdf",
+                                                url: "#"
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         }
 
-                        $("#headToolsBar").html(examPaperStatusBarFn(data));
+                        tempData.type = data.type;
+                        tempData.num = $this.parent().index() + 1;
+                        tempData.examCount = tempData.listExam.length;
+                        var count = 0;
+                        for( var j in tempData.listExam){
+                            if(tempData.listExam[j].status == "success"){
+                                count++;
+                            }
+                        }
+                        tempData.successCount = count;
+
+
+                        $("#headToolsBar").html(examPaperStatusBarFn(tempData));
                         //试题列表序号控制
                         $("#navExams>.collapse-inner>.num").click(function(e){
                             e.preventDefault();
@@ -973,9 +954,17 @@
                             var id = $this.attr("href");
                             $window.scrollTop($(id).offset().top - $("#pageHeader").height() - 60);
                         })
+                                .tooltip({
+                                    placement: "bottom"
+                                });
 
-                        data.action = "url";
-                        $this.html(examPaperDetailFn(data));
+                        tempData.action = "url";
+                        $this.html(examPaperDetailFn(tempData));
+
+                        $("#listTaskAttachment>li>.icon-remove-blue").click(function(e){
+                            e.preventDefault();
+                            $(this).parent().remove();
+                        })
 
                     })
                     .bind("shown",function(){
@@ -996,7 +985,6 @@
                     });
 
         }
-
 
 
     });
