@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import jodd.util.StringUtil;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.mortbay.util.ajax.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
@@ -28,6 +30,8 @@ import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.material.ExamOpinion;
+import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.process.SourceNote;
@@ -37,6 +41,7 @@ import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.material.ExamQuestionService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.utils.ShiroUtils;
 
@@ -67,6 +72,9 @@ public class PassThroughAjaxController {
 	@Autowired
 	private MaterialService materialService;
 
+	@Autowired
+	private ExamQuestionService examQuestionService;
+	
 	/**
 	 * 最新课程列表
 	 * 
@@ -207,7 +215,7 @@ public class PassThroughAjaxController {
 						//设置节信息
 						map.put("type", catalog.getMaterialType());
 						if(catalog.getThrough()==null){
-							map.put("status", "untreated");
+							map.put("status", "unfinish");
 						}else if(catalog.getThrough()==false){
 							map.put("status", "doing");
 						}else if(catalog.getThrough()==true){
@@ -217,7 +225,7 @@ public class PassThroughAjaxController {
 						map.put("lectureName", catalog.getFdName());
 						map.put("lectureIntro", catalog.getFdDescription());
 						map.put("num", catalog.getFdNo());
-						map.put("isOptional", catalog.getFdPassCondition()!=null && catalog.getFdPassCondition()==0?false:true);
+						map.put("isOptional", catalog.getFdPassCondition()!=null && catalog.getFdPassCondition()==0?true:false);
 						//设置节中内容
 						List<MaterialInfo> material = bamCourse.getMaterialByCatalog(catalog);
 						List list = new ArrayList();
@@ -259,5 +267,60 @@ public class PassThroughAjaxController {
 		}
 		return "fail";
 	}
+	/**
+	 * 根据测试id获取测试信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getExamInfoByquestionId")
+	@ResponseBody
+	public String getExamInfoByquestionId(WebRequest request) {
+		String questionId = request.getParameter("questionId");
+		MaterialInfo examQuestion = materialService.findUniqueByProperty("fdId", questionId);
+		Map map = new HashMap();
+		map.put("id", examQuestion.getFdId());
+		map.put("name", examQuestion.getFdName());
+		map.put("fullScore", materialService.getTotalSorce(questionId).get("totalscore"));
+		map.put("examPaperTime", examQuestion.getFdStudyTime());
+		map.put("examPaperIntro", examQuestion.getFdDescription());
+		//getStatus(examQuestion, catalogId, ShiroUtils.getUser().getId())
+		map.put("examPaperStatus", "unfinish");
+		
+		List<Map> listExam = new ArrayList<Map>();
+		List<ExamQuestion> examQuestions = examQuestion.getQuestions();
+		for (ExamQuestion examQuestion2 : examQuestions) {
+			Map map2 = new HashMap();
+			map2.put("id", examQuestion2.getFdId());
+			map2.put("index", examQuestion2.getFdOrder());
+			map2.put("status", null);
+			map2.put("examScore", examQuestion2.getFdStandardScore());
+			map2.put("examType", examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_SINGLE_SELECTION)?"single":(examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_MULTIPLE_SELECTION)?"multiple":"completion"));
+			map2.put("examStem", examQuestion2.getFdSubject());
+			List<ExamOpinion> examOpinions = examQuestion2.getOpinions();
+			Map opinionMap = new HashMap();
+			for (ExamOpinion examOpinion : examOpinions) {
+				opinionMap.put("index", examOpinion.getFdOrder());
+				opinionMap.put("name", examOpinion.getOpinion());
+				opinionMap.put("isAnswer", examOpinion.getIsAnswer());
+				opinionMap.put("isChecked", false);
+			}
+			map2.put("listExamAnswer", opinionMap);
+			List<AttMain> attMains = attMainService.findByCriteria(AttMain.class,
+	                Value.eq("fdModelId", examQuestion2.getFdId()),
+	                Value.eq("fdModelName", ExamQuestion.class.getName()));	
+			Map attMap = new HashMap();
+			for (AttMain attMain : attMains) {
+				attMap.put("index", attMain.getFdOrder());
+				attMap.put("name", attMain.getFdFileName());
+				attMap.put("url", attMain.getFdFilePath());
+			}
+			map2.put("listAttachment", attMap);
+			listExam.add(map2);
+		}
+		map.put("listExam", listExam);
+		return JsonUtils.writeObjectToJson(map);
+	}
+	
 	
 }

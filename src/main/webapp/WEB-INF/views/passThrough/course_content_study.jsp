@@ -537,13 +537,13 @@
 		  			  dataType:'json',
 		  			  success: function(result){
 		  				$("#mainContent").html(rightContentFn(result));
-		  				/* if(result.type == "exam" || result.type == "task"){
+		  				if(result.type == "exam" || result.type == "task"){
 		  					afterLoadExamOrTaskPage(result);
 		  	            } else if(result.type == "video"){
-		  	            //    afterLoadVideoPage(result);
+		  	              //  afterLoadVideoPage(result);
 		  	            //} else if(result.type == "doc"){
 		  	            //    afterLoadDocPage(result);
-		  	            } */
+		  	            } 
 		  			  },
 	  			});
             //$.get("url",{id: fdid}).success(function(result){//  ajax
@@ -582,8 +582,21 @@
                             /*$.getJSON("url",{id: $this.attr("data-fdid")}).success(function(result){
                              tempData = result;
                              });*/
+                             
+                            $.ajax({
+           		  			  url: "${ctx}/ajax/passThrough/getExamInfoByquestionId",
+           		  			  async:false,
+           		  			  data:{
+           		  			  	questionId: $this.attr("data-fdid"),
+           		  			  },
+           		  			  dataType:'json',
+           		  			  success: function(result){
+           		  				  alert(JSON.stringify(result));
+           		  				tempData=result;
+           		  			  }
+           	  			}); 
 
-                            tempData = {//试卷假数据，完事儿删除
+                            /* tempData = {//试卷假数据，完事儿删除
                                 id: "fdid08582300324",
                                 name: "雅思口语强化课程教案解读主试卷",
                                 fullScore: 50,
@@ -603,7 +616,7 @@
                                                 index: 3,
                                                 name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
                                                 isAnswer: true,
-                                                isChecked: false
+                                                isChecked: true
                                             },
                                             {
                                                 index: 0,
@@ -659,13 +672,13 @@
                                                 index: 3,
                                                 name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比重达到25.32%",
                                                 isAnswer: true,
-                                                isChecked: false
+                                                isChecked: true
                                             },
                                             {
                                                 index: 0,
                                                 name: "比规模以上工业增加值高11.64个百分点，占规模以上工业增加值的比",
                                                 isAnswer: false,
-                                                isChecked:false
+                                                isChecked:true
                                             },
                                             {
                                                 index: 1,
@@ -760,7 +773,7 @@
                                         ]
                                     }
                                 ]
-                            }
+                            }  */
                         } else if(data.type == "task"){
                             /*$.getJSON("url",{id: $this.attr("data-fdid")}).success(function(result){
                              tempData = result;
