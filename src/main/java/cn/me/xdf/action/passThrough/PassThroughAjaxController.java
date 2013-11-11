@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
+
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
@@ -29,11 +30,14 @@ import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
+import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.utils.ShiroUtils;
 
 
@@ -56,6 +60,12 @@ public class PassThroughAjaxController {
 	
 	@Autowired
 	private BamMaterialService bamMaterialService;
+	
+	@Autowired
+	private SourceNodeService sourceNodeService;
+	
+	@Autowired
+	private MaterialService materialService;
 
 	/**
 	 * 最新课程列表
@@ -216,10 +226,12 @@ public class PassThroughAjaxController {
 								Map materialTemp = new HashMap();
 								materialTemp.put("id", minfo.getFdId());
 								materialTemp.put("name", minfo.getFdName());
-								materialTemp.put("fullScore", "");
+								Map m = materialService.getTotalSorce(minfo.getFdId());
+								materialTemp.put("fullScore", m.get("totalscore"));
+								materialTemp.put("examCount", m.get("num"));
 								materialTemp.put("examPaperTime", minfo.getFdStudyTime());
 								materialTemp.put("examPaperIntro", minfo.getFdDescription());
-								materialTemp.put("examPaperStatus", "");
+								materialTemp.put("examPaperStatus", getStatus(minfo, catalogId, ShiroUtils.getUser().getId()));
 								list.add(materialTemp);
 							}
 						}
@@ -230,6 +242,22 @@ public class PassThroughAjaxController {
 			}
 		}
 		return JsonUtils.writeObjectToJson(map);
+	}
+	
+	private String getStatus(MaterialInfo minfo,String catalogId,String userId){
+		if(minfo.getThrough()){
+			return "pass";
+		}else{
+			SourceNote node = sourceNodeService.getSourceNote(minfo.getFdId(), catalogId, userId);
+			if(node==null){
+				return "unfinish";
+			}
+			Boolean iStudy=node.getIsStudy();
+			if(iStudy==null){
+				return "finish";
+			}
+		}
+		return "fail";
 	}
 	
 }

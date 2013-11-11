@@ -26,7 +26,9 @@ import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.material.Task;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.service.material.TaskService;
@@ -48,6 +50,7 @@ public class TaskPaperAjaxController {
 	
 	@Autowired
 	private AccountService accountService;
+	
 	
 	@RequestMapping(value = "saveOrUpdateTaskPaper")
 	@ResponseBody
@@ -121,7 +124,8 @@ public class TaskPaperAjaxController {
 				AttMain e = attMainService.get(map.get("id").toString());
 				e.setFdModelId(task.getFdId());
 				e.setFdModelName(Task.class.getName());
-				e.setFdKey(map.get("index").toString());
+				e.setFdKey("taskAtt");
+				e.setFdOrder(map.get("index").toString());
 				attMains.add(e);
 				attMainService.update(e);
 			}
@@ -203,7 +207,6 @@ public class TaskPaperAjaxController {
 		materialService.updateMaterialAuth(id, materialAuths);
 		info.setFdName(examPaperName);
 		info.setFdDescription(examPaperIntro);
-		info.setFdCreateTime(new Date());
 		info.setFdAuthor(author);
 		info.setFdAuthorDescription(authorIntro);
 		info.setFdScore(new Double(passScore));
@@ -274,6 +277,7 @@ public class TaskPaperAjaxController {
 		}
 		return JsonUtils.writeObjectToJson(list);
 	}
+	
 
 	/**
 	 * 根据作业包id删除作业

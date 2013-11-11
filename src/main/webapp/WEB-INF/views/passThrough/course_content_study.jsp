@@ -289,7 +289,7 @@
         </div>
     </script>
 
-    <script src="js/doT.min.js"></script>
+    <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
 <body>
@@ -523,7 +523,7 @@
                     }
                 });
 
-        loadRightCont("catalogId");//默认加载章节 参数：节id
+        loadRightCont(catalogId);//默认加载章节 参数：节id
 
         function loadRightCont(fdid){
 	        $.ajax({
@@ -536,15 +536,14 @@
 		  			  },
 		  			  dataType:'json',
 		  			  success: function(result){
-		  				  alert(JSON.stringify(result));
 		  				$("#mainContent").html(rightContentFn(result));
-		  				if(result.type == "exam" || result.type == "task"){
+		  				/* if(result.type == "exam" || result.type == "task"){
 		  					afterLoadExamOrTaskPage(result);
 		  	            } else if(result.type == "video"){
 		  	            //    afterLoadVideoPage(result);
 		  	            //} else if(result.type == "doc"){
 		  	            //    afterLoadDocPage(result);
-		  	            }
+		  	            } */
 		  			  },
 	  			});
             //$.get("url",{id: fdid}).success(function(result){//  ajax
