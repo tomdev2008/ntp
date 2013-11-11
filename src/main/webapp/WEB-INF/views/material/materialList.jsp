@@ -54,7 +54,7 @@
 
 </section>
 <input type="hidden" id="showkey" name="showkey">
-<input type="hidden" id="fdOrder">
+<input type="hidden" id="fdOrder" value="${param.order}">
 <input type="hidden" id="allFlag" >
 <input type="hidden" id="isAdmin" value="${isAdmin}">
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
