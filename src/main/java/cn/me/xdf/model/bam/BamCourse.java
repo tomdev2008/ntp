@@ -341,7 +341,7 @@ public class BamCourse extends IdEntity implements BamProcess {
         List<MaterialInfo> informs = new LinkedList<MaterialInfo>();
         ArrayUtils.sortListByProperty(courseContents, "fdMaterialNo", SortType.HIGHT);
         for (CourseContent content : courseContents) {
-            if (EqualsBuilder.reflectionEquals(content.getCatalog(), catalog, "fdId")) {
+            if (content.getCatalog().getFdId().equals(catalog.getFdId())) {
                 informs.add(content.getMaterial());
             }
         }

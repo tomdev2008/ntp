@@ -1,8 +1,6 @@
 package cn.me.xdf.service.material;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -305,6 +303,27 @@ public class MaterialService extends BaseService {
 			 list.add(map);
 		}
 		 return list;
+	}
+	
+	public Map getTotalSorce(String materialId){
+		StringBuffer finder = new StringBuffer("select count(*) as num,");
+		finder.append("       sum(q.fdstandardscore) as totalscore ");
+		finder.append("  from IXDF_NTP_EXAM_QUESTION q ");
+		finder.append("  where q.fdMaterialId=:materialId ");
+		finder.append(" group by q.fdmaterialid ");
+		finder.append("union all ");
+		finder.append("select count(*) as num,\n");
+		finder.append("       sum(t.fdstandardscore) as totalscore ");
+		finder.append("  from ixdf_ntp_task t ");
+		finder.append("  where t.fdMaterialId=:materialId ");
+		finder.append(" group by t.fdmaterialid");
+		Map map = new HashMap();
+		map.put("materialId", materialId);
+		List<Map> maps = findBySQL(finder.toString(), Map.class, map);
+		Map returnMap = new HashMap();
+		returnMap.put("num", new Integer(maps.get(0).get("NUM").toString()));
+		returnMap.put("totalscore",  new Integer(maps.get(0).get("TOTALSCORE").toString()));
+		return returnMap;
 	}
 
 }
