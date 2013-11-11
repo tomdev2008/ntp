@@ -9,15 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.mortbay.util.ajax.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.hibernate4.Value;
@@ -33,6 +30,7 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.ExamOpinion;
 import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.material.Task;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.AccountService;
@@ -74,6 +72,99 @@ public class PassThroughAjaxController {
 
 	@Autowired
 	private ExamQuestionService examQuestionService;
+	
+	/**
+	 * 学习页面更具作业包id寻找信息
+	 * @param fdId
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "findTaskByPaperId")
+	@ResponseBody
+	public String findTaskByPaperId(HttpServletRequest request){
+		String materialId = request.getParameter("fdId");
+		String catalogId = request.getParameter("catalogId");//节id
+		MaterialInfo info = materialService.load(materialId);
+		Map map = new HashMap();
+		List<Task> taskList = info.getTasks();
+		//存放作业列表
+		List<Map> list = new ArrayList<Map>();
+		double fullScore =0;
+		
+		for(Task task:taskList){
+			fullScore += task.getFdStandardScore();
+			Map taskMap = new HashMap();
+			taskMap.put("id", task.getFdId());
+			taskMap.put("index", task.getFdOrder());
+		    ///作业状态
+			taskMap.put("status", null);
+			taskMap.put("examType", task.getFdType());
+			taskMap.put("examScore", task.getFdStandardScore().intValue()); 	
+			taskMap.put("examName", task.getFdName());
+			taskMap.put("examStem", task.getFdSubject());
+		    
+			List<AttMain> attList = attMainService.findByCriteria(AttMain.class,
+					Value.eq("fdModelId", task.getFdId()),
+				Value.eq("fdModelName", Task.class.getName()));
+			
+			 List<Map> taskAtt = new ArrayList<Map>();
+			 List<Map> answerAtt = new ArrayList<Map>();
+			
+			for (AttMain attMain : attList) {
+			  if(attMain.getFdKey().equals("taskAtt")){
+				 //存放作业附件信息
+				
+				 Map attMap = new HashMap();
+				 
+				 attMap.put("index", attMain.getFdOrder());
+				 attMap.put("name", attMain.getFdFileName());
+				 attMap.put("url", "#");
+				 taskAtt.add(attMap);
+			   }else if(attMain.getFdKey().equals("answerAtt")){
+				 //存放答题者上传的附件
+				
+				 Map answerMap = new HashMap();
+				 answerMap.put("id", attMain.getFdId());
+				 answerMap.put("name", attMain.getFdFileName());
+				 answerMap.put("url", "#");
+				 answerAtt.add(answerMap);
+			   }
+			  
+			}
+			taskMap.put("listAttachment", taskAtt);//存放作业附件信息
+			taskMap.put("listTaskAttachment", answerAtt);//存放答题者上传的附件
+			list.add(taskMap);
+		}
+		
+		
+		map.put("listExam", list);
+		//作业列表信息结束
+		//存放作业包信息
+		map.put("id", info.getFdId());
+		map.put("name", info.getFdName()); 
+		map.put("fullScore", fullScore);
+		map.put("examPaperTime", info.getFdStudyTime());
+		map.put("examPaperIntro", info.getFdDescription());
+		//作业包状态
+		map.put("examPaperStatus", getStatus(info,catalogId,ShiroUtils.getUser().getId()));
+		//存放作业包信结束///////////
+		
+		/////////////////评分人操作信息
+        SourceNote sourceNote = sourceNodeService.getSourceNote(materialId, catalogId, ShiroUtils.getUser().getId());
+        if(sourceNote!=null){
+        	Map teacherRating = new HashMap();
+            teacherRating.put("score", sourceNote.getFdScore()==null?0:sourceNote.getFdScore());
+            teacherRating.put("comment", sourceNote.getFdComment());
+            Map teacherMap = new HashMap();
+            SysOrgPerson person = accountService.findById(sourceNote.getFdAppraiserId());
+            teacherMap.put("imgUrl", person.getPoto());
+            teacherRating.put("teacher", teacherMap);
+            map.put("teacherRating", teacherRating);
+        }
+		return JsonUtils.writeObjectToJson(map);
+	}
+	
+	
 	
 	/**
 	 * 最新课程列表

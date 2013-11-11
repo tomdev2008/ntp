@@ -566,12 +566,11 @@
                     });
         }
 
-
+        
         /*测试页加载完成后执行方法*/
         function afterLoadExamOrTaskPage(data){
-
+        	
             var $window = $(window);
-
             //试卷列表折叠 手风琴事件
             $("#listExamPaper>li>.collapse")
                     .bind("show",function(){
@@ -597,10 +596,20 @@
            		  			  }
            	  			}); 
                         } else if(data.type == "task"){
-                            /*$.getJSON("url",{id: $this.attr("data-fdid")}).success(function(result){
-                             tempData = result;
-                             });*/
-                            tempData = {//作业包假数据，完事儿删除
+                              $.ajax({
+            		  			  url: "${ctx}/ajax/passThrough/findTaskByPaperId",
+            		  			  async:false,
+            		  			  data:{
+            		  				  fdId: $this.attr("data-fdid"),
+            		  				  catalogId: catalogId
+            		  			  },
+            		  			  dataType:'json',
+            		  			  success: function(result){
+            		  				 tempData = result;
+            		  			  },
+            	  			});
+                             
+                           /*  tempData = {//作业包假数据，完事儿删除
                                 id: "fdid08582300324",
                                 name: "雅思口语强化课程教案解读",
                                 fullScore: 50,
@@ -741,31 +750,9 @@
                                                 url: "#"
                                             }
                                         ]
-                                    },
-                                    {
-                                        id: "fdid098976000322",
-                                        index: 3,
-                                        status: "null",//success,error,null,finish
-                                        examType: "onlineAnswer",//uploadWork, onlineAnswer
-                                        examScore: 5,
-                                        examName: "LA1-雅思听力评分细则",
-                                        examStem: "请仔细学习剑4-剑8、雅思全真模拟题试题，然后按照附件中的模板要求，提交雅思听力评分细则作业。本作业建议完成时间为 3 小时。",
-                                        answer: null,
-                                        listAttachment: [
-                                            {
-                                                index: 0,
-                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                                url: "#"
-                                            },
-                                            {
-                                                index: 1,
-                                                name: "高新技术产业各领域咨询报告.pdf",
-                                                url: "#"
-                                            }
-                                        ]
                                     }
                                 ]
-                            }
+                            } */
                         }
 
                         tempData.type = data.type;

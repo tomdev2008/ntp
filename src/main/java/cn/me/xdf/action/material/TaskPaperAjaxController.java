@@ -243,12 +243,14 @@ public class TaskPaperAjaxController {
 				Value.eq("fdModelName", Task.class.getName()));
 		List<Map<String,String>> attList = new ArrayList<Map<String,String>>();
 		for (AttMain attMain : atts) {
-			Map<String,String> mapAtt = new HashMap<String,String>();
-			mapAtt.put("id", attMain.getFdId());
-			mapAtt.put("index", attMain.getFdKey());
-			mapAtt.put("name", attMain.getFdFileName());
-			mapAtt.put("url", attMain.getFdFilePath());
-			attList.add(mapAtt);
+			if(attMain.getFdKey().equals("taskAtt")){
+			 Map<String,String> mapAtt = new HashMap<String,String>();
+			 mapAtt.put("id", attMain.getFdId());
+			 mapAtt.put("index", attMain.getFdOrder());
+			 mapAtt.put("name", attMain.getFdFileName());
+			 mapAtt.put("url", attMain.getFdFilePath());
+			 attList.add(mapAtt);
+			}
 		}
 		map.put("listAttachment",  attList);
 		return JsonUtils.writeObjectToJson(map);
