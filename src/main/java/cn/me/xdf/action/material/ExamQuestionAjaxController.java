@@ -277,7 +277,6 @@ public class ExamQuestionAjaxController {
 		//更改测试信息
 		info.setFdName(examPaperName);
 		info.setFdDescription(examPaperIntro);
-		info.setFdCreateTime(new Date());
 		info.setFdAuthor(author);
 		info.setFdAuthorDescription(authorIntro);
 		info.setFdScore(new Double(score));

@@ -203,7 +203,6 @@ public class TaskPaperAjaxController {
 		materialService.updateMaterialAuth(id, materialAuths);
 		info.setFdName(examPaperName);
 		info.setFdDescription(examPaperIntro);
-		info.setFdCreateTime(new Date());
 		info.setFdAuthor(author);
 		info.setFdAuthorDescription(authorIntro);
 		info.setFdScore(new Double(passScore));
