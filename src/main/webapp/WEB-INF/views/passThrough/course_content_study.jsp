@@ -523,7 +523,7 @@
                     }
                 });
 
-        loadRightCont("catalogId");//默认加载章节 参数：节id
+        loadRightCont(catalogId);//默认加载章节 参数：节id
 
         function loadRightCont(fdid){
 	        $.ajax({
