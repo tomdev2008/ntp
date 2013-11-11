@@ -26,6 +26,11 @@ public class SourceAspect {
     @Autowired
     private BamCourseService bamCourseService;
 
+    /**
+     * 资源过滤
+     * @param joinPoint
+     * @return
+     */
     @After(value = "execution(* cn.me.xdf.service.bam.process.SourceNodeService.saveSourceNode(..))")
     public Object saveBamScore(JoinPoint joinPoint) {
         log.info("开始启动资源过滤----------------------");
