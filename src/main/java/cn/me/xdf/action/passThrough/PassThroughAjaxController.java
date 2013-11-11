@@ -277,18 +277,28 @@ public class PassThroughAjaxController {
 	@ResponseBody
 	public String getExamInfoByquestionId(WebRequest request) {
 		String questionId = request.getParameter("questionId");
-		MaterialInfo examQuestion = materialService.findUniqueByProperty("fdId", questionId);
+		String catalogId = request.getParameter("catalogId");
+		String bamId = request.getParameter("bamId");
+		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
+		MaterialInfo examQuestion = materialService.get(questionId);
+		List<Map> listExam = new ArrayList<Map>();
+		List<ExamQuestion> examQuestions = examQuestion.getQuestions();
+		List<CourseContent> courseContents = bamCourse.getCourseContents();
+        if (courseContents != null){
+        	for (CourseContent content : courseContents) {
+	            if (content.getMaterial().getFdId().equals(questionId)) {
+	            	examQuestion = content.getMaterial();
+	            	break;
+	            }
+	        }
+        }
 		Map map = new HashMap();
 		map.put("id", examQuestion.getFdId());
 		map.put("name", examQuestion.getFdName());
 		map.put("fullScore", materialService.getTotalSorce(questionId).get("totalscore"));
 		map.put("examPaperTime", examQuestion.getFdStudyTime());
 		map.put("examPaperIntro", examQuestion.getFdDescription());
-		//getStatus(examQuestion, catalogId, ShiroUtils.getUser().getId())
-		map.put("examPaperStatus", "unfinish");
-		
-		List<Map> listExam = new ArrayList<Map>();
-		List<ExamQuestion> examQuestions = examQuestion.getQuestions();
+		map.put("examPaperStatus", getStatus(examQuestion, catalogId, ShiroUtils.getUser().getId()));
 		for (ExamQuestion examQuestion2 : examQuestions) {
 			Map map2 = new HashMap();
 			map2.put("id", examQuestion2.getFdId());

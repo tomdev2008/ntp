@@ -588,6 +588,8 @@
            		  			  async:false,
            		  			  data:{
            		  			  	questionId: $this.attr("data-fdid"),
+           		  				catalogId:catalogId,
+           		  				bamId:bamId,
            		  			  },
            		  			  dataType:'json',
            		  			  success: function(result){
