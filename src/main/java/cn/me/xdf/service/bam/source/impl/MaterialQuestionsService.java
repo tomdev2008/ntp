@@ -123,7 +123,7 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 			answerRecords.add(answerRecord);
 		}
 		sourceNode.setAnswerRecords(answerRecords);
-		sourceNodeService.save(sourceNode);
+		sourceNodeService.saveSourceNode(sourceNode);
 		//试题对应答案信息
 		
         return null;  //To change body of implemented methods use File | Settings | File Templates.
