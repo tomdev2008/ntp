@@ -93,10 +93,10 @@ public class ExamQuestionAjaxController {
 		examQuestion.setExam(exam);
 		examQuestion.setFdStandardScore(new Double(fdStandardScore));
 		examQuestion.setFdSubject(fdSubject);
-		if (fdType.equals("multiple")) {
+		if (fdType.equals("single")) {
 			// 单选
 			examQuestion.setFdType(Constant.EXAM_QUESTION_SINGLE_SELECTION);
-		} else if (fdType.equals("single")) {
+		} else if (fdType.equals("multiple")) {
 			// 多选
 			examQuestion.setFdType(Constant.EXAM_QUESTION_MULTIPLE_SELECTION);
 		} else {
@@ -178,9 +178,9 @@ public class ExamQuestionAjaxController {
 		int type = question.getFdType();
 		String questionType = "";
 		if (type == 1) {
-			questionType = "multiple";
-		} else if (type == 2) {
 			questionType = "single";
+		} else if (type == 2) {
+			questionType = "multiple";
 		} else {
 			questionType = "completion";
 		}
