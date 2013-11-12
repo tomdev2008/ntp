@@ -34,6 +34,6 @@ public interface ISourceService {
      * @param request
      * @return
      */
-    public Object findSubInfoByMaterial(MaterialInfo materialInfo);
+    public Object findSubInfoByMaterial(WebRequest request);
 
 }

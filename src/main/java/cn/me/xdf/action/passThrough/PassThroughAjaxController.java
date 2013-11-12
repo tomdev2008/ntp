@@ -284,7 +284,7 @@ public class PassThroughAjaxController {
 		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
 		MaterialInfo materialInfo = materialService.get(materialId); 
 		//根据素材类型获取素材子表信息
-		List listExam = (List)bamMaterialService.findSubInfoByMaterial(sourceType, materialInfo);
+		List listExam = (List)bamMaterialService.findSubInfoByMaterial(sourceType, request);
 		List<CourseContent> courseContents = bamCourse.getCourseContents();
         if (courseContents != null){
         	for (CourseContent content : courseContents) {

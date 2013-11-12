@@ -130,8 +130,9 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
     }
 
 	@Override
-	public Object findSubInfoByMaterial(MaterialInfo materialInfo) {
+	public Object findSubInfoByMaterial(WebRequest request) {
 		List<Map> listExam = new ArrayList<Map>();
+		MaterialInfo materialInfo = materialService.get(request.getParameter("materialId")); 
 		List<ExamQuestion> examQuestions = materialInfo.getQuestions();
 		for (ExamQuestion examQuestion2 : examQuestions) {
 			Map map2 = new HashMap();
