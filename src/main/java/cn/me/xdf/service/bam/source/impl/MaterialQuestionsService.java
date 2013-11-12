@@ -46,6 +46,9 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 
     @Override
     public Object saveSourceNode(WebRequest request) {
+    	String fdMtype = request.getParameter("fdMtype");
+		String catalogId = request.getParameter("catalogId");
+		String bamId = request.getParameter("bamId");
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

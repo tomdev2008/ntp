@@ -159,6 +159,9 @@
         </div>
         <form action="{{=it.action || '#'}}" post="post" id="formExam">
             <input name="fdid" value="{{=it.id}}" type="hidden" />
+			<input name="bamId" value="{{=it.bamId}}" type="hidden" />
+			<input name="catalogId" value="{{=it.catalogId}}" type="hidden" />
+			<input name="fdMtype" value="{{=it.fdMtype}}" type="hidden" />
             {{?it.type=='exam'}}
                 <div class="bd">
                 <dl class="listExam">
@@ -788,7 +791,10 @@
                                     placement: "bottom"
                                 });
 
-                        tempData.action = "submitExamOrTask?bamId="+bamId+"&catalogId="+catalogId+"&fdMtype="+fdMtype;
+                        tempData.action = "submitExamOrTask";
+                        tempData.bamId=bamId ;
+                        tempData.catalogId=catalogId ;
+                        tempData.fdMtype=fdMtype ;
                         $this.html(examPaperDetailFn(tempData));
 
                         $("#listTaskAttachment>li>.icon-remove-blue").click(function(e){
