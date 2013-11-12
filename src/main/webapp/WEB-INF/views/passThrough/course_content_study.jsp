@@ -40,7 +40,7 @@
                         {{?lecture.index == i}}
                            
                             <li{{?lecture.id == param.currentId}} class="active"{{?}}>
-                                <a {{?lecture.status != 'untreated'||param.isOrder==false}}href="#" {{?}}data-fdid="{{=lecture.id}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
+                                <a {{?lecture.status != 'untreated'||param.isOrder==false}}href="#" {{?}}data-fdid="{{=lecture.id}}" data-type="{{=lecture.baseType}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
                                     <span class="dt">节{{=lecture.num}} <b class="icon-circle-progress">
                                         {{?lecture.status != 'untreated'}}<i class="icon-progress{{?lecture.status == 'doing'}} half{{?}}"></i>{{?}}
                                     </b></span>
@@ -527,7 +527,7 @@
                     }
                 });
 
-        loadRightCont(catalogId);//默认加载章节 参数：节id
+        loadRightCont(catalogId,fdMtype);//默认加载章节 参数：节id
 
         function loadRightCont(fdid,type){
         	catalogId=fdid;
@@ -591,12 +591,13 @@
                              });*/
                              
                             $.ajax({
-           		  			  url: "${ctx}/ajax/passThrough/getExamInfoByquestionId",
+           		  			  url: "${ctx}/ajax/passThrough/getSubInfoByMaterialId",
            		  			  async:false,
            		  			  data:{
-           		  			  	questionId: $this.attr("data-fdid"),
+           		  				materialId: $this.attr("data-fdid"),
            		  				catalogId:catalogId,
            		  				bamId:bamId,
+           		  				sourceType:fdMtype,
            		  			  },
            		  			  dataType:'json',
            		  			  success: function(result){

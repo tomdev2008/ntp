@@ -2,6 +2,8 @@ package cn.me.xdf.service.bam.source;
 
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.material.MaterialInfo;
+
 import org.springframework.web.context.request.WebRequest;
 
 /**
@@ -32,6 +34,6 @@ public interface ISourceService {
      * @param request
      * @return
      */
-    public Object findSubInfoByMaterial(WebRequest request);
+    public Object findSubInfoByMaterial(MaterialInfo materialInfo);
 
 }

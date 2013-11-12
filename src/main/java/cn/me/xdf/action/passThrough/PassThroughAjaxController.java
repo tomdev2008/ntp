@@ -282,25 +282,26 @@ public class PassThroughAjaxController {
 		String sourceType = request.getParameter("sourceType");
 		String bamId = request.getParameter("bamId");
 		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
-		MaterialInfo examQuestion = materialService.get(materialId);
+		MaterialInfo materialInfo = materialService.get(materialId); 
+		//根据素材类型获取素材子表信息
+		List listExam = (List)bamMaterialService.findSubInfoByMaterial(sourceType, materialInfo);
 		List<CourseContent> courseContents = bamCourse.getCourseContents();
         if (courseContents != null){
         	for (CourseContent content : courseContents) {
 	            if (content.getMaterial().getFdId().equals(materialId)) {
-	            	examQuestion = content.getMaterial();
+	            	materialInfo = content.getMaterial();
 	            	break;
 	            }
 	        }
         }
 		Map map = new HashMap();
-		map.put("id", examQuestion.getFdId());
-		map.put("name", examQuestion.getFdName());
+		map.put("id", materialInfo.getFdId());
+		map.put("name", materialInfo.getFdName());
 		map.put("fullScore", materialService.getTotalSorce(materialId).get("totalscore"));
-		map.put("examPaperTime", examQuestion.getFdStudyTime());
-		map.put("examPaperIntro", examQuestion.getFdDescription());
-		map.put("examPaperStatus", getStatus(examQuestion, catalogId, ShiroUtils.getUser().getId()));
-		//根据素材类型获取素材子表信息
-		List listExam = (List)bamMaterialService.findSubInfoByMaterial(sourceType, request);
+		map.put("examPaperTime", materialInfo.getFdStudyTime());
+		map.put("examPaperIntro", materialInfo.getFdDescription());
+		map.put("examPaperStatus", getStatus(materialInfo, catalogId, ShiroUtils.getUser().getId()));
+		
 		map.put("listExam", listExam);
 		return JsonUtils.writeObjectToJson(map);
 	}

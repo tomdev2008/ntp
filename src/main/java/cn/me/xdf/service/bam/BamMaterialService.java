@@ -2,6 +2,8 @@ package cn.me.xdf.service.bam;
 
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.material.MaterialEnum;
+import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.bam.source.ISourceService;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +38,7 @@ public class BamMaterialService extends SimpleService {
      */
     @Transactional(readOnly = false)
     public Object saveSourceNode(String sourceType,WebRequest request) {
-        return sourceMap.get("m_"+sourceType).saveSourceNode(request);
+        return sourceMap.get(MaterialEnum.valueOf("m_"+sourceType).getBean()).saveSourceNode(request);
     }
 
 
@@ -44,7 +46,7 @@ public class BamMaterialService extends SimpleService {
         return null;
     }
 
-    public Object findSubInfoByMaterial(String sourceType,WebRequest request) {
-    	return sourceMap.get("m_"+sourceType).findSubInfoByMaterial(request);
+    public Object findSubInfoByMaterial(String sourceType,MaterialInfo materialInfo) {
+    	return sourceMap.get(MaterialEnum.valueOf("m_"+sourceType).getBean()).findSubInfoByMaterial(materialInfo);
     }
 }
