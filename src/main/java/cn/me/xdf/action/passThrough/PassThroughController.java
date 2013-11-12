@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.WebRequest;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.hibernate4.Value;
@@ -26,6 +27,7 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.bam.BamCourseService;
+import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
@@ -57,6 +59,9 @@ public class PassThroughController {
 	//评分统计service
 	@Autowired
 	private ScoreStatisticsService scoreStatisticsService;
+	
+	@Autowired
+	private BamMaterialService bamMaterialService;
 	
 	/**
 	 * 课程学习首页
@@ -125,4 +130,19 @@ public class PassThroughController {
 		Pagination page = bamCourseService.getPage(finder, 1, 15);
 		return page.getTotalCount();
 	}
+	
+	
+	/**
+	 * 提交试题后作业
+	 * @param request
+	 */
+	@RequestMapping(value = "submitExamOrTask")
+	public String submitExamOrTask(WebRequest request) {
+		String fdMtype = request.getParameter("fdMtype");
+		String catalogId = request.getParameter("catalogId");
+		String bamId = request.getParameter("bamId");
+		bamMaterialService.saveSourceNode(fdMtype, request);
+		return  "redirect:/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+catalogId+"&fdMtype="+fdMtype;
+	}
+	
 }
