@@ -1,5 +1,6 @@
 package cn.me.xdf.model.process;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -49,6 +50,7 @@ public class AnswerRecord extends IdEntity{
 		this.fdQuestionId = fdQuestionId;
 	}
 
+	@Column(length = 2000)
 	public String getFdAnswer() {
 		return fdAnswer;
 	}
