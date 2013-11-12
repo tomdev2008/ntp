@@ -66,6 +66,11 @@ public class TaskRecord extends IdEntity implements IAttMain{
 	private Boolean through;
 	
 	/**
+	 * 作业交互状态（00：未答；01：答完；02：驳回；03：未通过；04：通过）
+	 */
+	private String fdStatus;
+	
+	/**
 	 * 在线作答类型作业的答案
 	 */
 	private String fdAnswer;
@@ -142,5 +147,13 @@ public class TaskRecord extends IdEntity implements IAttMain{
 
 	public void setThrough(Boolean through) {
 		this.through = through;
+	}
+	
+	public String getFdStatus() {
+		return fdStatus;
+	}
+
+	public void setFdStatus(String fdStatus) {
+		this.fdStatus = fdStatus;
 	}
 }

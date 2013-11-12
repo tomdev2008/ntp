@@ -158,4 +158,34 @@ public class Constant {
 	 * 02课程授权管理
 	 */
 	public static final String COUSER_AUTH_MANAGE ="02";
+	
+	/**
+	 * 作业交互方式：
+	 * 00未答
+	 */
+	public static final String TASK_STATUS_UNFINISH = "00";
+	
+	/**
+	 * 作业交互方式：
+	 * 01答完
+	 */
+	public static final String TASK_STATUS_FINISH = "01";
+	
+	/**
+	 * 作业交互方式：
+	 * 02驳回
+	 */
+	public static final String TASK_STATUS_REJECT = "02";
+	
+	/**
+	 * 作业交互方式：
+	 * 03未通过
+	 */
+	public static final String TASK_STATUS_FAIL = "03";
+	
+	/**
+	 * 作业交互方式：
+	 * 04通过
+	 */
+	public static final String TASK_STATUS_PASS = "04";
 }
