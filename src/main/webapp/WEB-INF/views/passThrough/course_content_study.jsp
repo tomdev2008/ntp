@@ -38,6 +38,7 @@
                     {{~}}
                     {{~param.lecture :lecture:index}}
                         {{?lecture.index == i}}
+                           
                             <li{{?lecture.id == param.currentId}} class="active"{{?}}>
                                 <a {{?lecture.status != 'untreated'||param.isOrder==false}}href="#" {{?}}data-fdid="{{=lecture.id}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
                                     <span class="dt">节{{=lecture.num}} <b class="icon-circle-progress">
@@ -521,14 +522,17 @@
                 .click(function(e){
                     e.preventDefault();
                     if($(this).attr("href")){//已通章节可点
-                        loadRightCont($(this).attr("data-fdid"));
+                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
                         $(this).parent().addClass("active").siblings().removeClass("active");
                     }
                 });
 
         loadRightCont(catalogId);//默认加载章节 参数：节id
 
-        function loadRightCont(fdid){
+        function loadRightCont(fdid,type){
+        	catalogId=fdid;
+		    fdMtype=type;
+		    alert(catalogId+","+fdMtype);
 	        $.ajax({
 		  			  url: "${ctx}/ajax/passThrough/getCourseContent",
 		  			  async:false,
@@ -549,6 +553,7 @@
 		  	            } 
 		  			  },
 	  			});
+	        
             //$.get("url",{id: fdid}).success(function(result){//  ajax
             //result = taskData;// 测试用 数据 ，ajax后删除
             //$("#mainContent").html(rightContentFn(result));
@@ -567,7 +572,7 @@
                         $(this).removeClass("disabled");
                         $("#nextLecture").removeClass("disabled");
                     });
-        }
+            }
 
         
         /*测试页加载完成后执行方法*/
@@ -782,7 +787,7 @@
                                     placement: "bottom"
                                 });
 
-                        tempData.action = "url";
+                        tempData.action = "submitExamOrTask?bamId="+bamId+"&catalogId="+catalogId+"&fdMtype="+fdMtype;
                         $this.html(examPaperDetailFn(tempData));
 
                         $("#listTaskAttachment>li>.icon-remove-blue").click(function(e){

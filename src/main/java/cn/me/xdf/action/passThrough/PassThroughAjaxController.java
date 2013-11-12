@@ -257,6 +257,7 @@ public class PassThroughAjaxController {
 						tmp.put("index", catalog.getFdTotalNo());
 						tmp.put("num", catalog.getFdNo());
 						tmp.put("type", catalog.getMaterialType());
+						tmp.put("baseType", catalog.getFdMaterialType());
 						tmp.put("name", catalog.getFdName());
 						tmp.put("intro", catalog.getFdDescription());
 						if(catalog.getThrough()==null){
