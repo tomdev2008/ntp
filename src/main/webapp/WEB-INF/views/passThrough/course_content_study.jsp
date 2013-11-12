@@ -38,10 +38,10 @@
                     {{~}}
                     {{~param.lecture :lecture:index}}
                         {{?lecture.index == i}}
-                            <li{{?lecture.status == 'doing'}} class="active"{{?}}>
-                                <a {{?lecture.status != 'unfinish'}}href="#" {{?}}data-fdid="{{=lecture.id}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
+                            <li{{?lecture.id == param.currentId}} class="active"{{?}}>
+                                <a {{?lecture.status != 'untreated'||param.isOrder==false}}href="#" {{?}}data-fdid="{{=lecture.id}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
                                     <span class="dt">节{{=lecture.num}} <b class="icon-circle-progress">
-                                        {{?lecture.status != 'unfinish'}}<i class="icon-progress{{?lecture.status == 'doing'}} half{{?}}"></i>{{?}}
+                                        {{?lecture.status != 'untreated'}}<i class="icon-progress{{?lecture.status == 'doing'}} half{{?}}"></i>{{?}}
                                     </b></span>
                                     <span class="name"><i class="icon-{{=lecture.type}}"></i>
                                     {{=lecture.name || ''}}</span>
@@ -331,7 +331,8 @@
         
         //课程进行中节的内容类型
         var fdMtype = "${param.fdMtype}";
-				
+      //课程是否有序		
+        var isOrder ="${param.isOrder}";		
 				/*
         var leftData = {
             sidenav: {
@@ -410,6 +411,7 @@
 					  success: function(rsult){
 						  leftData = rsult;
 						  leftData.sidenav.currentId = catalogId;
+						  leftData.sidenav.isOrder=isOrder;
 						  $("#sideBar").html(pageLeftBarFn(leftData));
 					  },
 				});
@@ -520,6 +522,7 @@
                     e.preventDefault();
                     if($(this).attr("href")){//已通章节可点
                         loadRightCont($(this).attr("data-fdid"));
+                        $(this).parent().addClass("active").siblings().removeClass("active");
                     }
                 });
 

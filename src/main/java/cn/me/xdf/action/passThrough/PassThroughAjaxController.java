@@ -240,6 +240,7 @@ public class PassThroughAjaxController {
 		if(StringUtil.isNotBlank(bamId)){
 			BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
 			if(bamCourse!=null && bamCourse.getCatalogs()!=null){
+				Boolean isOrder=bamCourse.getCourseInfo().getIsOrder();
 				List<CourseCatalog> catalogs = bamCourse.getCatalogs();
 				Map catalogMap = new HashMap();
 				List<Map> chapter = new ArrayList();
@@ -271,6 +272,7 @@ public class PassThroughAjaxController {
 				}
 				catalogMap.put("chapter", chapter);
 				catalogMap.put("lecture", lecture);
+				catalogMap.put("isOrder", isOrder);
 				map.put("sidenav", catalogMap);
 			}
 		}
