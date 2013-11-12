@@ -1,5 +1,7 @@
 package cn.me.xdf.service.bam.source.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -71,6 +73,15 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 		String bamId = request.getParameter("bamId");
 		String materialFdid = request.getParameter("fdid");
 		String[] anwers = request.getParameterValues("examAnswer");
+		int time=0;
+		try {
+			Date starTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(request.getParameter("startTime"));
+			Date endTime= new Date();
+			time = (int) ((endTime.getTime()-starTime.getTime())/(60*1000));
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+		
 		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
 		//试题对应选项信息
 		Map<String,String> anwer = new HashMap<String,String>();
@@ -102,7 +113,7 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 		sourceNode.setIsStudy(sorce>=passSorce);
 		sourceNode.setFdOperationDate(new Date());
 		sourceNode.setFdScore(sorce);
-		sourceNode.setFdExamTime(10);
+		sourceNode.setFdExamTime(time);
 		//sourceNodeService.save(sourceNode);
 		Set<AnswerRecord> answerRecords = new HashSet<AnswerRecord>();
 		for (ExamQuestion question : examQuestions) {

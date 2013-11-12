@@ -214,6 +214,7 @@
 			<input name="bamId" value="{{=it.bamId}}" type="hidden" />
 			<input name="catalogId" value="{{=it.catalogId}}" type="hidden" />
 			<input name="fdMtype" value="{{=it.fdMtype}}" type="hidden" />
+			<input name="startTime" value="{{=it.startTime}}" type="hidden" />
             {{?it.type=='exam'}}
                 <div class="bd">
                 <dl class="listExam">
@@ -521,7 +522,8 @@
                         tempData.bamId=bamId ;
                         tempData.catalogId=catalogId ;
                         tempData.fdMtype=fdMtype ;
-                        tempData.startTime=new Date();
+                        var date = new Date();
+                        tempData.startTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                         $this.html(examPaperDetailFn(tempData));
 
                         $("#listTaskAttachment>li>.icon-remove-blue").click(function(e){
