@@ -26,5 +26,12 @@ public interface ISourceService {
      * @return
      */
     public Object saveSourceNode(WebRequest request);
+    
+    /**
+     * 获取素材子表详细信息
+     * @param request
+     * @return
+     */
+    public Object findSubInfoByMaterial(WebRequest request);
 
 }

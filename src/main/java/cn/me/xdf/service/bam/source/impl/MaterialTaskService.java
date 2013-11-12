@@ -19,4 +19,10 @@ public class MaterialTaskService extends SimpleService implements ISourceService
     public Object saveSourceNode(WebRequest request) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+	@Override
+	public Object findSubInfoByMaterial(WebRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
