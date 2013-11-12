@@ -98,7 +98,7 @@ public class PassThroughAjaxController {
 			taskMap.put("index", task.getFdOrder());
 		    ///作业状态
 			taskMap.put("status", null);
-			taskMap.put("examType", task.getFdType());
+			taskMap.put("examType", task.getFdType().equals("01")?"uploadWork":"onlineAnswer");
 			taskMap.put("examScore", task.getFdStandardScore().intValue()); 	
 			taskMap.put("examName", task.getFdName());
 			taskMap.put("examStem", task.getFdSubject());
@@ -113,30 +113,24 @@ public class PassThroughAjaxController {
 			for (AttMain attMain : attList) {
 			  if(attMain.getFdKey().equals("taskAtt")){
 				 //存放作业附件信息
-				
 				 Map attMap = new HashMap();
-				 
 				 attMap.put("index", attMain.getFdOrder());
 				 attMap.put("name", attMain.getFdFileName());
-				 attMap.put("url", "#");
+				 attMap.put("url", attMain.getFdId());
 				 taskAtt.add(attMap);
 			   }else if(attMain.getFdKey().equals("answerAtt")){
 				 //存放答题者上传的附件
-				
 				 Map answerMap = new HashMap();
 				 answerMap.put("id", attMain.getFdId());
 				 answerMap.put("name", attMain.getFdFileName());
-				 answerMap.put("url", "#");
+				 answerMap.put("url", attMain.getFdId());
 				 answerAtt.add(answerMap);
 			   }
-			  
 			}
 			taskMap.put("listAttachment", taskAtt);//存放作业附件信息
 			taskMap.put("listTaskAttachment", answerAtt);//存放答题者上传的附件
 			list.add(taskMap);
 		}
-		
-		
 		map.put("listExam", list);
 		//作业列表信息结束
 		//存放作业包信息
