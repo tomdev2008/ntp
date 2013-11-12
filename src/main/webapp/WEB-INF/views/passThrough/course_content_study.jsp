@@ -468,10 +468,10 @@
                     });
             }
 
-        
+     
         /*测试页加载完成后执行方法*/
         function afterLoadExamOrTaskPage(data){
-        	
+        	      	
             var $window = $(window);
             //试卷列表折叠 手风琴事件
             $("#listExamPaper>li>.collapse")
@@ -521,14 +521,13 @@
                         tempData.bamId=bamId ;
                         tempData.catalogId=catalogId ;
                         tempData.fdMtype=fdMtype ;
+                        tempData.startTime=new Date();
                         $this.html(examPaperDetailFn(tempData));
 
                         $("#listTaskAttachment>li>.icon-remove-blue").click(function(e){
                             e.preventDefault();
                             $(this).parent().remove();
                         })
-                        
-
                     })
                     .bind("shown",function(){
                         var $this = $(this);

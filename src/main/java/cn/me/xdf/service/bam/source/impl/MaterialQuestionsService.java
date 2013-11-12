@@ -3,8 +3,10 @@ package cn.me.xdf.service.bam.source.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,10 +104,9 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 		sourceNode.setFdScore(sorce);
 		sourceNode.setFdExamTime(10);
 		//sourceNodeService.save(sourceNode);
-		List<AnswerRecord> answerRecords = new ArrayList<AnswerRecord>();
+		Set<AnswerRecord> answerRecords = new HashSet<AnswerRecord>();
 		for (ExamQuestion question : examQuestions) {
 			AnswerRecord answerRecord = new AnswerRecord();
-			answerRecord.setFdSourceNode(sourceNode);
 			answerRecord.setFdQuestionId(question.getFdId());
 			answerRecord.setFdAnswer(anwer.get(question.getFdId()));
 			answerRecords.add(answerRecord);
