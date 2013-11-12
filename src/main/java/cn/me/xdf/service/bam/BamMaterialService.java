@@ -44,5 +44,7 @@ public class BamMaterialService extends SimpleService {
         return null;
     }
 
-
+    public Object findSubInfoByMaterial(String sourceType,WebRequest request) {
+    	return sourceMap.get("m_"+sourceType).findSubInfoByMaterial(request);
+    }
 }
