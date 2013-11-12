@@ -74,93 +74,6 @@ public class PassThroughAjaxController {
 	private ExamQuestionService examQuestionService;
 	
 	/**
-	 * 学习页面更具作业包id寻找信息
-	 * @param fdId
-	 * @return
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value = "findTaskByPaperId")
-	@ResponseBody
-	public String findTaskByPaperId(HttpServletRequest request){
-		String materialId = request.getParameter("fdId");
-		String catalogId = request.getParameter("catalogId");//节id
-		MaterialInfo info = materialService.load(materialId);
-		Map map = new HashMap();
-		List<Task> taskList = info.getTasks();
-		//存放作业列表
-		List<Map> list = new ArrayList<Map>();
-		double fullScore =0;
-		
-		for(Task task:taskList){
-			fullScore += task.getFdStandardScore();
-			Map taskMap = new HashMap();
-			taskMap.put("id", task.getFdId());
-			taskMap.put("index", task.getFdOrder());
-		    ///作业状态
-			taskMap.put("status", null);
-			taskMap.put("examType", task.getFdType().equals("01")?"uploadWork":"onlineAnswer");
-			taskMap.put("examScore", task.getFdStandardScore().intValue()); 	
-			taskMap.put("examName", task.getFdName());
-			taskMap.put("examStem", task.getFdSubject());
-		    
-			List<AttMain> attList = attMainService.findByCriteria(AttMain.class,
-					Value.eq("fdModelId", task.getFdId()),
-				Value.eq("fdModelName", Task.class.getName()));
-			
-			 List<Map> taskAtt = new ArrayList<Map>();
-			 List<Map> answerAtt = new ArrayList<Map>();
-			
-			for (AttMain attMain : attList) {
-			  if(attMain.getFdKey().equals("taskAtt")){
-				 //存放作业附件信息
-				 Map attMap = new HashMap();
-				 attMap.put("index", attMain.getFdOrder());
-				 attMap.put("name", attMain.getFdFileName());
-				 attMap.put("url", attMain.getFdId());
-				 taskAtt.add(attMap);
-			   }else if(attMain.getFdKey().equals("answerAtt")){
-				 //存放答题者上传的附件
-				 Map answerMap = new HashMap();
-				 answerMap.put("id", attMain.getFdId());
-				 answerMap.put("name", attMain.getFdFileName());
-				 answerMap.put("url", attMain.getFdId());
-				 answerAtt.add(answerMap);
-			   }
-			}
-			taskMap.put("listAttachment", taskAtt);//存放作业附件信息
-			taskMap.put("listTaskAttachment", answerAtt);//存放答题者上传的附件
-			list.add(taskMap);
-		}
-		map.put("listExam", list);
-		//作业列表信息结束
-		//存放作业包信息
-		map.put("id", info.getFdId());
-		map.put("name", info.getFdName()); 
-		map.put("fullScore", fullScore);
-		map.put("examPaperTime", info.getFdStudyTime());
-		map.put("examPaperIntro", info.getFdDescription());
-		//作业包状态
-		map.put("examPaperStatus", getStatus(info,catalogId,ShiroUtils.getUser().getId()));
-		//存放作业包信结束///////////
-		
-		/////////////////评分人操作信息
-        SourceNote sourceNote = sourceNodeService.getSourceNote(materialId, catalogId, ShiroUtils.getUser().getId());
-        if(sourceNote!=null){
-        	Map teacherRating = new HashMap();
-            teacherRating.put("score", sourceNote.getFdScore()==null?0:sourceNote.getFdScore());
-            teacherRating.put("comment", sourceNote.getFdComment());
-            Map teacherMap = new HashMap();
-            SysOrgPerson person = accountService.findById(sourceNote.getFdAppraiserId());
-            teacherMap.put("imgUrl", person.getPoto());
-            teacherRating.put("teacher", teacherMap);
-            map.put("teacherRating", teacherRating);
-        }
-		return JsonUtils.writeObjectToJson(map);
-	}
-	
-	
-	
-	/**
 	 * 最新课程列表
 	 * 
 	 * @param request
@@ -361,20 +274,19 @@ public class PassThroughAjaxController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "getExamInfoByquestionId")
+	@RequestMapping(value = "getSubInfoByMaterialId")
 	@ResponseBody
-	public String getExamInfoByquestionId(WebRequest request) {
-		String questionId = request.getParameter("questionId");
+	public String getSubInfoByMaterialId(WebRequest request) {
+		String materialId = request.getParameter("materialId");
 		String catalogId = request.getParameter("catalogId");
+		String sourceType = request.getParameter("sourceType");
 		String bamId = request.getParameter("bamId");
 		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
-		MaterialInfo examQuestion = materialService.get(questionId);
-		List<Map> listExam = new ArrayList<Map>();
-		List<ExamQuestion> examQuestions = examQuestion.getQuestions();
+		MaterialInfo examQuestion = materialService.get(materialId);
 		List<CourseContent> courseContents = bamCourse.getCourseContents();
         if (courseContents != null){
         	for (CourseContent content : courseContents) {
-	            if (content.getMaterial().getFdId().equals(questionId)) {
+	            if (content.getMaterial().getFdId().equals(materialId)) {
 	            	examQuestion = content.getMaterial();
 	            	break;
 	            }
@@ -383,43 +295,12 @@ public class PassThroughAjaxController {
 		Map map = new HashMap();
 		map.put("id", examQuestion.getFdId());
 		map.put("name", examQuestion.getFdName());
-		map.put("fullScore", materialService.getTotalSorce(questionId).get("totalscore"));
+		map.put("fullScore", materialService.getTotalSorce(materialId).get("totalscore"));
 		map.put("examPaperTime", examQuestion.getFdStudyTime());
 		map.put("examPaperIntro", examQuestion.getFdDescription());
 		map.put("examPaperStatus", getStatus(examQuestion, catalogId, ShiroUtils.getUser().getId()));
-		for (ExamQuestion examQuestion2 : examQuestions) {
-			Map map2 = new HashMap();
-			map2.put("id", examQuestion2.getFdId());
-			map2.put("index", examQuestion2.getFdOrder());
-			map2.put("status", null);
-			map2.put("examScore", examQuestion2.getFdStandardScore());
-			map2.put("examType", examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_SINGLE_SELECTION)?"single":(examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_MULTIPLE_SELECTION)?"multiple":"completion"));
-			map2.put("examStem", examQuestion2.getFdSubject());
-			List<ExamOpinion> examOpinions = examQuestion2.getOpinions();
-			List<Map> opinionlist = new ArrayList<Map>();
-			for (ExamOpinion examOpinion : examOpinions) {
-				Map opinionMap = new HashMap();
-				opinionMap.put("index", examOpinion.getFdOrder());
-				opinionMap.put("name", examOpinion.getOpinion());
-				opinionMap.put("isAnswer", examOpinion.getIsAnswer());
-				opinionMap.put("isChecked", false);
-				opinionlist.add(opinionMap);
-			}
-			map2.put("listExamAnswer", opinionlist);
-			List<AttMain> attMains = attMainService.findByCriteria(AttMain.class,
-	                Value.eq("fdModelId", examQuestion2.getFdId()),
-	                Value.eq("fdModelName", ExamQuestion.class.getName()));	
-			List<Map> attlist = new ArrayList<Map>();
-			for (AttMain attMain : attMains) {
-				Map attMap = new HashMap();
-				attMap.put("index", attMain.getFdOrder());
-				attMap.put("name", attMain.getFdFileName());
-				attMap.put("url", attMain.getFdFilePath());
-				attlist.add(attMap);
-			}
-			map2.put("listAttachment", attlist);
-			listExam.add(map2);
-		}
+		//根据素材类型获取素材子表信息
+		List listExam = (List)bamMaterialService.findSubInfoByMaterial(sourceType, request);
 		map.put("listExam", listExam);
 		return JsonUtils.writeObjectToJson(map);
 	}
