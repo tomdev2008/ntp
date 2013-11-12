@@ -83,6 +83,19 @@ public class SourceNote extends IdEntity{
 	private String fdComment;
 	
 	/**
+	 * 作业交互状态（00：未答；01：答完；02：驳回；03：未通过；04：通过）
+	 */
+	private String fdStatus;
+	
+	public String getFdStatus() {
+		return fdStatus;
+	}
+
+	public void setFdStatus(String fdStatus) {
+		this.fdStatus = fdStatus;
+	}
+
+	/**
 	 * 答题结果
 	 */
 	private Set<AnswerRecord> answerRecords;

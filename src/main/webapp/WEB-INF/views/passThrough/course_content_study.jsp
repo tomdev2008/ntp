@@ -560,9 +560,10 @@
                             },
                             'onUploadSuccess' : function (file, datas, Response) {
                                 if (Response) {
-                                    var objvalue = eval("(" + datas + ")");
+                                	var objvalue = eval("(" + datas + ")");
                                     //answerAttId
-                                    jQuery("#${answerAttId}").val(file.name+",");
+                                    var value = $("#answerAttId").val(); 
+                                    $("#answerAttId").val(objvalue.attId+","+value);
                                     jQuery("#attName").html(objvalue.fileName);
                                     var html = "<li id='attach'><a><i class='icon-paperClip'></i>"+objvalue.fileName+"<a href='#' class='icon-remove-blue'></a></li>";
                                      $("#listTaskAttachment").append(html);
