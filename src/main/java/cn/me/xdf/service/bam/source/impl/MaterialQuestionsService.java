@@ -114,7 +114,7 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 		sourceNode.setFdOperationDate(new Date());
 		sourceNode.setFdScore(sorce);
 		sourceNode.setFdExamTime(time);
-		//sourceNodeService.save(sourceNode);
+		sourceNode.setFdMaterialId(info.getFdId());
 		Set<AnswerRecord> answerRecords = new HashSet<AnswerRecord>();
 		for (ExamQuestion question : examQuestions) {
 			AnswerRecord answerRecord = new AnswerRecord();
@@ -132,13 +132,27 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 	@Override
 	public Object findSubInfoByMaterial(WebRequest request) {
 		List<Map> listExam = new ArrayList<Map>();
-		MaterialInfo materialInfo = materialService.get(request.getParameter("materialId")); 
+		String catalogId = request.getParameter("catalogId");
+		String materialId =request.getParameter("materialId");
+		MaterialInfo materialInfo = materialService.get(materialId); 
+		SourceNote sourceNote = sourceNodeService.getSourceNote(materialId, catalogId, ShiroUtils.getUser().getId());
 		List<ExamQuestion> examQuestions = materialInfo.getQuestions();
 		for (ExamQuestion examQuestion2 : examQuestions) {
 			Map map2 = new HashMap();
 			map2.put("id", examQuestion2.getFdId());
 			map2.put("index", examQuestion2.getFdOrder());
-			map2.put("status", null);
+			if(sourceNote==null){
+				map2.put("status", null);
+			}else{
+				Set<AnswerRecord> answerRecords = sourceNote.getAnswerRecords();
+				for (AnswerRecord answerRecord : answerRecords) {
+					if(answerRecord.getFdQuestionId().equals(examQuestion2.getFdId())){
+						map2.put("status", (answerRecord.getFdAnswer()+"#").equals(examQuestion2.getFdQuestion())?"success":"error");
+						break;
+					}
+				}
+			}
+			
 			map2.put("examScore", examQuestion2.getFdStandardScore());
 			map2.put("examType", examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_SINGLE_SELECTION)?"single":(examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_MULTIPLE_SELECTION)?"multiple":"completion"));
 			map2.put("examStem", examQuestion2.getFdSubject());
@@ -150,7 +164,22 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 				opinionMap.put("index", examOpinion.getFdOrder());
 				opinionMap.put("name", examOpinion.getOpinion());
 				opinionMap.put("isAnswer", examOpinion.getIsAnswer());
-				opinionMap.put("isChecked", false);
+				if(sourceNote==null){
+					opinionMap.put("isChecked", false);
+				}else{
+					Set<AnswerRecord> answerRecords = sourceNote.getAnswerRecords();
+					for (AnswerRecord answerRecord : answerRecords) {
+						if(answerRecord.getFdQuestionId().equals(examQuestion2.getFdId())){
+							if(answerRecord.getFdAnswer()==null){
+								opinionMap.put("isChecked", false);
+							}else{
+								opinionMap.put("isChecked", answerRecord.getFdAnswer().contains(examOpinion.getFdId()));
+							}
+							break;
+						}
+					}
+				}
+				
 				opinionlist.add(opinionMap);
 			}
 			map2.put("listExamAnswer", opinionlist);
