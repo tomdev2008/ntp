@@ -272,20 +272,19 @@
                                 <label>上传作业（建议小于2G）</label>
                                 <div class="control-upload">
 
-                                   
-                                   <div class="upload-fileName"><span id="attName"></span><i class="icon-paperClip"></i></div>
-                   
- 				    			  <div id="taskAttSeq" style="height:20px;width:650px;display:block;"> </div>
+                                  <div class="upload-fileName"><span id="attName"></span><i class="icon-paperClip"></i></div>
+ 				    			  <div id="taskAttSeq" style="height:20px;width:637px;display:block;"> </div>
 					              <div style="margin-left:637px;margin-top: 8px;height:40px;width:600px;display:block;">
 						            <button id="answerAtt" class="btn btn-primary btn-large" type="button" >上传</button>
 					              </div>
-					              <input type="hidden"  name="attId" id="attId">
+					              <input type="hidden" value="" name="attach_{{=task.id}}" id="answerAttId">
 
                                 </div>
                                 <ul class="attachList unstyled" id="listTaskAttachment">
                                     {{~task.listTaskAttachment :att2}}
                                         <li id="attach{{=att2.id}}">
-                                            <a href="${ctx}/common/file/download/{{=att2.fdId}}"><i class="icon-paperClip"></i>{{=att2.fdFileName}}</a>
+                                            <a href="${ctx}/common/file/download/{{=att2.fdId}}">
+												<i class="icon-paperClip"></i>{{=att2.fdFileName}}</a>
                                             <a href="#" class="icon-remove-blue"></a>
                                         </li>
                                     {{~}}
@@ -373,7 +372,7 @@
     $(function(){
         //页面左侧模板函数
         var pageLeftBarFn = doT.template(document.getElementById("pageLeftTemplate").text);
-
+        
         //页面右侧模板函数
         var rightContentFn = doT.template(document.getElementById("pageRightTemplate").text,undefined,{
             pageHeader: document.getElementById("pageRightHeaderTemplate").text,
@@ -449,10 +448,6 @@
 		  			  dataType:'json',
 		  			  success: function(result){
 		  				$("#mainContent").html(rightContentFn(result));
-		  				
-		  				
-		  				
-		  				
 		  				if(result.type == "exam" || result.type == "task"){
 		  					afterLoadExamOrTaskPage(result);
 		  	            } else if(result.type == "video"){
@@ -509,11 +504,7 @@
                         }
                         tempData.successCount = count;
 
-
                         $("#headToolsBar").html(examPaperStatusBarFn(tempData));
-                        
-                        
-                        
                         
                         //试题列表序号控制
                         $("#navExams>.collapse-inner>.num").click(function(e){
@@ -551,7 +542,6 @@
                         }
                         $window.scrollTop(sTop);
                        
-                        
                         jQuery("#answerAtt").uploadify({
                             'height' : 27,
                             'width' : 80,
@@ -570,15 +560,11 @@
                             'onUploadSuccess' : function (file, datas, Response) {
                                 if (Response) {
                                     var objvalue = eval("(" + datas + ")");
+                                    //answerAttId
+                                    jQuery("#${answerAttId}").val(file.name+",");
                                     jQuery("#attName").html(objvalue.fileName);
-                                    /* $("#listAttachment").append(itemExamDetailFn({
-                                   	 	flag: "add" ,
-                                   	 	id: objvalue.attId,
-                                        name: objvalue.fileName,
-                                        url: objvalue.filePath
-                                   })).sortable({
-                                           handle: ".state-dragable"
-                                   }); */
+                                    var html = "<li id='attach'><a><i class='icon-paperClip'></i>"+objvalue.fileName+"<a href='#' class='icon-remove-blue'></a></li>";
+                                     $("#listTaskAttachment").append(html);
                                 }
                             },
                             'onSelect':function(file){
@@ -603,51 +589,8 @@
                         $(this).empty().prev(".titBar").removeClass("hide");
                         $("#headToolsBar").empty();
                     });
-            
-            
-            
-            
         }
     });
-</script>
-<script type="text/javascript">
-
-  /* jQuery("#upMaterial").uploadify({
-    'height' : 27,
-    'width' : 80,
-    'multi' : true,
-    'simUploadLimit' : 1,
-    'swf' : '${ctx}/resources/uploadify/uploadify.swf',
-    'buttonText' : '上传',
-    'uploader' : '${ctx}/common/file/o_upload',
-    'auto' : true,
-    'queueID': 'upMaterialDiv',
-    'fileTypeExts' : '*.AVI;*.MP4;*.WMV;',
-    'onUploadStart' : function (file) {
-        jQuery("#upMaterial").uploadify("settings", "formData");
-    },
-    'onUploadSuccess' : function (file, data, Response) {
-        if (Response) {
-            var objvalue = eval("(" + data + ")");
-            jQuery("#attId").val(objvalue.attId);
-        }
-    },
-    
-    'onSelect':function(file){
-    	// 选择新文件时,先清文件列表
-    	var queuedFile = {};
-		for (var n in this.queueData.files) {
-				queuedFile = this.queueData.files[n];
-				if(queuedFile.id!=file.id){
-					delete this.queueData.files[queuedFile.id]
-					$('#' + queuedFile.id).fadeOut(0, function() {
-						$(this).remove();
-					});
-				}
-			}
-    },
-    'removeCompleted':false
-  }); */
 </script>
 </body>
 </html>
