@@ -2,6 +2,7 @@ package cn.me.xdf.service.bam.source.impl;
 
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.bam.source.ISourceService;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
     }
 
 	@Override
-	public Object findSubInfoByMaterial(WebRequest request) {
+	public Object findSubInfoByMaterial(MaterialInfo materialInfo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

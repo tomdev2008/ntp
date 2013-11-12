@@ -5,6 +5,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.bam.source.ISourceService;
 
@@ -21,7 +22,7 @@ public class MaterialTaskService extends SimpleService implements ISourceService
     }
 
 	@Override
-	public Object findSubInfoByMaterial(WebRequest request) {
+	public Object findSubInfoByMaterial(MaterialInfo materialInfo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
