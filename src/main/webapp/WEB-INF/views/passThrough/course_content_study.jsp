@@ -185,7 +185,7 @@
                             {{~exam.listExamAnswer :ans:index}}
                             {{?index1 == ans.index}}
                                 <label class="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" >
-                                    <input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?ans.isChecked}}checked{{?}} value="{{=index1+1}}" name="examAnswer{{=exam.id}}" />
+                                    <input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?ans.isChecked}}checked{{?}} value="{{=exam.id}}:{{=ans.id}}" name="examAnswer" />
                                     {{=ans.name}}
                                 </label>
                             {{?}}
