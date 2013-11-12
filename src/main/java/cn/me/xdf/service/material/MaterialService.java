@@ -8,6 +8,7 @@ import java.util.Map;
 import jodd.util.StringUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
@@ -33,6 +34,7 @@ import cn.me.xdf.utils.ShiroUtils;
  * @author
  * 
  */
+@Service
 @Transactional(readOnly = true)
 public class MaterialService extends BaseService {
 
@@ -42,11 +44,6 @@ public class MaterialService extends BaseService {
 	@Autowired
 	private MaterialAuthService materialAuthService;
 
-	private Map<String, ISourceService> sourceMap;
-
-	public void setSourceMap(Map<String, ISourceService> sourceMap) {
-		this.sourceMap = sourceMap;
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override

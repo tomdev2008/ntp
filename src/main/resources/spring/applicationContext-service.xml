@@ -7,21 +7,6 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
        default-lazy-init="true">
 
-    <bean id="materialService" class="cn.me.xdf.service.material.MaterialService">
-        <property name="sourceMap">
-            <map>
-                <entry key="materialAttmainService">
-                    <ref bean="materialAttmainService"></ref>
-                </entry>
-                <entry key="materialQuestionsService">
-                    <ref bean="materialQuestionsService"></ref>
-                </entry>
-                <entry key="materialTaskService">
-                    <ref bean="materialTaskService"></ref>
-                </entry>
-            </map>
-        </property>
-    </bean>
 
     <bean id="bamMaterialService" class="cn.me.xdf.service.bam.BamMaterialService">
         <property name="sourceMap">
