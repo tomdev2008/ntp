@@ -2,9 +2,6 @@ package cn.me.xdf.model.process;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import javax.persistence.Table;
 
@@ -25,12 +22,7 @@ import cn.me.xdf.model.base.IdEntity;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_ANSWER_RECORD")
-public class AnswerRecord extends IdEntity{
-	
-    /**
-	 * 所属素材记录
-	 */
-	private SourceNote fdSourceNode;
+public class AnswerRecord extends IdEntity{   
 	
 	/**
 	 * 所属试题Id
@@ -59,14 +51,4 @@ public class AnswerRecord extends IdEntity{
 		this.fdAnswer = fdAnswer;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdSourceNodeId")	
-	public SourceNote getFdSourceNode() {
-		return fdSourceNode;
-	}
-
-	public void setFdSourceNode(SourceNote fdSourceNode) {
-		this.fdSourceNode = fdSourceNode;
-	}
-	
 }

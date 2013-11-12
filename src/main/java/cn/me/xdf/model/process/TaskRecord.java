@@ -1,14 +1,11 @@
 package cn.me.xdf.model.process;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -18,9 +15,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.model.base.IdEntity;
-import cn.me.xdf.model.course.CourseCatalog;
-import cn.me.xdf.model.course.CourseInfo;
-import cn.me.xdf.model.organization.SysOrgPerson;
 
 /**
  * 
@@ -34,11 +28,6 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_TASK_RECORD")
 public class TaskRecord extends IdEntity implements IAttMain{
-	
-	/**
-	 * 所属素材记录
-	 */
-	private SourceNote fdSourceNode;
 	
 	/**
 	 * 所属作业题Id
@@ -97,16 +86,6 @@ public class TaskRecord extends IdEntity implements IAttMain{
 
 	public void setFdAnswer(String fdAnswer) {
 		this.fdAnswer = fdAnswer;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdSourceNodeId")	
-	public SourceNote getFdSourceNode() {
-		return fdSourceNode;
-	}
-
-	public void setFdSourceNode(SourceNote fdSourceNode) {
-		this.fdSourceNode = fdSourceNode;
 	}
 
 	public String getFdTaskId() {
