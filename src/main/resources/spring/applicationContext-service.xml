@@ -16,6 +16,9 @@
                 <entry key="materialQuestionsService">
                     <ref bean="materialQuestionsService"></ref>
                 </entry>
+                <entry key="materialTaskService">
+                    <ref bean="materialTaskService"></ref>
+                </entry>
             </map>
         </property>
     </bean>
@@ -28,6 +31,9 @@
                 </entry>
                 <entry key="materialQuestionsService">
                     <ref bean="materialQuestionsService"></ref>
+                </entry>
+                <entry key="materialTaskService">
+                    <ref bean="materialTaskService"></ref>
                 </entry>
             </map>
         </property>

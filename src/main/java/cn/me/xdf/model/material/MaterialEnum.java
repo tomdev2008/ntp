@@ -69,6 +69,21 @@ public enum MaterialEnum {
         public String getView() {
             return "question";
         }
+    }, m_10 {
+        @Override
+        public String getValue() {
+            return "10";
+        }
+
+        @Override
+        public String getBean() {
+            return "materialTaskService";
+        }
+
+        @Override
+        public String getView() {
+            return "task";
+        }
     };
 
     /**
