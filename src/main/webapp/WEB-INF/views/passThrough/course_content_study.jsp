@@ -205,8 +205,8 @@
                             <ul class="attachList unstyled">
                                 {{~task.listAttachment :att1:index1}}
                                 {{~task.listAttachment :att}}
-                                {{?index1 == att.index}}
-                                <li><a href="{{=att.url}}"><i class="icon-paperClip"></i>{{=att.name}}</a></li>
+                                {{?index1 == att.fdOrder}}
+                                <li><a href="${ctx}/common/file/download/{{=att.fdId}}"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
                                 {{?}}
                                 {{~}}
                                 {{~}}
@@ -224,7 +224,7 @@
                                 <ul class="attachList unstyled" id="listTaskAttachment">
                                     {{~task.listTaskAttachment :att2}}
                                         <li id="attach{{=att2.id}}">
-                                            <a href="{{=att2.url}}"><i class="icon-paperClip"></i>{{=att2.name}}</a>
+                                            <a href="${ctx}/common/file/download/{{=att2.fdId}}"><i class="icon-paperClip"></i>{{=att2.fdFileName}}</a>
                                             <a href="#" class="icon-remove-blue"></a>
                                         </li>
                                     {{~}}
@@ -333,76 +333,9 @@
         //课程进行中节的内容类型
         var fdMtype = "${param.fdMtype}";
       //课程是否有序		
-        var isOrder ="${param.isOrder}";		
-				/*
-        var leftData = {
-            sidenav: {
-                chapter:[
-                    {
-                        index: 4,
-                        num: 2,
-                        name: "业务学习"
-                    },
-                    {
-                        index: 0,
-                        num: 1,
-                        name: "业务学习"
-                    }
-                ],
-                lecture: [
-                    {
-                        id: "fdid345320432",
-                        index: 1,
-                        num: 1,
-                        type: "video",
-                        name: "学习入门视频",
-                        intro: "本课程为您介绍在线考试流程和相关注意事项",
-                        status: "pass"
-                    },
-                    {
-                        id: "fdid0wfwef432",
-                        index: 2,
-                        num: 2,
-                        type: "exam",
-                        name: "在线测试",
-                        intro: "本课程为您介绍在线考试流程和相关注意事项",
-                        status: "pass"
-                    },
-                    {
-                        id: "fdid9094858345",
-                        index: 3,
-                        num: 3,
-                        type: "task",
-                        name: "提交学术作业",
-                        intro: "本课程为您介绍在线考试流程和相关注意事项",
-                        status: "doing"
-                    },
-                    {
-                        id: "fdid000000000",
-                        index: 5,
-                        num: 4,
-                        type: "doc",
-                        name: "文档",
-                        intro: "本课程为您介绍在线考试流程和相关注意事项",
-                        status: "unfinish"
-                    },
-                    {
-                        id: "fdid32432432432",
-                        index: 6,
-                        num: 5,
-                        type: "ppt",
-                        name: "幻灯片",
-                        intro: "本课程为您介绍在线考试流程和相关注意事项",
-                        status: "unfinish"
-                    }
-                ]
-            }
-        }
-
-        $("#sideBar").html(pageLeftBarFn(leftData));
-				*/
-				
-				var leftData = {};
+        var isOrder ="${param.isOrder}";
+        
+		var leftData = {};
 				//ajax获取左侧章节展示树
 		    $.ajax({
 					  url: "${ctx}/ajax/passThrough/getBamCatalogTree",
@@ -426,96 +359,6 @@
             }).parent().height($("#sidebar").height());
         },100);
 				
-				/*
-        var examData = {// 测试用 数据 ，ajax后删除
-            type: "exam",
-            status: "doing",
-            courseName: "雅思口语新教师培训课程",
-            lectureName: "参加在线测试",
-            lectureIntro: "为获得更好的测试效果，建议您关闭IM聊天工具、视频音频等干扰源。测试过程中尽量不要离开。请勿关闭浏览器，否则测试结果将无法保存。",
-            num: 2,
-            isOptional: true,
-            listExamPaper: [//试卷列表数据结构
-                {
-                    id: "fdid08582300324",
-                    name: "雅思口语强化课程教案解读主试卷",
-                    fullScore: 50,
-                    examCount: 3,
-                    examPaperTime: 20,
-                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                    examPaperStatus: "unfinish"//unfinish, pass, fail, finish
-                },
-                {
-                    id: "fdid08580000432",
-                    name: "雅思口语强化课程教案解读主试卷2",
-                    fullScore: 50,
-                    examCount: 3,
-                    examPaperTime: 20,
-                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                    examPaperStatus: "pass"//unfinish, pass, fail, finish
-                },
-                {
-                    id: "fdid085800324324",
-                    name: "雅思口语强化课程教案解读主试卷3",
-                    fullScore: 50,
-                    examCount: 3,
-                    examPaperTime: 20,
-                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                    examPaperStatus: "fail"//unfinish, pass, fail, finish
-                }
-            ]
-        }
-
-        var taskData = {// 测试用 数据 ，ajax后删除
-            type: "task",
-            status: "doing",
-            courseName: "雅思口语新教师培训课程",
-            lectureName: "提交学术作业",
-            lectureIntro: "为获得更好的测试效果，建议您关闭IM聊天工具、视频音频等干扰源。测试过程中尽量不要离开。请勿关闭浏览器，否则测试结果将无法保存。",
-            num: 2,
-            isOptional: false,
-            listExamPaper: [//作业包 列表数据结构
-                {
-                    id: "fdid08582300324",
-                    name: "雅思口语强化课程教案解读作业包",
-                    fullScore: 50,
-                    examCount: 4,
-                    examPaperTime: 20,
-                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                    examPaperStatus: "unfinish"//unfinish, pass, fail, finish
-                },
-                {
-                    id: "fdid08582300324",
-                    name: "雅思口语强化课程教案解读作业包",
-                    fullScore: 50,
-                    examCount: 4,
-                    examPaperTime: 20,
-                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                    examPaperStatus: "pass"//unfinish, pass, fail, finish
-                },
-                {
-                    id: "fdid08582300324",
-                    name: "雅思口语强化课程教案解读作业包",
-                    fullScore: 50,
-                    examCount: 4,
-                    examPaperTime: 20,
-                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                    examPaperStatus: "fail"//unfinish, pass, fail, finish
-                },
-                {
-                    id: "fdid08582300324",
-                    name: "雅思口语强化课程教案解读作业包",
-                    fullScore: 50,
-                    examCount: 4,
-                    examPaperTime: 20,
-                    examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                    examPaperStatus: "finish"//unfinish, pass, fail, finish
-                }
-            ]
-        }
-        */
-        
-        
         $("#sidenav>li>a").popover({
             trigger: "hover"
         })
@@ -532,7 +375,6 @@
         function loadRightCont(fdid,type){
         	catalogId=fdid;
 		    fdMtype=type;
-		    alert(catalogId+","+fdMtype);
 	        $.ajax({
 		  			  url: "${ctx}/ajax/passThrough/getCourseContent",
 		  			  async:false,
@@ -554,17 +396,6 @@
 		  			  },
 	  			});
 	        
-            //$.get("url",{id: fdid}).success(function(result){//  ajax
-            //result = taskData;// 测试用 数据 ，ajax后删除
-            //$("#mainContent").html(rightContentFn(result));
-            //if(result.type == "exam" || result.type == "task"){
-            //    afterLoadExamOrTaskPage(result);
-            //} else if(result.type == "video"){
-            //    afterLoadVideoPage(result);
-            //} else if(result.type == "doc"){
-            //    afterLoadDocPage(result);
-            //}
-            //});
 
             //可选章节按钮
             $("#btnOptionalLecture").css("cursor","pointer")
@@ -585,185 +416,20 @@
                         var $this = $(this);
                         var tempData = {};
                         $this.prev(".titBar").addClass("hide");
-                        if(data.type == "exam"){
-                            /*$.getJSON("url",{id: $this.attr("data-fdid")}).success(function(result){
-                             tempData = result;
-                             });*/
-                             
-                            $.ajax({
-           		  			  url: "${ctx}/ajax/passThrough/getSubInfoByMaterialId",
-           		  			  async:false,
-           		  			  data:{
-           		  				materialId: $this.attr("data-fdid"),
-           		  				catalogId:catalogId,
-           		  				bamId:bamId,
-           		  				sourceType:fdMtype,
-           		  			  },
-           		  			  dataType:'json',
-           		  			  success: function(result){
-           		  				tempData=result;
-           		  			  }
-           	  			}); 
-                        } else if(data.type == "task"){
-                              $.ajax({
-            		  			  url: "${ctx}/ajax/passThrough/findTaskByPaperId",
-            		  			  async:false,
-            		  			  data:{
-            		  				  fdId: $this.attr("data-fdid"),
-            		  				  catalogId: catalogId
-            		  			  },
-            		  			  dataType:'json',
-            		  			  success: function(result){
-            		  				 tempData = result;
-            		  			  },
-            	  			});
-                             
-                           /*  tempData = {//作业包假数据，完事儿删除
-                                id: "fdid08582300324",
-                                name: "雅思口语强化课程教案解读",
-                                fullScore: 50,
-                                examPaperTime: 20,
-                                examPaperIntro: "雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷雅思口语强化课程教 案解读主试卷 雅思口语强化课程教案解读主试卷 雅思口语强化课程教案解读主试卷",
-                                examPaperStatus: "unfinish",//unfinish, pass, fail, finish
-                                listExam: [
-                                    {
-                                        id: "fdid00000000322",
-                                        index: 0,
-                                        status: "finish",//success,error,null,finish
-                                        examType: "uploadWork",//uploadWork, onlineAnswer
-                                        examScore: 5,
-                                        examName: "LA1-雅思听力评分细则",
-                                        examStem: "请仔细学习剑4-剑8、雅思全真模拟题试题，然后按照附件中的模板要求，提交雅思听力评分细则作业。本作业建议完成时间为 3 小时。",
-                                        listTaskAttachment: [
-                                            {
-                                                id: "fdid24123212",
-                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                                url: "#"
-                                            },
-                                            {
-                                                id: "fdid0000023212",
-                                                name: "高新技术产业各领域咨询报告.pdf",
-                                                url: "#"
-                                            }
-                                        ],
-                                        listAttachment: [
-                                            {
-                                                index: 0,
-                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                                url: "#"
-                                            },
-                                            {
-                                                index: 3,
-                                                name: "高新技术产业各领域咨询报告.pdf",
-                                                url: "#"
-                                            },
-                                            {
-                                                index: 2,
-                                                name: "高新技术产业各领域专家分析讲座.mp4",
-                                                url: "#"
-                                            },
-                                            {
-                                                index: 1,
-                                                name: "高新技术产业各领域咨询报告2.pdf",
-                                                url: "#"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        id: "fdid00000000322",
-                                        index: 2,
-                                        status: "error",//success,error,null,finish
-                                        examType: "uploadWork",//uploadWork, onlineAnswer
-                                        examScore: 5,
-                                        examName: "LA1-雅思听力评分细则",
-                                        examStem: "请仔细学习剑4-剑8、雅思全真模拟题试题，然后按照附件中的模板要求，提交雅思听力评分细则作业。本作业建议完成时间为 3 小时。",
-                                        teacherRating:{
-                                            teacher: {
-                                                imgUrl: './images/temp-face.jpg',
-                                                link: "#"
-                                            },
-                                            score: 1,
-                                            comment: "作业不太好，加油吧。"
-                                        },
-                                        listTaskAttachment: [
-                                            {
-                                                id: "fdid24123212",
-                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                                url: "#"
-                                            },
-                                            {
-                                                id: "fdid0000012",
-                                                name: "高新技术产业各领域咨询报告.pdf",
-                                                url: "#"
-                                            }
-                                        ],
-                                        listAttachment: [
-                                            {
-                                                index: 0,
-                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                                url: "#"
-                                            },
-                                            {
-                                                index: 3,
-                                                name: "高新技术产业各领域咨询报告.pdf",
-                                                url: "#"
-                                            },
-                                            {
-                                                index: 2,
-                                                name: "高新技术产业各领域专家分析讲座.mp4",
-                                                url: "#"
-                                            },
-                                            {
-                                                index: 1,
-                                                name: "高新技术产业各领域咨询报告2.pdf",
-                                                url: "#"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        id: "fdid00000000322",
-                                        index: 1,
-                                        status: "success",//success,error,null,finish
-                                        examType: "onlineAnswer",//uploadWork, onlineAnswer
-                                        examScore: 5,
-                                        examName: "LA1-雅思听力评分细则",
-                                        examStem: "请仔细学习剑4-剑8、雅思全真模拟题试题，然后按照附件中的模板要求，提交雅思听力评分细则作业。本作业建议完成时间为 3 小时。",
-                                        answer: "这里是答案这里是答案这里是答案这里是答案这里是答案",
-                                        teacherRating:{
-                                            teacher: {
-                                                imgUrl: './images/temp-face.jpg',
-                                                link: "#"
-                                            },
-                                            score: 4,
-                                            comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。"
-                                        },
-                                        listAttachment: [
-                                            {
-                                                index: 0,
-                                                name: "高新技术产业各领域增加值饼形图（单位：亿元）.jpg",
-                                                url: "#"
-                                            },
-                                            {
-                                                index: 3,
-                                                name: "高新技术产业各领域咨询报告.pdf",
-                                                url: "#"
-                                            },
-                                            {
-                                                index: 2,
-                                                name: "高新技术产业各领域专家分析讲座.mp4",
-                                                url: "#"
-                                            },
-                                            {
-                                                index: 1,
-                                                name: "高新技术产业各领域咨询报告2.pdf",
-                                                url: "#"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            } */
-                        }
-
+                        $.ajax({
+         		  			  url: "${ctx}/ajax/passThrough/getSubInfoByMaterialId",
+         		  			  async:false,
+         		  			  data:{
+         		  				materialId: $this.attr("data-fdid"),
+         		  				catalogId:catalogId,
+         		  				bamId:bamId,
+         		  				sourceType:fdMtype,
+         		  			  },
+         		  			  dataType:'json',
+         		  			  success: function(result){
+         		  				tempData=result;
+         		  			  }
+         	  			}); 
                         tempData.type = data.type;
                         tempData.num = $this.parent().index() + 1;
                         tempData.examCount = tempData.listExam.length;
