@@ -18,6 +18,7 @@ import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.material.ExamOpinion;
 import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.material.Task;
 import cn.me.xdf.model.process.AnswerRecord;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.SimpleService;
@@ -110,7 +111,7 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 			answerRecords.add(answerRecord);
 		}
 		sourceNode.setAnswerRecords(answerRecords);
-		//sourceNodeService.save(sourceNode);
+		sourceNodeService.save(sourceNode);
 		//试题对应答案信息
 		
         return null;  //To change body of implemented methods use File | Settings | File Templates.
@@ -140,18 +141,11 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 				opinionlist.add(opinionMap);
 			}
 			map2.put("listExamAnswer", opinionlist);
-			List<AttMain> attMains = attMainService.findByCriteria(AttMain.class,
-	                Value.eq("fdModelId", examQuestion2.getFdId()),
-	                Value.eq("fdModelName", ExamQuestion.class.getName()));	
-			List<Map> attlist = new ArrayList<Map>();
-			for (AttMain attMain : attMains) {
-				Map attMap = new HashMap();
-				attMap.put("index", attMain.getFdOrder());
-				attMap.put("name", attMain.getFdFileName());
-				attMap.put("url", attMain.getFdFilePath());
-				attlist.add(attMap);
-			}
-			map2.put("listAttachment", attlist);
+			
+			List<AttMain> taskAtt = attMainService.
+					getByModeslIdAndModelNameAndKey(examQuestion2.getFdId(),ExamQuestion.class.getName(),"ExamQuestion");
+			
+			map2.put("listAttachment", taskAtt);
 			listExam.add(map2);
 		}
 		return listExam;

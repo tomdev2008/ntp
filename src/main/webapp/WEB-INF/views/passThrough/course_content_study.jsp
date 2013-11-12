@@ -224,11 +224,11 @@
                             {{=index2+1}}. {{=exam.examStem}} （{{=exam.examScore}}分）
                         </dt>
                         <dd>
-                            <ul class="attachList unstyled">
+                             <ul class="attachList unstyled">
                                 {{~exam.listAttachment :att1:index1}}
                                 {{~exam.listAttachment :att:index}}
-                                {{?index1 == att.index}}
-                                    <li><a href="{{=att.url}}"><i class="icon-paperClip"></i>{{=att.name}}</a></li>
+                                {{?index1 == att.fdOrder}}
+                                    <li><a href="${ctx}/common/file/download/{{=att.fdId}}"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
                                 {{?}}
                                 {{~}}
                                 {{~}}
