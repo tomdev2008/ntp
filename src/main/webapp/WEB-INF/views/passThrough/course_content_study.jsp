@@ -311,7 +311,7 @@
                             <div class="bdt1 pd20">
                                 <div class="media teacherRating">
                                     <div class="pull-left">
-                                        <a href="#"><img class="media-object" src="{{=task.teacherRating.teacher.imgUrl}}" alt="指导老师"/></a>
+                                      <a href="#"><img class="media-object" src="{{=task.teacherRating.teacher.imgUrl}}" alt="指导老师"/></a>
                                         <h3>指导老师</h3>
                                     </div>
                                     <div class="media-body">
@@ -498,6 +498,7 @@
                         var tempData = {};
                         $this.prev(".titBar").addClass("hide");
                         $.ajax({
+                        	  type:"post",
          		  			  url: "${ctx}/ajax/passThrough/getSubInfoByMaterialId",
          		  			  async:false,
          		  			  data:{

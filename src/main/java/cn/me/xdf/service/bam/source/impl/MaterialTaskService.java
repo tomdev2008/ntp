@@ -143,25 +143,30 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 			SourceNote sourceNote = sourceNodeService.getSourceNote(materialInfo.getFdId(),
 					catalogId, ShiroUtils.getUser().getId());
 			if (sourceNote != null) {
-				List<Map> recordList = new ArrayList<Map>();
 				Set<TaskRecord> taskRecordList = sourceNote.getTaskRecords();
 				for (TaskRecord taskRecord : taskRecordList) {
 					if(taskRecord.getFdTaskId().equals(task.getFdId())){
 						Map record = new HashMap();
-						record.put("score", taskRecord.getFdScore() == null ? 0: sourceNote.getFdScore());
+						if(taskRecord.getFdScore()!=null){
+							record.put("score", taskRecord.getFdScore());
+						}
 						record.put("comment", taskRecord.getFdComment());
-						if(StringUtil.isNotBlank(sourceNote.getFdAppraiserId())){
-							SysOrgPerson person = accountService.load(sourceNote.getFdAppraiserId());
+						if(StringUtil.isNotBlank(taskRecord.getFdAppraiserId())){
+							SysOrgPerson person = accountService.load(taskRecord.getFdAppraiserId());
 							Map teacher= new HashMap();
 							teacher.put("imgUrl", person.getPoto());
 							record.put("teacher", teacher);
 						}
-						recordList.add(record);
+						taskMap.put("teacherRating", record);
 						///作业状态
 						if(taskRecord.getFdStatus().equals(Constant.TASK_STATUS_UNFINISH)){
 							taskMap.put("status", "null");
 						}else if(taskRecord.getFdStatus().equals(Constant.TASK_STATUS_FINISH)){
 							taskMap.put("status", "finish");
+						}else if(taskRecord.getFdStatus().equals(Constant.TASK_STATUS_PASS)){
+							taskMap.put("status", "success");
+						}else if(taskRecord.getFdStatus().equals(Constant.TASK_STATUS_FAIL)){
+							taskMap.put("status", "error");
 						}
 						List<AttMain> answerAtt = attMainService.getByModeslIdAndModelNameAndKey(taskRecord.getFdId(), TaskRecord.class.getName(),task.getFdId());
 						taskMap.put("listTaskAttachment", answerAtt);//存放答题者上传的附件
@@ -169,7 +174,7 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 						break;
 					}
 				}
-				taskMap.put("teacherRating", recordList);
+				
 			}
 			
 			list.add(taskMap);
