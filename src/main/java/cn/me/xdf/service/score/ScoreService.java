@@ -84,16 +84,19 @@ public class ScoreService extends BaseService{
 	 */
 	public Score saveScore(String fdModelName,String fdModelId,String fdScore,String userId){
 		Score s = findByModelIdAndUserId(fdModelName,fdModelId, userId);
-		if(s!=null){
-			throw new RuntimeException("不能重复评分");
+		Score score ;
+		if(s==null){
+			score = new Score();
+			SysOrgPerson orgPerson = accountService.load(userId);
+			score.setFdModelName(fdModelName);
+			score.setFdModelId(fdModelId);
+			score.setFdCreateTime(new Date());
+			score.setFdScore(new Integer(fdScore));
+			score.setFdUser(orgPerson);
+		}else{
+			score = s; 
+			score.setFdScore(new Integer(fdScore));
 		}
-		SysOrgPerson orgPerson = accountService.load(userId);
-		Score score = new Score();
-		score.setFdModelName(fdModelName);
-		score.setFdModelId(fdModelId);
-		score.setFdCreateTime(new Date());
-		score.setFdScore(new Integer(fdScore));
-		score.setFdUser(orgPerson);
 		return save(score);
 	}
 	

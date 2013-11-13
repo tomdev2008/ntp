@@ -32,6 +32,7 @@ $("#addMessage").bind("click",function(){
 	$.ajax({
 		  url: "${ctx}/ajax/message/addCourseMessage",
 		  async:false,
+		  type: "post",
 		  dataType : 'json',
 		  data:{
 			  courseId:"${param.courseId}",
@@ -49,25 +50,31 @@ $("#addMessage").bind("click",function(){
 $.ajax({
 	  url: "${ctx}/ajax/score/canPushScoreToCourse",
 	  async:false,
+	  type: "post",
 	  dataType : 'json',
 	  data:{
 		  fdModelId:"${param.courseId}",
 	  },
 	  success: function(result){
-		  //alert(result);
-		  if(result==true){
+		  $("#ratingDo  i").each(function(index){	
+				$(this).bind("mouseover",function(){
+					$(this).addClass("active").prevAll().addClass("active");
+					$(this).nextAll().removeClass("active");
+					$("#myScore").html((index+1));
+				});
+				$(this).bind("click",function(){
+					scoreing();
+				});
+				$(this).bind("mouseout",function(){
+					  setMyScore(0);
+				});
+		  });
+		  if(result!=-1){
 			  $("#ratingDo  i").each(function(index){	
-					$(this).bind("mouseover",function(){
-						$(this).addClass("active").prevAll().addClass("active");
-						$(this).nextAll().removeClass("active");
-						$("#myScore").html((index+1));
-					});
-					$(this).bind("click",function(){
-						scoreing();
-					});
-
-				}); 
-		  }else{
+				  $(this).bind("mouseout",function(){
+					  setMyScore(result);
+				});
+			  }); 
 			  setMyScore(result);
 		  }
 	  }
@@ -79,6 +86,7 @@ function scoreing(){
 	 $.ajax({
 		  url: "${ctx}/ajax/score/pushScoreToCourse",
 		  async:false,
+		  type: "post",
 		  dataType : 'json',
 		  data:{
 			  fdModelId:"${param.courseId}",
@@ -86,7 +94,14 @@ function scoreing(){
 		  },
 		  success: function(result){
 			  $.fn.jalert2("评分成功");
-			  $("#ratingDo  i").unbind();
+			  //$("#ratingDo  i").unbind();
+			  var score = (parseInt($("#myScore").html()));
+			  $("#ratingDo  i").each(function(index){	
+					$(this).bind("mouseout",function(){
+						  setMyScore(score);
+					});
+			  }); 
+			  setMyScore(score);
 			  setCourseScore();
 		  }
 	});
@@ -100,7 +115,7 @@ function setMyScore(score){
 		}else{
 			$(this).removeClass("active");
 		}
-		$("#myScore").html(score);
+		$("#myScore").html(parseInt(score));
 	}); 
 }
 //重置课程情分信息
@@ -109,6 +124,7 @@ function setCourseScore(){
 	 $.ajax({
 		  url: "${ctx}/ajax/score/getCourseScoreStatisticsByfdModelId",
 		  async:false,
+		  type: "post",
 		  dataType : 'json',
 		  data:{
 			  fdModelId:"${param.courseId}",

@@ -117,13 +117,13 @@ public class ScoreAjaxController {
 	 * @param fdModelName   业务Name
 	 * @param userId      评分人Id
 	 * 
-	 * @return  String(true:可以评分；“...”：已评分数)
+	 * @return  String(isnot:没有评分；“...”：已评分数)
 	 */
 	@RequestMapping(value = "canPushScore")
 	@ResponseBody
-	public String canPushScore(String fdModelName, String fdModelId,String userId) {
+	public int canPushScore(String fdModelName, String fdModelId,String userId) {
 		Score score = scoreService.findByModelIdAndUserId(fdModelName,fdModelId, userId);
-		return (score == null) ? "true" : score.getFdScore()+"";
+		return (score == null) ? -1 : score.getFdScore();
 	}
 	
 	/**
@@ -140,7 +140,7 @@ public class ScoreAjaxController {
 	 */
 	@RequestMapping(value = "canPushScoreToCourse")
 	@ResponseBody
-	public String canPushScoreToCourse(String fdModelId){
+	public int canPushScoreToCourse(String fdModelId){
 		return canPushScore(CourseInfo.class.getName() ,fdModelId ,ShiroUtils.getUser().getId());
 	}
 	
