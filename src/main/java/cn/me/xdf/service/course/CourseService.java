@@ -70,6 +70,10 @@ public class CourseService  extends BaseService{
 		finder.append(" on course.fdid=scorestatis.fdmodelid  and scorestatis.fdmodelname='"+CourseInfo.class.getName()+"' ");
 		//课程列表中有效的
 		finder.append("where course.isavailable='1'");/*有效的*/
+		if(Constant.COUSER_AUTH_MANAGE.equals(seleType)){//课程授权
+		  //非公开  已发布  无密码
+			finder.append(" and course.ispublish=0  and  course.fdstatus='01'  and course.fdpassword is null ");
+		}
 		//如果是管理员就显示所有有效的
 		if(!ShiroUtils.isAdmin()){
 			if(Constant.COUSER_TEMPLATE_MANAGE.equals(seleType)){//课程模版查询
