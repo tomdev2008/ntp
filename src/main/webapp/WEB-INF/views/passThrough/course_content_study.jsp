@@ -289,7 +289,7 @@
                                 <ul class="attachList unstyled" id="listTaskAttachment_{{=task.id}}">
                                     {{~task.listTaskAttachment :att2}}
                                         <li id="attach{{=att2.id}}">
-                                            
+                                            <input type="hidden" value='{{=att2.fdId}}' name='attach_{{=task.id}}' id='answerAttId_{{=task.id}}'>
                                             <a href="${ctx}/common/file/download/{{=att2.fdId}}">
 												<i class="icon-paperClip"></i>{{=att2.fdFileName}}</a>
                                             <a href="#" class="icon-remove-blue"></a>
@@ -589,7 +589,7 @@
                                     if (Response) {
                                         var objvalue = eval("(" + datas + ")");
                                         jQuery("#attName").html(objvalue.fileName);
-                                        var html = "<li id='attach"+objvalue.attId+"'><input type='hidden' value='"+objvalue.attId+"' name='attach_"+fileid+"' id='answerAttId'><a><i class='icon-paperClip'></i>"
+                                        var html = "<li id='attach"+objvalue.attId+"'><input type='hidden' value='"+objvalue.attId+"' name='attach_"+fileid+"' id='answerAttId_"+fileid+"'><a><i class='icon-paperClip'></i>"
                                         +objvalue.fileName+"</a><a href='#' class='icon-remove-blue'></a></li>";
                                         $("#listTaskAttachment_"+fileid).append(html);
                                     }

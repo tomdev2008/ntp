@@ -88,13 +88,16 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 				attMainService.deleteAttMainByModelId(taskRecord.getFdId());
 				///保存附件
 				String[] taskAttArrId = request.getParameterValues("attach_"+task.getFdId());
-				for (String taskAttId : taskAttArrId) {
-					AttMain attMain = attMainService.get(taskAttId);
-					attMain.setFdModelId(taskRecord.getFdId());
-					attMain.setFdModelName(TaskRecord.class.getName());
-					attMain.setFdKey(task.getFdId());
-					attMainService.save(attMain);
-					attMains.add(attMain);
+				
+				if(taskAttArrId!=null){
+					for (String taskAttId : taskAttArrId) {
+						AttMain attMain = attMainService.get(taskAttId);
+						attMain.setFdModelId(taskRecord.getFdId());
+						attMain.setFdModelName(TaskRecord.class.getName());
+						attMain.setFdKey(task.getFdId());
+						attMainService.save(attMain);
+						attMains.add(attMain);
+					}
 				}
 				if(attMains.isEmpty()){
 					taskRecord.setFdStatus(Constant.TASK_STATUS_UNFINISH);//00 未答
