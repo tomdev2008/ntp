@@ -317,23 +317,20 @@ public class PassThroughAjaxController {
 	}
 	/**
 	 *获取当前选中节的上一节点和下一节点,节点id,是否通过学习
+	 * @param catalogs  节列表
+	 * @param currentCatalog  当前节
+	 * @return 当前节点的上下节点
 	 */
 		private Map getCurrentCatalog(List<CourseCatalog> catalogs,CourseCatalog currentCatalog){
 			//分离章节集合中的节
-			List<CourseCatalog> onlyCatalogs=new ArrayList<CourseCatalog>();
-			for(CourseCatalog courseCatalog:catalogs){
-				if(Constant.CATALOG_TYPE_CHAPTER!=courseCatalog.getFdType()){
-					onlyCatalogs.add(courseCatalog);
-				}
-			}
 			CourseCatalog prevCatalog=null;
 			CourseCatalog nextCatalog=null;
 			Map pn=new HashMap();
 			if(currentCatalog.getFdNo()==1){//当前节是节1的情况
 				pn.put("prevc", "0");
 				pn.put("pstatus", "untreated");
-				if(onlyCatalogs.size()>2){//总节数>2节
-					nextCatalog=getpnCatalog(onlyCatalogs,currentCatalog.getFdNo()+1);
+				nextCatalog=getpnCatalog(catalogs,currentCatalog.getFdNo()+1);
+				if(nextCatalog!=null){//总节数>2节
 					pn.put("nextc", nextCatalog.getFdId());
 					if(nextCatalog.getThrough()==null){
 						pn.put("nstatus", "untreated");
@@ -348,25 +345,20 @@ public class PassThroughAjaxController {
 				}
 			}
 			if(currentCatalog.getFdNo()>1){//节编号大于1说明有上一节点 
-				prevCatalog=getpnCatalog(onlyCatalogs,currentCatalog.getFdNo()-1);
+				prevCatalog=getpnCatalog(catalogs,currentCatalog.getFdNo()-1);
 				pn.put("prevc", prevCatalog.getFdId());
 				pn.put("pstatus", "pass");
-				if(onlyCatalogs.size()>2){//总节数>2节
-					if(onlyCatalogs.size()==currentCatalog.getFdNo()){//当前节是节尾
-						pn.put("nextc", "0");
+				nextCatalog=getpnCatalog(catalogs,currentCatalog.getFdNo()+1);
+				if(nextCatalog!=null){//当前节是节尾
+					pn.put("nextc", nextCatalog.getFdId());
+					if(nextCatalog.getThrough()==null){
 						pn.put("nstatus", "untreated");
-					}else{
-						nextCatalog=getpnCatalog(onlyCatalogs,currentCatalog.getFdNo()+1);
-						pn.put("nextc", nextCatalog.getFdId());
-						if(nextCatalog.getThrough()==null){
-							pn.put("nstatus", "untreated");
-						}else if(nextCatalog.getThrough()==false){
-							pn.put("nstatus", "doing");
-						}else if(nextCatalog.getThrough()==true){
-							pn.put("nstatus", "pass");
-						}
+					}else if(nextCatalog.getThrough()==false){
+						pn.put("nstatus", "doing");
+					}else if(nextCatalog.getThrough()==true){
+						pn.put("nstatus", "pass");
 					}
-				}else{//当前节点有上一节但是没下一节
+				}else{
 					pn.put("nextc", "0");
 					pn.put("nstatus", "untreated");
 				}
@@ -375,10 +367,13 @@ public class PassThroughAjaxController {
 		}
 		/**
 		 * 根据节号抽去节
+		 * @param catalogs 章节集合
+		 * @param no       节号
+		 * @return   节信息
 		 */
 		private CourseCatalog getpnCatalog(List<CourseCatalog> catalogs,Integer no){
 			for(CourseCatalog courseCatalog:catalogs){
-				if(courseCatalog.getFdNo()==no){
+				if(Constant.CATALOG_TYPE_CHAPTER!=courseCatalog.getFdType()&&courseCatalog.getFdNo()==no){
 					return courseCatalog;
 				}
 			}
