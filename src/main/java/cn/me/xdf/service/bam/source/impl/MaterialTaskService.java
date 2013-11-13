@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jodd.util.StringUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;
@@ -23,6 +25,7 @@ import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.model.process.TaskRecord;
 import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.bam.BamCourseService;
+import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.bam.source.ISourceService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.material.MaterialService;
@@ -44,6 +47,9 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 	@Autowired
 	private TaskService taskService;
 	
+	@Autowired
+	private SourceNodeService sourceNodeService;
+	
 	@Override
     public Object findSourceByMaterials(BamCourse bamCourse, CourseCatalog catalog) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
@@ -56,27 +62,7 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 		String taskPaperId = request.getParameter("fdid");
 		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
 		MaterialInfo info = materialService.get(taskPaperId);
-		//request.getParameterValues("attach_"+task.getFdId())
-		List<Task> taskList = taskService.findByProperty("taskPackage.fdId", taskPaperId);
-		for (Task task : taskList) {
-			String taskAttIds = request.getParameter("attach_"+task.getFdId());
-			String[] taskAttId = taskAttIds.split(",");
-			for (int i = 0; i < taskAttId.length; i++) {
-				
-			}
-		}
-		Set<TaskRecord> answerRecords = new HashSet<TaskRecord>();
-		for (Task task : taskList) {
-			TaskRecord taskRecord = new TaskRecord();
-			taskRecord.setFdTaskId(task.getFdId());
-			if(task.getFdType().equals(Constant.TASK_TYPE_UPLOAD)){
-				taskRecord.setAttMains(null);
-			}
-			if(task.getFdType().equals(Constant.TASK_TYPE_ONLINE)){
-				taskRecord.setFdAnswer(null);
-			}
-			
-		}
+		
 		SourceNote sourceNode =new SourceNote();
 		sourceNode.setFdCourseId(bamCourse.getCourseId());
 		sourceNode.setFdCatalogId(catalogId);
@@ -84,14 +70,43 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 		sourceNode.setFdOperationDate(new Date());
 		sourceNode.setFdExamTime(info.getFdStudyTime());
 		
+		// request.getParameterValues("attach_"+task.getFdId())
+		List<Task> taskList = taskService.findByProperty("taskPackage.fdId",taskPaperId);
+		for (Task task : taskList) {
+			String taskAttIds = request.getParameter("attach_" + task.getFdId());
+			String[] taskAttId = taskAttIds.split(",");
+			for (int i = 0; i < taskAttId.length; i++) {
+             
+			}
+		}
+		Set<TaskRecord> answerRecords = new HashSet<TaskRecord>();
+		for (Task task : taskList) {
+			TaskRecord taskRecord = new TaskRecord();
+			taskRecord.setFdTaskId(task.getFdId());
+			if(task.getFdType().equals(Constant.TASK_TYPE_ONLINE)){//在线作答
+				String answer = request.getParameter("answer_"+task.getFdId());
+				taskRecord.setFdAnswer(answer);
+				if(StringUtil.isBlank(answer)){
+					taskRecord.setFdStatus(Constant.TASK_STATUS_UNFINISH);//00 未答
+				} else {
+					taskRecord.setFdStatus(Constant.TASK_STATUS_FINISH);//01 答完
+				}
+			}
+			if(task.getFdType().equals(Constant.TASK_TYPE_UPLOAD)){//上传作业
 		
-		
+				taskRecord.setAttMains(null);
+			}
+			answerRecords.add(taskRecord);
+		}
+		sourceNode.setTaskRecords(answerRecords);
+		//sourceNodeService.save(sourceNode);
         return null;  
     }
+    
 
 	@Override
 	public Object findSubInfoByMaterial(WebRequest request) {
-		String materialId = request.getParameter("fdId");
+		String materialId = request.getParameter("materialId");
 		String catalogId = request.getParameter("catalogId");//节id
 		MaterialInfo materialInfo = materialService.load(materialId);
 		List<Task> taskList = materialInfo.getTasks();

@@ -9,8 +9,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>新东方在线教师备课平台</title>
-<link href="${ctx}/resources/theme/default/css/global.css" rel="stylesheet" type="text/css">
-<link href="${ctx}/resources/theme/default/css/layout.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
 <style type="text/css">
 .uploadify-button {
@@ -63,6 +61,8 @@
 	width: 1px;
 }
 </style>
+<link href="${ctx}/resources/theme/default/css/global.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/theme/default/css/layout.css" rel="stylesheet" type="text/css">
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
 <![endif]-->
@@ -274,14 +274,14 @@
                                 <div class="control-upload">
 
                                   <div class="upload-fileName"><span id="attName"></span><i class="icon-paperClip"></i></div>
- 				    			  <div id="taskAttSeq" style="height:20px;width:637px;display:block;"> </div>
+ 				    			  <div id="taskAttSeq_{{=task.id}}" style="height:20px;width:637px;display:block;"> </div>
 					              <div style="margin-left:637px;margin-top: 8px;height:40px;width:600px;display:block;">
-						            <button id="answerAtt" class="btn btn-primary btn-large" type="button" >上传</button>
+						            <button name="answerAtt" id="{{=task.id}}" class="btn btn-primary btn-large" type="button" >上传</button>
 					              </div>
 					              <input type="hidden" value="" name="attach_{{=task.id}}" id="answerAttId">
 
                                 </div>
-                                <ul class="attachList unstyled" id="listTaskAttachment">
+                                <ul class="attachList unstyled" id="listTaskAttachment_{{=task.id}}">
                                     {{~task.listTaskAttachment :att2}}
                                         <li id="attach{{=att2.id}}">
                                             <a href="${ctx}/common/file/download/{{=att2.fdId}}">
@@ -296,7 +296,7 @@
                                 {{?}}
                                 {{?task.status != 'success'}}
                                     <label>答题</label>
-                                    <textarea name="answer{{=task.id}}" required class="input-block-level" placeholder="请必务填写" rows="4"></textarea>
+                                    <textarea name="answer_{{=task.id}}" required class="input-block-level" placeholder="请必务填写" rows="4"></textarea>
                                 {{?}}
                             {{?}}
                         </div>
@@ -525,11 +525,17 @@
                         var date = new Date();
                         tempData.startTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                         $this.html(examPaperDetailFn(tempData));
-
-                        $("#listTaskAttachment>li>.icon-remove-blue").click(function(e){
-                            e.preventDefault();
-                            $(this).parent().remove();
-                        })
+                        
+                       $("button[name='answerAtt']").each(function(){
+                        	//var fileid = $(this).attr('id'); 
+                        	var temp = "#listTaskAttachment_"+$(this).attr('id')+">li>.icon-remove-blue";
+                        	 $(temp).click(function(e){
+                                 e.preventDefault();
+                                 $(this).parent().remove();
+                             })
+                        	
+                         }); 
+                       
                     })
                     .bind("shown",function(){
                         var $this = $(this);
@@ -543,47 +549,54 @@
                         }
                         $window.scrollTop(sTop);
                        
-                        jQuery("#answerAtt").uploadify({
-                            'height' : 27,
-                            'width' : 80,
-                            'multi' : false,// 是否可上传多个文件
-                            'simUploadLimit' : 1,
-                            'swf' : '${ctx}/resources/uploadify/uploadify.swf',
-                            'buttonText' : '上 传',
-                            'uploader' : '${ctx}/common/file/o_upload',
-                            'auto' : true,// 选中后自动上传文件
-                            'queueID': 'taskAttSeq',// 文件队列div
-                            'fileSizeLimit':2097152,// 限制文件大小为2G
-                            'queueSizeLimit':1,
-                            'onUploadStart' : function (file) {
-                                jQuery("#answerAtt").uploadify("settings", "formData");
-                            },
-                            'onUploadSuccess' : function (file, datas, Response) {
-                                if (Response) {
-                                	var objvalue = eval("(" + datas + ")");
-                                    //answerAttId
-                                    var value = $("#answerAttId").val(); 
-                                    $("#answerAttId").val(objvalue.attId+","+value);
-                                    jQuery("#attName").html(objvalue.fileName);
-                                    var html = "<li id='attach'><a><i class='icon-paperClip'></i>"+objvalue.fileName+"<a href='#' class='icon-remove-blue'></a></li>";
-                                     $("#listTaskAttachment").append(html);
-                                }
-                            },
-                            'onSelect':function(file){
-                            	// 选择新文件时,先清文件列表,因为此处是课程封页,所以只需要一个图片附件
-                            	var queuedFile = {};
-                    			for (var n in this.queueData.files) {
-                    					queuedFile = this.queueData.files[n];
-                    					if(queuedFile.id!=file.id){
-                    						delete this.queueData.files[queuedFile.id]
-                    						$('#' + queuedFile.id).fadeOut(0, function() {
-                    							$(this).remove();
-                    						});
-                    					}
-                    				}
-                            },
-                            'removeCompleted':false // 进度条不消失
-                        });
+                        $("button[name='answerAtt']").each(function(){
+                        	
+                        	var fileid = $(this).attr('id');
+                        	
+                        	$('#'+fileid).uploadify({
+                                'height' : 27,
+                                'width' : 80,
+                                'multi' : false,// 是否可上传多个文件
+                                'simUploadLimit' : 1,
+                                'swf' : '${ctx}/resources/uploadify/uploadify.swf',
+                                'buttonText' : '上 传',
+                                'uploader' : '${ctx}/common/file/o_upload',
+                                'auto' : true,// 选中后自动上传文件
+                                'queueID': 'taskAttSeq_'+fileid,// 文件队列div
+                                'fileSizeLimit':2097152,// 限制文件大小为2G
+                                'queueSizeLimit':1,
+                                'onUploadStart' : function (file) {
+                                	$('#'+fileid).uploadify("settings", "formData");
+                                },
+                                'onUploadSuccess' : function (file, datas, Response) {
+                                    if (Response) {
+                                        var objvalue = eval("(" + datas + ")");
+                                        //answerAttId
+                                        var value = $("#answerAttId").val(); 
+                                        $("#answerAttId").val(objvalue.attId+","+value);
+                                        jQuery("#attName").html(objvalue.fileName);
+                                        var html = "<li id='attach"+objvalue.attId+"'><a><i class='icon-paperClip'></i>"+objvalue.fileName+"<a href='#' class='icon-remove-blue'></a></li>";
+                                        $("#listTaskAttachment_"+fileid).append(html);
+                                    }
+                                },
+                                'onSelect':function(file){
+                                	// 选择新文件时,先清文件列表,因为此处是课程封页,所以只需要一个图片附件
+                                	var queuedFile = {};
+                        			for (var n in this.queueData.files) {
+                        					queuedFile = this.queueData.files[n];
+                        					if(queuedFile.id!=file.id){
+                        						delete this.queueData.files[queuedFile.id]
+                        						$('#' + queuedFile.id).fadeOut(0, function() {
+                        							$(this).remove();
+                        						});
+                        					}
+                        				}
+                                },
+                                'removeCompleted':false // 进度条不消失
+                            });
+        						
+        				});
+
 		  				
 		  				
                     })
