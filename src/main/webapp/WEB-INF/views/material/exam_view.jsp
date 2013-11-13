@@ -140,6 +140,7 @@ $.ajax({
 	  url: "${ctx}/ajax/material/getMaterial?materialId=${param.fdId}",
 	  async:false,
 	  dataType : 'json',
+	  type: "post",
 	  success: function(result){
 		  $("#examPaperIntro").val(result.description);
 		  $("#passScore").html(result.score);
@@ -160,6 +161,7 @@ function initExamQuestions(){
 			  url: "${ctx}/ajax/material/getExamQuestionSrcByMaterId?materialId=${param.fdId}",
 			  async:false,
 			  dataType : 'json',
+			  type: "post",
 			  success: function(result){
 				  var html = "";
 				  for(var i in result.qusetions){

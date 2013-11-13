@@ -448,6 +448,7 @@
 							url : "${ctx}/ajax/material/getMaterial?materialId=${param.fdId}",
 							async : false,
 							dataType : 'json',
+							type: "post",
 							success : function(result) {
 								$("#examPaperIntro").val(result.description);
 								$("#passScore").val(result.score);
@@ -477,6 +478,7 @@
 						.ajax({
 							url : "${ctx}/ajax/material/getCreater?materialId=${param.fdId}",
 							async : false,
+							type: "post",
 							dataType : 'json',
 							success : function(result) {
 								creater = result.name + "（" + result.email
@@ -491,6 +493,7 @@
 							url : "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${param.fdId}",
 							async : false,
 							dataType : 'json',
+							type: "post",
 							success : function(result) {
 								var html = "<tr data-fdid='creater' draggable='true'> "
 										+ " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "
@@ -543,6 +546,7 @@
 															.ajax({
 																url : "${ctx}/ajax/material/deleteMaterial?materialId=${param.fdId}",
 																async : false,
+																type: "post",
 																success : function(
 																		result) {
 																	window.location.href = "${ctx}/material/findList?order=FDCREATETIME&fdType=08";
@@ -612,6 +616,7 @@
 							async : false,
 							data : data,
 							dataType : 'json',
+							type: "post",
 							success : function(rsult) {
 								window.location.href = "${ctx}/material/findList?order=FDCREATETIME&fdType=08";
 							},
@@ -730,6 +735,7 @@
 					$.ajax({
 						url : "${ctx}/ajax/examquestion/getExamsByMaterialId",
 						async : false,
+						type: "post",
 						data : {
 							id : fdid
 						},
@@ -1029,6 +1035,7 @@
 																		url : "${ctx}/ajax/examquestion/deleQuestionToExam",
 																		async : false,
 																		dataType : 'json',
+																		type: "post",
 																		data : {
 																			questionId : fdid,
 																			examId : "${param.fdId}",
@@ -1055,6 +1062,7 @@
 							url : "${ctx}/ajax/material/getExamQuestionByMaterId?materialId=${param.fdId}",
 							async : false,
 							dataType : 'json',
+							type: "post",
 							success : function(result) {
 								var html = "";
 
