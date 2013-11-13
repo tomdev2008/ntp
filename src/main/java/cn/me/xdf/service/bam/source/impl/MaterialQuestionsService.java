@@ -140,7 +140,7 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 			map2.put("id", examQuestion2.getFdId());
 			map2.put("index", examQuestion2.getFdOrder());
 			if(sourceNote==null){
-				map2.put("status", null);
+				map2.put("status", "null");
 			}else{
 				Set<AnswerRecord> answerRecords = sourceNote.getAnswerRecords();
 				for (AnswerRecord answerRecord : answerRecords) {
