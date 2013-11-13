@@ -363,6 +363,7 @@ $(function(){
     var curTime = 0;
 	if("${param.fdId}"!=null&&"${param.fdId}"!=""){
 		 $.ajax({
+			  type:"post",
 			  url: "${ctx}/ajax/material/getMaterial?materialId="+$("#materialId").val(),
 			  async:false,
 			  dataType : 'json',
@@ -443,6 +444,7 @@ $(function(){
 	var url="";
     if("${param.fdId}"!=null&&"${param.fdId}"!=""){
 	   $.ajax({
+		 type:"post",
 		 url: "${ctx}/ajax/material/getCreater?materialId="+$("#materialId").val(),
 		 async:false,
 		 dataType : 'json',
@@ -547,6 +549,7 @@ $(function(){
         }
         ///保存作业包素材的方法
         $.ajax({
+        	  type:"post",
 			  url:"${ctx}/ajax/taskPaper/updateTaskPaperMaterial",
 			  async:false,
 			  data:data,
@@ -646,6 +649,7 @@ $(function(){
         } else {
         	//当点击list页面的作业项时，初始化作业数据
         	$.ajax({
+        		  type:"post",
 				  url:"${ctx}/ajax/taskPaper/getTaskByTaskId",
 				  async:false,
 				  data:{id: fdid},
@@ -783,6 +787,7 @@ function initExamPaperList(){
 	if(id!==null&&id!=""){
 		var itemExamDetailFn = doT.template(document.getElementById("taskPaperListTemplate").text);
 	    $.ajax({
+	    	  type: "POST",
 			  url: "${ctx}/ajax/taskPaper/getTaskByMaterialId?materialId="+id,
 			  async:false,
 			  dataType : 'json',
