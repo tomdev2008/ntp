@@ -206,7 +206,7 @@
                         {{??it.examPaperStatus == 'pass'}} success">通过
                         {{??it.examPaperStatus == 'finish'}} info">答完
                         {{??it.examPaperStatus == 'unfinish'}}">待答{{?}}</span> {{?it.type=='exam'}}试卷{{??it.type=='task'}}作业包{{?}}{{=it.num}} {{=it.name}} 共计 <span class="total">{{=it.examCount}}</span>{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=it.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=it.examPaperTime}}分钟。</h2>
-        <p class="muted">{{=it.examPaperIntro}}</p>
+        <p class="muted">{{=it.examPaperIntro||''}}</p>
         <a class="btn btn-link" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=it.num}}">收起<b class="caret"></b></a>
         </div>
 		 
@@ -284,12 +284,12 @@
 					              <div style="margin-left:637px;margin-top: 8px;height:40px;width:600px;display:block;">
 						            <button name="answerAtt" id="{{=task.id}}" class="btn btn-primary btn-large" type="button" >上传</button>
 					              </div>
-					              <input type="hidden" value="" name="attach_{{=task.id}}" id="answerAttId">
 
                                 </div>
                                 <ul class="attachList unstyled" id="listTaskAttachment_{{=task.id}}">
                                     {{~task.listTaskAttachment :att2}}
                                         <li id="attach{{=att2.id}}">
+                                            
                                             <a href="${ctx}/common/file/download/{{=att2.fdId}}">
 												<i class="icon-paperClip"></i>{{=att2.fdFileName}}</a>
                                             <a href="#" class="icon-remove-blue"></a>
@@ -588,11 +588,9 @@
                                 'onUploadSuccess' : function (file, datas, Response) {
                                     if (Response) {
                                         var objvalue = eval("(" + datas + ")");
-                                        //answerAttId
-                                        var value = $("#answerAttId").val(); 
-                                        $("#answerAttId").val(objvalue.attId+","+value);
                                         jQuery("#attName").html(objvalue.fileName);
-                                        var html = "<li id='attach"+objvalue.attId+"'><a><i class='icon-paperClip'></i>"+objvalue.fileName+"<a href='#' class='icon-remove-blue'></a></li>";
+                                        var html = "<li id='attach"+objvalue.attId+"'><input type='hidden' value='"+objvalue.attId+"' name='attach_"+fileid+"' id='answerAttId'><a><i class='icon-paperClip'></i>"
+                                        +objvalue.fileName+"</a><a href='#' class='icon-remove-blue'></a></li>";
                                         $("#listTaskAttachment_"+fileid).append(html);
                                     }
                                 },

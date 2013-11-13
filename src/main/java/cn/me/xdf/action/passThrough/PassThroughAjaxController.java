@@ -263,13 +263,21 @@ public class PassThroughAjaxController {
 			if(node==null){
 				return "unfinish";
 			}
-			Boolean iStudy=node.getIsStudy();
+			if(node.getFdStatus().equals(Constant.TASK_STATUS_FINISH)){//完成
+				return "finish";
+			} else if(node.getFdStatus().equals(Constant.TASK_STATUS_REJECT)){//驳回
+				return "unfinish";
+			} else if(node.getFdStatus().equals(Constant.TASK_STATUS_UNFINISH)){//未完成
+				return "unfinish";
+			} 
+			/*Boolean iStudy=node.getIsStudy();
 			if(iStudy==null){
 				return "finish";
-			}
+			}*/
 		}
 		return "fail";
 	}
+
 	/**
 	 * 根据测试id获取测试信息
 	 * 

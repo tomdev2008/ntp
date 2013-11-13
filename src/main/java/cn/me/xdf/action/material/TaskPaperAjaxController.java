@@ -238,9 +238,8 @@ public class TaskPaperAjaxController {
 		map.put("examScore", task.getFdStandardScore());
 		map.put("examStem", task.getFdSubject());
 		
-		List<AttMain> atts = attMainService.findByCriteria(AttMain.class,
-				Value.eq("fdModelId", task.getFdId()),
-				Value.eq("fdModelName", Task.class.getName()));
+		List<AttMain> atts = attMainService.getByModeslIdAndModelNameAndKey(task.getFdId(), Task.class.getName(),"taskAtt");
+		
 		List<Map<String,String>> attList = new ArrayList<Map<String,String>>();
 		for (AttMain attMain : atts) {
 			if(attMain.getFdKey().equals("taskAtt")){
