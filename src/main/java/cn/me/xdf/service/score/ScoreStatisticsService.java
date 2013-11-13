@@ -36,11 +36,11 @@ public class ScoreStatisticsService extends BaseService{
 	 * 
 	 */
 	@Transactional(readOnly = false)
-	public ScoreStatistics resetInfoByFdId(String ScoreStatisticsId){
+	public ScoreStatistics updateInfoByFdId(String ScoreStatisticsId){
 		ScoreStatistics scoreStatistics = findUniqueByProperty("fdId", ScoreStatisticsId);
 		String fdModelId = scoreStatistics.getFdModelId();
 		String fdModelName = scoreStatistics.getFdModelName();
-		return resetInfoByFdModelId(fdModelName,fdModelId);
+		return updateInfoByFdModelId(fdModelName,fdModelId);
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public class ScoreStatisticsService extends BaseService{
 	 * 
 	 */
 	@Transactional(readOnly = false)
-	public ScoreStatistics resetInfoByFdModelId(String fdModelName, String fdModelId){
+	public ScoreStatistics updateInfoByFdModelId(String fdModelName, String fdModelId){
 		ScoreStatistics scoreStatistics = findScoreStatisticsByModelNameAndModelId(fdModelName, fdModelId);
 		if(scoreStatistics==null){
 			throw new RuntimeException("不存在评分统计信息");

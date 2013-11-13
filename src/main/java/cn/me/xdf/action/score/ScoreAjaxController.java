@@ -92,8 +92,8 @@ public class ScoreAjaxController {
 			scoreStatistics.setFdFiveScoreNum(0);
 			scoreStatisticsService.save(scoreStatistics);
 		}
-		scoreService.pushScore(fdModelName, fdModelId, fdScore, userId);
-		scoreStatistics = scoreStatisticsService.resetInfoByFdModelId(fdModelName,fdModelId);
+		scoreService.saveScore(fdModelName, fdModelId, fdScore, userId);
+		scoreStatistics = scoreStatisticsService.updateInfoByFdModelId(fdModelName,fdModelId);
 		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
 		map.put("fdId", scoreStatistics.getFdId());

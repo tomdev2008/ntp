@@ -82,7 +82,7 @@ public class ScoreService extends BaseService{
 	 * 
 	 * @return 评分信息
 	 */
-	public Score pushScore(String fdModelName,String fdModelId,String fdScore,String userId){
+	public Score saveScore(String fdModelName,String fdModelId,String fdScore,String userId){
 		Score s = findByModelIdAndUserId(fdModelName,fdModelId, userId);
 		if(s!=null){
 			throw new RuntimeException("不能重复评分");

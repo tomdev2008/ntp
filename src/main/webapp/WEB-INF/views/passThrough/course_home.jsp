@@ -222,7 +222,7 @@
                     	</div>
                     </div>
                 </div>               
-                <%-- <c:import url="/WEB-INF/views/base/comment/comment.jsp">
+               <%--  <c:import url="/WEB-INF/views/base/comment/comment.jsp">
                  	<c:param name="modelName" value="<%=CourseInfo.class.getName()%>" />
                  	<c:param name="modelId" value="${course.fdId}" />
                 </c:import> --%>
