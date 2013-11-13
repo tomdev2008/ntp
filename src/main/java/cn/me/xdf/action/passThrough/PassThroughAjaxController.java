@@ -325,7 +325,6 @@ public class PassThroughAjaxController {
 			}
 			CourseCatalog prevCatalog=null;
 			CourseCatalog nextCatalog=null;
-			List<Map> pnCatalogs = new ArrayList();
 			Map pn=new HashMap();
 			if(currentCatalog.getFdNo()==1){//当前节是节1的情况
 				pn.put("prevc", "0");
@@ -344,7 +343,6 @@ public class PassThroughAjaxController {
 					pn.put("nextc", "0");
 					pn.put("nstatus", "untreated");
 				}
-				pnCatalogs.add(pn);
 			}
 			if(currentCatalog.getFdNo()>1){//节编号大于1说明有上一节点 
 				prevCatalog=getpnCatalog(onlyCatalogs,currentCatalog.getFdNo()-1);
