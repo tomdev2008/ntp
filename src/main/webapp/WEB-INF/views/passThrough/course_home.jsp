@@ -107,9 +107,9 @@
                 <div class="section mt20">
                 	<div class="box-pd20">
                     	<div class="larning-sections">
+                    		<c:set var="isorder" value="true"/>
                     		<j:iter items="${catalog}" var="bean" status="vstatus">
                     	    <c:set var="i" value="1"/>
-                    	    <c:set var="isorder" value="true"/>
                     		<c:if test="${bean.fdType==0}">
                     		<dl>
                     			<dt>
