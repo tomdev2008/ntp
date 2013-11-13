@@ -92,9 +92,15 @@
                         {{?lecture.index == i}}
                            
                             <li{{?lecture.id == param.currentId}} class="active"{{?}}>
-                                <a {{?lecture.status != 'untreated'||param.isOrder==false}}href="#" {{?}}data-fdid="{{=lecture.id}}" data-type="{{=lecture.baseType}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
+                                <a {{?lecture.status != 'untreated'||param.isOrder==false}}href="#" {{?}}data-
+
+fdid="{{=lecture.id}}" data-type="{{=lecture.baseType}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" 
+
+title="{{=lecture.name || ''}}">
                                     <span class="dt">节{{=lecture.num}} <b class="icon-circle-progress">
-                                        {{?lecture.status != 'untreated'}}<i class="icon-progress{{?lecture.status == 'doing'}} half{{?}}"></i>{{?}}
+                                        {{?lecture.status != 'untreated'}}<i class="icon-progress{{?lecture.status == 
+
+'doing'}} half{{?}}"></i>{{?}}
                                     </b></span>
                                     <span class="name"><i class="icon-{{=lecture.type}}"></i>
                                     {{=lecture.name || ''}}</span>
@@ -126,18 +132,24 @@
     <script id="pageRightHeaderTemplate" type="x-dot-template">
         <div class="page-header" id="pageHeader" data-spy="affix" data-offset-top="10">
                 <div class="hd clearfix">
-                <a class="btn {{?it.prevc == "0"}} disabled{{?}}" href="#" id="prevLecture" data-fdid="{{=it.prevc}}" data-type="{{=it.type}}">
+                <a class="btn {{?it.prevc == "0"}} disabled{{?}}" href="#" id="prevLecture" data-fdid="{{=it.prevc}}" 
+
+data-type="{{=it.type}}">
                 <i class="icon-chevron-left"></i>
                 <span>上一节</span>
                 </a>
                 <h1>{{=it.courseName}}   节{{=it.num}} {{=it.lectureName}}
-                <span class="labelPass{{?it.status != "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
+                <span class="labelPass{{?it.status != "pass"}} disabled{{?}}"{{?it.isOptional}} 
+
+id="btnOptionalLecture"{{?}}>
                 <b class="caret"></b>
                 <span class="iconWrap"><i class="icon-right"></i></span>
                 <span class="tit">学习通过</span>
                 </span>
                 </h1>
-                 <a class="btn {{?it.nextc == "0"}} disabled{{?}}" href="#"  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.type}}">
+                 <a class="btn {{?it.nextc == "0"}} disabled{{?}}" href="#"  id="nextLecture" data-
+
+fdid="{{=it.nextc}}" data-type="{{=it.type}}">
                         <i class="icon-chevron-right"></i>
                         <span>下一节</span>
                 </a>
@@ -155,7 +167,11 @@
                 <div class="line">
                     <div class="line">
                         <span class="label-intro" >学习任务</span>
-                        <small>建议您认真完成所有{{?it.type=='exam'}}题目后提交试卷{{??it.type=='video'}}视频后提交{{??it.type=='task'}}作业后提交作业包{{??it.type=='doc'}}文档后提交{{??it.type=='ppt'}}幻灯片后提交{{?}}： </small></div>
+                        <small>建议您认真完成所有{{?it.type=='exam'}}题目后提交试卷{{??it.type=='video'}}视频后提交
+
+{{??it.type=='task'}}作业后提交作业包{{??it.type=='doc'}}文档后提交{{??it.type=='ppt'}}幻灯片后提交{{?}}： 
+
+</small></div>
                 </div>
             </li>
             <li>
@@ -166,9 +182,13 @@
             <li>
                 <div class="line">
                     <div class="line">
-                        本{{?it.type=='exam'}}测试{{??it.type=='video'}}视频{{??it.type=='task'}}作业包{{??it.type=='doc'}}文档{{??it.type=='ppt'}}幻灯片{{?}}环节为
+                        本{{?it.type=='exam'}}测试{{??it.type=='video'}}视频{{??it.type=='task'}}作业包{{??
+
+it.type=='doc'}}文档{{??it.type=='ppt'}}幻灯片{{?}}环节为
                         <b class="text-warning">{{?it.isOptional}}选{{??}}必{{?}}修</b> 环节，
-                        您必须通过全部{{?it.type=='exam'}}试卷{{??it.type=='video'}}视频{{??it.type=='task'}}作业包{{??it.type=='doc'}}文档{{??it.type=='ppt'}}幻灯片{{?}}，
+                        您必须通过全部{{?it.type=='exam'}}试卷{{??it.type=='video'}}视频{{??it.type=='task'}}作业包
+
+{{??it.type=='doc'}}文档{{??it.type=='ppt'}}幻灯片{{?}}，
                         才可以进入下一关继续学习。</div>
                 </div>
             </li>
@@ -180,9 +200,17 @@
         <ul class="unstyled listExamPaper" id="listExamPaper">
             {{~it.listExamPaper :paper:index}}
                 <li class="accordion-group">
-                    <a class="titBar" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=index+1}}">
-                        <h2>{{?it.type == 'exam'}}试卷{{??it.type == 'task'}}作业包{{?}}{{=index+1}}. {{=paper.name}}</h2>
-                        <p class="muted">共计{{=paper.examCount}}{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=paper.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=paper.examPaperTime}}分钟。</p>
+                    <a class="titBar" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=index
+
++1}}">
+                        <h2>{{?it.type == 'exam'}}试卷{{??it.type == 'task'}}作业包{{?}}{{=index+1}}. {{=paper.name}}
+
+</h2>
+                        <p class="muted">共计{{=paper.examCount}}{{?it.type=='exam'}}题{{??it.type=='task'}}个作业
+
+{{?}}，满分{{=paper.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为
+
+{{=paper.examPaperTime}}分钟。</p>
                         <span class="icon-state-bg{{?paper.examPaperStatus == 'fail'}} error">未通过
                         {{??paper.examPaperStatus == 'pass'}} success">通过
                         {{??paper.examPaperStatus == 'finish'}} info">答完
@@ -205,9 +233,17 @@
                 <h2><span class="icon-state-bg{{?it.examPaperStatus == 'fail'}} error">未通过
                         {{??it.examPaperStatus == 'pass'}} success">通过
                         {{??it.examPaperStatus == 'finish'}} info">答完
-                        {{??it.examPaperStatus == 'unfinish'}}">待答{{?}}</span> {{?it.type=='exam'}}试卷{{??it.type=='task'}}作业包{{?}}{{=it.num}} {{=it.name}} 共计 <span class="total">{{=it.examCount}}</span>{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=it.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=it.examPaperTime}}分钟。</h2>
+                        {{??it.examPaperStatus == 'unfinish'}}">待答{{?}}</span> {{?it.type=='exam'}}试卷{{??
+
+it.type=='task'}}作业包{{?}}{{=it.num}} {{=it.name}} 共计 <span class="total">{{=it.examCount}}</span>{{?
+
+it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=it.fullScore}}分，建议{{?it.type=='exam'}}答题{{??
+
+it.type=='task'}}完成{{?}}时间为{{=it.examPaperTime}}分钟。</h2>
         <p class="muted">{{=it.examPaperIntro||''}}</p>
-        <a class="btn btn-link" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=it.num}}">收起<b class="caret"></b></a>
+        <a class="btn btn-link" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=it.num}}">收起
+
+<b class="caret"></b></a>
         </div>
 		 
         <form action="{{=it.action || '#'}}" post="post" id="formExam">
@@ -234,7 +270,9 @@
                                 {{~exam.listAttachment :att1:index1}}
                                 {{~exam.listAttachment :att:index}}
                                 {{?index1 == att.fdOrder}}
-                                    <li><a href="${ctx}/common/file/download/{{=att.fdId}}"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
+                                    <li><a href="${ctx}/common/file/download/{{=att.fdId}}"><i class="icon-
+
+paperClip"></i>{{=att.fdFileName}}</a></li>
                                 {{?}}
                                 {{~}}
                                 {{~}}
@@ -244,7 +282,9 @@
                             {{~exam.listExamAnswer :ans:index}}
                             {{?index1 == ans.index}}
                                 <label class="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" >
-                                    <input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?ans.isChecked}}checked{{?}} value="{{=exam.id}}:{{=ans.id}}" name="examAnswer" />
+                                    <input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?
+
+ans.isChecked}}checked{{?}} value="{{=exam.id}}:{{=ans.id}}" name="examAnswer" />
                                     {{=ans.name}}
                                 </label>
                             {{?}}
@@ -262,13 +302,17 @@
                 {{?index2 == task.index}}
                     <div class="bd">
                         <div class="pd20">
-                            <div id="examStem{{=index2+1}}">{{=index2+1}}. {{=task.examName}}（{{=task.examScore}}分）</div>
+                            <div id="examStem{{=index2+1}}">{{=index2+1}}. {{=task.examName}}（{{=task.examScore}}分）
+
+</div>
                             <div>{{=task.examStem}}</div>
                             <ul class="attachList unstyled">
                                 {{~task.listAttachment :att1:index1}}
                                 {{~task.listAttachment :att}}
                                 {{?index1 == att.fdOrder}}
-                                <li><a href="${ctx}/common/file/download/{{=att.fdId}}"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
+                                <li><a href="${ctx}/common/file/download/{{=att.fdId}}"><i class="icon-
+
+paperClip"></i>{{=att.fdFileName}}</a></li>
                                 {{?}}
                                 {{~}}
                                 {{~}}
@@ -280,19 +324,31 @@
                                 <label>上传作业（建议小于2G）</label>
                                 <div class="control-upload">
 
-                                  <div class="upload-fileName"><span id="attName"></span><i class="icon-paperClip"></i></div>
- 				    			  <div id="taskAttSeq_{{=task.id}}" style="height:20px;width:637px;display:block;"> </div>
-					              <div style="margin-left:637px;margin-top: 8px;height:40px;width:600px;display:block;">
-						            <button name="answerAtt" id="{{=task.id}}" class="btn btn-primary btn-large" type="button" >上传</button>
+                                  <div class="upload-fileName"><span id="attName"></span><i class="icon-
+
+paperClip"></i></div>
+ 				    			  <div id="taskAttSeq_{{=task.id}}" 
+
+style="height:20px;width:637px;display:block;"> </div>
+					              <div style="margin-left:637px;margin-top: 
+
+8px;height:40px;width:600px;display:block;">
+						            <button name="answerAtt" id="{{=task.id}}" class="btn 
+
+btn-primary btn-large" type="button" >上传</button>
 					              </div>
 
                                 </div>
                                 <ul class="attachList unstyled" id="listTaskAttachment_{{=task.id}}">
                                     {{~task.listTaskAttachment :att2}}
                                         <li id="attach{{=att2.id}}">
-                                            <input type="hidden" value='{{=att2.fdId}}' name='attach_{{=task.id}}' id='answerAttId_{{=task.id}}'>
+                                            <input type="hidden" value='{{=att2.fdId}}' name='attach_{{=task.id}}' 
+
+id='answerAttId_{{=task.id}}'>
                                             <a href="${ctx}/common/file/download/{{=att2.fdId}}">
-												<i class="icon-paperClip"></i>{{=att2.fdFileName}}</a>
+												<i class="icon-
+
+paperClip"></i>{{=att2.fdFileName}}</a>
                                             <a href="#" class="icon-remove-blue"></a>
                                         </li>
                                     {{~}}
@@ -303,7 +359,9 @@
                                 {{?}}
                                 {{?task.status != 'success'}}
                                     <label>答题</label>
-                                    <textarea name="answer_{{=task.id}}" required class="input-block-level" placeholder="请必务填写" rows="4"></textarea>
+                                    <textarea name="answer_{{=task.id}}" required class="input-block-level" 
+
+placeholder="请必务填写" rows="4"></textarea>
                                 {{?}}
                             {{?}}
                         </div>
@@ -311,11 +369,17 @@
                             <div class="bdt1 pd20">
                                 <div class="media teacherRating">
                                     <div class="pull-left">
-                                        <a href="#"><img class="media-object" src="{{=task.teacherRating.teacher.imgUrl}}" alt="指导老师"/></a>
+                                        <a href="#"><img class="media-object" 
+
+src="{{=task.teacherRating.teacher.imgUrl}}" alt="指导老师"/></a>
                                         <h3>指导老师</h3>
                                     </div>
                                     <div class="media-body">
-                                        <div class="media-heading"><label class="label {{?task.status == 'success'}}label-success">通过{{??}}label-important">未通过{{?}}</label>｜ 满分 {{=task.examScore}} 分  ｜ 成绩 {{=task.teacherRating.score}} 分</div>
+                                        <div class="media-heading"><label class="label {{?task.status == 'success'}}
+
+label-success">通过{{??}}label-important">未通过{{?}}</label>｜ 满分 {{=task.examScore}} 分  ｜ 成绩 
+
+{{=task.teacherRating.score}} 分</div>
                                         <p>{{=task.teacherRating.comment || ''}}</p>
                                     </div>
                                 </div>
@@ -328,7 +392,9 @@
             {{?}}
         <div class="ft">
                 <button class="btn btn-primary btn-large" type="submit">提交答案</button>
-        <button class="btn btn-link" type="button" data-toggle="collapse" data-parent="#listExamPaper" data-target="#examPaper{{=it.num}}">收起<b class="caret"></b></button>
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-parent="#listExamPaper" data-
+
+target="#examPaper{{=it.num}}">收起<b class="caret"></b></button>
         </div>
 {{?}}
         </form>
@@ -340,18 +406,28 @@
     <script id="examPaperStatusBarTemplate" type="x-dot-template">
         <div class="examPaperStat">
             <div class="dt">{{?it.type == 'exam'}}试卷{{??it.type == 'task'}}作业包{{?}}{{=it.num}}</div>
-            你已完成<span class="succ">{{=it.successCount}}</span>{{?it.type == 'exam'}}道题目{{??it.type == 'task'}}个作业{{?}}，
+            你已完成<span class="succ">{{=it.successCount}}</span>{{?it.type == 'exam'}}道题目{{??it.type == 'task'}}
+
+个作业{{?}}，
             共计<span class="total">{{=it.examCount}}</span>{{?it.type == 'exam'}}题{{??it.type == 'task'}}个作业{{?}}
-            <a href="#navExams" data-toggle="collapse" class="showList"><span class="txtShow">展开</span><span class="txtHide">收起</span>{{?it.type == 'exam'}}试题{{??it.type == 'task'}}作业{{?}}列表<b class="caret"></b></a>
+            <a href="#navExams" data-toggle="collapse" class="showList"><span class="txtShow">展开</span><span 
+
+class="txtHide">收起</span>{{?it.type == 'exam'}}试题{{??it.type == 'task'}}作业{{?}}列表<b class="caret"></b></a>
         </div>
         <div id="navExams" class="collapse in">
             <div class="collapse-inner">
                 {{~it.listExam :exam1:index1}}
                 {{~it.listExam :exam:index}}
                 {{?index1 == exam.index}}
-                    <a class="num{{?exam.status != 'null'}} active"{{??}}" title="待答"{{?}} {{?exam.status == 'error'}}title="答错"{{??exam.status == 'success'}}title="答对"{{??exam.status == 'finish'}}title="答过"{{?}} href="#examStem{{=index1+1}}">
+                    <a class="num{{?exam.status != 'null'}} active"{{??}}" title="待答"{{?}} {{?exam.status == 
+
+'error'}}title="答错"{{??exam.status == 'success'}}title="答对"{{??exam.status == 'finish'}}title="答过"{{?}} 
+
+href="#examStem{{=index1+1}}">
                     {{=index1+1}}
-                    <i class="icon-circle-{{?exam.status == 'error'}}error{{??exam.status == 'success'}}success{{?}}"></i></a>
+                    <i class="icon-circle-{{?exam.status == 'error'}}error{{??exam.status == 'success'}}success
+
+{{?}}"></i></a>
                 {{?}}
                 {{~}}
                 {{~}}
@@ -443,13 +519,17 @@
         $("#prevLecture").click(function (e){
         	
         	if($(this).attr("data-fdid")==0)return false;
-        	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+        	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr
+
+("data-fdid")+"&fdMtype="+$(this).attr("data-type");
              
         });
         //下一节
         $("#nextLecture").click(function (e){
         	if($(this).attr("data-fdid")==0)return false;
-        	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+        	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr
+
+("data-fdid")+"&fdMtype="+$(this).attr("data-type");
             
         }); 
         function loadRightCont(fdid,type){
@@ -540,7 +620,9 @@
                         tempData.catalogId=catalogId ;
                         tempData.fdMtype=fdMtype ;
                         var date = new Date();
-                        //tempData.startTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                        //tempData.startTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" 
+
+"+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                         tempData.startTime=date.getTime();
                         $this.html(examPaperDetailFn(tempData));
                         
@@ -563,7 +645,9 @@
                         if($pageHead.hasClass("affix")){
                             sTop = pos.top - 60 - $pageHead.height();
                         } else{
-                            sTop = pos.top - 60 - $pageHead.height() - $pageHead.children(".hd").height() -$("#headToolsBar").height();
+                            sTop = pos.top - 60 - $pageHead.height() - $pageHead.children(".hd").height() -
+
+$("#headToolsBar").height();
                         }
                         $window.scrollTop(sTop);
                        
@@ -590,7 +674,9 @@
                                     if (Response) {
                                         var objvalue = eval("(" + datas + ")");
                                         jQuery("#attName").html(objvalue.fileName);
-                                        var html = "<li id='attach"+objvalue.attId+"'><input type='hidden' value='"+objvalue.attId+"' name='attach_"+fileid+"' id='answerAttId_"+fileid+"'><a><i class='icon-paperClip'></i>"
+                                        var html = "<li id='attach"+objvalue.attId+"'><input type='hidden' 
+
+value='"+objvalue.attId+"' name='attach_"+fileid+"' id='answerAttId_"+fileid+"'><a><i class='icon-paperClip'></i>"
                                         +objvalue.fileName+"</a><a href='#' class='icon-remove-blue'></a></li>";
                                         $("#listTaskAttachment_"+fileid).append(html);
                                     }
@@ -612,11 +698,12 @@
                             });
         						
         				});
-
-		  				
-		  				
+                        $("#formExam").validate();		  				
                     })
                     .bind("hide",function(){
+                    	$(".uploadify").each(function(){
+                    		$(this).uploadify('destroy'); 
+                    	});
                         $(this).empty().prev(".titBar").removeClass("hide");
                         $("#headToolsBar").empty();
                     });
