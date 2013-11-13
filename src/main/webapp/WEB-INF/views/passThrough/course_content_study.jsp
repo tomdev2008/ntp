@@ -274,6 +274,7 @@
                                 {{~}}
                             </ul>
                         </div>
+
                         <div class="bdt1 pd20">
                             {{?task.examType == 'uploadWork'}}
                                 <label>上传作业（建议小于2G）</label>

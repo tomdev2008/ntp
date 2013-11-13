@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;
 
-import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
@@ -67,10 +66,11 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 		String taskPaperId = request.getParameter("fdid");
 		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
 		MaterialInfo info = materialService.get(taskPaperId);
-		SourceNote sourceNode =new SourceNote();
+		SourceNote sourceNode = new SourceNote();
 		List<Task> taskList = taskService.findByProperty("taskPackage.fdId",taskPaperId);
 		Set<TaskRecord> answerRecords = new HashSet<TaskRecord>();
 		List<AttMain> attMains = new ArrayList<AttMain>();
+		///////////////////////////////////
 		for (Task task : taskList) {
 			TaskRecord taskRecord = new TaskRecord();
 			taskRecord.setFdTaskId(task.getFdId());//对应作业id
@@ -84,11 +84,7 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 				}
 			}
 			if(task.getFdType().equals(Constant.TASK_TYPE_UPLOAD)){//上传作业
-				////先清空以前的附件
-				attMainService.deleteAttMainByModelId(taskRecord.getFdId());
-				///保存附件
 				String[] taskAttArrId = request.getParameterValues("attach_"+task.getFdId());
-				
 				if(taskAttArrId!=null){
 					for (String taskAttId : taskAttArrId) {
 						AttMain attMain = attMainService.get(taskAttId);
@@ -96,7 +92,7 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 						attMain.setFdModelName(TaskRecord.class.getName());
 						attMain.setFdKey(task.getFdId());
 						attMainService.save(attMain);
-						attMains.add(attMain);
+						attMains.add(attMain);///保存附件
 					}
 				}
 				if(attMains.isEmpty()){
@@ -119,34 +115,30 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 		}else{
 			sourceNode.setFdStatus(Constant.TASK_STATUS_FINISH);
 		}
-		sourceNodeService.save(sourceNode);
-        return null;  
+        return sourceNodeService.saveSourceNode(sourceNode);  
     }
-    
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object findSubInfoByMaterial(WebRequest request) {
 		String materialId = request.getParameter("materialId");
 		String catalogId = request.getParameter("catalogId");//节id
+		List<Map> list = new ArrayList<Map>();//存放作业列表
 		MaterialInfo materialInfo = materialService.load(materialId);
+		if(!materialInfo.getIsAvailable()){
+			return list;
+		}
 		List<Task> taskList = materialInfo.getTasks();
-		//存放作业列表
-		List<Map> list = new ArrayList<Map>();
 		for(Task task:taskList){
 			Map taskMap = new HashMap();
 			taskMap.put("id", task.getFdId());
 			taskMap.put("index", task.getFdOrder());
-		    
 			taskMap.put("examType", task.getFdType().equals(Constant.TASK_TYPE_UPLOAD)?"uploadWork":"onlineAnswer");
 			taskMap.put("examScore", task.getFdStandardScore().intValue()); 	
 			taskMap.put("examName", task.getFdName());
 			taskMap.put("examStem", task.getFdSubject());
 			
 			List<AttMain> taskAtt = attMainService.getByModeslIdAndModelNameAndKey(task.getFdId(), Task.class.getName(),"taskAtt");
-		    
 			taskMap.put("listAttachment", taskAtt);//存放作业附件信息
-			
 			// ///////////////评分人操作信息
 			SourceNote sourceNote = sourceNodeService.getSourceNote(materialInfo.getFdId(),
 					catalogId, ShiroUtils.getUser().getId());
@@ -163,7 +155,6 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 							Map teacher= new HashMap();
 							teacher.put("imgUrl", person.getPoto());
 							record.put("teacher", teacher);
-							
 						}
 						recordList.add(record);
 						///作业状态
@@ -172,7 +163,6 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 						}else if(taskRecord.getFdStatus().equals(Constant.TASK_STATUS_FINISH)){
 							taskMap.put("status", "finish");
 						}
-						
 						List<AttMain> answerAtt = attMainService.getByModeslIdAndModelNameAndKey(taskRecord.getFdId(), TaskRecord.class.getName(),task.getFdId());
 						taskMap.put("listTaskAttachment", answerAtt);//存放答题者上传的附件
 						taskMap.put("answer", taskRecord.getFdAnswer());
