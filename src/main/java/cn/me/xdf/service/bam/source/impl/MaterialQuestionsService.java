@@ -135,6 +135,9 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 		String catalogId = request.getParameter("catalogId");
 		String materialId =request.getParameter("materialId");
 		MaterialInfo materialInfo = materialService.get(materialId); 
+		if(!materialInfo.getIsAvailable()){
+			return listExam;
+		}
 		SourceNote sourceNote = sourceNodeService.getSourceNote(materialId, catalogId, ShiroUtils.getUser().getId());
 		List<ExamQuestion> examQuestions = materialInfo.getQuestions();
 		for (ExamQuestion examQuestion2 : examQuestions) {

@@ -209,7 +209,11 @@
         <p class="muted">{{=it.examPaperIntro}}</p>
         <a class="btn btn-link" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=it.num}}">收起<b class="caret"></b></a>
         </div>
+		 
         <form action="{{=it.action || '#'}}" post="post" id="formExam">
+{{?it.listExam.length==0}}
+该素材已被删除
+{{??}}
             <input name="fdid" value="{{=it.id}}" type="hidden" />
 			<input name="bamId" value="{{=it.bamId}}" type="hidden" />
 			<input name="catalogId" value="{{=it.catalogId}}" type="hidden" />
@@ -325,6 +329,7 @@
                 <button class="btn btn-primary btn-large" type="submit">提交答案</button>
         <button class="btn btn-link" type="button" data-toggle="collapse" data-parent="#listExamPaper" data-target="#examPaper{{=it.num}}">收起<b class="caret"></b></button>
         </div>
+{{?}}
         </form>
 
         </div>
