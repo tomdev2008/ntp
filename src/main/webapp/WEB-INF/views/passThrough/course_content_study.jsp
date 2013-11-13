@@ -539,7 +539,8 @@
                         tempData.catalogId=catalogId ;
                         tempData.fdMtype=fdMtype ;
                         var date = new Date();
-                        tempData.startTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                        //tempData.startTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                        tempData.startTime=date.getTime();
                         $this.html(examPaperDetailFn(tempData));
                         
                        $("button[name='answerAtt']").each(function(){
