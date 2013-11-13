@@ -138,7 +138,9 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 			taskMap.put("examStem", task.getFdSubject());
 			
 			List<AttMain> taskAtt = attMainService.getByModeslIdAndModelNameAndKey(task.getFdId(), Task.class.getName(),"taskAtt");
-			taskMap.put("listAttachment", taskAtt);//存放作业附件信息
+			if(taskAtt!=null){
+				taskMap.put("listAttachment", taskAtt);//存放作业附件信息
+			}
 			// ///////////////评分人操作信息
 			SourceNote sourceNote = sourceNodeService.getSourceNote(materialInfo.getFdId(),
 					catalogId, ShiroUtils.getUser().getId());
@@ -169,7 +171,9 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 							taskMap.put("status", "error");
 						}
 						List<AttMain> answerAtt = attMainService.getByModeslIdAndModelNameAndKey(taskRecord.getFdId(), TaskRecord.class.getName(),task.getFdId());
-						taskMap.put("listTaskAttachment", answerAtt);//存放答题者上传的附件
+						if(answerAtt!=null){
+							taskMap.put("listTaskAttachment", answerAtt);//存放答题者上传的附件
+						}
 						taskMap.put("answer", taskRecord.getFdAnswer());
 						break;
 					}

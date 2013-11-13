@@ -239,19 +239,20 @@ public class TaskPaperAjaxController {
 		map.put("examStem", task.getFdSubject());
 		
 		List<AttMain> atts = attMainService.getByModeslIdAndModelNameAndKey(task.getFdId(), Task.class.getName(),"taskAtt");
-		
 		List<Map<String,String>> attList = new ArrayList<Map<String,String>>();
-		for (AttMain attMain : atts) {
-			if(attMain.getFdKey().equals("taskAtt")){
-			 Map<String,String> mapAtt = new HashMap<String,String>();
-			 mapAtt.put("id", attMain.getFdId());
-			 mapAtt.put("index", attMain.getFdOrder());
-			 mapAtt.put("name", attMain.getFdFileName());
-			 mapAtt.put("url", attMain.getFdFilePath());
-			 attList.add(mapAtt);
+		if(atts!=null){
+			for (AttMain attMain : atts) {
+				if(attMain.getFdKey().equals("taskAtt")){
+				 Map<String,String> mapAtt = new HashMap<String,String>();
+				 mapAtt.put("id", attMain.getFdId());
+				 mapAtt.put("index", attMain.getFdOrder());
+				 mapAtt.put("name", attMain.getFdFileName());
+				 mapAtt.put("url", attMain.getFdFilePath());
+				 attList.add(mapAtt);
+				}
 			}
+			map.put("listAttachment",  attList);
 		}
-		map.put("listAttachment",  attList);
 		return JsonUtils.writeObjectToJson(map);
 	}
 	/**

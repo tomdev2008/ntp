@@ -82,7 +82,7 @@
 <!-- 作业详情编辑 模板 -->
 <script id="examDetailTemplate" type="text/x-dot-template">
     <div class="page-header">
-        <a href="${ctx}/material/materialAddFoward?fdId=${materialInfo.fdId}&fdType=10" class="backParent">返回当前作业包</a>
+        <a href="${ctx}/material/materialAddFoward?fdId=${param.fdId}&fdType=10" class="backParent">返回当前作业包</a>
         <h4>{{=it.examPaperName}}</h4>
         <div class="btn-group">
             <button class="btn btn-large btn-primary" id="saveExam" type="button">保存</button>
@@ -318,8 +318,8 @@
                                     <thead>
                                     <tr>
                                         <th>授权用户</th>
-                                        <th>组织备课</th>
-                                        <th>编辑课程</th>
+                                        <th>可使用</th>
+                                        <th>可编辑</th>
                                         <th>删除</th>
                                     </tr>
                                     </thead>
@@ -435,8 +435,6 @@ function confirmDeleteTask(){
 $(function(){
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
-    //时间轴 模板函数
-    var timeLineFn = doT.template(document.getElementById("timeLineTemplate").text);
     //初始化作业列表
     initExamPaperList();
     //初始化授权人员列表
