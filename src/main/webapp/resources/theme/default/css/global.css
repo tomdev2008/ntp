@@ -5,6 +5,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display
 body {background:#efefef;padding-top:60px;overflow-y:scroll;*overflow-y:auto;}
 .pr{position:relative;}
 .mt20{margin-top: 20px !important;}
+.pd20{padding: 20px !important;}
 .bdbt2{border-bottom: solid #dcdcdc 2px; background-color:#FFF;}
 textarea{background-color:#f8f8f8;border-color:#e9e9e9;}
 .error{color:#b94a48}
@@ -12,7 +13,7 @@ input.error,textarea.error{border-color:#b94a48;}
 input.error:focus,textarea.error:focus{border-color:#953b39;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 6px #d59392;-moz-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 6px #d59392;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 6px #d59392}
 
 /*图标*/
-.icon-paperClip,.icon-right,.icon-video,.icon-ppt,.icon-medal,.icon-doc,.icon-exam,.icon-task,.icon-circle-progress,.icon-progress,.icon-chevronBig-right,.icon-gift,.icon-time,.icon-star{width:20px;height:20px;}/* icon 20*20 */
+.icon-paperClip,.icon-remove-blue,.icon-right,.icon-video,.icon-ppt,.icon-medal,.icon-doc,.icon-exam,.icon-task,.icon-circle-progress,.icon-progress,.icon-chevronBig-right,.icon-gift,.icon-time,.icon-star{width:20px;height:20px;}/* icon 20*20 */
 .icon-circle-error,.icon-circle-success{width: 12px;height: 12px;}/* 12*12 */
 .icon-circle-success{background-position: right -296px}
 .icon-circle-error{background-position: right -308px}
@@ -55,6 +56,7 @@ input.error:focus,textarea.error:focus{border-color:#953b39;-webkit-box-shadow:i
 .icon-state-bg.success{background-position: 0 -58px;}
 .icon-state-bg.info{background-position: 0 -24px;}
 .icon-state-bg.error{background-position: right -58px;}
+.icon-remove-blue{background-position: right -322px;}
 
 /*头部导航*/
 .logo{float:left;display:block;width:187px;height:58px;background:#3c82a8 url(../../../images/logo.png) no-repeat 20px 10px;}
@@ -86,3 +88,13 @@ footer .navbar .nav li.last a{border-right:none;}
 .rating-view{line-height:20px;}
 .rating-view .text-warning{vertical-align:middle}
 .rating-view .rating-all{margin-right:6px;}
+
+/*上传控件样式*/
+.control-upload{font-size: 0;margin-top: 10px;}
+.control-upload .progress{width:440px;height:24px;padding:2px;border:solid #d0e3ee 1px;background-color:#FFF;display:inline-block;margin-bottom:0;vertical-align:middle;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
+.control-upload .progress .bar{background-image:-moz-linear-gradient(top,#499dcb,#3d82a9);
+    background-image:-webkit-gradient(linear,0 0,0 100%,from(#499dcb),to(#3d82a9));
+    background-image:-webkit-linear-gradient(top,#499dcb,#3d82a9);background-image:-o-linear-gradient(top,#499dcb,#3d82a9);background-image:linear-gradient(to bottom,#499dcb,#3d82a9);background-repeat:repeat-x;
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff499dcb',endColorstr='#ff3d82a9',GradientType=0)}
+.control-upload .txt{margin:0 10px;color:#888;font-size: 14px;vertical-align: middle;}
+.control-upload .upload-fileName{font-size: 14px;margin-bottom: 5px;color: #999999;}
