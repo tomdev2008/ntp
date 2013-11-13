@@ -211,6 +211,7 @@ public class PassThroughAjaxController {
 			BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
 			if(bamCourse!=null && bamCourse.getCatalogs()!=null){
 				List<CourseCatalog> catalogs = bamCourse.getCatalogs();
+				Map prenext=getCurrentCatalog(catalogs,catalogId);
 				for(CourseCatalog catalog : catalogs){
 					if(catalog.getFdId().equals(catalogId)){
 						//设置节信息
@@ -244,6 +245,7 @@ public class PassThroughAjaxController {
 								list.add(materialTemp);
 							}
 						}
+						map.putAll(prenext);
 						map.put("listExamPaper", list);
 						break;
 					}
@@ -305,6 +307,80 @@ public class PassThroughAjaxController {
 		map.put("listExam", listExam);
 		return JsonUtils.writeObjectToJson(map);
 	}
-	
+	//获取当前选中节的上一节点和下一节点,节点id,是否通过学习
+		private Map getCurrentCatalog(List<CourseCatalog> catalogs,String id){
+			//分离章节集合中的节
+			List<CourseCatalog> onlyCatalogs=new ArrayList<CourseCatalog>();
+			for(CourseCatalog courseCatalog:catalogs){
+				if(Constant.CATALOG_TYPE_CHAPTER!=courseCatalog.getFdType()){
+					onlyCatalogs.add(courseCatalog);
+				}
+			}
+			//找到当前节
+			CourseCatalog currentCatalog=null;
+			for(CourseCatalog courseCatalog:onlyCatalogs){
+				if(courseCatalog.getFdId().equals(id)){
+					currentCatalog=courseCatalog;
+				}
+			}
+			CourseCatalog prevCatalog=null;
+			CourseCatalog nextCatalog=null;
+			List<Map> pnCatalogs = new ArrayList();
+			Map pn=new HashMap();
+			if(currentCatalog.getFdNo()==1){//当前节是节1的情况
+				pn.put("prevc", "0");
+				pn.put("pstatus", "untreated");
+				if(onlyCatalogs.size()>2){//总节数>2节
+					nextCatalog=getpnCatalog(onlyCatalogs,currentCatalog.getFdNo()+1);
+					pn.put("nextc", nextCatalog.getFdId());
+					if(nextCatalog.getThrough()==null){
+						pn.put("nstatus", "untreated");
+					}else if(nextCatalog.getThrough()==false){
+						pn.put("nstatus", "doing");
+					}else if(nextCatalog.getThrough()==true){
+						pn.put("nstatus", "pass");
+					}
+				}else{//不大于2 则当前节是节首也是节尾
+					pn.put("nextc", "0");
+					pn.put("nstatus", "untreated");
+				}
+				pnCatalogs.add(pn);
+			}
+			if(currentCatalog.getFdNo()>1){//节编号大于1说明有上一节点 
+				prevCatalog=getpnCatalog(onlyCatalogs,currentCatalog.getFdNo()-1);
+				pn.put("prevc", prevCatalog.getFdId());
+				pn.put("pstatus", "pass");
+				if(onlyCatalogs.size()>2){//总节数>2节
+					if(onlyCatalogs.size()==currentCatalog.getFdNo()){//当前节是节尾
+						pn.put("nextc", "0");
+						pn.put("nstatus", "untreated");
+					}else{
+						nextCatalog=getpnCatalog(onlyCatalogs,currentCatalog.getFdNo()+1);
+						pn.put("nextc", nextCatalog.getFdId());
+						if(nextCatalog.getThrough()==null){
+							pn.put("nstatus", "untreated");
+						}else if(nextCatalog.getThrough()==false){
+							pn.put("nstatus", "doing");
+						}else if(nextCatalog.getThrough()==true){
+							pn.put("nstatus", "pass");
+						}
+					}
+				}else{//当前节点有上一节但是没下一节
+					pn.put("nextc", "0");
+					pn.put("nstatus", "untreated");
+				}
+			}
+			return pn;
+		}
+		//根据节号抽去节
+		private CourseCatalog getpnCatalog(List<CourseCatalog> catalogs,Integer no){
+			for(CourseCatalog courseCatalog:catalogs){
+				if(courseCatalog.getFdNo()==no){
+					return courseCatalog;
+				}
+			}
+			return null;
+		}
+
 	
 }

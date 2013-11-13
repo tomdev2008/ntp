@@ -126,7 +126,7 @@
     <script id="pageRightHeaderTemplate" type="x-dot-template">
         <div class="page-header" id="pageHeader" data-spy="affix" data-offset-top="10">
                 <div class="hd clearfix">
-                <a class="btn" href="#button" id="prevLecture">
+                <a class="btn {{?it.prevc == "0"}} disabled{{?}}" href="#" id="prevLecture" data-fdid="{{=it.prevc}}" data-type="{{=it.type}}">
                 <i class="icon-chevron-left"></i>
                 <span>上一节</span>
                 </a>
@@ -137,7 +137,7 @@
                 <span class="tit">学习通过</span>
                 </span>
                 </h1>
-                <a class="btn disabled" href="#button" id="nextLecture">
+                 <a class="btn {{?it.nextc == "0"}} disabled{{?}}" href="#"  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.type}}">
                         <i class="icon-chevron-right"></i>
                         <span>下一节</span>
                 </a>
@@ -397,8 +397,6 @@
         
         //课程进行中节的内容类型
         var fdMtype = "${param.fdMtype}";
-      //课程是否有序		
-        var isOrder ="${param.isOrder}";
         
 		var leftData = {};
 				//ajax获取左侧章节展示树
@@ -410,7 +408,6 @@
 					  success: function(rsult){
 						  leftData = rsult;
 						  leftData.sidenav.currentId = catalogId;
-						  leftData.sidenav.isOrder=isOrder;
 						  $("#sideBar").html(pageLeftBarFn(leftData));
 					  },
 				});
@@ -436,7 +433,19 @@
                 });
 
         loadRightCont(catalogId,fdMtype);//默认加载章节 参数：节id
-
+        //上一节
+        $("#prevLecture").click(function (e){
+        	
+        	if($(this).attr("data-fdid")==0)return false;
+        	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+             
+        });
+        //下一节
+        $("#nextLecture").click(function (e){
+        	if($(this).attr("data-fdid")==0)return false;
+        	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+            
+        }); 
         function loadRightCont(fdid,type){
         	catalogId=fdid;
 		    fdMtype=type;
