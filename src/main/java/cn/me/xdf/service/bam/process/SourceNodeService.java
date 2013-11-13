@@ -34,7 +34,7 @@ public class SourceNodeService extends SimpleService {
 		finder.append("order by sourceNote.fdOperationDate desc");
 		finder.setParam("fdCatalogId", catalogId);
 		finder.setParam("fdMaterialId", materialId);
-		finder.setParam("fdUserId", ShiroUtils.getUser().getId());
+		finder.setParam("fdUserId", userId);
 		if(getPage(finder, 1, 1).getList().size()==0){
 			return null;
 		}else{

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
@@ -111,6 +112,7 @@ public class ExamQuestion extends IdEntity{
 		this.fdSubject = fdSubject;
 	}
 
+	@Column(length = 2000)
 	public String getFdQuestion() {
 		return fdQuestion;
 	}
