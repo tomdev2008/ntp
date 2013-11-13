@@ -211,10 +211,10 @@ public class PassThroughAjaxController {
 			BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
 			if(bamCourse!=null && bamCourse.getCatalogs()!=null){
 				List<CourseCatalog> catalogs = bamCourse.getCatalogs();
-				Map prenext=getCurrentCatalog(catalogs,catalogId);
 				for(CourseCatalog catalog : catalogs){
 					if(catalog.getFdId().equals(catalogId)){
 						//设置节信息
+						Map prenext=getCurrentCatalog(catalogs,catalog);
 						map.put("type", catalog.getMaterialType());
 						if(catalog.getThrough()==null){
 							map.put("status", "unfinish");
@@ -315,20 +315,15 @@ public class PassThroughAjaxController {
 		map.put("listExam", listExam);
 		return JsonUtils.writeObjectToJson(map);
 	}
-	//获取当前选中节的上一节点和下一节点,节点id,是否通过学习
-		private Map getCurrentCatalog(List<CourseCatalog> catalogs,String id){
+	/**
+	 *获取当前选中节的上一节点和下一节点,节点id,是否通过学习
+	 */
+		private Map getCurrentCatalog(List<CourseCatalog> catalogs,CourseCatalog currentCatalog){
 			//分离章节集合中的节
 			List<CourseCatalog> onlyCatalogs=new ArrayList<CourseCatalog>();
 			for(CourseCatalog courseCatalog:catalogs){
 				if(Constant.CATALOG_TYPE_CHAPTER!=courseCatalog.getFdType()){
 					onlyCatalogs.add(courseCatalog);
-				}
-			}
-			//找到当前节
-			CourseCatalog currentCatalog=null;
-			for(CourseCatalog courseCatalog:onlyCatalogs){
-				if(courseCatalog.getFdId().equals(id)){
-					currentCatalog=courseCatalog;
 				}
 			}
 			CourseCatalog prevCatalog=null;
@@ -378,7 +373,9 @@ public class PassThroughAjaxController {
 			}
 			return pn;
 		}
-		//根据节号抽去节
+		/**
+		 * 根据节号抽去节
+		 */
 		private CourseCatalog getpnCatalog(List<CourseCatalog> catalogs,Integer no){
 			for(CourseCatalog courseCatalog:catalogs){
 				if(courseCatalog.getFdNo()==no){
