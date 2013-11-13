@@ -103,6 +103,11 @@ public class Constant {
 	public static final String MESSAGE_TYPE_SYS = "03";
 	
 	/**
+	 * 消息类型：04评论回复
+	 */
+	public static final String MESSAGE_TYPE_REPLY = "04";
+	
+	/**
 	 * 课程模板状态：00草稿
 	 */
 	public static final String COURSE_TEMPLATE_STATUS_DRAFT = "00";
