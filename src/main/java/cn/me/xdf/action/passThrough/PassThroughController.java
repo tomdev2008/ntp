@@ -21,6 +21,7 @@ import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.common.utils.array.ArrayUtils;
 import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.model.bam.BamCourse;
+import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
@@ -28,6 +29,7 @@ import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
+import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
@@ -63,6 +65,9 @@ public class PassThroughController {
 	@Autowired
 	private BamMaterialService bamMaterialService;
 	
+	@Autowired
+	private AttMainService attMainService;
+	
 	/**
 	 * 课程学习首页
 	 * @param request
@@ -90,6 +95,9 @@ public class PassThroughController {
 				request.setAttribute("bamId", bamCourse.getFdId());
 				//课程信息
 				request.setAttribute("course", course);
+				//课程图片
+				AttMain attMain = attMainService.getByModelIdAndModelName(courseId, CourseInfo.class.getName());
+				request.setAttribute("courseAtt", attMain!=null?attMain.getFdId():"");
 				//课程评分统计
 				request.setAttribute("courseScore", scoreStatistics==null?0:scoreStatistics.getFdAverage());
 				//章节信息

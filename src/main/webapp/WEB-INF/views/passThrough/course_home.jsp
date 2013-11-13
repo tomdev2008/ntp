@@ -54,7 +54,14 @@
 <section class="container">	
 		<div class="section mt20">
         	<div class="media box-pd20">
-            <a href="#" class="pull-left"><img src="${ctx}/resources/images/zht-main-img.jpg" alt="" class="media-object"></a>
+            <a href="#" class="pull-left">
+            <c:if test="${courseAtt==''}">
+            	<img src="${ctx}/resources/images/zht-main-img.jpg" alt="" class="media-object">
+            </c:if>
+            <c:if test="${courseAtt!=null &&  courseAtt!=''}">
+            	<img src="${ctx}/common/file/image/${courseAtt}" alt="" class="media-object">
+            </c:if>
+            </a>
        	    <div class="media-body">
         		<div class="media-heading">
         		  <h2>${course.fdTitle}</h2>
