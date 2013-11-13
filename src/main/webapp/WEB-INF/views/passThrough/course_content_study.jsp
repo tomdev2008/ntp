@@ -225,6 +225,7 @@
                             {{=index2+1}}. {{=exam.examStem}} （{{=exam.examScore}}分）
                         </dt>
                         <dd>
+							{{?exam.listAttachment!=null}}
                              <ul class="attachList unstyled">
                                 {{~exam.listAttachment :att1:index1}}
                                 {{~exam.listAttachment :att:index}}
@@ -234,6 +235,7 @@
                                 {{~}}
                                 {{~}}
                             </ul>
+							{{?}}
                             {{~exam.listExamAnswer :ans1:index1}}
                             {{~exam.listExamAnswer :ans:index}}
                             {{?index1 == ans.index}}
