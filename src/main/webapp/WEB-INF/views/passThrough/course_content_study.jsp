@@ -1111,35 +1111,21 @@
             		  async:false,
             		  dataType : 'json',
             		  data:{
-            			  modelName:<%=MaterialInfo.class.getName()%>,
+            			  modelName:"<%=MaterialInfo.class.getName()%>",
             			  modelId:$("#formMakeComments").attr("data-fdid"),
             			  pageNo:pageNo,
             			  pageSize:pageSize,
                 	  },
             		  success: function(result){
-            			  $("#listComment").html(listCommentFn(result));
+            			  $("#listComment").html(listCommentFn(result.listComments));
             		  }
             	});
               //刷新评论页码
-              <%--  $.ajax({
-            		  url: "${ctx}/ajax/message/getCommentPageInfo",
-            		  async:false,
-            		  dataType : 'json',
-            		  data:{
-            			  modelName:<%=MaterialInfo.class.getName()%>,
-            			  modelId:$("#formMakeComments").att("data-fdid"),
-            			  pageNo:pageNo,
-            			  pageSize:pageSize,
-                	  },
-            		  success: function(result){
-            			 
-            		  }
-            	}); --%>
+            
             }
             
             /*提交评论表单*/
             function submitFormComment(form){
-            	alert("----------");
                $.ajax({
           		  	url: "${ctx}/ajax/message/addMaterialMessage",
           		  	async:false,
@@ -1149,10 +1135,8 @@
                     	isAnonymity: $("#isAnonymity").is(":checked"),
                     	fdContent: $("#textComment").val(),
               	  	},
-              	  	success:function(result){
-              	  		resetComment(1,10);
-              	  	}
           		});
+               resetComment(1,10);
                 //刷新评论列表信息
                 /* resetComment(1,10); */
               return false;
@@ -1306,7 +1290,7 @@
 
                 /*评分表单*/
                 $("#formMakeComments").validate({
-                    submitHandler: submitFormComment
+                    submitHandler: submitFormComment,
                 });
 
             });
