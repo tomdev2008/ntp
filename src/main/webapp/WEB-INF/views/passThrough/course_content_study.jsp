@@ -110,12 +110,10 @@
     <!--页面右侧模板-->
     <script id="pageRightTemplate" type="text/x-dot-template">
             {{#def.pageHeader}}
-            <div class="page-body">
+            <div class="page-body" id="pageBody">
                 {{#def.pageIntro}}
                 {{?it.type == 'exam' || it.type == 'task'}}
                     {{#def.examContent}}
-                {{??it.type == 'video'}}
-                    {{#def.videoContent}}
                 {{?}}
             </div>
     </script>
@@ -127,7 +125,7 @@
         <div class="page-header" id="pageHeader" data-spy="affix" data-offset-top="10">
                 <div class="hd clearfix">
                 <a class="btn {{?it.prevc == "0"}} disabled{{?}}" href="#" id="prevLecture" data-fdid="{{=it.prevc}}" data-type="{{=it.type}}">
-                <i class="icon-chevron-left"></i>
+                <i class="icon-chevron-lg-left"></i>
                 <span>上一节</span>
                 </a>
                 <h1>{{=it.courseName}}   节{{=it.num}} {{=it.lectureName}}
@@ -137,8 +135,8 @@
                 <span class="tit">学习通过</span>
                 </span>
                 </h1>
-                 <a class="btn {{?it.nextc == "0"}} disabled{{?}}" href="#"  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.type}}">
-                        <i class="icon-chevron-right"></i>
+                <a class="btn {{?it.nextc == "0"}} disabled{{?}}" href="#"  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.type}}">
+                        <i class="icon-chevron-lg-right"></i>
                         <span>下一节</span>
                 </a>
                 </div>
@@ -180,7 +178,7 @@
         <ul class="unstyled listExamPaper" id="listExamPaper">
             {{~it.listExamPaper :paper:index}}
                 <li class="accordion-group">
-                    <a class="titBar" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=index+1}}">
+                    <a class="titBar" {{?it.type == 'task' && paper.examPaperStatus == 'pass'}}{{??}}data-toggle="collapse" data-parent="#listExamPaper" {{?}}href="#examPaper{{=index+1}}">
                         <h2>{{?it.type == 'exam'}}试卷{{??it.type == 'task'}}作业包{{?}}{{=index+1}}. {{=paper.name}}</h2>
                         <p class="muted">共计{{=paper.examCount}}{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=paper.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=paper.examPaperTime}}分钟。</p>
                         <span class="icon-state-bg{{?paper.examPaperStatus == 'fail'}} error">未通过
@@ -193,8 +191,6 @@
                     </div>
                 </li>
             {{~}}
-
-
         </ul>
     </script>
 
@@ -209,11 +205,10 @@
         <p class="muted">{{=it.examPaperIntro||''}}</p>
         <a class="btn btn-link" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=it.num}}">收起<b class="caret"></b></a>
         </div>
-		 
         <form action="{{=it.action || '#'}}" post="post" id="formExam">
-{{?it.listExam.length==0}}
-该素材已被删除
-{{??}}
+			{{?it.listExam.length==0}}
+				该素材已被删除
+			{{??}}
             <input name="fdid" value="{{=it.id}}" type="hidden" />
 			<input name="bamId" value="{{=it.bamId}}" type="hidden" />
 			<input name="catalogId" value="{{=it.catalogId}}" type="hidden" />
@@ -229,8 +224,8 @@
                             {{=index2+1}}. {{=exam.examStem}} （{{=exam.examScore}}分）
                         </dt>
                         <dd>
-							{{?exam.listAttachment!=null}}
-                             <ul class="attachList unstyled">
+                            {{?exam.listAttachment!=null}}
+                            <ul class="attachList unstyled">
                                 {{~exam.listAttachment :att1:index1}}
                                 {{~exam.listAttachment :att:index}}
                                 {{?index1 == att.fdOrder}}
@@ -239,7 +234,7 @@
                                 {{~}}
                                 {{~}}
                             </ul>
-							{{?}}
+                            {{?}}
                             {{~exam.listExamAnswer :ans1:index1}}
                             {{~exam.listExamAnswer :ans:index}}
                             {{?index1 == ans.index}}
@@ -274,18 +269,15 @@
                                 {{~}}
                             </ul>
                         </div>
-
                         <div class="bdt1 pd20">
                             {{?task.examType == 'uploadWork'}}
                                 <label>上传作业（建议小于2G）</label>
                                 <div class="control-upload">
-
                                   <div class="upload-fileName"><span id="attName"></span><i class="icon-paperClip"></i></div>
  				    			  <div id="taskAttSeq_{{=task.id}}" style="height:20px;width:637px;display:block;"> </div>
 					              <div style="margin-left:637px;margin-top: 8px;height:40px;width:600px;display:block;">
 						            <button name="answerAtt" id="{{=task.id}}" class="btn btn-primary btn-large" type="button" >上传</button>
 					              </div>
-
                                 </div>
                                 <ul class="attachList unstyled" id="listTaskAttachment_{{=task.id}}">
                                     {{~task.listTaskAttachment :att2}}
@@ -311,7 +303,7 @@
                             <div class="bdt1 pd20">
                                 <div class="media teacherRating">
                                     <div class="pull-left">
-                                      <a href="#"><img class="media-object" src="{{=task.teacherRating.teacher.imgUrl}}" alt="指导老师"/></a>
+                                        <a href="#"><img class="media-object" src="{{=task.teacherRating.teacher.imgUrl}}" alt="指导老师"/></a>
                                         <h3>指导老师</h3>
                                     </div>
                                     <div class="media-body">
@@ -330,7 +322,7 @@
                 <button class="btn btn-primary btn-large" type="submit">提交答案</button>
         <button class="btn btn-link" type="button" data-toggle="collapse" data-parent="#listExamPaper" data-target="#examPaper{{=it.num}}">收起<b class="caret"></b></button>
         </div>
-{{?}}
+        {{?}}
         </form>
 
         </div>
@@ -359,6 +351,218 @@
         </div>
     </script>
 
+    <!-- 视频、文档等媒体信息模板-->
+    <script id="mediaInfoTemplate" type="x-dot-template">
+        {{#def.mediaInfo:it.defaultMedia}}
+        {{##def.mediaInfo:param:
+            <div class="section mt20">
+                <div class="mediaWrap bdbt2">
+                    <div class="mediaObject">
+                        <div id="flashcontent"></div>
+                    </div>
+                </div>
+                <div class="mediaToolbarWrap">
+                    <div class="mediaToolbar" id="mediaToolbar" data-fdid="{{=param.id}}">
+                        <div class="btn-group">
+                            <a id="btnPraise" class="btn btn-link{{?param.mePraised}} active{{?}}" href="#" title="{{?param.mePraised}}取消赞{{??}}赞{{?}}"><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
+                            <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" class="btn btn-link{{?param.canDownload}}" href="{{=param.url}}"{{??}} disabled"{{?}}><i class="icon-download-blue"></i><span class="num">{{=param.downloadCount || 0 }}</span></a>
+                        </div>
+                        <span class="playCount">{{?it.type == 'video'}}播放{{??}}阅读{{?}}  <strong class="num">{{=param.readCount || 0 }}</strong>  次</span>
+                        <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}}><i class="icon-right"></i>我学会了</button>
+                    </div>
+                    {{#def.listMedia}}
+                </div>
+                <div class="hd">
+                    <div class="tit-icon_bg"><i class="icon-video-intro"></i></div>
+                    <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{?}}信息</h5>
+                    <div class="pos-right" id="ratingTotal">
+                        <span>综合评分</span>
+                            <span class="rating-all" >
+                                {{ for(var i=0; i<5; i++){ }}
+                                    <i class="icon-star{{?i < param.rating.average}} active{{?}}"></i>
+                                {{ } }}
+                             </span>
+                        <b class="text-warning">{{=param.rating.average || 0}}</b>
+                    </div>
+                </div>
+                <div class="clearfix mt20">
+                    <div class="pull-left video-info">
+                        <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{?}}名称  <span class="name" id="mediaName">{{=param.name}}</span></h5>
+                        <p class="mediaIntro" id="mediaIntro">
+                            {{=param.intro}}
+                        </p>
+                    </div>
+                    <div class="pull-right">
+                        <dl class="info-rating">
+
+                            <dd id="ratingFive">
+                                <div class="rating span2">
+                                    <i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+                                </div>
+                                <div class="progress-gray span1">
+                                    <div class="bar" style="width: {{=(param.rating.five/param.rating.total)*100}}%;"></div>
+                                </div>
+                                <span class="fs9">{{=param.rating.five}}</span>
+                            </dd>
+                            <dd id="ratingFour">
+                                <div class="rating span2">
+                                    <i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+                                </div>
+                                <div class="progress-gray span1">
+                                    <div class="bar" style="width: {{=(param.rating.four/param.rating.total)*100}}%;"></div>
+                                </div>
+                                <span class="fs9">{{=param.rating.four}}</span>
+                            </dd>
+                            <dd id="ratingThree">
+                                <div class="rating span2">
+                                    <i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+                                </div>
+                                <div class="progress-gray span1">
+                                    <div class="bar" style="width: {{=(param.rating.three/param.rating.total)*100}}%;"></div>
+                                </div>
+                                <span class="fs9">{{=param.rating.three}}</span>
+                            </dd>
+                            <dd id="ratingTwo">
+                                <div class="rating span2">
+                                    <i class="icon-star"></i><i class="icon-star"></i>
+                                </div>
+                                <div class="progress-gray span1">
+                                    <div class="bar" style="width: {{=(param.rating.two/param.rating.total)*100}}%;"></div>
+                                </div>
+                                <span class="fs9">{{=param.rating.two}}</span>
+                            </dd>
+                            <dd id="ratingOne">
+                                <div class="rating span2">
+                                    <i class="icon-star"></i>
+                                </div>
+                                <div class="progress-gray span1">
+                                    <div class="bar" style="width: {{=(param.rating.one/param.rating.total)*100}}%;"></div>
+                                </div>
+                                <span class="fs9">{{=param.rating.one}}</span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        #}}
+        {{##def.listMedia:
+            <ul class="mediaList nav nav-pills" id="listMedia">
+                {{~it.listMedia :media:index}}
+                <li class="{{?it.defaultMedia.id == media.id}}active{{?}} {{?media.isPass}}pass{{?}}">
+                    <a href="{{=media.url}}" data-fdid="{{=media.id}}" title="{{=media.name}}">
+                        <i class="icon-circle-success"></i>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{?}}{{=index+1}}
+                    </a>
+                </li>
+                {{~}}
+            </ul>
+        #}}
+    </script>
+
+    <!-- 视频、文档等媒体页面 评论模板-->
+    <script id="mediaCommentTemplate" type="x-dot-template">
+        <div class="section" id="mediaComment">
+            <div class="edit-box">
+                    <div class="box-rating">
+                        <span>评分</span>
+                        <span class="rating-do" id="ratingDo">
+                            {{ for(var i=0; i<5; i++ ){ }}
+                                <i class="icon-star{{?i<it.meRating}} active{{?}}"></i>
+                            {{ } }}
+                         </span>
+                        <span class="point">{{=it.meRating}}</span>
+                    </div>
+                <form action="#listComment" id="formMakeComments" data-fdid="{{=it.mediaComment.id}}" >
+                    <textarea  id="textComment" name="textComment" required class="input-block-level" placeholder="有什么想吐槽的吗？随便写两句文评吧~ : )" ></textarea>
+                    <div class="comm-rating">
+                        <label for="isAnonymity" class="checkbox span1">
+                            <input id="isAnonymity" name="isAnonymity" type="checkbox">匿名发表
+                        </label>
+                        <button class="btn btn-primary" type="submit">发表</button>
+                    </div>
+                </form>
+            </div>
+            <div class="hd">
+                <div class="tit-icon_bg"><i class="icon-white-info"></i></div>
+                <h5>全部评论</h5>
+                <div class="pages">
+                    <div class="span2">
+                        第<span> 1 - 10</span> / <span>109</span> 条
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" disabled><i class="icon-chevron-left icon-white"></i></button>
+                        <button class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
+                    </div>
+                </div>
+            </div>
+            <ul class="media-list comment-list" id="listComment">
+            </ul>
+            <div class="comment-list-bottom clearfix">
+                <div class="pages pull-right">
+                    <div class="span2">
+                        第<span> 1 - 10</span> / <span>109</span> 条
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" disabled><i class="icon-chevron-left icon-white"></i></button>
+                        <button class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!--评论列表 模板-->
+    <script id="listCommentTemplate" type="x-dot-template">
+        {{~it :item:index}}
+        <li class="media" data-fdid="{{=item.id}}">
+            <a href="{{?item.isAnonymity}}#{{??}}{{=item.author.link}}{{?}}" class="pull-left"><img src="{{=!item.isAnonymity && item.author.imgUrl || 'images/face-placeholder.png'}}" alt="{{?item.isAnonymity}}匿名{{??}}{{=item.author.name}}{{?}}" border="0" class="media-object"></a>
+            <div class="media-body">
+                <div class="media-heading">
+                    <span class="name">{{?item.isAnonymity}}匿名{{??}}{{=item.author.name}}</span>（<span class="mail">{{=item.author.mail}}</span>）    来自 <span class="org">{{=item.author.org}}</span>{{?}}
+                    {{?!item.replyTo}}
+                        <div class="rating-view">
+                                    <span class="rating-all">
+                                        {{ for(var i=0; i<5; i++){ }}
+                                            <i class="icon-star{{?i < item.rating}} active{{?}}"></i>
+                                        {{ } }}
+                                    </span>
+                            <b class="text-warning">{{=item.rating}}</b>
+                        </div>
+                    {{?}}
+                </div>
+                <p class="comt-content">
+                    {{?item.replyTo}}回复<a href="{{=item.replyTo.link || '#'}}" class="replyOf">{{=item.replyTo.name}}（{{=item.replyTo.mail}}, {{=item.replyTo.org}}）</a>：{{?}}{{=item.comment}}
+                </p>
+                <div class="media-footing">
+                    <div class="clearfix">
+                        <span class="pull-left"><i class="icon-time"></i>{{=item.date}}
+                        </span>
+                        <div class="pull-right btns-comt">
+                            <a href="#" class="btnPraise{{?item.mePraised}} active{{?}}"><i class="icon-thumbs-up"></i><span class="num">{{=item.praiseCount}}</span></a>
+                            <a href="#" class="btnWeak{{?item.meWeaked}} active{{?}}"><i class="icon-thumbs-down"></i><span class="num">{{=item.weakCount}}</span></a>
+                            <a href="#" class="btnComment"><i class="icon-dialog"></i><span class="num">{{=item.commentCount}}</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        {{~}}
+    </script>
+
+    <!--回复评论表单 模板-->
+    <script id="formReplyCommentTemplate" type="x-dot-template">
+        <div class="form-reply">
+            <form id="formReply">
+                    <textarea class="input-block-level" required id="replyComm" name="replyComm" rows="3" placeholder="回复 {{=it.name}}"></textarea>
+                <div class="form-action">
+                     <div class="btn-group">
+                        <button class="btn btn-primary" type="submit">回复</button>
+                        <button class="btn btn-cancel" type="button">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
@@ -377,11 +581,10 @@
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
 <script type="text/javascript">
-
     $(function(){
         //页面左侧模板函数
         var pageLeftBarFn = doT.template(document.getElementById("pageLeftTemplate").text);
-        
+
         //页面右侧模板函数
         var rightContentFn = doT.template(document.getElementById("pageRightTemplate").text,undefined,{
             pageHeader: document.getElementById("pageRightHeaderTemplate").text,
@@ -391,11 +594,19 @@
 
         /*试卷详情模板函数*/
         var examPaperDetailFn = doT.template(document.getElementById("examPaperDetailTemplate").text);
-
         /*试卷状态栏模板函数*/
         var examPaperStatusBarFn = doT.template(document.getElementById("examPaperStatusBarTemplate").text);
 
-				//课程进程Id
+        /*视频、文档等媒体信息 模板函数*/
+        var mediaInfoFn = doT.template(document.getElementById("mediaInfoTemplate").text);
+        /*视频、文档等媒体评论 模板函数*/
+        var mediaCommentFn = doT.template(document.getElementById("mediaCommentTemplate").text);
+        /*视频、文档等媒体评论列表 模板函数*/
+        var listCommentFn = doT.template(document.getElementById("listCommentTemplate").text);
+        /*视频、文档等媒体回复评论表单 模板函数*/
+        var formReplyCommentFn = doT.template(document.getElementById("formReplyCommentTemplate").text);
+
+		//课程进程Id
         var bamId = "${param.bamId}";
         
         //课程进程中的节Id
@@ -426,7 +637,316 @@
                 }
             }).parent().height($("#sidebar").height());
         },100);
-				
+
+        var mediaData = {
+            type: "video",
+            status: "doing",
+            courseName: "雅思口语新教师培训课程",
+            lectureName: "学习入门视频",
+            lectureIntro: "为获得更好的测试效果，建议您关闭IM聊天工具、视频音频等干扰源。测试过程中尽量不要离开。请勿关闭浏览器，否则测试结果将无法保存。",
+            num: 1,
+            isOptional: false,
+            defaultMedia: {
+                id: "fdid0000054642352",
+                isPass: false,
+                name: "新东方的战略",
+                url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc",
+                intro: "本视频由集团总公司人力资源部负责监制，生动活泼地展示了新东方 企业及教职员工风采，强力推荐。",
+                mePraised: false,
+                canDownload: true,
+                praiseCount: 324,
+                downloadCount: 23,
+                readCount: 234325,
+                meRating: 3,
+                rating: {
+                    average: 4,
+                    total: 38,
+                    five: 26,
+                    four: 5,
+                    three: 2,
+                    two: 3,
+                    one: 2
+                },
+                mediaComment: {
+                    id: "fdid0930230453254",
+                    listComment: [
+                        {
+                            id: "fdid1221",
+                            isAnonymity:false,
+                            author: {
+                                imgUrl: "./images/temp-face.jpg",
+                                link: "#profile",
+                                name: "张三",
+                                mail: "zhangsan5@xdf.cn",
+                                org: "南京学校"
+                            },
+                            comment: "哥们儿，洗洗睡吧~",
+                            date: "15分钟前",
+                            replyTo: {
+                                name: "李四",
+                                link: "#profile",
+                                mail: "lisi2@xdf.cn",
+                                org: "广州学校"
+                            },
+                            mePraised: true,
+                            praiseCount: 45,
+                            meWeaked: false,
+                            weakCount: 10,
+                            commentCount: 12
+                        },
+                        {
+                            id: "fdid00003223",
+                            isAnonymity:false,
+                            author: {
+                                imgUrl: null,
+                                link: "#profile",
+                                name: "李四",
+                                mail: "lisi2@xdf.cn",
+                                org: "广州学校"
+                            },
+                            rating: 3,
+                            comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。",
+                            date: "50分钟前",
+                            mePraised: false,
+                            praiseCount: 25,
+                            meWeaked: true,
+                            weakCount: 2,
+                            commentCount: 6
+                        },
+                        {
+                            id: "fdid0777453",
+                            isAnonymity:false,
+                            author: {
+                                imgUrl: null,
+                                link: "#profile",
+                                name: "王二",
+                                mail: "wanger@xdf.cn",
+                                org: "北京学校"
+                            },
+                            rating: 5,
+                            comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。",
+                            date: "2个小时前",
+                            mePraised: false,
+                            praiseCount: 22,
+                            meWeaked: false,
+                            weakCount: 0,
+                            commentCount: 3
+                        }
+                    ]
+                }
+            },
+            listMedia: [
+                {
+                    id: "fdid435242",
+                    isPass: true,
+                    name: "新东方的愿景",
+                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
+                },
+                {
+                    id: "fdid11111678787",
+                    isPass: true,
+                    name: "新东方核心价值观",
+                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
+                },
+                {
+                    id: "fdid0000054642352",
+                    isPass: false,
+                    name: "新东方的战略",
+                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
+                },
+                {
+                    id: "fdid434t5434434",
+                    isPass: false,
+                    name: "新东方的愿景",
+                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
+                },
+                {
+                    id: "fdidregergrgrr43434",
+                    isPass: true,
+                    name: "新东方核心价值观",
+                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
+                },
+                {
+                    id: "fdid443454655555",
+                    isPass: false,
+                    name: "新东方的战略",
+                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
+                },
+                {
+                    id: "fdid085465436",
+                    isPass: true,
+                    name: "新东方的愿景",
+                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
+                },
+                {
+                    id: "fdid4077653324",
+                    isPass: false,
+                    name: "新东方核心价值观",
+                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
+                },
+                {
+                    id: "fdid4htehrew4334",
+                    isPass: false,
+                    name: "新东方的战略",
+                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
+                }
+            ]
+        }
+
+        var docData = {
+            type: "doc",
+            status: "doing",
+            courseName: "雅思口语新教师培训课程",
+            lectureName: "学习入门文档",
+            lectureIntro: "为获得更好的测试效果，建议您关闭IM聊天工具、视频音频等干扰源。测试过程中尽量不要离开。请勿关闭浏览器，否则测试结果将无法保存。",
+            num: 4,
+            isOptional: false,
+            defaultMedia: {
+                id: "fdid0000054642352",
+                isPass: false,
+                name: "新东方的战略",
+                url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc",
+                intro: "本文档由集团总公司人力资源部负责监制，生动活泼地展示了新东方 企业及教职员工风采，强力推荐。",
+                mePraised: false,
+                canDownload: true,
+                praiseCount: 324,
+                downloadCount: 23,
+                readCount: 234325,
+                meRating: 3,
+                rating: {
+                    average: 4,
+                    total: 38,
+                    five: 26,
+                    four: 5,
+                    three: 2,
+                    two: 3,
+                    one: 2
+                },
+                mediaComment: {
+                    id: "fdid0930230453254",
+                    listComment: [
+                        {
+                            id: "fdid1221",
+                            isAnonymity:false,
+                            author: {
+                                imgUrl: "./images/temp-face.jpg",
+                                link: "#profile",
+                                name: "张三",
+                                mail: "zhangsan5@xdf.cn",
+                                org: "南京学校"
+                            },
+                            comment: "哥们儿，洗洗睡吧~",
+                            date: "15分钟前",
+                            replyTo: {
+                                name: "李四",
+                                link: "#profile",
+                                mail: "lisi2@xdf.cn",
+                                org: "广州学校"
+                            },
+                            mePraised: true,
+                            praiseCount: 45,
+                            meWeaked: false,
+                            weakCount: 10,
+                            commentCount: 12
+                        },
+                        {
+                            id: "fdid00003223",
+                            isAnonymity:false,
+                            author: {
+                                imgUrl: null,
+                                link: "#profile",
+                                name: "李四",
+                                mail: "lisi2@xdf.cn",
+                                org: "广州学校"
+                            },
+                            rating: 3,
+                            comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。",
+                            date: "50分钟前",
+                            mePraised: false,
+                            praiseCount: 25,
+                            meWeaked: true,
+                            weakCount: 2,
+                            commentCount: 6
+                        },
+                        {
+                            id: "fdid0777453",
+                            isAnonymity:false,
+                            author: {
+                                imgUrl: null,
+                                link: "#profile",
+                                name: "王二",
+                                mail: "wanger@xdf.cn",
+                                org: "北京学校"
+                            },
+                            rating: 5,
+                            comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。",
+                            date: "2个小时前",
+                            mePraised: false,
+                            praiseCount: 22,
+                            meWeaked: false,
+                            weakCount: 0,
+                            commentCount: 3
+                        }
+                    ]
+                }
+            },
+            listMedia: [
+                {
+                    id: "fdid435242",
+                    isPass: true,
+                    name: "新东方的愿景",
+                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
+                },
+                {
+                    id: "fdid11111678787",
+                    isPass: true,
+                    name: "新东方核心价值观",
+                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
+                },
+                {
+                    id: "fdid0000054642352",
+                    isPass: false,
+                    name: "新东方的战略",
+                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
+                },
+                {
+                    id: "fdid434t5434434",
+                    isPass: false,
+                    name: "新东方的愿景",
+                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
+                },
+                {
+                    id: "fdidregergrgrr43434",
+                    isPass: true,
+                    name: "新东方核心价值观",
+                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
+                },
+                {
+                    id: "fdid443454655555",
+                    isPass: false,
+                    name: "新东方的战略",
+                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
+                },
+                {
+                    id: "fdid085465436",
+                    isPass: true,
+                    name: "新东方的愿景",
+                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
+                },
+                {
+                    id: "fdid4077653324",
+                    isPass: false,
+                    name: "新东方核心价值观",
+                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
+                },
+                {
+                    id: "fdid4htehrew4334",
+                    isPass: false,
+                    name: "新东方的战略",
+                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
+                }
+            ]
+        }
         $("#sidenav>li>a").popover({
             trigger: "hover"
         })
@@ -452,7 +972,7 @@
         	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
             
         }); 
-        function loadRightCont(fdid,type){
+		function loadRightCont(fdid,type){
         	catalogId=fdid;
 		    fdMtype=type;
 	        $.ajax({
@@ -484,13 +1004,331 @@
                         $(this).removeClass("disabled");
                         $("#nextLecture").removeClass("disabled");
                     });
+        }
+        /*视频、文档等媒体页加载头部后执行方法*/
+        function afterLoadMediaPage(data){
+            var $body = $("#pageBody");
+            $body.append(mediaInfoFn(data))
+                    .append(mediaCommentFn(data.defaultMedia));
+            $("#listComment").html(listCommentFn(data.defaultMedia.mediaComment.listComment));
+
+            /*评分效果*/
+            $body.delegate("#ratingDo>i","click",function(e){
+                var $this = $(this),
+                        index = $this.index();
+                    $this.addClass("active").prevAll().addClass("active");
+                    $this.nextAll().removeClass("active");
+                    $this.parent().nextAll(".point").text(index+1);
+                    $.post("url",{rete: index + 1})//提交评分
+            })  /*评论列表中按钮事件*/
+                .delegate("#listComment>.media .btns-comt>a","click",function(e){
+                    e.preventDefault();
+                        var $this = $(this);
+                        var itemId = $this.closest(".media").attr("data-fdid");
+                        var $num = $this.children(".num");
+                        if(!$this.hasClass("active")){
+                            if($this.hasClass("btnPraise")){//赞
+                                $num.text(parseInt($num.text()) + 1);
+                                //$.post("url",{id: itemId})
+                            } else if($this.hasClass("btnWeak")){//踩
+                                $num.text(parseInt($num.text()) + 1);
+                                //$.post("url",{id: itemId})
+                            } else if($this.hasClass("btnComment")){//评论
+                                if($("#formReply").length){
+                                    alert("请先保存其它回复");
+                                } else {
+                                    var $mediaBody = $this.closest(".media-body");
+                                    var toName =  $mediaBody.find(".media-heading>.name").text();
+                                    var toMail =  $mediaBody.find(".media-heading>.mail").text();
+                                    var toOrg =  $mediaBody.find(".media-heading>.org").text();
+                                    var toLink = $mediaBody.prev("a").attr("href");
+                                    $this.closest(".clearfix").after(formReplyCommentFn({
+                                        name: toName
+                                    }));
+                                    /*评论列表中回复表单验证*/
+                                    $("#formReply").validate({
+                                        submitHandler: function(form){
+                                            var txtComm = $("#replyComm").val();
+                                            var $list = $("#listComment");
+
+                                            var tempData = {
+                                                comment: txtComm,
+                                                date: "刚刚",
+                                                replyTo: {
+                                                    name: toName,
+                                                    link: toLink,
+                                                    mail: toMail,
+                                                    org: toOrg
+                                                },
+                                                mePraised: false,
+                                                praiseCount: 0,
+                                                meWeaked: false,
+                                                weakCount: 0,
+                                                commentCount: 0
+                                            }
+                                                tempData.author = {//取得当前账号信息
+                                                    imgUrl: "./images/temp-face.jpg",
+                                                    link: "#profile",
+                                                    name: "杨义锋",
+                                                    mail: "yangyf@xdf.cn",
+                                                    org: "北京学校"
+                                                }
+                                            tempData.id = "fdid2385932432";//ajax post后 删除
+                                            /*$.post("url",tempData)
+                                             .success(function(result){
+                                             tempData.id = result.id;
+                                             //$("#listComment").prepend(listCommentFn([tempData]));
+                                             });*/
+                                            $list.prepend(listCommentFn([tempData]));//ajax post后 删除
+                                            if($list.children(".media").length > 10){
+                                                $list.children(".media").last().remove();
+                                            }
+                                            $(form).parent(".form-reply").remove();
+                                            $num.text(parseInt($num.text()) + 1);
+                                            //$.post("url",{id: itemId})
+                                            $this.removeClass("active");
+                                        }
+                                    });
+                                    $("#formReply .btn-cancel").click(function(e){
+                                        $(this).closest(".form-reply").remove();
+                                        $this.removeClass("active");
+                                    });
+
+                                }
+                            }
+                            $this.addClass("active");
+                        }
+                })
+
+            /*评分表单*/
+            $("#formMakeComments").validate({
+                submitHandler: submitFormComment
+            });
+
+            /*提交评论表单*/
+            function submitFormComment(form){
+                var $list = $("#listComment");
+                var tempData = {
+                    isAnonymity: $("#isAnonymity").is(":checked"),
+                    rating: $("#ratingDo").next(".point").text(),
+                    comment: $("#textComment").val(),
+                    date: "刚刚",
+                    mePraised: false,
+                    praiseCount: 0,
+                    meWeaked: false,
+                    weakCount: 0,
+                    commentCount: 0
+                }
+                if(!tempData.isAnonymity){
+                    tempData.author = {//ajax 取得当前账号信息
+                        imgUrl: "./images/temp-face.jpg",
+                        link: "#profile",
+                        name: "杨义锋",
+                        mail: "yangyf@xdf.cn",
+                        org: "北京学校"
+                    }
+                }
+                tempData.id = "fdid2385932400032";//ajax post后 删除
+                /*$.post("url",tempData)
+                 .success(function(result){
+                 tempData.id = result.id;
+                 //$("#listComment").prepend(listCommentFn([tempData]));
+                 });*/
+                $list.prepend(listCommentFn([tempData]));//ajax post后 删除
+                if($list.children(".media").length > 10){
+                    $list.children(".media").last().remove();
+                }
+                $("#textComment").val("");
+                $("#isAnonymity").removeAttr("checked");
             }
 
-     
+            $("head").loadJS({name: "SWFobject.js"});
+
+            /**************************  如下代码把 videoplayer.swf 嵌入到 id 为 flashcontent 的div中  *********************/
+            var flashvars =
+            {
+                //flash接收的参数
+                autoPlay:'true',
+                skin:"http://me.xdf.cn:80/iportal/sys/attachment/video/videoPlayerSkin.swf",
+                video: data.defaultMedia.url,
+                fms:"rtmp://video.xdf.cn/V3/"
+            };
+            var params =
+            {
+                allowScriptAccess: "always",
+                allowFullScreen:"true",
+                wmode:"transparent",
+                quality:"high"
+            };
+            var attributes =
+            {
+                id: "myflash"
+            };
+            swfobject.embedSWF("http://me.xdf.cn:80/iportal/sys/attachment/video/videoplayer.swf", "flashcontent",
+                    "100%", "510", "6.0.0", "expressInstall.swf", flashvars, params, attributes);
+            var $mediaToolbar = $("#mediaToolbar");
+
+            $("#listMedia>li>a").bind("click",function(e){
+                e.preventDefault();
+                var $this = $(this);
+                $this.parent("li").addClass("active").siblings().removeClass("active");
+                flashvars.video = $this.attr("href");
+                swfobject.embedSWF("http://me.xdf.cn:80/iportal/sys/attachment/video/videoplayer.swf", "myflash",
+                        "100%", "510", "6.0.0", "expressInstall.swf", flashvars, params, attributes);
+                /*$.getJSON("url",{id: $this.attr("data-fdid")}).success(function(result){
+                    //
+                });*/
+                var result = {
+                    isPass: true,
+                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc",//下载url
+                    intro: "test本视频由集团总公司人力资源部负责监制，生动活泼地展示了新东方 企业及教职员工风采，强力推荐。",
+                    mePraised: true,
+                    canDownload: false,
+                    praiseCount: 54,
+                    downloadCount: 0,
+                    readCount: 325,
+                    meRating: 0,
+                    rating: {
+                        average: 3,
+                        total: 26,
+                        five: 16,
+                        four: 3,
+                        three: 2,
+                        two: 3,
+                        one: 2
+                    },
+                    mediaComment: {
+                        id: "fdid00877656545",
+                        listComment: [
+                            {
+                                id: "fdid187658",
+                                isAnonymity:false,
+                                author: {
+                                    imgUrl: "./images/temp-face.jpg",
+                                    link: "#profile",
+                                    name: "张四",
+                                    mail: "zhangsan5@xdf.cn",
+                                    org: "南京学校"
+                                },
+                                rating: 5,
+                                comment: "哥们儿，洗洗睡吧~",
+                                date: "15分钟前",
+                                replyTo: {
+                                    name: "李三",
+                                    link: "#profile",
+                                    mail: "lisi2@xdf.cn",
+                                    org: "广州学校"
+                                },
+                                mePraised: true,
+                                praiseCount: 45,
+                                meWeaked: false,
+                                weakCount: 10,
+                                commentCount: 12
+                            },
+                            {
+                                id: "fdid00003223",
+                                isAnonymity:false,
+                                author: {
+                                    imgUrl: null,
+                                    link: "#profile",
+                                    name: "李三",
+                                    mail: "lisi2@xdf.cn",
+                                    org: "广州学校"
+                                },
+                                rating: 2,
+                                comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。",
+                                date: "50分钟前",
+                                mePraised: false,
+                                praiseCount: 25,
+                                meWeaked: true,
+                                weakCount: 2,
+                                commentCount: 6
+                            }
+                        ]
+                    }
+                }
+                $("#btnPraise").addClass(result.mePraised ? "active" : '')
+                        .children(".num").text(result.praiseCount);
+                $("#btnDownload").addClass(result.canDownload ? '' : 'disabled').attr("data-original-title",result.canDownload ? '点击下载' : '无权下载')
+                        .children(".num").text(result.downloadCount);
+                $("#btnDoPass").attr("disabled",result.isPass ? true : false);
+                $mediaToolbar.find(".playCount>.num").text(result.readCount);
+                $("#mediaName").text($this.attr("title"));
+                $("#mediaIntro").text(result.intro);
+                $("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
+                    if(i < result.rating.average){
+                        $(this).addClass("active");
+                    } else {
+                        $(this).removeClass("active");
+                    }
+                }).end().children("b.text-warning").text(result.rating.average);
+                $("#ratingFive").find(".progress-gray>.bar")
+                        .width(result.rating.five/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.five);
+                $("#ratingFour").find(".progress-gray>.bar")
+                        .width(result.rating.four/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.four);
+                $("#ratingThree").find(".progress-gray>.bar")
+                        .width(result.rating.three/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.three);
+                $("#ratingTwo").find(".progress-gray>.bar")
+                        .width(result.rating.two/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.two);
+                $("#ratingOne").find(".progress-gray>.bar")
+                        .width(result.rating.one/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.one);
+                $("#mediaComment").after(mediaCommentFn(result)).remove();
+                $("#listComment").html(listCommentFn(result.mediaComment.listComment));
+
+                /*评分表单*/
+                $("#formMakeComments").validate({
+                    submitHandler: submitFormComment
+                });
+
+            });
+
+            $mediaToolbar.find(".btn-group>.btn").tooltip();
+
+            /*点赞事件*/
+            $("#btnPraise").on("click",function(e){
+                e.preventDefault();
+                var $this = $(this);
+                if($this.hasClass("active")){
+                    $this.removeClass("active").attr("data-original-title","赞").children(".num").text(parseInt($this.text())-1);
+                } else {
+                    $this.addClass("active").attr("data-original-title","取消赞").children(".num").text(parseInt($this.text())+1);
+                }
+                //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
+            });
+
+            /*点下载事件*/
+            $("#btnDownload").on("click",function(e){
+                var $this = $(this);
+                if($this.hasClass("disabled")){
+                    e.preventDefault();
+                } else {
+                    //$.post("url",{id: $mediaToolbar.attr("data-fdid")});
+                    $this.children(".num").text(parseInt($this.text())+1);
+                }
+            });
+
+            $("#btnDoPass").on("click",function(e){
+                $("#listMedia>li.active").addClass("pass");
+                $(this).attr("disabled", true);
+                //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
+            });
+        }
+
+
         /*测试页加载完成后执行方法*/
         function afterLoadExamOrTaskPage(data){
-        	      	
+
             var $window = $(window);
+
+            $("#listExamPaper>li>a").click(function(e){
+                e.preventDefault();
+                if(($(this).attr("data-toggle") == "collapse") && $(this).parent().siblings().find(".collapse").hasClass("in")){
+                    if(!confirm("确定要关闭未保存的表单？")){
+                        $(this).attr("data-toggle","");
+                    }
+                }
+            });
+
             //试卷列表折叠 手风琴事件
             $("#listExamPaper>li>.collapse")
                     .bind("show",function(){
@@ -511,7 +1349,7 @@
          		  			  success: function(result){
          		  				tempData=result;
          		  			  }
-         	  			}); 
+         	  			});
                         tempData.type = data.type;
                         tempData.num = $this.parent().index() + 1;
                         tempData.examCount = tempData.listExam.length;
@@ -523,8 +1361,8 @@
                         }
                         tempData.successCount = count;
 
+
                         $("#headToolsBar").html(examPaperStatusBarFn(tempData));
-                        
                         //试题列表序号控制
                         $("#navExams>.collapse-inner>.num").click(function(e){
                             e.preventDefault();
@@ -536,7 +1374,7 @@
                                     placement: "bottom"
                                 });
 
-                        tempData.action = "submitExamOrTask";
+						tempData.action = "submitExamOrTask";
                         tempData.bamId=bamId ;
                         tempData.catalogId=catalogId ;
                         tempData.fdMtype=fdMtype ;
@@ -544,8 +1382,15 @@
                         //tempData.startTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                         tempData.startTime=date.getTime();
                         $this.html(examPaperDetailFn(tempData));
-                        
-                       $("button[name='answerAtt']").each(function(){
+
+                        $this.find("[data-toggle='collapse']").click(function(e){
+                            e.preventDefault();
+                            if($(this).attr("data-toggle") == "collapse" && !confirm("确定要关闭未保存的表单？")){
+                                $(this).attr("data-toggle","");
+                            }
+                        })
+
+                        $("button[name='answerAtt']").each(function(){
                         	//var fileid = $(this).attr('id'); 
                         	var temp = "#listTaskAttachment_"+$(this).attr('id')+">li>.icon-remove-blue";
                         	 $(temp).click(function(e){
@@ -553,8 +1398,8 @@
                                  $(this).parent().remove();
                              })
                         	
-                         }); 
-                       
+                         });
+
                     })
                     .bind("shown",function(){
                         var $this = $(this);
@@ -567,7 +1412,7 @@
                             sTop = pos.top - 60 - $pageHead.height() - $pageHead.children(".hd").height() -$("#headToolsBar").height();
                         }
                         $window.scrollTop(sTop);
-                       
+                        
                         $("button[name='answerAtt']").each(function(){
                         	
                         	var fileid = $(this).attr('id');
@@ -613,7 +1458,7 @@
                             });
         						
         				});
-                        $("#formExam").validate();		  				
+                        $("#formExam").validate();
                     })
                     .bind("hide",function(){
                     	$(".uploadify").each(function(){
@@ -621,9 +1466,20 @@
                     	});
                         $(this).empty().prev(".titBar").removeClass("hide");
                         $("#headToolsBar").empty();
+                        $("#listExamPaper>li>a").each(function(){
+                            if($(this).attr("data-toggle") == ""){
+                                $(this).attr("data-toggle","collapse");
+                            }
+                        })
                     });
+
         }
+
+
     });
+
+
+
 </script>
 </body>
 </html>
