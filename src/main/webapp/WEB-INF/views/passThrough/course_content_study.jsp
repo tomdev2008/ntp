@@ -487,11 +487,11 @@
                 <h5>全部评论</h5>
                 <div class="pages">
                     <div class="span2">
-                        第<span> 1 - 10</span> / <span>109</span> 条
+                        第<span id="pageLine1"> 1 - 10</span> / <span id="pageTotal1"></span> 条
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" disabled><i class="icon-chevron-left icon-white"></i></button>
-                        <button class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
+                        <button id="gotoBefore1" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i></button>
+                        <button id="gotoNext1" class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
                     </div>
                 </div>
             </div>
@@ -499,12 +499,12 @@
             </ul>
             <div class="comment-list-bottom clearfix">
                 <div class="pages pull-right">
-                    <div class="span2">
-                        第<span> 1 - 10</span> / <span>109</span> 条
+                    <div class="span2" >
+                        第<span id="pageLine2"> 1 - 10</span> / <span id="pageTotal2"></span> 条
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" disabled><i class="icon-chevron-left icon-white"></i></button>
-                        <button class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
+                        <button id="gotoBefore2" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i></button>
+                        <button id="gotoNext1" class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
                     </div>
                 </div>
             </div>
@@ -1105,7 +1105,7 @@
                             $this.addClass("active");
                         }
                 })
-
+			resetComment(1,10);
             /*评分表单*/
             $("#formMakeComments").validate({
                 submitHandler: submitFormComment
@@ -1128,6 +1128,69 @@
             		  }
             	});
               //刷新评论页码
+                $.ajax({
+          		  url: "${ctx}/ajax/message/getCommentPageInfo",
+          		  async:false,
+          		  dataType : 'json',
+          		  data:{
+          			  modelName:"<%=MaterialInfo.class.getName()%>",
+          			  modelId:$("#formMakeComments").attr("data-fdid"),
+          			  pageNo:pageNo,
+          			  pageSize:pageSize,
+              	  },
+          		  success: function(result){
+          			//alert(JSON.stringify(result));
+         			 $("#pageLine1").html(" "+result.startLine+" - "+result.endLine+" ");
+         			 $("#pageLine2").html(" "+result.startLine+" - "+result.endLine+" ");
+         			 $("#pageTotal1").html(result.totalSize);
+         			 $("#pageTotal2").html(result.totalSize);
+         			 //第一页
+         			 if(result.pageNo==1){
+         				 $("#gotoBefore1").unbind();
+         				 $("#gotoBefore2").unbind();
+         				 $("#gotoNext1").bind("click",function (){resetComment(pageNo+1,pageSize);});
+         				 $("#gotoNext2").bind("click",function (){resetComment(pageNo+1,pageSize);});
+         				 $("#gotoBefore1").attr("disabled",true);
+         				 $("#gotoBefore2").attr("disabled",true);
+         				 $("#gotoNext1").removeAttr("disabled");
+         				 $("#gotoNext2").removeAttr("disabled");
+         			 }
+         			 //最后一页
+         			 if(result.pageNo==result.totalPage){
+         				 $("#gotoNext1").unbind();
+         				 $("#gotoNext2").unbind();
+         				 $("#gotoNext1").attr("disabled",true);
+         				 $("#gotoNext2").attr("disabled",true);
+         				 $("#gotoBefore1").bind("click",function (){resetComment(pageNo-1,pageSize);});
+         				 $("#gotoBefore2").bind("click",function (){resetComment(pageNo-1,pageSize);});
+         				 $("#gotoBefore1").removeAttr("disabled");
+         				 $("#gotoBefore2").removeAttr("disabled");
+         			 }
+         			 //只有一页
+         			 if(result.pageNo==result.totalPage&&result.pageNo==1){
+         				 $("#gotoNext1").unbind();
+         				 $("#gotoNext2").unbind();
+         				 $("#gotoBefore1").unbind();
+         				 $("#gotoBefore2").unbind();
+         				 $("#gotoNext1").attr("disabled",true);
+         				 $("#gotoNext2").attr("disabled",true);
+         				 $("#gotoBefore1").attr("disabled",true);
+         				 $("#gotoBefore2").attr("disabled",true);
+         			 }
+         			 //中间
+         			 if(result.pageNo!=result.totalPage&&result.pageNo!=1){
+         				 $("#gotoNext1").bind("click",function (){resetComment(pageNo+1,pageSize);});
+         				 $("#gotoNext2").bind("click",function (){resetComment(pageNo+1,pageSize);});
+         				 $("#gotoBefore1").bind("click",function (){resetComment(pageNo-1,pageSize);});
+         				 $("#gotoBefore2").bind("click",function (){resetComment(pageNo-1,pageSize);});
+         				 $("#gotoBefore1").removeAttr("disabled");
+         				 $("#gotoBefore2").removeAttr("disabled");
+         				 $("#gotoNext1").removeAttr("disabled");
+         				 $("#gotoNext2").removeAttr("disabled");
+         			 }
+         			 
+          		  }
+          		});
             
             }
             
