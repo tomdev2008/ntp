@@ -393,7 +393,7 @@
                             {{=param.intro}}
                         </p>
                     </div>
-                    <div class="pull-right">
+                    <div class="pull-right" id="pullrightInfo">
                         <dl class="info-rating">
 
                             <dd id="ratingFive">
@@ -563,7 +563,55 @@
             </form>
         </div>
     </script>
-
+				<script id="scoreInfo" type="x-dot-template">
+ 						<dl class="info-rating">
+						 	<dd id="ratingFive">
+                                <div class="rating span2">
+                                    <i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+                                </div>
+                                <div class="progress-gray span1">
+                                    <div class="bar" style="width: {{=(it.fdFiveScoreNum/it.fdScoreNum)*100}}%;"></div>
+                                </div>
+                                <span class="fs9">{{=it.fdFiveScoreNum}}</span>
+                            </dd>
+                            <dd id="ratingFour">
+                                <div class="rating span2">
+                                    <i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+                                </div>
+                                <div class="progress-gray span1">
+                                    <div class="bar" style="width: {{=(it.fdFourScoreNum/it.fdScoreNum)*100}}%;"></div>
+                                </div>
+                                <span class="fs9">{{=it.fdFourScoreNum}}</span>
+                            </dd>
+                            <dd id="ratingThree">
+                                <div class="rating span2">
+                                    <i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+                                </div>
+                                <div class="progress-gray span1">
+                                    <div class="bar" style="width: {{=(it.fdThreeScoreNum/it.fdScoreNum)*100}}%;"></div>
+                                </div>
+                                <span class="fs9">{{=it.fdThreeScoreNum}}</span>
+                            </dd>
+                            <dd id="ratingTwo">
+                                <div class="rating span2">
+                                    <i class="icon-star"></i><i class="icon-star"></i>
+                                </div>
+                                <div class="progress-gray span1">
+                                    <div class="bar" style="width: {{=(it.fdTwoScoreNum/it.fdScoreNum)*100}}%;"></div>
+                                </div>
+                                <span class="fs9">{{=it.fdTwoScoreNum}}</span>
+                            </dd>
+                            <dd id="ratingOne">
+                                <div class="rating span2">
+                                    <i class="icon-star"></i>
+                                </div>
+                                <div class="progress-gray span1">
+                                    <div class="bar" style="width: {{=(it.fdOneScoreNum/it.fdScoreNum)*100}}%;"></div>
+                                </div>
+                                <span class="fs9">{{=it.fdOneScoreNum}}</span>
+                            </dd>
+                        </dl>
+    		</script>
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
@@ -1035,7 +1083,15 @@
   		  			  },
   		  			  dataType:'json',
   		  			  success: function(result){
-  		  				
+  		  				$("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
+  		                    if(i < result[0].fdAverage){
+  		                        $(this).addClass("active");
+  		                    } else {
+  		                        $(this).removeClass("active");
+  		                    }
+  		                }).end().children("b.text-warning").text(result[0].fdAverage);
+  		  				var scoreInfoHtml = doT.template(document.getElementById("scoreInfo").text);
+  		  				$("#pullrightInfo").html(scoreInfoHtml(result[0]));
   		  			  },
   	  				});
                     
@@ -1407,7 +1463,6 @@
             });
 
             $("#btnDoPass").on("click",function(e){
-            	alert("反对");
                 $("#listMedia>li.active").addClass("pass");
                 $(this).attr("disabled", true);
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
