@@ -138,7 +138,7 @@
             <tx:method name="update*" propagation="REQUIRES_NEW"/>
             <tx:method name="saveOrUpdate*" propagation="REQUIRES_NEW"/>
             <tx:method name="delete*" propagation="REQUIRES_NEW"/>
-
+			<tx:method name="findMaterialDetailInfo" propagation="REQUIRES_NEW"/>
             <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
             <tx:method name="count*" propagation="REQUIRED" read-only="true"/>
             <tx:method name="find*" propagation="REQUIRED" read-only="true"/>

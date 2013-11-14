@@ -363,7 +363,7 @@ $(function(){
   jQuery("#upMaterial").uploadify({
     'height' : 27,
     'width' : 80,
-    'multi' : true,
+    'multi' : false,
     'simUploadLimit' : 1,
     'swf' : '${ctx}/resources/uploadify/uploadify.swf',
     'buttonText' : '上传',

@@ -600,6 +600,11 @@
 
         /*视频、文档等媒体信息 模板函数*/
         var mediaInfoFn = doT.template(document.getElementById("mediaInfoTemplate").text);
+        var rightMaterialContentFn = doT.template(document.getElementById("pageRightTemplate").text,undefined,{
+            pageHeader: document.getElementById("pageRightHeaderTemplate").text,
+            pageIntro: document.getElementById("pageRightIntroTemplate").text,
+            examContent: document.getElementById("mediaInfoTemplate").text
+        });
         /*视频、文档等媒体评论 模板函数*/
         var mediaCommentFn = doT.template(document.getElementById("mediaCommentTemplate").text);
         /*视频、文档等媒体评论列表 模板函数*/
@@ -986,11 +991,13 @@
 		  			  },
 		  			  dataType:'json',
 		  			  success: function(result){
-		  				$("#mainContent").html(rightContentFn(result));
 		  				if(result.type == "exam" || result.type == "task"){
+		  					$("#mainContent").html(rightContentFn(result));
 		  					afterLoadExamOrTaskPage(result);
 		  	            } else if(result.type == "video" || result.type == "doc"){
-		  	                afterLoadMediaPage(docData);
+		  	            	//alert(JSON.stringify(result));
+		  	            	$("#mainContent").html(rightMaterialContentFn(result));
+		  	                afterLoadMediaPage(result);
 		  	            }
 		  				
 		  			  },
