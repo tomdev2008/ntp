@@ -249,6 +249,7 @@ public class MaterialAjaxController {
 		materialInfo.setIsAvailable(true);
 		materialInfo.setIsPublish(true);
 		materialInfo.setIsDownload(true);
+		materialInfo.setFdCreateTime(new Date());
 		SysOrgPerson creator = accountService
 				.load(ShiroUtils.getUser().getId());
 		materialInfo.setCreator(creator);
