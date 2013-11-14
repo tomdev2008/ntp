@@ -1,6 +1,7 @@
 package cn.me.xdf.service.bam.source.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
@@ -57,7 +59,21 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 
     @Override
     public Object saveSourceNode(WebRequest request) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    	String catalogId = request.getParameter("catalogId");
+		String bamId = request.getParameter("bamId");
+		String materialInfoId = request.getParameter("fdid");
+		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
+		MaterialInfo info = materialService.get(materialInfoId);
+		info.setThrough(true);
+		materialService.save(info);
+		SourceNote sourceNode = new SourceNote();//保存学习素材记录
+		sourceNode.setFdCourseId(bamCourse.getCourseId());
+		sourceNode.setFdCatalogId(catalogId);
+		sourceNode.setFdUserId(ShiroUtils.getUser().getId());
+		sourceNode.setFdOperationDate(new Date());
+		sourceNode.setFdMaterialId(info.getFdId());
+		sourceNode.setIsStudy(true);
+        return sourceNodeService.saveSourceNode(sourceNode);
     }
 
 	@Override
@@ -73,19 +89,21 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 		List listMedia = new ArrayList();
 		Map listm=new HashMap();
 		Map defaultMedia = new HashMap();
+		boolean status= false;
 		if(material!=null){
-			for(MaterialInfo minfo:material){
-				boolean status=minfo.getThrough();
+			for(int i=0;i<material.size();i++){
+				MaterialInfo minfo = material.get(i);
 				AttMain attMain=attMainService.getByModelIdAndModelName(minfo.getFdId(), MaterialInfo.class.getName());
 				
 				listm.put("id", minfo.getFdId());//素材id
 				listm.put("name", minfo.getFdName());//素材名称
-				listm.put("isPass", minfo.getFdDescription());//素材描述
+				listm.put("intro", minfo.getFdDescription());//素材描述
+				listm.put("isPass", minfo.getThrough());//素材描述
 				if(attMain!=null){
 					listm.put("url", attMain.getFdId());//附件id
 				}
 				//defaultMedia 默认当前还没学习的内容
-				if(!status&&defaultMedia.isEmpty()){
+				if(i==0){
 					defaultMedia.put("id", minfo.getFdId());//素材id
 					defaultMedia.put("name", minfo.getFdName());//素材名称
 					defaultMedia.put("intro", minfo.getFdDescription());//素材描述
@@ -95,7 +113,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 					defaultMedia.put("canDownload",minfo.getIsDownload());//是否允许下载
 					defaultMedia.put("dowloadCount",minfo.getFdDownloads());//下载次数
 					defaultMedia.put("readCount",minfo.getFdPlays());//播放次数
-					defaultMedia.put("isPass", status);
+					defaultMedia.put("isPass", minfo.getThrough());
 					///////////////////////////////////
 					Map scorem=new HashMap();
 					scorem.put("average:", 0);
@@ -106,6 +124,20 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 					scorem.put("two", 0);
 					scorem.put("one", 0);
 					defaultMedia.put("rating", scorem);
+					status = true;
+				}
+				if(!minfo.getThrough()&&status){
+					defaultMedia.put("id", minfo.getFdId());//素材id
+					defaultMedia.put("name", minfo.getFdName());//素材名称
+					defaultMedia.put("intro", minfo.getFdDescription());//素材描述
+					if(attMain!=null){
+						defaultMedia.put("url", attMain.getFdId());//附件id
+					}
+					defaultMedia.put("canDownload",minfo.getIsDownload());//是否允许下载
+					defaultMedia.put("dowloadCount",minfo.getFdDownloads());//下载次数
+					defaultMedia.put("readCount",minfo.getFdPlays());//播放次数
+					defaultMedia.put("isPass", minfo.getThrough());
+					status = false;
 				}
 				listMedia.add(listm);
 			}
