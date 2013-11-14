@@ -1073,7 +1073,6 @@
                     $this.addClass("active").prevAll().addClass("active");
                     $this.nextAll().removeClass("active");
                     $this.parent().nextAll(".point").text(index+1);
-                    
                     $.ajax({
   		  			  url: "${ctx}/ajax/score/pushMaterialToCourse",
   		  			  async:false,
@@ -1094,8 +1093,6 @@
   		  				$("#pullrightInfo").html(scoreInfoHtml(result[0]));
   		  			  },
   	  				});
-                    
-                    //$.post("url",{rete: index + 1})//提交评分
             })  /*评论列表中按钮事件*/
                 .delegate("#listComment>.media .btns-comt>a","click",function(e){
                     e.preventDefault();
@@ -1193,10 +1190,12 @@
             $("#formMakeComments").validate({
                 submitHandler: submitFormComment
             });
+            
+            function resetScoreInfo(){
+            	
+            }
 
             function resetComment(pageNo,pageSize){
-            	//刷新评论列表
-            	
                 $.ajax({
             		  url: "${ctx}/ajax/message/findCommentByModelId",
             		  async:false,
