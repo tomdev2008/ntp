@@ -538,8 +538,8 @@
                         <span class="pull-left"><i class="icon-time"></i>{{=item.fdCreateTime}}
                         </span>
                         <div class="pull-right btns-comt">
-                            <a href="#" class="btnPraise{{?item.canSport}} active{{?}}"><i class="icon-thumbs-up"></i><span class="num">{{=item.supportCount}}</span></a>
-                            <a href="#" class="btnWeak{{?item.canOppose}} active{{?}}"><i class="icon-thumbs-down"></i><span class="num">{{=item.opposeCount}}</span></a>
+                            <a href="#" class="btnPraise{{?!item.canSport}} active{{?}}"><i class="icon-thumbs-up"></i><span class="num">{{=item.supportCount}}</span></a>
+                            <a href="#" class="btnWeak{{?!item.canOppose}} active{{?}}"><i class="icon-thumbs-down"></i><span class="num">{{=item.opposeCount}}</span></a>
                             <a href="#" class="btnComment"><i class="icon-dialog"></i><span class="num">{{=item.replyCount}}</span></a>
                         </div>
                     </div>
@@ -996,8 +996,8 @@
 		  					afterLoadExamOrTaskPage(result);
 		  	            } else if(result.type == "video" || result.type == "doc"){
 		  	            	//alert(JSON.stringify(result));
-		  	            	$("#mainContent").html(rightMaterialContentFn(result));
-		  	                afterLoadMediaPage(result);
+		  	            	$("#mainContent").html(rightMaterialContentFn(docData));
+		  	                afterLoadMediaPage(docData);
 		  	            }
 		  				
 		  			  },
@@ -1034,11 +1034,57 @@
                         var $num = $this.children(".num");
                         if(!$this.hasClass("active")){
                             if($this.hasClass("btnPraise")){//赞
-                                $num.text(parseInt($num.text()) + 1);
+                            	var pushok;
+                            	$.ajax({
+	                          		  url: "${ctx}/ajax/message/supportOrOpposeMessage",
+	                          		  async:false,
+	                          		  data:{
+	                          			messageId :itemId,
+	                          			fdType :"01",
+	                          		  },
+	                          		  success: function(result){
+	                          			  if(result=='"err"'){
+	                          				pushok=false;
+	                          			  }else{
+	                          				pushok=true;
+	                          			  }
+	                          				
+	                          		  }
+                          		});
+                            	if(pushok){
+                            		$num.text(parseInt($num.text()) + 1);
+                            		$this.addClass("active");
+                            	}else{
+                            		alert("不能支持和反对自己的评论");
+                            	}
+                            	
+                            	
                                 //$.post("url",{id: itemId})
                             } else if($this.hasClass("btnWeak")){//踩
-                                $num.text(parseInt($num.text()) + 1);
-                                //$.post("url",{id: itemId})
+                            	var pushok;
+                            	$.ajax({
+	                          		  url: "${ctx}/ajax/message/supportOrOpposeMessage",
+	                          		  async:false,
+	                          		  data:{
+	                          			messageId :itemId,
+	                          			fdType :"02",
+	                          		  },
+	                          		  success: function(result){
+	                          			  if(result=='"err"'){
+	                          				pushok=false;
+	                          			  }else{
+	                          				pushok=true;
+	                          			  }
+	                          				
+	                          		  }
+                          		});
+                            	if(pushok){
+                            		$num.text(parseInt($num.text()) + 1);
+                            		$this.addClass("active");
+                            	}else{
+                            		
+                            		alert("不能支持和反对自己的评论");
+                            	}
                             } else if($this.hasClass("btnComment")){//评论
                                 if($("#formReply").length){
                                     alert("请先保存其它回复");
@@ -1102,7 +1148,7 @@
 
                                 }
                             }
-                            $this.addClass("active");
+                            
                         }
                 })
 			resetComment(1,10);
@@ -1210,19 +1256,6 @@
                 //刷新评论列表信息
                 /* resetComment(1,10); */
               return false;
-              
-                /* tempData.id = "fdid2385932400032";//ajax post后 删除
-               $.post("url",tempData)
-                 .success(function(result){
-                 tempData.id = result.id;
-                 //$("#listComment").prepend(listCommentFn([tempData]));
-                 });
-                $list.prepend(listCommentFn([tempData]));//ajax post后 删除
-                if($list.children(".media").length > 10){
-                    $list.children(".media").last().remove();
-                }
-                $("#textComment").val("");
-                $("#isAnonymity").removeAttr("checked"); */
             }
 
             $("head").loadJS({name: "SWFobject.js"});
@@ -1369,6 +1402,7 @@
 
             /*点赞事件*/
             $("#btnPraise").on("click",function(e){
+            	alert("支持");
                 e.preventDefault();
                 var $this = $(this);
                 if($this.hasClass("active")){
@@ -1391,6 +1425,7 @@
             });
 
             $("#btnDoPass").on("click",function(e){
+            	alert("反对");
                 $("#listMedia>li.active").addClass("pass");
                 $(this).attr("disabled", true);
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})

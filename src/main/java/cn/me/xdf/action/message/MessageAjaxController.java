@@ -183,8 +183,8 @@ public class MessageAjaxController {
 			Score score = scoreService.findByModelIdAndUserId(modelName, modelId, message.getFdUser().getFdId());
 			map.put("isShowScore", message.getFdType().equals("04")?false:true);
 			map.put("score", score==null?0:score.getFdScore());
-			map.put("canSport", messageReplyService.isSupportMessage(message.getFdUser().getFdId(), message.getFdId()));
-			map.put("canOppose", messageReplyService.isOpposeMessage(message.getFdUser().getFdId(), message.getFdId()));
+			map.put("canSport", messageReplyService.isSupportMessage(ShiroUtils.getUser().getId(), message.getFdId())==null?true:false);
+			map.put("canOppose", messageReplyService.isOpposeMessage(ShiroUtils.getUser().getId(), message.getFdId())==null?true:false);
 
 
 			list.add(map);

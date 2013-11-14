@@ -98,10 +98,10 @@ public class MessageService extends BaseService{
 		if(!message.getFdType().equals("01")){
 			throw new RuntimeException("只有评论消息才能支持或反对");
 		}
-		if(!canOppose(userId,messageId)){
+		if(fdType.equals("02")&&!canOppose(userId,messageId)){
 			return "err";
 		}
-		if(!canSupport(userId,messageId)){
+		if(fdType.equals("01")&&!canSupport(userId,messageId)){
 			return "err";
 		}
 		MessageReply messageReply = new MessageReply();
