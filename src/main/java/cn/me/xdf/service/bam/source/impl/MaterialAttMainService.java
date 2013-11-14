@@ -115,8 +115,8 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 					defaultMedia.put("isPass", minfo.getThrough());
 					///////////////////////////////////
 					Map scorem=new HashMap();
-					scorem.put("average:", 0);
-					scorem.put("total:", 0);
+					scorem.put("average", 0);
+					scorem.put("total", 0);
 					scorem.put("five", 0);
 					scorem.put("four", 0);
 					scorem.put("three", 0);

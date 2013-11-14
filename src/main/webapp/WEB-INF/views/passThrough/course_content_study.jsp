@@ -766,7 +766,7 @@
                         index = $this.index();
                     $this.addClass("active").prevAll().addClass("active");
                     $this.nextAll().removeClass("active");
-                    $this.parent().nextAll(".point").text(index+1);
+                    $this.parent().nextAll(".point").text(index+1);  
                     $.ajax({
   		  			  url: "${ctx}/ajax/score/pushMaterialToCourse",
   		  			  async:false,
@@ -1074,6 +1074,7 @@
 		  			  dataType:'json',
 		  			  success: function(data){	  				 
 		  				result = data.defaultMedia;
+		  			    
                                 },
                 });
                 $("#btnPraise").addClass(result.mePraised ? "active" : '')
