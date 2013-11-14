@@ -46,9 +46,9 @@ public class MessageService extends BaseService{
 	 */
 	public boolean canSupport(String userId, String messageId){
 		Message message = findUniqueByProperty("fdId", messageId);
-		if(!message.getFdType().equals("01")){
+		/*if(!message.getFdType().equals("01")){
 			throw new RuntimeException("只有评论消息才能支持或反对");
-		}
+		}*/
 		if(messageReplyService.isSupportMessage(userId, messageId)!=null){
 			return false;
 		}else{
@@ -71,9 +71,9 @@ public class MessageService extends BaseService{
 	 */
 	public boolean canOppose(String userId, String messageId){
 		Message message = findUniqueByProperty("fdId", messageId);
-		if(!message.getFdType().equals("01")){
+		/*if(!message.getFdType().equals("01")){
 			throw new RuntimeException("只有评论消息才能支持或反对");
-		}
+		}*/
 		if(messageReplyService.isOpposeMessage(userId, messageId)!=null){
 			return false;
 		}else{
@@ -95,9 +95,9 @@ public class MessageService extends BaseService{
 	 */
 	public String supportOrOpposeMessage(String userId, String messageId,String fdType){
 		Message message = findUniqueByProperty("fdId", messageId);
-		if(!message.getFdType().equals("01")){
+		/*if(!message.getFdType().equals("01")&&!message.getFdType().equals("04")){
 			throw new RuntimeException("只有评论消息才能支持或反对");
-		}
+		}*/
 		if(fdType.equals("02")&&!canOppose(userId,messageId)){
 			return "err";
 		}
@@ -168,12 +168,13 @@ public class MessageService extends BaseService{
 	public Pagination findCommentPage(String fdModelName,String fdModelId ,int pageNo, int pageSize){
 		Finder finder = Finder
 				.create("from Message message ");
-		finder.append("where message.fdModelName=:fdModelName and message.fdModelId=:fdModelId and message.fdType=:fdType ");
+		finder.append("where message.fdModelName=:fdModelName and message.fdModelId=:fdModelId and (message.fdType=:fdType1 or message.fdType=:fdType2) ");
 		finder.append("order by message.fdCreateTime desc ");
 		
 		finder.setParam("fdModelName", fdModelName);
 		finder.setParam("fdModelId", fdModelId);
-		finder.setParam("fdType", Constant.MESSAGE_TYPE_REVIEW);
+		finder.setParam("fdType1", Constant.MESSAGE_TYPE_REVIEW);
+		finder.setParam("fdType2", Constant.MESSAGE_TYPE_REPLY);
 		List<Message> messages = (List<Message>) getPage(finder, pageNo, pageSize).getList();
 		return getPage(finder, pageNo, pageSize);
 	}

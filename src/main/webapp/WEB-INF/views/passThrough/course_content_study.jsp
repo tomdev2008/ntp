@@ -518,8 +518,8 @@
 			<a href="#" class="pull-left"><tags:image href="{{=it.fdUserURL}}" clas="media-object"/></a>
             <div class="media-body">
                 <div class="media-heading">
-                    <span class="name">{{?item.isAnonymous}}匿名{{??}}{{=item.fdUserName}}</span>（<span class="mail">{{=item.fdUserEmail}}</span>）    来自 <span class="org">{{=item.fdUserDept}}</span>{{?}}
-                    {{?!item.isShowScore}}
+                    <span class="name">{{=item.no}}# {{?item.isAnonymous}}匿名{{??}}{{=item.fdUserName}}</span>（<span class="mail">{{=item.fdUserEmail}}</span>）    来自 <span class="org">{{=item.fdUserDept}}</span>{{?}}
+                    {{?item.isShowScore}}
                         <div class="rating-view">
                                     <span class="rating-all">
                                         {{ for(var i=0; i<5; i++){ }}
@@ -553,7 +553,7 @@
     <script id="formReplyCommentTemplate" type="x-dot-template">
         <div class="form-reply">
             <form id="formReply">
-                    <textarea class="input-block-level" required id="replyComm" name="replyComm" rows="3" placeholder="回复 {{=it.name}}"></textarea>
+                    <textarea class="input-block-level" required id="replyComm" name="replyComm" rows="3" >回复 （{{=it.name}}）：</textarea>
                 <div class="form-action">
                      <div class="btn-group">
                         <button class="btn btn-primary" type="submit">回复</button>
@@ -1048,7 +1048,6 @@
 	                          			  }else{
 	                          				pushok=true;
 	                          			  }
-	                          				
 	                          		  }
                           		});
                             	if(pushok){
@@ -1057,9 +1056,6 @@
                             	}else{
                             		alert("不能支持和反对自己的评论");
                             	}
-                            	
-                            	
-                                //$.post("url",{id: itemId})
                             } else if($this.hasClass("btnWeak")){//踩
                             	var pushok;
                             	$.ajax({
@@ -1075,14 +1071,12 @@
 	                          			  }else{
 	                          				pushok=true;
 	                          			  }
-	                          				
 	                          		  }
                           		});
                             	if(pushok){
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		
                             		alert("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnComment")){//评论
@@ -1100,45 +1094,18 @@
                                     /*评论列表中回复表单验证*/
                                     $("#formReply").validate({
                                         submitHandler: function(form){
-                                            var txtComm = $("#replyComm").val();
-                                            var $list = $("#listComment");
-
-                                            var tempData = {
-                                                comment: txtComm,
-                                                date: "刚刚",
-                                                replyTo: {
-                                                    name: toName,
-                                                    link: toLink,
-                                                    mail: toMail,
-                                                    org: toOrg
-                                                },
-                                                mePraised: false,
-                                                praiseCount: 0,
-                                                meWeaked: false,
-                                                weakCount: 0,
-                                                commentCount: 0
-                                            }
-                                                tempData.author = {//取得当前账号信息
-                                                    imgUrl: "./images/temp-face.jpg",
-                                                    link: "#profile",
-                                                    name: "杨义锋",
-                                                    mail: "yangyf@xdf.cn",
-                                                    org: "北京学校"
-                                                }
-                                            tempData.id = "fdid2385932432";//ajax post后 删除
-                                            /*$.post("url",tempData)
-                                             .success(function(result){
-                                             tempData.id = result.id;
-                                             //$("#listComment").prepend(listCommentFn([tempData]));
-                                             });*/
-                                            $list.prepend(listCommentFn([tempData]));//ajax post后 删除
-                                            if($list.children(".media").length > 10){
-                                                $list.children(".media").last().remove();
-                                            }
-                                            $(form).parent(".form-reply").remove();
-                                            $num.text(parseInt($num.text()) + 1);
-                                            //$.post("url",{id: itemId})
-                                            $this.removeClass("active");
+                                           $.ajax({
+          	                          		  url: "${ctx}/ajax/message/addMaterialMessagesMessage",
+          	                          		  async:false,
+          	                          		  data:{
+          	                          			materialId :$("#formMakeComments").attr("data-fdid"),
+          	                          			fdContent :$("#replyComm").val(),
+          	                          			messageId :itemId,
+          	                          		  },
+          	                          		  success: function(result){
+          	                          			resetComment(1,10);
+          	                          		  }
+                                    		});
                                         }
                                     });
                                     $("#formReply .btn-cancel").click(function(e){
@@ -1150,7 +1117,7 @@
                             }
                             
                         }
-                })
+                });
 			resetComment(1,10);
             /*评分表单*/
             $("#formMakeComments").validate({
@@ -1159,6 +1126,7 @@
 
             function resetComment(pageNo,pageSize){
             	//刷新评论列表
+            	
                 $.ajax({
             		  url: "${ctx}/ajax/message/findCommentByModelId",
             		  async:false,

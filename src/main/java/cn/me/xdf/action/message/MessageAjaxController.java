@@ -121,7 +121,7 @@ public class MessageAjaxController {
 	 * 添加评论
 	 * 
 	 */
-	private void addMessage(String fdModelName,String fdModelId,String fdContent,String fdType,boolean isAnonymous,String userId) {
+	private Message addMessage(String fdModelName,String fdModelId,String fdContent,String fdType,boolean isAnonymous,String userId) {
 		Message message = new Message();
 		message.setFdModelName(fdModelName);
 		message.setFdModelId(fdModelId);
@@ -130,7 +130,7 @@ public class MessageAjaxController {
 		message.setFdType(fdType);
 		message.setIsAnonymous(isAnonymous);
 		message.setFdUser((SysOrgPerson)accountService.load(userId));
-		messageService.save(message);
+		return messageService.save(message);
 	}
 	
 	/**
@@ -151,6 +151,25 @@ public class MessageAjaxController {
 	@ResponseBody
 	private void addMaterialMessage(String materialId,String fdContent,String isAnonymity) {
 		addMessage(MaterialInfo.class.getName(), materialId, fdContent, Constant.MESSAGE_TYPE_REVIEW, false, ShiroUtils.getUser().getId());
+	}
+	
+	/**
+	 * 添加评论的评论(针对资源，当前用户)
+	 * 
+	 */
+	@RequestMapping(value = "addMaterialMessagesMessage")
+	@ResponseBody
+	private void addMaterialMessagesMessage(String materialId,String fdContent,String messageId) {
+		addMessage(MaterialInfo.class.getName(), materialId, fdContent, Constant.MESSAGE_TYPE_REPLY, false, ShiroUtils.getUser().getId());
+		MessageReply messageReply = new MessageReply();
+		messageReply.setFdContent(fdContent);
+		messageReply.setFdType("03");
+		messageReply.setFdCreateTime(new Date());
+		messageReply.setFdUser((SysOrgPerson)accountService.load(ShiroUtils.getUser().getId()));
+		Message message = new Message();
+		message.setFdId(messageId);
+		messageReply.setMessage(message);
+		messageReplyService.save(messageReply);
 	}
 	
 	/**
@@ -185,8 +204,6 @@ public class MessageAjaxController {
 			map.put("score", score==null?0:score.getFdScore());
 			map.put("canSport", messageReplyService.isSupportMessage(ShiroUtils.getUser().getId(), message.getFdId())==null?true:false);
 			map.put("canOppose", messageReplyService.isOpposeMessage(ShiroUtils.getUser().getId(), message.getFdId())==null?true:false);
-
-
 			list.add(map);
 		}
 		Map maps = new HashMap();
