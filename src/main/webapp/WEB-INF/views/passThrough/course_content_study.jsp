@@ -470,7 +470,7 @@
                                 <i class="icon-star{{?i<it.meRating}} active{{?}}"></i>
                             {{ } }}
                          </span>
-                        <span class="point">{{=it.meRating}}</span>
+                        <span class="point" id="ratingDoScore"></span>
                     </div>
                 <form action="javascript:void(0)" id="formMakeComments" data-fdid="{{=it.mediaComment.id}}" >
                     <textarea  id="textComment" name="textComment" required class="input-block-level" placeholder="有什么想吐槽的吗？随便写两句文评吧~ : )" ></textarea>
