@@ -472,7 +472,7 @@
                          </span>
                         <span class="point">{{=it.meRating}}</span>
                     </div>
-                <form action="#listComment" id="formMakeComments" data-fdid="{{=it.mediaComment.id}}" >
+                <form action="javascript:void(0)" id="formMakeComments" data-fdid="{{=it.mediaComment.id}}" >
                     <textarea  id="textComment" name="textComment" required class="input-block-level" placeholder="有什么想吐槽的吗？随便写两句文评吧~ : )" ></textarea>
                     <div class="comm-rating">
                         <label for="isAnonymity" class="checkbox span1">
@@ -514,33 +514,33 @@
     <!--评论列表 模板-->
     <script id="listCommentTemplate" type="x-dot-template">
         {{~it :item:index}}
-        <li class="media" data-fdid="{{=item.id}}">
-            <a {{?item.isAnonymity}}href="#"{{??}}href="{{=item.author.link}}"{{?}} class="pull-left"><img src="{{=!item.isAnonymity && item.author.imgUrl || 'images/face-placeholder.png'}}" alt="{{?item.isAnonymity}}匿名{{??}}{{=item.author.name}}{{?}}" border="0" class="media-object"></a>
+        <li class="media" data-fdid="{{=item.fdId}}">
+			<a href="#" class="pull-left"><tags:image href="{{=it.fdUserURL}}" clas="media-object"/></a>
             <div class="media-body">
                 <div class="media-heading">
-                    <span class="name">{{?item.isAnonymity}}匿名{{??}}{{=item.author.name}}</span>（<span class="mail">{{=item.author.mail}}</span>）    来自 <span class="org">{{=item.author.org}}</span>{{?}}
-                    {{?!item.replyTo}}
+                    <span class="name">{{?item.isAnonymous}}匿名{{??}}{{=item.fdUserName}}</span>（<span class="mail">{{=item.fdUserEmail}}</span>）    来自 <span class="org">{{=item.fdUserDept}}</span>{{?}}
+                    {{?!item.isShowScore}}
                         <div class="rating-view">
                                     <span class="rating-all">
                                         {{ for(var i=0; i<5; i++){ }}
-                                            <i class="icon-star{{?i < item.rating}} active{{?}}"></i>
+                                            <i class="icon-star{{?i < item.score}} active{{?}}"></i>
                                         {{ } }}
                                     </span>
-                            <b class="text-warning">{{=item.rating}}</b>
+                            <b class="text-warning">{{=item.score}}</b>
                         </div>
                     {{?}}
                 </div>
                 <p class="comt-content">
-                    {{?item.replyTo}}回复<a href="{{=item.replyTo.link || '#'}}" class="replyOf">{{=item.replyTo.name}}（{{=item.replyTo.mail}}, {{=item.replyTo.org}}）</a>：{{?}}{{=item.comment}}
+                    {{=item.content}}
                 </p>
                 <div class="media-footing">
                     <div class="clearfix">
-                        <span class="pull-left"><i class="icon-time"></i>{{=item.date}}
+                        <span class="pull-left"><i class="icon-time"></i>{{=item.fdCreateTime}}
                         </span>
                         <div class="pull-right btns-comt">
-                            <a href="#" class="btnPraise{{?item.mePraised}} active{{?}}"><i class="icon-thumbs-up"></i><span class="num">{{=item.praiseCount}}</span></a>
-                            <a href="#" class="btnWeak{{?item.meWeaked}} active{{?}}"><i class="icon-thumbs-down"></i><span class="num">{{=item.weakCount}}</span></a>
-                            <a href="#" class="btnComment"><i class="icon-dialog"></i><span class="num">{{=item.commentCount}}</span></a>
+                            <a href="#" class="btnPraise{{?item.canSport}} active{{?}}"><i class="icon-thumbs-up"></i><span class="num">{{=item.supportCount}}</span></a>
+                            <a href="#" class="btnWeak{{?item.canOppose}} active{{?}}"><i class="icon-thumbs-down"></i><span class="num">{{=item.opposeCount}}</span></a>
+                            <a href="#" class="btnComment"><i class="icon-dialog"></i><span class="num">{{=item.replyCount}}</span></a>
                         </div>
                     </div>
                 </div>
@@ -824,7 +824,7 @@
                     one: 2
                 },
                 mediaComment: {
-                    id: "fdid0930230453254",
+                    id: "14255329f44d67c683698994b8a86231",
                     listComment: [
                         {
                             id: "fdid1221",
@@ -990,7 +990,7 @@
 		  				if(result.type == "exam" || result.type == "task"){
 		  					afterLoadExamOrTaskPage(result);
 		  	            } else if(result.type == "video" || result.type == "doc"){
-		  	                afterLoadMediaPage(result);
+		  	                afterLoadMediaPage(docData);
 		  	            }
 		  				
 		  			  },
@@ -1111,8 +1111,8 @@
             		  async:false,
             		  dataType : 'json',
             		  data:{
-            			  modelName:<%=MaterialInfo.class.getName()%>
-            			  modelId:$("#formMakeComments").att("data-fdid"),
+            			  modelName:<%=MaterialInfo.class.getName()%>,
+            			  modelId:$("#formMakeComments").attr("data-fdid"),
             			  pageNo:pageNo,
             			  pageSize:pageSize,
                 	  },
@@ -1121,12 +1121,12 @@
             		  }
             	});
               //刷新评论页码
-               $.ajax({
+              <%--  $.ajax({
             		  url: "${ctx}/ajax/message/getCommentPageInfo",
             		  async:false,
             		  dataType : 'json',
             		  data:{
-            			  modelName:<%=MaterialInfo.class.getName()%>
+            			  modelName:<%=MaterialInfo.class.getName()%>,
             			  modelId:$("#formMakeComments").att("data-fdid"),
             			  pageNo:pageNo,
             			  pageSize:pageSize,
@@ -1134,24 +1134,28 @@
             		  success: function(result){
             			 
             		  }
-            	});
+            	}); --%>
             }
             
             /*提交评论表单*/
             function submitFormComment(form){
-                $.ajax({
+            	alert("----------");
+               $.ajax({
           		  	url: "${ctx}/ajax/message/addMaterialMessage",
           		  	async:false,
           		  	dataType : 'json',
           		  	data:{
-          				materialId:$("#formMakeComments").att("data-fdid"),
+          				materialId:$("#formMakeComments").attr("data-fdid"),
                     	isAnonymity: $("#isAnonymity").is(":checked"),
                     	fdContent: $("#textComment").val(),
               	  	},
+              	  	success:function(result){
+              	  		resetComment(1,10);
+              	  	}
           		});
                 //刷新评论列表信息
-                resetComment(1,10);
-              
+                /* resetComment(1,10); */
+              return false;
               
                 /* tempData.id = "fdid2385932400032";//ajax post后 删除
                $.post("url",tempData)

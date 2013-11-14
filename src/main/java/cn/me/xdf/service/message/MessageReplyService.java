@@ -27,17 +27,37 @@ public class MessageReplyService extends BaseService{
 	}
 	
 	/**
-	 * 查看用户是否支持或反对过指定评论
+	 * 查看用户是否支持过指定评论
 	 * 
 	 * @return MessageReply
 	 */
-	public MessageReply isContainMessageReply(String userId, String messageId){
+	public MessageReply isSupportMessage(String userId, String messageId){
 		Finder finder = Finder
 				.create("from MessageReply messageReply ");
-		finder.append("where messageReply.message.fdId=:messageId and messageReply.fdUser.fdId=:userId  and (messageReply.fdType=:fdType1 or messageReply.fdType=:fdType2)");
+		finder.append("where messageReply.message.fdId=:messageId and messageReply.fdUser.fdId=:userId  and messageReply.fdType=:fdType1");
 		finder.setParam("messageId", messageId);
 		finder.setParam("userId", userId);
 		finder.setParam("fdType1", "01");
+		List<MessageReply> scores = find(finder);
+		if(scores.size()==0){
+			return null;
+		}else{
+			return scores.get(0);	
+		}
+		
+	}
+	
+	/**
+	 * 查看用户是否反对过指定评论
+	 * 
+	 * @return MessageReply
+	 */
+	public MessageReply isOpposeMessage(String userId, String messageId){
+		Finder finder = Finder
+				.create("from MessageReply messageReply ");
+		finder.append("where messageReply.message.fdId=:messageId and messageReply.fdUser.fdId=:userId  and messageReply.fdType=:fdType2");
+		finder.setParam("messageId", messageId);
+		finder.setParam("userId", userId);
 		finder.setParam("fdType2", "02");
 		List<MessageReply> scores = find(finder);
 		if(scores.size()==0){

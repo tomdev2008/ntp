@@ -232,7 +232,10 @@ public class PassThroughAjaxController {
 						map.put("num", catalog.getFdNo());
 						map.put("isOptional", catalog.getFdPassCondition()!=null && catalog.getFdPassCondition()==0?true:false);
 						//根据素材类型设置节中内容详细信息
-						map.putAll((Map)bamMaterialService.findMaterialDetailInfo(sourceType, bamCourse, catalog));
+						Map returnMap = (Map)bamMaterialService.findMaterialDetailInfo(sourceType, bamCourse, catalog);
+						if(returnMap!=null){
+							map.putAll(returnMap);
+						}
 						break;
 					}
 				}

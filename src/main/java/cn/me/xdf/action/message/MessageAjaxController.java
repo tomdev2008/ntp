@@ -20,9 +20,11 @@ import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.score.Score;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.message.MessageReplyService;
 import cn.me.xdf.service.message.MessageService;
+import cn.me.xdf.service.score.ScoreService;
 import cn.me.xdf.utils.DateUtil;
 import cn.me.xdf.utils.ShiroUtils;
 
@@ -45,6 +47,9 @@ public class MessageAjaxController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private ScoreService scoreService;
 	
 	/**
 	 * 支持或反对评论
@@ -73,18 +78,38 @@ public class MessageAjaxController {
 	}
 	
 	/**
-	 * 查看用户是否可以支持或反对评论
+	 * 查看用户是否可以支持评论
 	 * 
-	 * @return String(true:能；supportOrOpposeed：评论过了；isme：自己的)
+	 * @return String(true:能；support：支持过了；isme：自己的)
 	 */
-	@RequestMapping(value = "canSupportOrOppose")
+	@RequestMapping(value = "canSupport")
 	@ResponseBody
-	public String canSupportOrOppose(String messageId) {
+	public String canSupport(String messageId) {
 		String userId = ShiroUtils.getUser().getId();
-		if(messageReplyService.isContainMessageReply(userId, messageId)!=null){
+		if(messageReplyService.isSupportMessage(userId, messageId)!=null){
+			return "support";
+		}else{
+			if(messageService.canSupport(userId, messageId)){
+				return "true";
+			}else{
+				return "isme";
+			}
+		}
+	}
+	
+	/**
+	 * 查看用户是否可以反对评论
+	 * 
+	 * @return String(true:能；opposeed：评论过了；isme：自己的)
+	 */
+	@RequestMapping(value = "canOppose")
+	@ResponseBody
+	public String canOppose(String messageId) {
+		String userId = ShiroUtils.getUser().getId();
+		if(messageReplyService.isOpposeMessage(userId, messageId)!=null){
 			return "supportOrOpposeed";
 		}else{
-			if(messageService.canSupportOrOppose(userId, messageId)){
+			if(messageService.canOppose(userId, messageId)){
 				return "true";
 			}else{
 				return "isme";
@@ -155,6 +180,13 @@ public class MessageAjaxController {
 			map.put("replyCount", messageService.getReplyCount(message.getFdId()));
 			int no = pagination.getTotalCount()-i-(pageNo-1)*pageSize;
 			map.put("no", no);
+			Score score = scoreService.findByModelIdAndUserId(modelName, modelId, message.getFdUser().getFdId());
+			map.put("isShowScore", message.getFdType().equals("04")?false:true);
+			map.put("score", score==null?0:score.getFdScore());
+			map.put("canSport", messageReplyService.isSupportMessage(message.getFdUser().getFdId(), message.getFdId()));
+			map.put("canOppose", messageReplyService.isOpposeMessage(message.getFdUser().getFdId(), message.getFdId()));
+
+
 			list.add(map);
 		}
 		Map maps = new HashMap();

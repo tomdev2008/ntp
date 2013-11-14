@@ -40,16 +40,41 @@ public class MessageService extends BaseService{
 	private MessageReplyService messageReplyService;
 	
 	/**
-	 * 查看用户是否可以支持或反对指定评论
+	 * 查看用户是否可以支持指定评论
 	 * 
 	 * @return boolean
 	 */
-	public boolean canSupportOrOppose(String userId, String messageId){
+	public boolean canSupport(String userId, String messageId){
 		Message message = findUniqueByProperty("fdId", messageId);
 		if(!message.getFdType().equals("01")){
 			throw new RuntimeException("只有评论消息才能支持或反对");
 		}
-		if(messageReplyService.isContainMessageReply(userId, messageId)!=null){
+		if(messageReplyService.isSupportMessage(userId, messageId)!=null){
+			return false;
+		}else{
+			if(message.getIsAnonymous().equals(false)){
+				if(userId.equals(message.getFdUser().getFdId())){
+					return false;
+				}else{
+					return true;
+				}
+			}else{
+				return true;
+			}
+		}
+	}
+	
+	/**
+	 * 查看用户是否可以反对指定评论
+	 * 
+	 * @return boolean
+	 */
+	public boolean canOppose(String userId, String messageId){
+		Message message = findUniqueByProperty("fdId", messageId);
+		if(!message.getFdType().equals("01")){
+			throw new RuntimeException("只有评论消息才能支持或反对");
+		}
+		if(messageReplyService.isOpposeMessage(userId, messageId)!=null){
 			return false;
 		}else{
 			if(message.getIsAnonymous().equals(false)){
@@ -73,7 +98,10 @@ public class MessageService extends BaseService{
 		if(!message.getFdType().equals("01")){
 			throw new RuntimeException("只有评论消息才能支持或反对");
 		}
-		if(!canSupportOrOppose(userId,messageId)){
+		if(!canOppose(userId,messageId)){
+			return "err";
+		}
+		if(!canSupport(userId,messageId)){
 			return "err";
 		}
 		MessageReply messageReply = new MessageReply();
