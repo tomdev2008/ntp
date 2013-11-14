@@ -988,11 +988,9 @@
 		  				$("#mainContent").html(rightContentFn(result));
 		  				if(result.type == "exam" || result.type == "task"){
 		  					afterLoadExamOrTaskPage(result);
-		  	            } else if(result.type == "video"){
-		  	              //  afterLoadVideoPage(result);
-		  	            //} else if(result.type == "doc"){
-		  	            //    afterLoadDocPage(result);
-		  	            } 
+		  	            } else if(result.type == "video" || result.type == "doc"){
+		  	                afterLoadMediaPage(result);
+		  	            }
 		  				
 		  			  },
 	  			});
