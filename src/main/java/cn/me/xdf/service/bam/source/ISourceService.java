@@ -35,5 +35,12 @@ public interface ISourceService {
      * @return
      */
     public Object findSubInfoByMaterial(WebRequest request);
+    
+    /**
+     * 获取素材详细信息
+     * @param request
+     * @return
+     */
+    public Object findMaterialDetailInfo(WebRequest request);
 
 }

@@ -185,4 +185,10 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 		}
 		return list;
 	}
+
+	@Override
+	public Object findMaterialDetailInfo(WebRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

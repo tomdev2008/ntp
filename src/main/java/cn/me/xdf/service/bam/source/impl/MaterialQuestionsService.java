@@ -188,4 +188,10 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 		}
 		return listExam;
 	}
+
+	@Override
+	public Object findMaterialDetailInfo(WebRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

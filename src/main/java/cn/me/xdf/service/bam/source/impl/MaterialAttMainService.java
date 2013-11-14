@@ -35,4 +35,10 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Object findMaterialDetailInfo(WebRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
