@@ -125,7 +125,7 @@
     <script id="pageRightHeaderTemplate" type="x-dot-template">
         <div class="page-header" id="pageHeader" data-spy="affix" data-offset-top="10">
                 <div class="hd clearfix">
-                <a class="btn {{?it.prevc == "0"}} disabled{{?}}" href="#" id="prevLecture" data-fdid="{{=it.prevc}}" data-type="{{=it.type}}">
+                <a class="btn {{?it.prevc == "0"}} disabled{{?}}" href="#" id="prevLecture" data-fdid="{{=it.prevc}}" data-type="{{=it.prevBaseType || ''}}">
                 <i class="icon-chevron-lg-left"></i>
                 <span>上一节</span>
                 </a>
@@ -136,7 +136,7 @@
                 <span class="tit">学习通过</span>
                 </span>
                 </h1>
-                <a class="btn {{?it.nextc == "0"}} disabled{{?}}" href="#"  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.type}}">
+                <a class="btn {{?it.nextc == "0"}} disabled{{?}}" href="#"  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.nextBaseType || ''}}">
                         <i class="icon-chevron-lg-right"></i>
                         <span>下一节</span>
                 </a>
@@ -515,7 +515,7 @@
     <script id="listCommentTemplate" type="x-dot-template">
         {{~it :item:index}}
         <li class="media" data-fdid="{{=item.id}}">
-            <a href="{{?item.isAnonymity}}#{{??}}{{=item.author.link}}{{?}}" class="pull-left"><img src="{{=!item.isAnonymity && item.author.imgUrl || 'images/face-placeholder.png'}}" alt="{{?item.isAnonymity}}匿名{{??}}{{=item.author.name}}{{?}}" border="0" class="media-object"></a>
+            <a {{?item.isAnonymity}}href="#"{{??}}href="{{=item.author.link}}"{{?}} class="pull-left"><img src="{{=!item.isAnonymity && item.author.imgUrl || 'images/face-placeholder.png'}}" alt="{{?item.isAnonymity}}匿名{{??}}{{=item.author.name}}{{?}}" border="0" class="media-object"></a>
             <div class="media-body">
                 <div class="media-heading">
                     <span class="name">{{?item.isAnonymity}}匿名{{??}}{{=item.author.name}}</span>（<span class="mail">{{=item.author.mail}}</span>）    来自 <span class="org">{{=item.author.org}}</span>{{?}}

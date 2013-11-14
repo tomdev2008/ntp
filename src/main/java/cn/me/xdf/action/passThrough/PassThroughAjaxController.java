@@ -303,6 +303,7 @@ public class PassThroughAjaxController {
 					}else if(nextCatalog.getThrough()==true){
 						pn.put("nstatus", "pass");
 					}
+					pn.put("nextBaseType", nextCatalog.getFdMaterialType());
 				}else{//不大于2 则当前节是节首也是节尾
 					pn.put("nextc", "0");
 					pn.put("nstatus", "untreated");
@@ -312,6 +313,7 @@ public class PassThroughAjaxController {
 				prevCatalog=getpnCatalog(catalogs,currentCatalog.getFdNo()-1);
 				pn.put("prevc", prevCatalog.getFdId());
 				pn.put("pstatus", "pass");
+				pn.put("prevBaseType", prevCatalog.getFdMaterialType());
 				nextCatalog=getpnCatalog(catalogs,currentCatalog.getFdNo()+1);
 				if(nextCatalog!=null){//当前节是节尾
 					pn.put("nextc", nextCatalog.getFdId());
@@ -322,6 +324,7 @@ public class PassThroughAjaxController {
 					}else if(nextCatalog.getThrough()==true){
 						pn.put("nstatus", "pass");
 					}
+					pn.put("nextBaseType", nextCatalog.getFdMaterialType());
 				}else{
 					pn.put("nextc", "0");
 					pn.put("nstatus", "untreated");
