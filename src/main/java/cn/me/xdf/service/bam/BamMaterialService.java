@@ -61,7 +61,7 @@ public class BamMaterialService extends SimpleService {
      * @param catalog   对应的节信息
      * @return
      */
-    public Object findMaterialDetailInfo(String sourceType,BamCourse bamCourse, CourseCatalog catalog){
-    	return sourceMap.get(MaterialEnum.valueOf("m_"+sourceType).getBean()).findMaterialDetailInfo(bamCourse, catalog);
+    public Object findMaterialDetailInfo(String sourceType,BamCourse bamCourse, CourseCatalog catalog, String fdid){
+    	return sourceMap.get(MaterialEnum.valueOf("m_"+sourceType).getBean()).findMaterialDetailInfo(bamCourse, catalog,fdid);
     }
 }

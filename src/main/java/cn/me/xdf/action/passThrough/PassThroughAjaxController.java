@@ -208,6 +208,8 @@ public class PassThroughAjaxController {
 		String catalogId = request.getParameter("catalogId");
 		//获取节内容类型
 		String sourceType = request.getParameter("fdMtype");
+		///点击播放当前素材的id
+		String materialId = request.getParameter("materialId");
 		Map map = new HashMap();
 		if(StringUtil.isNotBlank(bamId)){
 			BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
@@ -232,7 +234,7 @@ public class PassThroughAjaxController {
 						map.put("num", catalog.getFdNo());
 						map.put("isOptional", catalog.getFdPassCondition()!=null && catalog.getFdPassCondition()==0?true:false);
 						//根据素材类型设置节中内容详细信息
-						Map returnMap = (Map)bamMaterialService.findMaterialDetailInfo(sourceType, bamCourse, catalog);
+						Map returnMap = (Map)bamMaterialService.findMaterialDetailInfo(sourceType, bamCourse, catalog, materialId);
 						if(returnMap!=null){
 							map.putAll(returnMap);
 						}

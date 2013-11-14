@@ -42,6 +42,6 @@ public interface ISourceService {
      * @param catalog   对应的节信息
      * @return
      */
-    public Object findMaterialDetailInfo(BamCourse bamCourse, CourseCatalog catalog);
+    public Object findMaterialDetailInfo(BamCourse bamCourse, CourseCatalog catalog, String fdid);
 
 }

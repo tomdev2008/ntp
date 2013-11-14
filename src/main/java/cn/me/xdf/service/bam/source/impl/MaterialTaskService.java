@@ -187,7 +187,7 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 	}
 
 	@Override
-	public Object findMaterialDetailInfo(BamCourse bamCourse, CourseCatalog catalog) {
+	public Object findMaterialDetailInfo(BamCourse bamCourse, CourseCatalog catalog,String fdid) {
 		Map map = new HashMap();
 		List<MaterialInfo> material = bamCourse.getMaterialByCatalog(catalog);
 		List list = new ArrayList();

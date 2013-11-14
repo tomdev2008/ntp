@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jodd.util.StringUtil;
+
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.course.CourseCatalog;
@@ -83,7 +85,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 	}
 
 	@Override
-	public Object findMaterialDetailInfo(BamCourse bamCourse, CourseCatalog catalog) {
+	public Object findMaterialDetailInfo(BamCourse bamCourse, CourseCatalog catalog, String fdid) {
 		Map map = new HashMap();
 		List<MaterialInfo> material = bamCourse.getMaterialByCatalog(catalog);
 		List listMedia = new ArrayList();
@@ -94,7 +96,6 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 			for(int i=0;i<material.size();i++){
 				MaterialInfo minfo = material.get(i);
 				AttMain attMain=attMainService.getByModelIdAndModelName(minfo.getFdId(), MaterialInfo.class.getName());
-				
 				listm.put("id", minfo.getFdId());//素材id
 				listm.put("name", minfo.getFdName());//素材名称
 				listm.put("intro", minfo.getFdDescription());//素材描述
@@ -126,7 +127,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 					defaultMedia.put("rating", scorem);
 					status = true;
 				}
-				if(!minfo.getThrough()&&status){
+				if((!minfo.getThrough()&&status)||(StringUtil.isNotBlank(fdid)&&fdid.equals(minfo.getFdId()))){
 					defaultMedia.put("id", minfo.getFdId());//素材id
 					defaultMedia.put("name", minfo.getFdName());//素材名称
 					defaultMedia.put("intro", minfo.getFdDescription());//素材描述
