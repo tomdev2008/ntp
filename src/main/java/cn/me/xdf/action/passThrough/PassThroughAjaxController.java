@@ -216,7 +216,7 @@ public class PassThroughAjaxController {
 				for(CourseCatalog catalog : catalogs){
 					if(catalog.getFdId().equals(catalogId)){
 						//设置节信息
-						Map prenext=getCurrentCatalog(catalogs,catalog);
+						Map prenext=getCurrentCatalog(bamCourse,catalog);
 						map.putAll(prenext);
 						map.put("type", catalog.getMaterialType());
 						if(catalog.getThrough()==null){
@@ -288,49 +288,54 @@ public class PassThroughAjaxController {
 	 * @param currentCatalog  当前节
 	 * @return 当前节点的上下节点
 	 */
-		private Map getCurrentCatalog(List<CourseCatalog> catalogs,CourseCatalog currentCatalog){
+		private Map getCurrentCatalog(BamCourse bamCourse,CourseCatalog currentCatalog){
+			List<CourseCatalog> catalogs = bamCourse.getCatalogs();
 			//分离章节集合中的节
 			CourseCatalog prevCatalog=null;
 			CourseCatalog nextCatalog=null;
 			Map pn=new HashMap();
 			if(currentCatalog.getFdNo()==1){//当前节是节1的情况
 				pn.put("prevc", "0");
-				pn.put("pstatus", "untreated");
+				pn.put("pstatus", false);
 				nextCatalog=getpnCatalog(catalogs,currentCatalog.getFdNo()+1);
 				if(nextCatalog!=null){//总节数>2节
 					pn.put("nextc", nextCatalog.getFdId());
-					if(nextCatalog.getThrough()==null){
-						pn.put("nstatus", "untreated");
-					}else if(nextCatalog.getThrough()==false){
-						pn.put("nstatus", "doing");
-					}else if(nextCatalog.getThrough()==true){
-						pn.put("nstatus", "pass");
+					if(bamCourse.getCourseInfo().getIsOrder()){
+						if(null!=currentCatalog.getThrough()&&true==currentCatalog.getThrough()){
+							pn.put("nstatus", true);
+						}else{
+							pn.put("nstatus", false);
+						}
+					}else{
+						pn.put("nstatus", true);
 					}
 					pn.put("nextBaseType", nextCatalog.getFdMaterialType());
 				}else{//不大于2 则当前节是节首也是节尾
 					pn.put("nextc", "0");
-					pn.put("nstatus", "untreated");
+					pn.put("nstatus", false);
 				}
 			}
 			if(currentCatalog.getFdNo()>1){//节编号大于1说明有上一节点 
 				prevCatalog=getpnCatalog(catalogs,currentCatalog.getFdNo()-1);
 				pn.put("prevc", prevCatalog.getFdId());
-				pn.put("pstatus", "pass");
+				pn.put("pstatus", true);
 				pn.put("prevBaseType", prevCatalog.getFdMaterialType());
 				nextCatalog=getpnCatalog(catalogs,currentCatalog.getFdNo()+1);
 				if(nextCatalog!=null){//当前节是节尾
 					pn.put("nextc", nextCatalog.getFdId());
-					if(nextCatalog.getThrough()==null){
-						pn.put("nstatus", "untreated");
-					}else if(nextCatalog.getThrough()==false){
-						pn.put("nstatus", "doing");
-					}else if(nextCatalog.getThrough()==true){
-						pn.put("nstatus", "pass");
+					if(bamCourse.getCourseInfo().getIsOrder()){
+						if(null!=currentCatalog.getThrough()&&true==currentCatalog.getThrough()){
+							pn.put("nstatus", true);
+						}else{
+							pn.put("nstatus", false);
+						}
+					}else{
+						pn.put("nstatus", true);
 					}
 					pn.put("nextBaseType", nextCatalog.getFdMaterialType());
 				}else{
 					pn.put("nextc", "0");
-					pn.put("nstatus", "untreated");
+					pn.put("nstatus", false);
 				}
 			}
 			return pn;
@@ -349,6 +354,4 @@ public class PassThroughAjaxController {
 			}
 			return null;
 		}
-
-	
 }
