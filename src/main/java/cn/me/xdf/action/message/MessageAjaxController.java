@@ -16,6 +16,7 @@ import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
 import cn.me.xdf.model.organization.SysOrgPerson;
@@ -118,6 +119,16 @@ public class MessageAjaxController {
 	}
 	
 	/**
+	 * 添加评论(针对资源，当前用户)
+	 * 
+	 */
+	@RequestMapping(value = "addMaterialMessage")
+	@ResponseBody
+	private void addMaterialMessage(String materialId,String fdContent,String isAnonymity) {
+		addMessage(MaterialInfo.class.getName(), materialId, fdContent, Constant.MESSAGE_TYPE_REVIEW, false, ShiroUtils.getUser().getId());
+	}
+	
+	/**
 	 * 根据Id评论分页信息
 	 * 
 	 */
@@ -141,7 +152,7 @@ public class MessageAjaxController {
 			map.put("fdUserDept", message.getFdUser().getDeptName());
 			map.put("supportCount", messageService.getSupportCount(message.getFdId()));
 			map.put("opposeCount", messageService.getOpposeCount(message.getFdId()));
-			
+			map.put("replyCount", messageService.getReplyCount(message.getFdId()));
 			int no = pagination.getTotalCount()-i-(pageNo-1)*pageSize;
 			map.put("no", no);
 			list.add(map);

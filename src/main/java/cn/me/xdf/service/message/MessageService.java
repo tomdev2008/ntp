@@ -150,5 +150,21 @@ public class MessageService extends BaseService{
 		return getPage(finder, pageNo, pageSize);
 	}
 
+	/**
+	 * 计算指定评论的评论数
+	 * 
+	 * @return 评论的评论数
+	 */
+	@Transactional(readOnly = true)
+	public int getReplyCount(String messageId){
+		Finder finder = Finder
+				.create("select count(*) from MessageReply messageReply ");
+		finder.append("where messageReply.message.fdId = :messageId and messageReply.fdType = :fdType");
+		finder.setParam("messageId", messageId);
+		finder.setParam("fdType", "03");
+		List scores = find(finder);
+		long obj = (Long)scores.get(0);
+		return (int)obj;
+	}
 	
 }

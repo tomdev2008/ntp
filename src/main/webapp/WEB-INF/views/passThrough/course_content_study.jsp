@@ -1,3 +1,4 @@
+<%@page import="cn.me.xdf.model.material.MaterialInfo"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
@@ -1103,41 +1104,67 @@
                 submitHandler: submitFormComment
             });
 
+            function resetComment(pageNo,pageSize){
+            	//刷新评论列表
+                $.ajax({
+            		  url: "${ctx}/ajax/message/findCommentByModelId",
+            		  async:false,
+            		  dataType : 'json',
+            		  data:{
+            			  modelName:<%=MaterialInfo.class.getName()%>
+            			  modelId:$("#formMakeComments").att("data-fdid"),
+            			  pageNo:pageNo,
+            			  pageSize:pageSize,
+                	  },
+            		  success: function(result){
+            			  $("#listComment").html(listCommentFn(result));
+            		  }
+            	});
+              //刷新评论页码
+               $.ajax({
+            		  url: "${ctx}/ajax/message/getCommentPageInfo",
+            		  async:false,
+            		  dataType : 'json',
+            		  data:{
+            			  modelName:<%=MaterialInfo.class.getName()%>
+            			  modelId:$("#formMakeComments").att("data-fdid"),
+            			  pageNo:pageNo,
+            			  pageSize:pageSize,
+                	  },
+            		  success: function(result){
+            			 
+            		  }
+            	});
+            }
+            
             /*提交评论表单*/
             function submitFormComment(form){
-                var $list = $("#listComment");
-                var tempData = {
-                    isAnonymity: $("#isAnonymity").is(":checked"),
-                    rating: $("#ratingDo").next(".point").text(),
-                    comment: $("#textComment").val(),
-                    date: "刚刚",
-                    mePraised: false,
-                    praiseCount: 0,
-                    meWeaked: false,
-                    weakCount: 0,
-                    commentCount: 0
-                }
-                if(!tempData.isAnonymity){
-                    tempData.author = {//ajax 取得当前账号信息
-                        imgUrl: "./images/temp-face.jpg",
-                        link: "#profile",
-                        name: "杨义锋",
-                        mail: "yangyf@xdf.cn",
-                        org: "北京学校"
-                    }
-                }
-                tempData.id = "fdid2385932400032";//ajax post后 删除
-                /*$.post("url",tempData)
+                $.ajax({
+          		  	url: "${ctx}/ajax/message/addMaterialMessage",
+          		  	async:false,
+          		  	dataType : 'json',
+          		  	data:{
+          				materialId:$("#formMakeComments").att("data-fdid"),
+                    	isAnonymity: $("#isAnonymity").is(":checked"),
+                    	fdContent: $("#textComment").val(),
+              	  	},
+          		});
+                //刷新评论列表信息
+                resetComment(1,10);
+              
+              
+                /* tempData.id = "fdid2385932400032";//ajax post后 删除
+               $.post("url",tempData)
                  .success(function(result){
                  tempData.id = result.id;
                  //$("#listComment").prepend(listCommentFn([tempData]));
-                 });*/
+                 });
                 $list.prepend(listCommentFn([tempData]));//ajax post后 删除
                 if($list.children(".media").length > 10){
                     $list.children(".media").last().remove();
                 }
                 $("#textComment").val("");
-                $("#isAnonymity").removeAttr("checked");
+                $("#isAnonymity").removeAttr("checked"); */
             }
 
             $("head").loadJS({name: "SWFobject.js"});
