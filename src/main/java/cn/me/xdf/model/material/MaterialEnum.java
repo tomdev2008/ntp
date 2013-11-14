@@ -39,10 +39,10 @@ public enum MaterialEnum {
         public String getView() {
             return "video";
         }
-    }, m_02 {
+    }, m_04 {
         @Override
         public String getValue() {
-            return "02";
+            return "04";
         }
 
         @Override
@@ -52,7 +52,22 @@ public enum MaterialEnum {
 
         @Override
         public String getView() {
-            return "video";
+            return "doc";
+        }
+    }, m_05 {
+        @Override
+        public String getValue() {
+            return "05";
+        }
+
+        @Override
+        public String getBean() {
+            return "materialAttmainService";
+        }
+
+        @Override
+        public String getView() {
+            return "ppt";
         }
     }, m_08 {
         @Override
