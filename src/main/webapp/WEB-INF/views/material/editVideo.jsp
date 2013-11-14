@@ -370,7 +370,7 @@ $(function(){
     'uploader' : '${ctx}/common/file/o_upload',
     'auto' : true,
     'queueID': 'upMaterialDiv',
-    'fileTypeExts' : '*.AVI;*.MP4;*.WMV;',
+    'fileTypeExts' : uptype,
     'onUploadStart' : function (file) {
         jQuery("#upMaterial").uploadify("settings", "formData");
     },
@@ -405,10 +405,11 @@ $(function(){
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //初始化创建者
-    var creator="";
-	var url="";
-    if("${materialInfo.fdId!=null}"){
+   if("${param.fdId}"!=null&&"${param.fdId}"!=""){
+    	var creator="";
+    	var url="";
 	   $.ajax({
+		 cache:false,
 		 url: "${ctx}/ajax/material/getCreater?materialId=${materialInfo.fdId}",
 		 async:false,
 		 dataType : 'json',
@@ -417,31 +418,32 @@ $(function(){
 				  url=result.url;
 		 }
 	   });
-    }
-    //初始化权限列表
-    $.ajax({
-		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
-		  async:false,
-		  dataType : 'json',
-		  success: function(result){
-			  var html = "<tr data-fdid='creator' draggable='true'> "+
-			  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
-			  "<img src='"+url+"' alt=''>"+creator+" </div> </td>"+
-			  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
-			  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
-			  "</td> </tr>";
-			  for(var i in result.user){
-				  html += listUserKinguserFn(result.user[i]);
+	 //初始化权限列表
+	   $.ajax({
+			  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
+			  async:false,
+			  cache:false,
+			  dataType : 'json',
+			  success: function(result){
+				  var html = "<tr data-fdid='creator' draggable='true'> "+
+				  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
+				  "<img src='"+url+"' alt=''>"+creator+" </div> </td>"+
+				  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
+				  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
+				  "</td> </tr>";
+				  for(var i in result.user){
+					  html += listUserKinguserFn(result.user[i]);
+				  }
+				  $("#list_user").html(html); 
 			  }
-			  $("#list_user").html(html); 
-		  }
-	});
+		  });
+    } 
     
     $("#formEditDTotal").validate({
         submitHandler:saveMaterial
     });
     
-    $('#formEditDTotal a[data-toggle="tab"]').on('click', function (e) {
+    $('#formEditDTotal a[data-toggle="tab"]').on('shown', function (e) {
         var href = 	e.target.href.split("#").pop();
         $("#permission").val(href);
     });
@@ -535,10 +537,17 @@ function saveMaterial(){
         });
         data.kingUser = JSON.stringify(data.kingUser);
     }
-    $.post("${ctx}/ajax/material/saveOrUpdateVideo",data)
-     .success(function(){
-    	 window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
-     }); 
+  ///保存作业包素材的方法
+    $.ajax({
+    	  type:"post",
+		  url:"${ctx}/ajax/material/saveOrUpdateVideo",
+		  async:false,
+		  data:data,
+		  dataType:'json',
+		  success: function(rsult){
+			  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
+		  },
+	});
 }
 function saveMater(){
 	$("#formEditDTotal").trigger("submit");

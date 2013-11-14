@@ -157,7 +157,7 @@ public class FileController {
     		}else{
     			materialInfo.setFdDownloads(materialInfo.getFdDownloads()+1);
     		}
-    		materialService.update(materialInfo);
+    		materialService.save(materialInfo);
         	
         	List<AttMain> attMains = attMainService.getAttsByModelId(modelIds[i]);
         	if(attMains!=null&&attMains.size()>0){
@@ -194,7 +194,7 @@ public class FileController {
         		}else{
         			materialInfo.setFdDownloads(materialInfo.getFdDownloads()+1);
         		}
-        		materialService.update(materialInfo);
+        		materialService.save(materialInfo);
         		List<AttMain> attMains = attMainService.getAttsByModelId(materialInfo.getFdId());
         		if(attMains!=null&&attMains.size()>0){
         			for (AttMain attMain : attMains) {

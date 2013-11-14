@@ -273,54 +273,41 @@ public class MaterialAjaxController {
 	@RequestMapping(value = "saveOrUpdateVideo")
 	@ResponseBody
 	public void saveOrUpdateVideo(HttpServletRequest request) {
-		MaterialInfo info = new MaterialInfo();
+		String fdId = request.getParameter("fdId");
+		String permission = request.getParameter("permission");
+		String kingUser = request.getParameter("kingUser");
+		String attId = request.getParameter("attId");
+		MaterialInfo info;
+		if (StringUtil.isBlank(fdId)) {
+			info = new MaterialInfo();
+			info.setFdType(request.getParameter("fdType"));
+			SysOrgPerson creator = accountService.load(ShiroUtils.getUser().getId());
+			info.setCreator(creator);
+			info.setFdCreateTime(new Date());
+			info.setIsAvailable(true);
+		}else{
+			info = materialService.load(fdId);
+		}
+		if (StringUtil.isNotBlank(attId)) {
+			attMainService.deleteAttMainByModelId(info.getFdId());
+			saveAtt(attId, info.getFdId());
+		}
+		if (permission.equals("open")) {
+			info.setIsPublish(true);
+			// 删除素材的权限
+			materialAuthService.deleMaterialAuthByMaterialId(fdId);
+		} else {
+			info.setIsPublish(false);
+			// 保存权限信息
+			materialService.saveMaterAuth(kingUser, info.getFdId());
+		}
 		info.setFdAuthor(request.getParameter("author"));
 		info.setFdAuthorDescription(request.getParameter("authorIntro"));
 		info.setFdLink(request.getParameter("videoUrl"));
 		info.setFdName(request.getParameter("videoName"));
 		info.setFdDescription(request.getParameter("videoIntro"));
-		String permission = request.getParameter("permission");
-		String kingUser = request.getParameter("kingUser");
-		String attId = request.getParameter("attId");
-		String fdId = request.getParameter("fdId");
-		if (StringUtil.isBlank(fdId)) {
-			SysOrgPerson creator = accountService.load(ShiroUtils.getUser()
-					.getId());
-			info.setFdType(request.getParameter("fdType"));
-			info.setCreator(creator);
-			info.setFdCreateTime(new Date());
-			info.setIsAvailable(true);
-			if (permission.equals("open")) {
-				info.setIsPublish(true);
-			} else {
-				info.setIsPublish(false);
-				// 保存权限信息
-				materialService.saveMaterAuth(kingUser, info.getFdId());
-			}
-			// 保存素材信息
-			materialService.save(info);
-			// 保存附件信息
-			if (StringUtil.isNotBlank(attId)) {
-				saveAtt(attId, info.getFdId());
-			}
-		} else {
-			if (permission.equals("open")) {
-				info.setIsPublish(true);
-				// 删除素材的权限
-				if (StringUtil.isNotBlank(fdId)
-						&& StringUtil.isNotEmpty(fdId)) {
-					materialAuthService.deleMaterialAuthByMaterialId(fdId);
-				}
-			} else {
-				info.setIsPublish(false);
-				materialService.saveMaterAuth(kingUser, fdId);
-			}
-			materialService.updateMaterial(info, fdId);
-			if (StringUtil.isNotBlank(attId)) {
-				attMainService.deleteAttMainByModelId(info.getFdId());
-				saveAtt(attId, info.getFdId());
-			}
-		}
+		
+		materialService.save(info);
 	}
 
 	/**
