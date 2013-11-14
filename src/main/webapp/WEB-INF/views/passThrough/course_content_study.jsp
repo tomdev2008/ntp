@@ -470,7 +470,7 @@
                                 <i class="icon-star{{?i<it.meRating}} active{{?}}"></i>
                             {{ } }}
                          </span>
-                        <span class="point">{{=it.meRating}}</span>
+                        <span class="point" id="ratingDoScore">{{=it.meRating}}</span>
                     </div>
                 <form action="javascript:void(0)" id="formMakeComments" data-fdid="{{=it.mediaComment.id}}" >
                     <textarea  id="textComment" name="textComment" required class="input-block-level" placeholder="有什么想吐槽的吗？随便写两句文评吧~ : )" ></textarea>
@@ -1192,6 +1192,25 @@
             });
             
             function resetScoreInfo(){
+            	$.ajax({
+          		  url: "${ctx}/ajax/score/canPushScoreToMaterial",
+          		  async:false,
+          		  dataType:'json',
+          		  data:{
+          			  fdModelId:$("#formMakeComments").attr("data-fdid"),
+          		  },
+          		  success: function(result){
+          			  var score = (result==-1)?0:result;
+          			  $("#ratingDo").find(".icon-star").each(function(i){
+  		                    if(i < score){
+  		                        $(this).addClass("active");
+  		                    } else {
+  		                        $(this).removeClass("active");
+  		                    }
+  		                });
+          			  $("#ratingDoScore").text(score);
+          		  }
+      		});
             	$.ajax({
             		  url: "${ctx}/ajax/score/getScoreStatisticsByfdModelId",
             		  async:false,

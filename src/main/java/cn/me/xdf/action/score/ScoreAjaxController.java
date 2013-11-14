@@ -155,6 +155,15 @@ public class ScoreAjaxController {
 	}
 	
 	/**
+	 * 是否可以为资源评分（当前用户）
+	 */
+	@RequestMapping(value = "canPushScoreToMaterial")
+	@ResponseBody
+	public int canPushScoreToMaterial(String fdModelId){
+		return canPushScore(MaterialInfo.class.getName() ,fdModelId ,ShiroUtils.getUser().getId());
+	}
+	
+	/**
 	 * 根据业务Id和业务Name得到评分统计信息
 	 * 
 	 * @return 评分统计信息json
