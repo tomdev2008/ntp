@@ -65,15 +65,12 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 		String bamId = request.getParameter("bamId");
 		String materialInfoId = request.getParameter("fdid");
 		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
-		MaterialInfo info = materialService.get(materialInfoId);
-		info.setThrough(true);
-		materialService.save(info);
 		SourceNote sourceNode = new SourceNote();//保存学习素材记录
 		sourceNode.setFdCourseId(bamCourse.getCourseId());
 		sourceNode.setFdCatalogId(catalogId);
 		sourceNode.setFdUserId(ShiroUtils.getUser().getId());
 		sourceNode.setFdOperationDate(new Date());
-		sourceNode.setFdMaterialId(info.getFdId());
+		sourceNode.setFdMaterialId(materialInfoId);
 		sourceNode.setIsStudy(true);
         return sourceNodeService.saveSourceNode(sourceNode);
     }
@@ -89,11 +86,11 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 		Map map = new HashMap();
 		List<MaterialInfo> material = bamCourse.getMaterialByCatalog(catalog);
 		List listMedia = new ArrayList();
-		Map listm=new HashMap();
 		Map defaultMedia = new HashMap();
 		boolean status= false;
 		if(material!=null){
 			for(int i=0;i<material.size();i++){
+				Map listm=new HashMap();
 				MaterialInfo minfo = material.get(i);
 				AttMain attMain=attMainService.getByModelIdAndModelName(minfo.getFdId(), MaterialInfo.class.getName());
 				listm.put("id", minfo.getFdId());//素材id
@@ -103,6 +100,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 				if(attMain!=null){
 					listm.put("url", attMain.getFdId());//附件id
 				}
+				listMedia.add(listm);
 				//defaultMedia 默认当前还没学习的内容
 				if(i==0){
 					defaultMedia.put("id", minfo.getFdId());//素材id
@@ -112,8 +110,8 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 						defaultMedia.put("url", attMain.getFdId());//附件id
 					}
 					defaultMedia.put("canDownload",minfo.getIsDownload());//是否允许下载
-					defaultMedia.put("dowloadCount",minfo.getFdDownloads());//下载次数
-					defaultMedia.put("readCount",minfo.getFdPlays());//播放次数
+					defaultMedia.put("dowloadCount",minfo.getFdDownloads()==null?0:minfo.getFdDownloads());//下载次数
+					defaultMedia.put("readCount",minfo.getFdPlays()==null?0:minfo.getFdPlays());//播放次数
 					defaultMedia.put("isPass", minfo.getThrough());
 					///////////////////////////////////
 					Map scorem=new HashMap();
@@ -125,9 +123,13 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 					scorem.put("two", 0);
 					scorem.put("one", 0);
 					defaultMedia.put("rating", scorem);
+					Map memap=new HashMap();
+					memap.put("id", minfo.getFdId());
+					defaultMedia.put("mediaComment",memap );
+
 					status = true;
 				}
-				if((!minfo.getThrough()&&status)||(StringUtil.isNotBlank(fdid)&&fdid.equals(minfo.getFdId()))){
+				if(StringUtil.isNotEmpty(fdid) && minfo.getFdId().equals(fdid)){
 					defaultMedia.put("id", minfo.getFdId());//素材id
 					defaultMedia.put("name", minfo.getFdName());//素材名称
 					defaultMedia.put("intro", minfo.getFdDescription());//素材描述
@@ -135,12 +137,23 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 						defaultMedia.put("url", attMain.getFdId());//附件id
 					}
 					defaultMedia.put("canDownload",minfo.getIsDownload());//是否允许下载
-					defaultMedia.put("dowloadCount",minfo.getFdDownloads());//下载次数
-					defaultMedia.put("readCount",minfo.getFdPlays());//播放次数
+					defaultMedia.put("dowloadCount",minfo.getFdDownloads()==null?0:minfo.getFdDownloads());//下载次数
+					defaultMedia.put("readCount",minfo.getFdPlays()==null?0:minfo.getFdPlays());//播放次数
+					defaultMedia.put("isPass", minfo.getThrough());
+					break;
+				}else if(!minfo.getThrough()&&status){
+					defaultMedia.put("id", minfo.getFdId());//素材id
+					defaultMedia.put("name", minfo.getFdName());//素材名称
+					defaultMedia.put("intro", minfo.getFdDescription());//素材描述
+					if(attMain!=null){
+						defaultMedia.put("url", attMain.getFdId());//附件id
+					}
+					defaultMedia.put("canDownload",minfo.getIsDownload());//是否允许下载
+					defaultMedia.put("dowloadCount",minfo.getFdDownloads()==null?0:minfo.getFdDownloads());//下载次数
+					defaultMedia.put("readCount",minfo.getFdPlays()==null?0:minfo.getFdPlays());//播放次数
 					defaultMedia.put("isPass", minfo.getThrough());
 					status = false;
 				}
-				listMedia.add(listm);
 			}
 		}
 		map.put("listMedia", listMedia);

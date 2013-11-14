@@ -125,7 +125,7 @@
     <script id="pageRightHeaderTemplate" type="x-dot-template">
         <div class="page-header" id="pageHeader" data-spy="affix" data-offset-top="10">
                 <div class="hd clearfix">
-                <a class="btn {{?it.prevc == "0"}} disabled{{?}}" href="#" id="prevLecture" data-fdid="{{=it.prevc}}" data-type="{{=it.prevBaseType || ''}}">
+             <a class="btn {{?!it.pstatus}} disabled{{?}}" {{?it.pstatus}}href="#"{{?}} id="prevLecture" data-fdid="{{=it.prevc}}" data-type="{{=it.prevBaseType || ''}}">
                 <i class="icon-chevron-lg-left"></i>
                 <span>上一节</span>
                 </a>
@@ -136,7 +136,7 @@
                 <span class="tit">学习通过</span>
                 </span>
                 </h1>
-                <a class="btn {{?it.nextc == "0"}} disabled{{?}}" href="#"  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.nextBaseType || ''}}">
+                <a class="btn {{?!it.nstatus}} disabled{{?}}" {{?it.nstatus}}href="#"{{?}}  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.nextBaseType || ''}}">
                         <i class="icon-chevron-lg-right"></i>
                         <span>下一节</span>
                 </a>
@@ -375,7 +375,7 @@
                 </div>
                 <div class="hd">
                     <div class="tit-icon_bg"><i class="icon-video-intro"></i></div>
-                    <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{?}}信息</h5>
+                    <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}信息</h5>
                     <div class="pos-right" id="ratingTotal">
                         <span>综合评分</span>
                             <span class="rating-all" >
@@ -388,7 +388,7 @@
                 </div>
                 <div class="clearfix mt20">
                     <div class="pull-left video-info">
-                        <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{?}}名称  <span class="name" id="mediaName">{{=param.name}}</span></h5>
+                        <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}名称  <span class="name" id="mediaName">{{=param.name}}</span></h5>
                         <p class="mediaIntro" id="mediaIntro">
                             {{=param.intro}}
                         </p>
@@ -451,7 +451,7 @@
                 {{~it.listMedia :media:index}}
                 <li class="{{?it.defaultMedia.id == media.id}}active{{?}} {{?media.isPass}}pass{{?}}">
                     <a href="{{=media.url}}" data-fdid="{{=media.id}}" title="{{=media.name}}">
-                        <i class="icon-circle-success"></i>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{?}}{{=index+1}}
+                        <i class="icon-circle-success"></i>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}{{=index+1}}
                     </a>
                 </li>
                 {{~}}
@@ -470,7 +470,7 @@
                                 <i class="icon-star{{?i<it.meRating}} active{{?}}"></i>
                             {{ } }}
                          </span>
-                        <span class="point" id="ratingDoScore">{{=it.meRating}}</span>
+                        <span class="point">{{=it.meRating}}</span>
                     </div>
                 <form action="javascript:void(0)" id="formMakeComments" data-fdid="{{=it.mediaComment.id}}" >
                     <textarea  id="textComment" name="textComment" required class="input-block-level" placeholder="有什么想吐槽的吗？随便写两句文评吧~ : )" ></textarea>
@@ -692,315 +692,8 @@
             }).parent().height($("#sidebar").height());
         },100);
 
-        var mediaData = {
-            type: "video",
-            status: "doing",
-            courseName: "雅思口语新教师培训课程",
-            lectureName: "学习入门视频",
-            lectureIntro: "为获得更好的测试效果，建议您关闭IM聊天工具、视频音频等干扰源。测试过程中尽量不要离开。请勿关闭浏览器，否则测试结果将无法保存。",
-            num: 1,
-            isOptional: false,
-            defaultMedia: {
-                id: "fdid0000054642352",
-                isPass: false,
-                name: "新东方的战略",
-                url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc",
-                intro: "本视频由集团总公司人力资源部负责监制，生动活泼地展示了新东方 企业及教职员工风采，强力推荐。",
-                mePraised: false,
-                canDownload: true,
-                praiseCount: 324,
-                downloadCount: 23,
-                readCount: 234325,
-                meRating: 3,
-                rating: {
-                    average: 4,
-                    total: 38,
-                    five: 26,
-                    four: 5,
-                    three: 2,
-                    two: 3,
-                    one: 2
-                },
-                mediaComment: {
-                    id: "fdid0930230453254",
-                    listComment: [
-                        {
-                            id: "fdid1221",
-                            isAnonymity:false,
-                            author: {
-                                imgUrl: "./images/temp-face.jpg",
-                                link: "#profile",
-                                name: "张三",
-                                mail: "zhangsan5@xdf.cn",
-                                org: "南京学校"
-                            },
-                            comment: "哥们儿，洗洗睡吧~",
-                            date: "15分钟前",
-                            replyTo: {
-                                name: "李四",
-                                link: "#profile",
-                                mail: "lisi2@xdf.cn",
-                                org: "广州学校"
-                            },
-                            mePraised: true,
-                            praiseCount: 45,
-                            meWeaked: false,
-                            weakCount: 10,
-                            commentCount: 12
-                        },
-                        {
-                            id: "fdid00003223",
-                            isAnonymity:false,
-                            author: {
-                                imgUrl: null,
-                                link: "#profile",
-                                name: "李四",
-                                mail: "lisi2@xdf.cn",
-                                org: "广州学校"
-                            },
-                            rating: 3,
-                            comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。",
-                            date: "50分钟前",
-                            mePraised: false,
-                            praiseCount: 25,
-                            meWeaked: true,
-                            weakCount: 2,
-                            commentCount: 6
-                        },
-                        {
-                            id: "fdid0777453",
-                            isAnonymity:false,
-                            author: {
-                                imgUrl: null,
-                                link: "#profile",
-                                name: "王二",
-                                mail: "wanger@xdf.cn",
-                                org: "北京学校"
-                            },
-                            rating: 5,
-                            comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。",
-                            date: "2个小时前",
-                            mePraised: false,
-                            praiseCount: 22,
-                            meWeaked: false,
-                            weakCount: 0,
-                            commentCount: 3
-                        }
-                    ]
-                }
-            },
-            listMedia: [
-                {
-                    id: "fdid435242",
-                    isPass: true,
-                    name: "新东方的愿景",
-                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
-                },
-                {
-                    id: "fdid11111678787",
-                    isPass: true,
-                    name: "新东方核心价值观",
-                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
-                },
-                {
-                    id: "fdid0000054642352",
-                    isPass: false,
-                    name: "新东方的战略",
-                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
-                },
-                {
-                    id: "fdid434t5434434",
-                    isPass: false,
-                    name: "新东方的愿景",
-                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
-                },
-                {
-                    id: "fdidregergrgrr43434",
-                    isPass: true,
-                    name: "新东方核心价值观",
-                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
-                },
-                {
-                    id: "fdid443454655555",
-                    isPass: false,
-                    name: "新东方的战略",
-                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
-                },
-                {
-                    id: "fdid085465436",
-                    isPass: true,
-                    name: "新东方的愿景",
-                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
-                },
-                {
-                    id: "fdid4077653324",
-                    isPass: false,
-                    name: "新东方核心价值观",
-                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
-                },
-                {
-                    id: "fdid4htehrew4334",
-                    isPass: false,
-                    name: "新东方的战略",
-                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
-                }
-            ]
-        }
+ 
 
-        var docData = {
-            type: "doc",
-            status: "doing",
-            courseName: "雅思口语新教师培训课程",
-            lectureName: "学习入门文档",
-            lectureIntro: "为获得更好的测试效果，建议您关闭IM聊天工具、视频音频等干扰源。测试过程中尽量不要离开。请勿关闭浏览器，否则测试结果将无法保存。",
-            num: 4,
-            isOptional: false,
-            defaultMedia: {
-                id: "fdid0000054642352",
-                isPass: false,
-                name: "新东方的战略",
-                url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc",
-                intro: "本文档由集团总公司人力资源部负责监制，生动活泼地展示了新东方 企业及教职员工风采，强力推荐。",
-                mePraised: false,
-                canDownload: true,
-                praiseCount: 324,
-                downloadCount: 23,
-                readCount: 234325,
-                meRating: 3,
-                rating: {
-                    average: 4,
-                    total: 38,
-                    five: 26,
-                    four: 5,
-                    three: 2,
-                    two: 3,
-                    one: 2
-                },
-                mediaComment: {
-                    id: "14255329f44d67c683698994b8a86231",
-                    listComment: [
-                        {
-                            id: "fdid1221",
-                            isAnonymity:false,
-                            author: {
-                                imgUrl: "./images/temp-face.jpg",
-                                link: "#profile",
-                                name: "张三",
-                                mail: "zhangsan5@xdf.cn",
-                                org: "南京学校"
-                            },
-                            comment: "哥们儿，洗洗睡吧~",
-                            date: "15分钟前",
-                            replyTo: {
-                                name: "李四",
-                                link: "#profile",
-                                mail: "lisi2@xdf.cn",
-                                org: "广州学校"
-                            },
-                            mePraised: true,
-                            praiseCount: 45,
-                            meWeaked: false,
-                            weakCount: 10,
-                            commentCount: 12
-                        },
-                        {
-                            id: "fdid00003223",
-                            isAnonymity:false,
-                            author: {
-                                imgUrl: null,
-                                link: "#profile",
-                                name: "李四",
-                                mail: "lisi2@xdf.cn",
-                                org: "广州学校"
-                            },
-                            rating: 3,
-                            comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。",
-                            date: "50分钟前",
-                            mePraised: false,
-                            praiseCount: 25,
-                            meWeaked: true,
-                            weakCount: 2,
-                            commentCount: 6
-                        },
-                        {
-                            id: "fdid0777453",
-                            isAnonymity:false,
-                            author: {
-                                imgUrl: null,
-                                link: "#profile",
-                                name: "王二",
-                                mail: "wanger@xdf.cn",
-                                org: "北京学校"
-                            },
-                            rating: 5,
-                            comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。",
-                            date: "2个小时前",
-                            mePraised: false,
-                            praiseCount: 22,
-                            meWeaked: false,
-                            weakCount: 0,
-                            commentCount: 3
-                        }
-                    ]
-                }
-            },
-            listMedia: [
-                {
-                    id: "fdid435242",
-                    isPass: true,
-                    name: "新东方的愿景",
-                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
-                },
-                {
-                    id: "fdid11111678787",
-                    isPass: true,
-                    name: "新东方核心价值观",
-                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
-                },
-                {
-                    id: "fdid0000054642352",
-                    isPass: false,
-                    name: "新东方的战略",
-                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
-                },
-                {
-                    id: "fdid434t5434434",
-                    isPass: false,
-                    name: "新东方的愿景",
-                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
-                },
-                {
-                    id: "fdidregergrgrr43434",
-                    isPass: true,
-                    name: "新东方核心价值观",
-                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
-                },
-                {
-                    id: "fdid443454655555",
-                    isPass: false,
-                    name: "新东方的战略",
-                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
-                },
-                {
-                    id: "fdid085465436",
-                    isPass: true,
-                    name: "新东方的愿景",
-                    url: "mp4:office/kmss/resource/201306/154/1ipxy20dlbt45933r7u7"
-                },
-                {
-                    id: "fdid4077653324",
-                    isPass: false,
-                    name: "新东方核心价值观",
-                    url: "mp4:office/kmss/resource/201306/154/l54f8b8cly4zrd19cpau"
-                },
-                {
-                    id: "fdid4htehrew4334",
-                    isPass: false,
-                    name: "新东方的战略",
-                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc"
-                }
-            ]
-        }
         $("#sidenav>li>a").popover({
             trigger: "hover"
         })
@@ -1016,14 +709,16 @@
         //上一节
         $("#prevLecture").click(function (e){
         	
-        	if($(this).attr("data-fdid")==0)return false;
+        	if($(this).attr("href")){
         	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+        	}
              
         });
         //下一节
         $("#nextLecture").click(function (e){
-        	if($(this).attr("data-fdid")==0)return false;
+        	if($(this).attr("href")){
         	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+        	}
             
         }); 
 		function loadRightCont(fdid,type){
@@ -1042,9 +737,9 @@
 		  				if(result.type == "exam" || result.type == "task"){
 		  					$("#mainContent").html(rightContentFn(result));
 		  					afterLoadExamOrTaskPage(result);
-		  	            } else if(result.type == "video" || result.type == "doc"){
-		  	            	$("#mainContent").html(rightMaterialContentFn(docData));
-		  	                afterLoadMediaPage(docData);
+		  	            } else if(result.type == "video" || result.type == "doc"||result.type == "ppt"){
+		  	            	$("#mainContent").html(rightMaterialContentFn(result));
+		  	                afterLoadMediaPage(result);
 		  	            }
 		  				
 		  			  },
@@ -1365,78 +1060,22 @@
                 flashvars.video = $this.attr("href");
                 swfobject.embedSWF("http://me.xdf.cn:80/iportal/sys/attachment/video/videoplayer.swf", "myflash",
                         "100%", "510", "6.0.0", "expressInstall.swf", flashvars, params, attributes);
-                /*$.getJSON("url",{id: $this.attr("data-fdid")}).success(function(result){
-                    //
-                });*/
-                var result = {
-                    isPass: true,
-                    url: "mp4:office/kmss/resource/201306/154/f6u7hhqtpf2eutx9v9uc",//下载url
-                    intro: "test本视频由集团总公司人力资源部负责监制，生动活泼地展示了新东方 企业及教职员工风采，强力推荐。",
-                    mePraised: true,
-                    canDownload: false,
-                    praiseCount: 54,
-                    downloadCount: 0,
-                    readCount: 325,
-                    meRating: 0,
-                    rating: {
-                        average: 3,
-                        total: 26,
-                        five: 16,
-                        four: 3,
-                        three: 2,
-                        two: 3,
-                        one: 2
-                    },
-                    mediaComment: {
-                        id: "fdid00877656545",
-                        listComment: [
-                            {
-                                id: "fdid187658",
-                                isAnonymity:false,
-                                author: {
-                                    imgUrl: "./images/temp-face.jpg",
-                                    link: "#profile",
-                                    name: "张四",
-                                    mail: "zhangsan5@xdf.cn",
-                                    org: "南京学校"
+                var result;
+                $.ajax({
+                	  cache:false,
+		  			  url: "${ctx}/ajax/passThrough/getCourseContent",
+		  			  async:false,
+		  			  data:{
+		  				  materialId:$this.attr("data-fdid"),
+		  				  catalogId:catalogId,
+		  				  bamId:bamId,
+		  				  fdMtype:fdMtype
+		  			  },
+		  			  dataType:'json',
+		  			  success: function(data){	  				 
+		  				result = data.defaultMedia;
                                 },
-                                rating: 5,
-                                comment: "哥们儿，洗洗睡吧~",
-                                date: "15分钟前",
-                                replyTo: {
-                                    name: "李三",
-                                    link: "#profile",
-                                    mail: "lisi2@xdf.cn",
-                                    org: "广州学校"
-                                },
-                                mePraised: true,
-                                praiseCount: 45,
-                                meWeaked: false,
-                                weakCount: 10,
-                                commentCount: 12
-                            },
-                            {
-                                id: "fdid00003223",
-                                isAnonymity:false,
-                                author: {
-                                    imgUrl: null,
-                                    link: "#profile",
-                                    name: "李三",
-                                    mail: "lisi2@xdf.cn",
-                                    org: "广州学校"
-                                },
-                                rating: 2,
-                                comment: "曾经以为，自己会一直这样安逸的生活下去，稳定的工作，和睦的家庭，日子波澜不惊地缓缓流淌偶尔也想动点凡心给自己充充电，但每次都是由于懒散等原因，半途而废。",
-                                date: "50分钟前",
-                                mePraised: false,
-                                praiseCount: 25,
-                                meWeaked: true,
-                                weakCount: 2,
-                                commentCount: 6
-                            }
-                        ]
-                    }
-                }
+                });
                 $("#btnPraise").addClass(result.mePraised ? "active" : '')
                         .children(".num").text(result.praiseCount);
                 $("#btnDownload").addClass(result.canDownload ? '' : 'disabled').attr("data-original-title",result.canDownload ? '点击下载' : '无权下载')
@@ -1501,6 +1140,7 @@
                 $("#listMedia>li.active").addClass("pass");
                 $(this).attr("disabled", true);
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
+                window.location.href = "${ctx}/passThrough/submitExamOrTask?bamId="+bamId+"&catalogId="+catalogId+"&fdMtype="+fdMtype+"&fdid="+$mediaToolbar.attr("data-fdid");
             });
         }
 
