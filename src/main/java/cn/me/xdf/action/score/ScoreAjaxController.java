@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.score.Score;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.score.ScoreService;
@@ -133,6 +134,15 @@ public class ScoreAjaxController {
 	@ResponseBody
 	public String pushScoreToCourse(String fdModelId,String fdScore){
 		return pushScore(CourseInfo.class.getName(), fdModelId, fdScore,ShiroUtils.getUser().getId());
+	}
+	
+	/**
+	 * 为资源打分（当前用户）
+	 */
+	@RequestMapping(value = "pushMaterialToCourse")
+	@ResponseBody
+	public String pushMaterialToCourse(String fdModelId,String fdScore){
+		return pushScore(MaterialInfo.class.getName(), fdModelId, fdScore,ShiroUtils.getUser().getId());
 	}
 	
 	/**

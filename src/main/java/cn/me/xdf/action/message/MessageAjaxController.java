@@ -150,7 +150,7 @@ public class MessageAjaxController {
 	@RequestMapping(value = "addMaterialMessage")
 	@ResponseBody
 	private void addMaterialMessage(String materialId,String fdContent,String isAnonymity) {
-		addMessage(MaterialInfo.class.getName(), materialId, fdContent, Constant.MESSAGE_TYPE_REVIEW, false, ShiroUtils.getUser().getId());
+		addMessage(MaterialInfo.class.getName(), materialId, fdContent, Constant.MESSAGE_TYPE_REVIEW, isAnonymity.equals("true")?true:false, ShiroUtils.getUser().getId());
 	}
 	
 	/**

@@ -1025,7 +1025,21 @@
                     $this.addClass("active").prevAll().addClass("active");
                     $this.nextAll().removeClass("active");
                     $this.parent().nextAll(".point").text(index+1);
-                    $.post("url",{rete: index + 1})//提交评分
+                    
+                    $.ajax({
+  		  			  url: "${ctx}/ajax/score/pushMaterialToCourse",
+  		  			  async:false,
+  		  			  data:{
+  		  					fdModelId :$("#formMakeComments").attr("data-fdid"),
+  		  					fdScore : index + 1,
+  		  			  },
+  		  			  dataType:'json',
+  		  			  success: function(result){
+  		  				
+  		  			  },
+  	  				});
+                    
+                    //$.post("url",{rete: index + 1})//提交评分
             })  /*评论列表中按钮事件*/
                 .delegate("#listComment>.media .btns-comt>a","click",function(e){
                     e.preventDefault();
