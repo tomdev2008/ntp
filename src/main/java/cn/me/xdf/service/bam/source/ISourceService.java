@@ -38,9 +38,10 @@ public interface ISourceService {
     
     /**
      * 获取素材详细信息
-     * @param request
+     * @param bamCourse 人员对应的课程信息
+     * @param catalog   对应的节信息
      * @return
      */
-    public Object findMaterialDetailInfo(WebRequest request);
+    public Object findMaterialDetailInfo(BamCourse bamCourse, CourseCatalog catalog);
 
 }

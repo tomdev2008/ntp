@@ -206,6 +206,8 @@ public class PassThroughAjaxController {
 		String bamId = request.getParameter("bamId");
 		//获取节ID
 		String catalogId = request.getParameter("catalogId");
+		//获取节内容类型
+		String sourceType = request.getParameter("fdMtype");
 		Map map = new HashMap();
 		if(StringUtil.isNotBlank(bamId)){
 			BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
@@ -215,6 +217,7 @@ public class PassThroughAjaxController {
 					if(catalog.getFdId().equals(catalogId)){
 						//设置节信息
 						Map prenext=getCurrentCatalog(catalogs,catalog);
+						map.putAll(prenext);
 						map.put("type", catalog.getMaterialType());
 						if(catalog.getThrough()==null){
 							map.put("status", "unfinish");
@@ -228,25 +231,8 @@ public class PassThroughAjaxController {
 						map.put("lectureIntro", catalog.getFdDescription());
 						map.put("num", catalog.getFdNo());
 						map.put("isOptional", catalog.getFdPassCondition()!=null && catalog.getFdPassCondition()==0?true:false);
-						//设置节中内容
-						List<MaterialInfo> material = bamCourse.getMaterialByCatalog(catalog);
-						List list = new ArrayList();
-						if(material!=null){
-							for(MaterialInfo minfo:material){
-								Map materialTemp = new HashMap();
-								materialTemp.put("id", minfo.getFdId());
-								materialTemp.put("name", minfo.getFdName());
-								Map m = materialService.getTotalSorce(minfo.getFdId());
-								materialTemp.put("fullScore", m.get("totalscore"));
-								materialTemp.put("examCount", m.get("num"));
-								materialTemp.put("examPaperTime", minfo.getFdStudyTime());
-								materialTemp.put("examPaperIntro", minfo.getFdDescription());
-								materialTemp.put("examPaperStatus", getStatus(minfo, catalogId, ShiroUtils.getUser().getId()));
-								list.add(materialTemp);
-							}
-						}
-						map.putAll(prenext);
-						map.put("listExamPaper", list);
+						//根据素材类型设置节中内容详细信息
+						map.putAll((Map)bamMaterialService.findMaterialDetailInfo(sourceType, bamCourse, catalog));
 						break;
 					}
 				}
@@ -255,28 +241,6 @@ public class PassThroughAjaxController {
 		return JsonUtils.writeObjectToJson(map);
 	}
 	
-	private String getStatus(MaterialInfo minfo,String catalogId,String userId){
-		if(minfo.getThrough()){
-			return "pass";
-		}else{
-			SourceNote node = sourceNodeService.getSourceNote(minfo.getFdId(), catalogId, userId);
-			if(node==null){
-				return "unfinish";
-			}
-			if(node.getFdStatus().equals(Constant.TASK_STATUS_FINISH)){//完成
-				return "finish";
-			} else if(node.getFdStatus().equals(Constant.TASK_STATUS_REJECT)){//驳回
-				return "unfinish";
-			} else if(node.getFdStatus().equals(Constant.TASK_STATUS_UNFINISH)){//未完成
-				return "unfinish";
-			} 
-			/*Boolean iStudy=node.getIsStudy();
-			if(iStudy==null){
-				return "finish";
-			}*/
-		}
-		return "fail";
-	}
 
 	/**
 	 * 根据测试id获取测试信息
@@ -310,7 +274,7 @@ public class PassThroughAjaxController {
 		map.put("fullScore", materialService.getTotalSorce(materialId).get("totalscore"));
 		map.put("examPaperTime", materialInfo.getFdStudyTime());
 		map.put("examPaperIntro", materialInfo.getFdDescription());
-		map.put("examPaperStatus", getStatus(materialInfo, catalogId, ShiroUtils.getUser().getId()));
+		map.put("examPaperStatus", sourceNodeService.getStatus(materialInfo, catalogId, ShiroUtils.getUser().getId()));
 		
 		map.put("listExam", listExam);
 		return JsonUtils.writeObjectToJson(map);

@@ -187,8 +187,26 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 	}
 
 	@Override
-	public Object findMaterialDetailInfo(WebRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object findMaterialDetailInfo(BamCourse bamCourse, CourseCatalog catalog) {
+		Map map = new HashMap();
+		List<MaterialInfo> material = bamCourse.getMaterialByCatalog(catalog);
+		List list = new ArrayList();
+		if(material!=null){
+			for(MaterialInfo minfo:material){
+				Map materialTemp = new HashMap();
+				materialTemp.put("id", minfo.getFdId());
+				materialTemp.put("name", minfo.getFdName());
+				Map m = materialService.getTotalSorce(minfo.getFdId());
+				materialTemp.put("fullScore", m.get("totalscore"));
+				materialTemp.put("examCount", m.get("num"));
+				materialTemp.put("examPaperTime", minfo.getFdStudyTime());
+				materialTemp.put("examPaperIntro", minfo.getFdDescription());
+				materialTemp.put("examPaperStatus", sourceNodeService.getStatus(minfo, catalog.getFdId(), ShiroUtils.getUser().getId()));
+				list.add(materialTemp);
+			}
+		}
+		map.put("listExamPaper", list);
+		return map;
 	}
+	
 }

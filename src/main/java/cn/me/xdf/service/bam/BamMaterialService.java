@@ -46,7 +46,22 @@ public class BamMaterialService extends SimpleService {
         return null;
     }
 
+    /**
+     * 获取素材子表详细信息
+     * @param request
+     * @return
+     */
     public Object findSubInfoByMaterial(String sourceType,WebRequest request) {
     	return sourceMap.get(MaterialEnum.valueOf("m_"+sourceType).getBean()).findSubInfoByMaterial(request);
+    }
+    
+    /**
+     * 获取素材详细信息
+     * @param bamCourse 人员对应的课程信息
+     * @param catalog   对应的节信息
+     * @return
+     */
+    public Object findMaterialDetailInfo(String sourceType,BamCourse bamCourse, CourseCatalog catalog){
+    	return sourceMap.get(MaterialEnum.valueOf("m_"+sourceType).getBean()).findMaterialDetailInfo(bamCourse, catalog);
     }
 }

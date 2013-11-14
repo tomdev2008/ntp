@@ -37,7 +37,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 	}
 
 	@Override
-	public Object findMaterialDetailInfo(WebRequest request) {
+	public Object findMaterialDetailInfo(BamCourse bamCourse, CourseCatalog catalog) {
 		// TODO Auto-generated method stub
 		return null;
 	}
