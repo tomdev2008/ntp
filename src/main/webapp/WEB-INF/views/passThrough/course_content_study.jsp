@@ -1043,7 +1043,6 @@
 		  					$("#mainContent").html(rightContentFn(result));
 		  					afterLoadExamOrTaskPage(result);
 		  	            } else if(result.type == "video" || result.type == "doc"){
-		  	            	//alert(JSON.stringify(result));
 		  	            	$("#mainContent").html(rightMaterialContentFn(docData));
 		  	                afterLoadMediaPage(docData);
 		  	            }
@@ -1186,13 +1185,33 @@
                         }
                 });
 			resetComment(1,10);
+			resetScoreInfo();
             /*评分表单*/
             $("#formMakeComments").validate({
                 submitHandler: submitFormComment
             });
             
             function resetScoreInfo(){
-            	
+            	$.ajax({
+            		  url: "${ctx}/ajax/score/getScoreStatisticsByfdModelId",
+            		  async:false,
+            		  dataType:'json',
+            		  data:{
+            			  fdModelId:$("#formMakeComments").attr("data-fdid"),
+            			  fdModelName:"<%=MaterialInfo.class.getName()%>",
+            		  },
+            		  success: function(result){
+            			  $("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
+    		                    if(i < result[0].fdAverage){
+    		                        $(this).addClass("active");
+    		                    } else {
+    		                        $(this).removeClass("active");
+    		                    }
+    		                }).end().children("b.text-warning").text(result[0].fdAverage);
+    		  				var scoreInfoHtml = doT.template(document.getElementById("scoreInfo").text);
+    		  				$("#pullrightInfo").html(scoreInfoHtml(result[0]));
+            		  }
+        		});
             }
 
             function resetComment(pageNo,pageSize){
@@ -1222,7 +1241,6 @@
           			  pageSize:pageSize,
               	  },
           		  success: function(result){
-          			//alert(JSON.stringify(result));
          			 $("#pageLine1").html(" "+result.startLine+" - "+result.endLine+" ");
          			 $("#pageLine2").html(" "+result.startLine+" - "+result.endLine+" ");
          			 $("#pageTotal1").html(result.totalSize);
@@ -1439,7 +1457,6 @@
 
             /*点赞事件*/
             $("#btnPraise").on("click",function(e){
-            	alert("支持");
                 e.preventDefault();
                 var $this = $(this);
                 if($this.hasClass("active")){
