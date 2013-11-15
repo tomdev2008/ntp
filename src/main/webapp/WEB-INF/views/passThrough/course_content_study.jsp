@@ -377,7 +377,7 @@
                     <div class="mediaToolbar" id="mediaToolbar" data-fdid="{{=param.id}}">
                         <div class="btn-group">
                             <a id="btnPraise" class="btn btn-link{{?param.mePraised}} active{{?}}" href="#" title="{{?param.mePraised}}取消赞{{??}}赞{{?}}"><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
-                            <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" class="btn btn-link{{?param.canDownload}}" href="{{=param.url}}"{{??}} disabled"{{?}}><i class="icon-download-blue"></i><span class="num">{{=param.downloadCount || 0 }}</span></a>
+                           <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" class="btn btn-link{{?param.canDownload}}" href="#" data-fdid="{{=param.url}}" {??}} disabled"{{?}}><i class="icon-download-blue"></i><span class="num">{{=param.downloadCount || 0 }}</span></a>
                         </div>
                         <span class="playCount">{{?it.type == 'video'}}播放{{??}}阅读{{?}}  <strong class="num">{{=param.readCount || 0 }}</strong>  次</span>
                         <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}}><i class="icon-right"></i>我学会了</button>
@@ -1145,7 +1145,20 @@
                     e.preventDefault();
                 } else {
                     //$.post("url",{id: $mediaToolbar.attr("data-fdid")});
-                    $this.children(".num").text(parseInt($this.text())+1);
+                	 if($this.attr("data-fdid")!=null&&$this.attr("data-fdid")!=""){
+                     	  window.location.href="${ctx}/common/file/download/"+$this.attr("data-fdid");
+                     	  $.ajax({
+                     			type: "post",
+                     			url: "${ctx}/ajax/material/updateDownloadNum",
+                     			data : {
+                     				"materialId":$mediaToolbar.attr("data-fdid"),
+                     			},
+                     			success:function(){
+                     			}
+                     		}); 
+                       } else {
+                     	  $.fn.jalert2("您好！该视频没有对应附件");
+                       } 
                 }
             });
 
