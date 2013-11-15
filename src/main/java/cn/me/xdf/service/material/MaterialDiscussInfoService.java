@@ -41,12 +41,9 @@ public class MaterialDiscussInfoService extends BaseService{
 	@Transactional(readOnly = false)
 	public void updateMaterialDiscussInfo(String fdType,String fdId){
 		
-		MaterialInfo materialInfo = materialService.load(fdId);
-		MaterialDiscussInfo discussInfo = new MaterialDiscussInfo();
-		discussInfo.setMaterialInfo(materialInfo);
+		MaterialInfo materialInfo = materialService.get(fdId);
 		/////////////操作类型(下载:01、播放:02、攒:03)
 		if(fdType.equals(Constant.MATERIALDISCUSSINFO_TYPE_DOWNLOAD)){
-			discussInfo.setFdType(Constant.MATERIALDISCUSSINFO_TYPE_DOWNLOAD);
 			if(materialInfo.getFdDownloads()==null){
 				materialInfo.setFdDownloads(1);
 			}else{
@@ -61,10 +58,8 @@ public class MaterialDiscussInfoService extends BaseService{
 				materialInfo.setFdPlays(materialInfo.getFdPlays()+1);
 			}
 			materialService.save(materialInfo);
-			discussInfo.setFdType(Constant.MATERIALDISCUSSINFO_TYPE_PLAY);
 		}
 		if(fdType.equals(Constant.MATERIALDISCUSSINFO_TYPE_LAUD)){
-			discussInfo.setFdType(Constant.MATERIALDISCUSSINFO_TYPE_LAUD);
 			if(materialInfo.getFdLauds()==null){
 				materialInfo.setFdLauds(1);
 			}else{
@@ -72,23 +67,30 @@ public class MaterialDiscussInfoService extends BaseService{
 			}
 			materialService.save(materialInfo);
 		}
+		MaterialDiscussInfo discussInfo = new MaterialDiscussInfo();
+		discussInfo.setMaterialInfo(materialInfo);
+		discussInfo.setFdType(fdType);
 		discussInfo.setCreatTime(new Date());
 		discussInfo.setOrgPerson(accountService.findById(ShiroUtils.getUser().getId()));
 		save(discussInfo);
-		
 	}
 	/**
 	 * 查看当前用户是否具有赞权利
 	 * @return
 	 */
 	@Transactional(readOnly = false)
-	public boolean isCanLaud(){
-		List<MaterialDiscussInfo> discussInfoList = this.findByProperty("orgPerson.fdId", ShiroUtils.getUser().getId());
-		for (MaterialDiscussInfo materialDiscussInfo : discussInfoList) {
-			if(materialDiscussInfo.getFdType().equals(Constant.MATERIALDISCUSSINFO_TYPE_LAUD)){
-				return false;
+	public boolean isCanLaud(String materialId){
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * form ");
+		
+		/*List<MaterialDiscussInfo> discussInfoList = this.findByProperty("orgPerson.fdId", ShiroUtils.getUser().getId());
+		if(discussInfoList!=null){
+			for (MaterialDiscussInfo materialDiscussInfo : discussInfoList) {
+				if(materialDiscussInfo.getFdType().equals(Constant.MATERIALDISCUSSINFO_TYPE_LAUD)){
+					return false;
+				}
 			}
-		}
+		}*/
 		return true;
 	}
 
