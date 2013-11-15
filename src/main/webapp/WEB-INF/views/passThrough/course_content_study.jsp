@@ -237,10 +237,12 @@
                             </ul>
                             {{?}}
  							{{?exam.examType == 'completion'}}
-                                {{~exam.listExamAnswer :ans:index}}
+                                {{~exam.listExamAnswer :ans:indexno}}
                                 <label class="input">
-                                    <b class="icon-circle-bg blue">{{=index+1}}</b>
-                                    <input type="text" required class="input-xxlarge" value="{{=ans}}" name="examAnswer" />
+                                    <b class="icon-circle-bg blue">{{=indexno+1}}</b>
+                                    <input type="text" required class="input-xxlarge" value="{{=ans}}" exam-id="{{=exam.id}}" name="examAnswer_completion"/>
+									<input type="hidden" value=""  name="examAnswer"/>
+
                                 </label>
                                 {{~}}
                             {{??}}
@@ -1188,7 +1190,6 @@
          		  			  },
          		  			  dataType:'json',
          		  			  success: function(result){
-         		  				  alert(JSON.stringify(result.listExam[1].listExamAnswer));
          		  				tempData=result;
          		  			  }
          	  			});
@@ -1300,7 +1301,14 @@
                             });
         						
         				});
-                        $("#formExam").validate();
+                        $("#formExam").validate({
+                            submitHandler: function(form){
+	                            $("input[name='examAnswer_completion']").each(function(){
+	                            	$(this).next("input").val($(this).attr("exam-id")+":"+$(this).attr("value"));
+	                           	});
+	                            form.submit();
+                            }
+                        });
                     })
                     .bind("hide",function(){
                     	$(".uploadify").each(function(){

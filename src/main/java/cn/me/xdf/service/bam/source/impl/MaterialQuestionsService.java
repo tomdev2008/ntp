@@ -152,12 +152,21 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 			map2.put("examScore", examQuestion2.getFdStandardScore());
 			map2.put("examType", examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_SINGLE_SELECTION)?"single":(examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_MULTIPLE_SELECTION)?"multiple":"completion"));
 			if(examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_CLOZE)){
-				/*String [] opinionlist = new ArrayList<String>();*/
 				String answer = examQuestion2.getFdQuestion();
 				String [] answers = answer.split("#");
-				/*for (int i=1;i<=answers.length;i++) {
-					opinionlist.add(answers[i-1]);
-				}*/
+				if(sourceNote==null){
+					for (int i=0;i<answers.length;i++) {
+						answers[i]="";
+					}
+				}else{
+					Set<AnswerRecord> answerRecords = sourceNote.getAnswerRecords();
+					for (AnswerRecord answerRecord : answerRecords) {
+						if(answerRecord.getFdQuestionId().equals(examQuestion2.getFdId())){
+							answers = answerRecord.getFdAnswer().split("#");
+						}
+					}
+				}
+				
 				String subject = examQuestion2.getFdSubject();
 				String [] subjects = subject.split("#");
 				String res = "";
