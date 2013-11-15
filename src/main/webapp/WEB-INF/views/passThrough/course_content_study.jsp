@@ -1198,7 +1198,7 @@
             $("#listExamPaper>li>a").click(function(e){
             	var $athis = $(this);
                 e.preventDefault();
-                if(($(this).attr("data-toggle") == "collapse") && $(this).parent().siblings().find(".collapse").hasClass("in")){
+                if($(this).parent().siblings().find(".collapse").hasClass("in")){
                 	 var $this2 = $(this);
                  	$this2.attr("data-toggle","");
                  	$.fn.jalert("确定要关闭未保存的表单？",function(){
