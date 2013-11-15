@@ -77,16 +77,7 @@ public class MaterialAjaxController {
 		deleteMaterialData(materialId);
 	}
 	
-	/**
-	 * 保存赞
-	 * @param materialId
-	 */
-	@RequestMapping(value = "saveLaud")
-	@ResponseBody
-	public void saveLaud(String materialId){
-		materialDiscussInfoService.updateMaterialDiscussInfo(Constant.MATERIALDISCUSSINFO_TYPE_LAUD, materialId);
-	}
-
+	
 	/**
 	 * 批量删除素材的方法
 	 * 
@@ -194,10 +185,25 @@ public class MaterialAjaxController {
 	}
 	@RequestMapping(value = "updateDownloadNum")
 	@ResponseBody
-	public void updateDownloadNum(HttpServletRequest request){
+	public Integer updateDownloadNum(HttpServletRequest request){
 		String fdId = request.getParameter("materialId");
 		materialDiscussInfoService.updateMaterialDiscussInfo(Constant.MATERIALDISCUSSINFO_TYPE_DOWNLOAD, fdId);
+	    MaterialInfo info = materialService.load(fdId);
+	    return info.getFdDownloads();
 	}
+	
+	/**
+	 * 保存赞
+	 * @param materialId
+	 */
+	@RequestMapping(value = "saveLaud")
+	@ResponseBody
+	public Integer saveLaud(String materialId){
+		materialDiscussInfoService.updateMaterialDiscussInfo(Constant.MATERIALDISCUSSINFO_TYPE_LAUD, materialId);
+	    MaterialInfo info = materialService.load(materialId);
+		return info.getFdLauds();
+	}
+
 
 	/**
 	 * ajax找出素材列表
