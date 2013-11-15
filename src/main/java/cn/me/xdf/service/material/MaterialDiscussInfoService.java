@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.material.MaterialDiscussInfo;
 import cn.me.xdf.service.AccountService;
@@ -78,20 +79,19 @@ public class MaterialDiscussInfoService extends BaseService{
 	 * 查看当前用户是否具有赞权利
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = false)
 	public boolean isCanLaud(String materialId){
-		StringBuilder sql = new StringBuilder();
-		sql.append("select * form ");
-		
-		/*List<MaterialDiscussInfo> discussInfoList = this.findByProperty("orgPerson.fdId", ShiroUtils.getUser().getId());
-		if(discussInfoList!=null){
-			for (MaterialDiscussInfo materialDiscussInfo : discussInfoList) {
-				if(materialDiscussInfo.getFdType().equals(Constant.MATERIALDISCUSSINFO_TYPE_LAUD)){
-					return false;
-				}
-			}
-		}*/
-		return true;
+		Finder finder = Finder.create(" from MaterialDiscussInfo info where info.fdType=:fdType and orgPerson.fdId=:personId and materialInfo.fdId=:materialId");
+		finder.setParam("fdType", Constant.MATERIALDISCUSSINFO_TYPE_LAUD);
+		finder.setParam("personId", ShiroUtils.getUser().getId());
+		finder.setParam("materialId", materialId);
+		List<MaterialDiscussInfo> discussInfoList = find(finder);
+		if(discussInfoList==null){
+			return true;//可以赞
+		}else{
+			return false;
+		}
 	}
 
 }
