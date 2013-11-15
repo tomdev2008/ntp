@@ -1208,8 +1208,6 @@
                  		$this2.attr("data-toggle","collapse");
                  	});
                 }
-               
-
             });
 
             //试卷列表折叠 手风琴事件
@@ -1270,7 +1268,7 @@
                         $this.find("[data-toggle='collapse']").click(function(e){
                         	var $this2 = $(this);
                         	$this2.attr("data-toggle","");
-                        	$.fn.jalert("123123",function(){
+                        	$.fn.jalert("确定要关闭未保存的表单？",function(){
                         		$this2.attr("data-toggle","collapse");
                         		$this.collapse("hide");
                         	});
