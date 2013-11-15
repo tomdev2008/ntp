@@ -640,6 +640,7 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(function(){
         //页面左侧模板函数
@@ -826,7 +827,7 @@
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		alert("不能支持和反对自己的评论");
+                            		$.fn.jalert2("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnWeak")){//踩
                             	var pushok;
@@ -849,11 +850,11 @@
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		alert("不能支持和反对自己的评论");
+                            		$.fn.jalert2("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnComment")){//评论
                                 if($("#formReply").length){
-                                    alert("请先保存其它回复");
+                                	$.fn.jalert2("请先保存其它回复");
                                 } else {
                                     var $mediaBody = $this.closest(".media-body");
                                     var toName =  $mediaBody.find(".media-heading>.name").text();
@@ -898,7 +899,6 @@
             });
             
             function resetScoreInfo(){
-            	//alert($("#formMakeComments").attr("data-fdid"));
             	$.ajax({
           		  url: "${ctx}/ajax/score/canPushScoreToMaterial",
           		  async:false,
@@ -1179,7 +1179,7 @@
             $("#listExamPaper>li>a").click(function(e){
                 e.preventDefault();
                 if(($(this).attr("data-toggle") == "collapse") && $(this).parent().siblings().find(".collapse").hasClass("in")){
-                    if(!confirm("确定要关闭未保存的表单？")){
+                	if(!confirm("确定要关闭未保存的表单？")){
                         $(this).attr("data-toggle","");
                     }
                 }
@@ -1205,6 +1205,7 @@
          		  			  success: function(result){
          		  				tempData=result;
          		  			  }
+         		  			  
          	  			});
                         tempData.type = data.type;
                         tempData.num = $this.parent().index() + 1;
@@ -1240,7 +1241,7 @@
                         $this.html(examPaperDetailFn(tempData));
 
                         $this.find("[data-toggle='collapse']").click(function(e){
-                            e.preventDefault();
+                        	e.preventDefault();
                             if($(this).attr("data-toggle") == "collapse" && !confirm("确定要关闭未保存的表单？")){
                                 $(this).attr("data-toggle","");
                             }
