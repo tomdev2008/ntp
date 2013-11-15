@@ -225,7 +225,7 @@ public class MessageAjaxController {
 		int endLine = 0;
 		if(totalPage==pageNo){
 			if(totalSize%pageSize==0){
-				endLine = startLine + pageSize;
+				endLine = startLine + pageSize-1;
 			}else{
 				endLine = startLine + totalSize%pageSize-1;
 			}
