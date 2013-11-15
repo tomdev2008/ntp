@@ -46,20 +46,30 @@ public class ScoreAjaxController {
 	@ResponseBody
 	public String getScoreStatisticsByfdModelId(String fdModelId,String fdModelName){
 		ScoreStatistics scoreStatistics =  scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(fdModelName, fdModelId);
-		if(scoreStatistics==null){
-			return "0";
-		}
+		
 		List<Map> list = new ArrayList<Map>();
 		Map map = new HashMap();
-		map.put("fdId", scoreStatistics.getFdId());
-		map.put("fdModelId", scoreStatistics.getFdModelId());
-		map.put("fdAverage", scoreStatistics.getFdAverage());
-		map.put("fdScoreNum", scoreStatistics.getFdScoreNum());
-		map.put("fdFiveScoreNum", scoreStatistics.getFdFiveScoreNum());
-		map.put("fdFourScoreNum", scoreStatistics.getFdFourScoreNum());
-		map.put("fdThreeScoreNum", scoreStatistics.getFdThreeScoreNum());
-		map.put("fdTwoScoreNum", scoreStatistics.getFdTwoScoreNum());
-		map.put("fdOneScoreNum", scoreStatistics.getFdOneScoreNum());
+		if(scoreStatistics==null){
+			map.put("fdId", "");
+			map.put("fdModelId", "");
+			map.put("fdAverage", 0);
+			map.put("fdScoreNum", 0);
+			map.put("fdFiveScoreNum", 0);
+			map.put("fdFourScoreNum", 0);
+			map.put("fdThreeScoreNum", 0);
+			map.put("fdTwoScoreNum", 0);
+			map.put("fdOneScoreNum", 0);
+		}else{
+			map.put("fdId", scoreStatistics.getFdId());
+			map.put("fdModelId", scoreStatistics.getFdModelId());
+			map.put("fdAverage", scoreStatistics.getFdAverage());
+			map.put("fdScoreNum", scoreStatistics.getFdScoreNum());
+			map.put("fdFiveScoreNum", scoreStatistics.getFdFiveScoreNum());
+			map.put("fdFourScoreNum", scoreStatistics.getFdFourScoreNum());
+			map.put("fdThreeScoreNum", scoreStatistics.getFdThreeScoreNum());
+			map.put("fdTwoScoreNum", scoreStatistics.getFdTwoScoreNum());
+			map.put("fdOneScoreNum", scoreStatistics.getFdOneScoreNum());
+		}
 		list.add(map);
 		return JsonUtils.writeObjectToJson(list);
 	}

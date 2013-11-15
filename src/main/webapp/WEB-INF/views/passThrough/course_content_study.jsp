@@ -1,5 +1,6 @@
 <%@page import="cn.me.xdf.model.material.MaterialInfo"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
@@ -945,6 +946,7 @@
             		  url: "${ctx}/ajax/message/findCommentByModelId",
             		  async:false,
             		  dataType : 'json',
+            		  type:"post",
             		  data:{
             			  modelName:"<%=MaterialInfo.class.getName()%>",
             			  modelId:$("#formMakeComments").attr("data-fdid"),
@@ -1193,10 +1195,19 @@
             $("#listExamPaper>li>a").click(function(e){
                 e.preventDefault();
                 if(($(this).attr("data-toggle") == "collapse") && $(this).parent().siblings().find(".collapse").hasClass("in")){
-                	if(!confirm("确定要关闭未保存的表单？")){
-                        $(this).attr("data-toggle","");
-                    }
+                	 var $this2 = $(this);
+                 	$this2.attr("data-toggle","");
+                 	$.fn.jalert("确定要关闭未保存的表单？",function(){
+                 		$this2.parent().siblings().find(".collapse").each(function(i){
+                 			if($(this).hasClass("in")){
+                 				$(this).collapse("hide");
+                 			}
+                 		});
+                 		$this2.attr("data-toggle","collapse");
+                 	});
                 }
+               
+
             });
 
             //试卷列表折叠 手风琴事件
@@ -1255,12 +1266,16 @@
                         $this.html(examPaperDetailFn(tempData));
 
                         $this.find("[data-toggle='collapse']").click(function(e){
-                        	e.preventDefault();
-                            if($(this).attr("data-toggle") == "collapse" && !confirm("确定要关闭未保存的表单？")){
-                                $(this).attr("data-toggle","");
-                            }
+                        	var $this2 = $(this);
+                        	$this2.attr("data-toggle","");
+                        	$.fn.jalert("123123",function(){
+                        		$this2.attr("data-toggle","collapse");
+                        		$this.collapse("hide");
+                        	});
+                        	
                         })
-
+                        
+				
                         $("button[name='answerAtt']").each(function(){
                         	//var fileid = $(this).attr('id'); 
                         	var temp = "#listTaskAttachment_"+$(this).attr('id')+">li>.icon-remove-blue";
