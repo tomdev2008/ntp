@@ -42,7 +42,6 @@ public class MaterialDiscussInfoService extends BaseService{
 	public void updateMaterialDiscussInfo(String fdType,String fdId){
 		
 		MaterialInfo materialInfo = materialService.load(fdId);
-		
 		MaterialDiscussInfo discussInfo = new MaterialDiscussInfo();
 		discussInfo.setMaterialInfo(materialInfo);
 		/////////////操作类型(下载:01、播放:02、攒:03)
@@ -56,10 +55,22 @@ public class MaterialDiscussInfoService extends BaseService{
 			materialService.save(materialInfo);
 		}
 		if(fdType.equals(Constant.MATERIALDISCUSSINFO_TYPE_PLAY)){
+			if(materialInfo.getFdPlays()==null){
+				materialInfo.setFdPlays(1);
+			}else{
+				materialInfo.setFdPlays(materialInfo.getFdPlays()+1);
+			}
+			materialService.save(materialInfo);
 			discussInfo.setFdType(Constant.MATERIALDISCUSSINFO_TYPE_PLAY);
 		}
 		if(fdType.equals(Constant.MATERIALDISCUSSINFO_TYPE_LAUD)){
 			discussInfo.setFdType(Constant.MATERIALDISCUSSINFO_TYPE_LAUD);
+			if(materialInfo.getFdLauds()==null){
+				materialInfo.setFdLauds(1);
+			}else{
+				materialInfo.setFdLauds(materialInfo.getFdLauds()+1);
+			}
+			materialService.save(materialInfo);
 		}
 		discussInfo.setCreatTime(new Date());
 		discussInfo.setOrgPerson(accountService.findById(ShiroUtils.getUser().getId()));
@@ -71,7 +82,7 @@ public class MaterialDiscussInfoService extends BaseService{
 	 * @return
 	 */
 	@Transactional(readOnly = false)
-	public boolean isCanDownload(){
+	public boolean isCanLaud(){
 		List<MaterialDiscussInfo> discussInfoList = this.findByProperty("orgPerson.fdId", ShiroUtils.getUser().getId());
 		for (MaterialDiscussInfo materialDiscussInfo : discussInfoList) {
 			if(materialDiscussInfo.getFdType().equals(Constant.MATERIALDISCUSSINFO_TYPE_LAUD)){

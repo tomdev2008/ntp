@@ -165,6 +165,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 		defaultMedia.put("canDownload",info.getIsDownload());//是否允许下载
 		defaultMedia.put("dowloadCount",info.getFdDownloads()==null?0:info.getFdDownloads());//下载次数
 		defaultMedia.put("readCount",info.getFdPlays()==null?0:info.getFdPlays());//播放次数
+		defaultMedia.put("mePraised",materialDiscussInfoService.isCanLaud());//当前用户是否赞过
 		///////更改播放详情
 		materialDiscussInfoService.updateMaterialDiscussInfo(Constant.MATERIALDISCUSSINFO_TYPE_PLAY,info.getFdId());
 		map.put("listMedia", listMedia);
