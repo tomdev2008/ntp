@@ -1150,7 +1150,7 @@
 	         			},
 	         			success:function(data){
 	         				 $this.addClass("active").attr("data-original-title","赞").children(".num").text(data); 
-	         				 $this.attr("praisedstatus",false);
+	         				 $this.attr("praisedstatus",true);
 	         			}
 	         		}); 
                 }
