@@ -887,6 +887,7 @@
             });
             
             function resetScoreInfo(){
+            	//alert($("#formMakeComments").attr("data-fdid"));
             	$.ajax({
           		  url: "${ctx}/ajax/score/canPushScoreToMaterial",
           		  async:false,
@@ -1074,8 +1075,7 @@
 		  			  dataType:'json',
 		  			  success: function(data){	  				 
 		  				result = data.defaultMedia;
-		  			    
-                                },
+		  			  },
                 });
                 $("#btnPraise").addClass(result.mePraised ? "active" : '')
                         .children(".num").text(result.praiseCount);
@@ -1109,7 +1109,8 @@
                 $("#formMakeComments").validate({
                     submitHandler: submitFormComment,
                 });
-
+                resetComment(1,10);
+    			resetScoreInfo();
             });
 
             $mediaToolbar.find(".btn-group>.btn").tooltip();
