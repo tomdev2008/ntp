@@ -1,14 +1,19 @@
 package cn.me.xdf.action.common;
 
-import cn.me.xdf.common.download.DownloadHelper;
-import cn.me.xdf.common.upload.FileModel;
-import cn.me.xdf.common.upload.FileRepository;
-import cn.me.xdf.common.utils.Zipper;
-import cn.me.xdf.model.base.AttMain;
-import cn.me.xdf.model.material.MaterialInfo;
-import cn.me.xdf.service.base.AttMainService;
-import cn.me.xdf.service.material.MaterialService;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import jodd.io.StreamUtil;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,12 +28,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import cn.me.xdf.common.download.DownloadHelper;
+import cn.me.xdf.common.upload.FileModel;
+import cn.me.xdf.common.upload.FileRepository;
+import cn.me.xdf.common.utils.Zipper;
+import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.material.MaterialDiscussInfoService;
+import cn.me.xdf.service.material.MaterialService;
 
 /**
  * @author xiaobin
@@ -39,6 +47,9 @@ public class FileController {
 	
 	@Autowired
 	private MaterialService materialService;
+	
+	@Autowired
+	private MaterialDiscussInfoService materialDiscussInfoService;
 
     private static final Logger log = LoggerFactory.getLogger(FileController.class);
 
@@ -151,14 +162,7 @@ public class FileController {
         List<AttMain> attMainList = new ArrayList<AttMain>();
         for(int i=0;i<modelIds.length;i++){
         	//更改下载次数
-        	MaterialInfo materialInfo = materialService.load(modelIds[i]);
-        	if(materialInfo.getFdDownloads()==null){
-    			materialInfo.setFdDownloads(1);
-    		}else{
-    			materialInfo.setFdDownloads(materialInfo.getFdDownloads()+1);
-    		}
-    		materialService.save(materialInfo);
-        	
+    		materialDiscussInfoService.updateMaterialDiscussInfo("01", modelIds[i]);//更改操作明细
         	List<AttMain> attMains = attMainService.getAttsByModelId(modelIds[i]);
         	if(attMains!=null&&attMains.size()>0){
         		for (AttMain attMain : attMains) {
@@ -189,12 +193,7 @@ public class FileController {
         if(list!=null&&list.size()>0){
         	for (MaterialInfo materialInfo : list) {
         		//更改下载次数
-            	if(materialInfo.getFdDownloads()==null){
-        			materialInfo.setFdDownloads(1);
-        		}else{
-        			materialInfo.setFdDownloads(materialInfo.getFdDownloads()+1);
-        		}
-        		materialService.save(materialInfo);
+        		materialDiscussInfoService.updateMaterialDiscussInfo("01", materialInfo.getFdId());//更改操作明细
         		List<AttMain> attMains = attMainService.getAttsByModelId(materialInfo.getFdId());
         		if(attMains!=null&&attMains.size()>0){
         			for (AttMain attMain : attMains) {

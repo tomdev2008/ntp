@@ -26,13 +26,17 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_MATERIALDISCUSSINFO")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class MaterialDiscussInfo extends IdEntity{
 
 	/**
 	 * 操作人
 	 */
 	private SysOrgPerson orgPerson;
+	
+	/**
+	 * 所属素材
+	 */
+	private MaterialInfo materialInfo;
 	
 	/**
 	 * 操作时间
@@ -52,6 +56,16 @@ public class MaterialDiscussInfo extends IdEntity{
 
 	public void setOrgPerson(SysOrgPerson orgPerson) {
 		this.orgPerson = orgPerson;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fdMaterialId")
+	public MaterialInfo getMaterialInfo() {
+		return materialInfo;
+	}
+
+	public void setMaterialInfo(MaterialInfo materialInfo) {
+		this.materialInfo = materialInfo;
 	}
 
 	public Date getCreatTime() {

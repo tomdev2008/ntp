@@ -10,6 +10,7 @@ import jodd.util.StringUtil;
 
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
@@ -20,6 +21,7 @@ import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.bam.source.ISourceService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.material.ExamQuestionService;
+import cn.me.xdf.service.material.MaterialDiscussInfoService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.service.score.ScoreService;
 import cn.me.xdf.utils.ShiroUtils;
@@ -44,9 +46,12 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 	@Autowired
 	private AttMainService attMainService;
 	
-	
 	@Autowired
 	private MaterialService materialService;
+	
+	
+	@Autowired
+	private MaterialDiscussInfoService materialDiscussInfoService;
 	
 	@Autowired
 	private BamCourseService bamCourseService;
@@ -91,7 +96,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 		if(material!=null){
 			for(int i=0;i<material.size();i++){
 				Map listm=new HashMap();
-				MaterialInfo minfo = material.get(i);
+				MaterialInfo minfo = materialService.get(i);
 				AttMain attMain=attMainService.getByModelIdAndModelName(minfo.getFdId(), MaterialInfo.class.getName());
 				listm.put("id", minfo.getFdId());//素材id
 				listm.put("name", minfo.getFdName());//素材名称
@@ -109,9 +114,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 					if(attMain!=null){
 						defaultMedia.put("url", attMain.getFdId());//附件id
 					}
-					defaultMedia.put("canDownload",minfo.getIsDownload());//是否允许下载
-					defaultMedia.put("dowloadCount",minfo.getFdDownloads()==null?0:minfo.getFdDownloads());//下载次数
-					defaultMedia.put("readCount",minfo.getFdPlays()==null?0:minfo.getFdPlays());//播放次数
+					
 					defaultMedia.put("isPass", minfo.getThrough());
 					///////////////////////////////////
 					Map scorem=new HashMap();
@@ -136,9 +139,6 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 					if(attMain!=null){
 						defaultMedia.put("url", attMain.getFdId());//附件id
 					}
-					defaultMedia.put("canDownload",minfo.getIsDownload());//是否允许下载
-					defaultMedia.put("dowloadCount",minfo.getFdDownloads()==null?0:minfo.getFdDownloads());//下载次数
-					defaultMedia.put("readCount",minfo.getFdPlays()==null?0:minfo.getFdPlays());//播放次数
 					defaultMedia.put("isPass", minfo.getThrough());
 					Map memap=new HashMap();
 					memap.put("id", minfo.getFdId());
@@ -151,9 +151,6 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 					if(attMain!=null){
 						defaultMedia.put("url", attMain.getFdId());//附件id
 					}
-					defaultMedia.put("canDownload",minfo.getIsDownload());//是否允许下载
-					defaultMedia.put("dowloadCount",minfo.getFdDownloads()==null?0:minfo.getFdDownloads());//下载次数
-					defaultMedia.put("readCount",minfo.getFdPlays()==null?0:minfo.getFdPlays());//播放次数
 					defaultMedia.put("isPass", minfo.getThrough());
 					Map memap=new HashMap();
 					memap.put("id", minfo.getFdId());
@@ -165,12 +162,11 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 		////存储播放次数
 		String materialInfoId = (String) defaultMedia.get("id");
 		MaterialInfo info = materialService.load(materialInfoId);
-		if(info.getFdPlays()!=null){
-			info.setFdPlays(info.getFdPlays()+1);
-		} else {
-			info.setFdPlays(1);
-		}
-		materialService.save(info);
+		defaultMedia.put("canDownload",info.getIsDownload());//是否允许下载
+		defaultMedia.put("dowloadCount",info.getFdDownloads()==null?0:info.getFdDownloads());//下载次数
+		defaultMedia.put("readCount",info.getFdPlays()==null?0:info.getFdPlays());//播放次数
+		///////更改播放详情
+		materialDiscussInfoService.updateMaterialDiscussInfo(Constant.MATERIALDISCUSSINFO_TYPE_PLAY,info.getFdId());
 		map.put("listMedia", listMedia);
 		map.put("defaultMedia", defaultMedia);
 		return map;

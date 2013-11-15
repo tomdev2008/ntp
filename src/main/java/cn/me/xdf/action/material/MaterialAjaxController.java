@@ -34,6 +34,7 @@ import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseContentService;
 import cn.me.xdf.service.material.MaterialAuthService;
+import cn.me.xdf.service.material.MaterialDiscussInfoService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.utils.ShiroUtils;
 
@@ -59,6 +60,9 @@ public class MaterialAjaxController {
 
 	@Autowired
 	private CourseCatalogService courseCatalogService;
+	
+	@Autowired
+	private MaterialDiscussInfoService materialDiscussInfoService;
 
 	/**
 	 * 删除素材相关信息==>素材==>课程内容==>节
@@ -182,13 +186,7 @@ public class MaterialAjaxController {
 	@ResponseBody
 	public void updateDownloadNum(HttpServletRequest request){
 		String fdId = request.getParameter("materialId");
-		MaterialInfo materialInfo = materialService.load(fdId);
-		if(materialInfo.getFdDownloads()==null){
-			materialInfo.setFdDownloads(1);
-		}else{
-			materialInfo.setFdDownloads(materialInfo.getFdDownloads()+1);
-		}
-		materialService.save(materialInfo);
+		materialDiscussInfoService.updateMaterialDiscussInfo("01", fdId);
 	}
 
 	/**
