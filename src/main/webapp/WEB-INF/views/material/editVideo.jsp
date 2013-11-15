@@ -12,59 +12,10 @@
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link href="${ctx}/resources/css/DTotal.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
-<link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
-<!--上传附件的"浏览"按钮样式-->
-<style type="text/css">
-.uploadify-button {
-    background-color:rgb(67,145,187);
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(67,145,187)),
-		color-stop(1, rgb(67,145,187))
-	);
-	max-width:70px;
-	max-height:30px;
-	border-radius: 1px;
-	border: 0px;
-	font: bold 12px Arial, Helvetica, sans-serif;
-	display: block;
-	text-align: center;
-	text-shadow: 0 0px 0 rgba(0,0,0,0.25);
-    
-}
-.uploadify:hover .uploadify-button {
-    background-color:rgb(67,145,187);
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(67,145,187)),
-		color-stop(1, rgb(67,145,187))
-	);
-}
-.uploadify-queue-item {
-	background-color: #FFFFFF;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	font: 11px Verdana, Geneva, sans-serif;
-	margin-top: 1px;
-	max-width: 1000px;
-	padding: 5px;
-}
-.uploadify-progress {
-	background-color: #E5E5E5;
-	margin-top: 10px;
-	width: 100%;
-}
-.uploadify-progress-bar {
-	background-color: rgb(67,145,187);
-	height: 27px;
-	width: 1px;
-}
-</style> 
+<!--[if lt IE 9]>
+<script src="${ctx}/resources/js/html5.js"></script>
+<![endif]-->
+
 <!-- 授权管理 用户列表 模板 -->
 <script id="listUserKinguserTemplate" type="text/x-dot-template">
     <tr data-fdid="{{=it.id}}">
@@ -79,6 +30,7 @@
         <td><a href="#" class="icon-remove-blue"></a></td>
     </tr>
 </script>
+
 
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
@@ -188,10 +140,8 @@
                     <section class="section mt20">
                         <label id="uploadIntro"></label>
                         <div class="control-upload">
-                           <div id="upMaterialDiv" style="height:20px;width:650px;display:block;"></div>
-						   <div style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
-						     <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>
-						  </div>
+                        	
+						    <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>
 						  <input type="hidden"  name="attId" id="attId" value="">
                         </div>
                     </section>
@@ -281,7 +231,7 @@
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
-<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 function confirmDel(){
@@ -292,7 +242,7 @@ function deleteMaterial(){
 		type: "post",
 		url: "${ctx}/ajax/material/deleteMaterial",
 		data : {
-			"materialId":$("#fdId").val(),
+			"materialId":$("#fdId").val()
 		},
 		success:function(){
 			window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
@@ -349,29 +299,43 @@ $(function(){
     	uptype='*.ppt;';
         break;
   }
+	var $progress ;
 
-  jQuery("#upMaterial").uploadify({
-    'height' : 27,
-    'width' : 80,
+	$("#upMaterial").uploadify({
+    'height' : 40,
+    'width' : 68,
     'multi' : false,
     'simUploadLimit' : 1,
     'swf' : '${ctx}/resources/uploadify/uploadify.swf',
+    "buttonClass": "btn btn-primary btn-large",
     'buttonText' : '上传',
     'uploader' : '${ctx}/common/file/o_upload',
     'auto' : true,
-    'queueID': 'upMaterialDiv',
-    'fileTypeExts' : uptype,
+    'fileTypeExts' : "*.*",
+    'onInit' : function(){
+    	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
+		<span class="txt"><span class="pct">0%</span></span>');
+    	$("#upMaterial").next(".uploadify-queue").remove();
+    },
     'onUploadStart' : function (file) {
-        jQuery("#upMaterial").uploadify("settings", "formData");
+    	$("#upMaterial").before($progress);
+        //$uploadBtn.uploadify("settings", "formData");
     },
     'onUploadSuccess' : function (file, data, Response) {
         if (Response) {
             var objvalue = eval("(" + data + ")");
             jQuery("#attId").val(objvalue.attId);
+            setTimeout(function(){
+        		$progress.remove();
+        	},2000); 
         }
     },
-    
-    'onSelect':function(file){
+    'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
+    	var pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
+    	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
+    	
+    }
+    /* 'onSelect':function(file){
     	// 选择新文件时,先清文件列表
     	var queuedFile = {};
 		for (var n in this.queueData.files) {
@@ -383,8 +347,8 @@ $(function(){
 					});
 				}
 			}
-    },
-    'removeCompleted':false
+    }, 
+    'removeCompleted':false */
   });
 });
 
@@ -536,7 +500,7 @@ function saveMaterial(){
 		  dataType:'json',
 		  success: function(rsult){
 			  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
-		  },
+		  }
 	});
 }
 function saveMater(){
