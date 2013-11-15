@@ -88,9 +88,9 @@ public class MaterialDiscussInfoService extends BaseService{
 		finder.setParam("materialId", materialId);
 		List<MaterialDiscussInfo> discussInfoList = find(finder);
 		if(discussInfoList==null){
-			return true;//可以赞
+			return false;//不可以赞
 		}else{
-			return false;
+			return true;
 		}
 	}
 
