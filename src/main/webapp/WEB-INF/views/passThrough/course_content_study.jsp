@@ -721,16 +721,16 @@
         //上一节
         $("#prevLecture").click(function (e){
         	
-        	if($(this).attr("href")){
+        	//if($(this).attr("href")){
         	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
-        	}
+        	//}
              
         });
         //下一节
         $("#nextLecture").click(function (e){
-        	if($(this).attr("href")){
+        	//if($(this).attr("href")){
         	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
-        	}
+        	//}
             
         }); 
 		function loadRightCont(fdid,type){
@@ -1138,6 +1138,16 @@
                     $this.addClass("active").attr("data-original-title","取消赞").children(".num").text(parseInt($this.text())+1);
                 }
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
+                $.ajax({
+         			type: "post",
+         			url: "${ctx}/ajax/material/saveLaud",
+         			data : {
+         				"materialId":$mediaToolbar.attr("data-fdid"),
+         			},
+         			success:function(data){
+         				 $this.removeClass("active").attr("data-original-title","赞").children(".num").text(data); 
+         			}
+         		}); 
             });
 
             /*点下载事件*/
@@ -1156,7 +1166,8 @@
                      				"materialId":$mediaToolbar.attr("data-fdid"),
                      			},
                      			success:function(data){
-                     				 $("#btnDownload").children(".num").text(data);
+                     				 //$("#btnDownload").children(".num").text(data);
+                     				 $("#btnDownload").find("span").html(data);
                      			}
                      		}); 
                        } else {
