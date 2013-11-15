@@ -1170,10 +1170,11 @@
                   				"materialId":$mediaToolbar.attr("data-fdid"),
                   			},
                   			success:function(data){
-                  				 //$("#btnDownload").find("span").html(data);
+                  				 window.location.href="${ctx}/common/file/download/"+$this.attr("data-fdid");
+                  				 $("#btnDownload").find("span").html(data);
                   			}
                   		}); 
-                     	  window.location.href="${ctx}/common/file/download/"+$this.attr("data-fdid");
+                     	 
                        } else {
                      	  $.fn.jalert2("您好！该视频没有对应附件");
                        } 
