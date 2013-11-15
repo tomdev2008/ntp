@@ -241,7 +241,7 @@
                                 {{~exam.listExamAnswer :ans:indexno}}
                                 <label class="input">
                                     <b class="icon-circle-bg blue">{{=indexno+1}}</b>
-                                    <input type="text" required class="input-xxlarge" value="{{=ans}}" exam-id="{{=exam.id}}" name="examAnswer_completion"/>
+                                    <input type="text" required class="input-xxlarge" id="{{=indexno+1}}" value="{{=ans}}" exam-id="{{=exam.id}}" name="examAnswer_completion{{=exam.id}}{{=indexno+1}}" putId="examAnswer_completion"/>
 									<input type="hidden" value=""  name="examAnswer"/>
 
                                 </label>
@@ -1355,7 +1355,7 @@
         				});
                         $("#formExam").validate({
                             submitHandler: function(form){
-	                            $("input[name='examAnswer_completion']").each(function(){
+	                            $("input[putId='examAnswer_completion']").each(function(){
 	                            	$(this).next("input").val($(this).attr("exam-id")+":"+$(this).attr("value"));
 	                           	});
 	                            form.submit();
