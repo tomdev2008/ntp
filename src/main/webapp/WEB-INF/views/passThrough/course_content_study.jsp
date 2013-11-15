@@ -1086,7 +1086,7 @@
 		  				  fdMtype:fdMtype
 		  			  },
 		  			  dataType:'json',
-		  			  success: function(data){	  				 
+		  			  success: function(data){
 		  				result = data.defaultMedia;
 		  			  },
                 });
@@ -1098,6 +1098,7 @@
                 $mediaToolbar.find(".playCount>.num").text(result.readCount);
                 $("#mediaToolbar").attr("data-fdid",result.id);
                 $("#btnDownload").attr("data-fdid",result.url);
+                $("#btnPraise")attr("praisedstatus",result.mePraised);
                 $("#mediaName").text($this.attr("title"));
                 $("#mediaIntro").text(result.intro);
                 $("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
