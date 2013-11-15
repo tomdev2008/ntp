@@ -224,7 +224,12 @@ public class MessageAjaxController {
 		int totalPage = pagination.getTotalPage();
 		int endLine = 0;
 		if(totalPage==pageNo){
-			endLine = startLine + totalSize%pageSize-1;
+			if(totalSize%pageSize==0){
+				endLine = startLine + pageSize;
+			}else{
+				endLine = startLine + totalSize%pageSize-1;
+			}
+			
 		}else{
 			endLine = startLine + pageSize-1;
 		}
