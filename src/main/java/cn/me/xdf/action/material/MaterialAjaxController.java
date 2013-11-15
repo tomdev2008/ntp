@@ -76,6 +76,16 @@ public class MaterialAjaxController {
 		// 删除素材
 		deleteMaterialData(materialId);
 	}
+	
+	/**
+	 * 保存赞
+	 * @param materialId
+	 */
+	@RequestMapping(value = "saveLaud")
+	@ResponseBody
+	public void saveLaud(String materialId){
+		materialDiscussInfoService.updateMaterialDiscussInfo(Constant.MATERIALDISCUSSINFO_TYPE_LAUD, materialId);
+	}
 
 	/**
 	 * 批量删除素材的方法

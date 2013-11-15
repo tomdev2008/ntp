@@ -161,8 +161,6 @@ public class FileController {
         dh.setRequest(request);
         List<AttMain> attMainList = new ArrayList<AttMain>();
         for(int i=0;i<modelIds.length;i++){
-        	//更改下载次数
-    		materialDiscussInfoService.updateMaterialDiscussInfo("01", modelIds[i]);//更改操作明细
         	List<AttMain> attMains = attMainService.getAttsByModelId(modelIds[i]);
         	if(attMains!=null&&attMains.size()>0){
         		for (AttMain attMain : attMains) {
@@ -192,8 +190,6 @@ public class FileController {
         List<MaterialInfo> list = materialService.findByProperty("fdType", fdType);
         if(list!=null&&list.size()>0){
         	for (MaterialInfo materialInfo : list) {
-        		//更改下载次数
-        		materialDiscussInfoService.updateMaterialDiscussInfo("01", materialInfo.getFdId());//更改操作明细
         		List<AttMain> attMains = attMainService.getAttsByModelId(materialInfo.getFdId());
         		if(attMains!=null&&attMains.size()>0){
         			for (AttMain attMain : attMains) {

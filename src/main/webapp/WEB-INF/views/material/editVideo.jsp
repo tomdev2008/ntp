@@ -304,16 +304,6 @@ function downloadMater(){
   var attId = $("#fdattId").val();
   if(attId!=null&&attId!=""){
 	  window.location.href="${ctx}/common/file/download/"+attId;
-	  $.ajax({
-			type: "post",
-			url: "${ctx}/ajax/material/updateDownloadNum",
-			data : {
-				"materialId":$("#fdId").val(),
-			},
-			success:function(){
-				
-			}
-		}); 
   } else {
 	  $.fn.jalert2("您好！该视频没有对应附件");
   } 
