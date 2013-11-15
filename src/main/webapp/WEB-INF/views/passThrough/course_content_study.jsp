@@ -1094,6 +1094,8 @@
                         .children(".num").text(result.downloadCount);
                 $("#btnDoPass").attr("disabled",result.isPass ? true : false);
                 $mediaToolbar.find(".playCount>.num").text(result.readCount);
+                $("#mediaToolbar").attr("data-fdid",result.id);
+                $("#btnDownload").attr("data-fdid",result.url);
                 $("#mediaName").text($this.attr("title"));
                 $("#mediaIntro").text(result.intro);
                 $("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
@@ -1153,7 +1155,9 @@
                      			data : {
                      				"materialId":$mediaToolbar.attr("data-fdid"),
                      			},
-                     			success:function(){
+                     			success:function(data){
+                     				 alert(data);
+                     				 $("#btnDownload").children(".num").text(data);
                      			}
                      		}); 
                        } else {
