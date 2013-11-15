@@ -1196,6 +1196,7 @@
             var $window = $(window);
 
             $("#listExamPaper>li>a").click(function(e){
+            	var $athis = $(this);
                 e.preventDefault();
                 if(($(this).attr("data-toggle") == "collapse") && $(this).parent().siblings().find(".collapse").hasClass("in")){
                 	 var $this2 = $(this);
@@ -1207,6 +1208,7 @@
                  			}
                  		});
                  		$this2.attr("data-toggle","collapse");
+                 		$athis.trigger("click");
                  	});
                 }
             });
