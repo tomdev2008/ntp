@@ -169,6 +169,7 @@
             class="{{?i*param.span==param.span}}first {{?}}{{?param.curPos && i*param.span<=param.curPos}}active{{?}}"><span class="num">{{=i*param.span}}</span></a>
             {{ } }}
             </div>
+           <label id="examScoreErr" class="error" style="display: none;"></label>
         #}}
     </script>
 
@@ -259,6 +260,7 @@
                             <div class="controls">
                                 <input name="examPaperTime" id="examPaperTime"  type="hidden"/>
                             </div>
+                            <label id="examPaperTimeErr" class="error" style="display: none;"></label>
                         </div>
 
                     </section>
@@ -502,6 +504,11 @@ $(function(){
 
     /*提交表单函数*/
     function submitForm(form){
+    	if ($("#examPaperTime").val()=="") {
+			$("#examPaperTimeErr").html("请设置时间");
+			$("#examPaperTimeErr").css("display", "block");
+			return;
+		} 
     	if(parseInt($("#passScore").val())>parseInt($("#totalScore").html())){
     		$("#passScoreErr").css("display","block");
     		$("#passScoreErr").html("及格分数不能大于满分");
@@ -557,7 +564,7 @@ $(function(){
 			  success: function(rsult){
 				  window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
 			  },
-		});
+		}); 
     }
     $('#formEditDTotal a[data-toggle="tab"]').on('click', function (e) {
         var href = 	e.target.href.split("#").pop();
@@ -722,6 +729,11 @@ $(function(){
                 });
                 data.listAttachment =  JSON.stringify(data.listAttachment);
             }
+            if (JSON.stringify(data.examScore) == '""') {
+				$("#examScoreErr").html("请设置分数");
+				$("#examScoreErr").css("display", "block");
+				return;
+			}
             //console.log(data);
             //ajax
             $.ajax({
