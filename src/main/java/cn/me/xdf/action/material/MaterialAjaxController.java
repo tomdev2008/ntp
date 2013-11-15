@@ -186,7 +186,7 @@ public class MaterialAjaxController {
 	@ResponseBody
 	public void updateDownloadNum(HttpServletRequest request){
 		String fdId = request.getParameter("materialId");
-		materialDiscussInfoService.updateMaterialDiscussInfo("01", fdId);
+		materialDiscussInfoService.updateMaterialDiscussInfo(Constant.MATERIALDISCUSSINFO_TYPE_DOWNLOAD, fdId);
 	}
 
 	/**
