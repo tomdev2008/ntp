@@ -140,6 +140,9 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 					defaultMedia.put("dowloadCount",minfo.getFdDownloads()==null?0:minfo.getFdDownloads());//下载次数
 					defaultMedia.put("readCount",minfo.getFdPlays()==null?0:minfo.getFdPlays());//播放次数
 					defaultMedia.put("isPass", minfo.getThrough());
+					Map memap=new HashMap();
+					memap.put("id", minfo.getFdId());
+					defaultMedia.put("mediaComment",memap );
 					break;
 				}else if(!minfo.getThrough()&&status){
 					defaultMedia.put("id", minfo.getFdId());//素材id
@@ -152,10 +155,22 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 					defaultMedia.put("dowloadCount",minfo.getFdDownloads()==null?0:minfo.getFdDownloads());//下载次数
 					defaultMedia.put("readCount",minfo.getFdPlays()==null?0:minfo.getFdPlays());//播放次数
 					defaultMedia.put("isPass", minfo.getThrough());
+					Map memap=new HashMap();
+					memap.put("id", minfo.getFdId());
+					defaultMedia.put("mediaComment",memap );
 					status = false;
 				}
 			}
 		}
+		////存储播放次数
+		String materialInfoId = (String) defaultMedia.get("id");
+		MaterialInfo info = materialService.load(materialInfoId);
+		if(info.getFdPlays()!=null){
+			info.setFdPlays(info.getFdPlays()+1);
+		} else {
+			info.setFdPlays(1);
+		}
+		materialService.save(info);
 		map.put("listMedia", listMedia);
 		map.put("defaultMedia", defaultMedia);
 		return map;
