@@ -96,7 +96,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
 		if(material!=null){
 			for(int i=0;i<material.size();i++){
 				Map listm=new HashMap();
-				MaterialInfo minfo = materialService.get(i);
+				MaterialInfo minfo = material.get(i);
 				AttMain attMain=attMainService.getByModelIdAndModelName(minfo.getFdId(), MaterialInfo.class.getName());
 				listm.put("id", minfo.getFdId());//素材id
 				listm.put("name", minfo.getFdName());//素材名称
