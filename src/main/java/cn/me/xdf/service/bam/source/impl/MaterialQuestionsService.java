@@ -151,34 +151,57 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 			
 			map2.put("examScore", examQuestion2.getFdStandardScore());
 			map2.put("examType", examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_SINGLE_SELECTION)?"single":(examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_MULTIPLE_SELECTION)?"multiple":"completion"));
-			map2.put("examStem", examQuestion2.getFdSubject());
-			List<ExamOpinion> examOpinions = examQuestion2.getOpinions();
-			List<Map> opinionlist = new ArrayList<Map>();
-			for (ExamOpinion examOpinion : examOpinions) {
-				Map opinionMap = new HashMap();
-				opinionMap.put("id", examOpinion.getFdId());
-				opinionMap.put("index", examOpinion.getFdOrder());
-				opinionMap.put("name", examOpinion.getOpinion());
-				opinionMap.put("isAnswer", examOpinion.getIsAnswer());
-				if(sourceNote==null){
-					opinionMap.put("isChecked", false);
-				}else{
-					Set<AnswerRecord> answerRecords = sourceNote.getAnswerRecords();
-					for (AnswerRecord answerRecord : answerRecords) {
-						if(answerRecord.getFdQuestionId().equals(examQuestion2.getFdId())){
-							if(answerRecord.getFdAnswer()==null){
-								opinionMap.put("isChecked", false);
-							}else{
-								opinionMap.put("isChecked", answerRecord.getFdAnswer().contains(examOpinion.getFdId()));
+			if(examQuestion2.getFdType().equals(Constant.EXAM_QUESTION_CLOZE)){
+				/*String [] opinionlist = new ArrayList<String>();*/
+				String answer = examQuestion2.getFdQuestion();
+				String [] answers = answer.split("#");
+				/*for (int i=1;i<=answers.length;i++) {
+					opinionlist.add(answers[i-1]);
+				}*/
+				String subject = examQuestion2.getFdSubject();
+				String [] subjects = subject.split("#");
+				String res = "";
+				 for (int i = 0; i < subjects.length; i++) {
+					 String html = "<span class='line'><label for='examAnswer"+i+"' class='icon-circle-bg' >"+i+"</label></span>";
+					if (i % 2 ==0) {
+						res = res + subjects[i];
+					}else{
+						res = res + html;
+					}
+				 }
+				 map2.put("listExamAnswer", answers);
+				 map2.put("examStem", res);
+			}else{
+				map2.put("examStem", examQuestion2.getFdSubject());
+				List<Map> opinionlist = new ArrayList<Map>();
+				List<ExamOpinion> examOpinions = examQuestion2.getOpinions();
+				for (ExamOpinion examOpinion : examOpinions) {
+					Map opinionMap = new HashMap();
+					opinionMap.put("id", examOpinion.getFdId());
+					opinionMap.put("index", examOpinion.getFdOrder());
+					opinionMap.put("name", examOpinion.getOpinion());
+					opinionMap.put("isAnswer", examOpinion.getIsAnswer());
+					if(sourceNote==null){
+						opinionMap.put("isChecked", false);
+					}else{
+						Set<AnswerRecord> answerRecords = sourceNote.getAnswerRecords();
+						for (AnswerRecord answerRecord : answerRecords) {
+							if(answerRecord.getFdQuestionId().equals(examQuestion2.getFdId())){
+								if(answerRecord.getFdAnswer()==null){
+									opinionMap.put("isChecked", false);
+								}else{
+									opinionMap.put("isChecked", answerRecord.getFdAnswer().contains(examOpinion.getFdId()));
+								}
+								break;
 							}
-							break;
 						}
 					}
+					opinionlist.add(opinionMap);
 				}
-				
-				opinionlist.add(opinionMap);
-			}
-			map2.put("listExamAnswer", opinionlist);
+				map2.put("listExamAnswer", opinionlist);
+			};
+			
+			
 			
 			List<AttMain> taskAtt = attMainService.
 					getByModeslIdAndModelNameAndKey(examQuestion2.getFdId(),ExamQuestion.class.getName(),"ExamQuestion");

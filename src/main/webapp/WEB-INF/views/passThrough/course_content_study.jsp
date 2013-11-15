@@ -236,16 +236,25 @@
                                 {{~}}
                             </ul>
                             {{?}}
-                            {{~exam.listExamAnswer :ans1:index1}}
-                            {{~exam.listExamAnswer :ans:index}}
-                            {{?index1 == ans.index}}
-                                <label class="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" >
-                                    <input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?ans.isChecked}}checked{{?}} value="{{=exam.id}}:{{=ans.id}}" name="examAnswer" />
-                                    {{=ans.name}}
+ 							{{?exam.examType == 'completion'}}
+                                {{~exam.listExamAnswer :ans:index}}
+                                <label class="input">
+                                    <b class="icon-circle-bg blue">{{=index+1}}</b>
+                                    <input type="text" required class="input-xxlarge" value="{{=ans}}" name="examAnswer" />
                                 </label>
-                            {{?}}
-                            {{~}}
-                            {{~}}
+                                {{~}}
+                            {{??}}
+                           		{{~exam.listExamAnswer :ans1:index1}}
+                            	{{~exam.listExamAnswer :ans:index}}
+                            	{{?index1 == ans.index}}
+                                	<label class="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" >
+                                    	<input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?ans.isChecked}}checked{{?}} value="{{=exam.id}}:{{=ans.id}}" name="examAnswer" />
+                                    	{{=ans.name}}
+                                	</label>
+                            	{{?}}
+                            	{{~}}
+                            	{{~}}
+							{{?}}
                         </dd>
                     {{?}}
                     {{~}}
@@ -1179,6 +1188,7 @@
          		  			  },
          		  			  dataType:'json',
          		  			  success: function(result){
+         		  				  alert(JSON.stringify(result.listExam[1].listExamAnswer));
          		  				tempData=result;
          		  			  }
          	  			});
