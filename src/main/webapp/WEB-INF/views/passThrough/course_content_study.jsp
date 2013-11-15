@@ -1156,7 +1156,6 @@
                      				"materialId":$mediaToolbar.attr("data-fdid"),
                      			},
                      			success:function(data){
-                     				 alert(data);
                      				 $("#btnDownload").children(".num").text(data);
                      			}
                      		}); 
