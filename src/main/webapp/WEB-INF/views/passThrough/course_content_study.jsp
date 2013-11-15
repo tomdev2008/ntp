@@ -377,8 +377,8 @@
                 <div class="mediaToolbarWrap">
                     <div class="mediaToolbar" id="mediaToolbar" data-fdid="{{=param.id}}">
                         <div class="btn-group">
-                            <a id="btnPraise" class="btn btn-link{{?param.mePraised}} active{{?}}" href="#" title="{{?param.mePraised}}取消赞{{??}}赞{{?}}" praisedstatus="{{=param.mePraised}}"><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
-                           <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" class="btn btn-link{{?param.canDownload}}" href="#" data-fdid="{{=param.url}}" {??}} disabled"{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
+                            <a id="btnPraise" class="btn btn-link{{?!param.mePraised}} active{{?}}" href="javascript:void(0)" title="{{?param.mePraised}}取消赞{{??}}赞{{?}}" praisedstatus="{{=param.mePraised}}"><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
+                           <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" class="btn btn-link{{?param.canDownload}}" href="javascript:void(0)" data-fdid="{{=param.url}}" {??}} disabled"{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
                         </div>
                         <span class="playCount">{{?it.type == 'video'}}播放{{??}}阅读{{?}}  <strong class="num">{{=param.readCount || 0 }}</strong>  次</span>
                         <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}}><i class="icon-right"></i>我学会了</button>
@@ -516,7 +516,7 @@
                     </div>
                     <div class="btn-group">
                         <button id="gotoBefore2" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i></button>
-                        <button id="gotoNext1" class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
+                        <button id="gotoNext2" class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
                     </div>
                 </div>
             </div>
@@ -1090,8 +1090,12 @@
 		  				result = data.defaultMedia;
 		  			  },
                 });
-                $("#btnPraise").addClass(result.mePraised ? "active" : '')
-                        .children(".num").text(result.praiseCount);
+                if(result.mePraised){
+                	$("#btnPraise").removeClass("active").children(".num").text(result.praiseCount);
+                }else{
+                	 $("#btnPraise").addClass("active").children(".num").text(result.praiseCount);
+                }
+               
                 $("#btnDownload").addClass(result.canDownload ? '' : 'disabled').attr("data-original-title",result.canDownload ? '点击下载' : '无权下载')
                         .children(".num").text(result.downloadCount);
                 $("#btnDoPass").attr("disabled",result.isPass ? true : false);
@@ -1141,7 +1145,7 @@
                     $this.addClass("active").attr("data-original-title","取消赞").children(".num").text(parseInt($this.text())+1);
                 } */
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
-                if(!$this.attr("praisedstatus")){
+                if($this.attr("praisedstatus")=='true'){
 	                $.ajax({
 	         			type: "post",
 	         			url: "${ctx}/ajax/material/saveLaud",
@@ -1150,9 +1154,11 @@
 	         			},
 	         			success:function(data){
 	         				 $this.addClass("active").attr("data-original-title","赞").children(".num").text(data); 
-	         				 $this.attr("praisedstatus",true);
+	         				 $this.attr("praisedstatus",'false');
 	         			}
 	         		}); 
+                }else{
+                	$.fn.jalert2("您已经赞过该资源!");
                 }
             });
 

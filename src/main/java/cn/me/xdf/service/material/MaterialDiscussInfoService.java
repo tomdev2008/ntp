@@ -87,10 +87,10 @@ public class MaterialDiscussInfoService extends BaseService{
 		finder.setParam("personId", ShiroUtils.getUser().getId());
 		finder.setParam("materialId", materialId);
 		List<MaterialDiscussInfo> discussInfoList = find(finder);
-		if(discussInfoList==null){
-			return false;//不可以赞
+		if(discussInfoList==null||discussInfoList.isEmpty()){
+			return true;//可以赞
 		}else{
-			return true;
+			return false;
 		}
 	}
 
