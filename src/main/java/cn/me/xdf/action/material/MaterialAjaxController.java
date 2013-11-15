@@ -316,6 +316,7 @@ public class MaterialAjaxController {
 			// 保存权限信息
 			materialService.saveMaterAuth(kingUser, info.getFdId());
 		}
+		info.setIsDownload(true);
 		info.setFdAuthor(request.getParameter("author"));
 		info.setFdAuthorDescription(request.getParameter("authorIntro"));
 		info.setFdLink(request.getParameter("videoUrl"));
