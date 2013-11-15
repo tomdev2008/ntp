@@ -65,17 +65,19 @@ public class SourceNodeService extends SimpleService {
 			if(node==null){
 				return "unfinish";
 			}
-			if(node.getFdStatus().equals(Constant.TASK_STATUS_FINISH)){//完成
-				return "finish";
-			} else if(node.getFdStatus().equals(Constant.TASK_STATUS_REJECT)){//驳回
-				return "unfinish";
-			} else if(node.getFdStatus().equals(Constant.TASK_STATUS_UNFINISH)){//未完成
-				return "unfinish";
-			} 
-			/*Boolean iStudy=node.getIsStudy();
-			if(iStudy==null){
-				return "finish";
-			}*/
+			if(node.getFdStatus()!=null){
+				if(node.getFdStatus().equals(Constant.TASK_STATUS_FINISH)){//完成
+					return "finish";
+				} else if(node.getFdStatus().equals(Constant.TASK_STATUS_REJECT)){//驳回
+					return "unfinish";
+				} else if(node.getFdStatus().equals(Constant.TASK_STATUS_UNFINISH)){//未完成
+					return "unfinish";
+				} 
+				/*Boolean iStudy=node.getIsStudy();
+				if(iStudy==null){
+					return "finish";
+				}*/
+			}
 		}
 		return "fail";
 	}
