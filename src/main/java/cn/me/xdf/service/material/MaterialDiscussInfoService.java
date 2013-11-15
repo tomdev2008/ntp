@@ -42,18 +42,18 @@ public class MaterialDiscussInfoService extends BaseService{
 	public void updateMaterialDiscussInfo(String fdType,String fdId){
 		
 		MaterialInfo materialInfo = materialService.load(fdId);
-		if(materialInfo.getFdDownloads()==null){
-			materialInfo.setFdDownloads(1);
-		}else{
-			materialInfo.setFdDownloads(materialInfo.getFdDownloads()+1);
-		}
-		materialService.save(materialInfo);
 		
 		MaterialDiscussInfo discussInfo = new MaterialDiscussInfo();
 		discussInfo.setMaterialInfo(materialInfo);
 		/////////////操作类型(下载:01、播放:02、攒:03)
 		if(fdType.equals(Constant.MATERIALDISCUSSINFO_TYPE_DOWNLOAD)){
 			discussInfo.setFdType(Constant.MATERIALDISCUSSINFO_TYPE_DOWNLOAD);
+			if(materialInfo.getFdDownloads()==null){
+				materialInfo.setFdDownloads(1);
+			}else{
+				materialInfo.setFdDownloads(materialInfo.getFdDownloads()+1);
+			}
+			materialService.save(materialInfo);
 		}
 		if(fdType.equals(Constant.MATERIALDISCUSSINFO_TYPE_PLAY)){
 			discussInfo.setFdType(Constant.MATERIALDISCUSSINFO_TYPE_PLAY);
