@@ -17,7 +17,7 @@
         <span class="mask"></span>
         <span class="caption">
      		<h6>{{=item.FDTITLE }}</h6>
-            <span class="text-warning">{{=item.FDAUTHOR }}</span>
+            <span class="text-warning">{{=item.FDAUTHOR || ''}}</span>
         </span>
     </a>
 {{~}}
