@@ -909,6 +909,11 @@
 							$("#examStemErr").css("display", "block");
 							return;
 						}
+						if ((examSub.split("#").length==1)) {
+							$("#examStemErr").html("请设置填空题选项");
+							$("#examStemErr").css("display", "block");
+							return;
+						}
 					}
 					var data = {
 						examType : $("#examType").val(),
@@ -954,6 +959,17 @@
 					}
 					if (JSON.stringify(data.examType) != '"completion"'
 							&& JSON.stringify(data.listExamAnswer) == "[]") {
+						$("#answerErr").html("请输入试题选项");
+						$("#answerErr").css("display", "block");
+						return;
+					}
+					var isanswer=false;
+					$("#listExamAnswer>li").each(function(i) {
+						if($(this).find("input:checked").is(":checked")){
+							isanswer=true;
+						};
+					});
+					if (JSON.stringify(data.examType) != '"completion"'&&!isanswer) {
 						$("#answerErr").html("请输入试题答案");
 						$("#answerErr").css("display", "block");
 						return;
