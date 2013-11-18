@@ -618,52 +618,77 @@
 				$("#courseSkin").val($(this).next("h5").text());
 			});		
 			/* 课程推广 封页图片上传 */
+			var $progress ,flag = true,pct,interval,countdown = 0,byteUped = 0;
 
 	                jQuery("#upMovie").uploadify({
-	                    'height' : 27,
-	                    'width' : 80,
-	                    'multi' : false,// 是否可上传多个文件
+	                	'height' : 40,
+	                    'width' : 68,
+	                    'multi' : false,
 	                    'simUploadLimit' : 1,
 	                    'swf' : $('#ctx').val()+'/resources/uploadify/uploadify.swf',
 	                    'buttonText' : '上 传',
 	                    'uploader' : $('#ctx').val()+'/common/file/o_upload',
 	                    'auto' : true,// 选中后自动上传文件
-	                    'queueID': 'qdiv',// 文件队列div
+	                    "buttonClass": "btn btn-primary btn-large",
+	                    'buttonText' : '上传',
 	                    'fileTypeExts' : '*.jpg;*.png;',
 	                    'fileSizeLimit':2048,// 限制文件大小为2m
 	                    'queueSizeLimit':1,
+	                    'onInit' : function(){
+	                    	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
+	                		<span class="txt"><span class="pct">0%</span><span class="countdown"></span></span>');
+	                    	$("#upMovie").next(".uploadify-queue").remove();
+	                    },
 	                    'onUploadStart' : function (file) {
-	                        jQuery("#upMovie").uploadify("settings", "formData");
+	                    	$("#upMovie").before($progress);
+	                        //$uploadBtn.uploadify("settings", "formData");
 	                    },
 	                    'onUploadSuccess' : function (file, data, Response) {
 	                        if (Response) {
-	                            var objvalue = eval("(" + data + ")");
+	                        	$progress.find(".countdown").empty();
+	                        	var objvalue = eval("(" + data + ")");
+	                        	alert(objvalue.attId);
 	                            jQuery("#attIdID").val(objvalue.attId);
-	                            if (jQuery("#fdName")) {
-	                                jQuery("#fdName").val(file.name);
-	                            }
 	                           if (jQuery("#imgshow")) {
-                       					jQuery("#imgshow").attr('src',  $('#ctx').val()+'/common/file/image/' + objvalue.attId);
-                   			} 
-	                       
-	                         
+                       			jQuery("#imgshow").attr('src',  $('#ctx').val()+'/common/file/image/' + objvalue.attId);
+                   			   } 
+	                          
 	                        }
 	                    },
-	                    'onSelect':function(file){
-	                    	// 选择新文件时,先清文件列表,因为此处是课程封页,所以只需要一个图片附件
-	                    	var queuedFile = {};
-	            			for (var n in this.queueData.files) {
-	            					queuedFile = this.queueData.files[n];
-	            					if(queuedFile.id!=file.id){
-	            						delete this.queueData.files[queuedFile.id]
-	            						$('#' + queuedFile.id).fadeOut(0, function() {
-	            							$(this).remove();
-	            						});
-	            					}
-	            				}
-	                    },
-	                    'removeCompleted':false // 进度条不消失
-	                });
+	                    'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
+	                    	pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
+	                    	byteUped = bytesUploaded;
+	                    	if(flag){
+	                    		interval = setInterval(uploadSpeed,100);
+	                    		flag = false;
+	                    	}
+	                    	if(bytesUploaded == bytesTotal){
+	                    		clearInterval(interval);
+	                    		
+	                    	}
+	                    	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
+	                    	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
+	                    }
+	                  });
+	                function uploadSpeed(){
+	            		countdown = byteUped - countdown;
+	            	}
+	            	function secTransform(s){
+	            		if( typeof s == "number"){
+	            			s = Math.ceil(s);
+	            			var t = "";
+	            			if(s>3600){
+	            				t= Math.ceil(s/3600) + "小时" + Math.ceil(s%3600/60) + "分钟" + s%3600%60 + "秒";
+	            			} else if(s>60){
+	            				t= Math.ceil(s/60) + "分钟" + s%60 + "秒";
+	            			} else {
+	            				t= s + "秒";
+	            			}
+	            			return "，剩余时间：" + t;
+	            		}else{
+	            			return null;
+	            		}		
+	            	}
 
 		}
 		

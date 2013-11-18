@@ -257,18 +257,13 @@
 	    	<div class="section" >              	
 					<label for="CourseCover">课程封面</label>
 					<input id="courseCover" name="courseCover" class="input-block-level" type="hidden" value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
-												<!--图片预览-->
+									<!--图片预览-->
 					<div class="courseCover"><img id="imgshow" name="imgshow" style="width: 300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/zht-main-img.jpg'}}" alt="" /></div>					
 	       </div>
 		   <div class="section" >              	
 					<label>上传图片（支持JPG\JPEG、PNG、BMP格式的图片，建议小于2M）</label>
 					<div class="control-upload">
-						 <div id="qdiv" style="height:20px;width:650px;display:block;">
-							 
- 						 </div>
-						 <div style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
 						     <button id="upMovie" class="btn btn-primary btn-large" type="button" >上传</button>
-						 </div>
 							<input type="hidden"  name="attId" id="attIdID">
 					</div>		
 	       </div>		  
@@ -495,36 +490,7 @@
 </head>
 
 <body>
-<!-- <header class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-    	<div class="container">
-			<a href="#" class="logo"></a>
-	        <ul class="nav">
-	          <li><a href="#">系统管理</a></li>
-	          <li><a href="#">我是导师</a></li>
-	          <li><a href="#">我是主管</a></li>
-	        </ul>
-			
-            <ul class="nav pull-right">
-              <li class="dropdown">
-              	<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                	<span class="top-face"><img src="./images/temp-face.jpg" alt=""><i class="icon-disc"></i></span>
-                    <span class="name">杨义锋</span>
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                	<li><a href="#"><i class="icon-home"></i>备课首页</a></li>
-                    <li><a href="#"><i class="icon-envelope"></i>我的私信<span class="icon-disc-bg">2</span></a></li>
-                    <li><a href="profile.html"><i class="icon-user"></i>个人资料</a></li>
-                    <li><a href="changePwd.html"><i class="icon-pencil"></i>修改密码</a></li>
-                    <li><a href="#"><i class="icon-off"></i>退出平台</a></li>
-                </ul>
-              </li>
-              <li><a href="#" class="btn-off"></a></li>
-            </ul>
-		</div>
-    </div>
-</header> -->
+
 <input type="hidden" id="ctx" value="${pageContext.request.contextPath}"/>
 <section class="container">
 	<div class="clearfix">
@@ -587,63 +553,11 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script src="${ctx}/resources/js/jquery.sortable.js"></script>
-<link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
-<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script src="${ctx}/resources/js/templDetailPages.js"></script>
-<!--上传附件的"浏览"按钮样式-->
-<style type="text/css">
-.uploadify-button {
-    background-color:rgb(67,145,187);
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(67,145,187)),
-		color-stop(1, rgb(67,145,187))
-	);
-	max-width:70px;
-	max-height:30px;
-	border-radius: 1px;
-	border: 0px;
-	font: bold 12px Arial, Helvetica, sans-serif;
-	display: block;
-	text-align: center;
-	text-shadow: 0 0px 0 rgba(0,0,0,0.25);
-    
-}
-.uploadify:hover .uploadify-button {
-    background-color:rgb(67,145,187);
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(67,145,187)),
-		color-stop(1, rgb(67,145,187))
-	);
-}
-.uploadify-queue-item {
-	background-color: #FFFFFF;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	font: 11px Verdana, Geneva, sans-serif;
-	margin-top: 1px;
-	max-width: 1000px;
-	padding: 5px;
-}
-.uploadify-progress {
-	background-color: #E5E5E5;
-	margin-top: 10px;
-	width: 100%;
-}
-.uploadify-progress-bar {
-	background-color: rgb(67,145,187);
-	height: 27px;
-	width: 1px;
-}
-</style>
+
 <script type="text/javascript">	
 	
 	//点击左侧菜单事件
