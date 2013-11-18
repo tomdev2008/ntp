@@ -210,7 +210,7 @@ public class MessageAjaxController {
 			map.put("isAnonymous", message.getIsAnonymous());
 			map.put("fdCreateTime", DateUtil.getInterval(DateUtil.convertDateToString(message.getFdCreateTime()), "yyyy/MM/dd hh:mm aa"));
 			map.put("fdUserName", message.getFdUser().getRealName());
-			map.put("fdUserURL", message.getFdUser().getFdPhotoUrl());
+			map.put("fdUserURL", message.getFdUser().getPoto());
 			map.put("fdUserEmail", message.getFdUser().getFdEmail());
 			map.put("fdUserDept", message.getFdUser().getDeptName());
 			map.put("supportCount", messageService.getSupportCount(message.getFdId()));

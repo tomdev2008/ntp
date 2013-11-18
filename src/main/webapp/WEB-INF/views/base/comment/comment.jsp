@@ -10,7 +10,9 @@
 <!-- 评论条目模板 -->
 <script id="commentLineTemplate" type="text/x-dot-template">
   <li class="media" dataId="{{=it.fdId}}">
-            <a href="#" class="pull-left"><tags:image href="{{=it.fdUserURL}}" clas="media-object"/></a>
+            <a href="#" class="pull-left">
+			<img src="{{?it.fdUserURL.indexOf('http')>-1}}{{=it.fdUserURL}}{{??}}${ctx}/{{=it.fdUserURL}}{{?}}" />
+			</a>
            	 <div class="media-body">
 				
 				{{?!it.isAnonymous}}
@@ -62,7 +64,7 @@
     <div class="section mt20">
        <div class="hd">
                 <div class="tit-icon_bg"><i class="icon-white-info"></i></div>
-                <h4>全部评论</h4>
+                <h5>全部评论</h5>
                 <div class="pages">
                     <div class="span2">
                         第<span id="pageLine1"> 1 - 10</span> / <span id="pageTotal1"></span> 条
