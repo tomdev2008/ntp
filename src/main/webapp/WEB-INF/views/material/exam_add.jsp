@@ -747,7 +747,7 @@
 																				".item-ctrl")
 																		.prepend(
 																				$checkbox
-																						.addClass("inline"));
+																						.addClass("inline").detach());
 																$this.show();
 															}
 														} else {
@@ -758,7 +758,7 @@
 																			".item-ctrl")
 																	.prepend(
 																			$checkbox
-																					.addClass("inline"));
+																					.addClass("inline").detach());
 															$this.show();
 														}
 													});
