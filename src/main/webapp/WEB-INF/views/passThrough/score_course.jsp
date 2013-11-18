@@ -7,6 +7,15 @@
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <script src="${ctx}/resources/js/doT.min.js"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
+<script id="xingxingTemplate" type="text/x-dot-template">
+	<span class="rating-all">
+          {{ for(var i=0; i<5; i++){ }}
+                <i class="icon-star{{?i < it.score}} active{{?}}"></i>
+          {{ } }}
+    </span>
+    <b class="text-warning">{{=it.score}}</b>
+</script>
+<script src="${ctx}/resources/js/doT.min.js"></script>
 <div class="section">
  		<div class="hd">
 		<h2 class="h2_r">评分 </h2>
@@ -129,15 +138,9 @@ function setCourseScore(){
 			  courseScore=result[0].fdAverage;
 		  }
 	});
-	var html ="<span class='rating-all'>";
-	for(var i=1;i<=5;i++){
-		if(i<=parseInt(courseScore)){
-			html=html+"<i class='icon-star active'></i>";
-		}else{
-			html=html+"<i class='icon-star'></i>";
-		}
-	}
-	html=html+"</span>"+"<b class='text-warning'>"+courseScore+"</b>";
-	$("#courseScore").html(html);
+	var xingxingTemplate = doT.template(document.getElementById("xingxingTemplate").text);
+	var data;
+	data.score=courseScore;
+	$("#courseScore").html(xingxingTemplate(data));
 }
 </script>
