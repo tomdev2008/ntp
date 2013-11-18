@@ -173,6 +173,25 @@ public class MessageAjaxController {
 	}
 	
 	/**
+	 * 添加评论的评论(针对课程，当前用户)
+	 * 
+	 */
+	@RequestMapping(value = "addCourseMessagesMessage")
+	@ResponseBody
+	private void addCourseMessagesMessage(String materialId,String fdContent,String messageId) {
+		addMessage(CourseInfo.class.getName(), materialId, fdContent, Constant.MESSAGE_TYPE_REPLY, false, ShiroUtils.getUser().getId());
+		MessageReply messageReply = new MessageReply();
+		messageReply.setFdContent(fdContent);
+		messageReply.setFdType("03");
+		messageReply.setFdCreateTime(new Date());
+		messageReply.setFdUser((SysOrgPerson)accountService.load(ShiroUtils.getUser().getId()));
+		Message message = new Message();
+		message.setFdId(messageId);
+		messageReply.setMessage(message);
+		messageReplyService.save(messageReply);
+	}
+	
+	/**
 	 * 根据Id评论分页信息
 	 * 
 	 */

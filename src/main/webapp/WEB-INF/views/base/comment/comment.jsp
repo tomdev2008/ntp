@@ -4,48 +4,79 @@
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
-<link href="${ctx}/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="${ctx}/resources/css/emigrated.css" rel="stylesheet" type="text/css">
+<%-- <link href="${ctx}/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/css/emigrated.css" rel="stylesheet" type="text/css"> --%>
+<link href="${ctx}/resources/theme/default/css/global.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/theme/default/css/layout.css" rel="stylesheet" type="text/css">
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <!-- 评论条目模板 -->
 <script id="commentLineTemplate" type="text/x-dot-template">
-       <li class="media" dataId="{{=it.fdId}}">
+  <li class="media" dataId="{{=it.fdId}}">
             <a href="#" class="pull-left"><tags:image href="{{=it.fdUserURL}}" clas="media-object"/></a>
-            <div class="media-body">
+           	 <div class="media-body">
+				
 				{{?!it.isAnonymous}}
-					<div class="media-heading"> {{=it.no}}# {{=it.fdUserName}}（{{=it.fdUserEmail}}）    来自 {{=it.fdUserDept}}
+					<div class="media-heading"><span class="name"> {{=it.no}}# {{=it.fdUserName}}</span>（{{=it.fdUserEmail}}）    来自 {{=it.fdUserDept}}
 				{{?}}
 				{{?it.isAnonymous}}
-					<div class="media-heading"> {{=it.no}}# 匿名用户
+					<div class="media-heading"><span class="name"> {{=it.no}}# 匿名用户</span>
 				{{?}}
+				{{?it.isShowScore}}
+                        <div class="rating-view">
+                                    <span class="rating-all">
+                                        {{ for(var i=0; i<5; i++){ }}
+                                            <i class="icon-star{{?i < it.score}} active{{?}}"></i>
+                                        {{ } }}
+                                    </span>
+                            <b class="text-warning">{{=it.score}}</b>
+                        </div>
+                 {{?}}
               </div>
-              <p class="comt-content">{{=it.content}}</p>
-              <div class="media-footing clearfix">
-              	<span class="pull-left"><i class="icon-time"></i>{{=it.fdCreateTime}}</span>
-                <div class="pull-right btns-comt">
-                	<a href="javascript:void(0)" dataId="{{=it.fdId}}" class="suport" ><i class="icon-thumbs-up"></i><span>{{=it.supportCount}}</span></a>
-                	<a href="javascript:void(0)" dataId="{{=it.fdId}}" class="oppose" ><i class="icon-thumbs-down"></i><span>{{=it.opposeCount}}</span></a>
-                	<a href="#" ><i class="icon-share-alt"></i>0</a>
-                </div>
+              <p class="comt-content">
+					{{=it.content}}
+			  </p>
+              <div class="media-footing">
+				<div class="clearfix">
+              		<span class="pull-left"><i class="icon-time"></i>{{=it.fdCreateTime}}</span>
+              		 <div class="pull-right btns-comt">
+						<a href="javascript:void(0)" class="btnPraise{{?!it.canSport}} active{{?}}"><i class="icon-thumbs-up"></i><span class="num">{{=it.supportCount}}</span></a>
+                        <a href="javascript:void(0)" class="btnWeak{{?!it.canOppose}} active{{?}}"><i class="icon-thumbs-down"></i><span class="num">{{=it.opposeCount}}</span></a>
+                		<a href="javascript:void(0)" class="btnComment"><i class="icon-dialog"></i><span class="num">{{=it.replyCount}}</span></a>
+               	</div>
               </div>
             </div>
        </li> 
 </script>
+<script id="formReplyCommentTemplate" type="x-dot-template">
+        <div class="form-reply">
+            <form id="formReply">
+                    <textarea class="input-block-level" required id="replyComm" name="replyComm" rows="3" >回复（{{=it.name}}）：</textarea>
+                <div class="form-action">
+                     <div class="btn-group">
+                        <button class="btn btn-primary" type="submit">回复</button>
+                        <button class="btn btn-cancel" type="button">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
 <script src="${ctx}/resources/js/doT.min.js"></script>
-<div class="main">  
+<div class="main" id="commentBody">  
     <div class="section">
-        <div class="page-header">
-        	<div class="tit-icon_bg"><i class="icon-white-info"></i><i class="icon-sj"></i></div>
-        	<h5>全部评论</h5>
-            <div class="pages">
-            	<div class="span2">
-                	第<span id="pageLine1"></span> / <span id="pageTotal1"></span> 条
+    
+       <div class="hd">
+                <div class="tit-icon_bg"><i class="icon-white-info"></i></div>
+                <h5>全部评论</h5>
+                <div class="pages">
+                    <div class="span2">
+                        第<span id="pageLine1"> 1 - 10</span> / <span id="pageTotal1"></span> 条
+                    </div>
+                    <div class="btn-group">
+                        <button id="gotoBefore1" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i></button>
+                        <button id="gotoNext1" class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
+                    </div>
                 </div>
-                <div class="btn-group">
-                	<button id="gotoBefore1" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i></button>
-                    <button id="gotoNext1" class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
-                </div>
-            </div>
         </div>
         <ul class="media-list comment-list" id="commentListUl">
         </ul>
@@ -57,6 +88,7 @@
                 <div class="btn-group">
                 	<button id="gotoBefore2" class="btn btn-primary"><i class="icon-chevron-left icon-white"></i></button>
                     <button id="gotoNext2" class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
+                    
                 </div>
             </div>
         </div>
@@ -68,7 +100,7 @@
 var pageSize=10;
 initCommentLines("${param.modelName}","${param.modelId}",1);
 initCommentPageInfo("${param.modelName}","${param.modelId}",1);
-
+var formReplyCommentFn = doT.template(document.getElementById("formReplyCommentTemplate").text);
 ////////////////////////初始化结束
 //初始评论列表化页面
 function initCommentLines(modelName,modelId,pageNo){
@@ -90,6 +122,97 @@ function initCommentLines(modelName,modelId,pageNo){
 			  }
 			  $("#commentListUl").html(html);
 		  }
+	});
+	$(".btnComment").bind("click",function(){
+		var $this = $(this);
+		 if($("#formReply").length){
+         	$.fn.jalert2("请先保存其它回复");
+         } else {
+             var $mediaBody = $this.closest(".media-body");
+             var itemId = $this.closest(".media").attr("dataId");
+             var toName =  $mediaBody.find(".media-heading>.name").text();
+             $this.closest(".clearfix").after(formReplyCommentFn({
+                 name: toName
+             }));
+             $("#formReply").validate({
+                 submitHandler: function(form){
+                    $.ajax({
+                 		  url: "${ctx}/ajax/message/addCourseMessagesMessage",
+                 		  async:false,
+                 		  data:{
+                 			materialId :"${param.modelId}",
+                 			fdContent :$("#replyComm").val(),
+                 			messageId :itemId,
+                 		  },
+                 		  success: function(result){
+                 			 initCommentLines("${param.modelName}","${param.modelId}",1);
+                 			 initCommentPageInfo("${param.modelName}","${param.modelId}",1);
+                 		  }
+             		});
+                 }
+             });
+             $("#formReply .btn-cancel").click(function(e){
+                 $(this).closest(".form-reply").remove();
+                 $this.removeClass("active");
+             });
+
+         }
+	});
+	$(".btnPraise").bind("click",function(){
+		 var $this = $(this);
+		 var itemId = $this.closest(".media").attr("dataId");
+		 var $num = $this.children(".num");
+		 if(!$this.hasClass("active")){//赞
+        	var pushok;
+        	$.ajax({
+          		  url: "${ctx}/ajax/message/supportOrOpposeMessage",
+          		  async:false,
+          		  data:{
+          			messageId :itemId,
+          			fdType :"01",
+          		  },
+          		  success: function(result){
+          			  if(result=='"err"'){
+          				pushok=false;
+          			  }else{
+          				pushok=true;
+          			  }
+          		  }
+      		});
+        	if(pushok){
+        		$num.text(parseInt($num.text()) + 1);
+        		$this.addClass("active");
+        	}else{
+        		$.fn.jalert2("不能支持和反对自己的评论");
+        	}
+        } 
+	});
+	$(".btnWeak").bind("click",function(){
+		var $this = $(this);
+		var itemId = $this.closest(".media").attr("dataId");
+		 var $num = $this.children(".num");
+		var pushok;
+    	$.ajax({
+      		  url: "${ctx}/ajax/message/supportOrOpposeMessage",
+      		  async:false,
+      		  data:{
+      			messageId :itemId,
+      			fdType :"02",
+      		  },
+      		  success: function(result){
+      			  if(result=='"err"'){
+      				pushok=false;
+      			  }else{
+      				pushok=true;
+      			  }
+      		  }
+  		});
+    	if(pushok){
+    		$num.text(parseInt($num.text()) + 1);
+    		$this.addClass("active");
+    	}else{
+    		$.fn.jalert2("不能支持和反对自己的评论");
+    	}
 	});
 }
 //初始化分页信息
@@ -169,80 +292,9 @@ function gotoNext(pageNo){
 	initCommentLines("${param.modelName}","${param.modelId}",pageNo+1);
 	initCommentPageInfo("${param.modelName}","${param.modelId}",pageNo+1);
 }
-//绑定支持反对时间
+//绑定支持反对事件
 function bindSOEvent(){
-	$(".suport").bind("click",function(){
-		var canSuport=true;
-		var button = $(this);
-		$.ajax({
-			  url: "${ctx}/ajax/message/canSupportOrOppose",
-			  async:false,
-			  data:{
-				  messageId :$(this).attr("dataId"),
-			  },
-			  success: function(result){
-				 if(result=='"supportOrOpposeed"'){
-					 canSuport=false;
-					 $.fn.jalert2("您已经评分，不能重复评分");
-				 }
-				 if(result=='"isme"'){
-					 canSuport=false;
-					 $.fn.jalert2("不能评论自己的");
-				 }
-			  }
-		});
-		if(canSuport==false){
-			return;
-		}
-		$.ajax({
-			  url: "${ctx}/ajax/message/supportOrOpposeMessage",
-			  async:false,
-			  data:{
-				  messageId :$(this).attr("dataId"),
-				  fdType :"01",
-			  },
-			  success: function(result){
-					var n = parseInt(button.children("span")[0].innerHTML);
-					button.children("span")[0].innerHTML=n+1;
-			  }
-		});
-	});
-	$(".oppose").bind("click",function(){
-		var canSuport=true;
-		var button = $(this);
-		$.ajax({
-			  url: "${ctx}/ajax/message/canSupportOrOppose",
-			  async:false,
-			  data:{
-				  messageId :$(this).attr("dataId"),
-			  },
-			  success: function(result){
-				 if(result=='"supportOrOpposeed"'){
-					 canSuport=false;
-					 $.fn.jalert2("您已经评分，不能重复评分");
-				 }
-				 if(result=='"isme"'){
-					 canSuport=false;
-					 $.fn.jalert2("不能评论自己的");
-				 }
-			  }
-		});
-		if(canSuport==false){
-			return;
-		}
-		$.ajax({
-			  url: "${ctx}/ajax/message/supportOrOpposeMessage",
-			  async:false,
-			  data:{
-				  messageId :$(this).attr("dataId"),
-				  fdType :"02",
-			  },
-			  success: function(result){
-				  var n = parseInt(button.children("span")[0].innerHTML);
-				  button.children("span")[0].innerHTML=n+1;
-			  }
-		});
-	});
+	
 }
 
 </script>

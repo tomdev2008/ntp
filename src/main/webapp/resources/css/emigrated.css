@@ -2,12 +2,10 @@
 body {background:#efefef;color:#000;}
 .fs9{font-size:9px;}
 .icon-sj,.icon-white-doc,.icon-star,.icon-white-info,.icon-thumbs-up,.icon-thumbs-down,.icon-share-alt,.icon-time{background-image:url(../images/icon-png.png); background-repeat:no-repeat;}
-.main{padding:0 0 0 8px;}
 .section{background-color:#FFF; border-bottom:solid #dcdcdc 2px;margin-bottom:16px;}
-.page-header{background-color:#f5f5f5;height:44px;padding-left:70px;position:relative;padding-bottom:0;border-bottom:none;}
-.page-header h5{line-height:44px;margin:0;}
-.page-header .tit-icon_bg{background-color:#71accc;border-bottom:solid #5d8ea8 2px;position:absolute;top:0;left:-8px;height:24px;padding:9px 16px;}
-.page-header .tit-icon_bg .icon-sj{background-position:right -175px;position:absolute;left:0;bottom:-11px;width:8px;height:9px;}
+.section .hd{height:44px;position:relative;padding-bottom:0;border-bottom:none;}
+.section .hd h5{background-color:#f5f5f5;line-height:43px;margin:0;padding-left:70px;border-bottom:solid #e8e8e8 1px;}
+.section .hd .tit-icon_bg{background-color:#cbcbcb;position:absolute;top:0;left:0;height:24px;padding:10px 16px;}
 .icon-white-doc,.icon-white-info{width:24px;height:24px;}
 .icon-white-doc {background-position:0 -168px;}
 .icon-white-info{background-position:0 -192px;}
@@ -38,7 +36,7 @@ body {background:#efefef;color:#000;}
 .rating-do{margin:0 2px 0 10px;}
 .rating-do .icon-star{background-position:right -140px;vertical-align:-4px;*vertical-align:0;cursor:pointer;}
 .icon-star.active{background-position:right -120px;}
-.page-header .pages{position:absolute;right:20px;top:0;}
+.section .hd .pages{position:absolute;right:20px;top:0;}
 .pages{padding-top:7px;color:#aaaaaa;}
 .pages .span2{line-height:30px;}
 .pages .btn-group .btn{border-radius:15px;width:30px;height:30px;padding:0;border-bottom:none;margin-right:8px;}
