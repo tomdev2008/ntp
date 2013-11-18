@@ -139,7 +139,7 @@ function setCourseScore(){
 		  }
 	});
 	var xingxingTemplate = doT.template(document.getElementById("xingxingTemplate").text);
-	var data;
+	var data={};
 	data.score=courseScore;
 	$("#courseScore").html(xingxingTemplate(data));
 }
