@@ -11,58 +11,7 @@
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link href="${ctx}/resources/css/DTotal.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
-<link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/>
-<style type="text/css">
-.uploadify-button {
-    background-color:rgb(67,145,187);
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(67,145,187)),
-		color-stop(1, rgb(67,145,187))
-	);
-	max-width:70px;
-	max-height:30px;
-	border-radius: 1px;
-	border: 0px;
-	font: bold 12px Arial, Helvetica, sans-serif;
-	display: block;
-	text-align: center;
-	text-shadow: 0 0px 0 rgba(0,0,0,0.25);
-    
-}
-.uploadify:hover .uploadify-button {
-    background-color:rgb(67,145,187);
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, rgb(67,145,187)),
-		color-stop(1, rgb(67,145,187))
-	);
-}
-.uploadify-queue-item {
-	background-color: #FFFFFF;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	font: 11px Verdana, Geneva, sans-serif;
-	margin-top: 1px;
-	max-width: 1000px;
-	padding: 5px;
-}
-.uploadify-progress {
-	background-color: #E5E5E5;
-	margin-top: 10px;
-	width: 100%;
-}
-.uploadify-progress-bar {
-	background-color: rgb(67,145,187);
-	height: 27px;
-	width: 1px;
-}
-</style>
+
 
 <!-- 授权管理 用户列表 模板 -->
 <script id="listUserKinguserTemplate" type="text/x-dot-template">
@@ -131,14 +80,10 @@
             <section class="section mt20">
                 <label>辅助材料（上传辅助材料，建议小于2G）</label>
                 <div class="control-upload">
-                    <div class="upload-fileName"><span id="attName"></span><i class="icon-paperClip"></i></div>
-                   
- 				    <div id="qdiv" style="height:20px;width:650px;display:block;"> </div>
-					<div style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
-						 <button id="upMovie" class="btn btn-primary btn-large" type="button" >上传</button>
-					</div>
-					<input type="hidden"  name="attId" id="attId">
-
+                    <div class="upload-fileName" id="attName"></div>
+                   <div class="pr">
+                     <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>                   
+                   </div>
                 </div>
                 <ul class="unstyled list-attachment" id="listAttachment">
                     {{~it.listAttachment :att:index}}
@@ -351,7 +296,7 @@
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
-<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
@@ -747,50 +692,79 @@ $(function(){
 				  },
 			});
         }
-        jQuery("#upMovie").uploadify({
-            'height' : 27,
-            'width' : 80,
-            'multi' : false,// 是否可上传多个文件
-            'simUploadLimit' : 1,
-            'swf' : '${ctx}/resources/uploadify/uploadify.swf',
-            'buttonText' : '上 传',
-            'uploader' : '${ctx}/common/file/o_upload',
-            'auto' : true,// 选中后自动上传文件
-            'queueID': 'qdiv',// 文件队列div
-            'fileSizeLimit':2097152,// 限制文件大小为2G
-            'queueSizeLimit':1,
-            'onUploadStart' : function (file) {
-                jQuery("#upMovie").uploadify("settings", "formData");
-            },
-            'onUploadSuccess' : function (file, datas, Response) {
-                if (Response) {
-                    var objvalue = eval("(" + datas + ")");
-                    jQuery("#attName").html(objvalue.fileName);
-                    $("#listAttachment").append(itemExamDetailFn({
-                   	 	flag: "add" ,
-                   	 	id: objvalue.attId,
-                        name: objvalue.fileName,
-                        url: objvalue.filePath
-                   })).sortable({
-                           handle: ".state-dragable"
-                   });
-                }
-            },
-            'onSelect':function(file){
-            	// 选择新文件时,先清文件列表,因为此处是课程封页,所以只需要一个图片附件
-            	var queuedFile = {};
-    			for (var n in this.queueData.files) {
-    					queuedFile = this.queueData.files[n];
-    					if(queuedFile.id!=file.id){
-    						delete this.queueData.files[queuedFile.id]
-    						$('#' + queuedFile.id).fadeOut(0, function() {
-    							$(this).remove();
-    						});
-    					}
-    				}
-            },
-            'removeCompleted':false // 进度条不消失
-        });
+        var $progress ,
+    	flag = true,
+    	pct,interval,countdown = 0,byteUped = 0;
+
+    	$("#upMaterial").uploadify({
+        'height' : 40,
+        'width' : 68,
+        'multi' : false,
+        'simUploadLimit' : 1,
+        'swf' : '${ctx}/resources/uploadify/uploadify.swf',
+        "buttonClass": "btn btn-primary btn-large",
+        'buttonText' : '上传',
+        'uploader' : '${ctx}/common/file/o_upload',
+        'auto' : true,
+        'fileTypeExts' : '*.*',
+        'onInit' : function(){
+        	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
+    		<span class="txt"><span class="pct">0%</span><span class="countdown"></span></span>');
+        	$("#upMaterial").next(".uploadify-queue").remove();
+        },
+        'onUploadStart' : function (file) {
+        	$("#upMaterial").before($progress);
+            //$uploadBtn.uploadify("settings", "formData");
+        },
+        'onUploadSuccess' : function (file, data, Response) {
+            if (Response) {
+            	$progress.find(".countdown").empty();
+                var objvalue = eval("(" + data + ")");
+                jQuery("#attName").html(objvalue.fileName+"<i class=\"icon-paperClip\"></i>");
+                $("#listAttachment").append(itemExamDetailFn({
+               	 	flag: "add" ,
+               	 	id: objvalue.attId,
+                    name: objvalue.fileName,
+                    url: objvalue.filePath
+               })).sortable({
+                       handle: ".state-dragable"
+               });
+            }
+        },
+        'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
+        	pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
+        	byteUped = bytesUploaded;
+        	if(flag){
+        		interval = setInterval(uploadSpeed,100);
+        		flag = false;
+        	}
+        	if(bytesUploaded == bytesTotal){
+        		clearInterval(interval);
+        		
+        	}
+        	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
+        	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
+        }
+      });
+    	function uploadSpeed(){
+    		countdown = byteUped - countdown;
+    	}
+    	function secTransform(s){
+    		if( typeof s == "number"){
+    			s = Math.ceil(s);
+    			var t = "";
+    			if(s>3600){
+    				t= Math.ceil(s/3600) + "小时" + Math.ceil(s%3600/60) + "分钟" + s%3600%60 + "秒";
+    			} else if(s>60){
+    				t= Math.ceil(s/60) + "分钟" + s%60 + "秒";
+    			} else {
+    				t= s + "秒";
+    			}
+    			return "，剩余时间：" + t;
+    		}else{
+    			return null;
+    		}		
+    	}
     }
 });
 //初始化作业列表

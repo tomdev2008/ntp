@@ -141,7 +141,7 @@
                         <label id="uploadIntro"></label>
                         <div class="control-upload">
                         	
-						    <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>
+						    <button id="upMaterial"class="btn btn-primary btn-large" type="button" >上传</button>
 						  <input type="hidden"  name="attId" id="attId" value="">
                         </div>
                     </section>
@@ -316,7 +316,7 @@ $(function(){
     'fileTypeExts' : uptype,
     'onInit' : function(){
     	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
-		<span class="txt"><span class="pct">0%</span>，剩余时间：<span class="countdown"></span></span>');
+		<span class="txt"><span class="pct">0%</span><span class="countdown"></span></span>');
     	$("#upMaterial").next(".uploadify-queue").remove();
     },
     'onUploadStart' : function (file) {
@@ -325,6 +325,7 @@ $(function(){
     },
     'onUploadSuccess' : function (file, data, Response) {
         if (Response) {
+        	$progress.find(".countdown").empty();
             var objvalue = eval("(" + data + ")");
             jQuery("#attId").val(objvalue.attId);
         }
@@ -358,7 +359,7 @@ $(function(){
 			} else {
 				t= s + "秒";
 			}
-			return t;
+			return "，剩余时间：" + t;
 		}else{
 			return null;
 		}		
