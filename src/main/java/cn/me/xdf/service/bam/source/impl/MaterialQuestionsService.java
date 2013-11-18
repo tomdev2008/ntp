@@ -170,11 +170,12 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 				String subject = examQuestion2.getFdSubject();
 				String [] subjects = subject.split("#");
 				String res = "";
-				 for (int i = 0; i < subjects.length; i++) {
-					 String html = "<span class='line'><label for='examAnswer"+i+"' class='icon-circle-bg' >"+i+"</label></span>";
+				 for (int i = 0,j=1; i < subjects.length; i++) {
+					 String html = "<span class='line'><label for='examAnswer"+j+"' class='icon-circle-bg' >"+j+"</label></span>";
 					if (i % 2 ==0) {
 						res = res + subjects[i];
 					}else{
+						j++;
 						res = res + html;
 					}
 				 }
