@@ -58,6 +58,8 @@ public class ExamQuestionAjaxController {
 	public Map saveOrUpdateExamQuestion(HttpServletRequest request) {
 
 		String materialName = request.getParameter("materialName");
+		String materialintro = request.getParameter("materialintro");
+		String materialScore = request.getParameter("materialScore");
 		String materIalId = request.getParameter("materIalId");
 		MaterialInfo exam;
 		if(StringUtil.isBlank(materIalId)){
@@ -70,6 +72,8 @@ public class ExamQuestionAjaxController {
 			exam.setIsPublish(true);
 			exam.setIsDownload(true);
 			exam.setIsAvailable(true);
+			exam.setFdDescription(materialintro);
+			exam.setFdStudyTime(materialScore.equals("0")?null:new Integer(materialScore));
 			// /////////////////////保存测试
 			materialService.save(exam);
 		}else{

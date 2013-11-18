@@ -240,7 +240,7 @@
 							<div class="control-group">
 								<label class="control-label">建议时间 <small>(单位分钟)</small></label>
 								<div class="controls">
-									<input name="examPaperTime" id="examPaperTime" value="30"
+									<input name="examPaperTime" id="examPaperTime" value="0"
 										type="hidden" />
 									<div id="mainTimeLine" class="timeLine">
 										<div class="num">0</div>
@@ -670,6 +670,8 @@
 			/*加载试题页面*/
 			function loadExamPage(fdid) {
 				var materialName = $("#examPaperName").val();
+				var materialintro1 = $("#examPaperIntro").val();
+				var materialScore = $("#examPaperTime").val();
 				if (materialName == "" || materialName == null) {
 					$("#examPaperNameErr").html("请先设置试卷名称");
 					$("#examPaperNameErr").css("display", "block");
@@ -926,11 +928,13 @@
 						return;
 					}
 					//ajax
+					data.materialName=materialName;
+					data.materialintro=materialintro1;
+					data.materialScore=materialScore;
 					$.ajax({
 								url : "${ctx}/ajax/examquestion/saveOrUpdateExamQuestion?questionId="
 										+ fdid
-										+ "&materIalId=${param.fdId}&materialName="
-										+ materialName,
+										+ "&materIalId=${param.fdId}",
 								async : false,
 								data : data,
 								type : "POST",
