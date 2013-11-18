@@ -526,7 +526,9 @@
     <script id="listCommentTemplate" type="x-dot-template">
         {{~it :item:index}}
         <li class="media" data-fdid="{{=item.fdId}}">
-			<a href="#" class="pull-left"><tags:image href="{{=it.fdUserURL}}" clas="media-object"/></a>
+			<a href="#" class="pull-left">
+				<img class="media-object" src="{{?item.fdUserURL.indexOf('http')>-1}}{{=item.fdUserURL}}{{??}}${ctx}/{{=item.fdUserURL}}{{?}}" />
+			</a>
             <div class="media-body">
                 <div class="media-heading">
                     <span class="name">{{=item.no}}# {{?item.isAnonymous}}匿名{{??}}{{=item.fdUserName}}</span>（<span class="mail">{{=item.fdUserEmail}}</span>）    来自 <span class="org">{{=item.fdUserDept}}</span>{{?}}
@@ -771,7 +773,7 @@
             var $body = $("#pageBody");
             $body.append(mediaInfoFn(data))
                     .append(mediaCommentFn(data.defaultMedia));
-            $("#listComment").html(listCommentFn(data.defaultMedia.mediaComment.listComment));
+            //$("#listComment").html(listCommentFn(data.defaultMedia.mediaComment.listComment));
 
             /*评分效果*/
             $body.delegate("#ratingDo>i","click",function(e){
@@ -1123,7 +1125,7 @@
                 $("#ratingOne").find(".progress-gray>.bar")
                         .width(result.rating.one/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.one);
                 $("#mediaComment").after(mediaCommentFn(result)).remove();
-                $("#listComment").html(listCommentFn(result.mediaComment.listComment));
+                //$("#listComment").html(listCommentFn(result.mediaComment.listComment));
 
                 /*评分表单*/
                 $("#formMakeComments").validate({
