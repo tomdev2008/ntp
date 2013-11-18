@@ -435,12 +435,8 @@
 					<label>{{=it.uploadIntro || ''}}</label>
 					<div class="control-upload">
 
-						<div id="upMaterialDiv" style="height:20px;width:650px;display:block;">
-							 
- 						 </div>
-						 <div  style="margin-left:670px;margin-top: 8px;height:40px;width:600px;display:block;">
+						
 						     <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>
-						 </div>
 
 
 					</div>
