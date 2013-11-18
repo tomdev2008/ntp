@@ -92,7 +92,7 @@ public class TaskPaperAjaxController {
 			}
 			task.setFdSubject(fdSubject);
 			task.setTaskPackage(info);
-			task.setFdOrder(info.getTasks().isEmpty()?0:info.getTasks().size());
+			task.setFdOrder(info.getTasks()==null?0:info.getTasks().size());
 			taskService.save(task);
 		} else {//更改
 			task = taskService.load(taskId);
