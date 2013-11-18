@@ -182,7 +182,7 @@
                 <li class="accordion-group">
                     <a class="titBar" {{?it.type == 'task' && paper.examPaperStatus == 'pass'}}{{??}}data-toggle="collapse" data-parent="#listExamPaper" {{?}}href="#examPaper{{=index+1}}">
                         <h2>{{?it.type == 'exam'}}试卷{{??it.type == 'task'}}作业包{{?}}{{=index+1}}. {{=paper.name}}</h2>
-                        <p class="muted">共计{{=paper.examCount}}{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=paper.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=paper.examPaperTime}}分钟。</p>
+                        <p class="muted">共计{{=paper.examCount}}{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=paper.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=paper.examPaperTime}}{{?it.type=='exam'}}分钟{{??it.type=='task'}}天{{?}}。</p>
                         <span class="icon-state-bg{{?paper.examPaperStatus == 'fail'}} error">未通过
                         {{??paper.examPaperStatus == 'pass'}} success">通过
                         {{??paper.examPaperStatus == 'finish'}} info">答完
