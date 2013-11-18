@@ -62,7 +62,7 @@
     <div class="section mt20">
        <div class="hd">
                 <div class="tit-icon_bg"><i class="icon-white-info"></i></div>
-                <h5>全部评论</h5>
+                <h4>全部评论</h4>
                 <div class="pages">
                     <div class="span2">
                         第<span id="pageLine1"> 1 - 10</span> / <span id="pageTotal1"></span> 条
