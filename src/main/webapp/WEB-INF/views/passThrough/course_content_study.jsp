@@ -527,7 +527,11 @@
         {{~it :item:index}}
         <li class="media" data-fdid="{{=item.fdId}}">
 			<a href="#" class="pull-left">
+				{{?item.isAnonymous}}
+				<img class="media-object" src="/JensProject/resources/images/face-placeholder.png" />
+				{{??}}
 				<img class="media-object" src="{{?item.fdUserURL.indexOf('http')>-1}}{{=item.fdUserURL}}{{??}}${ctx}/{{=item.fdUserURL}}{{?}}" />
+				{{?}}
 			</a>
             <div class="media-body">
                 <div class="media-heading">
