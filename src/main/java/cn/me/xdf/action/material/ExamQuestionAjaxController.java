@@ -79,7 +79,7 @@ public class ExamQuestionAjaxController {
 		ExamQuestion examQuestion;
 		if(StringUtil.isEmpty(questionId)||questionId.equals("undefined")){
 			examQuestion = new ExamQuestion();
-			examQuestion.setFdOrder(exam.getQuestions().size());
+			examQuestion.setFdOrder(exam.getQuestions().isEmpty()?0:exam.getQuestions().size());
 		}else{
 			examQuestion = examQuestionService.get(questionId);
 		}
