@@ -718,20 +718,7 @@
                 });
 
         loadRightCont(catalogId,fdMtype);//默认加载章节 参数：节id
-        //上一节
-        $("#prevLecture").click(function (e){
-        	if($(this).attr("href")){
-        	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
-        	}
-             
-        });
-        //下一节
-        $("#nextLecture").click(function (e){
-        	if($(this).attr("href")){
-        	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
-        	}
-            
-        }); 
+        
 		function loadRightCont(fdid,type){
         	catalogId=fdid;
 		    fdMtype=type;
@@ -763,6 +750,21 @@
                         $(this).removeClass("disabled");
                         $("#nextLecture").removeClass("disabled");
                     });
+            
+          //上一节
+            $("#prevLecture").click(function (e){
+            	if($(this).attr("href")){
+            	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+            	}
+                 
+            });
+            //下一节
+            $("#nextLecture").click(function (e){
+            	if($(this).attr("href")){
+            	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+            	}
+                
+            }); 
         }
         /*视频、文档等媒体页加载头部后执行方法*/
         function afterLoadMediaPage(data){
