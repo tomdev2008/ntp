@@ -446,7 +446,7 @@ public class MaterialAjaxController {
 		map.put("name", person.getRealName());
 		map.put("email", person.getFdEmail());
 		map.put("dept", person.getDeptName());
-		map.put("url", person.getFdPhotoUrl());
+		map.put("url", person.getPoto());
 		return JsonUtils.writeObjectToJson(map);
 	}
 }

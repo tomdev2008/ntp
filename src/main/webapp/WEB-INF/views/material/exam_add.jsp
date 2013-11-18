@@ -28,7 +28,7 @@
         <td class="tdTit">
             <div class="pr">
                 <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
-                <img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
+			<img src="{{?it.imgUrl.indexOf('http')>-1}}{{=it.imgUrl}}{{??}}${ctx}/{{=it.imgUrl}}{{?}}" />{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
             </div>
         </td>
        <td><input type="checkbox" {{?it.tissuePreparation!=false}}checked{{?}}  class="tissuePreparation" /></td>
@@ -434,9 +434,15 @@
 							dataType : 'json',
 							type: "post",
 							success : function(result) {
+								var photo;
+								if(url.indexOf("http")>-1){
+									photo=url;
+								}else{
+									photo="${ctx}/"+url;
+								}
 								var html = "<tr data-fdid='creater' draggable='true'> "
 										+ " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "
-										+ "<img src='"+url+"' alt=''>"
+										+ "<img src='"+photo+"' alt=''>"
 										+ creater
 										+ " </div> </td>"
 										+ " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"
@@ -583,8 +589,14 @@
 											+ item.department;
 								},
 								formatItem : function(item) {
+									var photo;
+									if(item.imgUrl.indexOf("http")>-1){
+										photo=item.imgUrl;
+									}else{
+										photo="${ctx}/"+item.imgUrl;
+									}									
 									return '<img src="'
-											+ (item.imgUrl || 'images/temp-face36.jpg')
+											+ photo
 											+ '" alt="">' + item.name + '（'
 											+ item.mail + '），' + item.org
 											+ '  ' + item.department;
