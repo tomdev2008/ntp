@@ -12,11 +12,7 @@
 		<h2 class="h2_r">评分 </h2>
             	<div class="ab_l rating-view" id="ratingDo">
               	<span class="rating-all">
-             		<i class="icon-star" ></i>
-             		<i class="icon-star" ></i>
-             		<i class="icon-star" ></i>
-             		<i class="icon-star" ></i>
-             		<i class="icon-star" ></i>
+             		<i class="icon-star" ></i><i class="icon-star" ></i><i class="icon-star" ></i><i class="icon-star" ></i><i class="icon-star" ></i>
                   </span>
                   <span class="text-warning" id="myScore">0</span>
               </div>
