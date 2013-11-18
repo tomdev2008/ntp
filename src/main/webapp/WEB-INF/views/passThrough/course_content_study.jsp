@@ -1357,7 +1357,7 @@
                         $("#formExam").validate({
                             submitHandler: function(form){
 	                            $("input[putId='examAnswer_completion']").each(function(){
-	                            	$(this).next("input").val($(this).attr("exam-id")+":"+$(this).attr("value"));
+	                            	$(this).nextAll("input:first").val($(this).attr("exam-id")+":"+$(this).attr("value"));
 	                           	});
 	                            form.submit();
                             }
