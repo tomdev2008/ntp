@@ -4,10 +4,7 @@
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
-<%-- <link href="${ctx}/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="${ctx}/resources/css/emigrated.css" rel="stylesheet" type="text/css"> --%>
-<link href="${ctx}/resources/theme/default/css/global.css" rel="stylesheet" type="text/css">
-<link href="${ctx}/resources/theme/default/css/layout.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/theme/default/css/comment.css" rel="stylesheet" type="text/css">
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <!-- 评论条目模板 -->
@@ -62,9 +59,7 @@
         </div>
     </script>
 <script src="${ctx}/resources/js/doT.min.js"></script>
-<div class="main" id="commentBody">  
-    <div class="section">
-    
+    <div class="section mt20">
        <div class="hd">
                 <div class="tit-icon_bg"><i class="icon-white-info"></i></div>
                 <h5>全部评论</h5>
@@ -93,7 +88,6 @@
             </div>
         </div>
     </div>
-</div>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 ////////////////////////初始化开始

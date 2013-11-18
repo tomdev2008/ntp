@@ -53,7 +53,7 @@
 <!--主体 S-->
 <section class="container">	
 		<div class="section mt20">
-        	<div class="media box-pd20">
+        	<div class="media box-pd20 media-main">
             <a href="#" class="pull-left">
             <c:if test="${courseAtt==''}">
             	<img src="${ctx}/resources/images/zht-main-img.jpg" alt="" class="media-object">

@@ -299,7 +299,9 @@ $(function(){
     	uptype='*.ppt;';
         break;
   }
-	var $progress ;
+	var $progress ,
+	flag = true,
+	pct,interval,countdown = 0,byteUped = 0;
 
 	$("#upMaterial").uploadify({
     'height' : 40,
@@ -311,10 +313,10 @@ $(function(){
     'buttonText' : '上传',
     'uploader' : '${ctx}/common/file/o_upload',
     'auto' : true,
-    'fileTypeExts' : "*.*",
+    'fileTypeExts' : uptype,
     'onInit' : function(){
     	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
-		<span class="txt"><span class="pct">0%</span></span>');
+		<span class="txt"><span class="pct">0%</span>，剩余时间：<span class="countdown"></span></span>');
     	$("#upMaterial").next(".uploadify-queue").remove();
     },
     'onUploadStart' : function (file) {
@@ -325,31 +327,42 @@ $(function(){
         if (Response) {
             var objvalue = eval("(" + data + ")");
             jQuery("#attId").val(objvalue.attId);
-            setTimeout(function(){
-        		$progress.remove();
-        	},2000); 
         }
     },
     'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
-    	var pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
+    	pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
+    	byteUped = bytesUploaded;
+    	if(flag){
+    		interval = setInterval(uploadSpeed,100);
+    		flag = false;
+    	}
+    	if(bytesUploaded == bytesTotal){
+    		clearInterval(interval);
+    	}
     	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
-    	
+    	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
     }
-    /* 'onSelect':function(file){
-    	// 选择新文件时,先清文件列表
-    	var queuedFile = {};
-		for (var n in this.queueData.files) {
-				queuedFile = this.queueData.files[n];
-				if(queuedFile.id!=file.id){
-					delete this.queueData.files[queuedFile.id]
-					$('#' + queuedFile.id).fadeOut(0, function() {
-						$(this).remove();
-					});
-				}
-			}
-    }, 
-    'removeCompleted':false */
   });
+	function uploadSpeed(){
+		countdown = byteUped - countdown;
+	}
+	
+	function secTransform(s){
+		if( typeof s == "number"){
+			s = Math.ceil(s);
+			var t = "";
+			if(s>3600){
+				t= Math.ceil(s/3600) + "小时" + Math.ceil(s%3600/60) + "分钟" + s%3600%60 + "秒";
+			} else if(s>60){
+				t= Math.ceil(s/60) + "分钟" + s%60 + "秒";
+			} else {
+				t= s + "秒";
+			}
+			return t;
+		}else{
+			return null;
+		}		
+	}
 });
 
 </script>
