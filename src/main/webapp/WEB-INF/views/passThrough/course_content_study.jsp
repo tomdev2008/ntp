@@ -136,7 +136,7 @@
                         {{??paper.examPaperStatus == 'finish'}} info">答完
                         {{??paper.examPaperStatus == 'unfinish'}}">待答{{?}}</span>
                     </a>
-                    <div id="examPaper{{=index+1}}" data-fdid="{{=paper.id}}" class="accordion-body collapse">
+                    <div id="examPaper{{=index+1}}" examPaperStatus="{{=paper.examPaperStatus}}" data-fdid="{{=paper.id}}" class="accordion-body collapse">
 
                     </div>
                 </li>
@@ -1194,6 +1194,11 @@
             $("#listExamPaper>li>.collapse")
                     .bind("show",function(){
                         var $this = $(this);
+                        var examPaperStatus = $this.attr("examPaperStatus");
+                        if((data.type == "task") && (examPaperStatus=="finish")){
+                        	$.fn.jalert2("您已提交当前作业，请耐心等待导师审批！");
+                        	return;
+                        }
                         var tempData = {};
                         $this.prev(".titBar").addClass("hide");
                         $.ajax({
