@@ -113,7 +113,7 @@
 	<section class="section listWrap">
 		<ul class="nav list">
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
-				 <li><a href="#"><i class="icon-exam-num"></i>
+				 <li><a href="${ctx}/course/getSingleCourseAuthInfo?courseId=${bean.FDID}&fdType=13"><i class="icon-exam-num"></i>
 				
 				    <span class="title">
 					<c:if test="${bean.FDTITLE!=null && bean.FDTITLE!=''}">
