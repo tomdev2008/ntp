@@ -28,6 +28,8 @@ public class CourseLogic {
     public CourseLogic(BamCourse bamCourse, SourceNote sourceNote) {
         this.bamCourse = bamCourse;
         this.sourceNote = sourceNote;
+
+        initData();
     }
 
     private void initData() {
