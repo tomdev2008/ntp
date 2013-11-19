@@ -402,6 +402,8 @@ $(function(){
 	   });
     }
     $.ajax({
+    	type:"post",
+    	cache:false,
 		url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId="+$("#materialId").val(),
 		async:false,
 		dataType : 'json',

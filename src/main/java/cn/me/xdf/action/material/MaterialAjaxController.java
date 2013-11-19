@@ -227,8 +227,10 @@ public class MaterialAjaxController {
 			pageNo = 1;
 		}
 		if (StringUtil.isNotBlank(fdType) && StringUtil.isNotEmpty(fdType)) {
+//			Pagination page = materialService.findMaterialList(fdType, pageNo,
+//					SimplePage.DEF_COUNT, fdName, order);
 			Pagination page = materialService.findMaterialList(fdType, pageNo,
-					SimplePage.DEF_COUNT, fdName, order);
+					2, fdName, order);
 			model.addAttribute("page", page);
 		}
 		if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
