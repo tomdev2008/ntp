@@ -72,7 +72,7 @@
 
     <!--页面主内容区header-->
     <script id="pageRightHeaderTemplate" type="x-dot-template">
-        <div class="page-header" id="pageHeader" data-spy="affix" data-offset-top="10">
+        <div class="page-header" id="pageHeader" data-offset-top="10">
                 <div class="hd clearfix">
              <a class="btn {{?!it.pstatus}} disabled{{?}}" {{?it.pstatus}}href="#"{{?}} id="prevLecture" data-fdid="{{=it.prevc}}" data-type="{{=it.prevBaseType || ''}}">
                 <i class="icon-chevron-lg-left"></i>
@@ -729,6 +729,11 @@
             	}
                 
             }); 
+            $("#pageHeader").affix({
+                offset: {
+                    top: 10
+                }
+            });
         }
         /*视频、文档等媒体页加载头部后执行方法*/
         function afterLoadMediaPage(data){
