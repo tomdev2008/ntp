@@ -345,10 +345,7 @@
 		</section>
 
 	</section>
-
 	<script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
-	<script type="text/javascript"
-		src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
 	<script type="text/javascript"
 		src="${ctx}/resources/js/bootstrap.min.js"></script>
 	<script type="text/javascript"
