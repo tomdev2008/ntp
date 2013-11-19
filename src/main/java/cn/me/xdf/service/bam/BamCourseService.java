@@ -35,8 +35,10 @@ public class BamCourseService extends SimpleService {
      */
     public void updateCourseStartTime(String fdId) {
         BamCourse bamCourse = get(BamCourse.class, fdId);
-        bamCourse.setStartDate(new Date());
-        update(bamCourse);
+        if (bamCourse.getStartDate() != null) {
+            bamCourse.setStartDate(new Date());
+            update(bamCourse);
+        }
     }
 
     /**
