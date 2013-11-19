@@ -9,6 +9,7 @@ import cn.me.xdf.model.process.SourceNote;
 import org.apache.commons.collections.CollectionUtils;
 
 import javax.persistence.Transient;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,6 +85,9 @@ public class CourseLogic {
         }
     }
 
+    /**
+     * 设置此课程结束
+     */
     private void toCourseThroug() {
         List<CourseCatalog> catalogs = bamCourse.getCatalogs();
         boolean isThrought = true;
@@ -93,6 +97,7 @@ public class CourseLogic {
         }
 
         if (isThrought) {
+            bamCourse.setEndDate(new Date());
             bamCourse.setThrough(true);
         }
     }

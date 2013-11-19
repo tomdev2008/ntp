@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,6 +30,14 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class BamCourseService extends SimpleService {
 
+    /**
+     * 设置进入此课程的开始时间
+     */
+    public void updateCourseStartTime(String fdId) {
+        BamCourse bamCourse = get(BamCourse.class, fdId);
+        bamCourse.setStartDate(new Date());
+        update(bamCourse);
+    }
 
     /**
      * 根据备课老师和课程的ID获取此次备课的信息

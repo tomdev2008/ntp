@@ -18,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -74,6 +75,17 @@ public class BamCourse extends IdEntity implements BamProcess {
 
     }
 
+
+    /**
+     * 开始时间
+     */
+    private Date startDate;
+
+    /**
+     * 结束时间
+     */
+    private Date endDate;
+
     /**
      * 备课老师
      */
@@ -129,6 +141,42 @@ public class BamCourse extends IdEntity implements BamProcess {
      * 是否公开
      */
     private boolean isOpen;
+
+    /**
+     * 开始时间
+     *
+     * @return
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * 开始时间
+     *
+     * @param startDate
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * 结束时间
+     *
+     * @return
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * 结束时间
+     *
+     * @param endDate
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
     public String getCourseId() {
         return courseId;
