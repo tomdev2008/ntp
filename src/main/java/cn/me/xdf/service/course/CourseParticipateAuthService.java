@@ -47,50 +47,29 @@ public class CourseParticipateAuthService extends BaseService{
 	 */
 	@Transactional(readOnly=false)
 	public Pagination findSingleCourseAuthList(String courseId,String orderStr,Integer pageNo,Integer pageSize,String keyword){
-		Finder finder=Finder.create(" select cpa.fdid as fdid,"+
-       "cpa.fdcreatetime,"+
-       "cpa.fdcourseid as fdcourseid,"+
-       "sop.fdid as tid,"+
-       "sop.fd_photo_url as timgUrl,"+
-       "'' as tlink,"+
-       "sop.realname as tname,"+
-       "sop.fd_email as tmail,"+
-       "sop.depatid as tdepartment,"+
-       "soe.fd_name as tdepartmentname,"+
-       "sop1.fdid as mid,"+
-       "sop1.fd_photo_url as mimgUrl,"+
-       "'' as mlink,"+
-       "sop1.realname as mname,"+
-       "sop1.fd_email as mmail,"+
-       "sop1.depatid as mdepartment,"+
-       "soe1.fd_name as mdepartmentname" );
-		finder.append(" from IXDF_NTP_COURSE_PARTICI_AUTH cpa ");
-		finder.append(" left join SYS_ORG_PERSON sop on cpa.fdteacherid=sop.fdid ");//教师信息
-		finder.append(" left join SYS_ORG_PERSON sop1 on cpa.fduserid=sop1.fdid ");//导师信息
-		finder.append(" left join SYS_ORG_ELEMENT soe on sop.depatid=soe.fdid ");//教师部门信息
-		finder.append(" left join SYS_ORG_ELEMENT soe1 on sop1.depatid=soe1.fdid ");//导师部门信息
-		finder.append(" where cpa.fdcourseid=:courseId  ");
+		Finder finder=Finder.create(" from CourseParticipateAuth cpa ");
+		finder.append(" where cpa.course.fdId=:courseId  ");
 		finder.setParam("courseId", courseId);
 		if(StringUtil.isNotBlank(orderStr)){
 			if("mentor".equals(orderStr)){//按导师查询
 				if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
-					finder.append(" and sop1.realname like :namestr");
+					finder.append(" and cpa.fdTeacher.notifyEntity.realName like :namestr");
 					finder.setParam("namestr", keyword);
 				}
-				finder.append(" order by sop1.realname");
+				finder.append(" order by cpa.fdTeacher.notifyEntity.realName");
 			}
 			if("teacher".equals(orderStr)){
 				if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
-					finder.append(" and sop.realname like :namestr");
+					finder.append(" and cpa.fdUser.notifyEntity.realName like :namestr");
 					finder.setParam("namestr", keyword);
 				}
-				finder.append(" order by sop.realname");
+				finder.append(" order by cpa.fdUser.notifyEntity.realName");
 			}
 			if("createtime".equals(orderStr)){
-				finder.append(" order by cpa.createtime desc");
+				finder.append(" order by cpa.fdCreateTime desc");
 			}
 		}
-		return getPageBySql(finder, pageNo, pageSize);
+		return getPage(finder, pageNo, pageSize);
 	}
 	
 }

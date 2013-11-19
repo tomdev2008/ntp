@@ -1,5 +1,6 @@
 package cn.me.xdf.action.course;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,25 +20,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseCategory;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseAuthService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseCategoryService;
 import cn.me.xdf.service.course.CourseContentService;
+import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.course.CourseTagService;
 import cn.me.xdf.service.course.SeriesCoursesService;
 import cn.me.xdf.service.course.TagInfoService;
+import cn.me.xdf.service.score.ScoreStatisticsService;
 import cn.me.xdf.utils.ShiroUtils;
 
 /**
@@ -81,6 +87,12 @@ public class CourseAjaxController {
   
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private CourseParticipateAuthService courseParticipateAuthService;
+	
+	@Autowired
+	private ScoreStatisticsService statisticsService;
 	/**
 	 * 获取当前课程的基本信息
 	 * 
@@ -671,5 +683,100 @@ public class CourseAjaxController {
 				pageNoStr, orderbyStr,Constant.COUSER_AUTH_MANAGE);
 		model.addAttribute("page", page);
 		return "/course/divcourseauthlist";
+	}
+	/**
+	 * 某课程授权列表
+	 */
+	public  SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
+	@RequestMapping(value="getSingleCourseAuths")
+	@ResponseBody
+	public String getSingleCourseAuths(HttpServletRequest request){
+		String courseId=request.getParameter("courseId");
+		String orderStr=request.getParameter("order");
+		String pageNostr=request.getParameter("pageNo");
+		String keyword=request.getParameter("keyword");
+		int pageNo;
+		if (StringUtil.isNotBlank(pageNostr)) {
+			pageNo = Integer.parseInt(pageNostr);
+		} else {
+			pageNo = 1;
+		}
+		CourseInfo courseInfo=courseService.load(courseId);
+		AttMain attMain = attMainService.getByModelId(courseId);
+		Map courses=new HashMap();
+		courses.put("courseId", courseInfo.getFdId());//课程id
+		if(attMain!=null){
+			courses.put("coverUrl", attMain.getFdId());
+		}else{
+			courses.put("coverUrl", "");	
+		}//课程封面
+		ScoreStatistics scoreStatistics=statisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
+		if(scoreStatistics!=null){
+		courses.put("courseScore", scoreStatistics.getFdAverage());//课程评分;
+		}else{
+			courses.put("courseScore", 0);//课程评分;
+		}
+		courses.put("courseName", courseInfo.getFdTitle());//课程名称
+		courses.put("courseAuthor", courseInfo.getFdSubTitle());//课程作者;
+		//获取课程授权列表
+		List coursepas=new ArrayList();
+		Pagination page=courseParticipateAuthService.findSingleCourseAuthList(courseId,orderStr,pageNo,SimplePage.DEF_COUNT,keyword);
+		if(page.getTotalCount()>0){
+			List list = page.getList();
+			for(int i=0;i<list.size();i++){
+				CourseParticipateAuth cpa =(CourseParticipateAuth) list.get(i);
+				Map mcpa=new HashMap();//授权信息
+				mcpa.put("id", cpa.getFdId());
+				mcpa.put("time", sdf.format(cpa.getFdCreateTime()));
+				Map teacher=new HashMap();//教师信息
+				cpa.getFdUser();
+				teacher.put("imgUrl",  cpa.getFdUser().getPoto());
+				teacher.put("link",  "");
+				teacher.put("name",cpa.getFdUser().getNotifyEntity().getRealName());
+				teacher.put("mail",  cpa.getFdUser().getNotifyEntity().getFdEmail());
+				teacher.put("department",  cpa.getFdUser().getDeptName());
+				teacher.put("org", cpa.getFdUser().getHbmParent().getFdName());
+				Map mentor=null;//导师信息
+				if(cpa.getFdTeacher()!=null){
+					mentor=new HashMap();
+					mentor.put("imgUrl",  cpa.getFdTeacher().getPoto());
+					mentor.put("link",  "");
+					mentor.put("name",cpa.getFdTeacher().getNotifyEntity().getRealName());
+					mentor.put("mail",  cpa.getFdTeacher().getNotifyEntity().getFdEmail());
+					mentor.put("department",  cpa.getFdTeacher().getDeptName());
+					mentor.put("org", cpa.getFdTeacher().getHbmParent().getFdName());
+				}
+				mcpa.put("teacher", teacher);
+				mcpa.put("mentor", mentor);
+				coursepas.add(mcpa);
+			}
+		}
+		Map map=new HashMap();
+		map.put("totalPage", page.getTotalPage());
+		map.put("currentPage", pageNo);
+		map.put("list", coursepas);
+		map.put("totalCount", page.getTotalCount());
+		map.put("course",courses);
+		return JsonUtils.writeObjectToJson(map);
+	}
+	/**
+	 * 某课程授权添加
+	 */
+	@RequestMapping(value="saveCourseParticipateAuth")
+	@ResponseBody
+	public void saveCourseParticipateAuth(HttpServletRequest request){
+		String courseId=request.getParameter("courseId");
+		String teacherId=request.getParameter("teacher");
+		String mentorId=request.getParameter("mentor");
+		CourseInfo courseInfo=courseService.load(courseId);
+		SysOrgPerson teacher=accountService.findById(teacherId);
+		SysOrgPerson mentor=accountService.findById(mentorId);
+		CourseParticipateAuth cpa=new CourseParticipateAuth();
+		cpa.setCourse(courseInfo);
+		cpa.setFdUser(teacher);//教师
+		cpa.setFdTeacher(mentor);//导师
+	    cpa.setFdCreateTime(new Date());
+	    cpa.setVersion(0);
+	    courseParticipateAuthService.save(cpa);
 	}
 }

@@ -189,24 +189,5 @@ public class CourseController {
 	public String getCourseAuthInfo( HttpServletRequest request){
 		return "/course/courseauth_manage";
 	}
-	/**
-	 * 某课程授权添加
-	 */
-	@RequestMapping(value="saveCourseParticipateAuth")
-	public String saveCourseParticipateAuth(HttpServletRequest request){
-		String courseId=request.getParameter("courseId");
-		String teacherId=request.getParameter("teacher");
-		String mentorId=request.getParameter("mentor");
-		CourseInfo courseInfo=courseService.load(courseId);
-		SysOrgPerson teacher=accountService.findById(teacherId);
-		SysOrgPerson mentor=accountService.findById(mentorId);
-		CourseParticipateAuth cpa=new CourseParticipateAuth();
-		cpa.setCourse(courseInfo);
-		cpa.setFdTeacher(teacher);
-		cpa.setFdUser(mentor);
-	    cpa.setFdCreateTime(new Date());
-	    cpa.setVersion(0);
-	    courseParticipateAuthService.save(cpa);
-		return "redirect:/course/getSingleCourseAuthInfo?courseId="+courseId+"&fdType=13";
-	}
+	
 }
