@@ -587,6 +587,9 @@ $(function(){
     /*加载作业页面*/
     function loadExamPage(fdid){
     	var materialName = $("#examPaperName").val();
+    	var examPaperIntro = $("#examPaperIntro").val();
+    	var studyTime = $("#examPaperTime").val();
+    	
         if(materialName==""||materialName==null){
         	$("#examPaperNameErr").html("请先设置作业包名称");
         	$("#examPaperNameErr").css("display","block");
@@ -656,6 +659,8 @@ $(function(){
         function submitForm(form){
             var data = {
             	materialId:$("#materialId").val(),
+                examPaperIntro: examPaperIntro,
+                studyTime:studyTime,
             	materialName:materialName,
                 examType: $("#examType").val(),
                 examName: $("#examName").val(),

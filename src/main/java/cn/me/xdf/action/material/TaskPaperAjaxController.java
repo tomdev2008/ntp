@@ -59,6 +59,8 @@ public class TaskPaperAjaxController {
 		String materialId = request.getParameter("materialId");
 		MaterialInfo info;
 		String taskId = request.getParameter("taskId");
+		String examPaperIntro = request.getParameter("examPaperIntro");
+		String studyTime = request.getParameter("studyTime");
 		Task task;
 		if(StringUtil.isBlank(materialId)){//先进行作业包素材的保存
 			info = new MaterialInfo();
@@ -69,9 +71,15 @@ public class TaskPaperAjaxController {
 			info.setIsPublish(true);
 			info.setIsDownload(true);
 			info.setIsAvailable(true);
+			info.setFdDescription(examPaperIntro);
+			info.setFdStudyTime(studyTime==null?0:Integer.parseInt(studyTime));
 			materialService.save(info);
 		}else{
 			info = materialService.load(materialId);
+			info.setFdName(request.getParameter("materialName"));
+			info.setFdDescription(examPaperIntro);
+			info.setFdStudyTime(studyTime==null?0:Integer.parseInt(studyTime));
+			materialService.save(info);
 		}
 		String examType = request.getParameter("examType");//题型 01上传作业，02在线作答
 		String examName = request.getParameter("examName");//作业题目

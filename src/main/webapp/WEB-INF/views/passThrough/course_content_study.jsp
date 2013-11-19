@@ -327,7 +327,7 @@
                            <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" class="btn btn-link{{?param.canDownload}} active" href="javascript:void(0)" data-fdid="{{=param.url}}" {??}} disabled"{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
                         </div>
                         <span class="playCount">{{?it.type == 'video'}}播放{{??}}阅读{{?}}  <strong class="num">{{=param.readCount || 0 }}</strong>  次</span>
-                        <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}}><i class="icon-right"></i>我学会了</button>
+                      <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}}><i class="icon-right"></i>我学会了</button>
                     </div>
                     {{#def.listMedia}}
                 </div>
@@ -636,17 +636,23 @@
         
 		var leftData = {};
 				//ajax获取左侧章节展示树
-		    $.ajax({
-					  url: "${ctx}/ajax/passThrough/getBamCatalogTree",
-					  async:false,
-					  data:{bamId:bamId},
-					  dataType:'json',
-					  success: function(rsult){
-						  leftData = rsult;
-						  leftData.sidenav.currentId = catalogId;
-						  $("#sideBar").html(pageLeftBarFn(leftData));
-					  },
-				});
+				
+	     loadLeftData(bamId);//加载左边栏目
+				
+		 function loadLeftData(bamId){
+			  $.ajax({
+				  url: "${ctx}/ajax/passThrough/getBamCatalogTree",
+				  async:false,
+				  data:{bamId:bamId},
+				  dataType:'json',
+				  success: function(rsult){
+					  leftData = rsult;
+					  leftData.sidenav.currentId = catalogId;
+					  $("#sideBar").html(pageLeftBarFn(leftData));
+				  },
+			});
+			 
+		 }
 				
         //左侧菜单定位
         setTimeout(function(){
@@ -1144,8 +1150,18 @@
             $("#btnDoPass").on("click",function(e){
                 $("#listMedia>li.active").addClass("pass");
                 $(this).attr("disabled", true);
+                $.ajax({
+          			type: "post",
+          			url: "${ctx}/passThrough/submitExamOrTask?bamId="+bamId+"&catalogId="+catalogId+"&fdMtype="+fdMtype+"&fdid="+$mediaToolbar.attr("data-fdid"),
+          			data : {
+          				"materialId":$mediaToolbar.attr("data-fdid"),
+          			},
+          			success:function(data){
+          				loadRightCont(catalogId,fdMtype);
+          				loadLeftData(bamId);
+          			}
+          		}); 
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
-                window.location.href = "${ctx}/passThrough/submitExamOrTask?bamId="+bamId+"&catalogId="+catalogId+"&fdMtype="+fdMtype+"&fdid="+$mediaToolbar.attr("data-fdid");
             });
         }
 
