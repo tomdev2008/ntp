@@ -15,6 +15,7 @@
 </head>
 <body>
 <script type="text/javascript">
+$.Placeholder.init();
 function checkOldPwd(){
 	var oldPwd=$("#oldPwd").val();
 	$.ajax({

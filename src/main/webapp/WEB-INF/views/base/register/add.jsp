@@ -44,6 +44,7 @@
 </style>
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=12"></script>
 <script type="text/javascript">
+$.Placeholder.init();
     //注册
 	function register() {
 		//头像

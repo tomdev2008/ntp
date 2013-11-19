@@ -596,6 +596,7 @@
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(function(){
+    	$.Placeholder.init();
         //页面左侧模板函数
         var pageLeftBarFn = doT.template(document.getElementById("pageLeftTemplate").text);
 

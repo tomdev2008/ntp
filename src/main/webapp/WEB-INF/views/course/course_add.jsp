@@ -574,6 +574,7 @@
 <script src="${ctx}/resources/js/templDetailPages.js"></script>
 
 <script type="text/javascript">	
+$.Placeholder.init();
 	
 	//点击左侧菜单事件
 	$("#sideNav>li>a").bind("click",function(e){	

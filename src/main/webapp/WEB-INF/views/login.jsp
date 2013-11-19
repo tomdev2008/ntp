@@ -12,7 +12,6 @@
 <head>
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link href="${ctx}/resources/css/login.css?id=22" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="${ctx }/resources/js/placeholder.js"></script>
 </head>
 
 <body>
@@ -29,7 +28,6 @@
         	<input type="text" name="username" onclick="clearErrorMsg()" class="input-block-level inp inp-mail" placeholder="请输入您的邮箱账号">
         	<input type="password" name="password" onclick="clearErrorMsg()" class="input-block-level inp inp-password" placeholder="请输入您的登录密码">
         	 <br>
-            
             	<span id="errorMsg" class="help-block text-warning">
             	<c:if test="${error=='error'}">
             	<b class="icon-disc-bg warning">!</b> 
@@ -49,6 +47,5 @@
 	</div>
   </form>
 </div>
-
 </body>
 </html>

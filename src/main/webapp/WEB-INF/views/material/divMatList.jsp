@@ -237,6 +237,7 @@
 
 <input type="hidden" id="fdType" value="${param.fdType}">
 <script type="text/javascript">
+$.Placeholder.init();
 //下载素材
 function downloadMater(){
 	 var day=new Date();

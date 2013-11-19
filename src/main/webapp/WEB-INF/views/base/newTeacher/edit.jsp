@@ -17,6 +17,7 @@
 <script type="text/javascript">
 //初始化部门列表
 $(document).ready(function(){
+	$.Placeholder.init();
 	var id = $("#sysParOrgId").val();
 	var depId = $("#depId").val();
 	$.ajax({

@@ -32,6 +32,7 @@
           </div>                    
 </div>
 <script type="text/javascript">
+$.Placeholder.init();
 //初始化评论按钮
 $("#addMessage").bind("click",function(){
 	$.ajax({

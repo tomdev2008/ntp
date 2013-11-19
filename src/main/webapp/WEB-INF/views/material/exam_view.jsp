@@ -135,7 +135,7 @@
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify-3.1.min.js?id=1211"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
-
+$.Placeholder.init();
 $.ajax({
 	  url: "${ctx}/ajax/material/getMaterial?materialId=${param.fdId}",
 	  async:false,
