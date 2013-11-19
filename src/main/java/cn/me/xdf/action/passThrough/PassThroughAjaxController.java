@@ -206,6 +206,7 @@ public class PassThroughAjaxController {
 		String bamId = request.getParameter("bamId");
 		//获取节ID
 		String catalogId = request.getParameter("catalogId");
+        bamCourseService.updateCourseCatalogStartTime(bamId,catalogId);
 		//获取节内容类型
 		String sourceType = request.getParameter("fdMtype");
 		///点击播放当前素材的id

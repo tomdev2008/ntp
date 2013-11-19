@@ -42,6 +42,30 @@ public class BamCourseService extends SimpleService {
     }
 
     /**
+     * 更新某一节的开始时间
+     *
+     * @param bamId
+     * @param catalogId
+     */
+    public void updateCourseCatalogStartTime(String bamId, String catalogId) {
+        BamCourse bamCourse = get(BamCourse.class, bamId);
+        List<CourseCatalog> catalogs = bamCourse.getCatalogs();
+        boolean isNotEnableStartDate = false;
+        for (CourseCatalog catalog : catalogs) {
+            if (catalog.getFdId().equals(catalogId)) {
+                if (catalog.getStartDate() == null) {
+                    isNotEnableStartDate = true;
+                    catalog.setStartDate(new Date());
+                }
+            }
+        }
+        if (isNotEnableStartDate) {
+            bamCourse.setCatalogJson(JsonUtils.writeObjectToJson(catalogs));
+            update(bamCourse);
+        }
+    }
+
+    /**
      * 根据备课老师和课程的ID获取此次备课的信息
      *
      * @param userId
