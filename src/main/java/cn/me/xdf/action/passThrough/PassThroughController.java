@@ -123,7 +123,9 @@ public class PassThroughController {
 	@RequestMapping(value = "getStudyContent")
 	public String getStudyContent(HttpServletRequest request) {
 		String bamId = request.getParameter("bamId");
-		bamCourseService.updateCourseStartTime(bamId);
+		if(StringUtil.isNotBlank(bamId)){
+			bamCourseService.updateCourseStartTime(bamId);
+		}
 		//页面跳转，跳转到课程学习页面
 		return "/passThrough/course_content_study";
 	}
