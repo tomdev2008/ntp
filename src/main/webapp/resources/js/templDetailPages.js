@@ -464,9 +464,15 @@
 					return item.name + item.mail + item.org + item.department; 
 				},
 				formatItem: function(item) { 
+					var photo;
+					if(item.imgUrl.indexOf("http")>-1){
+						photo=item.imgUrl;
+					}else{
+						photo=$("#ctx").val()+"/"+item.imgUrl;
+					}
 					$("#addUser").next(".help-block").remove();
 					return '<img src="' 
-						+ (item.imgUrl || 'images/temp-face36.jpg') + '" alt="">' 
+						+ (photo) + '" alt="">' 
 						+ item.name + '（' + item.mail + '），' 
 						+ item.org + '  ' + item.department; 
 				},

@@ -328,7 +328,8 @@
 										<td class="tdTit">
                                           <div class="pr">
 											<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
-											<img src="{{=it.createrimgUrl}}" alt="">{{=it.creatername}}（{{=it.creatermail}}）， {{=it.createrdepartment}}
+											<img src="{{?it.createrimgUrl.indexOf('http')>-1}}{{=it.createrimgUrl}}{{??}}${ctx}/{{=it.createrimgUrl}}{{?}}" />
+											{{=it.creatername}}（{{=it.creatermail}}）， {{=it.createrdepartment}}
 										 </div>
                                           </td>
 										<td><input type="checkbox" checked onclick="return false" class="tissuePreparation" /></td>
@@ -366,7 +367,8 @@
 	<td class="tdTit">
         <div class="pr">
 		<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
-		<img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
+		<img src="{{?it.imgUrl.indexOf('http')>-1}}{{=it.imgUrl}}{{??}}${ctx}/{{=it.imgUrl}}{{?}}" />
+		{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
 		</div>
     </td>
 	<td><input type="checkbox" checked class="tissuePreparation" /></td>
