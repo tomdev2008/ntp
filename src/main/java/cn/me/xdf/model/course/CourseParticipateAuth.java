@@ -1,5 +1,7 @@
 package cn.me.xdf.model.course;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.Cache;
@@ -34,7 +36,12 @@ public class CourseParticipateAuth extends IdEntity {
      * 导师
      */
     private SysOrgPerson fdTeacher;
-
+    
+    /**
+     * 
+     * 授权时间
+     */
+    private Date fdCreateTime;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fdCourseId")
     public CourseInfo getCourse() {
@@ -64,6 +71,14 @@ public class CourseParticipateAuth extends IdEntity {
     public void setFdTeacher(SysOrgPerson fdTeacher) {
         this.fdTeacher = fdTeacher;
     }
+
+	public Date getFdCreateTime() {
+		return fdCreateTime;
+	}
+
+	public void setFdCreateTime(Date fdCreateTime) {
+		this.fdCreateTime = fdCreateTime;
+	}
 
 
 }
