@@ -125,7 +125,7 @@
                     {{?param.isAnswer != undefined}}
                     <label class="{{?it.examType == 'multiple'}}checkbox{{??it.examType == 'single'}}radio{{??}}checkbox{{?}} inline">
                         <input type="{{?it.examType == 'multiple'}}checkbox{{??it.examType == 'single'}}radio{{??}}checkbox{{?}}"
-                        {{?param.isAnswer}}checked{{?}} name="isAnswer" />
+                        {{?param.isAnswer}}checked{{?}} name="isAnswer" onclick="removeMess()" />
                         我是答案</label>
                     <a class="icon-pencil-blue" href="#"></a>
                     {{?}}
@@ -157,7 +157,7 @@
                         <label class="control-label" for="">是否答案</label>
                         <div class="controls">
                             <label class="{{?it.examType == 'multiple'}}checkbox{{??it.examType == 'single'}}radio{{??}}checkbox{{?}}" >
-                                <input type="{{?it.examType == 'multiple'}}checkbox{{??it.examType == 'single'}}radio{{??}}checkbox{{?}}"  name="isAnswer"/>我是答案</label>
+                                <input type="{{?it.examType == 'multiple'}}checkbox{{??it.examType == 'single'}}radio{{??}}checkbox{{?}}" onclick="removeMess()" name="isAnswer"/>我是答案</label>
                             <div class="action-btn">
                                 <button class="btn btn-primary btn-large" type="button">确定</button>
                                 <button class="btn btn-link btn-large" type="button">取消</button>
@@ -406,6 +406,7 @@
 								var n = result.time / 15;
 								$("#mainTimeLine a :lt(" + n + ")").attr(
 										"class", "active");
+								$("#examPaperTime").val(parseInt(result.time));
 							}
 						});
 				//初始化试题列表
@@ -821,6 +822,7 @@
 
 				$("#addExamItem").click(function(e) {
 					$formAdd.removeClass("hide");
+					$("#answerErr").css("display","none");
 				});
 
 				//试题类型选择
@@ -838,7 +840,7 @@
 													.addClass("radio")
 													.children(":checkbox")
 													.after(
-															'<input type="radio" name="isAnswer" />')
+															'<input type="radio" name="isAnswer" onclick="removeMess()" />')
 													.remove();
 										} else if (this.id == "multiple") {
 											$(
@@ -1098,6 +1100,7 @@
 			$("#questionCount").html(count);
 			$("#questionScore").html(totalScore);
 		}
+		function removeMess(){$("#answerErr").css("display","none");};
 	</script>
 </body>
 </html>

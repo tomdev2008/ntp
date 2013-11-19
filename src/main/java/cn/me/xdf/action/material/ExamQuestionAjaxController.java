@@ -78,6 +78,10 @@ public class ExamQuestionAjaxController {
 			materialService.save(exam);
 		}else{
 			exam = materialService.get(materIalId);
+			exam.setFdDescription(materialintro);
+			if(!materialScore.equals("0")){
+				exam.setFdStudyTime(new Integer(materialScore));
+			}
 		}
 		String questionId = request.getParameter("questionId");
 		ExamQuestion examQuestion;
