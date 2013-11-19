@@ -706,6 +706,7 @@ $(function(){
         'buttonText' : '上传',
         'uploader' : '${ctx}/common/file/o_upload',
         'auto' : true,
+        'fileSizeLimit':2097152,// 限制文件大小为2G
         'fileTypeExts' : '*.*',
         'onInit' : function(){
         	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\

@@ -649,20 +649,18 @@
 			/* 课程推广 封页图片上传 */
 			var $progress ,flag = true,pct,interval,countdown = 0,byteUped = 0;
 
-	                jQuery("#upMovie").uploadify({
-	                	'height' : 40,
+			jQuery("#upMovie").uploadify({
+				        'height' : 40,
 	                    'width' : 68,
 	                    'multi' : false,
 	                    'simUploadLimit' : 1,
 	                    'swf' : $('#ctx').val()+'/resources/uploadify/uploadify.swf',
+	                    "buttonClass": "btn btn-primary btn-large",
 	                    'buttonText' : '上 传',
 	                    'uploader' : $('#ctx').val()+'/common/file/o_upload',
 	                    'auto' : true,// 选中后自动上传文件
-	                    "buttonClass": "btn btn-primary btn-large",
-	                    'buttonText' : '上传',
 	                    'fileTypeExts' : '*.jpg;*.png;',
 	                    'fileSizeLimit':2048,// 限制文件大小为2m
-	                    'queueSizeLimit':1,
 	                    'onInit' : function(){
 	                    	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
 	                		<span class="txt"><span class="pct">0%</span><span class="countdown"></span></span>');
@@ -676,7 +674,6 @@
 	                        if (Response) {
 	                        	$progress.find(".countdown").empty();
 	                        	var objvalue = eval("(" + data + ")");
-	                        	alert(objvalue.attId);
 	                            jQuery("#attIdID").val(objvalue.attId);
 	                           if (jQuery("#imgshow")) {
                        			jQuery("#imgshow").attr('src',  $('#ctx').val()+'/common/file/image/' + objvalue.attId);
@@ -698,7 +695,7 @@
 	                    	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
 	                    	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
 	                    }
-	                  });
+	         });
 	                function uploadSpeed(){
 	            		countdown = byteUped - countdown;
 	            	}
