@@ -3,7 +3,11 @@ package cn.me.xdf.action.course;
 
 
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,19 +17,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import sun.java2d.pipe.SpanShapeRenderer.Simple;
+
+import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.course.CourseParticipateAuth;
+import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.score.ScoreStatistics;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseAuthService;
 import cn.me.xdf.service.course.CourseCatalogService;
+import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.score.ScoreStatisticsService;
 import cn.me.xdf.utils.ShiroUtils;
 
 /**
@@ -49,6 +65,15 @@ public class CourseController {
     
     @Autowired
 	private CourseAuthService courseAuthService;
+    
+    @Autowired
+    private ScoreStatisticsService statisticsService;
+    
+    @Autowired
+    private CourseParticipateAuthService courseParticipateAuthService;
+    
+    @Autowired 
+    private AccountService accountService;
 	/*
 	 * 
 	 * 获取课程列表
@@ -157,4 +182,31 @@ public class CourseController {
     	return "/course/courseauth_list";
     	
     }
+    /**
+	 * 某课程授权
+	 */
+	@RequestMapping(value="getSingleCourseAuthInfo")
+	public String getCourseAuthInfo( HttpServletRequest request){
+		return "/course/courseauth_manage";
+	}
+	/**
+	 * 某课程授权添加
+	 */
+	@RequestMapping(value="saveCourseParticipateAuth")
+	public String saveCourseParticipateAuth(HttpServletRequest request){
+		String courseId=request.getParameter("courseId");
+		String teacherId=request.getParameter("teacher");
+		String mentorId=request.getParameter("mentor");
+		CourseInfo courseInfo=courseService.load(courseId);
+		SysOrgPerson teacher=accountService.findById(teacherId);
+		SysOrgPerson mentor=accountService.findById(mentorId);
+		CourseParticipateAuth cpa=new CourseParticipateAuth();
+		cpa.setCourse(courseInfo);
+		cpa.setFdTeacher(teacher);
+		cpa.setFdUser(mentor);
+	    cpa.setFdCreateTime(new Date());
+	    cpa.setVersion(0);
+	    courseParticipateAuthService.save(cpa);
+		return "redirect:/course/getSingleCourseAuthInfo?courseId="+courseId+"&fdType=13";
+	}
 }
