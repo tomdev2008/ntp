@@ -17,6 +17,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.base.IdEntity;
 
+import java.util.Date;
+
 /**
  * 课程章节实体的定义
  *
@@ -270,4 +272,31 @@ public class CourseCatalog extends IdEntity {
         return "none";
     }
 
+    /**
+     * 开始时间
+     */
+    private Date startDate;
+
+    /**
+     * 结束时间
+     */
+    private Date endDate;
+
+    @Transient
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    @Transient
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 }
