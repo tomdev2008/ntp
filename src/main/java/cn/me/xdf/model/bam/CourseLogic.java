@@ -78,8 +78,10 @@ public class CourseLogic {
         if (isThrought) {
             List<CourseCatalog> catalogs = bamCourse.getCatalogs();
             for (CourseCatalog catalog : catalogs) {
-                if (catalog.getFdId().equals(sourceNote.getFdCatalogId()))
+                if (catalog.getFdId().equals(sourceNote.getFdCatalogId())) {
+                    catalog.setEndDate(new Date());
                     catalog.setThrough(true);
+                }
             }
             bamCourse.setCatalogJson(JsonUtils.writeObjectToJson(catalogs));
         }
