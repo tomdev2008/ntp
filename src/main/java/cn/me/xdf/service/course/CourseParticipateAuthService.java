@@ -47,9 +47,23 @@ public class CourseParticipateAuthService extends BaseService{
 	 */
 	@Transactional(readOnly=false)
 	public Pagination findSingleCourseAuthList(String courseId,String orderStr,Integer pageNo,Integer pageSize,String keyword){
-		Finder finder=Finder.create(" select cpa.fdid as fdid,cpa.fdcreatetime as fdcreatetime,cpa.fdcourseid as fdcourseid," +
-				"sop.fdid as tid,sop.realname as trealname,sop.fd_email as temail,sop.depatid as depatid,soe.fd_name as departname," +
-				"sop1.fdid as mid,sop1.realname as mrealname,sop1.fd_email as memail,sop1.depatid as depatid,soe1.fd_name as departname " );
+		Finder finder=Finder.create(" select cpa.fdid as fdid,"+
+       "cpa.fdcreatetime,"+
+       "cpa.fdcourseid as fdcourseid,"+
+       "sop.fdid as tid,"+
+       "sop.fd_photo_url as timgUrl,"+
+       "'' as tlink,"+
+       "sop.realname as tname,"+
+       "sop.fd_email as tmail,"+
+       "sop.depatid as tdepartment,"+
+       "soe.fd_name as tdepartmentname,"+
+       "sop1.fdid as mid,"+
+       "sop1.fd_photo_url as mimgUrl,"+
+       "'' as mlink,"+
+       "sop1.realname as mname,"+
+       "sop1.fd_email as mmail,"+
+       "sop1.depatid as mdepartment,"+
+       "soe1.fd_name as mdepartmentname" );
 		finder.append(" from IXDF_NTP_COURSE_PARTICI_AUTH cpa ");
 		finder.append(" left join SYS_ORG_PERSON sop on cpa.fdteacherid=sop.fdid ");//教师信息
 		finder.append(" left join SYS_ORG_PERSON sop1 on cpa.fduserid=sop1.fdid ");//导师信息
