@@ -87,6 +87,7 @@ public class CourseCatalogAjaxController {
 						lectureMap.put("num", catalog.getFdNo());
 						lectureMap.put("title", catalog.getFdName());
 						lectureMap.put("type", catalog.getMaterialType());
+						lectureMap.put("isElective", catalog.getFdPassCondition());
 						lecture.add(lectureMap);
 					}					
 				}

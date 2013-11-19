@@ -104,7 +104,9 @@
 		<div class="sortable-bar">
 			<span class="title">{{?param.type}}<i class="icon-{{=param.type}}"></i>{{?}}
 				第<span class="index">{{=param.num}}</span>{{?param.type}}节{{??}}章{{?}}
-				<span class="name">{{=param.title || ''}}</span></span>
+				<span class="name">{{=param.title || ''}}</span>
+			{{?param.type}}<label class="label" >{{?param.isElective!=null && param.isElective=='0'}}选修{{??}}必修{{?}}</label>{{?}}
+			</span>
 			<a class="icon-pencil2{{?!param.type}} icon-white{{?}} btn-ctrls" href="#"></a>
 			<a class="icon-remove{{?!param.type}} icon-white{{?}} btn-ctrls" href="#"></a>
 			{{?param.type}}
@@ -157,7 +159,12 @@
                         <input type="text" id="courseTitle" name="courseTitle" required minlength="6" class="input-block-level" value="{{=it.courseTit || ''}}"  />
                         <label for="subTitle">副标题</label>
                         <textarea name="subTitle" id="subTitle" required minlength="12" class="input-block-level" rows="3">{{=it.subTit || ''}}</textarea>
-                        
+                        <label for="sectionOrder">章节顺序</label>
+                        <input name="sectionOrder" id="sectionOrder" value="{{=it.sectionOrder||true}}" type="hidden">
+                        <div class="btn-group btns-radio" data-toggle="buttons-radio">
+                            <button class="btn btn-large{{?it.sectionOrder==null || it.sectionOrder}} active{{?}}" id="true" type="button">顺序学习</button>
+                            <button class="btn btn-large{{?it.sectionOrder!=null && !it.sectionOrder}} active{{?}}" id="false" type="button">无序学习</button>
+                        </div>
                         <label >关键词</label>
                         <div class="keywordWrap">
                         	<input type="hidden" id="keyword" name="keyword" value="{{= it.keyword || '' }}" />
@@ -401,6 +408,16 @@
     <div class="page-body mediaPage-content">
         <form id="formMedia" method="post" class="form-horizontal" action="{{=it.action || '##'}}">
 	    	<div class="section" >
+				<div class="control-group">
+                    <label class="control-label" >章节设置</label>
+                    <div class="controls">
+                        <input name="isElective" id="isElective" value="{{=it.isElective || '1'}}" type="hidden">
+                        <div class="btn-group btns-radio" data-toggle="buttons-radio">
+                            <button class="btn btn-large{{?it.isElective=='1' || it.isElective==null}} active{{?}}" id="obligatory" type="button">必修</button>
+                            <button class="btn btn-large{{?it.isElective=='0'}} active{{?}}" id="elective" type="button">选修</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="control-group">
                     <label class="control-label" for="lectureName">章节名称</label>
                     <div class="controls"><input value="{{=it.pageTitle || ''}}" id="lectureName" required class="input-xlarge" name="lectureName" type="text" /></div>
@@ -674,6 +691,7 @@
 			 subTitle:  $("#subTitle").val(),
 			 keyword: $("#keyword").val(),
 			 courseType: $("#courseType").val(),
+			 sectionOrder: $("#sectionOrder").val(),
 			},
 			function(data){
 				$("#courseId").val(data.courseid);

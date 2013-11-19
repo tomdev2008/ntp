@@ -113,6 +113,7 @@ public class CourseAjaxController {
 			if (course != null) {
 				map.put("courseTit", course.getFdTitle());
 				map.put("subTit", course.getFdSubTitle());
+				map.put("sectionOrder", course.getIsOrder());
 				if (course.getFdCategory() != null) {
 					map.put("courseType", course.getFdCategory().getFdId());
 				}
@@ -146,6 +147,8 @@ public class CourseAjaxController {
 		String courseTitle = request.getParameter("courseTitle");
 		// 获取课程副标题
 		String subTitle = request.getParameter("subTitle");
+		// 获取课程学习顺序
+		String sectionOrder = request.getParameter("sectionOrder");
 		// 获取课程标签
 		String keyword = request.getParameter("keyword");
 		// 获取课程分类ID
@@ -168,7 +171,7 @@ public class CourseAjaxController {
 				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
 				course.setIsAvailable(true);
 				course.setIsPublish(true);
-				course.setIsOrder(true);
+				course.setIsOrder(Boolean.valueOf(sectionOrder));
 				// 将分类保存到课程中
 				if (StringUtil.isNotEmpty(courseType)) {
 					CourseCategory category = courseCategoryService
@@ -181,7 +184,7 @@ public class CourseAjaxController {
 			} else {
 				course.setFdTitle(courseTitle);
 				course.setFdSubTitle(subTitle);
-
+				course.setIsOrder(Boolean.valueOf(sectionOrder));
 				// 将分类保存到课程中
 				if (StringUtil.isNotEmpty(courseType)) {
 					CourseCategory category = courseCategoryService
@@ -198,7 +201,7 @@ public class CourseAjaxController {
 			course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
 			course.setIsAvailable(true);
 			course.setIsPublish(true);
-			course.setIsOrder(true);
+			course.setIsOrder(Boolean.valueOf(sectionOrder));
 			// 将分类保存到课程中
 			if (StringUtil.isNotEmpty(courseType)) {
 				CourseCategory category = courseCategoryService.get(courseType);

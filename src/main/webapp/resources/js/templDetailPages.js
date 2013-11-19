@@ -280,6 +280,7 @@
                     $.post($('#ctx').val()+"/ajax/courseContent/saveCourseContent",{
                     	catalogId:opt.id,
                     	type:type,
+                    	isElective: $("#isElective").val(),
                         pageTitle: $("#lectureName").val(),
                         learnTime:  $("#learnTime").val(),
                         sectionsIntro: $("#sectionsIntro").val(),
@@ -294,6 +295,13 @@
                         });
                 }
             });
+            $("#formMedia .btns-radio>.btn").click(function(){
+            	if(this.id == "elective"){
+            		$("#isElective").val("0");
+            	}else{
+            		$("#isElective").val("1");
+            	}
+          });
             var itemHtml,
                 $listMedia = $("#listMedia"),
                 addFlag = false,
@@ -805,7 +813,9 @@
 			 * $("#rightCont").html(basicInfoFn(data));//ajax 成功后删除
 			 */
 			$("#formBasicInfo").validate();	
-					
+			$("#formBasicInfo").find(".btns-radio>.btn").on("click",function(){
+                $("#sectionOrder").val(this.id);
+            });		
 			// 添加关键词事件
 			$("#formBasicInfo .keywordWrap>.btn-add").bind("click",function(e){
 				e.preventDefault();

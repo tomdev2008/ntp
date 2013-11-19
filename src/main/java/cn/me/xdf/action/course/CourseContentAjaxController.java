@@ -60,6 +60,7 @@ public class CourseContentAjaxController {
 			if(catalog!=null){
 				map.put("learnTime", catalog.getFdStudyTime());
 				map.put("sectionsIntro", catalog.getFdDescription());
+				map.put("isElective", catalog.getFdPassCondition());
 				List<Map> list = new ArrayList<Map>();
 				//将课程中的素材列表信息返回到页面
 				List<CourseContent> contents = courseContentService.findContentsByCatalogIdId(catalogId);
@@ -93,6 +94,8 @@ public class CourseContentAjaxController {
 		String learnTime = request.getParameter("learnTime");
 		//获取节描述
 		String sectionsIntro = request.getParameter("sectionsIntro");
+		//获取节的必修选修设置
+		String isElective = request.getParameter("isElective");
 		//获取节内容类型
 		String type = request.getParameter("type");
 		//获取节内容列表
@@ -110,6 +113,7 @@ public class CourseContentAjaxController {
 				if(StringUtil.isNotEmpty(sectionsIntro)){
 					catalog.setFdDescription(sectionsIntro);
 				}
+				catalog.setFdPassCondition(Double.valueOf(isElective));
 				//先将课程与素材的关系清空，然后再进行保存
 				courseContentService.deleteByCatalogId(catalogId);
 				catalog.setFdTotalContent(0);
