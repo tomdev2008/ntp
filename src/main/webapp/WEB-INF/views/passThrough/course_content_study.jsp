@@ -132,7 +132,7 @@
         <ul class="unstyled listExamPaper" id="listExamPaper">
             {{~it.listExamPaper :paper:index}}
                 <li class="accordion-group">
-                    <a class="titBar" {{?it.type == 'task' && paper.examPaperStatus == 'pass'}}{{??}}data-toggle="collapse" data-parent="#listExamPaper" {{?}}href="#examPaper{{=index+1}}">
+                    <a class="titBar"  examPaperStatus="{{=paper.examPaperStatus}}" {{?it.type == 'task' && paper.examPaperStatus == 'pass'}}{{??}}data-toggle="collapse" data-parent="#listExamPaper" {{?}}href="#examPaper{{=index+1}}">
                         <h2>{{?it.type == 'exam'}}试卷{{??it.type == 'task'}}作业包{{?}}{{=index+1}}. {{=paper.name}}</h2>
                         <p class="muted">共计{{=paper.examCount}}{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=paper.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=paper.examPaperTime}}{{?it.type=='exam'}}分钟{{??it.type=='task'}}天{{?}}。</p>
                         <span class="icon-state-bg{{?paper.examPaperStatus == 'fail'}} error">未通过
@@ -1178,6 +1178,11 @@
 
             $("#listExamPaper>li>a").click(function(e){
             	var $athis = $(this);
+            	var examPaperStatus_a = $athis.attr("examPaperStatus");
+                if((data.type == "task") && (examPaperStatus_a=="finish")){
+                  	$.fn.jalert2("您已提交当前作业，请耐心等待导师审批！");
+                  	return;
+                 } 
                 e.preventDefault();
                 if($(this).parent().siblings().find(".collapse").hasClass("in")){
                 	 var $this2 = $(this);
