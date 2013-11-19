@@ -219,7 +219,7 @@
                             <button class="btn btn-primary btn-large" id="addExam" type="button">添加作业</button>
                         </div>
                         <div class="bd">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" id="list_exam_table" style="display:none">
                                 <thead>
                                 <tr>
                                     <th>作业</th>
@@ -432,6 +432,11 @@ $(function(){
                 e.preventDefault();
                 $(this).closest("tr").remove();
                 initScore();
+                if($("#list_exam tr").length==0){
+					$("#list_exam_table").css("display","none");
+				}else{
+					$("#list_exam_table").css("display","table");
+				}
             });
 
     //作业详情编辑页面 模板函数
@@ -796,10 +801,15 @@ function initExamPaperList(){
 			  async:false,
 			  dataType : 'json',
 			  success: function(result){
-				  var html = "";
+				 var html = "";
 				 for(var i in result){
 					  html += itemExamDetailFn(result[i]);
-				  }
+				 }
+				 if(result.length==0){
+					$("#list_exam_table").css("display","none");
+				 }else{
+					$("#list_exam_table").css("display","table");
+				 }
 				  $("#list_exam").html(html); 
 				  initScore();
 			  }
