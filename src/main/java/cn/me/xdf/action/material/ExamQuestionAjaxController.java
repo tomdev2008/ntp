@@ -74,7 +74,7 @@ public class ExamQuestionAjaxController {
 			exam.setIsAvailable(true);
 			exam.setFdDescription(materialintro);
 			exam.setFdStudyTime(materialScore.equals("0")?null:new Integer(materialScore));
-			// /////////////////////保存测试
+			//保存测试
 			materialService.save(exam);
 		}else{
 			exam = materialService.get(materIalId);
@@ -91,8 +91,6 @@ public class ExamQuestionAjaxController {
 		}else{
 			examQuestion = examQuestionService.get(questionId);
 		}
-		List<ExamOpinion> opinions = new ArrayList<ExamOpinion>();
-		List<AttMain> attMains = new ArrayList<AttMain>();
 		String fdType = request.getParameter("examType");
 		String fdSubject = request.getParameter("examStem");
 		String fdStandardScore = request.getParameter("examScore");
@@ -125,10 +123,7 @@ public class ExamQuestionAjaxController {
 			examQuestion.setFdQuestion(res);
 		} else {
 			//删除之前的选项
-			List<ExamOpinion> oldPoinions = examOpinionService.findByProperty("question.fdId", examQuestion.getFdId());
-			for (ExamOpinion examOpinion : oldPoinions) {
-				examOpinionService.delete(examOpinion.getFdId());
-			}
+			examOpinionService.deleteOpinionsByQuestionId(examQuestion.getFdId());
 			//保存新选项
 			List<Map> poinion = JsonUtils.readObjectByJson(opinionString,
 					List.class);
@@ -140,7 +135,6 @@ public class ExamQuestionAjaxController {
 				String isAnswer = map.get("isAnswer").toString();
 				e.setIsAnswer(isAnswer.equals("true"));
 				examOpinionService.save(e);
-				opinions.add(e);
 				// 得到答案
 				if (isAnswer.equals("true")) {
 					answer += e.getFdId() + "#";
@@ -150,27 +144,7 @@ public class ExamQuestionAjaxController {
 		}
 		examQuestionService.save(examQuestion);
 		// 更新选项附件
-		if (StringUtil.isNotBlank(attString)) {
-			//删除之前的选项
-			List<AttMain> oldAttMains = attMainService.findByCriteria(AttMain.class,
-	                Value.eq("fdModelId", examQuestion.getFdId()),
-	                Value.eq("fdModelName", ExamQuestion.class.getName()));
-			for (AttMain attMain : oldAttMains) {
-				attMain.setFdModelId("");
-				attMain.setFdModelName("");
-				attMainService.save(attMain);
-			}
-			List<Map> att = JsonUtils.readObjectByJson(attString, List.class);
-			for (Map map : att) {
-				AttMain e = attMainService.get(map.get("id").toString());
-				e.setFdModelId(examQuestion.getFdId());
-				e.setFdModelName(ExamQuestion.class.getName());
-				e.setFdOrder(map.get("index").toString());
-				e.setFdKey("ExamQuestion");
-				attMains.add(e);
-				attMainService.update(e);
-			}
-		}
+		updateAttMain(attString, examQuestion.getFdId());
 		Map retMap = new HashMap();
 		retMap.put("materIalId", exam.getFdId());
 		retMap.put("examQuestionId", examQuestion.getFdId());
@@ -325,5 +299,32 @@ public class ExamQuestionAjaxController {
 		info.setQuestions(examQuestions);
 		materialService.save(info);
 		examQuestionService.deleteQuestion(questionId);
+	}
+	
+	/**
+	 *  更新选项附件
+	 * @param attString
+	 * @param examQuestionId
+	 */
+	private void updateAttMain(String attString,String examQuestionId){
+		// 更新选项附件
+		if (StringUtil.isNotBlank(attString)) {
+			//删除之前的选项
+			List<AttMain> oldAttMains =attMainService.getAttMainsByModelIdAndModelName(examQuestionId, ExamQuestion.class.getName());
+			for (AttMain attMain : oldAttMains) {
+				attMain.setFdModelId("");
+				attMain.setFdModelName("");
+				attMainService.save(attMain);
+			}
+			List<Map> att = JsonUtils.readObjectByJson(attString, List.class);
+			for (Map map : att) {
+				AttMain e = attMainService.get(map.get("id").toString());
+				e.setFdModelId(examQuestionId);
+				e.setFdModelName(ExamQuestion.class.getName());
+				e.setFdOrder(map.get("index").toString());
+				e.setFdKey("ExamQuestion");
+				attMainService.update(e);
+			}
+		}
 	}
 }

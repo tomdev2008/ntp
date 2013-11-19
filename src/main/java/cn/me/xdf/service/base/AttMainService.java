@@ -3,19 +3,18 @@ package cn.me.xdf.service.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.me.xdf.annotaion.AttMainMachine;
-import cn.me.xdf.annotaion.AttValues;
-import cn.me.xdf.common.file.FileUtil;
-import cn.me.xdf.common.utils.MyBeanUtils;
-import cn.me.xdf.model.base.IAttMain;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.me.xdf.annotaion.AttMainMachine;
+import cn.me.xdf.annotaion.AttValues;
+import cn.me.xdf.common.file.FileUtil;
 import cn.me.xdf.common.hibernate4.Value;
+import cn.me.xdf.common.utils.MyBeanUtils;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.service.SimpleService;
 
 /**
@@ -78,6 +77,11 @@ public class AttMainService extends SimpleService {
         for (AttMain attMain : attMains) {
             deleteAttMain(attMain.getFdId());
         }
+    }
+    
+    @Transactional(readOnly = false)
+    public List<AttMain> getAttMainsByModelIdAndModelName(String modelId,String modelName) {
+        return findByCriteria(AttMain.class,Value.eq("fdModelId", modelId), Value.eq("fdModelName", modelName));
     }
 
     /**

@@ -1,5 +1,7 @@
 package cn.me.xdf.service.material;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,13 @@ public class ExamOpinionService extends BaseService{
 	@Override
 	public  Class<ExamOpinion> getEntityClass() {
 		return ExamOpinion.class;
+	}
+	
+	public void deleteOpinionsByQuestionId(String questionId){
+		List<ExamOpinion> oldPoinions = findByProperty("question.fdId", questionId);
+		for (ExamOpinion examOpinion : oldPoinions) {
+			delete(examOpinion.getFdId());
+		}
 	}
 
 }
