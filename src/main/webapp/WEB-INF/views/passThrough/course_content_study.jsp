@@ -606,8 +606,8 @@
                 <div class="bd">
                     <div class="media">
                         <a class="pull-left" href="{{!it.user.link || '#'}}">
-                            <img src="{{!it.user.imgUrl || './images/face-placeholder.png'}}" class="media-object img-polaroid" alt=""/>
-                            <i class="icon-medal-lg"></i>
+								<img src="{{?it.user.imgUrl.indexOf('http')>-1}}{{=it.user.imgUrl}}{{??}}${ctx}/{{=it.user.imgUrl}}{{?}}" class="media-object img-polaroid" alt=""/>
+                            	<i class="icon-medal-lg"></i>
                         </a>
                         <div class="media-body">
                             <div class="media-heading"><em>{{=it.user.name}}</em>老师，</div>
@@ -730,7 +730,19 @@
         
         function loadOverCard(){
         	 var pageContentFn = doT.template(document.getElementById("pageContentTemplate").text);
-             var pageData = {
+        	 var pageData={};
+        	 $.ajax({
+	  			  url: "${ctx}/ajax/passThrough/getCourseOverByBamId",
+	  			  async:false,
+	  			  data:{
+	  				  bamId:bamId
+	  			  },
+	  			  dataType:'json',
+	  			  success: function(result){
+	  				pageData=result;
+	  			  },
+ 			});
+        	/*  pageData  = {
                  courseName: "集团雅思基础口语新教师学习课程",
                  user: {
                      name: "杨义锋",
@@ -740,7 +752,7 @@
                  },
                  passTime: "2013-11-19",
                  issuer: "集团国外考试推广管理中心"
-             };
+             }; */
              $("#mainContent").html(pageContentFn(pageData));
              /* $("#prevLecture").click(function (e){
              	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
