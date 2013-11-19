@@ -86,7 +86,7 @@
                 </span>
                 </h1>
 				{{?!it.nstatus}}
-				<a class="btn" href="#"><i class="icon-disc-lg-bg"><i class="icon-medal"></i></i></a>
+				<a class="btn btn-back" href="#button"> <i class="icon-disc-lg-bg"><i class="icon-home icon-white"></i></i> </a>
 				{{??}}
 				 <a class="btn {{?!it.nstatus}} disabled{{?}}" {{?it.nstatus}}href="#"{{?}}  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.nextBaseType || ''}}">
                         <i class="icon-chevron-lg-right"></i>
