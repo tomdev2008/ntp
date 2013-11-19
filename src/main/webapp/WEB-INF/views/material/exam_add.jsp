@@ -268,7 +268,7 @@
 									type="button">添加试题</button>
 							</div>
 							<div class="bd">
-								<table class="table table-bordered">
+								<table class="table table-bordered" id="list_exam_table" style="display:none">
 									<thead>
 										<tr>
 											<th>试题</th>
@@ -579,6 +579,11 @@
 				e.preventDefault();
 				$(this).closest("tr").remove();
 				initScore();
+				if($("#list_exam tr").length==0){
+					$("#list_exam_table").css("display","none");
+				}else{
+					$("#list_exam_table").css("display","table");
+				}
 			});
 
 			$("#addUser")
@@ -1074,6 +1079,11 @@
 
 								for ( var i in result.qusetions) {
 									html += examQuestionTemplate(result.qusetions[i]);
+								}
+								if(result.qusetions.length==0){
+									$("#list_exam_table").css("display","none");
+								}else{
+									$("#list_exam_table").css("display","table");
 								}
 								$("#list_exam").html(html);
 								$("#examPaperName").val(result.name);
