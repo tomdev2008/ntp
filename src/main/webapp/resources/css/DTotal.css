@@ -38,11 +38,11 @@
 .page-header h4{text-align: center;margin: 0;line-height: 24px;}
 .box-control{margin-top: 25px}
 .box-control .hd{border-bottom: solid #e5e5e5 1px;padding: 15px 0;}
-.box-control .hd .btn-toolbar{margin: 0 18px}
+.box-control .hd .btn-toolbar{margin: 0 18px;position: relative;}
 .box-control .btn-toolbar > label{display: inline-block;margin: 0;vertical-align: middle;}
 .box-control .btn-toolbar > label.muted{padding: 10px;}
 .box-control .hd .btn-toolbar .btn{margin-right: 5px;border: solid #e5e5e5 1px;background-color: #FFFFFF;}
-.box-control .hd .btn-toolbar .btn-link{border: none;margin-right: 0}
+.box-control .hd .btn-toolbar .btn-link{border: none;margin-right: 0;position: absolute;right: 0;top:1px;}
 .box-control .hd .toolbar-search {display: inline-block;*display: inline;position: relative;margin-bottom:0; margin-left: 5px;}
 .box-control .hd .toolbar-search .icon-search{position: absolute;right: 10px;top: 5px;*top:10px;}
 .box-control .hd .toolbar-search .search{
@@ -52,7 +52,7 @@
 .btns-radio{margin-right: 12px;}
 .btns-radio .btn{border: solid #e5e5e5 1px;background-color: #FFFFFF;}
 .btns-radio .active.btn{background-color: #4391bb;border-color:#4391bb;color: #fff;text-shadow: none; }
-.btns-radio .btn + .btn{margin-left: 0;border-left: 0;}
+.btns-radio .btn + .btn{margin-left: 0;*margin-left: -1px;border-left: 0;}
 .box-control .bd .btn-toolbar label.radio{   margin-right: 10px;}
 .box-control .bd .btn-toolbar .pages{position: absolute;right: 0;
     top: 5px;}
@@ -96,11 +96,11 @@
 .editingBody #open.tab-pane{padding:16px;background-color:#efefef;border:solid #d7d6d6 1px;}
 .editingBody .tab-content .autoComplete{*width: 728px}
 .editingBody .tab-content .autoComplete + .icon-search{position: absolute;right: 10px;top: 10px;}
-.editingBody  .table td,.editingBody .table th{text-align:center;line-height:36px;padding:12px;}
+.editingBody  .table td,.editingBody .table th{text-align:center;line-height:36px;height:36px;padding:12px;}
 .editingBody  .table .tdTit img{width:36px;height:36px;margin-right:8px;}
 .editingBody  .table .tdTit .pr{text-align:left;padding-left:50px;}
 .editingBody  .table .tdTit .pr a{color: #000000;}
-.editingBody  .table .tdTit .state-dragable{left:18px;top:12px;}
+.editingBody  .table .tdTit .pr .state-dragable{left:18px;top:12px;*top:2px;}
 .editingBody  .table .sortable-placeholder{border:dashed #4391bb 1px;height:60px;padding:0;}
 .editingBody  .table tbody a.icon-remove-blue,.editingBody  .table tbody input{vertical-align:middle;}
 .editingBody .section .hd{position: relative;overflow: hidden}
@@ -114,14 +114,14 @@
 
 /*试卷详情页面*/
 .timeLine{font-size: 0;}
-.timeLine > a{width: 82px;display: inline-block;position: relative;margin-top: 1px;height:17px;background-color:#efefef;border-right: solid #e5e5e5 1px;border-top: solid #FFFFFF 6px;}
+.timeLine > a{width: 82px;display: inline-block;*margin-left:-1px;position: relative;margin-top: 1px;height:17px;background-color:#efefef;border-right: solid #e5e5e5 1px;border-top: solid #FFFFFF 6px;}
 .timeLine > a.first{border-left: solid #e5e5e5 1px;}
 .timeLine .num{font-size: 12px;color: #999;}
 .timeLine a .num{position: absolute;right:-6px;top: -27px;}
 .timeLine a.active{background-color:#99c0d5;}
 .scoreLine{}
 .list-attachment{margin: 20px 0;}
-.list-attachment li{border:solid #e4e4e4 1px;display: block;min-height: 58px;position: relative;overflow: hidden}
+.list-attachment li{border:solid #e4e4e4 1px;display: block;*margin-bottom:-3px;min-height: 58px;position: relative;overflow: hidden}
 .list-attachment li + li{border-top: none;}
 .list-attachment li.sortable-placeholder{border:dashed #4391bb 1px;}
 .list-attachment li:hover{background-color: #eff4f7;}
@@ -142,3 +142,29 @@
 .formAddItem .controls label{margin-top: 6px}
 .formAddItem .controls .action-btn{position: absolute;right: 12px; top:-3px;}
 #nameExamItem{width: 600px;background-color: #FFFFFF;}
+
+/*授权学习*/
+.authorizedBody .media{padding: 20px 15px;}
+.authorizedBody .media .pull-left{margin-right: 38px;}
+.authorizedBody .media .media-object{width: 362px;}
+.authorizedBody .media-body p{margin-bottom: 0;}
+.authorizedBody .media-heading h2{font-size: 18px;margin: 0;}
+.authorizedBody .media-foot {text-align: right;margin-top: 30px;}
+.authorizedBody .divider{text-align: center}
+#formAddTeacher{padding: 20px;margin: 0;}
+#formAddTeacher .input-block{margin-bottom: 0;padding: 19px 10px;width: 728px;display: block;}
+#formAddTeacher button.btn-primary {margin-top: 20px;}
+.listTeacher li{border-bottom: solid #e0e0e0 2px;margin-bottom:8px;background-color: #f9f9f9;padding: 0 20px;}
+.listTeacher li .hd{text-align: right;padding: 13px 0;border-bottom: dashed #e2e2e2 1px;}
+.listTeacher li .hd .remove{display: inline-block;width: 20px;height: 20px;font-size:18px;text-align: center;background-color: #95c3db;color: #ffffff}
+.listTeacher li .bd label.pull-left{margin-top: 47px;}
+.listTeacher li .bd .box{margin-top: -12px;}
+.listTeacher li .bd .box .span3{width: 250px;}
+.listTeacher li .bd .box .span2{width: 160px;}
+.listTeacher li .bd .box .span2 .divider{margin-top: 8px;}
+.listTeacher li .bd .box .type{text-align: center;}
+.listTeacher li .bd .box .type span,.listTeacher li .bd .box .time{background-color: #f9f9f9;}
+.listTeacher li .bd .box .type span{padding: 0 10px;}
+.listTeacher li .bd .box .time{font-size: 12px;color: #bbbbbb;text-align: center;}
+.listTeacher li .bd .box .span3 .person{margin: 20px 0 10px;height: 60px;}
+.listTeacher li .bd .box .span3 .person .pull-left{margin-top: 4px;margin-right: 10px;}

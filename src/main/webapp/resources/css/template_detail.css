@@ -97,6 +97,7 @@
 .sortable-bar .title .name{margin-left:10px;}
 .sortable .index {margin:0 2px;}
 .sortable-bar .title > i{margin-right:8px;}
+.sortable-bar .title .label{background-color:#f7f7f7;border:solid #e5e5e5 1px;color: #999;margin-left:5px;font-weight:normal;text-shadow: none;}
 .sortable-bar .btn-ctrls{margin-left:16px;display:none;}
 .sortable-bar:hover .btn-ctrls{display:inline-block;}
 .sortable .sortable-placeholder{background:none;height:58px;margin:0 14px;}
@@ -144,6 +145,10 @@
 .section-add .btn-lecture-add:hover{background-color:#585858;}
 
 /* 视频,文档。。。页 */
+.btns-radio{margin-right: 12px;}
+.btns-radio .btn{border: solid #e5e5e5 1px;background-color: #FFFFFF;}
+.btns-radio .active.btn{background-color: #4391bb;border-color:#4391bb;color: #fff;text-shadow: none; }
+.btns-radio .btn + .btn{margin-left: 0;*margin-left: -1px;border-left: 0;}
 .mediaPage-content .section .control-group .control-label{width: 60px;}
 .mediaPage-content .section .control-group .controls{
     margin-left: 80px;*margin-left: 0;}
