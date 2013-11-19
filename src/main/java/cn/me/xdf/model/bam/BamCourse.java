@@ -24,8 +24,6 @@ import java.util.List;
 import static cn.me.xdf.common.json.JsonUtils.*;
 
 /**
- *
- *
  * Created with IntelliJ IDEA.
  * User: xiaobin268
  * Date: 13-10-29
@@ -41,7 +39,6 @@ public class BamCourse extends IdEntity implements BamProcess {
 
     public BamCourse() {
     }
-
 
 
     public BamCourse(String preTeachId, String guideTeachId, String courseId, String courseJson,
@@ -306,11 +303,10 @@ public class BamCourse extends IdEntity implements BamProcess {
     @Transient
     public List<CourseCatalog> getCatalogs() {
         if (StringUtils.isNotBlank(catalogJson)) {
-             return readBeanByJson(catalogJson, List.class, CourseCatalog.class);
+            return readBeanByJson(catalogJson, List.class, CourseCatalog.class);
         }
         return null;
     }
-
 
 
     /**
@@ -348,24 +344,24 @@ public class BamCourse extends IdEntity implements BamProcess {
         return informs;
     }
 
-
     /**
-     * 设置当前素材通过
+     * 获取章节下的所有素材
      *
-     * @param id
+     * @return
      */
     @Transient
-    public void toMateridThroughById(String id) {
+    public List<MaterialInfo> getMaterialByCatalog(String catalogId) {
         List<CourseContent> courseContents = getCourseContents();
         if (courseContents == null)
-            return;
-
+            return null;
+        List<MaterialInfo> informs = new LinkedList<MaterialInfo>();
+        ArrayUtils.sortListByProperty(courseContents, "fdMaterialNo", SortType.HIGHT);
         for (CourseContent content : courseContents) {
-            if (content.getMaterial().getFdId().equals(id)) {
-                content.getMaterial().setThrough(true);
+            if (content.getCatalog().getFdId().equals(catalogId)) {
+                informs.add(content.getMaterial());
             }
         }
-        this.courseContentJson = JsonUtils.writeObjectToJson(courseContents);
+        return informs;
     }
 
 

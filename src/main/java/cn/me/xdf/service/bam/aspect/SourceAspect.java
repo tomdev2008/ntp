@@ -1,6 +1,7 @@
 package cn.me.xdf.service.bam.aspect;
 
 import cn.me.xdf.model.bam.BamCourse;
+import cn.me.xdf.model.bam.CourseLogic;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.bam.BamCourseService;
 import org.apache.commons.lang3.BooleanUtils;
@@ -28,6 +29,7 @@ public class SourceAspect {
 
     /**
      * 资源过滤
+     *
      * @param joinPoint
      * @return
      */
@@ -40,9 +42,11 @@ public class SourceAspect {
             return "";
         //更新素材
         BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(note.getFdUserId(), note.getFdCourseId());
-        // @todo 现在只做到设置素材进度，还没有更新章节进度
-        bamCourse.toMateridThroughById(note.getFdMaterialId());
-        bamCourseService.update(bamCourse);
+        CourseLogic courseLogic = new CourseLogic(bamCourse, note);
+
+        bamCourseService.update(courseLogic.getBamCourse());
+
+
         return joinPoint.getTarget();
     }
 }
