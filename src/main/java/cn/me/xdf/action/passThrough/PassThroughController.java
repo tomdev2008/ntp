@@ -10,6 +10,7 @@ import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
@@ -72,10 +73,8 @@ public class PassThroughController {
 	 * 课程学习首页
 	 * @param request
 	 */
-	@RequestMapping(value = "getCourseHome")
-	public String getCourseHome(HttpServletRequest request) {
-		//获取课程ID
-		String courseId = request.getParameter("courseId");
+	@RequestMapping(value = "getCourseHome/{courseId}")
+	public String getCourseHome(@PathVariable("courseId") String courseId,HttpServletRequest request) {
 		if(StringUtil.isNotEmpty(courseId)){
 			CourseInfo course = courseService.get(courseId);
 			if(course!=null && course.getIsAvailable()){
