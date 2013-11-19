@@ -85,10 +85,14 @@
                 <span class="tit">学习通过</span>
                 </span>
                 </h1>
-                <a class="btn {{?!it.nstatus}} disabled{{?}}" {{?it.nstatus}}href="#"{{?}}  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.nextBaseType || ''}}">
+				{{?!it.nstatus}}
+				<a class="btn" href="#"><i class="icon-disc-lg-bg"><i class="icon-medal"></i></i></a>
+				{{??}}
+				 <a class="btn {{?!it.nstatus}} disabled{{?}}" {{?it.nstatus}}href="#"{{?}}  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.nextBaseType || ''}}">
                         <i class="icon-chevron-lg-right"></i>
                         <span>下一节</span>
                 </a>
+				{{?}}
                 </div>
                 <div class="bd" id="headToolsBar">
 

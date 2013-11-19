@@ -19,7 +19,7 @@
         <td class="tdTit">
             <div class="pr">
                 <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
-                <img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
+				<img src="{{?it.imgUrl.indexOf('http')>-1}}{{=it.imgUrl}}{{??}}${ctx}/{{=it.imgUrl}}{{?}}" />{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
             </div>
         </td>
         <td><input type="checkbox" {{?it.tissuePreparation!=false}}checked{{?}}  class="tissuePreparation" /></td>
@@ -406,9 +406,15 @@ $(function(){
 		async:false,
 		dataType : 'json',
 		success: function(result){
+			var photo;
+			if(url.indexOf("http")>-1){
+				photo=url;
+			}else{
+				photo="${ctx}/"+url;
+			}
 			var html = "<tr data-fdid='creator' draggable='true'> "+
 			  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
-			  "<img src='"+url+"' alt=''>"+creator+" </div> </td>"+
+			  "<img src='"+photo+"' alt=''>"+creator+" </div> </td>"+
 			  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
 			  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
 			  "</td> </tr>";
@@ -523,8 +529,14 @@ $(function(){
             return item.name + item.mail + item.org + item.department;
         },
         formatItem: function(item) {
+        	var photo;
+			if(item.imgUrl.indexOf("http")>-1){
+				photo=item.imgUrl;
+			}else{
+				photo="${ctx}/"+item.imgUrl;
+			}		
             return '<img src="'
-                    + (item.imgUrl || 'images/temp-face36.jpg') + '" alt="">'
+                    + (photo) + '" alt="">'
                     + item.name + '（' + item.mail + '），'
                     + item.org + '  ' + item.department;
         },
