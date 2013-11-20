@@ -41,7 +41,7 @@ public class BamCourseService extends SimpleService {
         }
     }
 
-    public void updateCatalogThrough(BamCourse bamCourse,String catalogId){
+    public void updateCatalogThrough(BamCourse bamCourse, String catalogId) {
 
     }
 
@@ -116,7 +116,12 @@ public class BamCourseService extends SimpleService {
         save(bamCourse);
     }
 
-
+    /**
+     * 根据课程节获取所有课程节的ID
+     *
+     * @param courseCatalogs
+     * @return
+     */
     private List<Object> getCatalogIds(List<CourseCatalog> courseCatalogs) {
         try {
             return MyBeanUtils.getPropertyByList(courseCatalogs, "fdId");

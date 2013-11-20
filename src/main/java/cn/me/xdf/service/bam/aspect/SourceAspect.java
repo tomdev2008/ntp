@@ -31,6 +31,8 @@ public class SourceAspect {
     /**
      * 资源过滤
      *
+     * 更新课程的资源
+     *
      * @param joinPoint
      * @return
      */
@@ -54,6 +56,12 @@ public class SourceAspect {
         return joinPoint.getTarget();
     }
 
+    /**
+     * 更新课程节
+     *
+     * @param joinPoint
+     * @return
+     */
     @After(value = "execution(* cn.me.xdf.service.bam.BamCourseService.updateCatalogThrough(..))")
     public Object saveBamScoreByCatalog(JoinPoint joinPoint) {
         log.info("开始启动资源过滤------------saveBamScoreByCatalog----------");
