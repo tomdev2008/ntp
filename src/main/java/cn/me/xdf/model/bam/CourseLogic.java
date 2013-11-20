@@ -113,16 +113,22 @@ public class CourseLogic {
                 isThrought = false;
             }
         }
-        if (isThrought) {
-            List<CourseCatalog> catalogs = bamCourse.getCatalogs();
-            for (CourseCatalog catalog : catalogs) {
-                if (catalog.getFdId().equals(catalogId)) {
-                    catalog.setEndDate(new Date());
-                    catalog.setThrough(true);
-                }
+        
+        List<CourseCatalog> catalogs = bamCourse.getCatalogs();
+        for (CourseCatalog catalog : catalogs) {
+            if (catalog.getFdId().equals(catalogId)) {
+	             if (isThrought) {
+		              catalog.setEndDate(new Date());
+		              catalog.setThrough(true);
+	             }else{
+	            	 if(catalog.getThrough()==null){
+	            		 catalog.setThrough(false);
+	            	 }
+	             }
             }
-            bamCourse.setCatalogJson(JsonUtils.writeObjectToJson(catalogs));
         }
+            bamCourse.setCatalogJson(JsonUtils.writeObjectToJson(catalogs));
+        
     }
 
     /**
@@ -132,7 +138,7 @@ public class CourseLogic {
         List<CourseCatalog> catalogs = bamCourse.getCatalogs();
         boolean isThrought = true;
         for (CourseCatalog catalog : catalogs) {
-            if (!catalog.getThrough())
+            if (catalog.getThrough()==null || !catalog.getThrough())
                 isThrought = false;
         }
 
