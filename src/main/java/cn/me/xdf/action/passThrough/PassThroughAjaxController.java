@@ -42,6 +42,7 @@ import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.material.ExamQuestionService;
 import cn.me.xdf.service.material.MaterialService;
+import cn.me.xdf.utils.DateUtil;
 import cn.me.xdf.utils.ShiroUtils;
 
 
@@ -342,6 +343,17 @@ public class PassThroughAjaxController {
 					pn.put("nstatus", false);
 				}
 			}
+			int currentCatalogCount=0;
+			for(int i=0;i<catalogs.size();i++){
+				if(catalogs.get(i).getFdType()==1){
+					currentCatalogCount++;
+				}
+			}
+			if(currentCatalog.getFdNo()==currentCatalogCount){
+				pn.put("isLast", true);
+			}else{
+				pn.put("isLast", false);
+			}
 			return pn;
 		}
 		/**
@@ -368,18 +380,25 @@ public class PassThroughAjaxController {
 		@ResponseBody
 		public String getCourseOverByBamId(HttpServletRequest request){
 			String bamId = request.getParameter("bamId");
-			Map map = new HashMap();
-			Map user = new HashMap();
-			SysOrgPerson orgPerson = accountService.load(ShiroUtils.getUser().getId());
-			user.put("name",orgPerson.getRealName());
-			user.put("enName", orgPerson.getRealName());
-			user.put("imgUrl", orgPerson.getPoto());
-			user.put("link", "#");
-			map.put("courseName", "12312");
-			map.put("passTime", "asdasd");
-			map.put("issuer", "asdasd");
-			map.put("user", user);
-			return JsonUtils.writeObjectToJson(map);
+			BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
+			//if(bamCourse.getThrough()==false){
+				//return "notThrough";
+			//}else{
+				Map map = new HashMap();
+				Map user = new HashMap();
+				SysOrgPerson orgPerson = accountService.load(ShiroUtils.getUser().getId());
+				user.put("name",orgPerson.getRealName());
+				user.put("enName", orgPerson.getLoginName());
+				user.put("imgUrl", orgPerson.getPoto());
+				user.put("link", "#");
+				CourseInfo courseInfo =((CourseInfo)courseService.get(bamCourse.getCourseId()));
+				SysOrgPerson person = courseInfo.getCreator();
+				map.put("courseName", courseInfo.getFdTitle() );
+				map.put("passTime", DateUtil.convertDateToString(bamCourse.getEndDate()));
+				map.put("issuer", person.getDeptName());
+				map.put("user", user);
+				return JsonUtils.writeObjectToJson(map);
+			//}
 		}
 		
 }

@@ -37,6 +37,7 @@ import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.material.MaterialDiscussInfoService;
 import cn.me.xdf.service.material.MaterialService;
+import cn.me.xdf.utils.GraphUtils;
 
 /**
  * @author xiaobin
@@ -281,6 +282,47 @@ public class FileController {
     @Autowired
     public void setFileRepository(FileRepository fileRepository) {
         this.fileRepository = fileRepository;
+    }
+    
+    /**
+     * html转图片，并且下载
+     *
+     * @param id (对应AttMain的主键)
+     * @return
+     */
+    @RequestMapping("/downloadImg")
+    public void downloadImg(HttpServletRequest request, HttpServletResponse response) {
+        /*try {
+//        	String html = request.getParameter("html");
+        	String html = "<h1>哈哈哈</h1>";
+            response.setContentType("image/jpeg");
+            OutputStream out;
+            byte[] img = GraphUtils.toImages(html).get(0);
+            response.addHeader("Content-Length",
+                    String.valueOf(img.length));
+            out = response.getOutputStream();
+            out.write(img);
+            out.flush();
+            StreamUtil.close(out);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }*/
+    	try {
+//        	String html = request.getParameter("html");
+        	String html = "<h1>哈哈哈</h1>";
+            byte[] img = GraphUtils.toImages(html).get(0);
+            response.setHeader("Content-Disposition", "attachment;filename=hhh.jpg");
+            OutputStream out;
+            response.addHeader("Content-Length",
+                    String.valueOf(img.length));
+            out = response.getOutputStream();
+            out.write(img);
+            out.flush();
+            StreamUtil.close(out);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

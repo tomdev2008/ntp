@@ -85,7 +85,7 @@
                 <span class="tit">学习通过</span>
                 </span>
                 </h1>
-				{{?!it.nstatus}}
+				{{?it.isLast}}
 				<a class="btn btn-back" id="nextOver"> <i class="icon-disc-lg-bg"><i class="icon-home icon-white"></i></i> </a>
 				{{??}}
 				 <a class="btn {{?!it.nstatus}} disabled{{?}}" {{?it.nstatus}}href="#"{{?}}  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.nextBaseType || ''}}">
@@ -601,11 +601,11 @@
                 </div>
         </div>
         <section class="page-body" >
-            <section class="bdbt2 box-certificate">
+            <section class="bdbt2 box-certificate" id="cardId">
                 <div class="hd"><h2>新东方认证教师</h2></div>
                 <div class="bd">
                     <div class="media">
-                        <a class="pull-left" href="{{!it.user.link || '#'}}">
+                        <a class="pull-left" href="{{=it.user.link}}">
 								<img src="{{?it.user.imgUrl.indexOf('http')>-1}}{{=it.user.imgUrl}}{{??}}${ctx}/{{=it.user.imgUrl}}{{?}}" class="media-object img-polaroid" alt=""/>
                             	<i class="icon-medal-lg"></i>
                         </a>
@@ -731,6 +731,7 @@
         function loadOverCard(){
         	 var pageContentFn = doT.template(document.getElementById("pageContentTemplate").text);
         	 var pageData={};
+        	 var passed;
         	 $.ajax({
 	  			  url: "${ctx}/ajax/passThrough/getCourseOverByBamId",
 	  			  async:false,
@@ -739,24 +740,40 @@
 	  			  },
 	  			  dataType:'json',
 	  			  success: function(result){
-	  				pageData=result;
+	  				  if(result=="notThrough"){
+	  					passed=false;
+	  				  }else{
+	  					passed=true; 
+	  				  }
+	  				  pageData=result;
 	  			  },
  			});
-        	/*  pageData  = {
-                 courseName: "集团雅思基础口语新教师学习课程",
-                 user: {
-                     name: "杨义锋",
-                     enName: "yangyifeng",
-                     imgUrl: "./images/temp-face70.jpg",
-                     link: "#profile"
-                 },
-                 passTime: "2013-11-19",
-                 issuer: "集团国外考试推广管理中心"
-             }; */
-             $("#mainContent").html(pageContentFn(pageData));
+        	 //if(passed){
+        		 $("#mainContent").html(pageContentFn(pageData));
+        	 //}else{
+        	 //	 $.fn.jalert("您尚未取得结业证书");
+        	 //}
+            
              /* $("#prevLecture").click(function (e){
              	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
              }); */
+             
+             $("#downloadCertificate").bind("click",function(){
+            	 window.location.href = "${ctx}/common/file/downloadImg";
+
+            	 /* $.ajax({
+   	  			  url: "${ctx}/common/file/downloadImg",
+   	  			  async:false,
+   	  			  type:"post",
+   	  			  data:{
+   	  				  html:$("#cardId").html()
+   	  			  },
+   	  			  dataType:'json',
+   	  			  success: function(result){
+   	  				 
+   	  			  }
+    			}); */
+             });
              
         }
         
