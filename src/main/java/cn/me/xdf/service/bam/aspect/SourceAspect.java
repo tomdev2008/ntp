@@ -41,6 +41,9 @@ public class SourceAspect {
         if (args == null || args.length < 1) {
             throw new RuntimeException("无效的资源参数");
         }
+        if (!(args[0] instanceof SourceNote)) {
+            throw new RuntimeException("资源格式不正确");
+        }
         SourceNote note = (SourceNote) args[0];
         if (note == null || !BooleanUtils.toBoolean(note.getIsStudy()))
             return "";
@@ -57,6 +60,9 @@ public class SourceAspect {
         Object[] args = joinPoint.getArgs();
         if (args == null || args.length < 2) {
             throw new RuntimeException("无效的资源参数");
+        }
+        if (!(args[0] instanceof SourceNote)) {
+            throw new RuntimeException("资源格式不正确");
         }
         SourceNote note = (SourceNote) args[0];
         if (note == null || !BooleanUtils.toBoolean(note.getIsStudy()))
