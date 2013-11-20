@@ -69,22 +69,7 @@
 							<div class="pages pull-right">
 								<div class="span2">
 									第<span> 
-									 <c:if test="${page.totalPage==1}">
-									   1 - ${page.totalCount}
-									 </c:if>  
-									 <c:if test="${page.totalPage>1}">
-									   <c:if test="${page.pageNo==1}">
-									    1-10
-									   </c:if>
-									   <c:if test="${page.pageNo!=1}">
-									    <c:if test="${page.pageNo<page.totalPage}">
-									     ${page.pageNo*10-10+1} - ${page.pageNo*10}
-									    </c:if>
-										<c:if test="${page.pageNo==page.totalPage}">
-									     ${page.pageNo*10-10+1} - ${page.totalCount}
-									   </c:if>
-									  </c:if>
-									</c:if>
+									 ${page.startNum} - ${page.endNum}
 								   </span> 
 									 / <span>${page.totalCount}</span> 条 
 								</div>
@@ -188,11 +173,11 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu pull-right">
-						  <c:forEach var="i" begin="1" end="${page.totalPage}">
-							<li><a onclick="findeCoursesByKey('${i}','${param.order}')">
-							${i*10-10+1} - ${i*10} 
-							</a></li>
-						</c:forEach>
+						  <c:forEach var="i" begin="${page.startOperate}" end="${page.endOperate}"> 
+                            <li><a onclick="pageNavClick('${param.fdType}','${i}','${param.order}')">
+                             ${i*10-10+1} - ${i*10} 
+				            </a></li>
+			              </c:forEach> 
 						</ul>
 			
 					<c:if test="${page.lastPage==true}">

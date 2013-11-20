@@ -42,7 +42,7 @@
                         {{?lecture.index == i}}
                            
                             <li{{?lecture.id == param.currentId}} class="active"{{?}}>
-                                <a {{?lecture.status != 'untreated'||param.isOrder==false}}href="#" {{?}}data-fdid="{{=lecture.id}}" data-type="{{=lecture.baseType}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
+                                <a {{?lecture.fdStatus=='true'}}href="#" {{?}}data-fdid="{{=lecture.id}}" data-type="{{=lecture.baseType}}" data-toggle="popover" data-content="{{=lecture.intro || ''}}" title="{{=lecture.name || ''}}">
                                     <span class="dt">节{{=lecture.num}} <b class="icon-circle-progress">
                                         {{?lecture.status != 'untreated'}}<i class="icon-progress{{?lecture.status == 'doing'}} half{{?}}"></i>{{?}}
                                     </b></span>
@@ -687,21 +687,6 @@
 				
 	     loadLeftData(bamId);//加载左边栏目
 				
-		 function loadLeftData(bamId){
-			  $.ajax({
-				  url: "${ctx}/ajax/passThrough/getBamCatalogTree",
-				  async:false,
-				  data:{bamId:bamId},
-				  dataType:'json',
-				  success: function(rsult){
-					  leftData = rsult;
-					  leftData.sidenav.currentId = catalogId;
-					  $("#sideBar").html(pageLeftBarFn(leftData));
-				  },
-			});
-			 
-		 }
-				
         //左侧菜单定位
         setTimeout(function(){
             $("#sidebar").affix({
@@ -762,6 +747,21 @@
                  }); 
         	 }
         }
+		
+		 function loadLeftData(bamId){
+			  $.ajax({
+				  url: "${ctx}/ajax/passThrough/getBamCatalogTree",
+				  async:false,
+				  data:{bamId:bamId},
+				  dataType:'json',
+				  success: function(rsult){
+					  leftData = rsult;
+					  leftData.sidenav.currentId = catalogId;
+					  $("#sideBar").html(pageLeftBarFn(leftData));
+				  },
+			});
+			 
+		 }
         
 		function loadRightCont(fdid,type){
         	catalogId=fdid;
@@ -769,6 +769,7 @@
 	        $.ajax({
 		  			  url: "${ctx}/ajax/passThrough/getCourseContent",
 		  			  async:false,
+		  			  cache:false,
 		  			  data:{
 		  				  catalogId:fdid,
 		  				  bamId:bamId,
@@ -786,26 +787,52 @@
 		  				
 		  			  },
 	  			});
-	        
 
             //可选章节按钮
             $("#btnOptionalLecture").css("cursor","pointer")
                     .click(function(e){
                         $(this).removeClass("disabled");
                         $("#nextLecture").removeClass("disabled");
-                    });
+                     $.ajax({
+      		  			  url: "${ctx}/ajax/passThrough/updateCatalogThrough",
+      		  			  async:false,
+      		  			  data:{
+      		  				  catalogId:catalogId,
+      		  				  bamId:bamId,
+      		  			  },
+      		  			  dataType:'json',
+      		  			  success: function(result){
+      		  				loadLeftData(bamId);
+      		  			$("#sidenav>li>a").popover({
+      		              trigger: "hover"
+      		            })
+      		                  .click(function(e){
+      		                      e.preventDefault();
+      		                      if($(this).attr("href")){//已通章节可点
+      		                          loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
+      		                          $(this).parent().addClass("active").siblings().removeClass("active");
+      		                      }
+      		                  });
+      		  			  },
+      	  			}); 
+                        
+          });
             
           //上一节
             $("#prevLecture").click(function (e){
             	if($(this).attr("href")){
-            	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+            		catalogId = $(this).attr("data-fdid");
+            		loadLeftData(bamId);
+            		loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
             	}
                  
             });
             //下一节
             $("#nextLecture").click(function (e){
             	if($(this).attr("href")){
-            	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+            		catalogId = $(this).attr("data-fdid");
+            		loadLeftData(bamId);
+            		loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
             	}
                 
             }); 

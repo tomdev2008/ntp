@@ -72,6 +72,18 @@ public class PassThroughAjaxController {
 	private ExamQuestionService examQuestionService;
 	
 	/**
+	 * 点击学习通过，更改节的学习状态
+	 */
+	@RequestMapping(value = "updateCatalogThrough")
+	@ResponseBody
+	public void updateCatalogThrough(HttpServletRequest request){
+		String catalogId = request.getParameter("catalogId");
+		String bamId = request.getParameter("bamId");
+		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
+		bamCourseService.updateCatalogThrough(bamCourse, catalogId);
+	}
+	
+	/**
 	 * 最新课程列表
 	 * 
 	 * @param request
@@ -153,9 +165,13 @@ public class PassThroughAjaxController {
 			if(bamCourse!=null && bamCourse.getCatalogs()!=null){
 				Boolean isOrder=bamCourse.getCourseInfo().getIsOrder();
 				List<CourseCatalog> catalogs = bamCourse.getCatalogs();
+				if(catalogs!=null){
+					ArrayUtils.sortListByProperty(catalogs, "fdTotalNo", SortType.HIGHT);
+				}
 				Map catalogMap = new HashMap();
 				List<Map> chapter = new ArrayList();
 				List<Map> lecture = new ArrayList();
+				Boolean currentCatalog = true;//设置标识，记录上一节是否通过
 				for(CourseCatalog catalog : catalogs){
 					Map tmp = new HashMap();
 					if(Constant.CATALOG_TYPE_CHAPTER==catalog.getFdType()){
@@ -171,14 +187,27 @@ public class PassThroughAjaxController {
 						tmp.put("baseType", catalog.getFdMaterialType());
 						tmp.put("name", catalog.getFdName());
 						tmp.put("intro", catalog.getFdDescription());
-						if(catalog.getThrough()==null){
-							tmp.put("status", "untreated");
-						}else if(catalog.getThrough()==false){
-							tmp.put("status", "doing");
-						}else if(catalog.getThrough()==true){
-							tmp.put("status", "pass");
+						if(!isOrder){//无序
+							tmp.put("fdStatus", "true");
+						}else{//有序
+							if(currentCatalog!=null){
+								if(currentCatalog == true){
+									tmp.put("fdStatus", "true");
+								}else{
+									tmp.put("fdStatus", "false");
+								}
+							}else{
+								tmp.put("fdStatus", "false");
+							}
 						}
-						
+						if(catalog.getThrough()==null){
+								tmp.put("status", "untreated");
+						}else if(catalog.getThrough()==false){
+								tmp.put("status", "doing");
+						}else if(catalog.getThrough()==true){
+								tmp.put("status", "pass");
+						}
+						currentCatalog = catalog.getThrough();
 						lecture.add(tmp);
 					}
 				}

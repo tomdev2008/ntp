@@ -64,20 +64,14 @@ public class SourceAspect {
      */
     @After(value = "execution(* cn.me.xdf.service.bam.BamCourseService.updateCatalogThrough(..))")
     public Object saveBamScoreByCatalog(JoinPoint joinPoint) {
-        log.info("开始启动资源过滤------------saveBamScoreByCatalog----------");
+        log.info("开始启动资源过滤----------------------");
         Object[] args = joinPoint.getArgs();
         if (args == null || args.length < 2) {
             throw new RuntimeException("无效的资源参数");
         }
-        if (!(args[0] instanceof SourceNote)) {
-            throw new RuntimeException("资源格式不正确");
-        }
-        SourceNote note = (SourceNote) args[0];
-        if (note == null || !BooleanUtils.toBoolean(note.getIsStudy()))
-            return "";
+        BamCourse bamCourse = (BamCourse) args[0];
         String catalogId = (String) args[1];
         //更新素材
-        BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(note.getFdUserId(), note.getFdCourseId());
         CourseLogic courseLogic = new CourseLogic(bamCourse, null, catalogId, CourseLogic.CATALOG_UPDATE);
         bamCourseService.update(courseLogic.getBamCourse());
 
