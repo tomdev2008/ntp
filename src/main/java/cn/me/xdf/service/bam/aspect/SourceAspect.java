@@ -36,7 +36,7 @@ public class SourceAspect {
      */
     @After(value = "execution(* cn.me.xdf.service.bam.process.SourceNodeService.saveSourceNode(..))")
     public Object saveBamScoreBySourceNote(JoinPoint joinPoint) {
-        log.info("开始启动资源过滤----------------------");
+        log.info("开始启动资源过滤------------saveBamScoreBySourceNote----------");
         Object[] args = joinPoint.getArgs();
         if (args == null || args.length < 1) {
             throw new RuntimeException("无效的资源参数");
@@ -56,7 +56,7 @@ public class SourceAspect {
 
     @After(value = "execution(* cn.me.xdf.service.bam.BamCourseService.updateCatalogThrough(..))")
     public Object saveBamScoreByCatalog(JoinPoint joinPoint) {
-        log.info("开始启动资源过滤----------------------");
+        log.info("开始启动资源过滤------------saveBamScoreByCatalog----------");
         Object[] args = joinPoint.getArgs();
         if (args == null || args.length < 2) {
             throw new RuntimeException("无效的资源参数");
