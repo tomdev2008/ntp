@@ -381,9 +381,9 @@ public class PassThroughAjaxController {
 		public String getCourseOverByBamId(HttpServletRequest request){
 			String bamId = request.getParameter("bamId");
 			BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
-			//if(bamCourse.getThrough()==false){
-				//return "notThrough";
-			//}else{
+			if(bamCourse.getThrough()==false){
+				return "notThrough";
+			}else{
 				Map map = new HashMap();
 				Map user = new HashMap();
 				SysOrgPerson orgPerson = accountService.load(ShiroUtils.getUser().getId());
@@ -398,7 +398,7 @@ public class PassThroughAjaxController {
 				map.put("issuer", person.getDeptName());
 				map.put("user", user);
 				return JsonUtils.writeObjectToJson(map);
-			//}
+			}
 		}
 		
 }

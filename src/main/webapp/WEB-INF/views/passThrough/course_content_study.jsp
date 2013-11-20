@@ -748,32 +748,18 @@
 	  				  pageData=result;
 	  			  },
  			});
-        	 //if(passed){
+        	 if(passed){
         		 $("#mainContent").html(pageContentFn(pageData));
-        	 //}else{
-        	 //	 $.fn.jalert("您尚未取得结业证书");
-        	 //}
+        		 $("#downloadCertificate").bind("click",function(){
+                	 window.location.href = "${ctx}/common/file/downloadImg";
+                 });
+        	 }
             
              /* $("#prevLecture").click(function (e){
              	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
              }); */
              
-             $("#downloadCertificate").bind("click",function(){
-            	 window.location.href = "${ctx}/common/file/downloadImg";
-
-            	 /* $.ajax({
-   	  			  url: "${ctx}/common/file/downloadImg",
-   	  			  async:false,
-   	  			  type:"post",
-   	  			  data:{
-   	  				  html:$("#cardId").html()
-   	  			  },
-   	  			  dataType:'json',
-   	  			  success: function(result){
-   	  				 
-   	  			  }
-    			}); */
-             });
+            
              
         }
         
