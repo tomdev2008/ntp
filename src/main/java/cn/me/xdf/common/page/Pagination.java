@@ -111,4 +111,65 @@ public class Pagination extends SimplePage implements java.io.Serializable,
 		}
 		return end;
 	}
+	/**
+	 * 当前页显示第几条数据到第几条
+	 * @return
+	 */
+	public int getStartNum() {
+		int startNum = 1;
+		if(pageNo>1){
+			startNum = pageSize*getPrePage()+1;
+		}
+		return startNum;
+	}
+	/**
+	 * 当前页显示第几条数据到第几条
+	 * @return
+	 */
+	public int getEndNum() {
+		int endNum = 0;
+		if(getTotalPage()==1 || pageNo==getTotalPage()){
+			endNum = totalCount;
+			return endNum;
+		}
+		if(pageNo==1){
+			endNum = pageSize;
+			return endNum;
+		}
+		if(pageNo<getTotalPage()){
+			endNum = pageSize*getPrePage()+pageSize;
+		}
+		return endNum;
+	}
+	
+	/**
+	 * 分页列表点击操作时用的(开始页)
+	 * @return
+	 */
+	public int getStartOperate(){
+		int startOperate = 1;
+		if(pageNo>3){
+			startOperate = pageNo-2;
+		}
+		return startOperate;
+	}
+	/**
+	 * 分页列表点击操作时用的(结束页)
+	 * @return
+	 */
+	public int getEndOperate(){
+		int endOperate = 5;
+		if(getTotalPage()<=5){
+			endOperate = getTotalPage();
+			return endOperate;
+		}
+		if(pageNo>3&&pageNo<(getTotalPage()-2)){
+			endOperate = pageNo+2;
+		}
+		if(pageNo>3&&pageNo>=(getTotalPage()-2)){
+			endOperate = getTotalPage();
+		}
+		return endOperate;
+	}
+	
 }

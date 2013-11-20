@@ -171,7 +171,7 @@
 							</button>
 						</a>
 					</c:if>
-					<c:forEach var="i" begin="1" end="${page.totalPage}">
+					<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
 			            <c:choose>
 			                <c:when test="${page.pageNo == i}">
 			                    <button class="btn btn-primary btn-num active" type="button" >${i}</button>

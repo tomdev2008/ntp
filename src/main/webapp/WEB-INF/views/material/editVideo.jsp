@@ -136,6 +136,25 @@
                                         name="fdDescription">${materialInfo.fdDescription}</textarea>
                             </div>
                         </div>
+                        
+                        <div class="control-group">
+                           <label class="control-label">允许下载</label>
+                           <div class="controls">
+                             <div class="btn-group btns-radio" data-toggle="buttons-radio">
+                              <c:if test="${materialInfo.isDownload!=false}">
+                               <button class="btn btn-large active" id="yes" type="button">是</button>
+                               <button class="btn btn-large" id="no" type="button">否</button>
+                               <input type="hidden" value="yes" id="isDownload">
+                              </c:if> 
+                               <c:if test="${materialInfo.isDownload==false}">
+                               <button class="btn btn-large" id="yes" type="button">是</button>
+                               <button class="btn btn-large active" id="no" type="button">否</button>
+                               <input type="hidden" value="no" id="isDownload">
+                              </c:if> 
+                             </div>
+                           </div>
+                        </div>
+                        
                     </section>
                     <section class="section mt20">
                         <label id="uploadIntro"></label>
@@ -145,6 +164,7 @@
 						  <input type="hidden"  name="attId" id="attId" value="">
                         </div>
                     </section>
+                    
                     <section class="section mt20">
                         <div class="media-placeholder">
                            		 格式转换中 ... ...
@@ -421,6 +441,18 @@ $(function(){
         var href = 	e.target.href.split("#").pop();
         $("#permission").val(href);
     });
+    
+    //附件是否可下载
+    $('[data-toggle="buttons-radio"]>.btn').click(function(){
+        if(this.id == "yes"){
+        	$("#isDownload").val(this.id);
+        }
+        if(this.id == "no"){
+        	$("#isDownload").val(this.id);
+        }
+    });
+    
+    
     $("#list_user").sortable({
         handle: '.state-dragable'
     })
@@ -502,6 +534,7 @@ function saveMaterial(){
         permission:$("#permission").val(),
         fdType:$("#fdType").val(),
         attId:$("#attId").val(),
+        isDownload:$("#isDownload").val(),
         kingUser: null
     };
     if(data.permission === "encrypt"){
