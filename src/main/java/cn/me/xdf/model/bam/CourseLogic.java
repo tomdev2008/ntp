@@ -21,21 +21,43 @@ import java.util.List;
  */
 public class CourseLogic {
 
-    private BamCourse bamCourse;
+    public static final int SOURCE_UPDATE = 1;
 
+    public static final int CATALOG_UPDATE = 2;
+
+    private BamCourse bamCourse;
+    private String catalogId;
     private SourceNote sourceNote;
+
+    /**
+     * 更新类型
+     */
+    private int updateType;
 
 
     public CourseLogic(BamCourse bamCourse, SourceNote sourceNote) {
         this.bamCourse = bamCourse;
         this.sourceNote = sourceNote;
+        this.catalogId = sourceNote.getFdCatalogId();
+        updateType = SOURCE_UPDATE;
+        initData();
+    }
 
+    public CourseLogic(BamCourse bamCourse, SourceNote sourceNote, String catalogId, int updateType) {
+        this.bamCourse = bamCourse;
+        this.sourceNote = sourceNote;
+        this.updateType = updateType;
+        this.catalogId = catalogId;
         initData();
     }
 
     private void initData() {
-        toMateridThrough();
 
+        if (updateType == SOURCE_UPDATE) {
+            toMateridThrough();
+        } else if (updateType == CATALOG_UPDATE) {
+            toMateridThroughByCatalogId();
+        }
         toCatalogThrough();
         toCourseThroug();
     }
@@ -43,6 +65,22 @@ public class CourseLogic {
 
     public BamCourse getBamCourse() {
         return bamCourse;
+    }
+
+    /**
+     * 根据节ID设置此节下的素材全部通过
+     */
+    private void toMateridThroughByCatalogId() {
+        List<CourseContent> courseContents = bamCourse.getCourseContents();
+        if (courseContents == null)
+            return;
+
+        for (CourseContent content : courseContents) {
+            if (content.getCatalog().getFdId().equals(catalogId)) {
+                content.getMaterial().setThrough(true);
+            }
+        }
+        bamCourse.setCourseContentJson(JsonUtils.writeObjectToJson(courseContents));
     }
 
     /**
@@ -66,7 +104,7 @@ public class CourseLogic {
      * 设置当前节通过
      */
     private void toCatalogThrough() {
-        List<MaterialInfo> materialInfos = bamCourse.getMaterialByCatalog(sourceNote.getFdCatalogId());
+        List<MaterialInfo> materialInfos = bamCourse.getMaterialByCatalog(catalogId);
         if (CollectionUtils.isEmpty(materialInfos))
             return;
         boolean isThrought = true;
@@ -78,7 +116,7 @@ public class CourseLogic {
         if (isThrought) {
             List<CourseCatalog> catalogs = bamCourse.getCatalogs();
             for (CourseCatalog catalog : catalogs) {
-                if (catalog.getFdId().equals(sourceNote.getFdCatalogId())) {
+                if (catalog.getFdId().equals(catalogId)) {
                     catalog.setEndDate(new Date());
                     catalog.setThrough(true);
                 }

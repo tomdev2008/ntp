@@ -206,5 +206,5 @@ public class SourceNote extends IdEntity{
 	public void setFdAppraiserId(String fdAppraiserId) {
 		this.fdAppraiserId = fdAppraiserId;
 	}
-	
+
 }

@@ -41,6 +41,10 @@ public class BamCourseService extends SimpleService {
         }
     }
 
+    public void updateCatalogThrough(String courseId,String catalogId){
+
+    }
+
     /**
      * 更新某一节的开始时间
      *
