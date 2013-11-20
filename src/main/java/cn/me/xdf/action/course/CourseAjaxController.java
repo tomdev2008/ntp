@@ -724,7 +724,8 @@ public class CourseAjaxController {
 		if(page.getTotalCount()>0){
 			List list = page.getList();
 			for(int i=0;i<list.size();i++){
-				CourseParticipateAuth cpa =(CourseParticipateAuth) list.get(i);
+				Object [] obj=(Object[]) list.get(i);
+				CourseParticipateAuth cpa =(CourseParticipateAuth)obj[0] ;
 				Map mcpa=new HashMap();//授权信息
 				mcpa.put("id", cpa.getFdId());
 				mcpa.put("time", sdf.format(cpa.getFdCreateTime()));
@@ -757,6 +758,10 @@ public class CourseAjaxController {
 		map.put("list", coursepas);
 		map.put("totalCount", page.getTotalCount());
 		map.put("course",courses);
+		map.put("StartPage", page.getStartPage());
+		map.put("EndPage",page.getEndPage());
+		map.put("StartOperate", page.getStartOperate());
+		map.put("EndOperate", page.getEndOperate());
 		return JsonUtils.writeObjectToJson(map);
 	}
 	/**

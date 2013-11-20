@@ -47,25 +47,26 @@ public class CourseParticipateAuthService extends BaseService{
 	 */
 	@Transactional(readOnly=false)
 	public Pagination findSingleCourseAuthList(String courseId,String orderStr,Integer pageNo,Integer pageSize,String keyword){
-		Finder finder=Finder.create(" from CourseParticipateAuth cpa ");
+		Finder finder=Finder.create(" from CourseParticipateAuth cpa left join cpa.fdTeacher person");
+//		Finder finder=Finder.create("from CourseParticipateAuth cpa ");//该方式会过滤掉无导师课程
 		finder.append(" where cpa.course.fdId=:courseId  ");
 		finder.setParam("courseId", courseId);
 		if("mentor".equals(orderStr)){//按导师查询
 			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
 				finder.append(" and cpa.fdTeacher.notifyEntity.realName like :namestr");
-				finder.setParam("namestr", keyword);
+				finder.setParam("namestr", "%"+keyword+"%");
 			}
-			finder.append(" order by nlssort(cpa.fdTeacher.notifyEntity.realName,'NLS_SORT=SCHINESE_PINYIN_M')");
+			finder.append(" order by nlssort(person.notifyEntity.realName,'NLS_SORT=SCHINESE_PINYIN_M')");
 		}else if("teacher".equals(orderStr)){
 			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
 				finder.append(" and cpa.fdUser.notifyEntity.realName like :namestr");
-				finder.setParam("namestr", keyword);
+				finder.setParam("namestr", "%"+keyword+"%");
 			}
 			finder.append(" order by nlssort(cpa.fdUser.notifyEntity.realName,'NLS_SORT=SCHINESE_PINYIN_M')");
 		}else if("createtime".equals(orderStr)){
 			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
 				finder.append(" and cpa.fdUser.notifyEntity.realName like :namestr");
-				finder.setParam("namestr", keyword);
+				finder.setParam("namestr", "%"+keyword+"%");
 			}
 			finder.append(" order by cpa.fdCreateTime desc");
 		}else{

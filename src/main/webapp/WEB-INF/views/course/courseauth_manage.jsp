@@ -40,7 +40,7 @@
                             <span>教  师</span>
                     </div>
                     <div class="person">
-                            <a href="{{=item.teacher.link}}" class="pull-left"><img style="width:50px;height:50px;" src="{{=item.teacher.imgUrl || './images/face-placeholder.jpg'}}" alt=""/></a>
+                            <a href="{{=item.teacher.link}}" class="pull-left"><img style="width:50px;height:50px;" src="{{?item.teacher.imgUrl.indexOf('http')>-1}}{{=item.teacher.imgUrl}}{{??}}${ctx}/{{=item.teacher.imgUrl}}{{?}}" alt=""/></a>
                             <span>{{=item.teacher.name}}（{{=item.teacher.mail}}）<br /> {{?item.teacher.org.length>5}}{{=item.teacher.org.substr(0,5)+"..."}}{{??}}{{=item.teacher.org}}{{?}}{{?item.teacher.department.length>5}}{{=item.teacher.department.substr(0,3)+"..."}}{{??}}{{=item.teacher.department}}{{?}}</span>
                     </div>
                     </div>
@@ -59,7 +59,7 @@
                         </div>
                         <div class="person">
                             {{?item.mentor}}
-                                <a href="{{=item.mentor.link}}" class="pull-left"><img  style="width:50px;height:50px;" src="{{=item.mentor.imgUrl || './images/face-placeholder.jpg'}}" alt=""/></a>
+                                <a href="{{=item.mentor.link}}" class="pull-left"><img  style="width:50px;height:50px;" src="{{?item.mentor.imgUrl.indexOf('http')>-1}}{{=item.mentor.imgUrl}}{{??}}${ctx}/{{=item.mentor.imgUrl}}{{?}}" alt=""/></a>
                                 <span>{{=item.mentor.name}}（{{=item.mentor.mail}}）<br /> {{?item.mentor.org.length>5}}{{=item.mentor.org.substr(0,5)+"..."}}{{??}}{{=item.mentor.org}}{{?}} {{?item.mentor.department.length>5}}{{=item.mentor.department.substr(0,3)+"..."}}{{??}}{{=item.mentor.department}}{{?}}</span>
                             {{??}}
                                 <p align="center">本课程不需要导师参与</p>
@@ -77,7 +77,7 @@
         <td class="tdTit">
           <div class="pr">
             <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
-            <img src="{{=it.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
+            <img src="{{=it.imgUrl || '${ctx}/resources/images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
           <div>
          </td>
         <td><input type="checkbox" {{?it.tissuePreparation!=false}}checked{{?}} class="tissuePreparation" /></td>
@@ -88,7 +88,7 @@
 <script id="pageheardTemplate" type="text/x-dot-template">
 	<div class="pages pull-right">
 	<div class="span2">
- 	   第<span > {{=it.currentPage*10-9}} - {{=it.currentPage*10}}</span> / <span >{{=it.totalCount}}</span> 条
+ 	   第<span > {{=it.currentPage*10-9}} -{{?it.currentPage*10>it.totalCount}}{{=it.totalCount}}{{??}}{{=it.currentPage*10}}{{?}}</span> / <span >{{=it.totalCount}}</span> 条
 	</div>
 	<div class="btn-group">
     <button class="btn btn-primary btn-ctrl" type="button" {{?it.currentPage <= 1}} disabled {{?}} onclick='pageNavClick({{=it.currentPage-1}})'><i class="icon-chevron-left icon-white"></i></button>
@@ -99,31 +99,22 @@
 	<div class="btn-group dropup">
 	 <button class="btn btn-primary btn-ctrl" type="button" {{?it.currentPage<=1}}disabled{{?}}onclick='pageNavClick({{=it.currentPage-1}})'>
 	 <i class="icon-chevron-left icon-white"></i></button>
-	{{ for(var i=1;i<it.totalPage;i++){ }}
-     	{{=it.totalPage}}
-		{{?it.totalPage<=10}}
+	{{ for(var i=it.StartPage;i<=it.EndPage;i++){ }}
 			{{?i==it.currentPage}}
-				<button class="btn btn-primary btn-num active" type="button" oncick="pageNavClick({{=it.currentPage+1}})">{{=i}}</button>
+				<button class="btn btn-primary btn-num active" type="button">{{=i}}</button>
 			{{??}}
-				<button class="btn btn-primary btn-num" type="button" oncick="pageNavClick({{=it.currentPage+1}})">{{=i}}</button>
+				<a  oncick="pageNavClick({{=i}})">
+				<button class="btn btn-primary btn-num" type="button">{{=i}}</button>
+				</a>
 			{{?}}
-        {{??}}
-		     {{?i<=10}}
-				 {{?i==it.currentPage}}
-					<button class="btn btn-primary btn-num active" type="button" oncick="pageNavClick({{=it.currentPage+1}})">{{=i}}</button>
-				 {{??}}
-					<button class="btn btn-primary btn-num" type="button" oncick="pageNavClick({{=it.currentPage+1}})">{{=i}}</button>
-				{{?}}
-			 {{??}}
-			    
-				{{?i==it.currentPage}}
-					<button class="btn btn-primary btn-num active" type="button" oncick="pageNavClick({{=it.currentPage+1}})">{{=i}}</button>
-				 {{??}}
-					<button class="btn btn-primary btn-num" type="button" oncick="pageNavClick({{=it.currentPage+1}})">{{=i}}</button>
-				{{?}}
-			 {{?}}
-		{{?}}
 	{{}}}
+	 <button class="btn btn-primary btn-num  dropdown-toggle"  data-toggle="dropdown" type="button">
+                            <span class="caret"></span></button>
+	     <ul class="dropdown-menu pull-right">
+		{{ for(var j=it.StartOperate;j<=it.EndOperate;j++){ }}
+			<li><a href="pageNavClick({{=j}})">{{=j*10-10+1}}-{{=j*10}}</a></li>
+		{{}}}
+		</ul>
 	 <button class="btn btn-primary btn-ctrl" type="button" {{?it.currentPage == it.totalPage}} disabled {{?}} onclick='pageNavClick({{=it.currentPage+1}})'><i class="icon-chevron-right icon-white"></i></button>
 </div>
 </script>
@@ -162,7 +153,7 @@
                     </div>
                 </section>
                 <section class="section mt20">
-                    <form action="#rightCont" id="formAddTeacher">
+                   <!--  <form action="#rightCont" id="formAddTeacher"> -->
                         <input type="text" required name="inputTeacher" id="inputTeacher" class="autoComplete input-block" placeholder="授权某位老师学习本课程">
                         <span id="showerror"></span>
                         <input type="hidden" id="teacher">
@@ -174,7 +165,7 @@
                         <div class="divider">
                             <button class="btn btn-primary btn-large" type="submit">添加</button>
                             </div>
-                    </form>
+                   <!--  </form> -->
                 </section>
 			          <%-- <div class="page-body" id="page list">
 			        	<%@ include file="/WEB-INF/views/course/divcourseauth.jsp" %>
@@ -190,14 +181,17 @@
                                     <li><a href="#rightCont" onclick="confirmDel();">批量删除</a></li>
                                 </ul>
                             </div>
-                            <form class="toolbar-search">
-                                <input type="text" class="search" onkeydown="showSearch();" onkeyup="showSearch();" id="serach">
-                                <i class="icon-search"></i>
+                            <form class="toolbar-search" onkeydown="pressEnter();">
+                                <input type="text" class="search" onkeydown="showSearch();" onkeyup="showSearch();" id="search">
+                                <i class="icon-search" onclick="pageNavClick('1');"></i>
                             </form>
                             <span class="showState">
-                                <span class="muted">当前显示：</span>含“<a href="#">杨</a>”的用户
+                                <span class="muted">当前显示：</span>
+                                <span id="markshow">
+							 	<a id="containkey"href="#">全部条目</a>
+							 </span>
                             </span>
-                            <a class="btn btn-link" href="#rightCont">清空搜索结果</a>
+                            <a class="btn btn-link" href="javaScript:void(0);" onclick="clearserach();">清空搜索结果</a>
                         </div>
                     </div>
                     <div class="bd">
@@ -335,8 +329,14 @@
                 return item.name + item.mail + item.org + item.department;
             },
             formatItem: function(item) {
+            	var photo;
+    			if(item.imgUrl.indexOf("http")>-1){
+    				photo=item.imgUrl;
+    			}else{
+    				photo="${ctx}/"+item.imgUrl;
+    			}
                 return '<img src="'
-                        + (item.imgUrl || 'images/temp-face36.jpg') + '" alt="">'
+                        + (photo) + '" alt="">'
                         + item.name + '（' + item.mail + '），'
                         + item.org + '  ' + item.department;
             },
@@ -367,8 +367,14 @@
                 return item.name + item.mail + item.org + item.department;
             },
             formatItem: function(item) {
+            	var photo;
+    			if(item.imgUrl.indexOf("http")>-1){
+    				photo=item.imgUrl;
+    			}else{
+    				photo="${ctx}/"+item.imgUrl;
+    			}
                 return '<img src="'
-                        + (item.imgUrl || 'images/temp-face36.jpg') + '" alt="">'
+                        + (photo) + '" alt="">'
                         + item.name + '（' + item.mail + '），'
                         + item.org + '  ' + item.department;
             },
@@ -398,23 +404,23 @@
 /**********************methods***************************************************/
 function pressEnter(){//回车事件
 	if(event.keyCode==13){
-		findeCoursesByKey(1,$('#cachorder').val());
+		pageNavClick('1');
 	}
 }
 function clearserach(){//清理搜索栏并显示数据列表
 	//alert('ss');
-	$("#serach").attr("value","");
+	$("#search").val("");
 	$("#markshow").html('<a id="containkey"href="#">全部条目</a>');
-	findeCoursesByKey(1,'fdcreatetime');
+	pageNavClick('1');
 }
 
 function showSearch(){
-	var fdTitle = document.getElementById("serach").value;
+	var search = $("#search").val();
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
-	if(fdTitle.length>2){
-		$("#containkey").html(fdTitle.substr(0,2)+"...");
+	if(search.length>2){
+		$("#containkey").html(search.substr(0,2)+"...");
 		}else{
-			$("#containkey").html(fdTitle);
+			$("#containkey").html(search);
 		}
 }
 //选中当前页
@@ -461,7 +467,7 @@ function selectAll(){
  //翻页
  function pageNavClick(pageNo){
 	 
- 	 var keyword=$("#searchword").val();
+ 	 var keyword=$("#search").val();
  	 if($('input[name="selectCheckbox"]:checked').val()==1){
 		$("#allkey").attr("value",1);
 	 }
@@ -481,7 +487,9 @@ function selectAll(){
       	cache: false, 
       	dataType: "json",
       	success:function(data){	
+      		
       		 $("#pageheard").html(pageheardFn(data));
+      		 $("#pageEnd").html(pageendFn(data));
       		 loadListTeacherMentor(data.list);
       		 if($("#allFlag").val()=='true'){
 				document.getElementById("selectAll").checked=true;
@@ -496,7 +504,7 @@ function selectAll(){
 function confirmDel(){
 	var delekey="";
 	$('input[name="teacherGroup"]:checked').each(function() {
-		delekey+=$(this).val()+",";
+		delekey+=$(this).attr("id")+",";
 	}); 	
 	if(delekey==""){
 		$.fn.jalert2("当前没有选择要删除的数据!");
@@ -515,7 +523,7 @@ function confirmDel(){
  function deleteCourseParticAuth(){
 	 var delekey="";
 		$('input[name="teacherGroup"]:checked').each(function() {
-			delekey+=$(this).attr("id");
+			delekey+=$(this).attr("id")+",";
 		}); 	
 	 $.ajax({
       	type: "post",
@@ -532,7 +540,7 @@ function confirmDel(){
 }
  //删除所有授权信息
   function deleteAllCourseParticAuth(){
-	  var keyword=$("#searchword").val();//搜索关键字 	
+	  var keyword=$("#search").val();//搜索关键字 	
 	 $.ajax({
       	type: "post",
       	url: "${ctx}/ajax/course/deleteAllCouseParticAuth",
@@ -551,7 +559,6 @@ function confirmDel(){
 	    $("#currentpage").val(nowpage);
         $("a[name='delecpa']").bind("click",function(e){
         	var checkCpaId=$(this).attr("data-fdid");
-        	alert('1');
         	$.fn.jalert("您确认要删除所选数据？",function(){
         		 $.ajax({
         		      	type: "post",
