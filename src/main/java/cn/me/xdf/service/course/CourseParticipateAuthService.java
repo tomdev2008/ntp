@@ -50,26 +50,45 @@ public class CourseParticipateAuthService extends BaseService{
 		Finder finder=Finder.create(" from CourseParticipateAuth cpa ");
 		finder.append(" where cpa.course.fdId=:courseId  ");
 		finder.setParam("courseId", courseId);
-		if(StringUtil.isNotBlank(orderStr)){
-			if("mentor".equals(orderStr)){//按导师查询
-				if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
-					finder.append(" and cpa.fdTeacher.notifyEntity.realName like :namestr");
-					finder.setParam("namestr", keyword);
-				}
-				finder.append(" order by cpa.fdTeacher.notifyEntity.realName");
+		if("mentor".equals(orderStr)){//按导师查询
+			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
+				finder.append(" and cpa.fdTeacher.notifyEntity.realName like :namestr");
+				finder.setParam("namestr", keyword);
 			}
-			if("teacher".equals(orderStr)){
-				if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
-					finder.append(" and cpa.fdUser.notifyEntity.realName like :namestr");
-					finder.setParam("namestr", keyword);
-				}
-				finder.append(" order by cpa.fdUser.notifyEntity.realName");
+			finder.append(" order by nlssort(cpa.fdTeacher.notifyEntity.realName,'NLS_SORT=SCHINESE_PINYIN_M')");
+		}else if("teacher".equals(orderStr)){
+			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
+				finder.append(" and cpa.fdUser.notifyEntity.realName like :namestr");
+				finder.setParam("namestr", keyword);
 			}
-			if("createtime".equals(orderStr)){
-				finder.append(" order by cpa.fdCreateTime desc");
+			finder.append(" order by nlssort(cpa.fdUser.notifyEntity.realName,'NLS_SORT=SCHINESE_PINYIN_M')");
+		}else if("createtime".equals(orderStr)){
+			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
+				finder.append(" and cpa.fdUser.notifyEntity.realName like :namestr");
+				finder.setParam("namestr", keyword);
 			}
+			finder.append(" order by cpa.fdCreateTime desc");
+		}else{
+			finder.append(" order by cpa.fdCreateTime desc");
 		}
+		
 		return getPage(finder, pageNo, pageSize);
 	}
-	
+	/**
+	 * 某课程授权教师检查
+	 */
+	@Transactional(readOnly=false)
+	public boolean findCouseParticipateAuthById(String courseId,String teacherId){
+		Finder finder=Finder.create(" from CourseParticipateAuth cpa");
+		finder.append(" where cpa.fdUser.fdId=:teacherId and cpa.course.fdId=:courseId");
+		finder.setParam("teacherId", teacherId);
+		finder.setParam("courseId", courseId);
+		List list=find(finder);
+		if(list!=null&&list.size()>0){
+			return false;
+		}else{
+			return true;
+		}
+		
+	}
 }

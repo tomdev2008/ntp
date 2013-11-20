@@ -616,13 +616,13 @@ public class CourseAjaxController {
 		String deleType=request.getParameter("deleType");
 		if("0".equals(deleType)){//选择删除
 			if(ShiroUtils.isAdmin()){
-				return "redirect:/ajaxt/course/deleteCourse?courseId"+fdIds;//超管直接跳到删除方法删除
+				return "redirect:/ajax/course/deleteCourse?courseId"+fdIds;//超管直接跳到删除方法删除
 			}else{
 				return getDeleteKeys(fdIds);//获取可删除id
 			}
 		}else{//删除全部
 			if(ShiroUtils.isAdmin()){//管理员删除
-				return "redirect:/ajaxt/course/deleteAllCoursesByKey?fdTitle="+fdName;//超管直接跳到删除方法删除
+				return "redirect:/ajax/course/deleteAllCoursesByKey?fdTitle="+fdName;//超管直接跳到删除方法删除
 			}else{
 				return getDeleteKeys(fdIds);
 			}
@@ -716,8 +716,8 @@ public class CourseAjaxController {
 		}else{
 			courses.put("courseScore", 0);//课程评分;
 		}
-		courses.put("courseName", courseInfo.getFdTitle());//课程名称
-		courses.put("courseAuthor", courseInfo.getFdSubTitle());//课程作者;
+		courses.put("courseName", courseInfo.getFdTitle()==""||courseInfo.getFdTitle()==null?"":courseInfo.getFdTitle());//课程名称
+		courses.put("courseAuthor", courseInfo.getFdAuthor()==""||courseInfo.getFdAuthor()==null?"":courseInfo.getFdAuthor());//课程作者;
 		//获取课程授权列表
 		List coursepas=new ArrayList();
 		Pagination page=courseParticipateAuthService.findSingleCourseAuthList(courseId,orderStr,pageNo,SimplePage.DEF_COUNT,keyword);
@@ -764,19 +764,74 @@ public class CourseAjaxController {
 	 */
 	@RequestMapping(value="saveCourseParticipateAuth")
 	@ResponseBody
-	public void saveCourseParticipateAuth(HttpServletRequest request){
+	public boolean saveCourseParticipateAuth(HttpServletRequest request){
 		String courseId=request.getParameter("courseId");
 		String teacherId=request.getParameter("teacher");
-		String mentorId=request.getParameter("mentor");
-		CourseInfo courseInfo=courseService.load(courseId);
-		SysOrgPerson teacher=accountService.findById(teacherId);
-		SysOrgPerson mentor=accountService.findById(mentorId);
-		CourseParticipateAuth cpa=new CourseParticipateAuth();
-		cpa.setCourse(courseInfo);
-		cpa.setFdUser(teacher);//教师
-		cpa.setFdTeacher(mentor);//导师
-	    cpa.setFdCreateTime(new Date());
-	    cpa.setVersion(0);
-	    courseParticipateAuthService.save(cpa);
+		//查看当前用户是否已授权
+		boolean isexist=courseParticipateAuthService.findCouseParticipateAuthById(courseId,teacherId);
+		if(isexist){
+			String mentorId=request.getParameter("mentor");
+			CourseInfo courseInfo=courseService.load(courseId);
+			SysOrgPerson teacher=accountService.findById(teacherId);
+			SysOrgPerson mentor=accountService.findById(mentorId);
+			CourseParticipateAuth cpa=new CourseParticipateAuth();
+			cpa.setCourse(courseInfo);
+			cpa.setFdUser(teacher);//教师
+			cpa.setFdTeacher(mentor);//导师
+		    cpa.setFdCreateTime(new Date());
+		    cpa.setVersion(0);
+		    courseParticipateAuthService.save(cpa);
+		}
+		return isexist;	
+	    
+	}
+	/**
+	 * 根据id删除某课程授权数据
+	 * 
+	 */
+	@RequestMapping(value="deleteCouseParticAuthById")
+	@ResponseBody
+	public void deleteCouseParticAuthById(HttpServletRequest request){
+		String cpaid=request.getParameter("cpaId");
+		String[] ids=cpaid.split(",");
+		if(ids.length<2){
+			courseParticipateAuthService.delete(ids[0]);
+		}else{
+			for(int i=0;i<ids.length;i++){
+				courseParticipateAuthService.delete(ids[i]);
+			}
+		}
+		
+	}
+	/**
+	 * 根据关键字删除某课程授权数据 ,若没有,则删除所有
+	 * 
+	 */
+	public void deleteAllCourseParticAuth(HttpServletRequest request){
+		String courseId=request.getParameter("courseId");
+		String orderStr=request.getParameter("order");
+		String pageNostr=request.getParameter("pageNo");
+		String keyword=request.getParameter("keyword");
+		int pageNo;
+		if (StringUtil.isNotBlank(pageNostr)) {
+			pageNo = Integer.parseInt(pageNostr);
+		} else {
+			pageNo = 1;
+		}
+		Pagination page=courseParticipateAuthService.findSingleCourseAuthList(courseId,orderStr,pageNo,SimplePage.DEF_COUNT,keyword);
+		int i = page.getTotalPage();
+		if(i>0){
+			for(int j=0;j<i;j++){
+				page = courseParticipateAuthService.findSingleCourseAuthList(courseId,orderStr,1,SimplePage.DEF_COUNT,keyword);
+				List list = page.getList();
+				if(list!=null && list.size()>0){
+					for(Object obj:list){
+						Map map = (Map)obj;
+						String cpaId = (String)map.get("FDID");
+						courseParticipateAuthService.delete(cpaId);
+					}
+				}
+			}
+		}
 	}
 }
