@@ -86,7 +86,7 @@
                 </span>
                 </h1>
 				{{?it.isLast}}
-				<a class="btn btn-back" id="nextOver"> <i class="icon-disc-lg-bg"><i class="icon-home icon-white"></i></i> </a>
+				<a class="btn btn-back" id="nextOver" > <i class="icon-disc-lg-bg"><i class="icon-home icon-white"></i></i> </a>
 				{{??}}
 				 <a class="btn {{?!it.nstatus}} disabled{{?}}" {{?it.nstatus}}href="#"{{?}}  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.nextBaseType || ''}}">
                         <i class="icon-chevron-lg-right"></i>
@@ -584,9 +584,9 @@
    <script id="pageContentTemplate" type="text/x-dot-template">
        <div class="page-header" id="pageHeader" data-offset-top="10">
                 <div class="hd clearfix">
-             <a class="btn" href="#" >
+             <a class="btn" href="#" id="prevLecture" ata-fdid="{{=it.prevc}}" data-type="{{=it.prevBaseType || ''}}" >
                 <i class="icon-chevron-lg-left"></i>
-                <span>返回章节</span>
+                <span>返回</span>
                 </a>
                 <h1>{{=it.courseName}}
                 <span class="labelPass{{?it.status != "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
@@ -744,8 +744,8 @@
 	  					passed=false;
 	  				  }else{
 	  					passed=true; 
+	  					 pageData=result;
 	  				  }
-	  				  pageData=result;
 	  			  },
  			});
         	 if(passed){
@@ -753,14 +753,10 @@
         		 $("#downloadCertificate").bind("click",function(){
                 	 window.location.href = "${ctx}/common/file/downloadImg";
                  });
+        		 $("#prevLecture").click(function (e){
+                  	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$("#sidenav li :last a :first").attr("data-fdid")+"&fdMtype="+$("#sidenav li :last a :first").attr("data-type");
+                  }); 
         	 }
-            
-             /* $("#prevLecture").click(function (e){
-             	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
-             }); */
-             
-            
-             
         }
         
 		function loadRightCont(fdid,type){

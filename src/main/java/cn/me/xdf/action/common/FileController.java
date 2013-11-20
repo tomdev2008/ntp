@@ -1,5 +1,7 @@
 package cn.me.xdf.action.common;
 
+import gui.ava.html.image.generator.HtmlImageGenerator;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -294,40 +296,35 @@ public class FileController {
     public void downloadImg(HttpServletRequest request, HttpServletResponse response) {
 
     	try {
-        	String html = 
-        	"<!DOCTYPE HTML>"+
-        	"<head>"+
-        	"</head>"+
-        	"<body>"+
-        	"<section class='container'>"+
-        	"  <section class='page-body' >"+
-        	"            <section class='bdbt2 box-certificate' id='cardId'>"+
-        	"               <div class='hd'><h2>新东方认证教师</h2></div>"+
-        	"                <div class='bd'>"+
-        	"                    <div class='media'>"+
-        	"                        <a class='pull-left' href='{{=it.user.link}}'>"+
-        	"								<img src='http://10.200.27.52:8080/JensProject/resources/images/face-placeholder.png' class='media-object img-polaroid' alt=''/>"+
-        	"                            	<i class='icon-medal-lg'></i>"+
-        	"                        </a>"+
-        	"                        <div class='media-body'>"+
-        	"                            <div class='media-heading'><em>{{=it.user.name}}</em>老师，</div>"+
-        	"                            <p>已于 {{=it.passTime}} 完成《<em>{{=it.courseName}}</em>》，特此认证。"+
-        	"                                This is to certify MR/MS <span class='upper'>{{=it.user.enName}}</span> 's successful completion of the New Oriental Teacher Online Training.</p>"+
-        	"                            <p class='muted'>颁发者：{{=it.issuer}}</p>"+
-        	"                        </div>"+
-        	"                    </div>"+
-        	"                </div>"+
-        	"                <div class='ft'>"+
-        	"                    <button class='btn btn-primary btn-large' type='button' id='downloadCertificate'>下载证书</button>"+
-        	"                </div>"+
-        	"            </section>"+
-        	"        </section>"+
-        	"</section>"+
-        	"</body>";
-        	
-        	
-        	
-            byte[] img = GraphUtils.toImages(html).get(0);
+    		String html = 
+    				"<!DOCTYPE HTML>"+
+		       		"<section class='container'>"+
+		        	"  <section class='page-body' >"+
+		        	"            <section class='bdbt2 box-certificate' id='cardId'>"+
+		        	"               <div class='hd'><h2>新东方认证教师</h2></div>"+
+		        	"                <div class='bd'>"+
+		        	"                    <div class='media'>"+
+		        	"                        <a class='pull-left' href='{{=it.user.link}}'>"+
+		        	"								<img src='http://10.200.27.52:8080/JensProject/resources/images/face-placeholder.png' alt=''/>"+
+		        	"                            	<i class='icon-medal-lg'></i>"+
+		        	"                        </a>"+
+		        	"                        <div class='media-body'>"+
+		        	"                            <div class='media-heading'><em>{{=it.user.name}}</em>老师，</div>"+
+		        	"                            <p>已于 {{=it.passTime}} 完成《<em>{{=it.courseName}}</em>》，特此认证。"+
+		        	"                                This is to certify MR/MS <span class='upper'>{{=it.user.enName}}</span> 's successful completion of the New Oriental Teacher Online Training.</p>"+
+		        	"                            <p class='muted'>颁发者：{{=it.issuer}}</p>"+
+		        	"                        </div>"+
+		        	"                    </div>"+
+		        	"                </div>"+
+		        	"                <div class='ft'>"+
+		        	"                    <button class='btn btn-primary btn-large' type='button' id='downloadCertificate'>下载证书</button>"+
+		        	"                </div>"+
+		        	"            </section>"+
+		        	"        </section>"+
+		        	"</section>";
+    		HtmlImageGenerator imageGenerator = new HtmlImageGenerator();  
+	        imageGenerator.loadHtml (html);
+	        byte[] img = GraphUtils.toJpeg(imageGenerator.getBufferedImage());
             response.setHeader("Content-type", "text/html;charset=utf-8");
             String imgName = java.net.URLEncoder.encode("结业证书.jpg", "UTF-8");
             response.setHeader("Content-Disposition", "attachment;filename="+imgName);
@@ -338,7 +335,6 @@ public class FileController {
             out.write(img);
             out.flush();
             StreamUtil.close(out);
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
