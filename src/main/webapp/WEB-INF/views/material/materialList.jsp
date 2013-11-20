@@ -132,7 +132,7 @@ function pageNavClick(fdType,pageNo,order){
 		},
 		cache: false, 
 		dataType: "html",
-		success:function(data){		
+		success:function(data){	
 			$("#pageBody").html(data);
 			$("#show").html($("#showkey").val());
 			if(fdName!=""&&fdName!=null){

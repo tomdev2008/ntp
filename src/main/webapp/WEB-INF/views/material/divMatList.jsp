@@ -19,8 +19,7 @@
 					</ul>
 				</div>
 				<form class="toolbar-search" onkeydown="pressEnter();">
-					<input type="text" id="serach" class="search" placeholder="搜索条目"
-					   onkeydown="showSearch();" onkeyup="showSearch();"> 
+					<input type="text" id="serach" class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
 					<i class="icon-search" onclick="pageNavClick('${param.fdType}','1','FDCREATETIME');"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>
@@ -193,11 +192,11 @@
 				<button class="btn btn-primary btn-ctrl" type="button">
 					<i class="icon-chevron-left icon-white"></i>
 				</button>
-			</a>
+			</a><!-- ${page.totalPage} --${page.pageNo/10*10}---->
 		</c:if>
-
-		<c:forEach var="i" begin="1" end="${page.totalPage}">
-            <c:choose>
+		
+          <c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
+             <c:choose>
                 <c:when test="${page.pageNo == i}">
                     <button class="btn btn-primary btn-num active" type="button" >${i}</button>
                 </c:when>
@@ -206,8 +205,14 @@
                     <button class="btn btn-primary btn-num" type="button">${i}</button>
                  </a>
                 </c:otherwise>
-            </c:choose>
-          </c:forEach>
+             </c:choose>
+           </c:forEach>
+		
+		
+		
+            
+        
+          
 			<button class="btn btn-primary btn-num  dropdown-toggle"
 				data-toggle="dropdown" type="button">
 				<span class="caret"></span>

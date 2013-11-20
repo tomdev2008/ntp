@@ -34,6 +34,7 @@ import cn.me.xdf.model.material.Task;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.ShiroDbRealm.ShiroUser;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
@@ -357,4 +358,28 @@ public class PassThroughAjaxController {
 			}
 			return null;
 		}
+		
+		/**
+		 * 根据bamId获取结业证书信息(当前用户)
+		 * 
+		 * 
+		 */
+		@RequestMapping(value = "getCourseOverByBamId")
+		@ResponseBody
+		public String getCourseOverByBamId(HttpServletRequest request){
+			String bamId = request.getParameter("bamId");
+			Map map = new HashMap();
+			Map user = new HashMap();
+			SysOrgPerson orgPerson = accountService.load(ShiroUtils.getUser().getId());
+			user.put("name",orgPerson.getRealName());
+			user.put("enName", orgPerson.getRealName());
+			user.put("imgUrl", orgPerson.getPoto());
+			user.put("link", "#");
+			map.put("courseName", "12312");
+			map.put("passTime", "asdasd");
+			map.put("issuer", "asdasd");
+			map.put("user", user);
+			return JsonUtils.writeObjectToJson(map);
+		}
+		
 }

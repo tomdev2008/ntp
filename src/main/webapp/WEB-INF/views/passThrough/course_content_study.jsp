@@ -22,8 +22,8 @@
     <script id="pageLeftTemplate" type="text/x-dot-template">
             <div id="sidebar" class="sidebar" >
                 {{#def.sidenav:it.sidenav}}
-                <div class="bdbt2 leftBox mt20">
-                    <a href="#"><i class="icon-disc-lg-bg"><i class="icon-medal"></i></i>
+                <div class="bdbt2 leftBox mt20" >
+                    <a href="javascript:void(0)" id="courseOverBtn"><i class="icon-disc-lg-bg"><i class="icon-medal"></i></i>
                         结业证书</a>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                 </span>
                 </h1>
 				{{?!it.nstatus}}
-				<a class="btn btn-back" href="#button"> <i class="icon-disc-lg-bg"><i class="icon-home icon-white"></i></i> </a>
+				<a class="btn btn-back" id="nextOver"> <i class="icon-disc-lg-bg"><i class="icon-home icon-white"></i></i> </a>
 				{{??}}
 				 <a class="btn {{?!it.nstatus}} disabled{{?}}" {{?it.nstatus}}href="#"{{?}}  id="nextLecture" data-fdid="{{=it.nextc}}" data-type="{{=it.nextBaseType || ''}}">
                         <i class="icon-chevron-lg-right"></i>
@@ -580,6 +580,49 @@
                             </dd>
                         </dl>
     		</script>
+   <!-- 结业证书页面  -->
+   <script id="pageContentTemplate" type="text/x-dot-template">
+       <div class="page-header" id="pageHeader" data-offset-top="10">
+                <div class="hd clearfix">
+             <a class="btn" href="#" >
+                <i class="icon-chevron-lg-left"></i>
+                <span>返回章节</span>
+                </a>
+                <h1>{{=it.courseName}}
+                <span class="labelPass{{?it.status != "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
+                <b class="caret"></b>
+                <span class="iconWrap"><i class="icon-right"></i></span>
+                <span class="tit">学习通过</span>
+                </span>
+                </h1>
+				<a class="btn btn-back"> <i class="icon-disc-lg-bg"><i class="icon-home icon-white"></i></i> </a>
+                </div>
+                <div class="bd" id="headToolsBar">
+                </div>
+        </div>
+        <section class="page-body" >
+            <section class="bdbt2 box-certificate">
+                <div class="hd"><h2>新东方认证教师</h2></div>
+                <div class="bd">
+                    <div class="media">
+                        <a class="pull-left" href="{{!it.user.link || '#'}}">
+								<img src="{{?it.user.imgUrl.indexOf('http')>-1}}{{=it.user.imgUrl}}{{??}}${ctx}/{{=it.user.imgUrl}}{{?}}" class="media-object img-polaroid" alt=""/>
+                            	<i class="icon-medal-lg"></i>
+                        </a>
+                        <div class="media-body">
+                            <div class="media-heading"><em>{{=it.user.name}}</em>老师，</div>
+                            <p>已于 {{=it.passTime}} 完成《<em>{{=it.courseName}}</em>》，特此认证。
+                                This is to certify MR/MS <span class="upper">{{=it.user.enName}}</span> 's successful completion of the New Oriental Teacher Online Training.</p>
+                            <p class="muted">颁发者：{{=it.issuer}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ft">
+                    <button class="btn btn-primary btn-large" type="button" id="downloadCertificate">下载证书</button>
+                </div>
+            </section>
+        </section>
+    </script>
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
@@ -680,8 +723,42 @@
                         $(this).parent().addClass("active").siblings().removeClass("active");
                     }
                 });
-
+		$("#courseOverBtn").bind("click",function(){
+			loadOverCard();
+		});
         loadRightCont(catalogId,fdMtype);//默认加载章节 参数：节id
+        
+        function loadOverCard(){
+        	 var pageContentFn = doT.template(document.getElementById("pageContentTemplate").text);
+        	 var pageData={};
+        	 $.ajax({
+	  			  url: "${ctx}/ajax/passThrough/getCourseOverByBamId",
+	  			  async:false,
+	  			  data:{
+	  				  bamId:bamId
+	  			  },
+	  			  dataType:'json',
+	  			  success: function(result){
+	  				pageData=result;
+	  			  },
+ 			});
+        	/*  pageData  = {
+                 courseName: "集团雅思基础口语新教师学习课程",
+                 user: {
+                     name: "杨义锋",
+                     enName: "yangyifeng",
+                     imgUrl: "./images/temp-face70.jpg",
+                     link: "#profile"
+                 },
+                 passTime: "2013-11-19",
+                 issuer: "集团国外考试推广管理中心"
+             }; */
+             $("#mainContent").html(pageContentFn(pageData));
+             /* $("#prevLecture").click(function (e){
+             	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
+             }); */
+             
+        }
         
 		function loadRightCont(fdid,type){
         	catalogId=fdid;
@@ -728,6 +805,9 @@
             	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$(this).attr("data-fdid")+"&fdMtype="+$(this).attr("data-type");
             	}
                 
+            }); 
+            $("#nextOver").click(function (e){
+            	loadOverCard();
             }); 
             $("#pageHeader").affix({
                 offset: {

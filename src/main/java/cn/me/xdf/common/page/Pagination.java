@@ -82,4 +82,33 @@ public class Pagination extends SimplePage implements java.io.Serializable,
 	public void setList(List<?> list) {
 		this.list = list;
 	}
+	
+	/**
+	 * 开始页码
+	 */
+	public int getStartPage() {
+		int begin = 0;
+		if(pageNo%10!=0){
+			begin = (int) (Math.floor(pageNo/10)*10)+1;
+		}else{
+			begin = (pageNo/10-1)*10+1;
+		}
+		return begin;
+	}
+
+	/**
+	 * 结束页码
+	 */
+	public int getEndPage() {
+		int end = 0;
+		if(pageNo%10!=0){
+			end = (int) (Math.floor(pageNo/10)*10)+10;
+			if(end>getTotalPage()){
+				end = getTotalPage();
+			}
+		}else{
+			end = pageNo;
+		}
+		return end;
+	}
 }
