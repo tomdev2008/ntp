@@ -155,6 +155,9 @@
 		                                        	  </button>		                                        		
 		                                        	</c:if>
 		                                        	<c:if test="${lecture.through==false}">
+		                                        	  <c:if test="${course.isOrder==true}">
+		                                        	    <c:set var="isorder" value="false"/>
+		                                        	  </c:if>
 		                                        	  <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary">
 		                                        		继续学习
 		                                        	  </button>		
@@ -206,6 +209,9 @@
 		                                        </button>		                                        		
 		                                    </c:if>
 		                                    <c:if test="${lecture.through==false}">
+		                                    	<c:if test="${course.isOrder==true}">
+		                                        	<c:set var="isorder" value="false"/>
+		                                        </c:if>
 		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary">
 		                                        	继续学习
 		                                        </button>		
