@@ -315,6 +315,7 @@ public class FileController {
     	String bamId = request.getParameter("bamId");
     	BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
     	CourseInfo courseInfo = courseService.get(bamCourse.getCourseInfo().getFdId()) ;
+    	SysOrgPerson person = courseInfo.getCreator();
     	SysOrgPerson orgPerson = accountService.get(ShiroUtils.getUser().getId()) ; 
     	String rootUrl=request.getScheme() + "://" + request.getServerName()+":" + request.getServerPort()+ request.getContextPath() + "/";
     	String imgUrl="";
@@ -340,7 +341,7 @@ public class FileController {
 		        	"                            <div class='media-heading'><em>"+orgPerson.getRealName()+"</em>老师，</div>"+
 		        	"                            <p>已于 "+DateUtil.convertDateToString(((bamCourse.getEndDate()==null)?new Date():bamCourse.getEndDate())) +" 完成《<em>"+courseInfo.getFdTitle()+"</em>》，特此认证。"+
 		        	"                                This is to certify MR/MS <span class='upper'>"+orgPerson.getLoginName()+"</span> 's successful completion of the New Oriental Teacher Online Training.</p>"+
-		        	"                            <p class='muted'>颁发者："+courseInfo.getCreator().getDeptName()+"</p>"+
+		        	"                            <p class='muted'>颁发者："+(person.getHbmParent()==null?"":person.getHbmParent().getHbmParentOrg().getFdName())+" "+person.getDeptName()+"</p>"+
 		        	"                        </div>"+
 		        	"                    </div>"+
 		        	"                </div>"+

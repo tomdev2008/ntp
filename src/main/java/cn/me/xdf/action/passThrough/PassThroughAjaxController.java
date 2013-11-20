@@ -391,7 +391,7 @@ public class PassThroughAjaxController {
 				SysOrgPerson person = courseInfo.getCreator();
 				map.put("courseName", courseInfo.getFdTitle() );
 				map.put("passTime", DateUtil.convertDateToString(bamCourse.getEndDate()));
-				map.put("issuer", person.getDeptName());
+				map.put("issuer", (person.getHbmParent()==null?"":person.getHbmParent().getHbmParentOrg().getFdName())+" "+person.getDeptName());
 				map.put("user", user);
 				List<CourseCatalog> catalogs = bamCourse.getCatalogs();
 				List<CourseCatalog> catalog = new ArrayList<CourseCatalog>();
