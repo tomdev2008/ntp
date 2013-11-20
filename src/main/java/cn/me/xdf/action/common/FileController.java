@@ -312,24 +312,31 @@ public class FileController {
     	BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
     	CourseInfo courseInfo = bamCourse.getCourseInfo();
     	SysOrgPerson orgPerson = accountService.get(ShiroUtils.getUser().getId()) ; 
+    	String rootUrl=request.getScheme() + "://" + request.getServerName()+":" + request.getServerPort()+ request.getContextPath() + "/";
+    	String imgUrl="";
+    	if(orgPerson.getPoto().indexOf("http")>-1){
+    		imgUrl=orgPerson.getPoto();
+    	}else{
+    		imgUrl=rootUrl+orgPerson.getPoto();
+    	}
     	try {
     		String html = 
     				"<!DOCTYPE HTML>"+
 		       		"<section class='container'>"+
 		        	"  <section class='page-body' >"+
 		        	"            <section class='bdbt2 box-certificate' id='cardId'>"+
-		        	"               <div class='hd'><h2>"+courseInfo.getFdSubTitle()+"</h2></div>"+
+		        	"               <div class='hd'><h2>"+courseInfo.getFdTitle()+"</h2></div>"+
 		        	"                <div class='bd'>"+
 		        	"                    <div class='media'>"+
 		        	"                        <a class='pull-left' href='#'>"+
-		        	"								<img src='http://10.200.27.52:8080/JensProject/resources/images/face-placeholder.png' alt=''/>"+
+		        	"								<img src='"+imgUrl+"' alt=''/>"+
 		        	"                            	<i class='icon-medal-lg'></i>"+
 		        	"                        </a>"+
 		        	"                        <div class='media-body'>"+
 		        	"                            <div class='media-heading'><em>"+orgPerson.getRealName()+"</em>老师，</div>"+
-		        	"                            <p>已于 "+DateUtil.convertDateToString(((bamCourse.getEndDate()==null)?new Date():bamCourse.getEndDate())) +" 完成《<em>"+courseInfo.getFdSubTitle()+"</em>》，特此认证。"+
+		        	"                            <p>已于 "+DateUtil.convertDateToString(((bamCourse.getEndDate()==null)?new Date():bamCourse.getEndDate())) +" 完成《<em>"+courseInfo.getFdTitle()+"</em>》，特此认证。"+
 		        	"                                This is to certify MR/MS <span class='upper'>"+orgPerson.getLoginName()+"</span> 's successful completion of the New Oriental Teacher Online Training.</p>"+
-		        	"                            <p class='muted'>颁发者："+orgPerson.getDeptName()+"</p>"+
+		        	"                            <p class='muted'>颁发者："+courseInfo.getCreator().getDeptName()+"</p>"+
 		        	"                        </div>"+
 		        	"                    </div>"+
 		        	"                </div>"+
