@@ -43,6 +43,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.material.MaterialDiscussInfoService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.utils.DateUtil;
@@ -300,6 +301,9 @@ public class FileController {
     
     @Autowired
     private AccountService accountService;
+    
+    @Autowired
+    private CourseService courseService;
     /**
      * html转图片，并且下载
      *
@@ -310,7 +314,7 @@ public class FileController {
     public void downloadImg(HttpServletRequest request, HttpServletResponse response) {
     	String bamId = request.getParameter("bamId");
     	BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
-    	CourseInfo courseInfo = bamCourse.getCourseInfo();
+    	CourseInfo courseInfo = courseService.get(bamCourse.getCourseInfo().getFdId()) ;
     	SysOrgPerson orgPerson = accountService.get(ShiroUtils.getUser().getId()) ; 
     	String rootUrl=request.getScheme() + "://" + request.getServerName()+":" + request.getServerPort()+ request.getContextPath() + "/";
     	String imgUrl="";
