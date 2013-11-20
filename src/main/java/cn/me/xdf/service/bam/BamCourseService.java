@@ -41,7 +41,7 @@ public class BamCourseService extends SimpleService {
         }
     }
 
-    public void updateCatalogThrough(String courseId,String catalogId){
+    public void updateCatalogThrough(BamCourse bamCourse,String catalogId){
 
     }
 
