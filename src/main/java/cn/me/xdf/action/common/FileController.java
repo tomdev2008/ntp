@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,12 +35,19 @@ import cn.me.xdf.common.download.DownloadHelper;
 import cn.me.xdf.common.upload.FileModel;
 import cn.me.xdf.common.upload.FileRepository;
 import cn.me.xdf.common.utils.Zipper;
+import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.material.MaterialDiscussInfoService;
 import cn.me.xdf.service.material.MaterialService;
+import cn.me.xdf.utils.DateUtil;
 import cn.me.xdf.utils.GraphUtils;
+import cn.me.xdf.utils.ShiroUtils;
 
 /**
  * @author xiaobin
@@ -286,6 +294,12 @@ public class FileController {
         this.fileRepository = fileRepository;
     }
     
+    
+    @Autowired
+    private BamCourseService bamCourseService;
+    
+    @Autowired
+    private AccountService accountService;
     /**
      * html转图片，并且下载
      *
@@ -294,30 +308,30 @@ public class FileController {
      */
     @RequestMapping("/downloadImg")
     public void downloadImg(HttpServletRequest request, HttpServletResponse response) {
-
+    	String bamId = request.getParameter("bamId");
+    	BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
+    	CourseInfo courseInfo = bamCourse.getCourseInfo();
+    	SysOrgPerson orgPerson = accountService.get(ShiroUtils.getUser().getId()) ; 
     	try {
     		String html = 
     				"<!DOCTYPE HTML>"+
 		       		"<section class='container'>"+
 		        	"  <section class='page-body' >"+
 		        	"            <section class='bdbt2 box-certificate' id='cardId'>"+
-		        	"               <div class='hd'><h2>新东方认证教师</h2></div>"+
+		        	"               <div class='hd'><h2>"+courseInfo.getFdSubTitle()+"</h2></div>"+
 		        	"                <div class='bd'>"+
 		        	"                    <div class='media'>"+
-		        	"                        <a class='pull-left' href='{{=it.user.link}}'>"+
+		        	"                        <a class='pull-left' href='#'>"+
 		        	"								<img src='http://10.200.27.52:8080/JensProject/resources/images/face-placeholder.png' alt=''/>"+
 		        	"                            	<i class='icon-medal-lg'></i>"+
 		        	"                        </a>"+
 		        	"                        <div class='media-body'>"+
-		        	"                            <div class='media-heading'><em>{{=it.user.name}}</em>老师，</div>"+
-		        	"                            <p>已于 {{=it.passTime}} 完成《<em>{{=it.courseName}}</em>》，特此认证。"+
-		        	"                                This is to certify MR/MS <span class='upper'>{{=it.user.enName}}</span> 's successful completion of the New Oriental Teacher Online Training.</p>"+
-		        	"                            <p class='muted'>颁发者：{{=it.issuer}}</p>"+
+		        	"                            <div class='media-heading'><em>"+orgPerson.getRealName()+"</em>老师，</div>"+
+		        	"                            <p>已于 "+DateUtil.convertDateToString(((bamCourse.getEndDate()==null)?new Date():bamCourse.getEndDate())) +" 完成《<em>"+courseInfo.getFdSubTitle()+"</em>》，特此认证。"+
+		        	"                                This is to certify MR/MS <span class='upper'>"+orgPerson.getLoginName()+"</span> 's successful completion of the New Oriental Teacher Online Training.</p>"+
+		        	"                            <p class='muted'>颁发者："+orgPerson.getDeptName()+"</p>"+
 		        	"                        </div>"+
 		        	"                    </div>"+
-		        	"                </div>"+
-		        	"                <div class='ft'>"+
-		        	"                    <button class='btn btn-primary btn-large' type='button' id='downloadCertificate'>下载证书</button>"+
 		        	"                </div>"+
 		        	"            </section>"+
 		        	"        </section>"+

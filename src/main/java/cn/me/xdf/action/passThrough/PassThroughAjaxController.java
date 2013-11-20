@@ -17,24 +17,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 import cn.me.xdf.common.hibernate4.Finder;
-import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.common.utils.array.ArrayUtils;
+import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
-import cn.me.xdf.model.material.ExamOpinion;
-import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.material.MaterialInfo;
-import cn.me.xdf.model.material.Task;
 import cn.me.xdf.model.organization.SysOrgPerson;
-import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.AccountService;
-import cn.me.xdf.service.ShiroDbRealm.ShiroUser;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
@@ -397,6 +393,18 @@ public class PassThroughAjaxController {
 				map.put("passTime", DateUtil.convertDateToString(bamCourse.getEndDate()));
 				map.put("issuer", person.getDeptName());
 				map.put("user", user);
+				List<CourseCatalog> catalogs = bamCourse.getCatalogs();
+				List<CourseCatalog> catalog = new ArrayList<CourseCatalog>();
+				for (CourseCatalog courseCatalog : catalogs) {
+					if(courseCatalog.getFdType()==1){
+						catalog.add(courseCatalog);
+					}
+				}
+				ArrayUtils.sortListByProperty(catalog, "fdNo", SortType.HIGHT);
+				map.put("firstCId", catalog.get(0).getFdId());
+				map.put("firstCType", catalog.get(0).getFdMaterialType());
+				map.put("listCId", catalog.get(catalog.size()-1).getFdId());
+				map.put("listCType", catalog.get(catalog.size()-1).getFdMaterialType());
 				return JsonUtils.writeObjectToJson(map);
 			}
 		}

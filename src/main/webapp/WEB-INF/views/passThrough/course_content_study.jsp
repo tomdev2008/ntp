@@ -584,18 +584,18 @@
    <script id="pageContentTemplate" type="text/x-dot-template">
        <div class="page-header" id="pageHeader" data-offset-top="10">
                 <div class="hd clearfix">
-             <a class="btn" href="#" id="prevLecture" ata-fdid="{{=it.prevc}}" data-type="{{=it.prevBaseType || ''}}" >
+             <a class="btn" href="#" id="firstC" >
                 <i class="icon-chevron-lg-left"></i>
-                <span>返回</span>
+                <span>第一节</span>
                 </a>
                 <h1>{{=it.courseName}}
                 <span class="labelPass{{?it.status != "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
-                <b class="caret"></b>
-                <span class="iconWrap"><i class="icon-right"></i></span>
-                <span class="tit">学习通过</span>
                 </span>
                 </h1>
-				<a class="btn btn-back"> <i class="icon-disc-lg-bg"><i class="icon-home icon-white"></i></i> </a>
+				<a class="btn" href="#" id="lastC" >
+                <i class="icon-chevron-lg-right"></i>
+                <span>最后节</span>
+                </a>
                 </div>
                 <div class="bd" id="headToolsBar">
                 </div>
@@ -729,6 +729,7 @@
         loadRightCont(catalogId,fdMtype);//默认加载章节 参数：节id
         
         function loadOverCard(){
+        	
         	 var pageContentFn = doT.template(document.getElementById("pageContentTemplate").text);
         	 var pageData={};
         	 var passed;
@@ -746,16 +747,19 @@
 	  					passed=true; 
 	  					 pageData=result;
 	  				  }
-	  			  },
+	  			  }
  			});
         	 if(passed){
         		 $("#mainContent").html(pageContentFn(pageData));
         		 $("#downloadCertificate").bind("click",function(){
-                	 window.location.href = "${ctx}/common/file/downloadImg";
+                	 window.location.href = "${ctx}/common/file/downloadImg?bamId="+bamId;
                  });
-        		 $("#prevLecture").click(function (e){
-                  	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+$("#sidenav li :last a :first").attr("data-fdid")+"&fdMtype="+$("#sidenav li :last a :first").attr("data-type");
-                  }); 
+        		 $("#firstC").click(function (e){
+                  	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+pageData.firstCId+"&fdMtype="+pageData.firstCType;
+                 }); 
+        		 $("#lastC").click(function (e){
+                   	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+pageData.listCId+"&fdMtype="+pageData.listCType;
+                 }); 
         	 }
         }
         
