@@ -56,12 +56,12 @@ import cn.me.xdf.utils.ShiroUtils;
 @Controller
 @RequestMapping("/common/file")
 public class FileController {
-	
-	@Autowired
-	private MaterialService materialService;
-	
-	@Autowired
-	private MaterialDiscussInfoService materialDiscussInfoService;
+
+    @Autowired
+    private MaterialService materialService;
+
+    @Autowired
+    private MaterialDiscussInfoService materialDiscussInfoService;
 
     private static final Logger log = LoggerFactory.getLogger(FileController.class);
 
@@ -123,6 +123,7 @@ public class FileController {
 
     /**
      * 文件下载（打包）
+     *
      * @param ids
      * @param zipname
      * @param request
@@ -157,8 +158,10 @@ public class FileController {
         downloadAttMain(attMains, agent, zipname, response);
         return null;
     }
+
     /**
      * 按文件modelId进行批量Download(打包) yuhz
+     *
      * @param ids
      * @param zipname
      * @param request
@@ -168,24 +171,26 @@ public class FileController {
      */
     @RequestMapping("/batchDownloadZip/{modelIds}/{zipname}")
     public String batchDownloadZip(@PathVariable("modelIds") String[] modelIds, @PathVariable("zipname") String zipname,
-                 HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
-    	DownloadHelper dh = new DownloadHelper();
+                                   HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        DownloadHelper dh = new DownloadHelper();
         dh.setRequest(request);
         List<AttMain> attMainList = new ArrayList<AttMain>();
-        for(int i=0;i<modelIds.length;i++){
-        	List<AttMain> attMains = attMainService.getAttsByModelId(modelIds[i]);
-        	if(attMains!=null&&attMains.size()>0){
-        		for (AttMain attMain : attMains) {
-        			attMainList.add(attMain);
-				}
-        	}
+        for (int i = 0; i < modelIds.length; i++) {
+            List<AttMain> attMains = attMainService.getAttsByModelId(modelIds[i]);
+            if (attMains != null && attMains.size() > 0) {
+                for (AttMain attMain : attMains) {
+                    attMainList.add(attMain);
+                }
+            }
         }
         String agent = request.getHeader("USER-AGENT");
-        downloadAttMain(attMainList, agent, zipname, response);     
-    	return null;
+        downloadAttMain(attMainList, agent, zipname, response);
+        return null;
     }
+
     /**
      * 根据素材类型进行附件全部下载 yuhz
+     *
      * @param fdType
      * @param zipname
      * @param request
@@ -195,27 +200,27 @@ public class FileController {
      */
     @RequestMapping("/allDownloadZip/{fdType}/{zipname}")
     public String allDownloadZip(@PathVariable("fdType") String fdType, @PathVariable("zipname") String zipname,
-                 HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
-    	DownloadHelper dh = new DownloadHelper();
+                                 HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        DownloadHelper dh = new DownloadHelper();
         dh.setRequest(request);
         List<AttMain> attMainList = new ArrayList<AttMain>();
         List<MaterialInfo> list = materialService.findByProperty("fdType", fdType);
-        if(list!=null&&list.size()>0){
-        	for (MaterialInfo materialInfo : list) {
-        		List<AttMain> attMains = attMainService.getAttsByModelId(materialInfo.getFdId());
-        		if(attMains!=null&&attMains.size()>0){
-        			for (AttMain attMain : attMains) {
-            			attMainList.add(attMain);
-    				}
-        		}
-			}
-        	
+        if (list != null && list.size() > 0) {
+            for (MaterialInfo materialInfo : list) {
+                List<AttMain> attMains = attMainService.getAttsByModelId(materialInfo.getFdId());
+                if (attMains != null && attMains.size() > 0) {
+                    for (AttMain attMain : attMains) {
+                        attMainList.add(attMain);
+                    }
+                }
+            }
+
         }
         String agent = request.getHeader("USER-AGENT");
-        downloadAttMain(attMainList, agent, zipname, response);     
-    	return null;
+        downloadAttMain(attMainList, agent, zipname, response);
+        return null;
     }
-    
+
 
     private void downloadAttMain(List<AttMain> attMains, String agent, String zipname, HttpServletResponse response) throws UnsupportedEncodingException {
         if (attMains != null && !attMains.isEmpty()) {
@@ -266,8 +271,10 @@ public class FileController {
 
         //response.setContentType(attMain.getFdContentType());
         response.setContentType("image/jpeg");
-        response.addHeader("Content-Length",
-                String.valueOf(attMain.getFdSize()));
+        if (attMain.getFdSize() != null) {
+            response.addHeader("Content-Length",
+                    String.valueOf(attMain.getFdSize()));
+        }
         OutputStream out;
         try {
             out = response.getOutputStream();
@@ -294,16 +301,17 @@ public class FileController {
     public void setFileRepository(FileRepository fileRepository) {
         this.fileRepository = fileRepository;
     }
-    
-    
+
+
     @Autowired
     private BamCourseService bamCourseService;
-    
+
     @Autowired
     private AccountService accountService;
-    
+
     @Autowired
     private CourseService courseService;
+
     /**
      * html转图片，并且下载
      *
@@ -312,48 +320,48 @@ public class FileController {
      */
     @RequestMapping("/downloadImg")
     public void downloadImg(HttpServletRequest request, HttpServletResponse response) {
-    	String bamId = request.getParameter("bamId");
-    	BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
-    	CourseInfo courseInfo = courseService.get(bamCourse.getCourseInfo().getFdId()) ;
-    	SysOrgPerson person = courseInfo.getCreator();
-    	SysOrgPerson orgPerson = accountService.get(ShiroUtils.getUser().getId()) ; 
-    	String rootUrl=request.getScheme() + "://" + request.getServerName()+":" + request.getServerPort()+ request.getContextPath() + "/";
-    	String imgUrl="";
-    	if(orgPerson.getPoto().indexOf("http")>-1){
-    		imgUrl=orgPerson.getPoto();
-    	}else{
-    		imgUrl=rootUrl+orgPerson.getPoto();
-    	}
-    	try {
-    		String html = 
-    				"<!DOCTYPE HTML>"+
-		       		"<section class='container'>"+
-		        	"  <section class='page-body' >"+
-		        	"            <section class='bdbt2 box-certificate' id='cardId'>"+
-		        	"               <div class='hd'><h2>"+courseInfo.getFdTitle()+"</h2></div>"+
-		        	"                <div class='bd'>"+
-		        	"                    <div class='media'>"+
-		        	"                        <a class='pull-left' href='#'>"+
-		        	"								<img src='"+imgUrl+"' alt=''/>"+
-		        	"                            	<i class='icon-medal-lg'></i>"+
-		        	"                        </a>"+
-		        	"                        <div class='media-body'>"+
-		        	"                            <div class='media-heading'><em>"+orgPerson.getRealName()+"</em>老师，</div>"+
-		        	"                            <p>已于 "+DateUtil.convertDateToString(((bamCourse.getEndDate()==null)?new Date():bamCourse.getEndDate())) +" 完成《<em>"+courseInfo.getFdTitle()+"</em>》，特此认证。"+
-		        	"                                This is to certify MR/MS <span class='upper'>"+orgPerson.getLoginName()+"</span> 's successful completion of the New Oriental Teacher Online Training.</p>"+
-		        	"                            <p class='muted'>颁发者："+(person.getHbmParent()==null?"":person.getHbmParent().getHbmParentOrg().getFdName())+" "+person.getDeptName()+"</p>"+
-		        	"                        </div>"+
-		        	"                    </div>"+
-		        	"                </div>"+
-		        	"            </section>"+
-		        	"        </section>"+
-		        	"</section>";
-    		HtmlImageGenerator imageGenerator = new HtmlImageGenerator();  
-	        imageGenerator.loadHtml (html);
-	        byte[] img = GraphUtils.toJpeg(imageGenerator.getBufferedImage());
+        String bamId = request.getParameter("bamId");
+        BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
+        CourseInfo courseInfo = courseService.get(bamCourse.getCourseInfo().getFdId());
+        SysOrgPerson person = courseInfo.getCreator();
+        SysOrgPerson orgPerson = accountService.get(ShiroUtils.getUser().getId());
+        String rootUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+        String imgUrl = "";
+        if (orgPerson.getPoto().indexOf("http") > -1) {
+            imgUrl = orgPerson.getPoto();
+        } else {
+            imgUrl = rootUrl + orgPerson.getPoto();
+        }
+        try {
+            String html =
+                    "<!DOCTYPE HTML>" +
+                            "<section class='container'>" +
+                            "  <section class='page-body' >" +
+                            "            <section class='bdbt2 box-certificate' id='cardId'>" +
+                            "               <div class='hd'><h2>" + courseInfo.getFdTitle() + "</h2></div>" +
+                            "                <div class='bd'>" +
+                            "                    <div class='media'>" +
+                            "                        <a class='pull-left' href='#'>" +
+                            "								<img src='" + imgUrl + "' alt=''/>" +
+                            "                            	<i class='icon-medal-lg'></i>" +
+                            "                        </a>" +
+                            "                        <div class='media-body'>" +
+                            "                            <div class='media-heading'><em>" + orgPerson.getRealName() + "</em>老师，</div>" +
+                            "                            <p>已于 " + DateUtil.convertDateToString(((bamCourse.getEndDate() == null) ? new Date() : bamCourse.getEndDate())) + " 完成《<em>" + courseInfo.getFdTitle() + "</em>》，特此认证。" +
+                            "                                This is to certify MR/MS <span class='upper'>" + orgPerson.getLoginName() + "</span> 's successful completion of the New Oriental Teacher Online Training.</p>" +
+                            "                            <p class='muted'>颁发者：" + (person.getHbmParent() == null ? "" : person.getHbmParent().getHbmParentOrg().getFdName()) + " " + person.getDeptName() + "</p>" +
+                            "                        </div>" +
+                            "                    </div>" +
+                            "                </div>" +
+                            "            </section>" +
+                            "        </section>" +
+                            "</section>";
+            HtmlImageGenerator imageGenerator = new HtmlImageGenerator();
+            imageGenerator.loadHtml(html);
+            byte[] img = GraphUtils.toJpeg(imageGenerator.getBufferedImage());
             response.setHeader("Content-type", "text/html;charset=utf-8");
             String imgName = java.net.URLEncoder.encode("结业证书.jpg", "UTF-8");
-            response.setHeader("Content-Disposition", "attachment;filename="+imgName);
+            response.setHeader("Content-Disposition", "attachment;filename=" + imgName);
             OutputStream out;
             response.addHeader("Content-Length",
                     String.valueOf(img.length));

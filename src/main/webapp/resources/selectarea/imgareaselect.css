@@ -1,0 +1,13 @@
+@charset "utf-8";
+/* CSS Document */
+body{margin:0;padding:0px;font-size:14px;line-height:20px;}
+body,input,button{font-family: "Helvetica Neue","Hiragino Sans GB", "Microsoft Yahei", Tahoma, Arial, STHeiti,
+    sans-serif;}
+input{border:1px solid #333;background-color:#fff;line-height:16px;padding:1px;}
+.big-imgDiv{width:400px;height:400px;border:1px solid #333;margin-right:10px;float:left;}
+.cutRight-box{margin-left:460px;}
+.min-imgDiv{overflow:hidden;border:1px solid #333;}
+.imgArea-bigSize,.imgArea-minSize{margin-bottom:12px;}
+.imgArea-box{margin-top:90px;}
+.imgArea-control{margin-top:7px;}
+.btn{border:none; background:#ffa00a; height:18px; line-height:18px; color:#fff; padding:0 8px; -moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px; }

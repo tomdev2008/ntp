@@ -20,6 +20,5 @@ public class BamCourseServiceTest extends BaseTest {
     @Test
     public void testSaveBamCourse() {
         //测试
-        bamCourseService.updateCatalogThrough("11111", "2222");
     }
 }
