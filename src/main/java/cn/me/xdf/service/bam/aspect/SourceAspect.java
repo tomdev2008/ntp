@@ -53,7 +53,7 @@ public class SourceAspect {
         }
         SourceNote note = (SourceNote) args[0];
         if (note == null || !BooleanUtils.toBoolean(note.getIsStudy())){
-        	if(!BooleanUtils.toBoolean(note.getIsStudy())){
+        	if(note != null && !BooleanUtils.toBoolean(note.getIsStudy())){
         		messageService.saveMaterialMessage(note);
         	}
         	 return "";
