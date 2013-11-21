@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sys-message>
+    <message name="source">
+        <![CDATA[
+		您的课程《${courseName}》全部通过，已获得<a href="${link}">证书</a>。
+	]]>
+    </message>
+    <message name="lecture">
+        <![CDATA[
+		您已通过节${lectureName}。
+	]]>
+    </message>
+    <message name="video">
+        <![CDATA[
+		您已通过节${lectureName}中的${materialName}视频。
+	]]>
+    </message>
+    <message name="doc">
+        <![CDATA[
+		您已通过节${lectureName}中的${materialName}文档。
+	]]>
+    </message>
+    <message name="ppt">
+        <![CDATA[
+		您已通过节${lectureName}中的${materialName}幻灯片。
+	]]>
+    </message>
+    <message name="exam">
+        <![CDATA[
+		您学习的节${lectureName}中的${materialName}测试${ispass}。
+	]]>
+    </message>
+    <message name="task">
+        <![CDATA[
+		您学习的节${lectureName}中的${materialName}作业${ispass}。
+	]]>
+    </message>
+</sys-message>

@@ -115,6 +115,15 @@
             </list>
         </property>
     </bean>
+    
+    <bean id="messageAssembleBuilder"
+          class="cn.me.xdf.service.message.MessageAssembleBuilder">
+        <property name="fileName">
+            <list>
+                <value>classpath:message/sys-message.xml</value>
+            </list>
+        </property>
+    </bean>
 
     <bean id="fileRepository" class="cn.me.xdf.common.upload.FileRepository"/>
 

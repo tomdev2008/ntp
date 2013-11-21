@@ -1,20 +1,47 @@
 package cn.me.xdf.service.message;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.hibernate.event.service.spi.EventListenerRegistry;
+import org.hibernate.event.spi.EventType;
+import org.hibernate.internal.SessionFactoryImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sun.tools.corba.se.idl.ConstEntry;
+
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.hibernate4.dynamic.DynamicBaseDaoImpl;
+import cn.me.xdf.common.hibernate4.dynamic.DynamicHibernateAssembleBuilder;
+import cn.me.xdf.common.hibernate4.dynamic.StatementTemplate;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.Constant;
+import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.BaseService;
+import cn.me.xdf.service.ShiroDbRealm.ShiroUser;
+import cn.me.xdf.service.bam.BamCourseService;
+import cn.me.xdf.utils.ShiroUtils;
+import freemarker.cache.StringTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
 /**
  * 
@@ -25,8 +52,16 @@ import cn.me.xdf.service.BaseService;
  */
 @Service
 @Transactional(readOnly = false)
-public class MessageService extends BaseService{
+public class MessageService extends BaseService implements InitializingBean{
 
+	private static final Logger LOGER = LoggerFactory
+            .getLogger(MessageService.class);
+	
+	/**
+     * 模板缓存
+     */
+    protected Map<String, Template> templateCache;
+    
 	@Autowired
 	private AccountService accountService;
 	
@@ -39,6 +74,17 @@ public class MessageService extends BaseService{
 	@Autowired
 	private MessageReplyService messageReplyService;
 	
+	protected MessageAssembleBuilder messageAssembleBuilder;
+
+    @Autowired
+    public void setMessageAssembleBuilder(
+			MessageAssembleBuilder messageAssembleBuilder) {
+		this.messageAssembleBuilder = messageAssembleBuilder;
+	}
+	
+    @Autowired
+    private BamCourseService bamCourseService;
+    
 	/**
 	 * 查看用户是否可以支持指定评论
 	 * 
@@ -64,6 +110,7 @@ public class MessageService extends BaseService{
 		}
 	}
 	
+
 	/**
 	 * 查看用户是否可以反对指定评论
 	 * 
@@ -195,5 +242,117 @@ public class MessageService extends BaseService{
 		long obj = (Long)scores.get(0);
 		return (int)obj;
 	}
+	
+	/**
+	 * 保存课程学习过程中系统发的课程通过消息
+	 * @param bamCourse 进程
+	 */
+	public void saveCourseMessage(BamCourse bamCourse){
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("courseName", bamCourse.getCourseInfo().getFdTitle());
+		param.put("link", "http://www.baidu.com");
+		saveSysMessage(bamCourse.getFdId(),"source",param);
+	}
+	
+	/**
+	 * 保存课程学习过程中系统发的节通过消息
+	 * @param bamCourse 进程
+	 * @param catalog 节
+	 */
+	public void saveLectureMessage(BamCourse bamCourse,CourseCatalog catalog){
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("lectureName", catalog.getFdName());
+		saveSysMessage(bamCourse.getFdId(),"lecture",param);
+	}
+	
+	/**
+	 * 保存课程学习过程中系统发的素材通过消息
+	 * @param bamCourse 进程
+	 * @param catalog 节
+	 * @param material 素材
+	 */
+	public void saveMaterialMessage(BamCourse bamCourse,CourseCatalog catalog,MaterialInfo material){
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("lectureName", catalog.getFdName());
+		param.put("materialName", material.getFdName());
+		String type = catalog.getMaterialType();
+		if(Constant.MATERIAL_TYPE_TEST.equals(type) || Constant.MATERIAL_TYPE_JOBPACKAGE.equals(type)){
+			param.put("ispass", "已通过");
+		}
+		saveSysMessage(bamCourse.getFdId(),type,param);
+	}
+	
+	/**
+	 * 保存课程学习过程中系统发的素材通过消息
+	 * @param bamCourse 进程
+	 * @param catalog 节
+	 * @param material 素材
+	 */
+	public void saveMaterialMessage(SourceNote note){
+		BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(note.getFdUserId(), note.getFdCourseId());
+		CourseCatalog catalog = bamCourse.getCatalogById(note.getFdCatalogId());
+		MaterialInfo material = bamCourse.getMaterialInfoById(note.getFdMaterialId());
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("lectureName", catalog!=null?catalog.getFdName():"");
+		param.put("materialName", material!=null?material.getFdName():"");
+		if(!note.getIsStudy()){
+			param.put("ispass", "未通过");
+		}else if(note.getIsStudy()){
+			param.put("ispass", "已通过");
+		}else{
+			if(Constant.TASK_STATUS_FINISH.equals(note.getFdStatus())){
+				param.put("ispass", "已提交");
+			}
+		}
+		saveSysMessage(bamCourse.getFdId(),catalog.getMaterialType(),param);
+	}
+	
+	/**
+	 * 保存课程学习过程中系统发的通过消息
+	 * @param bamId 进程ID
+	 * @param name 消息配置中的name
+	 * @param parameters 消息配置中填入的参数 
+	 */
+	public void saveSysMessage(String bamId,final String name,final Map<String, ?> parameters){
+		Template template = templateCache.get(name);
+        String content = processTemplate(template, parameters);
+        Message message = new Message();
+        message.setFdType(Constant.MESSAGE_TYPE_SYS);
+        message.setFdContent(content);
+        message.setFdModelId(bamId);
+        message.setFdModelName(BamCourse.class.getName());
+        message.setFdCreateTime(new Date());
+        super.save(message);
+	}
+	
+	@Override
+    public void afterPropertiesSet() throws Exception {
+		templateCache = new ConcurrentHashMap<String, Template>();
+        messageAssembleBuilder.init();
+        Map<String, String> message = messageAssembleBuilder.getMessages();
+        Configuration configuration = new Configuration();
+        configuration.setNumberFormat("#");
+        StringTemplateLoader stringLoader = new StringTemplateLoader();
+        for (Entry<String, String> entry : message.entrySet()) {
+            stringLoader.putTemplate(entry.getKey(), entry.getValue());
+            templateCache
+                    .put(entry.getKey(),new Template(entry.getKey(),
+                                            new StringReader(entry.getValue()),
+                                            configuration));
+        }
+        configuration.setTemplateLoader(stringLoader);
+    }
+
+    protected String processTemplate(Template template,
+                                     Map<String, ?> parameters) {
+        StringWriter stringWriter = new StringWriter();
+        try {
+        	template.process(parameters, stringWriter);
+        } catch (Exception e) {
+            LOGER.error("处理系统消息参数模板时发生错误：{}", e.toString());
+            throw new RuntimeException(e);
+        }
+        return stringWriter.toString();
+    }
 	
 }

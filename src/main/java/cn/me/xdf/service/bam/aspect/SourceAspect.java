@@ -4,6 +4,8 @@ import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.bam.CourseLogic;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.bam.BamCourseService;
+import cn.me.xdf.service.message.MessageService;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -27,6 +29,9 @@ public class SourceAspect {
 
     @Autowired
     private BamCourseService bamCourseService;
+    
+    @Autowired
+    private MessageService messageService;
 
     /**
      * 资源过滤
@@ -47,11 +52,16 @@ public class SourceAspect {
             throw new RuntimeException("资源格式不正确");
         }
         SourceNote note = (SourceNote) args[0];
-        if (note == null || !BooleanUtils.toBoolean(note.getIsStudy()))
-            return "";
+        if (note == null || !BooleanUtils.toBoolean(note.getIsStudy())){
+        	if(!BooleanUtils.toBoolean(note.getIsStudy())){
+        		messageService.saveMaterialMessage(note);
+        	}
+        	 return "";
+        }
+           
         //更新素材
         BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(note.getFdUserId(), note.getFdCourseId());
-        CourseLogic courseLogic = new CourseLogic(bamCourse, note);
+        CourseLogic courseLogic = new CourseLogic(bamCourse, note,messageService);
         bamCourseService.update(courseLogic.getBamCourse());
         return joinPoint.getTarget();
     }
@@ -72,7 +82,7 @@ public class SourceAspect {
         BamCourse bamCourse = (BamCourse) args[0];
         String catalogId = (String) args[1];
         //更新素材
-        CourseLogic courseLogic = new CourseLogic(bamCourse, null, catalogId, CourseLogic.CATALOG_UPDATE);
+        CourseLogic courseLogic = new CourseLogic(bamCourse, null, catalogId, CourseLogic.CATALOG_UPDATE,messageService);
         bamCourseService.update(courseLogic.getBamCourse());
 
         return joinPoint.getTarget();

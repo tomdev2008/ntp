@@ -1,12 +1,16 @@
 package cn.me.xdf.model.bam;
 
 import cn.me.xdf.common.json.JsonUtils;
+import cn.me.xdf.common.spring.ApplicationContextHelper;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.process.SourceNote;
+import cn.me.xdf.service.message.MessageService;
+
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Transient;
 import java.util.Date;
@@ -28,6 +32,8 @@ public class CourseLogic {
     private BamCourse bamCourse;
     private String catalogId;
     private SourceNote sourceNote;
+    
+    private MessageService messageService = null;
 
     /**
      * 更新类型
@@ -35,24 +41,25 @@ public class CourseLogic {
     private int updateType;
 
 
-    public CourseLogic(BamCourse bamCourse, SourceNote sourceNote) {
+    public CourseLogic(BamCourse bamCourse, SourceNote sourceNote,MessageService service) {
         this.bamCourse = bamCourse;
         this.sourceNote = sourceNote;
         this.catalogId = sourceNote.getFdCatalogId();
         updateType = SOURCE_UPDATE;
+        messageService = service;
         initData();
     }
 
-    public CourseLogic(BamCourse bamCourse, SourceNote sourceNote, String catalogId, int updateType) {
+    public CourseLogic(BamCourse bamCourse, SourceNote sourceNote, String catalogId, int updateType,MessageService service) {
         this.bamCourse = bamCourse;
         this.sourceNote = sourceNote;
         this.updateType = updateType;
         this.catalogId = catalogId;
+        messageService = service;
         initData();
     }
 
     private void initData() {
-
         if (updateType == SOURCE_UPDATE) {
             toMateridThrough();
         } else if (updateType == CATALOG_UPDATE) {
@@ -78,6 +85,7 @@ public class CourseLogic {
         for (CourseContent content : courseContents) {
             if (content.getCatalog().getFdId().equals(catalogId)) {
                 content.getMaterial().setThrough(true);
+                messageService.saveMaterialMessage(bamCourse, content.getCatalog(), content.getMaterial());
             }
         }
         bamCourse.setCourseContentJson(JsonUtils.writeObjectToJson(courseContents));
@@ -92,8 +100,10 @@ public class CourseLogic {
             return;
 
         for (CourseContent content : courseContents) {
-            if (content.getMaterial().getFdId().equals(sourceNote.getFdMaterialId())) {
+            if (content.getCatalog().getFdId().equals(sourceNote.getFdCatalogId())
+            	&& content.getMaterial().getFdId().equals(sourceNote.getFdMaterialId())) {
                 content.getMaterial().setThrough(true);
+                messageService.saveMaterialMessage(bamCourse, content.getCatalog(), content.getMaterial());
             }
         }
         bamCourse.setCourseContentJson(JsonUtils.writeObjectToJson(courseContents));
@@ -120,6 +130,7 @@ public class CourseLogic {
 	             if (isThrought) {
 		              catalog.setEndDate(new Date());
 		              catalog.setThrough(true);
+		              messageService.saveLectureMessage(bamCourse, catalog);
 	             }else{
 	            	 if(catalog.getThrough()==null){
 	            		 catalog.setThrough(false);
@@ -145,6 +156,7 @@ public class CourseLogic {
         if (isThrought) {
             bamCourse.setEndDate(new Date());
             bamCourse.setThrough(true);
+            messageService.saveCourseMessage(bamCourse);
         }
     }
 
