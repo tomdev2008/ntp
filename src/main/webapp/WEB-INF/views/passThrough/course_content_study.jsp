@@ -725,6 +725,7 @@
 	  				  bamId:bamId
 	  			  },
 	  			  dataType:'json',
+	  			  type:"post",
 	  			  success: function(result){
 	  				  if(result=="notThrough"){
 	  					passed=false;

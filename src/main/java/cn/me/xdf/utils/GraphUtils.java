@@ -4,17 +4,16 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
@@ -26,7 +25,7 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  * 
  */
 public class GraphUtils {
- private final static Logger logger = Logger.getLogger(GraphUtils.class);
+ private final static Logger logger = LoggerFactory.getLogger(GraphUtils.class);
  public static int DEFAULT_IMAGE_WIDTH = 1024;
  public static int DEFAULT_IMAGE_HEIGHT = 1300;
 
