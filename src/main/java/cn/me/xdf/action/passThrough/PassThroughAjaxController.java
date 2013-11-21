@@ -93,7 +93,7 @@ public class PassThroughAjaxController {
 	@ResponseBody
 	public String getNewCourseList(HttpServletRequest request) {
 		List result = new ArrayList();
-		Pagination page = courseService.discoverCourses(ShiroUtils.getUser().getId(),1,5);
+		Pagination page = courseService.discoverCourses(1,5);
 		if(page.getTotalCount()>0){
 			List list = page.getList();
 			for(int i=0;i<list.size();i++){
