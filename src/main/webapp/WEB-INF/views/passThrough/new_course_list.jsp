@@ -7,7 +7,7 @@
 <script src="${ctx}/resources/js/doT.min.js"></script>
 <script id="newCourseTemplate" type="text/x-dot-template">
 {{~it :item:index}}
-	<a href="${ctx}/passThrough/getCourseHome?courseId={{=item.FDID}}">
+	<a href="${ctx}/passThrough/getCourseHome/{{=item.FDID}}">
 		{{?item.ATTID == ''}}
 			<img src="${ctx}/resources/images/zht-main-img.jpg" alt="">
 		{{?}}

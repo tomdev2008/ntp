@@ -153,7 +153,7 @@ public class CourseService  extends BaseService{
 	 */
 	@Transactional(readOnly = true)
 	public Pagination discoverCourses(String userId, int pageNo, int pageSize) {
-		Finder finder = Finder.create(" select c.* from ixdf_ntp_course c where c.isAvailable=1 and c.fdStatus=:fdStatus and ( ");
+		Finder finder = Finder.create(" select c.fdid,c.fdtitle,c.fdauthor from ixdf_ntp_course c where c.isAvailable=1 and c.fdStatus=:fdStatus and ( ");
 		finder.append(" c.isPublish=1 or (fdPassword is not null and fdPassword <> '') or exists ( ");
 		finder.append(" select p.fdid from ixdf_ntp_course_partici_auth p where p.fdcourseid = c.fdid and p.fduserid = :userId  )) order by c.fdCreateTime desc ");
 		finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
