@@ -61,6 +61,9 @@ input.error:focus,textarea.error:focus{border-color:#953b39;-webkit-box-shadow:i
 .icon-course{background-position: 0 -883px;}
 .icon-course-series{background-position: 0 -907px;}
 .icon-handshake{background-position: 0 -931px; width: 30px;height: 72px;}
+.icon-tel{background-position: 0 -1003px;}
+.icon-male{background-position: 0 -1027px}
+.icon-female{background-position: right -1027px}
 
 /* star */
 .icon-star{*margin-right:0;vertical-align:middle;}

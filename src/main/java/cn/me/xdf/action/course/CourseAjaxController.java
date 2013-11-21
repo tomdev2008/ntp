@@ -812,6 +812,8 @@ public class CourseAjaxController {
 	 * 根据关键字删除某课程授权数据 ,若没有,则删除所有
 	 * 
 	 */
+	@RequestMapping(value="deleteAllCourseParticAuth")
+	@ResponseBody
 	public void deleteAllCourseParticAuth(HttpServletRequest request){
 		String courseId=request.getParameter("courseId");
 		String orderStr=request.getParameter("order");
@@ -831,9 +833,9 @@ public class CourseAjaxController {
 				List list = page.getList();
 				if(list!=null && list.size()>0){
 					for(Object obj:list){
-						Map map = (Map)obj;
-						String cpaId = (String)map.get("FDID");
-						courseParticipateAuthService.delete(cpaId);
+						Object [] temp=(Object[]) obj;
+						CourseParticipateAuth cpa =(CourseParticipateAuth)temp[0] ;
+						courseParticipateAuthService.delete(cpa.getFdId());
 					}
 				}
 			}

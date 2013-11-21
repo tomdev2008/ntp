@@ -103,7 +103,7 @@
 			{{?i==it.currentPage}}
 				<button class="btn btn-primary btn-num active" type="button">{{=i}}</button>
 			{{??}}
-				<a  oncick="pageNavClick({{=i}})">
+				<a  onclick="pageNavClick({{=i}})">
 				<button class="btn btn-primary btn-num" type="button">{{=i}}</button>
 				</a>
 			{{?}}
@@ -112,7 +112,7 @@
                             <span class="caret"></span></button>
 	     <ul class="dropdown-menu pull-right">
 		{{ for(var j=it.StartOperate;j<=it.EndOperate;j++){ }}
-			<li><a href="pageNavClick({{=j}})">{{=j*10-10+1}}-{{=j*10}}</a></li>
+			<li><a href="javascript:void(0)" onclick="pageNavClick({{=j}})">{{=j*10-10+1}}-{{=j*10}}</a></li>
 		{{}}}
 		</ul>
 	 <button class="btn btn-primary btn-ctrl" type="button" {{?it.currentPage == it.totalPage}} disabled {{?}} onclick='pageNavClick({{=it.currentPage+1}})'><i class="icon-chevron-right icon-white"></i></button>
@@ -153,7 +153,7 @@
                     </div>
                 </section>
                 <section class="section mt20">
-                   <!--  <form action="#rightCont" id="formAddTeacher"> -->
+                    <form action="#rightCont" id="formAddTeacher">
                         <input type="text" required name="inputTeacher" id="inputTeacher" class="autoComplete input-block" placeholder="授权某位老师学习本课程">
                         <span id="showerror"></span>
                         <input type="hidden" id="teacher">
@@ -165,7 +165,7 @@
                         <div class="divider">
                             <button class="btn btn-primary btn-large" type="submit">添加</button>
                             </div>
-                   <!--  </form> -->
+                     </form> 
                 </section>
 			          <%-- <div class="page-body" id="page list">
 			        	<%@ include file="/WEB-INF/views/course/divcourseauth.jsp" %>
@@ -181,7 +181,7 @@
                                     <li><a href="#rightCont" onclick="confirmDel();">批量删除</a></li>
                                 </ul>
                             </div>
-                            <form class="toolbar-search" onkeydown="pressEnter();">
+                            <form class="toolbar-search" onclick="pressEnter();" >
                                 <input type="text" class="search" onkeydown="showSearch();" onkeyup="showSearch();" id="search">
                                 <i class="icon-search" onclick="pageNavClick('1');"></i>
                             </form>
@@ -399,14 +399,22 @@
         	$("#inputMentor").val(item.name + '（' + item.mail + '），' + item.org + '  ' + item.department);
         	$("#mentor").val(item.id);
     	});
+        $(this).keypress( function(e) {  //屏蔽回车事件 由于目前回车会提交两次表单原因找不到 暂时如此处理
+               var key = window.event ? e.keyCode : e.which;  
+               if(key.toString() == "13"){  
+                            return false;  
+               }  
+        }); 
 
     });
 /**********************methods***************************************************/
-function pressEnter(){//回车事件
-	if(event.keyCode==13){
-		pageNavClick('1');
+/* function pressEnter(){//回车事件
+	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+	if (keyCode == 13) {
+		pageNavClick('1');//return false;
 	}
-}
+
+}  */
 function clearserach(){//清理搜索栏并显示数据列表
 	//alert('ss');
 	$("#search").val("");
@@ -543,9 +551,10 @@ function confirmDel(){
 	  var keyword=$("#search").val();//搜索关键字 	
 	 $.ajax({
       	type: "post",
-      	url: "${ctx}/ajax/course/deleteAllCouseParticAuth",
+      	url: "${ctx}/ajax/course/deleteAllCourseParticAuth",
       	data : {
-      		"keyword":keyword
+      		courseId:"${param.courseId}",
+      		keyword:keyword
       	},
       	cache: false, 
       	dataType: "json",

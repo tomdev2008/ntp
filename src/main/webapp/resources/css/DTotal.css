@@ -145,8 +145,8 @@
 
 /*授权学习*/
 .authorizedBody .media{padding: 20px 15px;}
-.authorizedBody .media .pull-left{margin-right: 38px;}
-.authorizedBody .media .media-object{width: 362px;}
+.authorizedBody .media .pull-left{margin-right: 38px;width: 362px;}
+.authorizedBody .media .media-object{width: 362px;height: 160px;}
 .authorizedBody .media-body p{margin-bottom: 0;}
 .authorizedBody .media-heading h2{font-size: 18px;margin: 0;}
 .authorizedBody .media-foot {text-align: right;margin-top: 30px;}
@@ -160,7 +160,7 @@
 .listTeacher li .bd label.pull-left{margin-top: 47px;}
 .listTeacher li .bd .box{margin-top: -12px;}
 .listTeacher li .bd .box .span3{width: 250px;}
-.listTeacher li .bd .box .span2{width: 170px;}
+.listTeacher li .bd .box .span2{width: 160px;}
 .listTeacher li .bd .box .span2 .divider{margin-top: 8px;}
 .listTeacher li .bd .box .type{text-align: center;}
 .listTeacher li .bd .box .type span,.listTeacher li .bd .box .time{background-color: #f9f9f9;}
