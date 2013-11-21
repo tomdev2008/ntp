@@ -328,7 +328,7 @@
                     <div class="mediaToolbar" id="mediaToolbar" data-fdid="{{=param.id}}">
                         <div class="btn-group">
                             <a id="btnPraise" class="btn btn-link{{?!param.mePraised}} active{{?}}" href="javascript:void(0)" title="{{?param.mePraised}}取消赞{{??}}赞{{?}}" praisedstatus="{{=param.mePraised}}"><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
-                           <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" class="btn btn-link{{?param.canDownload}} active" href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled"{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
+                           <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" canDownload="{{=param.canDownload}}" class="btn btn-link" {{?param.canDownload}}href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
                         </div>
                         <span class="playCount">{{?it.type == 'video'}}播放{{??}}阅读{{?}}  <strong class="num">{{=param.readCount || 0 }}</strong>  次</span>
                       <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}}><i class="icon-right"></i>我学会了</button>
@@ -1176,12 +1176,13 @@
                 	 $("#btnPraise").addClass("active").children(".num").text(result.praiseCount);
                 }
                
-                $("#btnDownload").addClass(result.canDownload ? '' : 'disabled').attr("data-original-title",result.canDownload ? '点击下载' : '无权下载')
+                $("#btnDownload").addClass(result.canDownload ? "active" : "disabled").attr("data-original-title",result.canDownload ? '点击下载' : '无权下载')
                         .children(".num").text(result.downloadCount);
                 $("#btnDoPass").attr("disabled",result.isPass ? true : false);
                 $mediaToolbar.find(".playCount>.num").text(result.readCount);
                 $("#mediaToolbar").attr("data-fdid",result.id);
                 $("#btnDownload").attr("data-fdid",result.url);
+                $("#btnDownload").attr("canDownload",result.canDownload);
                 $("#btnPraise").attr("praisedstatus",result.mePraised);
                 $("#mediaName").text($this.attr("title"));
                 $("#mediaIntro").text(result.intro);
@@ -1245,8 +1246,9 @@
             /*点下载事件*/
             $("#btnDownload").on("click",function(e){
                 var $this = $(this);
-                if($this.hasClass("disabled")){
+                if($this.attr("canDownload")=='false'){
                     e.preventDefault();
+                    return;
                 } else {
                     //$.post("url",{id: $mediaToolbar.attr("data-fdid")});
                 	 if($this.attr("data-fdid")!=null&&$this.attr("data-fdid")!=""){
