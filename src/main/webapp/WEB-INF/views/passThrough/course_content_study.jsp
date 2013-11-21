@@ -1282,6 +1282,17 @@
           			success:function(data){
           				loadRightCont(catalogId,fdMtype);
           				loadLeftData(bamId);
+          			  $("#sidenav>li>a").popover({
+          	            trigger: "hover"
+          	        })
+          	                .click(function(e){
+          	                    e.preventDefault();
+          	                    if($(this).attr("href")){//已通章节可点
+          	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
+          	                        $(this).parent().addClass("active").siblings().removeClass("active");
+          	                    }
+          	                });
+          				
           			}
           		}); 
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
