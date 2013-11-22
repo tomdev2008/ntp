@@ -1,4 +1,5 @@
 @charset "utf-8";
+.open .btn:focus{outline: 0;}
 /* width */
 .w760{width:760px;}
 .w225{width:225px;}
@@ -28,6 +29,8 @@
 
 .page-header{position:relative;margin:0;padding:15px 20px;line-height:30px;height:30px;}
 .page-header .pos-r{position: absolute;right: 20px;top: 14px;}
+.page-header .pos-r .btn-link {line-height: 24px;}
+.page-header .pos-r .btn-link i{margin-right: 5px;}
 .box-control{margin-top: 15px}
 .box-control .hd{border-bottom: solid #e5e5e5 1px;padding: 15px 0;}
 .box-control .hd .btn-toolbar{margin: 0 18px;position: relative;}
@@ -50,15 +53,21 @@
 .box-control .bd .btn-toolbar .pages{position: absolute;right: 0;
     top: 5px;}
 .box-control .bd .btn-toolbar .pages .btn-group{float: left;}
+.box-control .nav-tabs{border-bottom:solid #dcdcdc 2px;margin-bottom: 5px;}
+.box-control .nav-tabs li{margin-bottom: -2px;}
+.box-control .nav-tabs li a{padding:15px 24px;margin-right:0;color:#999999;border-right: solid #dcdcdc 1px;-moz-border-radius: 0;-webkit-border-radius: 0;border-radius: 0;}
+.box-control .nav-tabs li a:hover{}
+.box-control .nav-tabs .active a{border-top-color:transparent;border-left:0;color: #000000}
 
 .listTeacher{margin-top: 36px;}
-.listTeacher .media>.pull-left{margin-top: -16px;width: 82px;}
+.listTeacher .media>.pull-left{margin-top: -16px;width: 82px;padding-left: 15px;}
 .listTeacher .media>.pull-left>a{display: block;text-align: center;}
 .listTeacher .media>.pull-left>.face{padding-bottom: 10px;}
 .listTeacher .media>.pull-left>.send{margin-top: 10px;line-height: 24px;color: #666666;}
 .listTeacher .media>.pull-left>.send i{margin-right: 2px;}
 .listTeacher .media-object{height: 70px;padding: 5px;}
-.listTeacher .media{overflow: visible; cursor:pointer;margin-bottom: 24px;padding-left: 15px;}
+.listTeacher .media{overflow: visible; cursor:pointer;margin-bottom: 24px;}
+.listTeacher .media .pull-left a:hover,.listTeacher .media-foot a:hover{color: #4391bb}
 .listTeacher .media.active{background-color: #eff4f7}
 .listTeacher .media-body{padding: 0 20px;}
 .listTeacher .media-heading{line-height: 24px;padding:11px;margin: 20px 0;background-color: #f7f7f7;position: relative}
@@ -78,6 +87,14 @@
 .listTeacher .media-body .box .bd{border: solid #dddddd 1px;padding:20px 10px;background-color: #ffffff;}
 .listTeacher .media-body .box .bd .time{color: #bbbbbb;font-size: 12px;}
 .listTeacher .media-body .box .bd .time i{margin-right: 4px;}
+.listTeacher .media-foot{border-top: solid #efefef 1px;color: #666666;position: relative;}
+.listTeacher .media-foot a{color: #666666;}
+.listTeacher .media-foot .statebar{padding: 15px 22px;}
+.listTeacher .media-foot .statebar strong{font-weight: normal;color: #4391bb;}
+.listTeacher .media-foot .isPass{text-align:center;color:#ffffff;position: absolute;right: 0;top:0;width: 68px;padding:15px 0; background-color: #c1c1c1;border-bottom: solid #a6a6a6 2px;}
+.listTeacher .media-foot .isPass.pass{background-color: #a7cfe4;border-bottom-color: #90b2c4;}
+.listTeacher .media-foot .toolbar{text-align: center;color: #dddddd;padding: 13px 0;line-height: 22px;height: 24px;}
+.listTeacher .media-foot em{font-style: normal;margin: 0 20px;}
 
 .profile{padding: 22px;}
 .profile .face{width: 181px;height: 181px;}
