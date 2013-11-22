@@ -792,8 +792,8 @@
             //可选章节按钮
             $("#btnOptionalLecture").css("cursor","pointer")
                     .click(function(e){
-                        $(this).removeClass("disabled");
-                        $("#nextLecture").removeClass("disabled");
+                        //$(this).removeClass("disabled");
+                        //$("#nextLecture").removeClass("disabled");
                      $.ajax({
       		  			  url: "${ctx}/ajax/passThrough/updateCatalogThrough",
       		  			  async:false,
@@ -804,6 +804,7 @@
       		  			  dataType:'json',
       		  			  success: function(result){
       		  				loadLeftData(bamId);
+      		  				loadRightCont(catalogId,fdMtype);
       		  			$("#sidenav>li>a").popover({
       		              trigger: "hover"
       		            })

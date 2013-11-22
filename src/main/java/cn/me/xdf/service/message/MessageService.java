@@ -275,11 +275,11 @@ public class MessageService extends BaseService implements InitializingBean{
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("lectureName", catalog.getFdName());
 		param.put("materialName", material.getFdName());
-		String type = catalog.getMaterialType();
+		String type = catalog.getFdMaterialType();
 		if(Constant.MATERIAL_TYPE_TEST.equals(type) || Constant.MATERIAL_TYPE_JOBPACKAGE.equals(type)){
 			param.put("ispass", "已通过");
 		}
-		saveSysMessage(bamCourse.getFdId(),type,param);
+		saveSysMessage(bamCourse.getFdId(),catalog.getMaterialType(),param);
 	}
 	
 	/**
@@ -295,11 +295,14 @@ public class MessageService extends BaseService implements InitializingBean{
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("lectureName", catalog!=null?catalog.getFdName():"");
 		param.put("materialName", material!=null?material.getFdName():"");
-		if(!note.getIsStudy()){
-			param.put("ispass", "未通过");
-		}else if(note.getIsStudy()){
-			param.put("ispass", "已通过");
-		}else{
+		if(note.getIsStudy()!=null){
+			if(!note.getIsStudy()){
+				param.put("ispass", "未通过");
+			}else if(note.getIsStudy()){
+				param.put("ispass", "已通过");
+			}
+		}
+		else{
 			if(Constant.TASK_STATUS_FINISH.equals(note.getFdStatus())){
 				param.put("ispass", "已提交");
 			}
