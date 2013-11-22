@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,7 @@ import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.organization.User;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.base.AttMainService;
@@ -728,7 +730,7 @@ public class CourseAjaxController {
 				teacher.put("name",cpa.getFdUser().getNotifyEntity().getRealName());
 				teacher.put("mail",  cpa.getFdUser().getNotifyEntity().getFdEmail());
 				teacher.put("department",  cpa.getFdUser().getDeptName());
-				teacher.put("org", cpa.getFdUser().getHbmParent().getFdName());
+//				teacher.put("org", cpa.getFdUser().getHbmParent().getFdName());
 				Map mentor=null;//导师信息
 				if(cpa.getFdTeacher()!=null){
 					mentor=new HashMap();
@@ -737,7 +739,7 @@ public class CourseAjaxController {
 					mentor.put("name",cpa.getFdTeacher().getNotifyEntity().getRealName());
 					mentor.put("mail",  cpa.getFdTeacher().getNotifyEntity().getFdEmail());
 					mentor.put("department",  cpa.getFdTeacher().getDeptName());
-					mentor.put("org", cpa.getFdTeacher().getHbmParent().getFdName());
+//					mentor.put("org", cpa.getFdTeacher().getHbmParent().getFdName());
 				}
 				mcpa.put("teacher", teacher);
 				mcpa.put("mentor", mentor);
@@ -832,5 +834,34 @@ public class CourseAjaxController {
 				}
 			}
 		}
+	}
+	/**
+	 * 根据课程名称查询课程信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "findCourseByName")
+	@ResponseBody
+	public List<CourseInfo> findByName(HttpServletRequest request) {
+		String key = request.getParameter("q");
+		List<CourseInfo> courses = new ArrayList<CourseInfo>();
+		if (StringUtils.isBlank(key))
+			return null;
+
+		// 根据用户输入的关键字查询登录名和姓名，
+		// 排除最高用户admin
+		List<CourseInfo> courseInfos = courseService.findCourseInfoByCouseNameTop10(key);
+		CourseInfo couser = null;
+		for (CourseInfo couserInfo : courseInfos) {
+			couser= new CourseInfo();
+			couser.setFdId(couserInfo.getFdId());
+			couser.setFdTitle(couserInfo.getFdTitle());
+			couser.setFdSubTitle(couserInfo.getFdSubTitle());
+			couser.setFdAuthor(couserInfo.getFdAuthor());
+			couser.setFdAuthorDescription(couserInfo.getFdAuthorDescription());
+			courses.add(couser);
+		}
+		return courses;
 	}
 }

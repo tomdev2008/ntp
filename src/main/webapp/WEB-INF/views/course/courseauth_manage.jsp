@@ -41,7 +41,7 @@
                     </div>
                     <div class="person">
                             <a href="{{=item.teacher.link}}" class="pull-left"><img style="width:50px;height:50px;" src="{{?item.teacher.imgUrl.indexOf('http')>-1}}{{=item.teacher.imgUrl}}{{??}}${ctx}/{{=item.teacher.imgUrl}}{{?}}" alt=""/></a>
-                            <span>{{=item.teacher.name}}（{{=item.teacher.mail}}）<br /> {{?item.teacher.org.length>5}}{{=item.teacher.org.substr(0,5)+"..."}}{{??}}{{=item.teacher.org}}{{?}}{{?item.teacher.department.length>5}}{{=item.teacher.department.substr(0,3)+"..."}}{{??}}{{=item.teacher.department}}{{?}}</span>
+                            <span>{{=item.teacher.name}}（{{=item.teacher.mail}}）<br /> {{?item.teacher.department.length>8}}{{=item.teacher.department.substr(0,8)+"..."}}{{??}}{{=item.teacher.department}}{{?}}</span>
                     </div>
                     </div>
                     <div class="span2">
@@ -60,7 +60,7 @@
                         <div class="person">
                             {{?item.mentor}}
                                 <a href="{{=item.mentor.link}}" class="pull-left"><img  style="width:50px;height:50px;" src="{{?item.mentor.imgUrl.indexOf('http')>-1}}{{=item.mentor.imgUrl}}{{??}}${ctx}/{{=item.mentor.imgUrl}}{{?}}" alt=""/></a>
-                                <span>{{=item.mentor.name}}（{{=item.mentor.mail}}）<br /> {{?item.mentor.org.length>5}}{{=item.mentor.org.substr(0,5)+"..."}}{{??}}{{=item.mentor.org}}{{?}} {{?item.mentor.department.length>5}}{{=item.mentor.department.substr(0,3)+"..."}}{{??}}{{=item.mentor.department}}{{?}}</span>
+                                <span>{{=item.mentor.name}}（{{=item.mentor.mail}}）<br /> {{?item.mentor.department.length>8}}{{=item.mentor.department.substr(0,8)+"..."}}{{??}}{{=item.mentor.department}}{{?}}</span>
                             {{??}}
                                 <p align="center">本课程不需要导师参与</p>
                             {{?}}
@@ -154,13 +154,14 @@
                 </section>
                 <section class="section mt20">
                     <form action="#rightCont" id="formAddTeacher">
-                        <input type="text" required name="inputTeacher" id="inputTeacher" class="autoComplete input-block" placeholder="授权某位老师学习本课程">
+                        <input type="text" required name="inputTeacher" id="inputTeacher"  class="autoComplete input-block" placeholder="授权某位老师学习本课程">
                         <span id="showerror"></span>
                         <input type="hidden" id="teacher">
                         <div class="divider">
                             <i class="icon-handshake"></i>
                         </div>
                         <input type="text"  name="inputMentor" id="inputMentor" class="autoComplete input-block" placeholder="为该课程指定一位导师"/>
+                         <span id="showerror2"></span>
                         <input type="hidden" id="mentor"/>
                         <div class="divider">
                             <button class="btn btn-primary btn-large" type="submit">添加</button>
@@ -223,8 +224,8 @@
 							   </c:if>
 							</a> 
                             </div>
-                            <label class="radio inline" for="selectCurrPage"><input type="checkbox" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()" value="0" />选中本页</label>
-                            <label class="radio inline" for="selectAll"><input type="checkbox" id="selectAll" name="selectCheckbox" onclick="selectAll()" value="1"/>选中全部</label>
+                            <label class="checkbox inline" for="selectCurrPage"><input type="checkbox" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()" value="0" />选中本页</label>
+                            <label class="checkbox inline" for="selectAll"><input type="checkbox" id="selectAll" name="selectCheckbox" onclick="selectAll()" value="1"/>选中全部</label>
                             <div id="pageheard">
                             </div>
                         </div>
@@ -265,6 +266,16 @@
     	//添加新授权
         $("#formAddTeacher").validate({
             submitHandler: function(form){
+            	if($("#teacher").val()==null||$("#teacher").val()==""){
+            		$("#showerror").html("<font size='2' color='red'>输入数据有误,请从下来菜单中选择数据!</font>");
+            		return;
+            	}
+            	if($("#inputMentor").val()!=null&&$("#inputMentor").val()!=""){
+            		if($("#mentor").val()==null||$("#mentor").val()==""){
+            			$("#showerror2").html("<font size='2' color='red'>输入数据有误,请从下来菜单中选择数据!</font>");
+            			return;
+            		}
+            	}
             	 $.post("${ctx}/ajax/course/saveCourseParticipateAuth",{
                  	'courseId':"${param.courseId}",//课程id
                  	'teacher':$("#teacher").val(),//教师id//导师id
@@ -274,6 +285,7 @@
                				window.location.href="${ctx}/course/getSingleCourseAuthInfo?courseId=${param.courseId}&order=createtime&fdType=13";
                			}else{
                				$("#showerror").html("<font size='2' color='red'>当前所选教师已授权该课程!</font>");
+               				$("#teacher").val("");
                			}
                      });
             }
@@ -405,7 +417,18 @@
                             return false;  
                }  
         }); 
-
+        $("#inputTeacher").bind("focus",function(){
+        	if($("#showerror").html()!=null&&$("#showerror").html()!=""){
+        		$("#showerror").html("");
+        		$(this).val("");
+        	}
+        });
+        $("#inputMentor").bind("focus",function(){
+        	if($("#showerror2").html()!=null&&$("#showerror2").html()!=""){
+        		$("#showerror2").html("");
+        		$(this).val("");
+        	}
+        });
     });
 /**********************methods***************************************************/
 /* function pressEnter(){//回车事件

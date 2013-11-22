@@ -11,6 +11,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>新东方在线教师备课平台</title>
 <link href="${ctx}/resources/css/global.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/css/DTotal.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/css/template_detail.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
+<script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
+
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
 <![endif]-->
@@ -55,8 +66,7 @@
 					{{ } }}
 	      	</ul>
 	        <div class="section-add">
-	        	<button id="addCourse" class="btn btn-block btn-lecture-add" type="button">添加课程</button>
-				<button id="addSeries" class="btn btn-block" type="button">添加阶段</button>
+			    <button id="addSeries" class="btn btn-block" type="button">添加阶段</button>
 	        </div>
 	      </div>
       </div> 
@@ -76,7 +86,7 @@
 				<label class="control-label">第<span class="index">{{?it.chapter}}{{=it.chapter.num}}</span>阶段{{??it.lecture}}{{=it.lecture.num}}</span>课程{{?}}</label>
 				<div class="controls">
                    {{?it.chapter}}<input type="text" maxlength="20" class="input-block-level" placeholder="请输入标题内容" value="{{=(it.chapter ? it.chapter.title : it.lecture.title) || ''}}" />
-					{{??it.lecture}}<input type="text" name="courses" class="autoComplete input-block-level" placeholder="请选择课程信息">
+					{{??it.lecture}}<input type="text" id="courses" name="courses" class="autoComplete input-block-level" placeholder="请选择课程信息">
                     {{?}}
 					<span class="count">20字</span>
 				</div>
@@ -108,9 +118,7 @@
 			</span>
 			<a class="icon-pencil2{{?!param.type}} icon-white{{?}} btn-ctrls" href="#"></a>
 			<a class="icon-remove{{?!param.type}} icon-white{{?}} btn-ctrls" href="#"></a>
-			{{?param.type}}
 			<a href="#" class="btn-edit">编辑内容</a>
-			{{?}}
 			<div class="state-dragable">
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -234,6 +242,8 @@
     </tr>
 </script>
 <script src="${ctx}/resources/js/doT.min.js"></script>
+<script src="${ctx}/resources/js/templSeriesPages.js"></script>
+
 </head>
 
 <body>
@@ -273,21 +283,17 @@
 		<div class="w790 pull-right" id="rightCont">    
 	   
 	    </div>
+	    <!--  <input type="text" required name="inputTeacher" id="inputTeacher" class="autoComplete input-block" placeholder="授权某位老师学习本课程">
+	   -->
 	</div>
 </section>
-<link href="${ctx}/resources/css/template_detail.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
-<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
-<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
-<script src="${ctx}/resources/js/templSeriesPages.js"></script>
+
+
 <script type="text/javascript">	
 $.Placeholder.init();
 	
+
+
 	//点击左侧菜单事件
 	$("#sideNav>li>a").bind("click",function(e){	
 		if ($('#upMovie').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
@@ -396,17 +402,11 @@ $.Placeholder.init();
 			
 		});
 	}
-	//清空密码input
-	function removePass(){
-		$("#coursePwd").attr("class", "valid");
-		$("#passRadio label").remove();
-		
-		$("#coursePwd").val("");
-	}
+
 	//系列封页图片保存
-    function saveCoursePic(){
-    	$.post('${ctx}/ajax/course/cover',{
-			courseId : $("#courseId").val(),
+    function saveSeriesPic(){
+    	$.post('${ctx}/ajax/series/cover',{
+			seriesId : $("#seriesId").val(),
 			attId: $("#attIdID").val(),
 			})
 		.success(function(){

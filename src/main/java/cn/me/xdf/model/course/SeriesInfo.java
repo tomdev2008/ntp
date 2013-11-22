@@ -18,6 +18,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.model.base.IdEntity;
 import cn.me.xdf.model.organization.SysOrgPerson;
 
@@ -32,7 +33,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_SERIES")
-public class SeriesInfo extends IdEntity{
+public class SeriesInfo extends IdEntity implements IAttMain{
 
 	/**
 	 * 上级系列
@@ -66,6 +67,15 @@ public class SeriesInfo extends IdEntity{
 	 * 对应封面存储的附件
 	 */
 	private AttMain attMain;
+	/**
+	 * 
+	 * 是否发布
+	 */
+	private	 Boolean isPublish;
+	/**
+	 * 排序号
+	 */
+	private  Integer fdSeiresNo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdParentId")
@@ -127,6 +137,22 @@ public class SeriesInfo extends IdEntity{
 
 	public void setCreator(SysOrgPerson creator) {
 		this.creator = creator;
+	}
+
+	public Boolean getIsPublish() {
+		return isPublish;
+	}
+
+	public void setIsPublish(Boolean isPublish) {
+		this.isPublish = isPublish;
+	}
+
+	public Integer getFdSeiresNo() {
+		return fdSeiresNo;
+	}
+
+	public void setFdSeiresNo(Integer fdSeiresNo) {
+		this.fdSeiresNo = fdSeiresNo;
 	}
 	
 }
