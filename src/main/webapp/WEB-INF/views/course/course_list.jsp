@@ -2,11 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
+<%@page import="cn.me.xdf.utils.ShiroUtils"%>
+<%@page import="cn.me.xdf.service.ShiroDbRealm.ShiroUser"%>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
 <%
  String order = request.getParameter("order");
 //String fdType = request.getParameter("fdType");
+ boolean isAdmin = ShiroUtils.isAdmin();
+ request.setAttribute("isAdmin", isAdmin);
 
 %>
  <html class=""> 
@@ -44,7 +48,7 @@
 			<input type="hidden" id="allFlag" >
 			<input type="hidden"  id="cousetype" value="${param.fdType}">
 			<input type="hidden" id="cachorder"/>
-            
+            <input type="hidden" id="isAdmin" value="${isAdmin}">
 	    </section>
 	</section>
 </section>
@@ -201,15 +205,26 @@ function confirmDelecourse(){
 		return;
 	}
 	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
-		fiterDelete(delekey,1);
-		$.fn.jalert("您确认要删除所有数据？",deleteAllCourse);
+		if($("#isAdmin").val()=='true'){
+			$.fn.jalert("您确认要删除所有数据？",deleteAllCourse);
+		}else{
+			fiterDelete(delekey,1);
+			$.fn.jalert("您确认要删除所有数据？",deleteAllCourse);
+		}
 	}else if($('input[name="selectCheckbox"]:checked').val()==0){
-		fiterDelete(delekey,0);
-		$.fn.jalert("您确认要删除本页数据？",deleteCourse);
+		if($("#isAdmin").val()=='true'){
+			$.fn.jalert("您确认要删除本页数据？",deleteCourse);
+		}else{
+			fiterDelete(delekey,0);
+			$.fn.jalert("您确认要删除本页数据？",deleteCourse);
+		}
 	}else{
-		fiterDelete(delekey,0);
-		$.fn.jalert("您确认要删除所选数据？",deleteCourse);
-		
+		if($("#isAdmin").val()=='true'){
+			$.fn.jalert("您确认要删除所选数据？",deleteCourse);
+		}else{
+			fiterDelete(delekey,0);
+			$.fn.jalert("您确认要删除所选数据？",deleteCourse);
+		}
 	}
 }
 //删除选中列表

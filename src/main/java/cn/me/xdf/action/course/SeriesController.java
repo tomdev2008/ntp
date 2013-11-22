@@ -2,6 +2,8 @@ package cn.me.xdf.action.course;
 
 import javax.servlet.http.HttpServletRequest;
 
+import jodd.util.StringUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.SeriesInfoService;
@@ -24,42 +27,7 @@ public class SeriesController {
 	private SeriesInfoService seriesInfoService;
 	@Autowired
 	private AttMainService attMainService;
-	/*
-	 * 保存系列
-	 * author hanhl
-	 */
-	@RequestMapping(value="saveSeries")
-	public String  saveSeries(HttpServletRequest request){
-		String parentId=request.getParameter("parentId");
-		String fdName=request.getParameter("fdName");
-		String fdDescription=request.getParameter("fdDescription");
-        
-		SeriesInfo seriesInfo=new SeriesInfo();
-		if(parentId==null||"".equals(parentId)){
-			//父为空则是根  即系列
-			seriesInfo.setFdName(fdName);
-			seriesInfo.setFdDescription(fdDescription);
-			seriesInfo.setIsAvailable(true);//默认有效
-			seriesInfo.setVersion(0);
-			//同时保存系列的封面(附件)
-			
-			seriesInfoService.save(seriesInfo);
-		}else{
-			//不为空 则是阶段 ????这块有问题,如果系列和阶段是在同一操作页面,如何构建级联关系,若直接添加阶段?
-			
-			SeriesInfo supSeries=seriesInfoService.get(parentId);
-			seriesInfo.setFdName(fdName);
-			seriesInfo.setFdDescription(fdDescription);
-			seriesInfo.setHbmParent(supSeries);
-			seriesInfo.setIsAvailable(true);//默认有效
-			seriesInfo.setVersion(0);
-			//阶段没有封面?
-			seriesInfoService.save(seriesInfo);
-		}
-		
-		
-		return "";
-	}
+	
 	/*
 	 * 修改系列或阶段信息
 	 * author hanhl
@@ -101,5 +69,18 @@ public class SeriesController {
 		model.addAttribute("page", page);
 		return "/course/course_list";
 	}
-	
+	/**
+	 * 创建新系列
+	 */
+	@RequestMapping(value="add")
+	public String editSeries(HttpServletRequest request){
+		String seriesId=request.getParameter("seriesId");
+		if(StringUtil.isNotEmpty(seriesId)){
+			SeriesInfo series = seriesInfoService.get(seriesId);
+			if(series!=null){
+				request.setAttribute("series", series);
+			}
+		}
+		return "/course/series_add";
+	}
 }

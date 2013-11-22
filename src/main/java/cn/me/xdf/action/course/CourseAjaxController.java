@@ -469,9 +469,10 @@ public class CourseAjaxController {
 						String courseId = (String)map.get("FDID");
 						if(ShiroUtils.isAdmin()){//管理员删除不判断权限
 							delCourseById(courseId);
-						}
-						if(StringUtil.isNotBlank(findEditAuth(courseId))){//非管理员删除
-							delCourseById(courseId);
+						}else{
+							if(StringUtil.isNotBlank(findEditAuth(courseId))){//非管理员删除
+								delCourseById(courseId);
+							}
 						}
 					}
 				}
@@ -612,20 +613,11 @@ public class CourseAjaxController {
 	@ResponseBody
 	public String deleteFiter(HttpServletRequest request){
 		String fdIds = request.getParameter("courseId");
-		String fdName= request.getParameter("fdName");
 		String deleType=request.getParameter("deleType");
 		if("0".equals(deleType)){//选择删除
-			if(ShiroUtils.isAdmin()){
-				return "redirect:/ajax/course/deleteCourse?courseId"+fdIds;//超管直接跳到删除方法删除
-			}else{
 				return getDeleteKeys(fdIds);//获取可删除id
-			}
 		}else{//删除全部
-			if(ShiroUtils.isAdmin()){//管理员删除
-				return "redirect:/ajax/course/deleteAllCoursesByKey?fdTitle="+fdName;//超管直接跳到删除方法删除
-			}else{
 				return getDeleteKeys(fdIds);
-			}
 		}
 	}
 	/*

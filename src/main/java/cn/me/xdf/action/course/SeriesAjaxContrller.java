@@ -1,9 +1,13 @@
 package cn.me.xdf.action.course;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import jodd.util.StringUtil;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +17,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.base.Constant;
+import cn.me.xdf.model.course.CourseCategory;
+import cn.me.xdf.model.course.SeriesInfo;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.course.SeriesCoursesService;
 import cn.me.xdf.service.course.SeriesInfoService;
+import cn.me.xdf.utils.ShiroUtils;
 @Controller
 @RequestMapping(value = "/ajax/series")
 @Scope("request")
@@ -24,6 +34,28 @@ public class SeriesAjaxContrller {
 	private SeriesInfoService seriesInfoService;
 	@Autowired
 	private SeriesCoursesService seriesCoursesService;
+	@Autowired
+	private AccountService accountService;
+	/*
+	 * 保存系列
+	 * author hanhl
+	 */
+	@RequestMapping(value="saveSeries")
+	@ResponseBody
+	public String  saveSeries(HttpServletRequest request){
+		String seriesTitle=request.getParameter("seriesTitle");
+		String seriesDesc=request.getParameter("seriesDesc");
+		SeriesInfo series=new SeriesInfo();
+		series.setFdName(seriesTitle);
+		series.setFdDescription(seriesDesc);
+		series.setFdCreateTime(new Date());
+		series.setVersion(0);
+		series.setCreator(accountService.findById(ShiroUtils.getUser().getId()));
+	    seriesInfoService.save(series);
+	    Map map=new HashMap();
+		map.put("seriesId", series.getFdId());
+		return JsonUtils.writeObjectToJson(map);
+	}
 	/*
 	 * 查询课程列表 或者根据关键字搜索 author hanhl
 	 */
