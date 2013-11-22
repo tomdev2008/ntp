@@ -866,7 +866,7 @@
 							$("#examStemErr").css("display", "block");
 							return;
 						}
-						if ((examSub.split("#").length==1)) {
+						if ((examSub.split("#").length==1)||examSub.indexOf("##")==(examSub.length-2)) {
 							$("#examStemErr").html("请设置填空题选项");
 							$("#examStemErr").css("display", "block");
 							return;
