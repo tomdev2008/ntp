@@ -43,6 +43,7 @@
 			</c:import>
 			<!-- 图片列表页面 -->
 			<c:import url="/WEB-INF/views/studyTrack/divimglist.jsp">
+				<c:param name="type" value="tutor"></c:param>
 			</c:import>
 	        </div>
         </div>

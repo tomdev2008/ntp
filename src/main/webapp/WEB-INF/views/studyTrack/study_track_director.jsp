@@ -47,6 +47,7 @@
 			
 			<!-- 图片列表页面 -->
 			<c:import url="/WEB-INF/views/studyTrack/divimglist.jsp">
+				<c:param name="type" value="director"></c:param>
 			</c:import>
 	        </div>
         </div>
