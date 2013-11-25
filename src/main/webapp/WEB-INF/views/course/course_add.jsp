@@ -13,6 +13,7 @@
 <link href="${ctx}/resources/css/global.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/resources/css/template_detail.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/resources/kindeditor/themes/default/default.css" />
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
 <![endif]-->
@@ -211,7 +212,7 @@
         <form id="formDetailInfo" method="post" action="{{=it.action || '##'}}">  	
 	    	<div class="section" >   
 					<label for="courseAbstract">课程摘要</label>
-					<textarea id="courseAbstract" name="courseAbstract" required minlength="20" class="input-block-level" rows="4">{{=it.courseAbstract || ''}}</textarea>
+					<textarea id="courseAbstract" name="courseAbstract" style="width:100%;height:200px;visibility:hidden;"></textarea>
 					<label for="courseAuthor">作者</label>
 					<input type="text" id="courseAuthor" name="courseAuthor" required  class="span5" value="{{=it.courseAuthor || ''}}">
 					<label for="authorDescrip">作者描述</label>
@@ -242,7 +243,7 @@
 					{{#def.formAddItem:"课程要求"}}
                     
 	       </div>
-           <button class="btn btn-block btn-submit btn-inverse" type="button" onClick="saveDetailInfo()">保存</button>
+           <button class="btn btn-block btn-submit btn-inverse" type="button" id="saveDetailInfo">保存</button>
        </form>	  
 	 </div> 
 	 {{##def.formAddItem:param:
@@ -503,6 +504,8 @@
 </script>
 
 <script src="${ctx}/resources/js/doT.min.js"></script>
+<script charset="utf-8" src="${ctx}/resources/kindeditor/kindeditor-all-min.js"></script>
+<script charset="utf-8" src="${ctx}/resources/kindeditor/lang/zh_CN.js"></script>
 </head>
 
 <body>
@@ -585,6 +588,7 @@ $.Placeholder.init();
 		if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
 		     $('#upMaterial').uploadify('destroy'); 
 		}
+		KindEditor.remove('textarea[name="courseAbstract"]');
 		urlRouter();		
 	});
 	
@@ -704,25 +708,7 @@ $.Placeholder.init();
 		});
 	}
 	
-	//ajax保存课程详细信息
-	function saveDetailInfo(){
-		if(!$("#formDetailInfo").valid()){
-			return;
-		}
-		$.post('${ctx}/ajax/course/saveDetailInfo',{
-			 courseId : $("#courseId").val(),
-			 courseAbstract: $("#courseAbstract").val(),
-			 learnObjectives:  $("#learnObjectives").val(),
-			 suggestedGroup: $("#suggestedGroup").val(),
-			 courseRequirements: $("#courseRequirements").val(),
-			 courseAuthor: $("#courseAuthor").val(),
-			 authorDescrip: $("#authorDescrip").val()
-			})
-		.success(function(){
-			//提交成功跳转到详细信息
-       	    urlRouter("promotion");
-		});
-	}
+	
 		
 	//ajax保存课程详细信息
 	function saveIsPublish(){

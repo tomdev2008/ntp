@@ -751,8 +751,44 @@
 					  data = rsult;
 						data.pageTitle = title;
 						$("#rightCont").html(detailInfoFn(data));	
+						var editor = KindEditor.create('textarea[id="courseAbstract"]', {
+								resizeType : 1,
+								allowPreviewEmoticons : false,
+								allowImageUpload : false,
+								items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+									'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+									'insertunorderedlist', '|', 'undo', 'redo','link','image'],
+								afterBlur: function(){this.sync();}
+							});
+						editor.html(data.courseAbstract);
+						//ajax保存课程详细信息
+						$("#saveDetailInfo").click(function(e) {
+							if(!$("#formDetailInfo").valid()){
+								return;
+							}
+							saveDetailInfo();
+						});
 				  },
 			});
+			
+			//调用ajax保存课程模板的详细信息
+			function saveDetailInfo(){
+				$.post($('#ctx').val()+'/ajax/course/saveDetailInfo',{
+					 courseId : $("#courseId").val(),
+					 courseAbstract: $("#courseAbstract").val(),
+					 learnObjectives:  $("#learnObjectives").val(),
+					 suggestedGroup: $("#suggestedGroup").val(),
+					 courseRequirements: $("#courseRequirements").val(),
+					 courseAuthor: $("#courseAuthor").val(),
+					 authorDescrip: $("#authorDescrip").val()
+					})
+				.success(function(){
+					KindEditor.remove('textarea[name="courseAbstract"]');
+					//提交成功跳转到详细信息
+		       	    urlRouter("promotion");
+				});
+			}
+			
 			/*
 			 * data = {//ajax 成功后删除 action: "#",//form表单action courseAbstract:
 			 * "", learnObjectives: ["了解雅思考试基本情况","了解英国留学基本情况"], suggestedGroup:
