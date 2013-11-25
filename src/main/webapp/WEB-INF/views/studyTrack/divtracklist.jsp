@@ -91,8 +91,7 @@
                         操作
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#rightCont">导出列表</a></li>
-                        <li><a href="#rightCont">打包下载</a></li>
+                        <li><a href="javascript:void(0)" id="expStudyTrackA">导出列表</a></li>
                     </ul>
                 </div>
                 <form class="toolbar-search">
@@ -115,8 +114,8 @@
                     <button  date-orderType="teacher" class="btn btn-large" type="button">导师</button>
                     <button  date-orderType="time" class="btn btn-large active" type="button">时间</button>
                 </div>
-                <label class="radio inline" for="selectCurrPage"><input type="radio" id="selectCurrPage" name="selectCheckbox" checked />选中本页</label>
-                <label class="radio inline" for="selectAll"><input type="radio" id="selectAll" name="selectCheckbox" />选中全部</label>
+                <label class="radio inline" for="selectCurrPage"><input value="noPage" type="radio" id="selectCurrPage" name="selectCheckbox" checked />选中本页</label>
+                <label class="radio inline" for="selectAll"><input value="all" type="radio" id="selectAll" name="selectCheckbox" />选中全部</label>
                 <div class="pages pull-right" id="pageTop" >
 
                 </div>
@@ -150,6 +149,8 @@ $("#divOrder button").bind("click",function(){
 });
 
 
+
+
 function refreshTrackList(type,pageNo,pageSize,order){
 	resetOrderImg(order);
 	type=$("#selectTypeHidden").val();
@@ -174,6 +175,20 @@ function refreshTrackList(type,pageNo,pageSize,order){
 		success : function(result) {
 			data = result.list;
 			pageDate = result.pageInfo;
+		}
+	});
+	$("#expStudyTrackA").bind("click",function(){
+		var isAll=$(':radio[name="selectCheckbox"]:checked').val();
+		if(isAll=="noPage"){
+			var chk_value = [];
+			$("#listTeacher li").each(function() {
+				chk_value.push($(this).attr("data-fdid"));
+			});
+			window.location.href="${ctx}/studyTrack/expStudyTrackList/"+chk_value;
+		}else{
+			var serach = "";
+			serach = $("#serach").val();
+			window.location.href="${ctx}/studyTrack/expStudyTrackAll?selectType="+type+"&key="+serach+"&order="+order;
 		}
 	});
 	$("#pageTop").html(pageTopFn(pageDate));

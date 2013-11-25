@@ -94,7 +94,7 @@ public class StudyTrackAjaxController {
 				guideTeachName = ((SysOrgPerson)accountService.load((String)bamCourse.get("GUIID"))).getRealName();
 			}
 			map.put("mentor", guideTeachName);
-			Map passMap = passInfoByBamId((String)bamCourse.get("BAMID"));
+			Map passMap = studyTrackService.passInfoByBamId((String)bamCourse.get("BAMID"));
 			String currLecture="";
 			if(passMap.size()==0){
 				currLecture="尚未开始学习";
@@ -104,7 +104,7 @@ public class StudyTrackAjaxController {
 				currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
 			}
 			map.put("currLecture", currLecture);
-			Map map2 = getMessageInfoByBamId((String)bamCourse.get("BAMID"));
+			Map map2 = studyTrackService.getMessageInfoByBamId((String)bamCourse.get("BAMID"));
 			if(map2.size()==0){
 				map.put("passMsg","没有学习记录");
 				map.put("passTime", "");
@@ -152,55 +152,7 @@ public class StudyTrackAjaxController {
 		map.put("endPage", pagination.getEndPage());
 		return map;
 	}
-	/**
-	 * 获取当前环节
-	 * @param bamId
-	 * @return
-	 */
-	private Map passInfoByBamId(String bamId){
-		Map map = new HashMap();
-		BamCourse bamCourse = bamCourseService.get(BamCourse.class , bamId);
-		List<CourseCatalog> catalogs =bamCourse.getCatalogs();
-		ArrayUtils.sortListByProperty(catalogs, "fdTotalNo", SortType.HIGHT);
-		for (int i=0;i< catalogs.size();i++) {
-			CourseCatalog courseCatalog = catalogs.get(i);
-			if(Constant.CATALOG_TYPE_CHAPTER == courseCatalog.getFdType()){
-				continue;
-			}
-			List<MaterialInfo> infos = bamCourse.getMaterialByCatalog(courseCatalog.getFdId());
-			for (int j=0; j<infos.size();j++) {
-				MaterialInfo materialInfo = infos.get(j);
-				if(materialInfo.getThrough()==true){
-					map.put("courseCatalogNow", courseCatalog);
-					map.put("materialInfoNow", materialInfo);
-				}
-			}
-		}
-		return map;
-	}
 	
-	/**
-	 * 获取备课跟踪
-	 * 
-	 * @param bamId
-	 * @return
-	 */
-	private Map getMessageInfoByBamId(String bamId){
-		Map map = new HashMap();
-		Finder finder = Finder.create("");		
-		finder.append(" from Message message");
-		finder.append(" where message.fdType=:fdType and message.fdModelName=:fdModelName and message.fdModelId=:fdModelId ");
-		finder.append(" order by message.fdCreateTime desc");
-		finder.setParam("fdType", Constant.MESSAGE_TYPE_SYS);
-		finder.setParam("fdModelName", BamCourse.class.getName());
-		finder.setParam("fdModelId", bamId);
-		Message message = (Message) messageService.find(finder).get(0);
-		if(message!=null){
-			map.put("cot", message.getFdContent());
-			map.put("time", message.getFdCreateTime());
-		}
-		return map;
-	}
 	
 	
 	@RequestMapping(value = "getPerson")

@@ -1,6 +1,8 @@
 package cn.me.xdf.service.studyTack;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,9 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.common.utils.array.ArrayUtils;
+import cn.me.xdf.common.utils.array.SortType;
+import cn.me.xdf.model.bam.BamCourse;
+import cn.me.xdf.model.base.Constant;
+import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.bam.BamCourseService;
+import cn.me.xdf.service.message.MessageService;
 import cn.me.xdf.utils.ShiroUtils;
 
 /**
@@ -30,6 +40,9 @@ public class StudyTrackService {
 	@Autowired
 	private AccountService accountService;
 
+	@Autowired
+	private MessageService messageService;
+	
 	/**
 	 * 得到学习跟踪分页列表
 	 * 
@@ -40,26 +53,49 @@ public class StudyTrackService {
 	 * @return
 	 */
 	public Pagination getStudyTrack(String selectType,String userId,int pageNo,int pageSize,String orderType,String key){
-		
 		Pagination pagination=null;
-		
 		if(selectType.equals("myGuidance")){//我指导的备课ok
-			pagination=getStudyTrackByMyGuidance(pageNo, pageSize, orderType,key);
-			
+			pagination=bamCourseService.getPageBySql(getStudyTrackByMyGuidance(orderType,key), pageNo, pageSize);
 		}else if(selectType.equals("myOrganized")){//我组织的备课ok
-			pagination=getStudyTrackByMyOrganized(pageNo, pageSize, orderType,key);
+			pagination=bamCourseService.getPageBySql(getStudyTrackByMyOrganized(orderType,key), pageNo, pageSize);
 			
 		}else if(selectType.equals("myDepart")){//我所在部门的备课
-			pagination=getStudyTrackByMyDepart(pageNo, pageSize, orderType,key);
-			
+			pagination=bamCourseService.getPageBySql(getStudyTrackByMyDepart(orderType,key), pageNo, pageSize);
 		}else if(selectType.equals("myOrg")){//我所在机构的备课
-			pagination=getStudyTrackByMyOrg(pageNo, pageSize, orderType,key);
+			pagination=bamCourseService.getPageBySql(getStudyTrackByMyOrg(orderType,key), pageNo, pageSize);
 			
 		}else if(selectType.equals("myManaged")){//我所管理的备课ok
-			pagination=getStudyTrackByMyManaged(pageNo, pageSize, orderType,key);
-			
+			pagination=bamCourseService.getPageBySql(getStudyTrackByMyManaged(orderType,key), pageNo, pageSize);
 		}
 		return pagination;
+	}
+	
+	
+	/**
+	 * 得到学习跟踪
+	 * 
+	 * @param selectType
+	 * @param userId
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	public List<Object[]> getStudyTrackAll(String selectType,String orderType,String key){
+		List<Object[]> bamCourses=null;
+		if(selectType.equals("myGuidance")){//我指导的备课ok
+			bamCourses=bamCourseService.findBySQL(getStudyTrackByMyGuidance(orderType,key).getOrigHql(), null, null);	
+		}else if(selectType.equals("myOrganized")){//我组织的备课ok
+			bamCourses=bamCourseService.findBySQL(getStudyTrackByMyOrganized(orderType,key).getOrigHql(), null, null);
+		}else if(selectType.equals("myDepart")){//我所在部门的备课
+			bamCourses=bamCourseService.findBySQL(getStudyTrackByMyDepart(orderType,key).getOrigHql(), null, null);
+			
+		}else if(selectType.equals("myOrg")){//我所在机构的备课
+			bamCourses=bamCourseService.findBySQL(getStudyTrackByMyOrg(orderType,key).getOrigHql(), null, null);
+			
+		}else if(selectType.equals("myManaged")){//我所管理的备课ok
+			bamCourses=bamCourseService.findBySQL(getStudyTrackByMyManaged(orderType,key).getOrigHql(), null, null);	
+		}
+		return bamCourses;
 	}
 	
 	/**
@@ -69,7 +105,7 @@ public class StudyTrackService {
 	 * @param pageSize
 	 * @return
 	 */
-	private Pagination getStudyTrackByMyOrganized(int pageNo,int pageSize,String orderType,String key){
+	private Finder getStudyTrackByMyOrganized(String orderType,String key){
 
 		Finder finder = Finder.create("");		
 		finder.append(" SELECT b.FDID bamId,c.FDID courseId,b.PRETEACHID preId,o1.fdid guiId from");
@@ -83,7 +119,7 @@ public class StudyTrackService {
 		finder.append("  left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");
 		finder.append("    where o2.realname like '%"+key+"%'");
 		finder = addOrder(finder, orderType);
-		return bamCourseService.getPageBySql(finder, pageNo, pageSize);
+		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 		
 	}
 	
@@ -93,7 +129,7 @@ public class StudyTrackService {
 	 * @param pageSize
 	 * @return
 	 */
-	private Pagination getStudyTrackByMyGuidance(int pageNo,int pageSize,String orderType,String key){
+	private Finder getStudyTrackByMyGuidance(String orderType,String key){
 		Finder finder = Finder
 				.create("");		
 		finder.append(" SELECT b.FDID bamId,c.FDID courseId,b.PRETEACHID preId,o1.fdid guiId from");
@@ -104,7 +140,7 @@ public class StudyTrackService {
 		finder.append("  left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");
 		finder.append("    where o2.realname like '%"+key+"%'");
 		finder = addOrder(finder, orderType);
-		return bamCourseService.getPageBySql(finder, pageNo, pageSize);
+		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 	}
 	
 	/**
@@ -113,7 +149,7 @@ public class StudyTrackService {
 	 * @param pageSize
 	 * @return
 	 */
-	private Pagination getStudyTrackByMyDepart(int pageNo,int pageSize,String orderType,String key){
+	private Finder getStudyTrackByMyDepart(String orderType,String key){
 		Finder finder = Finder
 				.create("");
 		finder.append(" SELECT b.FDID bamId,c.FDID courseId,b.PRETEACHID preId,o1.fdid guiId from ");
@@ -125,7 +161,7 @@ public class StudyTrackService {
 		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");
 		finder.append("    where o2.realname like '%"+key+"%'");
 		finder = addOrder(finder, orderType);
-		return bamCourseService.getPageBySql(finder, pageNo, pageSize);
+		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 	}
 	
 	/**
@@ -134,7 +170,7 @@ public class StudyTrackService {
 	 * @param pageSize
 	 * @return
 	 */
-	private Pagination getStudyTrackByMyOrg(int pageNo,int pageSize,String orderType,String key){
+	private Finder getStudyTrackByMyOrg(String orderType,String key){
 		SysOrgPerson orgPerson = (SysOrgPerson)accountService.get(ShiroUtils.getUser().getId());
 		Finder finder = Finder
 				.create("");
@@ -148,7 +184,7 @@ public class StudyTrackService {
 		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");		
 		finder.append("    where o2.realname like '%"+key+"%'");
 		finder = addOrder(finder, orderType);
-		return bamCourseService.getPageBySql(finder, pageNo, pageSize);
+		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 	}
 	
 	/**
@@ -157,7 +193,7 @@ public class StudyTrackService {
 	 * @param pageSize
 	 * @return
 	 */
-	private Pagination getStudyTrackByMyManaged(int pageNo,int pageSize,String orderType,String key){
+	private Finder getStudyTrackByMyManaged(String orderType,String key){
 		Finder finder = Finder
 				.create("");
 		finder.append(" SELECT b.FDID bamId,c.FDID courseId,b.PRETEACHID preId,o1.fdid guiId from");
@@ -171,7 +207,7 @@ public class StudyTrackService {
 		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");
 		finder.append("    where o2.realname like '%"+key+"%'");
 		finder = addOrder(finder, orderType);
-		return bamCourseService.getPageBySql(finder, pageNo, pageSize);
+		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 	}
 	
 	private Finder addOrder(Finder finder ,String orderType){
@@ -196,7 +232,55 @@ public class StudyTrackService {
 	
 	
 	
+	/**
+	 * 获取当前环节
+	 * @param bamId
+	 * @return
+	 */
+	public Map passInfoByBamId(String bamId){
+		Map map = new HashMap();
+		BamCourse bamCourse = bamCourseService.get(BamCourse.class , bamId);
+		List<CourseCatalog> catalogs =bamCourse.getCatalogs();
+		ArrayUtils.sortListByProperty(catalogs, "fdTotalNo", SortType.HIGHT);
+		for (int i=0;i< catalogs.size();i++) {
+			CourseCatalog courseCatalog = catalogs.get(i);
+			if(Constant.CATALOG_TYPE_CHAPTER == courseCatalog.getFdType()){
+				continue;
+			}
+			List<MaterialInfo> infos = bamCourse.getMaterialByCatalog(courseCatalog.getFdId());
+			for (int j=0; j<infos.size();j++) {
+				MaterialInfo materialInfo = infos.get(j);
+				if(materialInfo.getThrough()==true){
+					map.put("courseCatalogNow", courseCatalog);
+					map.put("materialInfoNow", materialInfo);
+				}
+			}
+		}
+		return map;
+	}
 	
+	/**
+	 * 获取备课跟踪
+	 * 
+	 * @param bamId
+	 * @return
+	 */
+	public Map getMessageInfoByBamId(String bamId){
+		Map map = new HashMap();
+		Finder finder = Finder.create("");		
+		finder.append(" from Message message");
+		finder.append(" where message.fdType=:fdType and message.fdModelName=:fdModelName and message.fdModelId=:fdModelId ");
+		finder.append(" order by message.fdCreateTime desc");
+		finder.setParam("fdType", Constant.MESSAGE_TYPE_SYS);
+		finder.setParam("fdModelName", BamCourse.class.getName());
+		finder.setParam("fdModelId", bamId);
+		Message message = (Message) messageService.find(finder).get(0);
+		if(message!=null){
+			map.put("cot", message.getFdContent());
+			map.put("time", message.getFdCreateTime());
+		}
+		return map;
+	}
 	
 	
 	
