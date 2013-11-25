@@ -15,60 +15,31 @@
 	</div>
     <div class="bd">
     	<div class="listImg">
-    		
-        	<a href="#">
-    			<img src="${ctx}/resources/images/iAmTeacher/track.jpg" alt="">
-    			<span class="mask"></span>
-    			<span class="caption">
-                	<h6>备课跟踪</h6>
-                </span>
-            </a>
-            <a href="#">
-    			<img src="${ctx}/resources/images/iAmTeacher/checkwork.jpg" alt="">
-    			<span class="mask"></span>
-    			<span class="caption">
-                	<h6>绩效统计</h6>
-                </span>
-            </a>
             <c:if test="${param.type=='tutor'}">
-            <a href="#">
+            <a href="${ctx}/adviser/checkTask">
     			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
     			<span class="mask"></span>
     			<span class="caption">
                 	<h6>批改作业</h6>
                 </span>
             </a>
-             <a href="#">
-    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
-    			<span class="mask"></span>
-    			<span class="caption">
-                	<h6>批改课件</h6>
-                </span>
-            </a>
-             <a href="#">
-    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
-    			<span class="mask"></span>
-    			<span class="caption">
-                	<h6>组织批课</h6>
-                </span>
-            </a>
-             <a href="#">
-    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
-    			<span class="mask"></span>
-    			<span class="caption">
-                	<h6>确认课件</h6>
-                </span>
-            </a>
-            </c:if>
-             <c:if test="${param.type=='director'}">
-            <a href="#">
+             <a href="${ctx}/course/getCourseAuthInfos?fdType=13&order=fdcreatetime">
     			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
     			<span class="mask"></span>
     			<span class="caption">
                 	<h6>组织备课</h6>
                 </span>
             </a>
-             <a href="#">
+            </c:if>
+             <c:if test="${param.type=='director'}">
+            <a href="${ctx}/course/getCourseAuthInfos?fdType=13&order=fdcreatetime">
+    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
+    			<span class="mask"></span>
+    			<span class="caption">
+                	<h6>组织备课</h6>
+                </span>
+            </a>
+             <a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime">
     			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
     			<span class="mask"></span>
     			<span class="caption">
