@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +33,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import cn.me.xdf.common.download.DownloadHelper;
+import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.common.upload.FileModel;
 import cn.me.xdf.common.upload.FileRepository;
 import cn.me.xdf.common.utils.Zipper;
@@ -41,6 +44,7 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.adviser.AdviserService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
@@ -59,6 +63,9 @@ public class FileController {
 
     @Autowired
     private MaterialService materialService;
+    
+    @Autowired
+    private AdviserService adviserService;
 
     @Autowired
     private MaterialDiscussInfoService materialDiscussInfoService;
@@ -120,6 +127,28 @@ public class FileController {
         }
         return dh;
     }
+    
+    /**
+     * 文件下载（打包）
+     *
+     * @param ids
+     * @param zipname
+     * @param request
+     * @param response
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping("/downloadZipsByArrayIds/{ids}/{zipname}")
+    public String downloadZipsByArrayIds(@PathVariable("ids") String ids, @PathVariable("zipname") String zipname,
+                                         HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        DownloadHelper dh = new DownloadHelper();
+        dh.setRequest(request);
+        List<AttMain> attMains = attMainService.getAttsByIds(StringUtils.split(ids, ','));
+        String agent = request.getHeader("USER-AGENT");
+        downloadAttMain(attMains, agent, zipname, response);
+        return null;
+    }
+
 
     /**
      * 文件下载（打包）
@@ -158,6 +187,63 @@ public class FileController {
         downloadAttMain(attMains, agent, zipname, response);
         return null;
     }
+    /**
+     * 指导老师批量下载作业附件
+     */
+    @RequestMapping("/batchDownloadTaskZip/{noteIds}/{zipname}")
+    public String batchDownloadTaskZip(@PathVariable("noteIds") String[] noteIds, @PathVariable("zipname") String zipname,
+                                   HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        DownloadHelper dh = new DownloadHelper();
+        dh.setRequest(request);
+        List<AttMain> attMainList = new ArrayList<AttMain>();
+        for (int i = 0; i < noteIds.length; i++) {
+            List<AttMain> attMains = adviserService.findNotesAtts(noteIds[i]);
+            for (AttMain attMain : attMains) {
+            	attMainList.add(attMain);
+			}
+        }
+        String agent = request.getHeader("USER-AGENT");
+        downloadAttMain(attMainList, agent, zipname, response);
+        return null;
+    }
+    /**
+     * 指导老师批量下载作业附件
+     */
+    @RequestMapping("/allDownloadTaskZip/{fdType}/{zipname}")
+    public String allDownloadTaskZip(@PathVariable("fdType") String fdType, @PathVariable("zipname") String zipname,
+                                   HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        DownloadHelper dh = new DownloadHelper();
+        dh.setRequest(request);
+        List<AttMain> attMainList = new ArrayList<AttMain>();
+        String keyword = request.getParameter("keyword");
+        Pagination page  = adviserService.findAdivserCouserList(fdType, 1, SimplePage.DEF_COUNT, keyword, "FDCREATETIME");
+        if(page.getTotalCount()>0){
+           List list = page.getList();
+		   for(int i=0;i<list.size();i++){
+			   Map pageMap = (Map) list.get(i);
+			   List<AttMain> attMains = adviserService.findNotesAtts((String)pageMap.get("FDID"));
+			   for (AttMain attMain : attMains) {
+	            	attMainList.add(attMain);
+				}
+		   }
+         }
+        for(int index=2;index<=page.getTotalPage();index++){
+        	 Pagination pagetemp  = adviserService.findAdivserCouserList(fdType, 1, SimplePage.DEF_COUNT, keyword, "FDCREATETIME");
+        	 if(pagetemp.getTotalCount()>0){
+               List list = pagetemp.getList();
+      		   for(int i=0;i<list.size();i++){
+      			   Map pageMap = (Map) list.get(i);
+      			   List<AttMain> attMains = adviserService.findNotesAtts((String)pageMap.get("FDID"));
+      			   for (AttMain attMain : attMains) {
+      	            	attMainList.add(attMain);
+      				}
+      		   }
+            }
+        }
+        String agent = request.getHeader("USER-AGENT");
+        downloadAttMain(attMainList, agent, zipname, response);
+        return null;
+    }
 
     /**
      * 按文件modelId进行批量Download(打包) yuhz
@@ -187,6 +273,8 @@ public class FileController {
         downloadAttMain(attMainList, agent, zipname, response);
         return null;
     }
+    
+    
 
     /**
      * 根据素材类型进行附件全部下载 yuhz

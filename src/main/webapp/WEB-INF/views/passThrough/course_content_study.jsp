@@ -825,6 +825,16 @@
             	if($(this).attr("href")){
             		catalogId = $(this).attr("data-fdid");
             		loadLeftData(bamId);
+            		$("#sidenav>li>a").popover({
+          	            trigger: "hover"
+          	        })
+          	                .click(function(e){
+          	                    e.preventDefault();
+          	                    if($(this).attr("href")){//已通章节可点
+          	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
+          	                        $(this).parent().addClass("active").siblings().removeClass("active");
+          	                    }
+          	                });
             		loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
             	}
                  
@@ -834,6 +844,16 @@
             	if($(this).attr("href")){
             		catalogId = $(this).attr("data-fdid");
             		loadLeftData(bamId);
+            		$("#sidenav>li>a").popover({
+          	            trigger: "hover"
+          	        })
+          	                .click(function(e){
+          	                    e.preventDefault();
+          	                    if($(this).attr("href")){//已通章节可点
+          	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
+          	                        $(this).parent().addClass("active").siblings().removeClass("active");
+          	                    }
+          	                });
             		loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
             	}
                 
