@@ -50,6 +50,11 @@ public class LogOnline extends IdEntity{
 	 * 是否在线
 	 */
 	private Boolean isOnline;
+	
+	/**
+	 * 登录天数
+	 */
+	private Integer loginDay;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdPersonId")
@@ -91,6 +96,14 @@ public class LogOnline extends IdEntity{
 
 	public void setIsOnline(Boolean isOnline) {
 		this.isOnline = isOnline;
+	}
+
+	public Integer getLoginDay() {
+		return loginDay;
+	}
+
+	public void setLoginDay(Integer loginDay) {
+		this.loginDay = loginDay;
 	}
 
 	

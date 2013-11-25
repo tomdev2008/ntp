@@ -13,23 +13,7 @@
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
 <![endif]-->
-<script id="personTemplate" type="x-dot-template">
-                    <div class="profile">
-                        <a href="#">
-				<img src="{{?it.url.indexOf('http')>-1}}{{=it.url}}{{??}}${ctx}/{{=it.url}}{{?}}" class="face" alt="头像" /></a>
-                        <h5>{{=it.name}} 
-						{{?it.sex=='M'}}
-							<i class="icon-male"></i></h5>
-						{{??}}
-							<i class="icon-female"></i></h5>
-						{{?}}
-                        <p class="muted">
-                            {{=it.org}} {{=it.dep}} <br/>
-                            最近登录    0 天前<br/>
-                            在线统计    0 天
-                        </p>
-                    </div>
-</script>
+
 <script src="${ctx}/resources/js/doT.min.js" type="text/javascript"></script>
 </head>
 <body>
@@ -56,17 +40,11 @@
 
 			</div>
 			<div class="pull-right w225">
-                <div class="section" id="personFace">
-                    <div class="profile">
-                        <a href="#"><img src="./images/face-placeholder.png" class="face" alt="头像"/></a>
-                        <h5>杨义锋 <i class="icon-male"></i></h5> <!-- 女人用.icon-female -->
-                        <p class="muted">
-                            集团总公司 知识管理中心 <br/>
-                            最近登录    3 天前<br/>
-                            在线统计    35 天
-                        </p>
-                    </div>
-                </div>
+
+			<!-- 用户页面 -->
+			<c:import url="/WEB-INF/views/studyTrack/divuserimg.jsp">
+			</c:import>
+			
 			<!-- 图片列表页面 -->
 			<c:import url="/WEB-INF/views/studyTrack/divimglist.jsp">
 			</c:import>

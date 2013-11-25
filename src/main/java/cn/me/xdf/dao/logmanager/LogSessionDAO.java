@@ -1,6 +1,7 @@
 package cn.me.xdf.dao.logmanager;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -70,7 +71,11 @@ public class LogSessionDAO extends HibernateSimpleDao implements SessionDAO  {
 	        	person.setFdId(ShiroUtils.getUser().getId());
 	        	logLogin.setPerson(person);
 	        	logLogin.setSessionId(session.getId().toString());
-	        	logLogin.setTime(new Date());
+	        	Date date = new Date();
+	        	logLogin.setTime(date);
+//	        	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+//	        	String dateString = formatter.format(date);  
+//	        	logLogin.setCreatDay(dateString);
 	        	logLoginService.saveAndUpdateOnine(logLogin);
 	    	}
 	        return sessions.putIfAbsent(id, session);

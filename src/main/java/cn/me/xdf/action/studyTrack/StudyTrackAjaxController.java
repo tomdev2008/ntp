@@ -31,6 +31,8 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.log.LogLoginService;
+import cn.me.xdf.service.log.LogOnlineService;
 import cn.me.xdf.service.message.MessageService;
 import cn.me.xdf.service.studyTack.StudyTrackService;
 import cn.me.xdf.utils.DateUtil;
@@ -61,6 +63,12 @@ public class StudyTrackAjaxController {
 	
 	@Autowired
 	private MessageService messageService;
+	
+	@Autowired
+	private LogOnlineService logOnlineService;
+	
+	@Autowired
+	private LogLoginService logLoginService;
 
 	@RequestMapping(value = "getTracks")
 	@ResponseBody
@@ -165,6 +173,8 @@ public class StudyTrackAjaxController {
 		map.put("org", orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
 		map.put("dep", orgPerson.getDeptName());
 		map.put("sex", orgPerson.getFdSex());
+		map.put("lastTime", logLoginService.getNewLoginDate());
+		map.put("onlineDay",logOnlineService.getOnlineByUserId(ShiroUtils.getUser().getId()).getLoginDay());
 		return JsonUtils.writeObjectToJson(map);
 	}
 	
