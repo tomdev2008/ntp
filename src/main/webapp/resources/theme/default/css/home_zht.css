@@ -9,7 +9,7 @@
 .box-pd15{padding:15px;}
 .box-pd20{padding:20px;}
 .box-txt,.box-txt li{line-height:32px;}
-.section{border-bottom:solid #dcdcdc 2px;display:block; background-color:#FFF;}
+.section{border-bottom:solid #dcdcdc 2px;background-color:#FFF;}
 .hd{overflow:hidden;position:relative;}
 .hd h2{border-bottom:solid #efefef 1px;font-size:14px;padding:10px 20px;margin:0;}
 .hd h2.h2_r{padding:10px 15px;}
