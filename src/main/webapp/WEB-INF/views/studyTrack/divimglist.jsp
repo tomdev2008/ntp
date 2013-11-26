@@ -16,34 +16,48 @@
     <div class="bd">
     	<div class="listImg">
             <c:if test="${param.type=='tutor'}">
+            <a href="${ctx}/studyTrack/getStudyTrackTutor">
+                 <img src="${ctx}/resources/images/iAmTeacher/track.jpg" alt="">
+                    <span class="mask"></span>
+                    <span class="caption">
+                         <h6>学习跟踪</h6>
+                    </span>
+             </a>
             <a href="${ctx}/adviser/checkTask">
     			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
     			<span class="mask"></span>
     			<span class="caption">
                 	<h6>批改作业</h6>
                 </span>
-            </a>
-             <a href="${ctx}/course/getCourseAuthInfos?fdType=13&order=fdcreatetime">
-    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
-    			<span class="mask"></span>
-    			<span class="caption">
-                	<h6>组织备课</h6>
-                </span>
-            </a>
+            </a>            
             </c:if>
              <c:if test="${param.type=='director'}">
-            <a href="${ctx}/course/getCourseAuthInfos?fdType=13&order=fdcreatetime">
+             <a href="#">
+                 <img src="${ctx}/resources/images/iAmTeacher/track.jpg" alt="">
+                    <span class="mask"></span>
+                    <span class="caption">
+                         <h6>学习跟踪</h6>
+                    </span>
+             </a>
+              <a href="${ctx}/course/getCourseAuthInfos?fdType=13&order=fdcreatetime">
     			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
     			<span class="mask"></span>
     			<span class="caption">
-                	<h6>组织备课</h6>
+                	<h6>授权学习</h6>
                 </span>
             </a>
              <a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime">
     			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
     			<span class="mask"></span>
     			<span class="caption">
-                	<h6>课程模板</h6>
+                	<h6>课程管理</h6>
+                </span>
+            </a>
+            <a href="${ctx}/material/findList?fdType=01&order=FDCREATETIME">
+    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
+    			<span class="mask"></span>
+    			<span class="caption">
+                	<h6>课程素材库</h6>
                 </span>
             </a>
             </c:if>

@@ -255,7 +255,7 @@ public class FileController {
 		   }
          }
         for(int index=2;index<=page.getTotalPage();index++){
-        	 Pagination pagetemp  = adviserService.findAdivserCouserList(fdType, 1, SimplePage.DEF_COUNT, keyword, "FDCREATETIME");
+        	 Pagination pagetemp  = adviserService.findAdivserCouserList(fdType, index, SimplePage.DEF_COUNT, keyword, "FDCREATETIME");
         	 if(pagetemp.getTotalCount()>0){
                List list = pagetemp.getList();
       		   for(int i=0;i<list.size();i++){

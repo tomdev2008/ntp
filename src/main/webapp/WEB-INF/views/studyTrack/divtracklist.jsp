@@ -121,14 +121,13 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>    
     <section class="listWrap">
         <ul class="listTeacher media-list" id="listTeacher">
 
         </ul>
     </section>
     <div class="pages" id="pagebottom">
-        
     </div>
 </div>
 <script type="text/javascript">
@@ -186,9 +185,31 @@ function refreshTrackList(type,pageNo,pageSize,order){
 			});
 			window.location.href="${ctx}/studyTrack/expStudyTrackList/"+chk_value;
 		}else{
+			var expPage=1;
 			var serach = "";
 			serach = $("#serach").val();
-			window.location.href="${ctx}/studyTrack/expStudyTrackAll?selectType="+type+"&key="+serach+"&order="+order;
+			$.ajax({
+				url : "${ctx}/ajax/studyTrack/getExpPageSize",
+				async : false,
+				dataType : 'json',
+				type: "post",
+				data:{
+					selectType:type,
+					order:order,
+					key:serach,
+				},
+				success : function(result) {
+					expPage=result;
+				}
+			});
+			if(expPage>=1){
+				for(var i=1;i<=expPage;i++){
+					window.location.href="${ctx}/studyTrack/expStudyTrackAll?selectType="+type+"&key="+serach+"&order="+order+"&pageNo="+i;
+				}
+			}
+			else{
+				window.location.href="${ctx}/studyTrack/expStudyTrackAll?selectType="+type+"&key="+serach+"&order="+order+"&pageNo="+1;
+			}
 		}
 	});
 	$("#pageTop").html(pageTopFn(pageDate));

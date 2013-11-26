@@ -117,7 +117,7 @@ public class CourseController {
 				courseService.save(course);
 			}
 		}
-		return "redirect:/course/findcourseInfos";
+		return "redirect:/course/findcourseInfos?fdType=12&order=fdcreatetime";
 	}
 	
 	/**

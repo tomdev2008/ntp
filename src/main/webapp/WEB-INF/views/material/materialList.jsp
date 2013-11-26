@@ -29,7 +29,7 @@
 	  </section>
     	 
 		<section class="w790 pull-right" id="rightCont">
-	        <div class="page-header">
+	        <div class="page-header bder2">
 	           <c:if test="${param.fdType!=1000}">
                 <span class="muted">我正在看：</span> 
                  <c:if test="${param.fdType=='01'}">视频</c:if>

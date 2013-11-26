@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import jodd.util.StringUtil;
 
@@ -179,7 +180,20 @@ public class StudyTrackAjaxController {
 	}
 	
 	
-	
+	/**
+	 * 导出全部（带查询）
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value = "/getExpPageSize")
+	@ResponseBody
+	public String getExpPageSize(HttpServletRequest request,HttpServletResponse response){
+		String selectType = request.getParameter("selectType");
+		String orderType = request.getParameter("order");
+		String key = request.getParameter("key");
+		int page = studyTrackService.getStudyTrack(selectType, ShiroUtils.getUser().getId(), 1, 20000, orderType, key).getTotalPage();
+		return JsonUtils.writeObjectToJson(page);
+	}
 	
 	
 	

@@ -61,7 +61,7 @@
         </div>
     </script>
 <script src="${ctx}/resources/js/doT.min.js"></script>
-    <div class="section mt20">
+    <div class="section mt20" id="commentDiv">
        <div class="hd">
                 <div class="tit-icon_bg"><i class="icon-white-info"></i></div>
                 <h4>全部评论</h4>
@@ -117,6 +117,11 @@ function initCommentLines(modelName,modelId,pageNo){
 				  html = html + commentLineTemplate(result.listComments[i]);
 			  }
 			  $("#commentListUl").html(html);
+			  if(result.listComments.length==0){
+				  $("#commentDiv").addClass("hide");
+			  }else{
+				  $("#commentDiv").removeClass("hide");
+			  }
 		  }
 	});
 	$(".btnComment").bind("click",function(){
