@@ -20,8 +20,8 @@ request.setAttribute("path", path[path.length-1]);
 	          <shiro:hasAnyRoles name="admin,group">
 	          <li><a href="${ctx}/admin/role/list">系统管理</a></li>
 	          </shiro:hasAnyRoles>
-	          <li><a href="${ctx}/adviser/checkTask?order=FDCREATETIME">我是导师</a></li>
-	          <li><a href="${ctx}/material/findList?fdType=01&order=FDCREATETIME">我是主管</a></li>
+	          <li><a href="${ctx}/studyTrack/getStudyTrackTutor">我是导师</a></li>
+	          <li><a href="${ctx}/studyTrack/getStudyTrackDirector">我是主管</a></li>
 	        </ul>
 			<shiro:authenticated>
             <ul class="nav pull-right">
