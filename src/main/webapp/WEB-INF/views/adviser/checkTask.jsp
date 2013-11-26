@@ -57,6 +57,7 @@
             {{~}}
     </script>
 <script id="pageheardTemplate" type="text/x-dot-template">
+    <input id="pageIndex" type="hidden" value="{{=it.totalPage}}"/>
 	<div class="span2">
  	   第<span > {{=it.startNum}} - {{=it.endNum}}</span> / <span >{{=it.totalCount}}</span> 条
 	</div>
@@ -158,9 +159,9 @@
 							     </a>
                                 </div>
                                 <label class="radio inline" for="selectCurrPage">
-                                <input type="radio" id="selectCurrPage" onclick="checkcurrpage()" name="selectCheckbox"/>选中本页</label>
+                                <input type="radio" id="selectCurrPage" checked name="selectCheckbox"/>选中本页</label>
                                 <label class="radio inline" for="selectAll">
-                                <input type="radio" id="selectAll" onclick="selectAll()" name="selectCheckbox" />选中全部</label>
+                                <input type="radio" id="selectAll"  name="selectCheckbox" />选中全部</label>
                                 <div class="pages pull-right" id="pageheard">
                                     
                                 </div>
@@ -178,47 +179,17 @@
                 </div>
 			</div>
 			<div class="pull-right w225">
-                <div class="section">
-                    <div class="profile">
-                        <a href="#"><img src="${ctx}/resources/images/face-placeholder.png" class="face" alt="头像"/></a>
-                        <h5>杨义锋 <i class="icon-male"></i></h5> <!-- 女人用.icon-female -->
-                        <p class="muted">
-                                                             集团总公司 知识管理中心 <br/>
-                                                            最近登录    3 天前<br/>
-                                                            在线统计    35 天
-                        </p>
-                    </div>
-                </div>
-                <div class="section navTeacher" data-spy="affix" data-offset-top="384">
-                	<div class="hd">
-                		<h5>我是导师</h5>
-                	</div>
-                    <div class="bd">
-                    	<div class="listImg">
-                        	<a href="#">
-                    			<img src="${ctx}/resources/images/iAmTeacher/track.jpg" alt="">
-                    			<span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>学习跟踪</h6>
-                                </span>
-                            </a>
-                            <a href="#">
-                    			<img src="${ctx}/resources/images/iAmTeacher/checkwork.jpg" alt="">
-                    			<span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>批改作业</h6>
-                                </span>
-                            </a>
-                            <a href="#">
-                    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
-                    			<span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>安排日程</h6>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+			  <div class="section">
+                <!--用户页面 -->
+			   <c:import url="/WEB-INF/views/studyTrack/divuserimg.jsp"></c:import>
+			  </div>
+			<!-- 图片列表页面 -->
+			 <div class="section navTeacher" data-spy="affix" data-offset-top="384">
+			<c:import url="/WEB-INF/views/studyTrack/divimglist.jsp">
+				<c:param name="type" value="tutor"></c:param>
+			</c:import>
+            </div>    
+              
 	        </div>
         </div>
 <input type="hidden" id="fdType"/>
@@ -251,7 +222,6 @@ var pageendFn= doT.template(document.getElementById("pageEndTemplate").text);
             initlistTeacher($(this).attr("href").slice(1));
             loadList($(this).attr("href").slice(1));
         });
-
         
         function initlistTeacher(fdType){
         	$.ajax({
@@ -284,35 +254,27 @@ function batchDownload(){
 	if(document.getElementById("selectAll").checked){
 		 var keyword=$("#search").val();
 		 var fdType=$("#fdType").val();
-		 $.fn.jalert("您下载全部数据吗？",function(){
-			  window.location.href="${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword;
+		 var pageIndex = $("#pageIndex").val();
+		 for (var index = 1; index <= pageIndex; index++) {
+			window.open("${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword+"&pageIndex="+index);
+		 }
+		 /* $.fn.jalert("您确定下载全部数据吗？",function(){
+			  //window.location.href="${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword;
 			  return;
-		});
+		}); */
 	} else if(document.getElementById("selectCurrPage").checked){
 		var chk_value = [];
-		$('input[name="noteIds"]:checked').each(function() {
-			chk_value.push($(this).val());
-	    });
-		$.fn.jalert("您下载本页数据吗？",function(){
-			  window.location.href="${ctx}/common/file/batchDownloadTaskZip/"+chk_value+"/作业";
-			  return;
+		$("#listTeacher li").each(function() {
+			chk_value.push($(this).attr("data-fdid"));
+		});
+		$.fn.jalert("您确定下载本页数据吗？",function(){
+			window.location.href="${ctx}/common/file/batchDownloadTaskZip/"+chk_value+"/作业";
+			return;
 		});
 	} else{
 		 $.fn.jalert2("您好!您没有选择要下载的数据！");
 		  return;
 	}
-}
-//全部选中
-function selectAll(){
-  $('input[name="noteIds"]').each(function(){
-	   $(this).attr("checked",false);// 
-  });
-}
-//选中当前页
-function checkcurrpage(){
-    $('input[name="noteIds"]').each(function(){
-    	$(this).attr("checked",true);// 
-   });
 }
 //下载
 function downloadAtt(attIds,zipname){

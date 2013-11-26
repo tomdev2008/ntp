@@ -444,6 +444,7 @@
                     </div>
                 </form>
             </div>
+			<div id="commentDiv">
             <div class="hd">
                 <div class="tit-icon_bg"><i class="icon-white-info"></i></div>
                 <h5>全部评论</h5>
@@ -470,6 +471,7 @@
                     </div>
                 </div>
             </div>
+			</div>
         </div>
     </script>
 
@@ -835,7 +837,6 @@
           	                        $(this).parent().addClass("active").siblings().removeClass("active");
           	                    }
           	                });
-            		loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
             	}
                  
             });
@@ -1056,6 +1057,11 @@
                 	  },
             		  success: function(result){
             			  $("#listComment").html(listCommentFn(result.listComments));
+            			  if(result.listComments.length==0){
+            				  $("#commentDiv").addClass("hide");
+            			  }else{
+            				  $("#commentDiv").removeClass("hide");
+            			  }
             		  }
             	});
               //刷新评论页码
