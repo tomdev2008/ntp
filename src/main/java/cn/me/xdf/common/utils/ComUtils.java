@@ -35,7 +35,7 @@ public class ComUtils {
 	 * @return
 	 */
 	public static String getDefaultPoto() {
-		return "resources/images/face-placeholder.png";
+		return "resources/images/pikachu-placeholder.png";
 	}
 
 	public static String getFileUrl(String fdId, String fileName) {
