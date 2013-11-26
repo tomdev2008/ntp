@@ -2,6 +2,7 @@ package cn.me.xdf.model.bam;
 
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.spring.ApplicationContextHelper;
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
@@ -149,7 +150,7 @@ public class CourseLogic {
         List<CourseCatalog> catalogs = bamCourse.getCatalogs();
         boolean isThrought = true;
         for (CourseCatalog catalog : catalogs) {
-            if (catalog.getThrough()==null || !catalog.getThrough())
+            if (Constant.CATALOG_TYPE_LECTURE.equals(catalog.getFdType()) &&(catalog.getThrough()==null || !catalog.getThrough()))
                 isThrought = false;
         }
 
