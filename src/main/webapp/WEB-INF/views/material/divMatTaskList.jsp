@@ -19,7 +19,7 @@
 					</ul>
 				</div>
 				<form class="toolbar-search" onkeydown="pressEnter();">
-					<input type="text" id="serach" class="search" placeholder="搜索条目"
+					<input type="text" id="serach" class="search" placeholder="搜索素材"
 					   onblur="pageNavClick('${param.fdType}');"  onkeydown="showSearch();" onkeyup="showSearch();"> 
 					<i class="icon-search"  onclick="pageNavClick('${param.fdType}','1','FDCREATETIME');"></i>
 				</form>
