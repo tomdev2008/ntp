@@ -162,18 +162,17 @@ public class CourseService  extends BaseService{
 	 * 查找课程
 	 */
 	public List<CourseInfo> findCourseInfoByCouseNameTop10(String key) {
-		Finder finder = Finder
-				.create("from CourseInfo c ");
-		finder.append("where  course.isavailable='1'  and (c.fdTitle like :key1  or c.fdSubTitle like :key2)");
+		Finder finder = Finder.create(" from  CourseInfo c ");
+		finder.append("where  c.isAvailable='1'  and (c.fdTitle like :key1  or c.fdSubTitle like :key2)");
 		finder.setParam("key1", "%"+key+"%");
 		finder.setParam("key2", "%"+key+"%");
 		if(!ShiroUtils.isAdmin()){
 		//已发布的课程
-		finder.append("and ( course.fdstatus='01' or ");
+		finder.append("and ( c.fdstatus='01' or ");
 		//当前登录用户自己创建的
-		finder.append("  course.fdcreatorid=:createId  or");
+		finder.append("  c.creator.fdId=:createId  or");
 		//有编辑权限的
-		finder.append("	exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and auth.isediter=1 and fduserid=:userId)	)");
+		finder.append("	exists (select auth.fdId from CourseAuth auth where auth.course.fdId=c.fdId and auth.isediter=1 and auth.fdUser.fdId=:userId)	)");
 		finder.setParam("userId", ShiroUtils.getUser().getId());
 		finder.setParam("createId", ShiroUtils.getUser().getId());
 		}

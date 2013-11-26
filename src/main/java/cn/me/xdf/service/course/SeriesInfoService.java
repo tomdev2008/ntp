@@ -1,5 +1,7 @@
 package cn.me.xdf.service.course;
 
+import java.util.List;
+
 import jodd.util.StringUtil;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.BaseService;
 @Service
@@ -65,6 +68,20 @@ public class SeriesInfoService extends BaseService {
 		update(seriesInfo);
 
 	}
-	
+	/**
+	 * 查找课程权限
+	 * @param courseId 课程ID
+	 * @return List 章节列表
+	 */
+	@Transactional(readOnly = true)
+	public List<SeriesInfo> getSeriesById(String seriesId){
+		//根据系列ID查找章节，并按总序号升序
+		Finder finder = Finder
+				.create("from SeriesInfo series ");
+		finder.append("where series.hbmParent.fdId = :seriesId order by series.fdSeiresNo");
+		finder.setParam("seriesId", seriesId);		
+		return  find(finder);
+	}
+
 
 }
