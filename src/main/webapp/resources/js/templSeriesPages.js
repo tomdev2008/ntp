@@ -526,9 +526,9 @@
 			data.pageTitle = title;	
 			$("#rightCont").html(deleteSeriesFn(data));	
 			
-			$("#deleteSeries").click(function(){confirmDel();});
+			$("#deleteSeriesCourse").click(function(){confirmDel();});
 			function confirmDel(){
-				$.fn.jalert("您确认要删除当前系列课程？",deleteSeries);
+				$.fn.jalert("您确认要删除当前系列课程？",deleteseriesInfo);
 			}
 			// 调用ajax删除当前课程
 			function deleteseriesInfo(){
@@ -537,7 +537,7 @@
 		         })
 		             .success(function(){
 		                 // 提交成功
-		            	 window.location.href=$('#ctx').val()+"/series/findSeriesInfos";
+		            	 window.location.href=$('#ctx').val()+"/series/findSeriesInfos?fdType=11&order=fdcreatetime";
 		             });
 			}
 		};

@@ -125,11 +125,11 @@ public class SeriesAjaxContrller {
 		String seriesId=request.getParameter("seriesId");
 		String seriesTitle=request.getParameter("seriesTitle");
 		String seriesDesc=request.getParameter("seriesDesc");
-		String isavailable=request.getParameter("isavailable");
+//		String isavailable=request.getParameter("isavailable");
 		SeriesInfo series=seriesInfoService.get(seriesId);
 		series.setFdName(seriesTitle);
 		series.setFdDescription(seriesDesc);
-		series.setIsAvailable(Boolean.parseBoolean(isavailable));
+		series.setIsAvailable(true);
 		seriesInfoService.save(series);
 	}
 	/**

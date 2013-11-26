@@ -63,7 +63,7 @@ public class SeriesController {
 	public String pagefoward(HttpServletRequest request){
 		String seriesId=request.getParameter("seriesId");
 		if(StringUtil.isNotEmpty(seriesId)){
-			return "redirect:/series/add?"+seriesId;
+			return "redirect:/series/add?seriesId="+seriesId;
 		}else{
 			return "redirect:/series/add";
 		}

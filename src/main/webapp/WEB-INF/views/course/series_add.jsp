@@ -141,12 +141,12 @@
                         <label for="seriesDesc">系列描述</label>
                         <textarea name="seriesDesc" id="seriesDesc" required minlength="12" class="input-block-level" rows="3">{{=it.fdDescription || ''}}</textarea>   
                     </fieldset>
-						<input name="sectionIsava" id="sectionIsava" value="{{=it.isavailable||true}}" type="hidden">
+						<!--<input name="sectionIsava" id="sectionIsava" value="{{=it.isavailable||true}}" type="hidden">
 						<label for="sectionOrder"></label>
 						<div class="btn-group btns-radio" data-toggle="buttons-radio">
                             <button class="btn btn-large{{?it.isavailable==null || it.isavailable}} active{{?}}" id="true" type="button">有效</button>
                             <button class="btn btn-large{{?it.isavailable!=null && !it.isavailable}} active{{?}}" id="false" type="button">无效</button>
-                        </div>
+                        </div>-->
 	       </div>
            <button class="btn btn-block btn-submit btn-inverse" type="button" onClick="saveBaseInfo()">保存</button>
        </form>
@@ -187,7 +187,7 @@
 3. 本系列中的课程资料 请前往 课程信息 进行查阅。
 					</div>
 	       </div>		 
-           <button class="btn btn-block btn-warning btn-submit" id="deleteSeries" type="button">删除</button>         
+           <button class="btn btn-block btn-warning btn-submit" id="deleteSeriesCourse" type="button">删除</button>         
 	 </div> 	
 </script>
 <!-- 系列课程 模板 -->
@@ -379,8 +379,8 @@ $.Placeholder.init();
 		$.post('${ctx}/ajax/series/saveSeriesBaseInfo',{
 			 seriesId:$("#seriesId").val(),
 			 seriesTitle: $("#seriesTitle").val(),
-			 seriesDesc:  $("#seriesDesc").val(),
-			 isavailable:$("#sectionIsava").val()
+			 seriesDesc:  $("#seriesDesc").val()
+			 //isavailable:$("#sectionIsava").val()
 			})
 		.success(function(){
 			//提交成功系列推广
