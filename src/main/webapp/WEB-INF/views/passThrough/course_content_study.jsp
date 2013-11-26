@@ -825,6 +825,7 @@
             	if($(this).attr("href")){
             		catalogId = $(this).attr("data-fdid");
             		loadLeftData(bamId);
+            		loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
             		$("#sidenav>li>a").popover({
           	            trigger: "hover"
           	        })
@@ -835,7 +836,6 @@
           	                        $(this).parent().addClass("active").siblings().removeClass("active");
           	                    }
           	                });
-            		loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
             	}
                  
             });

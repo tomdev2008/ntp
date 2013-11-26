@@ -30,6 +30,13 @@
                 	<h6>组织备课</h6>
                 </span>
             </a>
+            <a href="${ctx}/studyTrack/getStudyTrackTutor">
+                 <img src="${ctx}/resources/images/iAmTeacher/track.jpg" alt="">
+                    <span class="mask"></span>
+                    <span class="caption">
+                         <h6>学习跟踪</h6>
+                    </span>
+             </a>
             </c:if>
              <c:if test="${param.type=='director'}">
             <a href="${ctx}/course/getCourseAuthInfos?fdType=13&order=fdcreatetime">
