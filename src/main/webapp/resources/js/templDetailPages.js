@@ -754,7 +754,8 @@
 						var editor = KindEditor.create('textarea[id="courseAbstract"]', {
 								resizeType : 1,
 								allowPreviewEmoticons : false,
-								allowImageUpload : false,
+								allowImageUpload : true,
+								uploadJson : $('#ctx').val()+'/common/file/KEditor_uploadImg',
 								items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 									'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
 									'insertunorderedlist', '|', 'undo', 'redo','link','image'],

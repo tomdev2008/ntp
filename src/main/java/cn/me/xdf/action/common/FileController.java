@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import cn.me.xdf.common.download.DownloadHelper;
+import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.common.upload.FileModel;
@@ -90,6 +92,31 @@ public class FileController {
         attMain = attMainService.save(attMain);
         fileModel.setAttId(attMain.getFdId());
         return fileModel;
+    }
+    
+    /**
+     * 富文本编辑器上传图片
+     */
+    @RequestMapping("/KEditor_uploadImg")
+    public String uploadImg(HttpServletRequest request, HttpServletResponse response) {
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
+                request.getSession().getServletContext());
+
+        commonsMultipartResolver.setDefaultEncoding("utf-8");
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile file = multipartRequest.getFile("imgFile");
+        FileModel fileModel = fileRepository.storeByExt(file);
+        AttMain attMain = fileModel.toAttMain();
+        attMain = attMainService.save(attMain);
+        Map map = new HashMap();
+        map.put("error", 0);
+		map.put("url", request.getContextPath() + "/common/file/image/"+attMain.getFdId());
+		try {  
+            response.getWriter().println(JsonUtils.writeObjectToJson(map));  
+        } catch (IOException e) {  
+            log.error(e.getMessage());  
+        }  
+        return null;
     }
 
     /**
