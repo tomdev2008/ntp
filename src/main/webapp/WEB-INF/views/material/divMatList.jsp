@@ -13,7 +13,7 @@
 						操作 <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<!-- <li><a href="#rightCont">导出列表</a></li> -->
+					    <li><a href="#rightCont" onclick="exportData();">导出列表</a></li>
 						<li><a href="#rightCont" onclick="downloadMater();">打包下载</a></li>
 						<li><a href="#rightCont" onclick="batchDelete();">批量删除</a></li>
 					</ul>
@@ -273,6 +273,23 @@ function downloadMater(){
 	} else {
 		window.location.href="${ctx}/common/file/batchDownloadZip/"+chk_value+"/xdf_"+fdType+"素材_"+CurrentDate;
 	}
+}
+//导出列表   
+function exportData(){
+   var fdType=$("#fdType").val();
+   var chk_value = [];
+   $('input[name="ids"]:checked').each(function() {
+		chk_value.push($(this).val());
+   });
+   if (chk_value.length == 0) {
+		$.fn.jalert2("请选择要下载的数据!");
+		return;
+   }
+   $.fn.jalert("您确定导出所选数据吗？",function(){
+		window.location.href="${ctx}/material/exportMaterialData/"+chk_value+"/"+fdType;
+		return;
+   });
+	
 }
 </script>
 

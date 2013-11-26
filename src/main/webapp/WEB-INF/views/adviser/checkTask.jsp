@@ -252,11 +252,10 @@ var pageendFn= doT.template(document.getElementById("pageEndTemplate").text);
 //导出列表   
 function exportData(){
 	 var fdType=$("#fdType").val();
-	 alert(fdType);
 	if(document.getElementById("selectAll").checked){
 		 var keyword=$("#search").val();
 		 $.fn.jalert("您确定要导出全部数据吗？",function(){
-			  window.location.href="${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword;
+			  window.location.href="${ctx}/adviser/exportAllDataList/"+fdType+"/?keyword="+keyword;
 			  return;
 		 }); 
 	} else if(document.getElementById("selectCurrPage").checked){
