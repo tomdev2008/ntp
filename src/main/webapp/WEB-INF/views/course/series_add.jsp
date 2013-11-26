@@ -11,16 +11,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>新东方在线教师备课平台</title>
 <link href="${ctx}/resources/css/global.css" rel="stylesheet" type="text/css">
-<link href="${ctx}/resources/css/DTotal.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/resources/css/template_detail.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
-<script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
-<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
-<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
+
 
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
@@ -42,28 +35,22 @@
 	            	<div class="progress progress-course">
 	            		<div class="bar" style="width:20%;"></div>
 	            	</div>
-	                您已经完成了本系列的 <span class="num_comp"></span> 个阶段内容，共计 <span class="num_all">{{=it.lecture.length}}</span> 阶段。
+	                您已经完成了本系列的 <span class="num_comp"></span> 个阶段内容，共计 <span class="num_all">{{?it.chapter}}{{=it.chapter.length}}{{??}}0{{?}}</span> 阶段。
 	        </div>
 	       
 	      <div class="sortableWrap">
 	      	<ul class="sortable" id="sortable">  
-			    	{{  for(var i=0; i<(it.chapter.length+it.lecture.length); i++){  }}
+				{{?it.chapter}}
+			    	{{  for(var i=1; i<(it.chapter.length)+1; i++){  }}
 						{{~it.chapter :chp:index}}
 							{{?chp.index == i}}	
 								<li class="chapter" data-fdid="{{=chp.id}}">		
-								{{#def.sectionbar:chp}}	
+								{{#def.sectionbar:chp}}
 								</li>			
 							{{?}}
 						{{~}}
-						{{~it.lecture :lec:index}}
-							{{?lec.index == i}}
-								<li class="lecture" data-fdid="{{=lec.id}}">
-								{{#def.sectionbar:lec}}
-								{{#def.lecturecontent:lec}}
-								</li>
-							{{?}}
-						{{~}}
 					{{ } }}
+				{{?}}
 	      	</ul>
 	        <div class="section-add">
 			    <button id="addSeries" class="btn btn-block" type="button">添加阶段</button>
@@ -74,7 +61,7 @@
 
 <!--添加系列表单模板-->
 <script id="addSectionsTemplate" type="text/x-dot-template">
-	<li class="{{?it.chapter}}chapter{{??it.lecture}}lecture{{?}}" data-fdid="">
+	<li class="chapter" data-fdid="">
 		{{#def.edittitle || ''}}		
 	</li>
 </script>
@@ -83,10 +70,10 @@
 <script id="formEditSectionTitle" type="text/x-dot-template">
 	<div class="form-edit-title form-horizontal">		
 			<div class="control-group">
-				<label class="control-label">第<span class="index">{{?it.chapter}}{{=it.chapter.num}}</span>阶段{{??it.lecture}}{{=it.lecture.num}}</span>课程{{?}}</label>
+				<label class="control-label">第<span class="index">{{?it.chapter}}{{=it.chapter.num}}</span>阶段{{?}}</label>
 				<div class="controls">
-                   {{?it.chapter}}<input type="text" maxlength="20" class="input-block-level" placeholder="请输入标题内容" value="{{=(it.chapter ? it.chapter.title : it.lecture.title) || ''}}" />
-					{{??it.lecture}}<input type="text" id="courses" name="courses" class="autoComplete input-block-level" placeholder="请选择课程信息">
+                   {{?it.chapter}}
+					<input type="text" maxlength="20" class="input-block-level" placeholder="请输入标题内容" value="{{=it.chapter.title|| ''}}" />
                     {{?}}
 					<span class="count">20字</span>
 				</div>
@@ -102,9 +89,6 @@
 <script id="sectionsTemplate" type="text/x-dot-template">
 		{{?it.chapter}}
 			{{#def.sectionbar:it.chapter}}
-		{{??it.lecture}}
-			{{#def.sectionbar:it.lecture}}
-			{{#def.lecturecontent:it.lecture}}
 		{{?}}		              
 </script>
 
@@ -112,13 +96,13 @@
 <script id="sectionBarTemplate" type="text/x-dot-template">
 	{{##def.sectionbar:param:
 		<div class="sortable-bar">
-			<span class="title">{{?param.type}}<i class="icon-{{=param.type}}"></i>{{?}}
+			<span class="title">
 				第<span class="index">{{=param.num}}</span>阶段
 				<span class="name">{{=param.title || ''}}</span>
 			</span>
-			<a class="icon-pencil2{{?!param.type}} icon-white{{?}} btn-ctrls" href="#"></a>
-			<a class="icon-remove{{?!param.type}} icon-white{{?}} btn-ctrls" href="#"></a>
-			<a href="#" class="btn-edit">编辑内容</a>
+			<a class="icon-pencil2 icon-white btn-ctrls" href="#"></a>
+			<a class="icon-remove icon-white btn-ctrls" href="#"></a>
+			<a href="#course" class="btn-edit">编辑内容</a>
 			<div class="state-dragable">
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -138,22 +122,8 @@
 			编辑内容
 			<a href="#" class="icon-remove-sign"></a>
 			</div>
-			<div class="bd">
-				<a class="btn-type" href="#"><i class="icon-doc-lg"></i><h5>课程</h5></a>
-			</div>
-		</div>
-	#}}
-</script>
-<!--节内容模板-->
-<script id="lectureContentTemplate" type="text/x-dot-template">
-	{{##def.lecturecontent:param:
-		<div class="lecture-content hide">
-			<div class="hd">
-			编辑内容
-			<a href="#" class="icon-remove-sign"></a>
-			</div>
-			<div class="bd">
-				<a class="btn-type" href="#"><i class="icon-doc-lg"></i><h5>课程</h5></a>
+				<div class="bd">
+				<a class="btn-type" href="#video"><i class="icon-video-lg"></i><h5>课程</h5></a>
 			</div>
 		</div>
 	#}}
@@ -167,10 +137,11 @@
 	    	<div class="section" >   
 	            	<fieldset>
                     	<label for="seriesTitle">系列名称</label>
-                        <input type="text" id="seriesTitle" name="seriesTitle" required minlength="6" class="input-block-level" value="{{=it.seriesTit || ''}}"  />
+                        <input type="text" id="seriesTitle" name="seriesTitle" required minlength="6" class="input-block-level" value="{{=it.fdName || ''}}"  />
                         <label for="seriesDesc">系列描述</label>
-                        <textarea name="seriesDesc" id="seriesDesc" required minlength="12" class="input-block-level" rows="3">{{=it.seriesDesc || ''}}</textarea>   
+                        <textarea name="seriesDesc" id="seriesDesc" required minlength="12" class="input-block-level" rows="3">{{=it.fdDescription || ''}}</textarea>   
                     </fieldset>
+						<input name="sectionIsava" id="sectionIsava" value="{{=it.isavailable||true}}" type="hidden">
 						<label for="sectionOrder"></label>
 						<div class="btn-group btns-radio" data-toggle="buttons-radio">
                             <button class="btn btn-large{{?it.isavailable==null || it.isavailable}} active{{?}}" id="true" type="button">有效</button>
@@ -188,7 +159,7 @@
     <div class="page-body promotion-content">    	
         <form id="formPromotion" method="post" action="{{=it.action || '##'}}">  	
 	    	<div class="section" >              	
-					<label for="CourseCover">课程封面</label>
+					<label for="CourseCover">系列封面</label>
 					<input id="courseCover" name="courseCover" class="input-block-level" type="hidden" value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
 									<!--图片预览-->
 					<div class="courseCover"><img id="imgshow" name="imgshow" style="width: 300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/zht-main-img.jpg'}}" alt="" /></div>					
@@ -200,16 +171,7 @@
 							<input type="hidden"  name="attId" id="attIdID">
 					</div>		
 	       </div>		  
-		   <div class="courseSkins">
-		   		 <label >课程皮肤</label>
-				<input type="hidden" id="courseSkin" name="courseSkin" value="{{=it.courseSkin.title || ''}}" />
-				<ul class="nav courseSkinList clearfix">
-					{{~ it.courseSkinList :skin:index}}
-						 <li{{?skin.title == it.courseSkin.title}} class="active"{{?}}><a href="#"><img src="{{=skin.imgUrl}}" alt="{{=skin.title}}" /><i class="icon-right"></i></a><h5>{{=skin.title}}</h5></li>
-					{{~}}                    	                  
-				</ul>
-			</div>
-           <button class="btn btn-block btn-submit btn-inverse" type="button"  onclick="saveCoursePic();">保存</button>
+           <button class="btn btn-block btn-submit btn-inverse" type="button"  onclick="saveSeriesPic();">保存</button>
        </form>	  
 	 </div> 	
 </script>
@@ -228,21 +190,82 @@
            <button class="btn btn-block btn-warning btn-submit" id="deleteCourse" type="button">删除</button>         
 	 </div> 	
 </script>
-<script id="listUserKinguserTemplate" type="text/x-dot-template">
-    <tr data-fdid="{{=it.id}}">
-        <td class="tdTit">
-          <div class="pr">
-            <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
-            <img src="{{=it.imgUrl || '${ctx}/resources/images/temp-face36.jpg'}}" alt="">{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
-          <div>
-         </td>
-        <td><input type="checkbox" {{?it.tissuePreparation!=false}}checked{{?}} class="tissuePreparation" /></td>
-        <td><input type="checkbox" {{?it.editingCourse!=false}}checked{{?}} class="editingCourse" /></td>
-        <td><a href="#" class="icon-remove-blue"></a></td>
-    </tr>
+<!-- 系列课程 模板 -->
+<script id="mediaPageTemplate" type="text/x-dot-template">
+    <div class="page-header">
+        <h4>第{{=it.lectureIndex}}阶段 {{=it.pageTitle || ''}}</h4>
+    </div>
+    <div class="page-body mediaPage-content">
+        <form id="formMedia" method="post" class="form-horizontal" action="{{=it.action || '##'}}">
+	    	<div class="section" >
+                <div class="control-group">
+                    <label class="control-label" for="lectureName">阶段名称</label>
+                    <div class="controls"><input value="{{=it.pageTitle || ''}}" id="lectureName" required class="input-xlarge" name="lectureName" type="text" /></div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="sectionsIntro">阶段说明</label>
+                    <div class="controls">
+                        <textarea placeholder="请填写该阶段的描述信息" rows="4" required minlength="20" class="input-xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>
+                    </div>
+                </div>
+	       </div>
+            <div class="mediaList">
+                <label >课程列表（<span id="mediaCount">{{?it.mediaList}}{{=it.mediaList.length || ''}}{{??}}0{{?}}</span>  个）</label>
+                <ul class="unstyled" id="listMedia">
+                    {{~it.mediaList :item:index}}
+                        {{~it.mediaList :item2:index2}}
+                            {{?(index+1) == item2.index}}
+                            <li data-fdid="{{=item.id}}"><span class="title">课程 <span class="index">{{=item2.index}}</span>：<span class="name">{{=item.title}}</span></span>
+                                <a class="icon-pencil2 btn-ctrls" href="#"></a>
+                                <a class="icon-remove btn-ctrls" href="#"></a>
+                                <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+                            </li>
+                            {{?}}
+                        {{~}}
+                    {{~}}
+                </ul>
+            </div>
+            <div class="section" >
+                <label>或者从 <a id="gotoMaterial" href="#">课程列表</a> 中选择课程</label>
+                <div class="autoCompleteWrap">
+					<input id="addMedia" type="text" />
+					<!--
+					<button class="btn btn-primary btn-large" type="button" >选择</button>
+					-->
+                </div>
+            </div>
+           <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
+       </form>
+	 </div>
 </script>
+
+<!-- 系列课程列表项 模板 -->
+<script id="mediaListTemplate" type="text/x-dot-template">
+    <li data-fdid="{{=it.id}}"><span class="title">课程 <span class="index">{{=it.index}}</span>：<span class="name">{{=it.name}}</span></span>
+        <a class="icon-pencil2 btn-ctrls" href="#"></a>
+        <a class="icon-remove btn-ctrls" href="#"></a>
+        <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+    </li>
+</script>
+
+<!--编辑系列课程 标题表单模板-->
+<script id="formEditMediaTitle" type="text/x-dot-template">
+    <li class="form-edit-title form-horizontal">
+        <div class="control-group">
+            <label class="control-label">{{=it.typeTxt}}<span class="index">{{=it.index}}</span></label>
+            <div class="controls">
+                <input type="text" class="input-block-level" placeholder="请输入标题" value="{{=it.name || ''}}" />
+                <span class="count">20字</span>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="btn btn-primary btn-large" type="button">保存</button>
+            <button class="btn btn-link" type="button">取消</button>
+        </div>
+    </li>
+</script>
+
 <script src="${ctx}/resources/js/doT.min.js"></script>
-<script src="${ctx}/resources/js/templSeriesPages.js"></script>
 
 </head>
 
@@ -283,24 +306,21 @@
 		<div class="w790 pull-right" id="rightCont">    
 	   
 	    </div>
-	    <!--  <input type="text" required name="inputTeacher" id="inputTeacher" class="autoComplete input-block" placeholder="授权某位老师学习本课程">
-	   -->
 	</div>
 </section>
-
-
+<script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
+<script src="${ctx}/resources/js/templSeriesPages.js"></script>
 <script type="text/javascript">	
 $.Placeholder.init();
-	
-
-
 	//点击左侧菜单事件
 	$("#sideNav>li>a").bind("click",function(e){	
 		if ($('#upMovie').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
 		     $('#upMovie').uploadify('destroy'); 
-		}
-		if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
-		     $('#upMaterial').uploadify('destroy'); 
 		}
 		urlRouter();		
 	});
@@ -308,6 +328,7 @@ $.Placeholder.init();
 	//根据URL中‘#’后参数判断加载栏目
 	function urlRouter(href,opt){
 		setTimeout(function(){
+			
 			var param = href ? href : location.href.split("#").pop();			
 			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass("active");
 			switch(param){			
@@ -329,12 +350,17 @@ $.Placeholder.init();
 	  				break;
 				case "deleteSeries":
 				//	if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
-						rightCont.loadDeleteCoursePage("删除课程",$("#seriesId").val());
+						rightCont.loadDeleteCoursePage("删除系列",$("#seriesId").val());
 	  			//	}else{
 	  			//		$.fn.jalert2("请先设置系列信息");
 	  			//		urlRouter("basicInfo");
 	  			//	}
 	  				break;
+				case "course":
+                    if(opt) {
+                        rightCont.loadVideoPage(opt);
+                        break;
+                    }
 	  			case "sectionsDirectory":
 	  			default:
 	  				rightCont.loadSectionDirectoryPage("系列目录");			
@@ -345,76 +371,29 @@ $.Placeholder.init();
 	}
 	urlRouter();
 
-	//ajax保存课程基本信息
+	//ajax保存系列基本信息
 	function saveBaseInfo(){
 		if(!$("#formBasicInfo").valid()){
 			return;
 		}
-		$.post('${ctx}/ajax/series/saveSeries',{
+		$.post('${ctx}/ajax/series/saveSeriesBaseInfo',{
+			 seriesId:$("#seriesId").val(),
 			 seriesTitle: $("#seriesTitle").val(),
-			 seriesDesc:  $("#seriesDesc").val()
-			},
-			function(data){
-				$("#seriesId").val(data.seriesId);
-			},"json")
-		.success(function(){
-			//提交成功跳转到阶段信息
-       	    urlRouter("sectionsDirectory");
-		});
-	}
-	
-	//ajax保存课程详细信息
-	function saveDetailInfo(){
-		if(!$("#formDetailInfo").valid()){
-			return;
-		}
-		$.post('${ctx}/ajax/course/saveDetailInfo',{
-			 courseId : $("#courseId").val(),
-			 courseAbstract: $("#courseAbstract").val(),
-			 learnObjectives:  $("#learnObjectives").val(),
-			 suggestedGroup: $("#suggestedGroup").val(),
-			 courseRequirements: $("#courseRequirements").val(),
-			 courseAuthor: $("#courseAuthor").val(),
-			 authorDescrip: $("#authorDescrip").val()
+			 seriesDesc:  $("#seriesDesc").val(),
+			 isavailable:$("#sectionIsava").val()
 			})
 		.success(function(){
-			//提交成功跳转到详细信息
+			//提交成功系列推广
        	    urlRouter("promotion");
 		});
 	}
-		
-	//ajax保存课程详细信息
-	function saveIsPublish(){
-		if($(':radio[name="encryptType"]:checked').val()=="passwordProtect"&&!$("#formAccessRight").valid()){
-			return;
-		}
-		if($(':radio[name="encryptType"]:checked').val()=="authorized"){
-			 $("#coursePwd").val("");
-		}
-		$.post('${ctx}/ajax/course/updateIsPublish',{
-			courseId : $("#courseId").val(),
-			isPublish: $("#permission").val(),
-			fdPassword:  $("#coursePwd").val(),
-			})
-		.success(function(){
-			//提交成功跳转到详细信息
-       	    urlRouter("kinguser");
-			
-		});
-	}
-
 	//系列封页图片保存
     function saveSeriesPic(){
-    	$.post('${ctx}/ajax/series/cover',{
+    	$.post('${ctx}/ajax/series/saveSeriesPic',{
 			seriesId : $("#seriesId").val(),
 			attId: $("#attIdID").val(),
 			})
 		.success(function(){
-			if ($('#upMovie').length > 0) { 
-				//注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
-			     $('#upMovie').uploadify('destroy'); 
-			}
-       	    urlRouter("accessRight");
 		});
     }
 
