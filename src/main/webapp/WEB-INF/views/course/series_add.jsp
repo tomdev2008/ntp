@@ -97,7 +97,7 @@
 	{{##def.sectionbar:param:
 		<div class="sortable-bar">
 			<span class="title">
-				第<span class="index">{{=param.num}}</span>阶段
+				第<span class="index">{{=param.index}}</span>阶段
 				<span class="name">{{=param.title || ''}}</span>
 			</span>
 			<a class="icon-pencil2 icon-white btn-ctrls" href="#"></a>
@@ -187,7 +187,7 @@
 3. 本系列中的课程资料 请前往 课程信息 进行查阅。
 					</div>
 	       </div>		 
-           <button class="btn btn-block btn-warning btn-submit" id="deleteCourse" type="button">删除</button>         
+           <button class="btn btn-block btn-warning btn-submit" id="deleteSeries" type="button">删除</button>         
 	 </div> 	
 </script>
 <!-- 系列课程 模板 -->
@@ -210,13 +210,12 @@
                 </div>
 	       </div>
             <div class="mediaList">
-                <label >课程列表（<span id="mediaCount">{{?it.mediaList}}{{=it.mediaList.length || ''}}{{??}}0{{?}}</span>  个）</label>
+                <label >课程列表（<span id="mediaCount">{{?it.mediaList}}{{=it.mediaList.length || ''}}{{??}}0{{?}}</span>  个）</label><label id="showError"></label>
                 <ul class="unstyled" id="listMedia">
                     {{~it.mediaList :item:index}}
                         {{~it.mediaList :item2:index2}}
                             {{?(index+1) == item2.index}}
                             <li data-fdid="{{=item.id}}"><span class="title">课程 <span class="index">{{=item2.index}}</span>：<span class="name">{{=item.title}}</span></span>
-                                <a class="icon-pencil2 btn-ctrls" href="#"></a>
                                 <a class="icon-remove btn-ctrls" href="#"></a>
                                 <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
                             </li>
@@ -242,7 +241,6 @@
 <!-- 系列课程列表项 模板 -->
 <script id="mediaListTemplate" type="text/x-dot-template">
     <li data-fdid="{{=it.id}}"><span class="title">课程 <span class="index">{{=it.index}}</span>：<span class="name">{{=it.name}}</span></span>
-        <a class="icon-pencil2 btn-ctrls" href="#"></a>
         <a class="icon-remove btn-ctrls" href="#"></a>
         <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
     </li>
@@ -280,7 +278,7 @@
 	        	<h5>${course.fdTitle}</h5>
 	            <div class="btn-group">
 	                <c:if test="${course.fdStatus==null || course.fdStatus=='00'}">
-		            <button class="btn btn-primary btn-large" disabled type="button" onclick="previewCourse()">预览</button>
+		            <button class="btn btn-primary btn-large" disabled  type="button" onclick="previewCourse()">预览</button>
 		            <button class="btn btn-primary btn-large" disabled type="button" onclick="releaseCourse()">发布</button>
 		            </c:if>
 	            </div>
@@ -307,6 +305,8 @@
 	   
 	    </div>
 	</div>
+	<input id="phasesnum" type="hidden">
+	<input id="pofcoursenum" type="hidden">
 </section>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
@@ -396,7 +396,15 @@ $.Placeholder.init();
 		.success(function(){
 		});
     }
-
+  //系列发布
+/* 	function releaseCourse(){
+		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
+	} */
+	
+	//系列预览
+	/* function previewCourse(){
+		window.open("${ctx}/course/previewCourse?courseId="+$("#courseId").val(),'_blank');
+	} */
 </script>
 </body>
 </html>

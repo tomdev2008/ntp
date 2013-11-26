@@ -28,34 +28,7 @@ public class SeriesController {
 	@Autowired
 	private AttMainService attMainService;
 	
-	/*
-	 * 修改系列或阶段信息
-	 * author hanhl
-	 */
-	@RequestMapping(value="updateSeries")
-	public String updateSeries(HttpServletRequest request){
-		String seriesId=request.getParameter("seriesId");
-		SeriesInfo seriesInfo=seriesInfoService.get(seriesId);
-		String fdName=request.getParameter("fdName");
-		String fdDescription=request.getParameter("fdDescription");
-		seriesInfo.setFdName(fdName);
-		seriesInfo.setFdDescription(fdDescription);
-		//修改封面附件信息 先删除原始附件 然后更新为最新上传附件
-		seriesInfoService.save(seriesInfo);
-		return "";
-	}
-	/*
-	 * 删除系列 设置系列状态为无效即可;
-	 * author hanhl
-	 */
-	@RequestMapping(value="deleteSeries")
-	public String deleteSeries(HttpServletRequest request){
-		String seriesId=request.getParameter("seriesId");
-		SeriesInfo seriesInfo=seriesInfoService.get(seriesId);
-		seriesInfo.setIsAvailable(false);
-		seriesInfoService.save(seriesInfo);
-		return "";
-	}
+	
 	/*
 	 * 查询系列课程;
 	 * author hanhl
@@ -82,5 +55,17 @@ public class SeriesController {
 			}
 		}
 		return "/course/series_add";
+	}
+	/**
+	 * 系列课程
+	 */
+	@RequestMapping(value="pagefoward")
+	public String pagefoward(HttpServletRequest request){
+		String seriesId=request.getParameter("seriesId");
+		if(StringUtil.isNotEmpty(seriesId)){
+			return "redirect:/series/add?"+seriesId;
+		}else{
+			return "redirect:/series/add";
+		}
 	}
 }

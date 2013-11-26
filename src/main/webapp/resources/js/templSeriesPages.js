@@ -76,13 +76,6 @@
                         $("#mediaCount").text($("#listMedia").children("li").each(function(i){
                             $(this).find(".title>.index").text(i+1);
                         }).length);
-                    }else if($(this).hasClass("icon-pencil2")){// 编辑项
-                        var $tit = $(this).prev(".title");
-                        $(this).parent("li").hide().after(editMediaTitleFn({
-                            typeTxt: data.typeTxt,
-                            index: $tit.children(".index").text(),
-                            name: $tit.children(".name").text()
-                        }));
                     }
                 })
                 // 绑定保存,取消标题按钮事件
@@ -112,13 +105,23 @@
                             title: $(this).find(".title>.name").text()
                         });
                     });
+                    if(listArr.length<1){
+                    	//$.fn.jalert2("请选择课程信息后保存!");//添加课程为空错误提示;
+                    	$("#showError").html("<font size='2' color='red'>请选择阶段的课程信息!</font>");
+                    	return;
+                    }
                     $.post($('#ctx').val()+"/ajax/series/saveSeriesCourse",{
                     	phasesId:opt.id,
-                    	type:type,
                         sectionsIntro: $("#sectionsIntro").val(),
                         mediaList:JSON.stringify(listArr)
                     })
                         .success(function(){
+                        	if($("#pofcoursenum").val()==null||$("#pofcoursenum").val()==""){
+                        		$("#pofcoursenum").val("1");
+                        	}else{
+                        		$("#pofcoursenum").val(parseInt($("#pofcoursenum").val())+1);
+                        	}
+                        	updateButtonStatus();//更新阶段及课程标记
                         	 if ($('#upMovie').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
 	                   		     $('#upMovie').uploadify('destroy'); 
 	                   		}
@@ -154,10 +157,10 @@
                 scroll: false,
                 width:688
             }).result(function(e,item){
+            		$("#showError").html("");//清除错误提示;
             	    var flag = true;
                     //item.typeTxt = data.name;
                     item.index = $listMedia.children("li").length + 1;
-                    
                     itemHtml = mediaListFn(item);
                     // addFlag = true;
                     $("#addMedia").next(".help-block").remove();
@@ -298,7 +301,7 @@
 						data.pageTitle = title;		
 						$("#rightCont").html(loadsectionsDirectoryFn(data));
 						//alert(JSON.stringify(data));
-						//updataProgressCourses($('#sortable').children(".lecture").length);	
+						updataProgressCourses($('#sortable').children(".chapter").length);	
 				  },
 			});
 			var $sections = $('#sortable');
@@ -319,11 +322,11 @@
 				e.preventDefault();
 				var $li = $(this).closest("li");
 				// 删除阶段数据==================================
-				$.post($('#ctx').val()+'/ajax/catalog/deleteCatalogById',{fdid: $li.attr("data-fdid")})
+				$.post($('#ctx').val()+'/ajax/series/deletePhasesById',{phasesId: $li.attr("data-fdid")})
 				.success(function(){
 					$li.remove();
 					changIndex();
-					updataProgressCourses($sections.children(".lecture").length);
+					updataProgressCourses($sections.children(".chapter").length);
 				});
 			})
 			// 绑定编辑节内容按钮事件
@@ -375,6 +378,12 @@
 										handle: '.sortable-bar',
 										forcePlaceholderSize: true
 									});
+									if($("#phasesnum").val()==null||$("#phasesnum").val()==""){
+										$("#phasesnum").val("1");
+									}else{
+										$("#phasesnum").val(parseInt($("#phasesnum").val())+1);
+									}
+									updateButtonStatus();//更新阶段及课程标记
 							  },
 						});
 					}			
@@ -485,15 +494,23 @@
 			$prog.find(".progress>.bar").width(comp/numAll*100 + "%");
 			$prog.find(".num_comp").text(comp);
 			$prog.find(".num_all").text(numAll);
-			if(numAll > 0){
-				if(numAll == comp){
-					enabledPublish();
-				} else {
-					disabledPublish();
-				}
+//			if(numAll > 0){
+//				if(numAll == comp){
+//					enabledPublish();
+//				} else {
+//					disabledPublish();
+//				}
+//			}
+		}
+		function updateButtonStatus(){
+			phasesNum=$("#phasesnum").val();
+			pofcourseNum=$("#pofcoursenum").val();
+			if(phasesNum-pofcourseNum==0){
+				enabledPublish();
+			}else{
+				disabledPublish();
 			}
 		}
-		
 		// 激活预览和发布按钮方法
 		function enabledPublish(){
 			$(window).scrollTop(0);
@@ -509,13 +526,13 @@
 			data.pageTitle = title;	
 			$("#rightCont").html(deleteSeriesFn(data));	
 			
-			$("#deleteCourse").click(function(){confirmDel();});
+			$("#deleteSeries").click(function(){confirmDel();});
 			function confirmDel(){
-				$.fn.jalert("您确认要删除当前系列课程？",deleteCourse);
+				$.fn.jalert("您确认要删除当前系列课程？",deleteSeries);
 			}
 			// 调用ajax删除当前课程
 			function deleteseriesInfo(){
-				 $.post($('#ctx').val()+"/ajax/series/deleteCourse",{
+				 $.post($('#ctx').val()+"/ajax/series/deleteSeries",{
 					 seriesId:fdid
 		         })
 		             .success(function(){

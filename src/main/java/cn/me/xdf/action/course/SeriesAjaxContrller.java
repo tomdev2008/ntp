@@ -29,6 +29,7 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.SeriesCourses;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
@@ -66,11 +67,12 @@ public class SeriesAjaxContrller {
 		String seriesId=request.getParameter("seriesId");
 		String fdName = request.getParameter("title");
 		int fdNo = Integer.parseInt(request.getParameter("fdno"));
+		SysOrgPerson creator=accountService.findById(ShiroUtils.getUser().getId());
 		SeriesInfo series=new SeriesInfo();
 		series.setFdName(fdName);
 		series.setVersion(0);
 		series.setFdCreateTime(new Date());
-		series.setCreator(accountService.findById(ShiroUtils.getUser().getId()));
+		series.setCreator(creator);
 		series.setFdSeiresNo(fdNo);
 		//没有系列id说明是新增系列  否则就是新增阶段
 		 Map map=new HashMap();
@@ -82,6 +84,11 @@ public class SeriesAjaxContrller {
 			map.put("id", series.getFdId());
 		}else{
 			SeriesInfo seriessup=new SeriesInfo();//先创建系列
+			seriessup.setIsPublish(false);//初始化为非发布状态
+			seriessup.setVersion(0);
+			seriessup.setFdCreateTime(new Date());
+			seriessup.setCreator(creator);
+			seriessup.setIsAvailable(true);//有效的
 			seriesInfoService.save(seriessup);
 			series.setHbmParent(seriessup);
 			seriesInfoService.save(series);//再保存阶段
@@ -165,22 +172,6 @@ public class SeriesAjaxContrller {
 			attMainService.save(attMain);
 		}
 	}
-	/**
-	 * 删除系列信息
-	 * @param model
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value = "deleteSeriesInfo")
-	@ResponseBody
-	public void deleteSeriesInfo(HttpServletRequest request) {
-		String seriesId=request.getParameter("seriesId");
-		String attMainId = request.getParameter("attId");
-		if(StringUtil.isNotBlank(attMainId)){
-			attMainService.deleteAttMainByModelId(seriesId);
-		}
-		seriesInfoService.delete(seriesId);
-	}
 	/*
 	 * 查询课程列表 或者根据关键字搜索 author hanhl
 	 */
@@ -241,12 +232,28 @@ public class SeriesAjaxContrller {
 				if(list!=null && list.size()>0){
 					for(Object obj:list){
 						Map map = (Map)obj;
-						String courseId = (String)map.get("FDID");
-						seriesInfoService.deleteSeries(courseId);
+						String seriesId = (String)map.get("FDID");
+						seriesInfoService.deleteSeries(seriesId);
 					}
 				}
 			}
 		}
+	}
+	/**
+	 * 删除阶段信息
+	 */
+	@RequestMapping(value="deletePhasesById")
+	@ResponseBody
+	public void deletePhasesById(HttpServletRequest request){
+		String phasesId = request.getParameter("phasesId");
+	    if(StringUtil.isNotEmpty(phasesId)){
+	    	List<SeriesCourses> seriescourseslist=seriesCoursesService.getSeriesCourseByseriesId(phasesId);
+	    	if(seriescourseslist!=null){
+	    		for(SeriesCourses seriescourse:seriescourseslist){
+	    			seriesCoursesService.deleteBySeriesId(seriescourse.getFdId());
+	    		}
+	    	}
+	    }
 	}
 	/**
 	 * 更新阶段的顺序

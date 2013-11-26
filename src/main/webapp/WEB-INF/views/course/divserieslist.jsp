@@ -100,7 +100,7 @@
 		<ul class="nav list">
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
 			
-				<li><a href="#"> 
+				<li><a href="${ctx}/series/pagefoward?seriesId=${bean.FDID}"> 
 				<input type="checkbox" name="ids" value="${bean.FDID}"/>
 				    <span class="title">${bean.FDNAME}</span> 
 				    <span class="date"><i class="icon-time"></i><fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
