@@ -282,7 +282,7 @@ function exportData(){
 		chk_value.push($(this).val());
    });
    if (chk_value.length == 0) {
-		$.fn.jalert2("请选择要下载的数据!");
+		$.fn.jalert2("请选择要导出的数据!");
 		return;
    }
    $.fn.jalert("您确定导出所选数据吗？",function(){
