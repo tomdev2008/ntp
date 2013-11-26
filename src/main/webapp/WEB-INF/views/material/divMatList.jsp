@@ -227,6 +227,7 @@
 $.Placeholder.init();
 //下载素材
 function downloadMater(){
+	 var key = $("#serach").val();
 	 var day=new Date();
 	 var Year = day.getFullYear();
 	 var  Month = day.getMonth()+1;
@@ -266,7 +267,7 @@ function downloadMater(){
 	}
 	if($("#allFlag").val()=='true'){
 		$.fn.jalert("您确定全部下载吗？",function(){
-			  window.location.href="${ctx}/common/file/allDownloadZip/${param.fdType}/xdf_"+fdType+"素材_"+CurrentDate;
+			  window.location.href="${ctx}/common/file/allDownloadZip/${param.fdType}/xdf_"+fdType+"素材_"+CurrentDate+"?key="+key;
 			  return;
 		});
 	} else {

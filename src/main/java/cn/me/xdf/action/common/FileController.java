@@ -317,20 +317,37 @@ public class FileController {
     public String allDownloadZip(@PathVariable("fdType") String fdType, @PathVariable("zipname") String zipname,
                                  HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         DownloadHelper dh = new DownloadHelper();
+        String key = request.getParameter("key");
         dh.setRequest(request);
         List<AttMain> attMainList = new ArrayList<AttMain>();
-        List<MaterialInfo> list = materialService.findByProperty("fdType", fdType);
-        if (list != null && list.size() > 0) {
-            for (MaterialInfo materialInfo : list) {
-                List<AttMain> attMains = attMainService.getAttsByModelId(materialInfo.getFdId());
-                if (attMains != null && attMains.size() > 0) {
-                    for (AttMain attMain : attMains) {
-                        attMainList.add(attMain);
-                    }
-                }
-            }
-
+        Pagination page = materialService.findMaterialByKey(fdType, key, 1, SimplePage.DEF_COUNT);
+        if(page.getTotalCount()>0){
+           List list = page.getList();
+  		   for(int i=0;i<list.size();i++){
+  			   Map pageMap = (Map) list.get(i);
+  			   List<AttMain> attMains = attMainService.getAttsByModelId((String)pageMap.get("FDID"));
+  			   if (attMains != null && attMains.size() > 0) {
+  			   for (AttMain attMain : attMains) {
+  	            	attMainList.add(attMain);
+  				}
+  			  }
+  		   }
         }
+        for(int index=2;index<=page.getTotalPage();index++){
+       	 Pagination pagetemp  = materialService.findMaterialByKey(fdType, key,index, SimplePage.DEF_COUNT);
+       	 if(pagetemp.getTotalCount()>0){
+              List list = pagetemp.getList();
+     		   for(int i=0;i<list.size();i++){
+     			  Map pageMap = (Map) list.get(i);
+     			   List<AttMain> attMains = attMainService.getAttsByModelId((String)pageMap.get("FDID"));
+     			   if (attMains != null && attMains.size() > 0) {
+     			    for (AttMain attMain : attMains) {
+     	            	attMainList.add(attMain);
+     				}
+     			  }
+     		   }
+           }
+       }
         String agent = request.getHeader("USER-AGENT");
         downloadAttMain(attMainList, agent, zipname, response);
         return null;
