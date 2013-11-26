@@ -19,7 +19,7 @@
 					</ul>
 				</div>
 				<form class="toolbar-search" onkeydown="pressEnter();">
-					<input type="text" id="serach" class="search" onkeydown="showSearch();" onkeyup="showSearch();" placeholder="搜索素材"> 
+					<input type="text" id="serach" class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
 					<i class="icon-search" onclick="pageNavClick('${param.fdType}','1','FDCREATETIME');"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>
