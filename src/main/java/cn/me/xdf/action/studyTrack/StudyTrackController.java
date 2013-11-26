@@ -1,5 +1,6 @@
 package cn.me.xdf.action.studyTrack;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.utils.excel.AbsExportExcel;
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.course.CourseCatalog;
@@ -24,6 +26,7 @@ import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.studyTack.StudyTrackService;
+import cn.me.xdf.utils.ShiroUtils;
 import cn.me.xdf.view.model.VStudyTrack;
 /**
  * 学习跟踪
@@ -107,7 +110,7 @@ public class StudyTrackController {
 			}
 			studyTrackList.add(vStudyTrack);
 		}
-		AbsExportExcel.exportExcel(studyTrackList, "studyTrack.xls", response);
+		AbsExportExcel.exportExcel(studyTrackList, "studyTrack.xls", response);	
 		return null;
 	}
 	
@@ -115,16 +118,18 @@ public class StudyTrackController {
 	 * 导出全部（带查询）
 	 * @param request
 	 * @param response
+	 * @throws IOException 
 	 */
 	@RequestMapping(value = "/expStudyTrackAll")
-	public String expStudyTrackAll(HttpServletRequest request,HttpServletResponse response){
+	public String expStudyTrackAll(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		List<VStudyTrack> studyTrackList = new ArrayList<VStudyTrack>();
 		String selectType = request.getParameter("selectType");
 		String orderType = request.getParameter("order");
 		String key = request.getParameter("key");
-		List<Object[]> bamCourses = studyTrackService.getStudyTrackAll(selectType, orderType, key);
-		for (Object[] s : bamCourses) {
-			BamCourse bamCourse = bamCourseService.get(BamCourse.class, (String)s[0]);
+		int pageNo = new Integer(request.getParameter("pageNo"));
+		List<Map> bamCourses = studyTrackService.getStudyTrackAll(selectType, orderType, key ,pageNo);
+		for (Map s : bamCourses) {
+			BamCourse bamCourse = bamCourseService.get(BamCourse.class, (String)s.get("BAMID"));
 			SysOrgPerson person = (SysOrgPerson)accountService.load(bamCourse.getPreTeachId());
 			CourseInfo courseInfo = courseService.load(bamCourse.getCourseId());
 			VStudyTrack vStudyTrack = new VStudyTrack();
@@ -156,6 +161,7 @@ public class StudyTrackController {
 			}
 			studyTrackList.add(vStudyTrack);
 		}
+		//response
 		AbsExportExcel.exportExcel(studyTrackList, "studyTrack.xls", response);
 		return null;
 	}

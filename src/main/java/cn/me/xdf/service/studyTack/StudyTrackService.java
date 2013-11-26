@@ -80,20 +80,20 @@ public class StudyTrackService {
 	 * @param pageSize
 	 * @return
 	 */
-	public List<Object[]> getStudyTrackAll(String selectType,String orderType,String key){
-		List<Object[]> bamCourses=null;
+	public List<Map> getStudyTrackAll(String selectType,String orderType,String key,int pageNo){
+		List<Map> bamCourses=null;
 		if(selectType.equals("myGuidance")){//我指导的备课ok
-			bamCourses=bamCourseService.findBySQL(getStudyTrackByMyGuidance(orderType,key).getOrigHql(), null, null);	
+			bamCourses= (List<Map>) bamCourseService.getPageBySql(getStudyTrackByMyGuidance(orderType,key), pageNo, 20000).getList();
 		}else if(selectType.equals("myOrganized")){//我组织的备课ok
-			bamCourses=bamCourseService.findBySQL(getStudyTrackByMyOrganized(orderType,key).getOrigHql(), null, null);
+			bamCourses= (List<Map>) bamCourseService.getPageBySql(getStudyTrackByMyGuidance(orderType,key), pageNo, 20000).getList();
 		}else if(selectType.equals("myDepart")){//我所在部门的备课
-			bamCourses=bamCourseService.findBySQL(getStudyTrackByMyDepart(orderType,key).getOrigHql(), null, null);
+			bamCourses= (List<Map>) bamCourseService.getPageBySql(getStudyTrackByMyGuidance(orderType,key), pageNo, 20000).getList();
 			
 		}else if(selectType.equals("myOrg")){//我所在机构的备课
-			bamCourses=bamCourseService.findBySQL(getStudyTrackByMyOrg(orderType,key).getOrigHql(), null, null);
+			bamCourses= (List<Map>) bamCourseService.getPageBySql(getStudyTrackByMyGuidance(orderType,key), pageNo, 20000).getList();
 			
 		}else if(selectType.equals("myManaged")){//我所管理的备课ok
-			bamCourses=bamCourseService.findBySQL(getStudyTrackByMyManaged(orderType,key).getOrigHql(), null, null);	
+			bamCourses= (List<Map>) bamCourseService.getPageBySql(getStudyTrackByMyGuidance(orderType,key), pageNo, 20000).getList();
 		}
 		return bamCourses;
 	}
@@ -281,21 +281,5 @@ public class StudyTrackService {
 		}
 		return map;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
