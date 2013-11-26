@@ -62,7 +62,7 @@ public class AdviserController {
 		List<VCheckTaskData> adviserList = new ArrayList<VCheckTaskData>();
 		for (String modelId : modelIds) {
 			SourceNote note = sourceNodeService.get(SourceNote.class, modelId);
-			SysOrgPerson person = (SysOrgPerson)accountService.load(note.getFdId());//人员信息
+			SysOrgPerson person = (SysOrgPerson)accountService.load(note.getFdUserId());//人员信息
 			VCheckTaskData vdata = new VCheckTaskData();
 			vdata.setUserName(person.getRealName());//名字
 			vdata.setUserDept(person.getDeptName());//部门名字

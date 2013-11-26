@@ -114,7 +114,7 @@
                                      		   操作
                                         <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#rightCont">导出列表</a></li>
+                                        <li><a href="#rightCont" onclick="exportData();">导出列表</a></li>
                                         <li><a href="#rightCont" onclick="batchDownload();">打包下载</a></li>
                                     </ul>
                                 </div>
@@ -249,19 +249,39 @@ var pageendFn= doT.template(document.getElementById("pageEndTemplate").text);
         }
 
 });
+//导出列表   
+function exportData(){
+	 var fdType=$("#fdType").val();
+	 alert(fdType);
+	if(document.getElementById("selectAll").checked){
+		 var keyword=$("#search").val();
+		 $.fn.jalert("您确定要导出全部数据吗？",function(){
+			  window.location.href="${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword;
+			  return;
+		 }); 
+	} else if(document.getElementById("selectCurrPage").checked){
+		var chk_value = [];
+		$("#listTeacher li").each(function() {
+			chk_value.push($(this).attr("data-fdid"));
+		});
+		$.fn.jalert("您确定导出本页数据吗？",function(){
+			window.location.href="${ctx}/adviser/exportDataList/"+chk_value+"/"+fdType;
+			return;
+		});
+	} else{
+		 $.fn.jalert2("您好!您没有选择要导出的数据！");
+		  return;
+	}
+}
 //批量下载或者下载全部
 function batchDownload(){
 	if(document.getElementById("selectAll").checked){
 		 var keyword=$("#search").val();
 		 var fdType=$("#fdType").val();
-		 var pageIndex = $("#pageIndex").val();
-		 for (var index = 1; index <= pageIndex; index++) {
-			window.open("${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword+"&pageIndex="+index);
-		 }
-		 /* $.fn.jalert("您确定下载全部数据吗？",function(){
-			  //window.location.href="${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword;
+		 $.fn.jalert("您确定下载全部数据吗？",function(){
+			  window.location.href="${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword;
 			  return;
-		}); */
+		 }); 
 	} else if(document.getElementById("selectCurrPage").checked){
 		var chk_value = [];
 		$("#listTeacher li").each(function() {
