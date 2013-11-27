@@ -178,39 +178,12 @@ function refreshTrackList(type,pageNo,pageSize,order){
 	});
 	$("#expStudyTrackA").bind("click",function(){
 		var isAll=$(':radio[name="selectCheckbox"]:checked').val();
-		if(isAll=="noPage"){
-			var chk_value = [];
-			$("#listTeacher li").each(function() {
-				chk_value.push($(this).attr("data-fdid"));
-			});
-			window.location.href="${ctx}/studyTrack/expStudyTrackList/"+chk_value;
-		}else{
-			var expPage=1;
-			var serach = "";
-			serach = $("#serach").val();
-			$.ajax({
-				url : "${ctx}/ajax/studyTrack/getExpPageSize",
-				async : false,
-				dataType : 'json',
-				type: "post",
-				data:{
-					selectType:type,
-					order:order,
-					key:serach,
-				},
-				success : function(result) {
-					expPage=result;
-				}
-			});
-			if(expPage>=1){
-				for(var i=1;i<=expPage;i++){
-					window.location.href="${ctx}/studyTrack/expStudyTrackAll?selectType="+type+"&key="+serach+"&order="+order+"&pageNo="+i;
-				}
-			}
-			else{
-				window.location.href="${ctx}/studyTrack/expStudyTrackAll?selectType="+type+"&key="+serach+"&order="+order+"&pageNo="+1;
-			}
-		}
+		var chk_value = [];
+		$("#listTeacher li").each(function() {
+			chk_value.push($(this).attr("data-fdid"));
+		});
+		var serach = $("#serach").val();
+		window.location.href="${ctx}/common/exp/getExpStudyTrack?modelIds="+chk_value+"&selectType="+type+"&key="+serach+"&order="+order+"&isAll="+isAll;
 	});
 	$("#pageTop").html(pageTopFn(pageDate));
 	pageDate.type=type;

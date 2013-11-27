@@ -80,6 +80,13 @@ public class AttMainService extends SimpleService {
     }
     
     @Transactional(readOnly = false)
+    public void deleteAttMainByIds(String [] ids) {
+    	for (String id : ids) {
+    		deleteAttMain(id);
+		}
+    }
+    
+    @Transactional(readOnly = false)
     public List<AttMain> getAttMainsByModelIdAndModelName(String modelId,String modelName) {
         return findByCriteria(AttMain.class,Value.eq("fdModelId", modelId), Value.eq("fdModelName", modelName));
     }

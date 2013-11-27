@@ -1,8 +1,11 @@
 package cn.me.xdf.service.studyTack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import jodd.util.StringUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,13 +18,17 @@ import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.bam.BamCourseService;
+import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.message.MessageService;
 import cn.me.xdf.utils.ShiroUtils;
+import cn.me.xdf.view.model.VStudyTrack;
 
 /**
  * 
@@ -42,6 +49,10 @@ public class StudyTrackService {
 
 	@Autowired
 	private MessageService messageService;
+	
+	@Autowired
+	private CourseService courseService;
+
 	
 	/**
 	 * 得到学习跟踪分页列表
@@ -210,6 +221,14 @@ public class StudyTrackService {
 		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 	}
 	
+	/**
+	 * 
+	 * 添加查询排序sql
+	 * 
+	 * @param finder
+	 * @param orderType
+	 * @return
+	 */
 	private Finder addOrder(Finder finder ,String orderType){
 		if(orderType.equals("course")){
 			finder.append(" order by c.FDTITLE desc ");
@@ -230,10 +249,9 @@ public class StudyTrackService {
 		}
 	}
 	
-	
-	
 	/**
 	 * 获取当前环节
+	 * 
 	 * @param bamId
 	 * @return
 	 */
@@ -281,5 +299,94 @@ public class StudyTrackService {
 		}
 		return map;
 	}
-
+	
+	
+	/**
+	 * 根据bamId获取导出模板
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	public List<VStudyTrack> buildStudyTrackList(String[] ids){
+		List<VStudyTrack> studyTrackList = new ArrayList<VStudyTrack>();
+		for (String string : ids) {
+			BamCourse bamCourse = bamCourseService.get(BamCourse.class, string);
+			SysOrgPerson person = (SysOrgPerson)accountService.load(bamCourse.getPreTeachId());
+			CourseInfo courseInfo = courseService.load(bamCourse.getCourseId());
+			VStudyTrack vStudyTrack = new VStudyTrack();
+			vStudyTrack.setUserName(person.getRealName());
+			vStudyTrack.setUserDep(person.getDeptName());
+			vStudyTrack.setUserTel(person.getFdWorkPhone());
+			vStudyTrack.setUserEmai(person.getFdEmail());
+			vStudyTrack.setCourseName(courseInfo.getFdTitle());
+			if(StringUtil.isEmpty(bamCourse.getGuideTeachId())){
+				vStudyTrack.setGuideTeachName("没有导师");
+			}else{
+				vStudyTrack.setGuideTeachName(((SysOrgPerson)accountService.load(bamCourse.getGuideTeachId())).getRealName());
+			}
+			Map passMap = passInfoByBamId(bamCourse.getFdId());
+			String currLecture="";
+			if(passMap.size()==0){
+				currLecture="尚未开始学习";
+			}else{
+				CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");
+				MaterialInfo materialInfo = (MaterialInfo) passMap.get("materialInfoNow");
+				currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
+			}
+			vStudyTrack.setLinkNow(currLecture);
+			Map map2 = getMessageInfoByBamId(bamCourse.getFdId());
+			if(map2.size()==0){
+				vStudyTrack.setStudyInofNow("没有学习记录");
+			}else{
+				vStudyTrack.setStudyInofNow((String)map2.get("cot"));
+			}
+			studyTrackList.add(vStudyTrack);
+		}
+		return studyTrackList;
+	}
+	
+	/**
+	 * 根据bamList获取导出模板
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public List<VStudyTrack> buildStudyTrackList(List list){
+		List<VStudyTrack> studyTrackList = new ArrayList<VStudyTrack>();
+		for (Object obj : list) {
+			Map map = (Map) obj;
+			BamCourse bamCourse = bamCourseService.get(BamCourse.class, (String)map.get("BAMID"));
+			SysOrgPerson person = (SysOrgPerson)accountService.load(bamCourse.getPreTeachId());
+			CourseInfo courseInfo = courseService.load(bamCourse.getCourseId());
+			VStudyTrack vStudyTrack = new VStudyTrack();
+			vStudyTrack.setUserName(person.getRealName());
+			vStudyTrack.setUserDep(person.getDeptName());
+			vStudyTrack.setUserTel(person.getFdWorkPhone());
+			vStudyTrack.setUserEmai(person.getFdEmail());
+			vStudyTrack.setCourseName(courseInfo.getFdTitle());
+			if(StringUtil.isEmpty(bamCourse.getGuideTeachId())){
+				vStudyTrack.setGuideTeachName("没有导师");
+			}else{
+				vStudyTrack.setGuideTeachName(((SysOrgPerson)accountService.load(bamCourse.getGuideTeachId())).getRealName());
+			}
+			Map passMap = passInfoByBamId(bamCourse.getFdId());
+			String currLecture="";
+			if(passMap.size()==0){
+				currLecture="尚未开始学习";
+			}else{
+				CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");
+				MaterialInfo materialInfo = (MaterialInfo) passMap.get("materialInfoNow");
+				currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
+			}
+			vStudyTrack.setLinkNow(currLecture);
+			Map map2 = getMessageInfoByBamId(bamCourse.getFdId());
+			if(map2.size()==0){
+				vStudyTrack.setStudyInofNow("没有学习记录");
+			}else{
+				vStudyTrack.setStudyInofNow((String)map2.get("cot"));
+			}
+			studyTrackList.add(vStudyTrack);
+		}
+		return studyTrackList;
+	}
 }
