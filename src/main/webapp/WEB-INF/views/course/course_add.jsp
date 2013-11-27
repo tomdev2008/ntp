@@ -34,7 +34,9 @@
 	            	<div class="progress progress-course">
 	            		<div class="bar" style="width:20%;"></div>
 	            	</div>
-	                您已经完成了本课程的 <span class="num_comp"></span> 个章节内容，共计 <span class="num_all">{{=it.lecture.length}}</span> 个章节。
+	                您已经完成了本课程的 <span class="num_comp"></span> 个章节内容，共计 <span class="num_all">
+
+{{=it.lecture.length}}</span> 个章节。
 	        </div>
 	       
 	      <div class="sortableWrap">
@@ -76,9 +78,13 @@
 <script id="formEditSectionTitle" type="text/x-dot-template">
 	<div class="form-edit-title form-horizontal">		
 			<div class="control-group">
-				<label class="control-label">第<span class="index">{{?it.chapter}}{{=it.chapter.num}}</span>章{{??it.lecture}}{{=it.lecture.num}}</span>节{{?}}</label>
+				<label class="control-label">第<span class="index">{{?it.chapter}}{{=it.chapter.num}}</span>
+
+章{{??it.lecture}}{{=it.lecture.num}}</span>节{{?}}</label>
 				<div class="controls">
-					<input type="text" maxlength="20" class="input-block-level" placeholder="请输入课程标题" value="{{=(it.chapter ? it.chapter.title : it.lecture.title) || ''}}" />
+					<input type="text" maxlength="20" class="input-block-level" placeholder="请输入课程
+
+标题" value="{{=(it.chapter ? it.chapter.title : it.lecture.title) || ''}}" />
 					<span class="count">20字</span>
 				</div>
 			</div>
@@ -106,7 +112,9 @@
 			<span class="title">{{?param.type}}<i class="icon-{{=param.type}}"></i>{{?}}
 				第<span class="index">{{=param.num}}</span>{{?param.type}}节{{??}}章{{?}}
 				<span class="name">{{=param.title || ''}}</span>
-			{{?param.type}}<label class="label" >{{?param.isElective!=null && param.isElective=='0'}}选修{{??}}必修{{?}}</label>{{?}}
+			{{?param.type}}<label class="label" >{{?param.isElective!=null && param.isElective=='0'}}选修{{??}}
+
+必修{{?}}</label>{{?}}
 			</span>
 			<a class="icon-pencil2{{?!param.type}} icon-white{{?}} btn-ctrls" href="#"></a>
 			<a class="icon-remove{{?!param.type}} icon-white{{?}} btn-ctrls" href="#"></a>
@@ -133,15 +141,31 @@
 			<a href="#" class="icon-remove-sign"></a>
 			</div>
 			<div class="bd">
-				<a class="btn-type{{?param.type != 'none' && param.type != 'video'}} disabled{{?}}" href="#video"><i class="icon-video-lg"></i><h5>视频</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'audio'}} disabled{{?}}" href="#audio"><i class="icon-audio-lg"></i><h5>音频</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'doc'}} disabled{{?}}" href="#doc"><i class="icon-doc-lg"></i><h5>文档</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'ppt'}} disabled{{?}}" href="#ppt"><i class="icon-ppt-lg"></i><h5>幻灯片</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'img'}} disabled{{?}}" href="#img"><i class="icon-img-lg"></i><h5>图片</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'exam'}} disabled{{?}}" href="#exam"><i class="icon-exam-lg"></i><h5>测试</h5></a>
-				<a class="btn-type{{?param.type != 'none' && param.type != 'task'}} disabled{{?}}" href="#task"><i class="icon-task-lg"></i><h5>作业</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'video'}} disabled{{?}}" 
+
+href="#video"><i class="icon-video-lg"></i><h5>视频</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'audio'}} disabled{{?}}" 
+
+href="#audio"><i class="icon-audio-lg"></i><h5>音频</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'doc'}} disabled{{?}}" 
+
+href="#doc"><i class="icon-doc-lg"></i><h5>文档</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'ppt'}} disabled{{?}}" 
+
+href="#ppt"><i class="icon-ppt-lg"></i><h5>幻灯片</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'img'}} disabled{{?}}" 
+
+href="#img"><i class="icon-img-lg"></i><h5>图片</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'exam'}} disabled{{?}}" 
+
+href="#exam"><i class="icon-exam-lg"></i><h5>测试</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'task'}} disabled{{?}}" 
+
+href="#task"><i class="icon-task-lg"></i><h5>作业</h5></a>
 				<!-- 
-				<a class="btn-type{{?param.type != 'none' && param.type != 'calendar'}} disabled{{?}}" href="#calendar"><i class="icon-calendar-lg"></i><h5>日程安排</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'calendar'}} disabled{{?}}" 
+
+href="#calendar"><i class="icon-calendar-lg"></i><h5>日程安排</h5></a>
 				-->
 			</div>
 		</div>
@@ -157,21 +181,31 @@
 	    	<div class="section" >   
 	            	<fieldset>
                     	<label for="courseTitle">标题</label>
-                        <input type="text" id="courseTitle" name="courseTitle" required minlength="6" class="input-block-level" value="{{=it.courseTit || ''}}"  />
+                        <input type="text" id="courseTitle" name="courseTitle" required minlength="6" class="input-block-
+
+level" value="{{=it.courseTit || ''}}"  />
                         <label for="subTitle">副标题</label>
-                        <textarea name="subTitle" id="subTitle" required minlength="12" class="input-block-level" rows="3">{{=it.subTit || ''}}</textarea>
+                        <textarea name="subTitle" id="subTitle" required minlength="12" class="input-block-level" rows="3">
+
+{{=it.subTit || ''}}</textarea>
                         <label for="sectionOrder">章节顺序</label>
                         <input name="sectionOrder" id="sectionOrder" value="{{=it.sectionOrder||true}}" type="hidden">
                         <label for="sectionOrder"></label>
 						 <div class="btn-group btns-radio" data-toggle="buttons-radio">
-                            <button class="btn btn-large{{?it.sectionOrder==null || it.sectionOrder}} active{{?}}" id="true" type="button">顺序学习</button>
-                            <button class="btn btn-large{{?it.sectionOrder!=null && !it.sectionOrder}} active{{?}}" id="false" type="button">无序学习</button>
+                            <button class="btn btn-large{{?it.sectionOrder==null || it.sectionOrder}} active{{?}}" id="true" 
+
+type="button">顺序学习</button>
+                            <button class="btn btn-large{{?it.sectionOrder!=null && !it.sectionOrder}} active{{?}}" 
+
+id="false" type="button">无序学习</button>
                         </div>
                         <label >关键词</label>
                         <div class="keywordWrap">
                         	<input type="hidden" id="keyword" name="keyword" value="{{= it.keyword || '' }}" />
 							{{~ it.keyword :key:index}}
-                         		 <span class="alert alert-tag"><span>{{=key}}</span><a href="#" data-dismiss="alert" class="close">&times;</a></span>
+                         		 <span class="alert alert-tag"><span>{{=key}}</span><a href="#" data-dismiss="alert" 
+
+class="close">&times;</a></span>
                          	{{~}}
                           <a href="#" class="btn-add">+</a>
                           
@@ -181,7 +215,9 @@
                     <input type="hidden" id="courseType" name="courseType" value="{{=it.courseType || ''}}" />
                     <ul class="nav nav-pills courseType">
 						{{~ it.courseTypeList :type:index}}
-							 <li{{?type.id == it.courseType}} class="active"{{?}}><a href="#">{{=type.title}}</a><input type='hidden' value='{{=type.id}}'></li>
+							 <li{{?type.id == it.courseType}} class="active"{{?}}><a href="#">
+
+{{=type.title}}</a><input type='hidden' value='{{=type.id}}'></li>
 						{{~}}                    	                  
                     </ul>  
 	       </div>
@@ -202,7 +238,9 @@
 
 <!-- 模板详情_基本信息 关键词标签 模板 -->
 <script id="tagKeywordInfoTemplate" type="text/x-dot-template">
-		<span class="alert alert-tag"><span>{{=it.keyword}}</span><a href="#" data-dismiss="alert" class="close">&times;</a></span>
+		<span class="alert alert-tag"><span>{{=it.keyword}}</span><a href="#" data-dismiss="alert" 
+
+class="close">&times;</a></span>
 </script>
 
 <!-- 模板详情_详细信息 模板 -->
@@ -212,13 +250,21 @@
         <form id="formDetailInfo" method="post" action="{{=it.action || '##'}}">  	
 	    	<div class="section" >   
 					<label for="courseAbstract">课程摘要</label>
-					<textarea id="courseAbstract" name="courseAbstract" style="width:100%;height:200px;visibility:hidden;"></textarea>
+					<textarea id="courseAbstract" name="courseAbstract" 
+
+style="width:100%;height:200px;visibility:hidden;"></textarea>
 					<label for="courseAuthor">作者</label>
-					<input type="text" id="courseAuthor" name="courseAuthor" required  class="span5" value="{{=it.courseAuthor || ''}}">
+					<input type="text" id="courseAuthor" name="courseAuthor" required  class="span5" 
+
+value="{{=it.courseAuthor || ''}}">
 					<label for="authorDescrip">作者描述</label>
-					<textarea id="authorDescrip" name="authorDescrip"  class="input-block-level" rows="4">{{=it.authorDescrip || ''}}</textarea>
+					<textarea id="authorDescrip" name="authorDescrip"  class="input-block-level" 
+
+rows="4">{{=it.authorDescrip || ''}}</textarea>
 					<label for="learnObjectives">学习目标</label>
-					<input type="hidden" id="learnObjectives" name="learnObjectives" value="{{= it.learnObjectives || '' }}" />
+					<input type="hidden" id="learnObjectives" name="learnObjectives" value="{{= 
+
+it.learnObjectives || '' }}" />
 					<ul class="list_alert nav">						
 						{{~ it.learnObjectives :obj:index}}
 							 {{#def.item:obj}}
@@ -226,7 +272,9 @@
 					</ul>
 					{{#def.formAddItem:"学习目标"}}
 					<label for="suggestedGroup">建议群体</label>
-					<input type="hidden" id="suggestedGroup" name="suggestedGroup" value="{{= it.suggestedGroup || '' }}" />
+					<input type="hidden" id="suggestedGroup" name="suggestedGroup" value="{{= 
+
+it.suggestedGroup || '' }}" />
 					<ul class="list_alert nav">						
 						{{~ it.suggestedGroup :obj:index}}
 							 {{#def.item:obj}}
@@ -234,7 +282,9 @@
 					</ul>
 					{{#def.formAddItem:"建议群体"}}
                     <label for="courseRequirements">课程要求</label>
-					<input type="hidden" id="courseRequirements" name="courseRequirements" value="{{= it.courseRequirements || '' }}" />
+					<input type="hidden" id="courseRequirements" name="courseRequirements" value="{{= 
+
+it.courseRequirements || '' }}" />
 					<ul class="list_alert nav">						
 						{{~ it.courseRequirements :obj:index}}
 							 {{#def.item:obj}}
@@ -247,15 +297,21 @@
        </form>	  
 	 </div> 
 	 {{##def.formAddItem:param:
-	 	<div class="formAdd form-inline control-group"><input type="text" placeholder="请填写{{=param}}" /><button class="btn btn-large btn-primary" type="button">添加</button></div>
+	 	<div class="formAdd form-inline control-group"><input type="text" placeholder="请填写{{=param}}" /><button 
+
+class="btn btn-large btn-primary" type="button">添加</button></div>
 	 #}}
 	 {{##def.item:param:
-	 	<li class="alert"><i class="icon-square"></i><span>{{=param}}</span><a href="#" data-dismiss="alert" class="close">&times;</a></li>
+	 	<li class="alert"><i class="icon-square"></i><span>{{=param}}</span><a href="#" data-dismiss="alert" 
+
+class="close">&times;</a></li>
 	 #}}
 </script>
 <!-- 模板详情_详细信息 列表项 模板 -->
 <script id="itemDetailInfoTemplate" type="text/x-dot-template">	
-		<li class="alert"><i class="icon-square"></i><span>{{=it}}</span><a href="#" data-dismiss="alert" class="close">&times;</a></li>
+		<li class="alert"><i class="icon-square"></i><span>{{=it}}</span><a href="#" data-dismiss="alert" 
+
+class="close">&times;</a></li>
 </script>
 
 <!-- 课程推广 模板 -->
@@ -265,23 +321,35 @@
         <form id="formPromotion" method="post" action="{{=it.action || '##'}}">  	
 	    	<div class="section" >              	
 					<label for="CourseCover">课程封面</label>
-					<input id="courseCover" name="courseCover" class="input-block-level" type="hidden" value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
+					<input id="courseCover" name="courseCover" class="input-block-level" type="hidden" 
+
+value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
 									<!--图片预览-->
-					<div class="courseCover"><img id="imgshow" name="imgshow" style="width: 300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/zht-main-img.jpg'}}" alt="" /></div>					
+					<div class="courseCover"><img id="imgshow" name="imgshow" style="width: 
+
+300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/zht-main-img.jpg'}}" alt="" /></div>			
+
+		
 	       </div>
 		   <div class="section" >              	
 					<label>上传图片（支持JPG\JPEG、PNG、BMP格式的图片，建议小于2M）</label>
 					<div class="control-upload">
-						     <button id="upMovie" class="btn btn-primary btn-large" type="button" >上传</button>
+						     <button id="upMovie" class="btn btn-primary btn-large" type="button" >
+
+上传</button>
 							<input type="hidden"  name="attId" id="attIdID">
 					</div>		
 	       </div>		  
 		   <div class="courseSkins">
 		   		 <label >课程皮肤</label>
-				<input type="hidden" id="courseSkin" name="courseSkin" value="{{=it.courseSkin.title || ''}}" />
+				<input type="hidden" id="courseSkin" name="courseSkin" value="{{=it.courseSkin.title || 
+
+''}}" />
 				<ul class="nav courseSkinList clearfix">
 					{{~ it.courseSkinList :skin:index}}
-						 <li{{?skin.title == it.courseSkin.title}} class="active"{{?}}><a href="#"><img src="{{=skin.imgUrl}}" alt="{{=skin.title}}" /><i class="icon-right"></i></a><h5>{{=skin.title}}</h5></li>
+						 <li{{?skin.title == it.courseSkin.title}} class="active"{{?}}><a 
+
+href="#"><img src="{{=skin.imgUrl}}" alt="{{=skin.title}}" /><i class="icon-right"></i></a><h5>{{=skin.title}}</h5></li>
 					{{~}}                    	                  
 				</ul>
 			</div>
@@ -297,19 +365,45 @@
         <form id="formAccessRight" method="post" action="{{=it.action || '#accessRight'}}">  	
 	    	<div class="section" >              	
 					<label>权限设置
-						<input type="hidden" id="permission" name="permission" value="{{=it.permission || 'open'}}" />						
+						<input type="hidden" id="permission" name="permission" 
+
+value="{{=it.permission || 'open'}}" />						
 					</label>
 					<ul class="nav nav-pills">
-							<li{{?it.permission == 'open' || it.permission == ''}} class="active"{{?}}><a data-toggle="tab" href="#open">公开</a></li>
-							<li{{?it.permission == 'encrypt'}} class="active"{{?}}><a data-toggle="tab" href="#encrypt">加密</a></li>
+							<li{{?it.permission == 'open' || it.permission == ''}} 
+
+class="active"{{?}}><a data-toggle="tab" href="#open">公开</a></li>
+							<li{{?it.permission == 'encrypt'}} class="active"{{?}}><a data-
+
+toggle="tab" href="#encrypt">加密</a></li>
 					</ul>
 					<div class="tab-content">
-						<div class="tab-pane{{?it.permission == 'open' || it.permission == ''}} active{{?}}" id="open">
-						提示："公开"课程将允许所有NTP用户（新东方集团教职员工）访问。而"私密"课程将提醒课程负责主管手动授权或者密码访问。
+						<div class="tab-pane{{?it.permission == 'open' || it.permission == ''}} 
+
+active{{?}}" id="open">
+						提示："公开"课程将允许所有NTP用户（新东方集团教职员工）访问。而"私密"课程将
+
+提醒课程负责主管手动授权或者密码访问。
 						</div>
-						<div class="tab-pane{{?it.permission == 'encrypt'}} active{{?}}" id="encrypt">
-							<label  class="radio" for="authorized"><input type="radio" onclick="removePass()" value="authorized" {{?it.encryptType == 'authorized' || it.encryptType == ''}}checked{{?}} name="encryptType" id="authorized" /><span class="labelTxt">授权组织备课</span>前往 <a href="#kinguser" onClick="urlRouter()" >授权管理</a> 本课程的用户列表</label>
-							<label  class="radio" id="passRadio" for="passwordProtect"><input type="radio" value="passwordProtect" {{?it.encryptType == 'passwordProtect'}}checked{{?}} name="encryptType" id="passwordProtect" /><span class="labelTxt">密码保护</span><input type="password" id="coursePwd"  name="coursePwd" {{?it.encryptType !='passwordProtect'}}disabled{{?}} placeholder="请填写课程访问的密码" value="{{=it.coursePwd || ''}}" /></label>
+						<div class="tab-pane{{?it.permission == 'encrypt'}} active{{?}}" 
+
+id="encrypt">
+							<label  class="radio" for="authorized"><input type="radio" 
+
+onclick="removePass()" value="authorized" {{?it.encryptType == 'authorized' || it.encryptType == ''}}checked{{?}} 
+
+name="encryptType" id="authorized" /><span class="labelTxt">授权组织备课</span>前往 <a href="#kinguser" onClick="urlRouter
+
+()" >授权管理</a> 本课程的用户列表</label>
+							<label  class="radio" id="passRadio" for="passwordProtect"><input 
+
+type="radio" value="passwordProtect" {{?it.encryptType == 'passwordProtect'}}checked{{?}} name="encryptType" 
+
+id="passwordProtect" /><span class="labelTxt">密码保护</span><input type="password" id="coursePwd"  name="coursePwd" {{?
+
+it.encryptType !='passwordProtect'}}disabled{{?}} placeholder="请填写课程访问的密码" value="{{=it.coursePwd || ''}}" 
+
+/></label>
 						</div>
 					</div>					
 	       </div>		 
@@ -336,13 +430,25 @@
 									<tr data-fdid="creater">
 										<td class="tdTit">
                                           <div class="pr">
-											<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
-											<img src="{{?it.createrimgUrl.indexOf('http')>-1}}{{=it.createrimgUrl}}{{??}}${ctx}/{{=it.createrimgUrl}}{{?}}" />
-											{{=it.creatername}}（{{=it.creatermail}}）， {{=it.createrdepartment}}
+											<div class="state-dragable"><span 
+
+class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span 
+
+class="icon-bar"></span></div>
+											<img src="{{?
+
+it.createrimgUrl.indexOf('http')>-1}}{{=it.createrimgUrl}}{{??}}${ctx}/{{=it.createrimgUrl}}{{?}}" />
+											{{=it.creatername}}
+
+（{{=it.creatermail}}）， {{=it.createrdepartment}}
 										 </div>
                                           </td>
-										<td><input type="checkbox" checked onclick="return false" class="tissuePreparation" /></td>
-										<td><input type="checkbox" checked onclick="return false" class="editingCourse" /></td>
+										<td><input type="checkbox" checked 
+
+onclick="return false" class="tissuePreparation" /></td>
+										<td><input type="checkbox" checked 
+
+onclick="return false" class="editingCourse" /></td>
 										<td></td>
 									</tr>
 							{{~it.user :user:index}}
@@ -351,13 +457,27 @@
 									<tr data-fdid="{{=user.id}}">
 										<td class="tdTit">
                                           <div class="pr">
-											<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
-											<img src="{{=user.imgUrl || 'images/temp-face36.jpg'}}" alt="">{{=user.name}}（{{=user.mail}}），{{=user.org}} {{=user.department}}
+											<div class="state-dragable"><span 
+
+class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span 
+
+class="icon-bar"></span></div>
+												<img src="{{?
+
+user.imgUrl.indexOf('http')>-1}}{{=user.imgUrl}}{{??}}${ctx}/{{=user.imgUrl}}{{?}}" />{{=user.name}}（{{=user.mail}}），
+
+{{=user.org}} {{=user.department}}
 										 </div>
                                           </td>
-										<td><input type="checkbox" {{?user.tissuePreparation}}checked{{?}} class="tissuePreparation" /></td>
-										<td><input type="checkbox" {{?user.editingCourse}}checked{{?}} class="editingCourse" /></td>
-										<td><a href="#" class="icon-remove-blue"></a></td>
+										<td><input type="checkbox" {{?
+
+user.tissuePreparation}}checked{{?}} class="tissuePreparation" /></td>
+										<td><input type="checkbox" {{?
+
+user.editingCourse}}checked{{?}} class="editingCourse" /></td>
+										<td><a href="#" class="icon-remove-
+
+blue"></a></td>
 									</tr>
 									{{?}}
 								{{~}}
@@ -375,7 +495,9 @@
 <tr data-fdid="{{=it.id}}">
 	<td class="tdTit">
         <div class="pr">
-		<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+		<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-
+
+bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 		<img src="{{?it.imgUrl.indexOf('http')>-1}}{{=it.imgUrl}}{{??}}${ctx}/{{=it.imgUrl}}{{?}}" />
 		{{=it.name}}（{{=it.mail}}），{{=it.org}} {{=it.department}}
 		</div>
@@ -415,23 +537,33 @@
                     <div class="controls">
                         <input name="isElective" id="isElective" value="{{=it.isElective || '1'}}" type="hidden">
                         <div class="btn-group btns-radio" data-toggle="buttons-radio">
-                            <button class="btn btn-large{{?it.isElective=='1' || it.isElective==null}} active{{?}}" id="obligatory" type="button">必修</button>
-                            <button class="btn btn-large{{?it.isElective=='0'}} active{{?}}" id="elective" type="button">选修</button>
+                            <button class="btn btn-large{{?it.isElective=='1' || it.isElective==null}} active{{?}}" 
+
+id="obligatory" type="button">必修</button>
+                            <button class="btn btn-large{{?it.isElective=='0'}} active{{?}}" id="elective" type="button">选
+
+修</button>
                         </div>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="lectureName">章节名称</label>
-                    <div class="controls"><input value="{{=it.pageTitle || ''}}" id="lectureName" required class="input-xlarge" name="lectureName" type="text" /></div>
+                    <div class="controls"><input value="{{=it.pageTitle || ''}}" id="lectureName" required class="input-
+
+xlarge" name="lectureName" type="text" /></div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="learnTime">学习时长</label>
-                    <div class="controls"><input value="{{=it.learnTime || ''}}" required placeholder="请认真填写该章节的建议学习时长" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
+                    <div class="controls"><input value="{{=it.learnTime || ''}}" required placeholder="请认真填写该章节的建
+
+议学习时长" id="learnTime" class="input-xlarge" name="learnTime" type="text" /></div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="sectionsIntro">章节说明</label>
                     <div class="controls">
-                        <textarea placeholder="请认真填写该章节的描述信息" rows="4" required minlength="20" class="input-xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>
+                        <textarea placeholder="请认真填写该章节的描述信息" rows="4" required minlength="20" class="input-
+
+xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>
                     </div>
                 </div>
 	       </div>
@@ -441,10 +573,14 @@
                     {{~it.mediaList :item:index}}
                         {{~it.mediaList :item2:index2}}
                             {{?(index+1) == item2.index}}
-                            <li data-fdid="{{=item.id}}"><span class="title">{{=it.typeTxt}} <span class="index">{{=item2.index}}</span>：<span class="name">{{=item.title}}</span></span>
+                            <li data-fdid="{{=item.id}}"><span class="title">{{=it.typeTxt}} <span class="index">
+
+{{=item2.index}}</span>：<span class="name">{{=item.title}}</span></span>
                                 <a class="icon-pencil2 btn-ctrls" href="#"></a>
                                 <a class="icon-remove btn-ctrls" href="#"></a>
-                                <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+                                <div class="state-dragable"><span class="icon-bar"></span><span class="icon-
+
+bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
                             </li>
                             {{?}}
                         {{~}}
@@ -457,7 +593,9 @@
 					<div class="control-upload">
 
 						
-						     <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>
+						     <button id="upMaterial" class="btn btn-primary btn-large" type="button" 
+
+>上传</button>
 
 
 					</div>
@@ -479,10 +617,14 @@
 
 <!-- 视频,文档。。。列表项 模板 -->
 <script id="mediaListTemplate" type="text/x-dot-template">
-    <li data-fdid="{{=it.id}}"><span class="title">{{=it.typeTxt}} <span class="index">{{=it.index}}</span>：<span class="name">{{=it.name}}</span></span>
+    <li data-fdid="{{=it.id}}"><span class="title">{{=it.typeTxt}} <span class="index">{{=it.index}}</span>：<span 
+
+class="name">{{=it.name}}</span></span>
         <a class="icon-pencil2 btn-ctrls" href="#"></a>
         <a class="icon-remove btn-ctrls" href="#"></a>
-        <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+        <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-
+
+bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
     </li>
 </script>
 
@@ -517,12 +659,18 @@
 	        <div class="page-title section" id="page-title">
 	        	<input type='hidden' id='courseId' value='${course.fdId}' />
 	        	<h5>
-	        	<a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" class="backParent">返回课程列表</a>
+	        	<a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" class="backParent">返回课程列表
+
+</a>
 	        	&nbsp;&nbsp;&nbsp; ${course.fdTitle}</h5>
 	            <div class="btn-group">
 	                <c:if test="${course.fdStatus==null || course.fdStatus=='00'}">
-		            <button class="btn btn-primary btn-large" disabled type="button" onclick="previewCourse()">预览</button>
-		            <button class="btn btn-primary btn-large" disabled type="button" onclick="releaseCourse()">发布</button>
+		            <button class="btn btn-primary btn-large" disabled type="button" onclick="previewCourse()">预览
+
+</button>
+		            <button class="btn btn-primary btn-large" disabled type="button" onclick="releaseCourse()">发布
+
+</button>
 		            </c:if>
 	            </div>
 	        </div>
@@ -598,7 +746,9 @@ $.Placeholder.init();
 	function urlRouter(href,opt){
 		setTimeout(function(){
 			var param = href ? href : location.href.split("#").pop();			
-			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass("active");
+			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass
+
+("active");
 			switch(param){			
 	  			case "basicInfo":
 	  				rightCont.loadBasicInfoPage("基本信息");
