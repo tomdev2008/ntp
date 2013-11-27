@@ -372,7 +372,7 @@ public class MaterialAjaxController {
 		map.put("fdName",info.getFdName());
 		map.put("description", info.getFdDescription());
 		map.put("time", info.getFdStudyTime());
-		map.put("score", info.getFdScore());
+		map.put("score", info.getFdScore()==null?"0":info.getFdScore());
 		map.put("fdAuthor", info.getFdAuthor());
 		map.put("fdAuthorDescription", info.getFdAuthorDescription());
 		map.put("isPublish", info.getIsPublish());
