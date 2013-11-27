@@ -85,7 +85,7 @@ public class AdviserService extends BaseService{
 			 finder.append(" order by course.fdtitle ");
 		 }
 		 if(order.equalsIgnoreCase("user")){
-			 finder.append(" order by user.realname ");
+			 finder.append(" order by person.realname ");
 		 }
 		 
 		 Pagination page = getPageBySql(finder, pageNo, pageSize);

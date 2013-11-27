@@ -23,7 +23,7 @@
                          <h6>学习跟踪</h6>
                     </span>
              </a>
-            <a href="${ctx}/adviser/checkTask">
+            <a href="${ctx}/adviser/checkTask?order=fdcreatetime">
     			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
     			<span class="mask"></span>
     			<span class="caption">

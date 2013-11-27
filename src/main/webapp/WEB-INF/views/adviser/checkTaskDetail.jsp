@@ -240,7 +240,7 @@
 		<div class="clearfix mt20">
 	        <div class="pull-left w760">
                 <div class="page-header">
-                    <a href="${ctx}/adviser/checkTask">返回批改作业首页</a>
+                    <a href="${ctx}/adviser/checkTask?order=fdcreatetime">返回批改作业首页</a>
                     <div class="pos-r">
                         <button class="btn btn-primary btn-large" id="downloadBox" type="button">打包下载</button>
                     </div>
