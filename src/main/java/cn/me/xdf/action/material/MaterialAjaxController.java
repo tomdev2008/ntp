@@ -145,7 +145,7 @@ public class MaterialAjaxController {
 		int i = page.getTotalPage();
 		if (i > 0) {
 			for (int j = 0; j < i; j++) {
-				page = materialService.findMaterialList(fdType, 1, 1, fdName,
+				page = materialService.findMaterialList(fdType, 1, j+1, fdName,
 						order);
 				List list = page.getList();
 				if (list != null && list.size() > 0) {
