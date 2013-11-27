@@ -73,8 +73,9 @@ function showSearch(){
 	}else if(($("#serach").val()).length>2){
 		serach = ($("#serach").val()).substr(0,2);
 		serach= serach+"...";
+		$("#containkey").html(serach);
 	}
-	$("#containkey").html(serach);
+	
 }
 function clearserach(){
 	$("#serach").attr("value","");
