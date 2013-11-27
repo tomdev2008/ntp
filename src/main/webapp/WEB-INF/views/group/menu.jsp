@@ -2,16 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
     	<ul class="nav nav-list sidenav" id="sideNav">
-                <li class="nav-header first"><a href="#">学习跟踪</a></li>
+                <li class="nav-header first"><a href="${ctx}/studyTrack/getStudyTrackDirector">学习跟踪</a></li>
                 
 	            <c:if test="${param.fdType=='13'}">
-	            <li class="active">
+	            <li class="nav-header active">
 	            </c:if>
 	            <c:if test="${param.fdType!='13'}">
-	            <li>
+	            <li class="nav-header">
 	            </c:if>
-	            <a href="${ctx}/course/getCourseAuthInfos?fdType=13&order=fdcreatetime">
-	            <i class="icon-course-series"></i>授权学习</a></li>
+	            <a href="${ctx}/course/getCourseAuthInfos?fdType=13&order=fdcreatetime">授权学习</a>
+	            </li>
+	            
 	            <li class="nav-header">
                     <span>课程管理</span>
 	            </li>
