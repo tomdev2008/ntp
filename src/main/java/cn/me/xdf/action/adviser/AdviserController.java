@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.common.utils.excel.AbsExportExcel;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
@@ -21,6 +23,7 @@ import cn.me.xdf.model.material.Task;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.adviser.AdviserService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseService;
@@ -35,6 +38,9 @@ public class AdviserController {
 	
 	@Autowired
 	private MaterialService materialService;
+	
+	@Autowired
+	private AdviserService adviserService;
 	
 	@Autowired
 	private SourceNodeService sourceNodeService;
@@ -92,6 +98,23 @@ public class AdviserController {
 			}
 			adviserList.add(vdata);
 		}
+		AbsExportExcel.exportExcel(adviserList, fdType+"Data.xls", response);
+		return null;
+	}
+	/**
+	 * 导出全部导师批改作业列表
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/exportAllDataList/{fdType}")
+	public String exportAllDataList(@PathVariable("fdType") String fdType,
+			    HttpServletRequest request, HttpServletResponse response){
+		String order = request.getParameter("order");
+		String keyword = request.getParameter("keyword");
+		List<VCheckTaskData> adviserList = new ArrayList<VCheckTaskData>();
+		Pagination page = adviserService.findAdivserCouserList(fdType, 1, SimplePage.DEF_COUNT, keyword, order);
+		
 		AbsExportExcel.exportExcel(adviserList, fdType+"Data.xls", response);
 		return null;
 	}

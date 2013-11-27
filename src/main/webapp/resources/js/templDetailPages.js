@@ -753,6 +753,7 @@
 						$("#rightCont").html(detailInfoFn(data));	
 						var editor = KindEditor.create('textarea[id="courseAbstract"]', {
 								resizeType : 1,
+								cssData : 'body {font-size:14px;}',
 								allowPreviewEmoticons : false,
 								allowImageUpload : true,
 								uploadJson : $('#ctx').val()+'/common/file/KEditor_uploadImg',

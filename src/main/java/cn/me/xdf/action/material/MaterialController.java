@@ -1,6 +1,11 @@
 package cn.me.xdf.action.material;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import jodd.util.StringUtil;
 
@@ -8,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.common.utils.excel.AbsExportExcel;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.material.MaterialAuth;
@@ -24,6 +31,8 @@ import cn.me.xdf.service.material.MaterialAuthService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
 import cn.me.xdf.utils.ShiroUtils;
+import cn.me.xdf.view.model.VCheckTaskData;
+import cn.me.xdf.view.model.VMaterialData;
 
 /**
  * 材料信息
@@ -83,6 +92,49 @@ public class MaterialController {
 		}
 		return null;
 	}
+	/**
+	 * 导出素材列表
+	 * @param modelIds
+	 * @param fdType
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/exportMaterialData/{modelIds}/{fdType}")
+	public String exportMaterialData(@PathVariable("modelIds") String[] modelIds,@PathVariable("fdType") String fdType,
+			 HttpServletRequest request, HttpServletResponse response){
+		List<VMaterialData> materialList = new ArrayList<VMaterialData>();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
+		for (String modelId : modelIds) {
+			VMaterialData data = new VMaterialData();
+			MaterialInfo info = materialService.load(modelId);
+			data.setFdDownloads(info.getFdDownloads()==null?0:info.getFdDownloads());
+			data.setFdLauds(info.getFdLauds()==null?0:info.getFdLauds());
+			data.setFdPlays(info.getFdPlays()==null?0:info.getFdPlays());
+			data.setFdName(info.getFdName());
+			ScoreStatistics score = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(MaterialInfo.class.getName(), modelId);
+			if(score!=null){
+				data.setScore(score.getFdAverage()==null?0:score.getFdAverage());
+			}else{
+				data.setScore(0.0);
+			}
+			String time = sdf.format(info.getFdCreateTime());
+			data.setFdCreateTime(time);
+			if(info.getFdType().equals(Constant.MATERIAL_TYPE_VIDEO)){
+				data.setFdType("视频");
+			}else if(info.getFdType().equals(Constant.MATERIAL_TYPE_DOC)){
+				data.setFdType("文档");
+			}else if(info.getFdType().equals(Constant.MATERIAL_TYPE_PPT)){
+				data.setFdType("幻灯片");
+			}else{
+				data.setFdType("素材");
+			}
+			materialList.add(data);
+		}
+		AbsExportExcel.exportExcel(materialList, "materialData.xls", response);
+		return null;
+	}
+	
 	/**
 	 * 返回添加素材的页面
 	 * @param request
