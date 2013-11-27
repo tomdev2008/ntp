@@ -54,6 +54,15 @@ public class AdviserController {
 	@Autowired
 	private CourseCatalogService courseCatalogService;
 	
+	/**返回批改作业详情页
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/checkTaskDetail")
+	public String checkTaskDetail(){
+		return "/adviser/checkTaskDetail";
+	}
+	
 	/**
 	 * 导出xls文件
 	 * @param modelIds

@@ -1,8 +1,10 @@
 package cn.me.xdf.action.adviser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,20 +12,22 @@ import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
-import cn.me.xdf.model.course.CourseCategory;
+import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.material.Task;
@@ -32,12 +36,15 @@ import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.model.process.TaskRecord;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.adviser.AdviserService;
+import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
+import cn.me.xdf.service.bam.process.TaskRecordService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseCatalogService;
-import cn.me.xdf.service.course.CourseCategoryService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.material.MaterialService;
+import cn.me.xdf.service.material.TaskService;
+import cn.me.xdf.utils.DateUtil;
 import cn.me.xdf.utils.ShiroUtils;
 
 @Controller
@@ -65,6 +72,200 @@ public class AdviserAjaxController {
 	
 	@Autowired
 	private AttMainService attMainService;
+	
+	@Autowired
+	private TaskService taskService;
+	
+	@Autowired
+	private BamCourseService bamCourseService;
+	
+	@Autowired
+	private TaskRecordService taskRecordService;
+	
+	/**
+	 * 找出批改是当前作业包信息
+	 * @param request
+	 * @return
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value = "findCheckTaskDetail")
+	@ResponseBody
+	public String findCheckTaskDetail(HttpServletRequest request){
+		String noteId = request.getParameter("noteId");
+		SourceNote note = sourceNodeService.get(SourceNote.class, noteId);
+		MaterialInfo info = materialService.load(note.getFdMaterialId());//作业包
+		Map taskData = new HashMap();
+		taskData.put("id", note.getFdId());
+		//////////此处为得到作业包序号
+		BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(note.getFdUserId(), note.getFdCourseId());
+		List<CourseContent> content = bamCourse.getCourseContents();
+		for (CourseContent courseContent : content) {
+			if(courseContent.getMaterial().getFdId().equals(note.getFdMaterialId())){
+				taskData.put("num", courseContent.getFdMaterialNo());break;
+			}
+		}
+		taskData.put("name", info.getFdName());
+		/////////此处为设置总分
+		List<Task> tasks = info.getTasks();
+		double totalScore = 0;
+		for (Task task : tasks) {
+			totalScore += task.getFdStandardScore();
+		}
+		taskData.put("fullScore", totalScore);//总分
+		taskData.put("scorePass", info.getFdScore());//及格分
+		double fdScore = 0;
+		Set<TaskRecord> Record = note.getTaskRecords();
+        for (TaskRecord taskRecord : Record) {
+        	if(taskRecord.getFdScore()!=null){
+        		fdScore += taskRecord.getFdScore();
+        	}
+		}
+		taskData.put("score", fdScore);//老师打分
+		
+		taskData.put("taskCount", info.getTasks().size());//作业数量
+		taskData.put("intro", info.getFdDescription()==null?"":info.getFdDescription());//介绍
+		String status = note.getFdStatus();
+		if(status.equals(Constant.TASK_STATUS_FINISH)||status.equals(Constant.TASK_STATUS_FINISH)){
+			taskData.put("status", "unfinish");//状态  unfinish, pass, fail
+		}else if(status.equals(Constant.TASK_STATUS_PASS)){
+			taskData.put("status", "pass");
+		}else if(status.equals(Constant.TASK_STATUS_FAIL)){
+			taskData.put("status", "fail");
+		}
+		////////////////////作业详情
+		List<Map> taskRescordlist = new ArrayList<Map>();
+		Set<TaskRecord> taskRecordList = note.getTaskRecords();
+		for (TaskRecord temp : taskRecordList) {
+			Map taskRescord = new HashMap();
+			Task task = taskService.get(temp.getFdTaskId());//找出相对应的作业
+			taskRescord.put("id", temp.getFdId());
+			taskRescord.put("index", task.getFdOrder());//序号
+			taskRescord.put("name", task.getFdName());//作业名称
+			taskRescord.put("stem", task.getFdSubject()==null?"":task.getFdSubject());//作业简介
+			if(temp.getFdStatus().equals(Constant.TASK_STATUS_UNFINISH)){
+				taskRescord.put("status", "null");//00未答
+			}else if(temp.getFdStatus().equals(Constant.TASK_STATUS_FINISH)){
+				taskRescord.put("status", "unchecked");//提交未检查
+			}else if(temp.getFdStatus().equals(Constant.TASK_STATUS_CHECK)){
+				taskRescord.put("status", "checked");//检查 通过
+			}
+		    //作业类型
+			taskRescord.put("type", task.getFdType().equals(Constant.TASK_TYPE_UPLOAD)?"uploadWork":"onlineAnswer");
+			taskRescord.put("totalScore", task.getFdStandardScore());
+			///导师信息
+			Map rating = new HashMap();
+			if(temp.getFdScore()!=null){
+			  rating.put("score", temp.getFdScore().intValue());//得分	
+			}
+			if(temp.getFdCreateTime()!=null){
+				rating.put("time", DateUtil.getInterval(DateUtil.convertDateToString(temp.getFdCreateTime()), "yyyy/MM/dd hh:mm aa"));
+			}
+			rating.put("comment", temp.getFdComment());
+			taskRescord.put("rating", rating);
+			/////////附件开始 (学生上传)
+			List<AttMain> listTaskAttachment = attMainService
+					.getByModeslIdAndModelNameAndKey(temp.getFdId(), TaskRecord.class.getName(),task.getFdId());
+			List<Map> listAtt = new ArrayList();
+			if(listTaskAttachment!=null&&!listTaskAttachment.isEmpty()){
+				for (AttMain attMain : listTaskAttachment) {
+					Map attMap = new HashMap();
+					attMap.put("id", attMain.getFdId());
+					attMap.put("name", attMain.getFdFileName());
+					attMap.put("fileUrl", attMain.getFdFilePath());
+					String name = FilenameUtils.getExtension(attMain.getFdFileName()).toLowerCase(Locale.ENGLISH);
+					if(name.endsWith(".mp4")||name.endsWith(".avi")||name.endsWith(".wmv")||name.endsWith(".rmvb")
+							||name.endsWith(".doc")||name.endsWith(".xls")||name.endsWith(".ppt")){
+						attMap.put("type", "onlinePlay");	
+					}else{
+						attMap.put("type", "notOnlinePlay");	
+					}
+					if(attMain.getFileUrl()!=null){//播放地址
+						attMap.put("mediaUrl", attMain.getFileUrl());
+					}
+					listAtt.add(attMap);
+				 }
+			}
+			 
+			taskRescord.put("listTaskAttachment", listAtt);
+			/////////附件开始 (作业自带)
+			List<AttMain> listAttachment = attMainService
+					.getByModeslIdAndModelNameAndKey(task.getFdId(), Task.class.getName(),"taskAtt");
+			taskRescord.put("listAttachment", listAttachment);
+			taskRescordlist.add(taskRescord);
+		}
+		taskData.put("listTask", taskRescordlist);
+		return JsonUtils.writeObjectToJson(taskData);
+	}
+	/**
+	 * 老师批改页面头部 得到用户信息和课程
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "findCourseAndUser")
+	@ResponseBody
+	public String findCourseAndUser(HttpServletRequest request){
+		String noteId = request.getParameter("noteId");
+		SourceNote note = sourceNodeService.get(SourceNote.class, noteId);
+		Map introData = new HashMap();
+		CourseInfo courseInfo = courseService.get(note.getFdCourseId());
+		introData.put("id", courseInfo.getFdId());
+		introData.put("courseName", courseInfo.getFdTitle());
+		CourseCatalog courseCatalog = courseCatalogService.get(note.getFdCatalogId());
+		introData.put("currLecture", courseCatalog.getFdName());//当前节
+		introData.put("mentor", ShiroUtils.getUser().getName());
+		SysOrgPerson person = accountService.findById(note.getFdUserId());//学习课程人员
+		Map user = new HashMap();//封装人员信息
+		user.put("name", person.getRealName());
+		user.put("imgUrl", person.getPoto());
+		user.put("org", person.getHbmParent()==null?"":person.getHbmParent());
+		user.put("department", person.getDeptName());
+		user.put("phone", person.getFdMobileNo());
+		user.put("mail", person.getFdEmail());
+		introData.put("user", user);////封装人员信息
+		return JsonUtils.writeObjectToJson(introData);
+	}
+	
+	@RequestMapping("/updateTaskRecord/{fdId}")
+	@ResponseBody
+	public void updateTaskRecord(@PathVariable("fdId") String fdId,HttpServletRequest request){
+		String fdComment = request.getParameter("fdComment");
+		String score = request.getParameter("score");
+		TaskRecord record = taskRecordService.get(fdId);
+		record.setFdComment(fdComment);//设置评语
+		record.setFdScore(Double.parseDouble(score));//设置评分
+		record.setFdStatus(Constant.TASK_STATUS_CHECK);//设置为已检查
+		record.setFdCreateTime(new Date());//设置导师批改时间
+		record.setFdAppraiserId(ShiroUtils.getUser().getId());//设置导师
+		taskRecordService.save(record);
+	}
+	/**
+	 * 更新soursenote里边的导师批课信息
+	 * @param fdId
+	 * @param request
+	 */
+	@RequestMapping("/updateSourseNote/{fdId}")
+	@ResponseBody
+	public void updateSourseNote(@PathVariable("fdId") String fdId,HttpServletRequest request){
+		SourceNote note = sourceNodeService.get(SourceNote.class, fdId);
+		double totalScore = 0.0;
+		Set<TaskRecord> Record = note.getTaskRecords();
+        for (TaskRecord taskRecord : Record) {
+        	if(taskRecord.getFdScore()!=null){
+        		totalScore += taskRecord.getFdScore();
+        	}
+		}		
+		note.setIsStudy(true);//设置为true
+		note.setFdScore(totalScore);
+		MaterialInfo info = materialService.load(note.getFdMaterialId());//作业包
+		if(info.getFdScore()>=totalScore){
+			note.setFdStatus(Constant.TASK_STATUS_FAIL);//未通过
+		}else{
+			note.setFdStatus(Constant.TASK_STATUS_PASS);//通过
+		}
+		note.setFdAppraiserId(ShiroUtils.getUser().getId());//指导老师
+		sourceNodeService.saveSourceNode(note);
+	}
+	
 	
 	/**
 	 * 找出我所批改的作业
@@ -116,6 +317,7 @@ public class AdviserAjaxController {
 				CourseCatalog courseCatalog = courseCatalogService.get((String)pageMap.get("FDCATALOGID"));
 				map.put("currLecture", courseCatalog.getFdName());//节名称
 				MaterialInfo info = materialService.load((String)pageMap.get("FDMATERIALID"));
+				map.put("taskPaper", info.getFdName());
 				if(fdType.equalsIgnoreCase("unchecked")){//未检查
 					SourceNote note = sourceNodeService.get(SourceNote.class, (String)pageMap.get("FDID"));
 					Set<TaskRecord> taskRexords = note.getTaskRecords();

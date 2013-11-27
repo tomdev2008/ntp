@@ -183,6 +183,11 @@ public class Constant {
 	public static final String TASK_STATUS_REJECT = "02";
 	
 	/**
+	 * 作业审批（代表当前记录已被导师审批）
+	 */
+	public static final String TASK_STATUS_CHECK = "05";
+	
+	/**
 	 * 作业交互方式：
 	 * 03未通过
 	 */

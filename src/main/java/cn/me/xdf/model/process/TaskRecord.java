@@ -1,5 +1,6 @@
 package cn.me.xdf.model.process;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -55,7 +56,7 @@ public class TaskRecord extends IdEntity implements IAttMain{
 	private Boolean through;
 	
 	/**
-	 * 作业交互状态（00：未答；01：答完；02：驳回；03：未通过；04：通过）
+	 * 作业交互状态（00：未答；01：答完；02：驳回；03：未通过；04：通过;05:已批改）
 	 */
 	private String fdStatus;
 	
@@ -64,6 +65,12 @@ public class TaskRecord extends IdEntity implements IAttMain{
 	 */
 	private String fdAnswer;
 	
+	/**
+	 * 操作时间(此处为导师操作时间)
+	 */
+	private Date fdCreateTime;
+	
+
 	/**
 	 * 上传的作业
 	 */
@@ -126,6 +133,14 @@ public class TaskRecord extends IdEntity implements IAttMain{
 
 	public void setThrough(Boolean through) {
 		this.through = through;
+	}
+	
+	public Date getFdCreateTime() {
+		return fdCreateTime;
+	}
+
+	public void setFdCreateTime(Date fdCreateTime) {
+		this.fdCreateTime = fdCreateTime;
 	}
 	
 	public String getFdStatus() {

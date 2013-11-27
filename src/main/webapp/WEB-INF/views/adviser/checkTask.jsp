@@ -39,6 +39,8 @@
                         <dd>{{=item.mentor}}</dd>
                         <dt>当前环节：</dt>
                         <dd>{{=item.currLecture}}</dd>
+						<dt>当前作业包：</dt>
+                        <dd>{{=item.taskPaper}}</dd>
                     </dl>
                 </div>
                 <div class="media-foot">
@@ -388,7 +390,7 @@ function loadList(fdType){
                                     alert("发私信");
                                 }
                             }  else{
-                                window.open("http://ntp.xdf.cn/" + $(this).attr("data-fdid"));//打开详情页面
+                                window.open("${ctx}/adviser/checkTaskDetail?noteId=" + $(this).attr("data-fdid"),"_self");//打开详情页面
                             }
                         }
                     });
