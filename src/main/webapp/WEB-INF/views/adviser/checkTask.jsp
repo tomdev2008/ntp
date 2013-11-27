@@ -135,11 +135,11 @@
                             <div class="btn-toolbar">
                                 <label class="muted">排序</label>
                                 <div class="btn-group btns-radio" data-toggle="buttons-radio">
-                                <a onclick="getDataOrderBy('1','FDCREATETIME');">
-                                  <c:if test="${param.order=='FDCREATETIME'}">
+                                <a onclick="getDataOrderBy('1','fdcreatetime');">
+                                  <c:if test="${param.order=='fdcreatetime'}">
 								    <button class="btn btn-large active" type="button">时间</button>
 							      </c:if>
-							      <c:if test="${param.order!='FDCREATETIME'}">
+							      <c:if test="${param.order!='fdcreatetime'}">
 								    <button class="btn btn-large" type="button">时间</button>
 							      </c:if>
 							     </a>
@@ -339,7 +339,7 @@ function pageNavClick(pageNo){
   }); 
 }
 function getDataOrderBy(pageNo,order){
-	 $("#orderBy").val(order);
+	 $("#fdOrder").val(order);
 	 pageNavClick(pageNo);
 }
 function clearserach(){//清理搜索栏并显示数据列表
