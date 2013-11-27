@@ -206,7 +206,7 @@
 			</section>
 			<section class="w790 pull-right" id="rightCont">
 				<div class="page-header">
-					<a href="${ctx}/material/findList?fdType=08" class="backParent">返回测试列表</a>
+					<a href="${ctx}/material/findList?fdType=08&order=FDCREATETIME" class="backParent">返回测试列表</a>
 					<h4 id="examMainName"></h4>
 					<div class="btn-group">
 						<button class="btn btn-large btn-primary" id="saveExamPaper"

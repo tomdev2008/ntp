@@ -516,7 +516,9 @@
 		<div class="tit-bar">    	
 	        <div class="page-title section" id="page-title">
 	        	<input type='hidden' id='courseId' value='${course.fdId}' />
-	        	<h5>${course.fdTitle}</h5>
+	        	<h5>
+	        	<a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" class="backParent">返回课程列表</a>
+	        	&nbsp;&nbsp;&nbsp; ${course.fdTitle}</h5>
 	            <div class="btn-group">
 	                <c:if test="${course.fdStatus==null || course.fdStatus=='00'}">
 		            <button class="btn btn-primary btn-large" disabled type="button" onclick="previewCourse()">预览</button>
