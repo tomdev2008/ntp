@@ -100,7 +100,7 @@
                 </form>
             <span class="showState">
                 <span class="muted">当前显示：</span>         
-            		 <span id="markshow" >含“<a id="containkey" href="#"></a>”的用户</span>   
+            		 <span id="markshow" ><a id="containkey" href="#">全部条目</a></span>   
             </span>
                 <a class="btn btn-link" href="#rightCont" id="resetSelect">清空搜索结果</a>
             </div>
@@ -134,7 +134,7 @@
 refreshTrackList("",1,10,"time");
 $("#resetSelect").bind("click",function(){
 	$("#serach").val("");
-	$("#markshow").html('含“<a id="containkey"href="#"></a>”的用户');
+	$("#markshow").html('<a id="containkey"href="#">全部条目</a>');
 	refreshTrackList("",1,10,"time");
 });
 
@@ -254,12 +254,14 @@ function refreshTrackList(type,pageNo,pageSize,order){
 
 function showSearch(){
 	var fdTitle = document.getElementById("serach").value;
-	$("#markshow").html('含“<a id="containkey"href="#"></a>”的用户');
-	if(fdTitle.length>2){
+	$("#markshow").html('含“<a id="containkey" href="#"></a>”的用户');
+	if(fdTitle==''){
+		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
+	}else if(fdTitle.length>2){
 		$("#containkey").html(fdTitle.substr(0,6)+"...");
-		}else{
-			$("#containkey").html(fdTitle);
-		}
+	}else{
+		$("#containkey").html(fdTitle);
+	}
 }
 
 function resetOrderImg(order){
