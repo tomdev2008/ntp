@@ -209,7 +209,7 @@
                              </div>
                              <div class="tab-pane" id="encrypt">
                                 <table class="table table-bordered">
-                                    <thead><tr><th>授权用户</th><th>使用</th>
+                                    <thead><tr><th>授权用户</th><th>可用</th>
                                      <th>编辑</th><th>删除</th></tr></thead>
                                     <tbody id="list_user"></tbody>
                                 </table>
@@ -225,7 +225,7 @@
                              </div>
                              <div class="tab-pane active" id="encrypt">
                                 <table class="table table-bordered">
-                                    <thead><tr><th>授权用户</th><th>使用</th>
+                                    <thead><tr><th>授权用户</th><th>可用</th>
                                      <th>编辑</th><th>删除</th></tr></thead>
                                     <tbody id="list_user"></tbody>
                                 </table>
