@@ -43,7 +43,7 @@
 		            <tags:shirourl url="${ctx}/register/list" active="register" text="新教师注册" iconName="dashboard-04_16.png" para="${active}"></tags:shirourl>
 		          </shiro:hasAnyRoles>
 		          <shiro:hasAnyRoles name="campus">
-		            <tags:shirourl url="${ctx}/campus/flow/list" active="flow" text="组织备课" iconName="dashboard-07_16.png" para="${active}"></tags:shirourl>
+		            <tags:shirourl url="${ctx}/campus/flow/list" active="flow" text="授权学习" iconName="dashboard-07_16.png" para="${active}"></tags:shirourl>
 		            <tags:shirourl url="${ctx}/campus/progress/list" active="campusprogress" text="学校备课跟踪" iconName="dashboard-09_16.png" para="${active}"></tags:shirourl>
 		            <tags:shirourl url="${ctx}/campus/progress/guidList" active="campusguidList" text="学校绩效分析" iconName="dashboard-10_16.png" para="${active}"></tags:shirourl>
 		          </shiro:hasAnyRoles>
