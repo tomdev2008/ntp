@@ -448,7 +448,9 @@ function clearserach(){//清理搜索栏并显示数据列表
 function showSearch(){
 	var search = $("#search").val();
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
-	if(search.length>2){
+	if(search==''){
+		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
+	}else if(search.length>2){
 		$("#containkey").html(search.substr(0,2)+"...");
 		}else{
 			$("#containkey").html(search);

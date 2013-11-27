@@ -350,7 +350,9 @@ function clearserach(){//清理搜索栏并显示数据列表
 function showSearch(){
 	var search = $("#search").val();
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的用户');
-	if(search.length>8){
+	if(search==''){
+		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
+	}else if(search.length>8){
 		$("#containkey").html(search.substr(0,8)+"...");
 	}else{
 		$("#containkey").html(search);

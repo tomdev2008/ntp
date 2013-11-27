@@ -68,7 +68,9 @@ function pressEnter(){
 function showSearch(){
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
 	var serach = $("#serach").val();
-	if(($("#serach").val()).length>2){
+	if(serach==''){
+		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
+	}else if(($("#serach").val()).length>2){
 		serach = ($("#serach").val()).substr(0,2);
 		serach= serach+"...";
 	}
