@@ -72,13 +72,13 @@ public class TaskPaperAjaxController {
 			info.setIsDownload(true);
 			info.setIsAvailable(true);
 			info.setFdDescription(examPaperIntro);
-			info.setFdStudyTime(studyTime==null?0:Integer.parseInt(studyTime));
+			info.setFdStudyTime(StringUtil.isAllBlank(studyTime)?0:Integer.parseInt(studyTime));
 			materialService.save(info);
 		}else{
 			info = materialService.load(materialId);
 			info.setFdName(request.getParameter("materialName"));
 			info.setFdDescription(examPaperIntro);
-			info.setFdStudyTime(studyTime==null?0:Integer.parseInt(studyTime));
+			info.setFdStudyTime(StringUtil.isAllBlank(studyTime)?0:Integer.parseInt(studyTime));
 			materialService.save(info);
 		}
 		String examType = request.getParameter("examType");//题型 01上传作业，02在线作答
