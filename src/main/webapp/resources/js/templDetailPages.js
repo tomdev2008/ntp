@@ -278,9 +278,11 @@
                         });
                     });
                     if(listArr.length==0){
-                    	$("#materErr").removeClass("hide");
+                    	$("#materErr").html("请输入试题选项");
+						$("#materErr").css("display", "block");
                     	return false;
                     }else{
+                    	alert("1111111111");
                     	$.post($('#ctx').val()+"/ajax/courseContent/saveCourseContent",{
                         	catalogId:opt.id,
                         	type:type,
@@ -343,7 +345,6 @@
                 scroll: false,
                 width:688
             }).result(function(e,item){
-            		$("#materErr").addClass("hide");
             	    var flag = true;
                     item.typeTxt = data.typeTxt;
                     item.index = $listMedia.children("li").length + 1;
@@ -359,6 +360,7 @@
                         }
                    });
                     if(flag){
+                    	$("#materErr").css("display","none");
                     	$listMedia.append(itemHtml)
                         .sortable();
                         $("#mediaCount").text($listMedia.children("li").length);

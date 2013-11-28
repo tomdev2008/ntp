@@ -569,7 +569,8 @@ xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</t
 	       </div>
             <div class="mediaList">
                 <label >{{=it.typeTxt}}列表（<span id="mediaCount">{{=it.mediaList.length || '0'}}</span>  个）</label>
-				<label id="materErr" class="error hide">资源不能为空</label> 
+				
+				<label id="materErr" class="error" style="display: none;"></label>
                 <ul class="unstyled" id="listMedia">
                     {{~it.mediaList :item:index}}
                         {{~it.mediaList :item2:index2}}
