@@ -256,10 +256,8 @@
                                 {{?task.answer}}
                                     {{=task.answer}}
                                 {{?}}
-                                {{?task.status != 'success'}}
-                                    <label>答题</label>
-                                    <textarea name="answer_{{=task.id}}" required class="input-block-level" placeholder="请必务填写" rows="4"></textarea>
-                                {{?}}
+                                <label>答题</label>
+                                <textarea name="answer_{{=task.id}}" required class="input-block-level" placeholder="请必务填写" rows="4"></textarea>
                             {{?}}
                         </div>
                         {{?task.status == 'success' || task.status == 'error'}}

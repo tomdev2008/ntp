@@ -51,7 +51,8 @@
     <script id="resultsBarTemplate" type="x-dot-template">
         <div class="listTeacher section">
             <div class="media-foot">
-                <div class="statebar">作业包总分 <strong>{{=it.fullScore}}</strong>  分<em>|</em>及格分 <strong>{{=it.scorePass}}</strong>  分<em>|</em>当前批改的总得分 <strong id="totalScore">{{=it.score}}</strong>  分</div>
+                <div class="statebar">作业包总分 <strong>{{=it.fullScore}}</strong>  分<em>|</em>及格分 <strong>{{=it.scorePass}}</strong>  分
+                    <em>|</em>当前批改的总得分 <strong id="totalScore">{{=it.score}}</strong>  分</div>
                 <span class="isPass{{?it.status == 'pass'}} pass">通过{{??}}">未通过{{?}}</span>
             </div>
         </div>
@@ -118,7 +119,7 @@
                             <label >说点什么</label>
                             {{#def.richText}}
                             <div class="clearfix">
-                                <button class="btn btn-primary btn-large pull-right" type="button">此题批改确认</button>
+                               <button class="btn btn-primary btn-large pull-right" type="button">此题批改确认</button>
                             </div>
                         {{??}}
                             <label >作业打分</label>
@@ -152,7 +153,8 @@
                 {{?it.status == "unfinish"}}
                     <div class="ft">
                         <div class="scoreBar">
-                            作业包总分 <strong>{{=it.fullScore}}</strong>  分<em>|</em>及格分 <strong>{{=it.scorePass}}</strong>  分<em>|</em>当前批改的总得分 <strong id="nowScore">{{=it.score}}</strong>  分
+                            作业包总分 <strong>{{=it.fullScore}}</strong>  分<em>|</em>及格分 <strong>{{=it.scorePass}}</strong>  分<em>|</em>当前批改的总得分 
+                         <strong id="nowScore">{{=it.score}}</strong>  分
                         </div>
                         <button class="btn btn-primary btn-large" type="submit">提交全部批改</button>
                     </div>
@@ -268,6 +270,7 @@
 <!--主体 E-->
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(function(){
         /*作业包介绍模板函数*/
@@ -276,19 +279,45 @@
        var teacherIntroData = {};
        
        var noteId  = "${param.noteId}";
+       
+       var attIds = {};
        //找出批改作业详情 顶部div信息
-	   $.ajax({
-			url : "${ctx}/ajax/adviser/findCourseAndUser",
-			async : false,
-			data : {
-				"noteId" : noteId,
-			},
-			dataType : 'json',
-			success : function(result) {
-				teacherIntroData = result;
-			}
+       if(noteId!=''){
+    	   $.ajax({
+   			url : "${ctx}/ajax/adviser/findCourseAndUser",
+   			async : false,
+   			data : {
+   				"noteId" : noteId,
+   			},
+   			dataType : 'json',
+   			success : function(result) {
+   				teacherIntroData = result;
+   			}
+   		});
+    	   
+       }
+       
+       $("#downloadBox").bind("click",function(){
+    	   downloadAtt();
 		});
-
+       
+       function downloadAtt(){
+    	   ///找当前作业包的附件信息
+      	 $.ajax({
+      		url : "${ctx}/ajax/adviser/findAttsBySoureceId/"+noteId,
+      		async : true,
+      		dataType : 'json',
+      		success : function(result) {
+      			alert(JSON.stringify(result));
+      			$.fn.jalert("您确定下载本作业包作业附件吗？",function(){
+    				window.location.href= window.location.href="${ctx}/common/file/downloadZipsByArrayIds/"+result.attIds+"/作业";
+    				return;
+    			});
+      		}
+      	  }); 
+			
+		}
+	   
 		$("#teacherIntro").html(teacherIntroFn(teacherIntroData));
 		var taskDetailFn = doT.template(document
 				.getElementById("taskDetailTemplate").text, undefined, {
@@ -371,8 +400,13 @@
 						},
 						ignore : "",
 						submitHandler : function(form) {
-							taskData.status = taskData.score < taskData.scorePass ? "fail"
-									: "pass";
+							
+						    if($(".timeLine").length>0){
+						    	$form.find(".bd .ratingBox .btn-primary").after('<label class="error pull-right">请提交为提交的作业！</label>');
+					    		$form.find(".bd .ratingBox .btn-primary").focus();
+						    	return false;
+							} 
+							taskData.status = taskData.score < taskData.scorePass ? "fail" : "pass";
 							//$.post()保存soursenote
 							 $.ajax({
 								type:"post",
@@ -383,7 +417,7 @@
 									$window.scrollTop($("#taskDetail").offset().top - 60);
 									loadTaskDetail();
 								}
-							});
+							});  
 							
 						}
 					});
@@ -433,14 +467,12 @@
 													"fdComment" : txt,
 												},
 												success: function(result){
-													$("#navTask>a").eq(result-1).addClass("active").attr("data-original-title","已批改");
-													var total = $("#total").val();
-													$("#nowScore").text(taskData.score);
-													total = total + taskData.score;
-													$("#total").val(total);
+													$("#navTask>a").eq(result).addClass("active").attr("data-original-title","已批改");
 												}
-												
 											});
+											 var total = $("#nowScore").text();
+												total = parseInt(total) + parseInt(taskData.score);
+												$("#nowScore").text(total);
 											
 										}
 									}

@@ -153,6 +153,7 @@
 .taskDetail .bd .box-comm{border: solid #dddddd 1px;padding: 15px 10px;}
 .taskDetail .bd .box-comm .time{font-size: 12px;color: #cccccc;margin-top: 10px;}
 .taskDetail .bd .box-comm .time i{margin-right: 5px;}
+.taskDetail .bd .ratingBox .clearfix label.error{padding-top:10px;}
 .taskDetail .ft{text-align: center;margin: 20px 0;position: relative;}
 .taskDetail .ft .scoreBar{background-color: #4491bb;padding: 10px 0;color: #ffffff;margin-bottom: 18px;}
 .taskDetail .btn-link{position: absolute;right: 0;top: 5px;}

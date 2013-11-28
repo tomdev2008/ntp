@@ -163,6 +163,8 @@ public class AdviserAjaxController {
 			Map rating = new HashMap();
 			if(temp.getFdScore()!=null){
 			  rating.put("score", temp.getFdScore().intValue());//得分	
+			}else{
+			  rating.put("score", 0);
 			}
 			if(temp.getFdCreateTime()!=null){
 				rating.put("time", DateUtil.getInterval(DateUtil.convertDateToString(temp.getFdCreateTime()), "yyyy/MM/dd hh:mm aa"));
@@ -282,7 +284,20 @@ public class AdviserAjaxController {
 		note.setFdAppraiserId(ShiroUtils.getUser().getId());//指导老师
 		sourceNodeService.saveSourceNode(note);
 	}
-	
+	/**
+	 * 返回当前sourcenote对应的taskScord的附件
+	 * @param fdId
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/findAttsBySoureceId/{fdId}")
+	@ResponseBody
+	public String findAttsBySoureceId(@PathVariable("fdId") String fdId,HttpServletRequest request){
+		SourceNote note = sourceNodeService.get(SourceNote.class, fdId);
+		Map attmap = new HashMap();
+		attmap.put("attIds", findAtt(note));
+		return JsonUtils.writeObjectToJson(attmap);
+	}
 	
 	/**
 	 * 找出我所批改的作业
@@ -337,20 +352,8 @@ public class AdviserAjaxController {
 				map.put("taskPaper", info.getFdName());
 				if(fdType.equalsIgnoreCase("unchecked")){//未检查
 					SourceNote note = sourceNodeService.get(SourceNote.class, (String)pageMap.get("FDID"));
-					Set<TaskRecord> taskRexords = note.getTaskRecords();
-					List<String> attAll = new ArrayList<String>();
-					for (TaskRecord taskRecord : taskRexords) {
-						List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(taskRecord.getFdId(), TaskRecord.class.getName());
-						if(attMains!=null&&!attMains.isEmpty()){
-							for (AttMain attMain : attMains) {
-								if(attMain!=null){
-									attAll.add(attMain.getFdId());
-								}
-							}
-						}
-					}
 					String zipname = courseInfo.getFdTitle()+"_"+info.getFdName()+"_"+person.getRealName();
-					map.put("downloadBoxUrl", attAll.toArray());//下载作业包
+					map.put("downloadBoxUrl", findAtt(note));//下载作业包
 					map.put("zipname", zipname);
 				}else{
 					List<Task> tasks = info.getTasks();
@@ -384,7 +387,21 @@ public class AdviserAjaxController {
 		data.put("paging",paging);
 		return JsonUtils.writeObjectToJson(data);
 	}
-	
-	
+	/////找附件
+	private Object[] findAtt(SourceNote note){
+		Set<TaskRecord> taskRexords = note.getTaskRecords();
+		List<String> attAll = new ArrayList<String>();
+		for (TaskRecord taskRecord : taskRexords) {
+			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(taskRecord.getFdId(), TaskRecord.class.getName());
+			if(attMains!=null&&!attMains.isEmpty()){
+				for (AttMain attMain : attMains) {
+					if(attMain!=null){
+						attAll.add(attMain.getFdId());
+					}
+				}
+			}
+		}
+		return attAll.toArray();
+	}
 
 }
