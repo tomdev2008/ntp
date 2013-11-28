@@ -79,15 +79,18 @@ public class CourseService  extends BaseService{
 			if(Constant.COUSER_TEMPLATE_MANAGE.equals(seleType)){//课程模版查询
 			//当前登录用户自己创建的
 			finder.append(" and ( course.fdcreatorid=:createId  or ");
+			finder.setParam("createId", userId);
 			//已发布的课程
 			finder.append("  course.fdstatus='01' and (course.ispublish=1 or course.fdpassword is  not null or ");
 			//有编辑权限的
 			finder.append("	exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and (auth.isauthstudy=1 or auth.isediter=1) and fduserid=:userId)	) )");
 			finder.setParam("userId", userId);
-			finder.setParam("createId", userId);
 			}
 			if(Constant.COUSER_AUTH_MANAGE.equals(seleType)){//课程授权
-				finder.append(" and exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and auth.isauthstudy=1 and fduserid=:userId)");
+				//当前登录用户自己创建的
+				finder.append(" and ( course.fdcreatorid=:createId  or ");
+				finder.setParam("createId", userId);
+				finder.append("  exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and auth.isauthstudy=1 and fduserid=:userId) )");
 				finder.setParam("userId", userId);
 			}
 		}
