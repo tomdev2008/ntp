@@ -296,7 +296,7 @@ public class StudyTrackService {
 		finder.setParam("fdType", Constant.MESSAGE_TYPE_SYS);
 		finder.setParam("fdModelName", BamCourse.class.getName());
 		finder.setParam("fdModelId", bamId);
-		Message message = (Message) messageService.find(finder).get(0);
+		Message message =messageService.find(finder)==null?null:(Message) messageService.find(finder).get(0);
 		if(message!=null){
 			map.put("cot", message.getFdContent());
 			map.put("time", message.getFdCreateTime());

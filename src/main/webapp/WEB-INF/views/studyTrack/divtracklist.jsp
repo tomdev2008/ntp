@@ -109,10 +109,10 @@
             <div class="btn-toolbar">
                 <label class="muted">排序</label>
                 <div class="btn-group btns-radio" data-toggle="buttons-radio" id="divOrder"> 
+               		<button  date-orderType="time" class="btn btn-large active" type="button">时间</button>
                     <button  date-orderType="course" class="btn btn-large"  type="button">课程</button>
                     <button  date-orderType="newTeacher" class="btn btn-large" type="button">新教师</button>
                     <button  date-orderType="teacher" class="btn btn-large" type="button">导师</button>
-                    <button  date-orderType="time" class="btn btn-large active" type="button">时间</button>
                 </div>
                 <label class="radio inline" for="selectCurrPage"><input value="noPage" type="radio" id="selectCurrPage" name="selectCheckbox" checked />选中本页</label>
                 <label class="radio inline" for="selectAll"><input value="all" type="radio" id="selectAll" name="selectCheckbox" />选中全部</label>
