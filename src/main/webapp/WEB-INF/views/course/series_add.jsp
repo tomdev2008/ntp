@@ -45,14 +45,12 @@
 	      </div>
       </div> 
 </script>
-
 <!--添加系列表单模板-->
 <script id="addSectionsTemplate" type="text/x-dot-template">
 	<li class="chapter" data-fdid="">
 		{{#def.edittitle || ''}}		
 	</li>
 </script>
-
 <!--编辑系列标题表单模板-->
 <script id="formEditSectionTitle" type="text/x-dot-template">
 	<div class="form-edit-title form-horizontal">		
@@ -206,7 +204,6 @@
        </form>
 	 </div>
 </script>
-
 <!-- 系列课程列表项 模板 -->
 <script id="mediaListTemplate" type="text/x-dot-template">
     <li data-fdid="{{=it.id}}"><span class="title">课程 <span class="index">{{=it.index}}</span>：<span class="name">{{=it.name}}</span></span>
@@ -214,7 +211,6 @@
         <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
     </li>
 </script>
-
 <!--编辑系列课程 标题表单模板-->
 <script id="formEditMediaTitle" type="text/x-dot-template">
     <li class="form-edit-title form-horizontal">
@@ -231,13 +227,9 @@
         </div>
     </li>
 </script>
-
 <script src="${ctx}/resources/js/doT.min.js"></script>
-
 </head>
-
 <body>
-
 <input type="hidden" id="ctx" value="${pageContext.request.contextPath}"/>
 <section class="container">
 	<div class="clearfix">
@@ -278,8 +270,6 @@
 	   
 	    </div>
 	</div>
-	<input id="phasesnum" type="hidden">
-	<input id="pofcoursenum" type="hidden">
 </section>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>

@@ -118,11 +118,6 @@
                         mediaList:JSON.stringify(listArr)
                     })
                         .success(function(){
-                        	if($("#pofcoursenum").val()==null||$("#pofcoursenum").val()==""){
-                        		$("#pofcoursenum").val("1");
-                        	}else{
-                        		$("#pofcoursenum").val(parseInt($("#pofcoursenum").val())+1);
-                        	}
                         	 if ($('#upMovie').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
 	                   		     $('#upMovie').uploadify('destroy'); 
 	                   		}
