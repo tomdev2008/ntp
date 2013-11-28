@@ -145,7 +145,6 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 			if(taskAtt!=null){
 				taskMap.put("listAttachment", taskAtt);//存放作业附件信息
 			}
-			taskMap.put("status", "null");//未答
 			/////////////////评分人操作信息
 			if(sourceNote != null) {
 				Set<TaskRecord> taskRecordList = sourceNote.getTaskRecords();
@@ -182,7 +181,8 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 						break;
 					}
 				}
-				
+			}else{
+				taskMap.put("status", "null");//未答
 			}
 			
 			list.add(taskMap);
