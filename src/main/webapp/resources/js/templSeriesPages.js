@@ -173,7 +173,7 @@
                     }
                 });
             $("#gotoMaterial").bind("click",function(){
-            	window.open($('#ctx').val()+"/course/findcourseInfos",'_blank');
+            	window.open($('#ctx').val()+"/course/findcourseInfos?fdType=12&order=fdcreatetime",'_blank');
             });
         };
 		

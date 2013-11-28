@@ -168,11 +168,11 @@ public class CourseService  extends BaseService{
 		finder.setParam("key2", "%"+key+"%");
 		if(!ShiroUtils.isAdmin()){
 			//已发布的课程
-			finder.append("and  c.fdstatus='01'  ");
+			finder.append("and  c.fdStatus='01'  ");
 			//当前登录用户自己创建的
 			finder.append(" and  ( c.creator.fdId=:createId  or c.isPublish=1 or c.fdPassword is not null or ");
 			//有编辑权限的
-			finder.append("	exists (select auth.fdId from CourseAuth auth where auth.course.fdId=c.fdId and (auth.isauthstudy=1 or auth.isediter=1) and auth.fdUser.fdId=:userId)	)");
+			finder.append("	exists (select auth.fdId from CourseAuth auth where auth.course.fdId=c.fdId and (auth.isAuthStudy=1 or auth.isEditer=1) and auth.fdUser.fdId=:userId))	");
 			finder.setParam("userId", ShiroUtils.getUser().getId());
 			finder.setParam("createId", ShiroUtils.getUser().getId());
 		}
