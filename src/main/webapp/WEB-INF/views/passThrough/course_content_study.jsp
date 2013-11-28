@@ -492,8 +492,8 @@
                     {{?item.isShowScore}}
                         <div class="rating-view">
                                     <span class="rating-all">
-                                        {{ for(var i=0; i<5; i++){ }}
-                                            <i class="icon-star{{?i < item.score}} active{{?}}"></i>
+                                        {{ for(var i=1; i<=5; i++){ }}
+                                            <i class="icon-star{{?i <= item.score}} active{{?}}"></i>
                                         {{ } }}
                                     </span>
                             <b class="text-warning">{{=item.score}}</b>
@@ -892,7 +892,7 @@
   		  			  dataType:'json',
   		  			  success: function(result){
   		  				$("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
-  		                    if(i < result[0].fdAverage){
+  		                    if((i+1) <= result[0].fdAverage){
   		                        $(this).addClass("active");
   		                    } else {
   		                        $(this).removeClass("active");
@@ -1031,7 +1031,7 @@
             		  },
             		  success: function(result){
             			  $("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
-    		                    if(i < result[0].fdAverage){
+    		                    if((i+1) <= result[0].fdAverage){
     		                        $(this).addClass("active");
     		                    } else {
     		                        $(this).removeClass("active");

@@ -76,12 +76,14 @@
                                 <span class="rating-view">
                                     <span class="rating-all">
                                        <c:if test="${score.fdAverage!=null}">
-                                         <c:forEach var="i" begin="1" end="${score.fdAverage}">
-                                           <i class="icon-star active"></i>
-                                         </c:forEach>
-                                         <c:forEach var="i" begin="1" end="${5-score.fdAverage}">
-                                           <i class="icon-star"></i>
-                                         </c:forEach>
+                        <c:forEach var="i" begin="1" end="5">
+					  	<c:if test="${i<=score.fdAverage}">
+					  	<i class="icon-star active"></i>
+					  	</c:if>
+					  	<c:if test="${i>score.fdAverage}">
+					  	<i class="icon-star"></i>
+					  	</c:if>
+					  </c:forEach>                                         
                                        </c:if>
                                        <c:if test="${score.fdAverage==null}">
                                          <c:forEach var="i" begin="1" end="5">

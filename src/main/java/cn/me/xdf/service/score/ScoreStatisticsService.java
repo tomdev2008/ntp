@@ -1,8 +1,8 @@
 package cn.me.xdf.service.score;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
-import org.hibernate.criterion.Criterion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.BaseService;
-import cn.me.xdf.service.material.MaterialAuthService;
 /**
  * 
  * 评分统计service
@@ -80,7 +79,9 @@ public class ScoreStatisticsService extends BaseService{
 		int score_5 = scoreService.getCountByModelIdAndScore(fdModelName,fdModelId, 5);
 		int num = score_1+score_2+score_3+score_4+score_5;
 		Double average = (score_1+score_2*2+score_3*3+score_4*4+score_5*5)/new Double(num);
-		scoreStatistics.setFdAverage(Math.round(average)/1.0);
+	    DecimalFormat decimalFormat = new DecimalFormat(".#");
+	    double c =Double.parseDouble(decimalFormat.format(average)) ;
+		scoreStatistics.setFdAverage(c);
 		scoreStatistics.setFdScoreNum(num);
 		scoreStatistics.setFdOneScoreNum(score_1);
 		scoreStatistics.setFdTwoScoreNum(score_2);

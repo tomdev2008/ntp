@@ -72,11 +72,13 @@
               </p>
               	<div class="rating-view" id="courseScore">
                 		<span class="rating-all">
-                		  <c:forEach var="i" begin="1" end="${courseScore}">
+                		  <c:forEach var="i" begin="1" end="5">
+                		  	<c:if test="${courseScore >= i}">
                 		  	<i class="icon-star active"></i>
-                		  </c:forEach>
-                		  <c:forEach var="i" begin="1" end="${5-courseScore}">
-                		 	 <i class="icon-star"></i>
+                		  	</c:if>
+                		  	<c:if test="${courseScore < i}">
+                		  	<i class="icon-star"></i>
+                		  	</c:if>
                 		  </c:forEach>
                          </span>
                          <b class="text-warning">${courseScore}</b>

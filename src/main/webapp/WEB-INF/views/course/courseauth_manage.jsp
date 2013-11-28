@@ -322,8 +322,8 @@
         	$("#coursepage").attr('src','${ctx}/resources/images/zht-main-img.jpg');
         }
         //课程评分
-        for(var i=0;i<result.courseScore;i++){
-        	$("#cavg i :eq("+i+")").addClass("active");
+        for(var i=1;i<=result.courseScore;i++){
+        	$("#cavg i :eq("+(i-1)+")").addClass("active");
         }
         //课程评分
         $("#courseavg").html(result.courseScore);

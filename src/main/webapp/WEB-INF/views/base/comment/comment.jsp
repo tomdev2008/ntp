@@ -24,8 +24,8 @@
 				{{?it.isShowScore}}
                         <div class="rating-view">
                                     <span class="rating-all">
-                                        {{ for(var i=0; i<5; i++){ }}
-                                            <i class="icon-star{{?i < it.score}} active{{?}}"></i>
+                                        {{ for(var i=1; i<=5; i++){ }}
+                                            <i class="icon-star{{?i <= it.score}} active{{?}}"></i>
                                         {{ } }}
                                     </span>
                             <b class="text-warning">{{=it.score}}</b>

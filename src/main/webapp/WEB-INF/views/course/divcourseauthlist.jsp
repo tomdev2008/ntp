@@ -126,12 +126,15 @@
 				    <span class="rating-view">
 				    <c:if test="${bean.FDAVERAGE!=null}">
 					  <span class="rating-all">
-					  <c:forEach var="i" begin="1" end="${bean.FDAVERAGE}">
-					   <i class="icon-star active"></i>
+					  <c:forEach var="i" begin="1" end="5">
+					  	<c:if test="${i<=bean.FDAVERAGE}">
+					  	<i class="icon-star active"></i>
+					  	</c:if>
+					  	<c:if test="${i>bean.FDAVERAGE}">
+					  	<i class="icon-star"></i>
+					  	</c:if>
 					  </c:forEach>
-					  <c:forEach var="i" begin="1" end="${5-bean.FDAVERAGE}">
-					   <i class="icon-star"></i>
-					  </c:forEach>
+					  
 					  </span> 
 					  <b class="text-warning">${bean.FDAVERAGE}</b>
 					  </c:if>

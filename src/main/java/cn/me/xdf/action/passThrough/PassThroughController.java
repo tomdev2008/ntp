@@ -98,7 +98,7 @@ public class PassThroughController {
 				AttMain attMain = attMainService.getByModelIdAndModelName(courseId, CourseInfo.class.getName());
 				request.setAttribute("courseAtt", attMain!=null?attMain.getFdId():"");
 				//课程评分统计
-				request.setAttribute("courseScore", scoreStatistics==null?0:Integer.parseInt(new java.text.DecimalFormat("0").format(scoreStatistics.getFdAverage())));
+				request.setAttribute("courseScore", scoreStatistics==null?0:scoreStatistics.getFdAverage());
 				//章节信息
 				List<CourseCatalog> courseCatalogs = bamCourse.getCatalogs();
 				if(courseCatalogs!=null){
