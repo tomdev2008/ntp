@@ -150,7 +150,6 @@ $("#divOrder button").bind("click",function(){
 function refreshTrackList(type,pageNo,pageSize,order){
 	if(!order){
 		order=$("#divOrder .active").attr("date-ordertype");
-		alert(order);
 	}
 	resetOrderImg(order);
 	type=$("#selectTypeHidden").val();
