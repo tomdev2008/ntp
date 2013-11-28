@@ -3,10 +3,6 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE HTML>
-<!--[if lt IE 7]>      <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class=""> <!--<![endif]-->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>新东方在线教师备课平台</title>
@@ -175,10 +171,6 @@
     <div class="page-body mediaPage-content">
         <form id="formMedia" method="post" class="form-horizontal" action="{{=it.action || '##'}}">
 	    	<div class="section" >
-                <div class="control-group">
-                    <label class="control-label" for="lectureName">阶段名称</label>
-                    <div class="controls"><input value="{{=it.pageTitle || ''}}" id="lectureName" required class="input-xlarge" name="lectureName" type="text" /></div>
-                </div>
                 <div class="control-group">
                     <label class="control-label" for="sectionsIntro">阶段说明</label>
                     <div class="controls">

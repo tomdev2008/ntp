@@ -46,7 +46,7 @@ public class SeriesController {
 	 * 创建新系列
 	 */
 	@RequestMapping(value="add")
-	public String editSeries(HttpServletRequest request){
+	public String add(HttpServletRequest request){
 		String seriesId=request.getParameter("seriesId");
 		if(StringUtil.isNotEmpty(seriesId)){
 			SeriesInfo series = seriesInfoService.get(seriesId);
