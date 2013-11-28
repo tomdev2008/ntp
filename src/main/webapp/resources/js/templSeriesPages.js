@@ -455,6 +455,9 @@
 			var $prog = $("#progress_courses");
 			var comp=$prog.find(".num_comp").html();
 			//var comp = numAll - $('#sortable').find(".sortable-bar>.title>.icon-none").length;
+			if(comp>numAll){
+				comp=numAll;
+			}
 			$prog.find(".progress>.bar").width(comp/numAll*100 + "%");
 			$prog.find(".num_comp").text(comp);
 			$prog.find(".num_all").text(numAll);
