@@ -110,9 +110,7 @@ public class CourseContentAjaxController {
 				if(StringUtil.isNotEmpty(learnTime)){
 					catalog.setFdStudyTime(learnTime);
 				}
-				if(StringUtil.isNotEmpty(sectionsIntro)){
-					catalog.setFdDescription(sectionsIntro);
-				}
+				catalog.setFdDescription(sectionsIntro);
 				catalog.setFdPassCondition(Double.valueOf(isElective));
 				//先将课程与素材的关系清空，然后再进行保存
 				courseContentService.deleteByCatalogId(catalogId);
