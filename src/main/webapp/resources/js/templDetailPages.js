@@ -277,22 +277,27 @@
                             title: $(this).find(".title>.name").text()
                         });
                     });
-                    $.post($('#ctx').val()+"/ajax/courseContent/saveCourseContent",{
-                    	catalogId:opt.id,
-                    	type:type,
-                    	isElective: $("#isElective").val(),
-                        pageTitle: $("#lectureName").val(),
-                        learnTime:  $("#learnTime").val(),
-                        sectionsIntro: $("#sectionsIntro").val(),
-                        mediaList:JSON.stringify(listArr)
-                    })
-                        .success(function(){
-                            // 提交成功
-	                        if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
-	                   		     $('#upMaterial').uploadify('destroy'); 
-	                   		}
-                        	urlRouter("sectionsDirectory");
-                        });
+                    if(listArr.length==0){
+                    	$("#materErr").removeClass("hide");
+                    	return false;
+                    }else{
+                    	$.post($('#ctx').val()+"/ajax/courseContent/saveCourseContent",{
+                        	catalogId:opt.id,
+                        	type:type,
+                        	isElective: $("#isElective").val(),
+                            pageTitle: $("#lectureName").val(),
+                            learnTime:  $("#learnTime").val(),
+                            sectionsIntro: $("#sectionsIntro").val(),
+                            mediaList:JSON.stringify(listArr)
+                        }).success(function(){
+                                // 提交成功
+    	                        if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+    	                   		     $('#upMaterial').uploadify('destroy'); 
+    	                   		}
+                            	urlRouter("sectionsDirectory");
+                            });
+                    }
+                    
                 }
             });
             $("#formMedia .btns-radio>.btn").click(function(){
@@ -338,6 +343,7 @@
                 scroll: false,
                 width:688
             }).result(function(e,item){
+            		$("#materErr").addClass("hide");
             	    var flag = true;
                     item.typeTxt = data.typeTxt;
                     item.index = $listMedia.children("li").length + 1;
@@ -549,7 +555,7 @@
 					  data:{data:JSON.stringify(data)},
 					  dataType:'json',
 					  success: function(rsult){
-						  $.fn.jalert2("修改成功");
+						  //$.fn.jalert2("修改成功");
 					  },
 				});
 			});

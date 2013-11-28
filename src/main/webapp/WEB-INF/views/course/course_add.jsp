@@ -561,14 +561,15 @@ xlarge" name="lectureName" type="text" /></div>
                 <div class="control-group">
                     <label class="control-label" for="sectionsIntro">章节说明</label>
                     <div class="controls">
-                        <textarea placeholder="请认真填写该章节的描述信息" rows="4" required minlength="20" class="input-
+                        <textarea placeholder="请认真填写该章节的描述信息" rows="4" minlength="20" class="input-
 
 xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>
                     </div>
                 </div>
 	       </div>
             <div class="mediaList">
-                <label >{{=it.typeTxt}}列表（<span id="mediaCount">{{=it.mediaList.length || ''}}</span>  个）</label>
+                <label >{{=it.typeTxt}}列表（<span id="mediaCount">{{=it.mediaList.length || '0'}}</span>  个）</label>
+				<label id="materErr" class="error hide">资源不能为空</label> 
                 <ul class="unstyled" id="listMedia">
                     {{~it.mediaList :item:index}}
                         {{~it.mediaList :item2:index2}}
