@@ -704,6 +704,9 @@
             trigger: "hover"
         })
                 .click(function(e){
+                	$(".uploadify").each(function(){
+                		$(this).uploadify('destroy'); 
+                	});
                     e.preventDefault();
                     if($(this).attr("href")){//已通章节可点
                         loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
@@ -811,6 +814,9 @@
       		              trigger: "hover"
       		            })
       		                  .click(function(e){
+      		                	$(".uploadify").each(function(){
+                            		$(this).uploadify('destroy'); 
+                            	});
       		                      e.preventDefault();
       		                      if($(this).attr("href")){//已通章节可点
       		                          loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
@@ -831,6 +837,9 @@
           	            trigger: "hover"
           	        })
           	                .click(function(e){
+          	                	$(".uploadify").each(function(){
+                            		$(this).uploadify('destroy'); 
+                            	});
           	                    e.preventDefault();
           	                    if($(this).attr("href")){//已通章节可点
           	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
@@ -849,6 +858,9 @@
           	            trigger: "hover"
           	        })
           	                .click(function(e){
+          	                	$(".uploadify").each(function(){
+                            		$(this).uploadify('destroy'); 
+                            	});
           	                    e.preventDefault();
           	                    if($(this).attr("href")){//已通章节可点
           	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
@@ -1313,6 +1325,9 @@
           	            trigger: "hover"
           	        })
           	                .click(function(e){
+          	                	$(".uploadify").each(function(){
+                            		$(this).uploadify('destroy'); 
+                            	});
           	                    e.preventDefault();
           	                    if($(this).attr("href")){//已通章节可点
           	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
