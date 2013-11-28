@@ -278,11 +278,10 @@
                         });
                     });
                     if(listArr.length==0){
-                    	$("#materErr").html("请输入试题选项");
+                    	$("#materErr").html("请选择"+data_typeTxt);
 						$("#materErr").css("display", "block");
                     	return false;
                     }else{
-                    	alert("1111111111");
                     	$.post($('#ctx').val()+"/ajax/courseContent/saveCourseContent",{
                         	catalogId:opt.id,
                         	type:type,
