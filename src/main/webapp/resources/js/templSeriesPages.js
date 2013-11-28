@@ -308,7 +308,9 @@
 			.delegate(".sortable-bar>.icon-pencil2","click",function(e){
 				e.preventDefault();
 				var $tit = $(this).prev(".title");
-				var data = rtnSectionData($tit.closest("li").hasClass("chapter"),$tit.children(".index").text(),$tit.children(".name").text());		
+				var $index=$tit.children(".index");
+				var data = rtnSectionData($tit.closest("li").hasClass("chapter"),$index.text(),$tit.children(".name").text(),$index.text());		
+				//alert(JSON.stringify(data))
 				$(this).closest(".sortable-bar").addClass("hide").after(editTitleFn(data));
 			})	
 			// 绑定编辑节内容按钮事件
