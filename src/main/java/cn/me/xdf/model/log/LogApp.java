@@ -42,20 +42,16 @@ public class LogApp extends IdEntity{
 	 */
 	private String ip;
 	
-	/**
-	 * url
-	 */
-	private String url;
 	
 	/**
-	 * 请求类型
+	 * 操作类型
 	 */
 	private String method;
 	
 	/**
-	 * SessionId
+	 * SQL语句
 	 */
-	private String sessionId;
+	private String sql;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdPersonId")
@@ -83,14 +79,6 @@ public class LogApp extends IdEntity{
 		this.ip = ip;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
 	public String getMethod() {
 		return method;
 	}
@@ -99,12 +87,12 @@ public class LogApp extends IdEntity{
 		this.method = method;
 	}
 
-	public String getSessionId() {
-		return sessionId;
+	public String getSql() {
+		return sql;
 	}
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
+	public void setSql(String sql) {
+		this.sql = sql;
 	}
 
 	
