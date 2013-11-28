@@ -137,7 +137,7 @@ public class SeriesAjaxContrller {
 	 * 	 */
 	@RequestMapping(value = "showcover")
 	@ResponseBody
-	public String getCourseCoverById(HttpServletRequest
+	public String showcover(HttpServletRequest
 
 	request) {
 		String seriesId = request.getParameter("seriesId");
