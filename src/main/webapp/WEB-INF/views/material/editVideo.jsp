@@ -47,7 +47,7 @@
                 <a href="${ctx}/material/findList?fdType=${materialInfo.fdType}&order=FDCREATETIME" class="backParent">
                 <span id="back"></span>
                </a>
-                <h4>${materialInfo.fdName}</h4>
+                <h4><tags:title value="${materialInfo.fdName}" size="25" ></tags:title></h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
                     <c:if test="${materialInfo.fdId!=null}">
