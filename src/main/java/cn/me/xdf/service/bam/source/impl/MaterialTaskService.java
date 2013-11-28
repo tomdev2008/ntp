@@ -128,6 +128,10 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 			return list;
 		}
 		List<Task> taskList = materialInfo.getTasks();
+		///作业包状态
+		// ///////////////评分人操作信息
+		SourceNote sourceNote = sourceNodeService.getSourceNote(materialInfo.getFdId(),
+							catalogId, ShiroUtils.getUser().getId());
 		for(Task task:taskList){
 			Map taskMap = new HashMap();
 			taskMap.put("id", task.getFdId());
@@ -141,10 +145,8 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 			if(taskAtt!=null){
 				taskMap.put("listAttachment", taskAtt);//存放作业附件信息
 			}
-			// ///////////////评分人操作信息
-			SourceNote sourceNote = sourceNodeService.getSourceNote(materialInfo.getFdId(),
-					catalogId, ShiroUtils.getUser().getId());
-			if (sourceNote != null) {
+			/////////////////评分人操作信息
+			if(sourceNote != null) {
 				Set<TaskRecord> taskRecordList = sourceNote.getTaskRecords();
 				for (TaskRecord taskRecord : taskRecordList) {
 					if(taskRecord.getFdTaskId().equals(task.getFdId())){
@@ -162,13 +164,14 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 						taskMap.put("teacherRating", record);
 						///作业状态
 						if(taskRecord.getFdStatus().equals(Constant.TASK_STATUS_UNFINISH)){
-							taskMap.put("status", "null");
+							taskMap.put("status", "null");//未答
 						}else if(taskRecord.getFdStatus().equals(Constant.TASK_STATUS_FINISH)){
-							taskMap.put("status", "finish");
-						}else if(taskRecord.getFdStatus().equals(Constant.TASK_STATUS_PASS)){
-							taskMap.put("status", "success");
-						}else if(taskRecord.getFdStatus().equals(Constant.TASK_STATUS_FAIL)){
-							taskMap.put("status", "error");
+							taskMap.put("status", "finish");//已答
+					    //////////// 已下两个状态 先从作业包 中取
+						}else if(sourceNote.getFdStatus().equals(Constant.TASK_STATUS_PASS)){
+							taskMap.put("status", "success");//导师批改
+						}else if(sourceNote.getFdStatus().equals(Constant.TASK_STATUS_FAIL)){
+							taskMap.put("status", "error");//导师批改
 						}
 						List<AttMain> answerAtt = attMainService.getByModeslIdAndModelNameAndKey(taskRecord.getFdId(), TaskRecord.class.getName(),task.getFdId());
 						if(answerAtt!=null){

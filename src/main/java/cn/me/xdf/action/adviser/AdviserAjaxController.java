@@ -98,11 +98,15 @@ public class AdviserAjaxController {
 		taskData.put("id", note.getFdId());
 		//////////此处为得到作业包序号
 		BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(note.getFdUserId(), note.getFdCourseId());
-		List<CourseContent> content = bamCourse.getCourseContents();
-		for (CourseContent courseContent : content) {
-			if(courseContent.getMaterial().getFdId().equals(note.getFdMaterialId())){
-				taskData.put("num", courseContent.getFdMaterialNo());break;
+		if(bamCourse!=null){
+			List<CourseContent> content = bamCourse.getCourseContents();
+			for (CourseContent courseContent : content) {
+				if(courseContent.getMaterial().getFdId().equals(note.getFdMaterialId())){
+					taskData.put("num", courseContent.getFdMaterialNo());break;
+				}
 			}
+		}else{
+			taskData.put("num", "");
 		}
 		taskData.put("name", info.getFdName());
 		/////////此处为设置总分
@@ -148,6 +152,9 @@ public class AdviserAjaxController {
 				taskRescord.put("status", "unchecked");//提交未检查
 			}else if(temp.getFdStatus().equals(Constant.TASK_STATUS_CHECK)){
 				taskRescord.put("status", "checked");//检查 通过
+			}
+			if(task.getFdType().equals(Constant.TASK_TYPE_ONLINE)){//在线
+				taskRescord.put("answer", temp.getFdAnswer());//检查 通过
 			}
 		    //作业类型
 			taskRescord.put("type", task.getFdType().equals(Constant.TASK_TYPE_UPLOAD)?"uploadWork":"onlineAnswer");
@@ -227,7 +234,7 @@ public class AdviserAjaxController {
 	
 	@RequestMapping("/updateTaskRecord/{fdId}")
 	@ResponseBody
-	public void updateTaskRecord(@PathVariable("fdId") String fdId,HttpServletRequest request){
+	public Integer updateTaskRecord(@PathVariable("fdId") String fdId,HttpServletRequest request){
 		String fdComment = request.getParameter("fdComment");
 		String score = request.getParameter("score");
 		TaskRecord record = taskRecordService.get(fdId);
@@ -237,6 +244,8 @@ public class AdviserAjaxController {
 		record.setFdCreateTime(new Date());//设置导师批改时间
 		record.setFdAppraiserId(ShiroUtils.getUser().getId());//设置导师
 		taskRecordService.save(record);
+		Task task = taskService.get(record.getFdTaskId());
+		return task.getFdOrder();
 	}
 	/**
 	 * 更新soursenote里边的导师批课信息
@@ -253,14 +262,22 @@ public class AdviserAjaxController {
         	if(taskRecord.getFdScore()!=null){
         		totalScore += taskRecord.getFdScore();
         	}
+        	if(taskRecord.getFdAppraiserId()==null){//题目未作答的时候
+        		taskRecord.setFdAppraiserId(ShiroUtils.getUser().getId());//设置导师
+        		taskRecord.setFdCreateTime(new Date());//设置导师批改时间
+        		taskRecord.setFdScore(0.0);//设置评分
+        		taskRecord.setFdStatus(Constant.TASK_STATUS_CHECK);//设置为已检查
+        		taskRecordService.save(taskRecord);
+        	}
 		}		
-		note.setIsStudy(true);//设置为true
 		note.setFdScore(totalScore);
 		MaterialInfo info = materialService.load(note.getFdMaterialId());//作业包
-		if(info.getFdScore()>=totalScore){
+		if(info.getFdScore()>totalScore){
 			note.setFdStatus(Constant.TASK_STATUS_FAIL);//未通过
+			note.setIsStudy(false);//设置为true
 		}else{
 			note.setFdStatus(Constant.TASK_STATUS_PASS);//通过
+			note.setIsStudy(true);//设置为true
 		}
 		note.setFdAppraiserId(ShiroUtils.getUser().getId());//指导老师
 		sourceNodeService.saveSourceNode(note);

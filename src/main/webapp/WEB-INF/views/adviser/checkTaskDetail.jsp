@@ -104,7 +104,7 @@
                                 {{~}}
                             </ul>
                             {{??task.type == 'onlineAnswer'}}
-                                {{=task.answer || ''}}
+                               {{=task.answer.replace(new RegExp(' ','g'),'&nbsp;').replace(new RegExp('\n','g'),'<br>') || ''}}
                             {{?}}
                         {{?}}
                     </div>
@@ -408,7 +408,7 @@
 													.html('<div class="text-info"><span class="num">'
 															+ score
 															+ '</span>分</div>');
-											taskData.score += score;
+											taskData.score = score;
 											var fdid = $boxScore.parent(
 													".ratingBox").attr("id");
 											for ( var i = 0 in taskData.listTask) {// for test
@@ -432,11 +432,16 @@
 													"score" : taskData.score,
 													"fdComment" : txt,
 												},
+												success: function(result){
+													$("#navTask>a").eq(result-1).addClass("active").attr("data-original-title","已批改");
+													var total = $("#total").val();
+													$("#nowScore").text(taskData.score);
+													total = total + taskData.score;
+													$("#total").val(total);
+												}
+												
 											});
-											var total = $("#total").val();
-											$("#nowScore").text(taskData.score);
-											total = total + taskData.score;
-											$("#total").val(total);
+											
 										}
 									}
 									if (score) {
