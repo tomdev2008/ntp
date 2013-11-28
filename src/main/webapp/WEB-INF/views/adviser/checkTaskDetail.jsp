@@ -308,11 +308,15 @@
       		async : true,
       		dataType : 'json',
       		success : function(result) {
-      			alert(JSON.stringify(result));
-      			$.fn.jalert("您确定下载本作业包作业附件吗？",function(){
-    				window.location.href= window.location.href="${ctx}/common/file/downloadZipsByArrayIds/"+result.attIds+"/作业";
-    				return;
-    			});
+      			if(result.attIds==null||result.attIds==''){
+      				 $.fn.jalert2("您好!该作业包没有数据可下载！");
+      				   return;
+      			}else{
+      				$.fn.jalert("您确定下载本作业包作业附件吗？",function(){
+        				window.location.href= window.location.href="${ctx}/common/file/downloadZipsByArrayIds/"+result.attIds+"/作业";
+        				return;
+        			});
+      			}
       		}
       	  }); 
 			
@@ -400,15 +404,17 @@
 						},
 						ignore : "",
 						submitHandler : function(form) {
-							
-						    if($(".timeLine").length>0){
-						    	$form.find(".bd .ratingBox .btn-primary").after('<label class="error pull-right">请提交为提交的作业！</label>');
-					    		$form.find(".bd .ratingBox .btn-primary").focus();
-						    	return false;
-							} 
+							$("#formTask .timeLine").each(function(){
+								$(this).parent().nextAll(".clearfix").children(".btn-primary")
+								.after('<label class="error pull-right">请批改该作业！</label>');
+								$(this).parent().nextAll(".clearfix").children(".btn-primary").focus();
+							});
+							if($("#formTask .timeLine").length>0){
+								return;
+							}
 							taskData.status = taskData.score < taskData.scorePass ? "fail" : "pass";
 							//$.post()保存soursenote
-							 $.ajax({
+						  $.ajax({
 								type:"post",
 								url : "${ctx}/ajax/adviser/updateSourseNote/"+noteId,
 								async : false,
@@ -417,7 +423,7 @@
 									$window.scrollTop($("#taskDetail").offset().top - 60);
 									loadTaskDetail();
 								}
-							});  
+							}); 
 							
 						}
 					});
@@ -425,7 +431,8 @@
 					.find(".bd .ratingBox .btn-primary")
 					.click(
 							function(e) {
-								var $boxComm = $(this).parent().prev();
+								var $this = $(this);
+								var $boxComm = $this.parent().prev();
 								var $boxScore = $boxComm.prevAll(".box-score");
 								if ($boxComm.hasClass("boxRichText")) {
 									var txt = $boxComm.children("textarea")
@@ -467,6 +474,7 @@
 													"fdComment" : txt,
 												},
 												success: function(result){
+													$this.next(".error").remove();
 													$("#navTask>a").eq(result).addClass("active").attr("data-original-title","已批改");
 												}
 											});
