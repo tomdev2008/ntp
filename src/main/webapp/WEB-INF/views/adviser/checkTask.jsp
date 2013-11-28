@@ -257,7 +257,7 @@ function exportData(){
 	if(document.getElementById("selectAll").checked){
 		 var keyword=$("#search").val();
 		 $.fn.jalert("您确定要导出全部数据吗？",function(){
-			  window.location.href="${ctx}/adviser/exportAllDataList/"+fdType+"/?keyword="+keyword;
+			  window.location.href="${ctx}/common/exp/getExportAdviserTask?fdType="+fdType+"&fdName="+keyword;
 			  return;
 		 }); 
 	} else if(document.getElementById("selectCurrPage").checked){
@@ -266,7 +266,7 @@ function exportData(){
 			chk_value.push($(this).attr("data-fdid"));
 		});
 		$.fn.jalert("您确定导出本页数据吗？",function(){
-			window.location.href="${ctx}/adviser/exportDataList/"+chk_value+"/"+fdType;
+			window.location.href="${ctx}/common/exp/getExportAdviserTask?modelIds="+chk_value+"&fdType="+fdType+"&isAll=noPage";
 			return;
 		});
 	} else{
@@ -277,10 +277,11 @@ function exportData(){
 //批量下载或者下载全部
 function batchDownload(){
 	if(document.getElementById("selectAll").checked){
+		 var order=$("#fdOrder").val();
 		 var keyword=$("#search").val();
 		 var fdType=$("#fdType").val();
 		 $.fn.jalert("您确定下载全部数据吗？",function(){
-			  window.location.href="${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword;
+			  window.location.href="${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword+"&order="+order;
 			  return;
 		 }); 
 	} else if(document.getElementById("selectCurrPage").checked){

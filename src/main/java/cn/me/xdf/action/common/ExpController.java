@@ -22,11 +22,13 @@ import cn.me.xdf.common.utils.Zipper;
 import cn.me.xdf.common.utils.excel.AbsExportExcel;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.adviser.AdviserService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.studyTack.StudyTrackService;
 import cn.me.xdf.utils.ShiroUtils;
+import cn.me.xdf.view.model.VCheckTaskData;
 import cn.me.xdf.view.model.VStudyTrack;
 
 
@@ -56,6 +58,9 @@ public class ExpController {
 	
     @Autowired
     private CourseService courseService;
+    
+    @Autowired
+    private AdviserService adviserService;
 	
     /**
 	 * 导出学习跟踪excel方法
@@ -97,7 +102,47 @@ public class ExpController {
 		}
 		return null;
 	}
-    
+	/**
+	 * 导出作业包xls（导出）
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/getExportAdviserTask")
+    public String getExportAdviserTask(HttpServletRequest request,HttpServletResponse response){
+		String isAll = request.getParameter("isAll");
+		String fdType = request.getParameter("fdType");
+		String fdName = request.getParameter("fdName");
+		String order = request.getParameter("order");
+		if("noPage".equals(isAll)){
+			String [] modelIds = request.getParameter("modelIds").split(",");
+			List<VCheckTaskData> adviserList = adviserService.findCheckDataList(modelIds, fdType);
+			AbsExportExcel.exportExcel(adviserList, fdType+"Data.xls", response);
+		} else {
+			Pagination page = adviserService.findAdivserCouserList(fdType, 1, 20000, fdName, order);
+			if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
+				List<VCheckTaskData> adviserList = adviserService.findCheckDataByPageList(page.getList());
+				AbsExportExcel.exportExcel(adviserList, fdType+"Data.xls", response);
+			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
+				String [] attMainIds= new String[page.getTotalPage()];
+				for(int i=1;i<=page.getTotalPage();i++){
+					Pagination pageZip = adviserService.findAdivserCouserList(fdType, 1, 20000, fdName, order);
+					AttMain attMain = AbsExportExcel.exportExcels(adviserService.findCheckDataByPageList(pageZip.getList()), fdType+"Data.xls");
+					attMainService.save(attMain);
+					attMainIds[i-1] = attMain.getFdId();
+				}
+				try {
+					downloadZipsByArrayIds(attMainIds, fdType+"Data.xls", request, response);
+				} catch (UnsupportedEncodingException e) {
+					  log.error("export excleZip error!", e);
+				}
+				//删除下载后的无用附件
+				attMainService.deleteAttMainByIds(attMainIds);
+			}
+		}
+    	return null;
+    }
+     
 
 	/**
 	 * 
