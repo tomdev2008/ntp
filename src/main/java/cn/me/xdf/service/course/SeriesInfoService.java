@@ -13,7 +13,10 @@ import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.SeriesInfo;
+import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.BaseService;
+import cn.me.xdf.utils.ShiroUtils;
 @Service
 @Transactional(readOnly = true)
 public class SeriesInfoService extends BaseService {
@@ -33,6 +36,13 @@ public class SeriesInfoService extends BaseService {
 	public  Pagination findSeriesInfosOrByName(String fdName,String pageNo ,String orderbyStr){
 		Finder finder = Finder.create("select *  from ixdf_ntp_series seriesInfo ");
 		finder.append(" where seriesInfo.isavailable=1 and seriesInfo.fdparentid is null " );
+		if(!ShiroUtils.isAdmin()){
+			//条件一  发布的系列
+			finder.append(" and  seriesInfo.ispublish='1' ");
+			//条件二 如果是当前用户的草稿系列
+			finder.append(" or ( seriesInfo.ispublish='0' and seriesInfo.fdcreatorid=:creatorId)");
+			finder.setParam("creatorId", ShiroUtils.getUser().getId());
+		}
 		//设置页码
 		int pageNoI=0;
 		if(StringUtil.isNotBlank(pageNo)&&StringUtil.isNotEmpty(pageNo)){
@@ -65,12 +75,12 @@ public class SeriesInfoService extends BaseService {
 	public void deleteSeries(String seriesId){
 		SeriesInfo seriesInfo=get(seriesId);
 		seriesInfo.setIsAvailable(false);
-		update(seriesInfo);
+		save(seriesInfo);
 
 	}
 	/**
-	 * 查找课程权限
-	 * @param courseId 课程ID
+	 * 查找阶段
+	 * @param seriesId 系列ID
 	 * @return List 章节列表
 	 */
 	@Transactional(readOnly = true)

@@ -57,6 +57,7 @@
 				  data:{phasesId:opt.id},
 				  dataType:'json',
 				  success: function(rsult){
+					  //alert(JSON.stringify(rsult));
 					  data = rsult;
 		              data.pageTitle = opt.title;
 		              data.lectureIndex = numParseCN(opt.index);
@@ -110,6 +111,7 @@
                     	$("#showError").html("<font size='2' color='red'>请选择阶段的课程信息!</font>");
                     	return;
                     }
+                   // alert(JSON.stringify(listArr));
                     $.post($('#ctx').val()+"/ajax/series/saveSeriesCourse",{
                     	phasesId:opt.id,
                         sectionsIntro: $("#sectionsIntro").val(),
@@ -121,7 +123,6 @@
                         	}else{
                         		$("#pofcoursenum").val(parseInt($("#pofcoursenum").val())+1);
                         	}
-                        	updateButtonStatus();//更新阶段及课程标记
                         	 if ($('#upMovie').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
 	                   		     $('#upMovie').uploadify('destroy'); 
 	                   		}
@@ -130,9 +131,7 @@
                 }
             });
             var itemHtml,
-                $listMedia = $("#listMedia"),
-                addFlag = false,
-                mediaData ;
+                $listMedia = $("#listMedia");
             $("#addMedia").autocomplete($("#ctx").val()+"/ajax/series/getCourseBykey",{
                 formatItem: function(item) {
                 	$("#addMedia").next(".help-block").remove();
@@ -317,18 +316,6 @@
 				var data = rtnSectionData($tit.closest("li").hasClass("chapter"),$tit.children(".index").text(),$tit.children(".name").text());		
 				$(this).closest(".sortable-bar").addClass("hide").after(editTitleFn(data));
 			})	
-			// 绑定删除章节按钮事件
-			.delegate(".sortable-bar>.icon-remove","click",function(e){
-				e.preventDefault();
-				var $li = $(this).closest("li");
-				// 删除阶段数据==================================
-				$.post($('#ctx').val()+'/ajax/series/deletePhasesById',{phasesId: $li.attr("data-fdid")})
-				.success(function(){
-					$li.remove();
-					changIndex();
-					updataProgressCourses($sections.children(".chapter").length);
-				});
-			})
 			// 绑定编辑节内容按钮事件
 			.delegate(".sortable-bar>.btn-edit","click",function(e){
 				if($(this).hasClass("disabled")){
@@ -342,13 +329,21 @@
                     });
                 }
 			})
-			// 绑定节内容关闭按钮事件
-			.delegate(".lecture-content>.hd>a.icon-remove-sign","click",function(e){
-				e.preventDefault();		
-				$(this).closest(".lecture-content").addClass("hide").prevAll(".sortable-bar").children(".btn-edit").removeClass("hide");
-								
+			
+			// 绑定删除阶段按钮事件
+			.delegate(".sortable-bar>.icon-remove","click",function(e){
+					e.preventDefault();
+					var $li = $(this).closest("li");
+					// 删除阶段数据==================================
+					$.post($('#ctx').val()+'/ajax/series/deletePhasesById',{phasesId: $li.attr("data-fdid")})
+					.success(function(){
+						$li.remove();
+						changIndex();
+						updataProgressCourses($sections.children(".chapter").length);
+						
+					});
 			})
-			// 绑定保存章节标题按钮事件
+			// 绑定保存阶段标题按钮事件
 			.delegate(".form-edit-title .btn-primary","click",function(e){
 				e.preventDefault();
 				var $form = $(this).closest(".form-edit-title");
@@ -361,16 +356,13 @@
 							$li.children(".sortable-bar").removeClass("hide").find(".name").text($tit.val());
 						});
 					} else {// 新加阶段
-						//alert($form.find(".index").text());
-						//alert(parseInt($sections.children("li").length)-1);
-						//return ;
 						$.ajax({
 							  url: $('#ctx').val()+"/ajax/series/saveSeries",
 							  async:false,
 							  data:{seriesId:$("#seriesId").val(),ischapter:$li.hasClass("chapter"),fdtotalno:parseInt($sections.children("li").length)-1,fdno:$form.find(".index").text(),title:$tit.val()},
 							  dataType:'json',
 							  success: function(result){
-								  var data = rtnSectionData($li.hasClass("chapter"),$form.find(".index").text(),$tit.val(),$li.length,"none",result.id);
+								  var data = rtnSectionData($li.hasClass("chapter"),$li.length,$tit.val(),$form.find(".index").text(),"none",result.id);
 									$("#seriesId").val(result.seriesId);
 									$li.attr("data-fdid",result.id);
 									$form.before(sectionsFn(data));	
@@ -378,12 +370,7 @@
 										handle: '.sortable-bar',
 										forcePlaceholderSize: true
 									});
-									if($("#phasesnum").val()==null||$("#phasesnum").val()==""){
-										$("#phasesnum").val("1");
-									}else{
-										$("#phasesnum").val(parseInt($("#phasesnum").val())+1);
-									}
-									updateButtonStatus();//更新阶段及课程标记
+									updataProgressCourses($sections.children(".chapter").length);
 							  },
 						});
 					}			
@@ -392,7 +379,7 @@
 					$form.find(".control-group:first").addClass("warning").find(":text").after('<span class="help-block">请填写标题！</span>');;
 				}
 			})
-			// 绑定取消章节标题编辑按钮事件
+			// 绑定取消阶段标题编辑按钮事件
 			.delegate(".form-edit-title .btn-link","click",function(e){
 				e.preventDefault();
 				var $form = $(this).closest(".form-edit-title");
@@ -407,26 +394,13 @@
 				if($(this).val() && $(this).closest(".control-group").hasClass("warning")){
 					$(this).closest(".control-group").removeClass("warning").find(".help-block").remove();
 				}		
-			})
-			// 绑定课程类型按钮事件
-			.delegate(".lecture-content>.bd>.btn-type","click",function(e){
-				if($(this).hasClass("disabled")){
-					e.preventDefault();
-				} else {
-                    var $tit = $(this).closest(".lecture-content").prev().find(".title");
-                    urlRouter(false,{
-                        id: $(this).closest(".lecture").attr("data-fdid"),
-                        title: $tit.find(".name").text(),
-                        index: $tit.find(".index").text()
-                    });
-                }
 			});
-            // 更新章节顺序方法
+            // 更新阶段顺序方法
             function changIndex(){
                 var $items = $sections.children("li"),
                     i_ch = 1,
                     data = {
-                		courseid : $("#courseId").val(),
+                		seriesId : $("#seriesId").val(),
                         chapter : [],
                         lecture : []
                     }, $item ;
@@ -441,15 +415,14 @@
                         });
                     }
                 });
-                $.post($('#ctx').val()+"/ajax/series/updateSeriesOrder",{seriesId : $("#seriesId").val(),chapter:JSON.stringify(data.chapter),lecture:JSON.stringify(data.lecture)},function(res){},'json');// ajax
-																																																				// 更新所有章节排序
+                $.post($('#ctx').val()+"/ajax/series/updateSeriesOrder",{seriesId : $("#seriesId").val(),chapter:JSON.stringify(data.chapter),lecture:JSON.stringify(data.lecture)},function(res){},'json');
             }
 			// 绑定添加阶段事件
 			$("#addSeries").bind("click",function(){
 					if(!$sections.children(".chapter").last().children(".form-edit-title").length){
 						var data = {
 							chapter: {
-								index: $sections.children("li").length, 
+								index: $sections.children("li").length+1, 
 								num: $sections.children(".chapter").length + 1
 							}			
 						};		
@@ -465,8 +438,7 @@
 		// 格式化章节数据
 		function rtnSectionData(isChapter,nm,tit,i,typ,fdid){
 			var data = {
-					chapter : undefined,
-					lecture : undefined
+					chapter : undefined
 			};
 			if(isChapter){
 				data.chapter = {
@@ -475,40 +447,23 @@
 						num: nm,
 						title: tit		
 				};			
-			} else {
-				data.lecture = {
-						id: fdid ,
-						index: i,
-						num: nm,
-						title: tit,
-						type: typ
-				};			
-			}
+			} 
 			return data;
 		}
-		
 		// 更新课程进度条
 		function updataProgressCourses(numAll){
 			var $prog = $("#progress_courses");
-			var comp = numAll - $('#sortable').find(".sortable-bar>.title>.icon-none").length;
+			var comp=$prog.find(".num_comp").html();
+			//var comp = numAll - $('#sortable').find(".sortable-bar>.title>.icon-none").length;
 			$prog.find(".progress>.bar").width(comp/numAll*100 + "%");
 			$prog.find(".num_comp").text(comp);
 			$prog.find(".num_all").text(numAll);
-//			if(numAll > 0){
-//				if(numAll == comp){
-//					enabledPublish();
-//				} else {
-//					disabledPublish();
-//				}
-//			}
-		}
-		function updateButtonStatus(){
-			phasesNum=$("#phasesnum").val();
-			pofcourseNum=$("#pofcoursenum").val();
-			if(phasesNum-pofcourseNum==0){
-				enabledPublish();
-			}else{
-				disabledPublish();
+			if(numAll > 0){
+				if(numAll == comp){
+					enabledPublish();
+				} else {
+					disabledPublish();
+				}
 			}
 		}
 		// 激活预览和发布按钮方法

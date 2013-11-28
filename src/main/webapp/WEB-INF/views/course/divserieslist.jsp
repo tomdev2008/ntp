@@ -102,8 +102,18 @@
 			
 				<li><a href="${ctx}/series/pagefoward?seriesId=${bean.FDID}"> 
 				<input type="checkbox" name="ids" value="${bean.FDID}"/>
-				    <span class="title">${bean.FDNAME}</span> 
-				    <span class="date"><i class="icon-time"></i><fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
+				    <span class="title">
+					    <c:if test="${bean.FDNAME!=null && bean.FDNAME!=''}">
+							${bean.FDNAME}
+						</c:if>
+						<c:if test="${bean.FDNAME==null || bean.FDNAME==''}">
+							未命名
+						</c:if>
+					</span> 
+				    <span class="date">
+				    	<i class="icon-time"></i>
+				    	<fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/>
+				    </span>
 				</a></li>
 			</j:iter> 
 		</ul>

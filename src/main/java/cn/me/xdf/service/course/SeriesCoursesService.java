@@ -64,6 +64,7 @@ public class SeriesCoursesService  extends BaseService{
 	public List<SeriesCourses> getSeriesCourseByseriesId(String seriesId){
 		Finder finder=Finder.create("from SeriesCourses sc ");
 		finder.append(" where sc.series.fdId=:seriesId");
+		finder.append(" order by  sc.fdCourseNo ");
 		finder.setParam("seriesId", seriesId);	
 		List<SeriesCourses> sclist=find(finder);
 		if(sclist!=null&&sclist.size()>0){

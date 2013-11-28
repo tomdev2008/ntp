@@ -183,24 +183,8 @@ public class SeriesAjaxContrller {
 		Pagination page=seriesInfoService.findSeriesInfosOrByName(fdName, pageNo, orderbyStr);
 		model.addAttribute("page", page);
 		return "/course/divserieslist";
-		
 	}
-	/*
-	 * 删除系列阶段课程 author hanhl
-	 * 删除时,把系列或阶段设置为无效即可
-	 */
-	@RequestMapping(value="deleteSeries")
-	@ResponseBody
-	public void deleteSeries(HttpServletRequest request){
-		String seriesId=request.getParameter("seriesId");
-		if(StringUtils.isNotEmpty(seriesId)){
-			String[] courses = seriesId.split(",");
-			for(int i=0;i<courses.length;i++){
-				seriesInfoService.deleteSeries(courses[i]);//先删阶段与课程关系再删除阶段 系列
-			}
-		}
-		
-	}
+	
 	
 	/*
 	 * 选择课程删除时:删除课程与系列的关系  author hanhl
@@ -210,10 +194,25 @@ public class SeriesAjaxContrller {
 		String courseId=request.getParameter("courseId");
 		seriesCoursesService.deleteByCourseId(courseId);
 	}
-	
 	/*
 	 * 删除系列阶段课程 author hanhl
-	 * 删除时,把系列或阶段设置为无效即可
+	 * 删除时,把系列或阶段设置为无效即可:系列课程列表单一删除
+	 */
+	@RequestMapping(value="deleteSeries")
+	@ResponseBody
+	public void deleteSeries(HttpServletRequest request){
+		String seriesId=request.getParameter("seriesId");
+		if(StringUtils.isNotEmpty(seriesId)){
+			String[] courses = seriesId.split(",");
+			for(int i=0;i<courses.length;i++){
+				deleteSeriesById(courses[i]);
+			}
+		}
+		
+	}
+	/*
+	 * 删除系列阶段课程 author hanhl
+	 * 删除时,把系列或阶段设置为无效即可:系列课程列表全删
 	 */
 	@RequestMapping(value="deleteAllSeries")
 	@ResponseBody
@@ -233,9 +232,30 @@ public class SeriesAjaxContrller {
 					for(Object obj:list){
 						Map map = (Map)obj;
 						String seriesId = (String)map.get("FDID");
-						seriesInfoService.deleteSeries(seriesId);
+						deleteSeriesById(seriesId);
 					}
 				}
+			}
+		}
+	}
+	private void deleteSeriesById(String seriesId){
+		SeriesInfo seriesInfo=seriesInfoService.get(seriesId);//查找系列
+		if(seriesInfo!=null){
+			if(seriesInfo.getIsPublish()){
+				//如果是已发布的系列,则置为无效
+				seriesInfoService.deleteSeries(seriesId);
+			}else{
+				//草稿状态,直接删除系列(首先到系列课程中删除,然后删除系列自己)
+				//seriesInfoService.delete(seriesId);
+				List<SeriesInfo> phaseslist=seriesInfoService.getSeriesById(seriesId);//查找系列下的阶段
+				if(phaseslist!=null){
+					for(SeriesInfo phases:phaseslist){//查找阶段下的课程并删除
+						seriesCoursesService.deleteBySeriesId(phases.getFdId());
+						seriesInfoService.delete(phases.getFdId());
+					}
+				}
+				seriesInfoService.delete(seriesId);
+				
 			}
 		}
 	}
@@ -247,12 +267,11 @@ public class SeriesAjaxContrller {
 	public void deletePhasesById(HttpServletRequest request){
 		String phasesId = request.getParameter("phasesId");
 	    if(StringUtil.isNotEmpty(phasesId)){
-	    	List<SeriesCourses> seriescourseslist=seriesCoursesService.getSeriesCourseByseriesId(phasesId);
-	    	if(seriescourseslist!=null){
-	    		for(SeriesCourses seriescourse:seriescourseslist){
-	    			seriesCoursesService.deleteBySeriesId(seriescourse.getFdId());
-	    		}
-	    	}
+	    	//此处删除涉及两张表:系列表  系列课程表
+	    	//删除系列课程表
+	    	seriesCoursesService.deleteBySeriesId(phasesId);
+	    	//删除系列表
+	    	seriesInfoService.delete(phasesId);
 	    }
 	}
 	/**
@@ -261,9 +280,7 @@ public class SeriesAjaxContrller {
 	 */
 	@RequestMapping(value = "updateSeriesOrder")
 	@ResponseBody
-	public void updateCatalogOrder(HttpServletRequest request) {
-		//获取系列id
-		String seriesId = request.getParameter("seriesId");
+	public void updateSeriesOrder(HttpServletRequest request) {
 		//获取阶段
 		String chapter = request.getParameter("chapter");
 		//如果章信息不为空，则将章信息转为list循环更新
@@ -319,6 +336,7 @@ public class SeriesAjaxContrller {
 					seriesSub.setFdDescription(seriesDesc);
 					seriesInfoService.save(seriesSub);//保存阶段信息
 				}
+				seriesCoursesService.deleteBySeriesId(phasesId);//首先清理系列课程表中已存在的信息,然后保存最新信息
 				if(StringUtil.isNotEmpty(courseList)){
 					//解析页面传递的素材列表
 					List<Map> cousers = JsonUtils.readObjectByJson(courseList, List.class);
@@ -326,7 +344,6 @@ public class SeriesAjaxContrller {
 						for(Map map:cousers){
 							String courseId = (String)map.get("id");
 							String index = (String)map.get("index");
-							String title = (String)map.get("title");
 							if(StringUtil.isNotEmpty(courseId)){
 								CourseInfo courseInfo = courseService.get(courseId);
 								if(courseInfo!=null && courseInfo.getIsAvailable()){
@@ -387,8 +404,9 @@ public class SeriesAjaxContrller {
 		//获取系列id
 		String seriesId = request.getParameter("seriesId");
 		List<Map> phaseses=null;
+		int courseCount=0;
 		if(StringUtil.isNotEmpty(seriesId)){
-			//根据课程ID取章节列表
+			//根据系列ID取阶段列表
 			List<SeriesInfo> serieses = seriesInfoService.getSeriesById(seriesId);
 			if(serieses!=null && serieses.size()>0){
 				phaseses= new ArrayList<Map>();
@@ -399,12 +417,17 @@ public class SeriesAjaxContrller {
 						phasesM.put("num", serieses.size());
 						phasesM.put("title", series.getFdName());
 						phaseses.add(phasesM);
+						List<SeriesCourses> sOfcourselist=seriesCoursesService.getSeriesCourseByseriesId(series.getFdId());
+						if(sOfcourselist!=null&&sOfcourselist.size()>0){
+							courseCount++;
+						}
 					}
 				}
 			}	
 		//将阶段信息转换成json返回到页面
 		Map map = new HashMap();
 		map.put("chapter", phaseses);
+		map.put("courseCount",courseCount);
 		return JsonUtils.writeObjectToJson(map);
 	}
 	/**
@@ -423,5 +446,18 @@ public class SeriesAjaxContrller {
 			
 		}
 		return JsonUtils.writeObjectToJson(map);
+	}
+	/**
+	 * 系列课程发布或预览
+	 */
+	@RequestMapping(value="releaseSeries")
+	@ResponseBody
+	public void releaseSeries(HttpServletRequest request){
+		String seriesId=request.getParameter("seriesId");
+		if(StringUtil.isNotEmpty(seriesId)){
+			SeriesInfo seriesInfo=seriesInfoService.get(seriesId);
+			seriesInfo.setIsPublish(true);
+			seriesInfoService.save(seriesInfo);
+		}
 	}
 }

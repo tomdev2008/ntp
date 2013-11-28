@@ -13,31 +13,22 @@
 <link href="${ctx}/resources/css/global.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/resources/css/template_detail.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
-
-
-<!--[if lt IE 9]>
-<script src="js/html5.js"></script>
-<![endif]-->
-
 <!-- 模板详情_右侧内容区标题 模板 -->
 <script id="contHeaderTemplate" type="text/x-dot-template">
  	<div class="page-header">        	
 		<h4>{{=it.pageTitle || ''}}</h4>           
 	</div>
 </script>
-
 <!-- 模板详情_系列目录 模板 -->
 <script id="sectionDirectoryTemplate" type="text/x-dot-template">
 	{{#def.pageHeader}}
     	<div class="page-body">
-	    	<div class="section" id="progress_courses">          
-	       		
+	    	<div class="section" id="progress_courses">    
 	            	<div class="progress progress-course">
 	            		<div class="bar" style="width:20%;"></div>
 	            	</div>
-	                您已经完成了本系列的 <span class="num_comp"></span> 个阶段内容，共计 <span class="num_all">{{?it.chapter}}{{=it.chapter.length}}{{??}}0{{?}}</span> 阶段。
+	                您设置本系列的 <span class="num_comp">{{=it.courseCount}}</span> 个阶段内容，共计 <span class="num_all">{{?it.chapter}}{{=it.chapter.length}}{{??}}0{{?}}</span> 阶段。
 	        </div>
-	       
 	      <div class="sortableWrap">
 	      	<ul class="sortable" id="sortable">  
 				{{?it.chapter}}
@@ -45,8 +36,8 @@
 						{{~it.chapter :chp:index}}
 							{{?chp.index == i}}	
 								<li class="chapter" data-fdid="{{=chp.id}}">		
-								{{#def.sectionbar:chp}}
-								</li>			
+									{{#def.sectionbar:chp}}
+								</li>
 							{{?}}
 						{{~}}
 					{{ } }}
@@ -70,7 +61,7 @@
 <script id="formEditSectionTitle" type="text/x-dot-template">
 	<div class="form-edit-title form-horizontal">		
 			<div class="control-group">
-				<label class="control-label">第<span class="index">{{?it.chapter}}{{=it.chapter.num}}</span>阶段{{?}}</label>
+				<label class="control-label">第<span class="index">{{?it.chapter}}{{=it.chapter.index}}</span>阶段{{?}}</label>
 				<div class="controls">
                    {{?it.chapter}}
 					<input type="text" maxlength="20" class="input-block-level" placeholder="请输入标题内容" value="{{=it.chapter.title|| ''}}" />
@@ -114,21 +105,7 @@
 	#}}
 </script>
 
-<!--阶段内容模板-->
-<script id="SeriesContentTemplate" type="text/x-dot-template">
-	{{##def.lecturecontent:param:
-		<div class="lecture-content hide">
-			<div class="hd">
-			编辑内容
-			<a href="#" class="icon-remove-sign"></a>
-			</div>
-				<div class="bd">
-				<a class="btn-type" href="#video"><i class="icon-video-lg"></i><h5>课程</h5></a>
-			</div>
-		</div>
-	#}}
-</script>
-<!-- 模板详情_基本信息 模板 -->
+<!-- 系列模板详情_基本信息 模板 -->
 <script id="basicInfoTemplate" type="text/x-dot-template">
 	{{#def.pageHeader}} 
     <div class="page-body">       
@@ -214,8 +191,8 @@
                 <ul class="unstyled" id="listMedia">
                     {{~it.mediaList :item:index}}
                         {{~it.mediaList :item2:index2}}
-                            {{?(index+1) == item2.index}}
-                            <li data-fdid="{{=item.id}}"><span class="title">课程 <span class="index">{{=item2.index}}</span>：<span class="name">{{=item.title}}</span></span>
+                           {{?(index+1) == item2.index}}
+                            <li data-fdid="{{=item.id}}"><span class="title">课程 <span class="index">{{=item2.index}}</span>：<span class="name">{{=item2.title}}</span></span>
                                 <a class="icon-remove btn-ctrls" href="#"></a>
                                 <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
                             </li>
@@ -275,9 +252,13 @@
 		<div class="tit-bar">    	
 	        <div class="page-title section" id="page-title">
 	        	<input type='hidden' id='seriesId' value='${series.fdId}' />
-	        	<h5>${course.fdTitle}</h5>
+	        	<h5>
+	        	<a href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime" class="backParent">返回系列课程列表</a>
+	        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	        	${series.fdName}
+	        	</h5>
 	            <div class="btn-group">
-	                <c:if test="${course.fdStatus==null || course.fdStatus=='00'}">
+	                <c:if test="${series.isPublish==null ||!series.isPublish}">
 		            <button class="btn btn-primary btn-large" disabled  type="button" onclick="previewCourse()">预览</button>
 		            <button class="btn btn-primary btn-large" disabled type="button" onclick="releaseCourse()">发布</button>
 		            </c:if>
@@ -397,14 +378,21 @@ $.Placeholder.init();
 		});
     }
   //系列发布
-/* 	function releaseCourse(){
-		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
-	} */
+	function releaseCourse(){
+		$.post('${ctx}/ajax/series/releaseSeries',{
+			 seriesId:$("#seriesId").val()
+			})
+		.success(function(){
+			window.location.href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime";
+		});
+		//window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
+	} 
 	
 	//系列预览
-	/* function previewCourse(){
-		window.open("${ctx}/course/previewCourse?courseId="+$("#courseId").val(),'_blank');
-	} */
+	function previewCourse(){
+		window.location.href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime";
+		//window.open("${ctx}/course/previewCourse?courseId="+$("#courseId").val(),'_blank');
+	} 
 </script>
 </body>
 </html>
