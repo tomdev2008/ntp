@@ -323,7 +323,7 @@
         }
         //课程评分
         for(var i=0;i<result.courseScore;i++){
-        $("#cavg").find("i")[i].addClass("active");
+        	$("#cavg i :eq("+i+")").addClass("active");
         }
         //课程评分
         $("#courseavg").html(result.courseScore);
