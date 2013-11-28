@@ -82,7 +82,7 @@ public class CourseService  extends BaseService{
 			//已发布的课程
 			finder.append("  course.fdstatus='01' and (course.ispublish=1 or course.fdpassword is  not null or ");
 			//有编辑权限的
-			finder.append("	exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and (auth.isauthstudy=1 or auth.isediter=1) and fduserid=:userId)	) ))");
+			finder.append("	exists (select auth.fdid from ixdf_ntp_course_auth auth where auth.fdcourseid=course.fdid and (auth.isauthstudy=1 or auth.isediter=1) and fduserid=:userId)	) )");
 			finder.setParam("userId", userId);
 			finder.setParam("createId", userId);
 			}
