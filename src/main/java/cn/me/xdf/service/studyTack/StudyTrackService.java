@@ -230,7 +230,11 @@ public class StudyTrackService {
 	 * @return
 	 */
 	private Finder addOrder(Finder finder ,String orderType){
-		if(orderType.equals("course")){
+		
+		if(orderType==null){
+			finder.append(" order by b.STARTDATE desc ");
+			return finder;
+		}else if(orderType.equals("course")){
 			finder.append(" order by c.FDTITLE desc ");
 			return finder;
 		}else if(orderType.equals("newTeacher")){

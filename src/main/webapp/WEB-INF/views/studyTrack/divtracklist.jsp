@@ -147,10 +147,11 @@ $("#divOrder button").bind("click",function(){
 	refreshTrackList('',1,10,$(this).attr("date-orderType"),$("#serach").val());
 });
 
-
-
-
 function refreshTrackList(type,pageNo,pageSize,order){
+	if(!order){
+		order=$("#divOrder .active").attr("date-ordertype");
+		alert(order);
+	}
 	resetOrderImg(order);
 	type=$("#selectTypeHidden").val();
 	/*老师列表模板函数*/
