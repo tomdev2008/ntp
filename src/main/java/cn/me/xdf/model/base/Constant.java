@@ -198,4 +198,26 @@ public class Constant {
 	 * 04通过
 	 */
 	public static final String TASK_STATUS_PASS = "04";
+	
+	/**
+	 * 数据库操作方式：
+	 * 01修改
+	 */
+	public static final String DB_UPDATE = "01";
+	
+	/**
+	 * 数据库操作方式：
+	 * 02删除
+	 */
+	public static final String DB_DELETE = "02";
+	
+	/**
+	 * 数据库操作方式：
+	 * 03插入
+	 */
+	public static final String DB_INSERT = "03";
+	
+	
+	
+	
 }

@@ -2,9 +2,11 @@ package cn.me.xdf.model.log;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -30,7 +32,7 @@ public class LogApp extends IdEntity{
 	/**
 	 * 操作人
 	 */
-	private SysOrgPerson person;
+	private String personId;
 	
 	/**
 	 * 操作时间
@@ -38,30 +40,24 @@ public class LogApp extends IdEntity{
 	private Date time;
 	
 	/**
-	 * ip地址
-	 */
-	private String ip;
-	
-	
-	/**
 	 * 操作类型
 	 */
 	private String method;
 	
 	/**
-	 * SQL语句
+	 * 操作内容
 	 */
-	private String sql;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fdPersonId")
-	public SysOrgPerson getPerson() {
-		return person;
-	}
-
-	public void setPerson(SysOrgPerson person) {
-		this.person = person;
-	}
+	private String content;
+	
+	/**
+	 * 对应modelId
+	 */
+	private String modelId;
+	
+	/**
+	 * 对应modelId
+	 */
+	private String modelName;
 
 	public Date getTime() {
 		return time;
@@ -71,13 +67,6 @@ public class LogApp extends IdEntity{
 		this.time = time;
 	}
 
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
 
 	public String getMethod() {
 		return method;
@@ -86,14 +75,42 @@ public class LogApp extends IdEntity{
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
-	public String getSql() {
-		return sql;
+	
+	@Lob
+    @Basic(fetch = FetchType.LAZY)
+	public String getContent() {
+		return content;
 	}
 
-	public void setSql(String sql) {
-		this.sql = sql;
+	public void setContent(String content) {
+		this.content = content;
 	}
+
+	public String getModelId() {
+		return modelId;
+	}
+
+	public void setModelId(String modelId) {
+		this.modelId = modelId;
+	}
+
+	public String getModelName() {
+		return modelName;
+	}
+
+	public void setModelName(String modelName) {
+		this.modelName = modelName;
+	}
+
+	public String getPersonId() {
+		return personId;
+	}
+
+	public void setPersonId(String personId) {
+		this.personId = personId;
+	}
+
+	
 
 	
 	
