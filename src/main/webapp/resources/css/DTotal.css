@@ -35,6 +35,7 @@
     line-height: 34px;}
 .page-header .backParent{position: absolute;left: 20px;top:18px;}
 .page-header .btn-group{position: absolute;right: 12px;top:10px;}
+.page-header .btn-group .btn{margin-left: 10px;}
 .page-header h4{text-align: center;margin: 0;line-height: 24px;}
 .box-control{margin-top: 25px}
 .box-control .hd{border-bottom: solid #e5e5e5 1px;padding: 15px 0;}
