@@ -81,7 +81,7 @@
 <!-- 最新系列 -->
 <script id="seriesTemplate" type="text/x-dot-template">
 						{{~it.newestSeries:series:index}}
-							<a href="#">
+							<a href="javascript:void(0)" data-fdid="{{=series.seriesId}}">
                     			<img src="{{?series.seriesImg!=""}}${ctx}/common/file/image/{{=series.seriesImg}}{{??}}${ctx }/resources/images/temp-newClass.jpg{{?}}" alt="">
                     			<span class="mask"></span>
                     			<span class="caption">
@@ -161,7 +161,7 @@
                 <div class="section newClass mt20">
                 	<div class="hd">
                 		<h5>最新系列课程</h5>
-                        <a href="#" class="ab_r">发现全部</a>
+                        <a href="#" class="ab_r" id="findAll">发现全部</a>
                 	</div>
                     <div class="bd">
                     	<div class="list-class" id="serieslist">
@@ -248,6 +248,13 @@
            	 $("#authorImg").attr("src","${ctx }/resources/images/face-placeholder.png");
             }
           }
+         //最新课程列表点击
+         $("#serieslist>a").bind("click",function(){
+        	 window.location.href="${ctx}/series/pagefoward?seriesId="+$(this).attr("data-fdid");
+         });
+         $("#findAll").bind("click",function(){
+        	 alert("链接至发现课程!!");
+         });
     });
     
 </script>
