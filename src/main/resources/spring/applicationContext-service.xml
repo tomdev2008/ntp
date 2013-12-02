@@ -38,5 +38,6 @@
     <!--<aop:aspectj-autoproxy proxy-target-class="true"/>-->
 
     <bean id="accessArgAspect" class="cn.me.xdf.service.bam.aspect.SourceAspect"/>
+    <bean id="attMainAspect" class="cn.me.xdf.service.bam.aspect.AttMainAspect"/>
 
 </beans>

@@ -7,9 +7,8 @@ import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.message.MessageService;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,7 @@ public class SourceAspect {
      * @param joinPoint
      * @return
      */
-    @After(value = "execution(* cn.me.xdf.service.bam.process.SourceNodeService.saveSourceNode(..))")
+    @AfterReturning(value = "execution(* cn.me.xdf.service.bam.process.SourceNodeService.saveSourceNode(..))")
     public Object saveBamScoreBySourceNote(JoinPoint joinPoint) {
         log.info("开始启动资源过滤------------saveBamScoreBySourceNote----------");
         Object[] args = joinPoint.getArgs();
@@ -72,7 +71,7 @@ public class SourceAspect {
      * @param joinPoint
      * @return
      */
-    @After(value = "execution(* cn.me.xdf.service.bam.BamCourseService.updateCatalogThrough(..))")
+    @AfterReturning(value = "execution(* cn.me.xdf.service.bam.BamCourseService.updateCatalogThrough(..))")
     public Object saveBamScoreByCatalog(JoinPoint joinPoint) {
         log.info("开始启动资源过滤----------------------");
         Object[] args = joinPoint.getArgs();

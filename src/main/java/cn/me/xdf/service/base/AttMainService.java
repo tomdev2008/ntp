@@ -1,20 +1,12 @@
 package cn.me.xdf.service.base;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import cn.me.xdf.annotaion.AttMainMachine;
-import cn.me.xdf.annotaion.AttValues;
 import cn.me.xdf.common.file.FileUtil;
 import cn.me.xdf.common.hibernate4.Value;
-import cn.me.xdf.common.utils.MyBeanUtils;
 import cn.me.xdf.model.base.AttMain;
-import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.service.SimpleService;
 
 /**
@@ -29,6 +21,7 @@ public class AttMainService extends SimpleService {
     }
 
     /**
+     * 保存附件
      *
      * @param attMain
      * @return
@@ -36,23 +29,7 @@ public class AttMainService extends SimpleService {
     @Transactional(readOnly = false)
     public AttMain save(AttMain attMain) {
         return super.save(attMain);
-    }
-
-    /**
-     * 根据模型ID和模型名称和关键字查询上传附件信息
-     *
-     * @param modelId
-     * @param modelName
-     * @param key
-     * @return
-     */
-    public AttMain getByModelIdAndModelNameAndKey(String modelId,
-                                                  String modelName, String key) {
-        List<AttMain> attMains = getByModeslIdAndModelNameAndKey(modelId, modelName, key);
-        if (CollectionUtils.isNotEmpty(attMains)) {
-            return attMains.get(0);
-        }
-        return null;
+        //return get("1429d050d954ab9842240c146a2a8189");
     }
 
 
@@ -83,17 +60,17 @@ public class AttMainService extends SimpleService {
             deleteAttMain(attMain.getFdId());
         }
     }
-    
+
     @Transactional(readOnly = false)
-    public void deleteAttMainByIds(String [] ids) {
-    	for (String id : ids) {
-    		deleteAttMain(id);
-		}
+    public void deleteAttMainByIds(String[] ids) {
+        for (String id : ids) {
+            deleteAttMain(id);
+        }
     }
-    
+
     @Transactional(readOnly = false)
-    public List<AttMain> getAttMainsByModelIdAndModelName(String modelId,String modelName) {
-        return findByCriteria(AttMain.class,Value.eq("fdModelId", modelId), Value.eq("fdModelName", modelName));
+    public List<AttMain> getAttMainsByModelIdAndModelName(String modelId, String modelName) {
+        return findByCriteria(AttMain.class, Value.eq("fdModelId", modelId), Value.eq("fdModelName", modelName));
     }
 
     /**
@@ -144,7 +121,6 @@ public class AttMainService extends SimpleService {
         }
         return null;
     }
-
 
 
 }

@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import cn.me.xdf.service.plugin.AttMainPlugin;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -108,6 +110,8 @@ public class AttMain extends IdEntity {
      */
     private Integer flag;
 
+    private String fileNetId;
+
     public String getFdFileName() {
         return fdFileName;
     }
@@ -157,6 +161,13 @@ public class AttMain extends IdEntity {
     }
 
     public String getFileUrl() {
+        try {
+            if (StringUtils.isBlank(fileUrl)) {
+                fileUrl = AttMainPlugin.getSwfPath(this);
+            }
+        } catch (Exception e) {
+            fileUrl = null;
+        }
         return fileUrl;
     }
 
@@ -236,5 +247,13 @@ public class AttMain extends IdEntity {
 
     public void setFlag(Integer flag) {
         this.flag = flag;
+    }
+
+    public String getFileNetId() {
+        return fileNetId;
+    }
+
+    public void setFileNetId(String fileNetId) {
+        this.fileNetId = fileNetId;
     }
 }
