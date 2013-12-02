@@ -106,7 +106,7 @@ public class AttMain extends IdEntity {
     private String fdCreatorId;
 
     /**
-     * 文档转化标志
+     * 文档转化标志   0：正在转换中、1：转化完成。
      */
     private Integer flag;
 
@@ -245,7 +245,14 @@ public class AttMain extends IdEntity {
         this.fdCreatorId = fdCreatorId;
     }
 
+    /**
+     * 0：正在转换中、1：转化完成。
+     *
+     * @return
+     */
+    @Basic(fetch = FetchType.LAZY)
     public Integer getFlag() {
+        flag = StringUtils.isBlank(getFileUrl()) ? 0 : 1;
         return flag;
     }
 
