@@ -51,15 +51,15 @@ public class AttMainPlugin {
                     List<Map<String, String>> lists = (List<Map<String, String>>) map.get("ResponseData");
                     return lists.get(0).get("filenetId");
                 } else {
-                    log.error(map.get("Error").toString());
-                    throw new RuntimeException(map.get("Error").toString());
+                    log.error("addDoc:" + map.get("Error").toString());
+                    throw new RuntimeException("addDoc:" + map.get("Error").toString());
                 }
             } else {
-                throw new RuntimeException("连接失败");
+                throw new RuntimeException("addDoc：连接失败");
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e.getCause());
+            log.error("addDoc:" + e.getMessage());
+            throw new RuntimeException("addDoc:" + e.getCause());
         }
     }
 
@@ -80,15 +80,15 @@ public class AttMainPlugin {
                     List<Map<String, String>> lists = (List<Map<String, String>>) map.get("ResponseData");
                     return lists.get(0).get("swf地址");
                 } else {
-                    log.error(map.get("Error").toString());
-                    throw new RuntimeException(map.get("Error").toString());
+                    log.error("getSwfPath:" + map.get("Error").toString());
+                    throw new RuntimeException("getSwfPath:" + map.get("Error").toString());
                 }
             } else {
-                throw new RuntimeException("连接失败");
+                throw new RuntimeException("getSwfPath:连接失败");
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e.getCause());
+            log.error("getSwfPath:" + e.getMessage());
+            throw new RuntimeException("getSwfPath:" + e.getCause());
             //e.printStackTrace();
         }
     }

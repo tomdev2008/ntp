@@ -160,10 +160,14 @@ public class AttMain extends IdEntity {
         this.fdStoreType = fdStoreType;
     }
 
+    @Basic(fetch = FetchType.LAZY)
     public String getFileUrl() {
         try {
-            if (StringUtils.isBlank(fileUrl)) {
-                fileUrl = AttMainPlugin.getSwfPath(this);
+            //视频、文档、幻灯片
+            if (("01".equals(fdFileType) || "04".equals(fdFileType) || "05".equals(fdFileType)) && StringUtils.isNotBlank(fileNetId)) {
+                if (StringUtils.isBlank(fileUrl)) {
+                    fileUrl = AttMainPlugin.getSwfPath(this);
+                }
             }
         } catch (Exception e) {
             fileUrl = null;
