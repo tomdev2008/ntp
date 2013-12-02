@@ -1,5 +1,7 @@
 package cn.me.xdf.action.course;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.base.AttMainService;
@@ -57,15 +60,37 @@ public class SeriesController {
 		return "/course/series_add";
 	}
 	/**
-	 * 系列课程
+	 * 系列系列首页
 	 */
 	@RequestMapping(value="pagefoward")
 	public String pagefoward(HttpServletRequest request){
 		String seriesId=request.getParameter("seriesId");
 		if(StringUtil.isNotEmpty(seriesId)){
+			if(seriesInfoService.getSeriesOfUser(seriesId)){//如果是系列创建者跳转到系列编辑页
 			return "redirect:/series/add?seriesId="+seriesId;
+			}else{                                          //其他则跳转到系列课程首页
+				return "/course/series_preview";
+			}
 		}else{
 			return "redirect:/series/add";
 		}
+	}
+	/**
+	 * 预览系列
+	 * @param request
+	 */
+	@RequestMapping(value = "previewSeries")
+	public String previewSeries(HttpServletRequest request) {
+		//获取课程ID
+		String courseId = request.getParameter("seriesId");
+		if(StringUtil.isNotEmpty(courseId)){
+//			CourseInfo course = courseService.get(courseId);
+//			if(course!=null){
+//				List<CourseCatalog> catalog = courseCatalogService.getCatalogsByCourseId(courseId);
+//				request.setAttribute("course", course);
+//				request.setAttribute("catalog", catalog);
+//			}
+		}
+		return "/course/series_preview";
 	}
 }

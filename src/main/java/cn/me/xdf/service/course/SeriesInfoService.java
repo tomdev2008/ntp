@@ -88,10 +88,25 @@ public class SeriesInfoService extends BaseService {
 		//根据系列ID查找章节，并按总序号升序
 		Finder finder = Finder
 				.create("from SeriesInfo series ");
-		finder.append("where series.hbmParent.fdId = :seriesId order by series.fdSeiresNo");
+		finder.append("where series.hbmParent.fdId = :seriesId order by series.fdSeriesNo");
 		finder.setParam("seriesId", seriesId);		
 		return  find(finder);
 	}
-
+   /**
+    * 当前系列创建者是否是当前登录用户
+    */
+	@Transactional(readOnly=true)
+	public boolean getSeriesOfUser(String seriesId){
+		Finder finder=Finder.create(" from SeriesInfo series");
+		finder.append(" where series.creator.fdId=:creatorId and series.fdId=:seriesId ");
+		finder.setParam("creatorId", ShiroUtils.getUser().getId());
+		finder.setParam("seriesId", seriesId);
+		List seriesList=find(finder);
+		if(seriesList!=null&&seriesList.size()>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 }
