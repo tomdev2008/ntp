@@ -1,5 +1,6 @@
 package cn.me.xdf.action.course;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,8 +19,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
@@ -30,11 +33,15 @@ import cn.me.xdf.model.course.SeriesCourses;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.SimpleService;
+import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.course.SeriesCoursesService;
 import cn.me.xdf.service.course.SeriesInfoService;
+import cn.me.xdf.service.score.ScoreStatisticsService;
 import cn.me.xdf.utils.ShiroUtils;
 @Controller
 @RequestMapping(value = "/ajax/series")
@@ -55,8 +62,12 @@ public class SeriesAjaxContrller {
 	@Autowired
 	private CourseService courseService;
 
+	//课程进程service
+	@Autowired
+	private BamCourseService bamCourseService;
 	
-
+	@Autowired
+    private ScoreStatisticsService scoreStatisticsService;
 	/*
 	 * 保存阶段信息
 	 * author hanhl
@@ -73,9 +84,9 @@ public class SeriesAjaxContrller {
 		series.setVersion(0);
 		series.setFdCreateTime(new Date());
 		series.setCreator(creator);
-		series.setFdSeiresNo(fdNo);
+		series.setFdSeriesNo(fdNo);
 		//没有系列id说明是新增系列  否则就是新增阶段
-		 Map map=new HashMap();
+		 Map<String, String> map=new HashMap<String, String>();
 		if(StringUtil.isNotEmpty(seriesId)){
 			SeriesInfo seriessup=seriesInfoService.get(seriesId);
 			series.setHbmParent(seriessup);
@@ -142,7 +153,7 @@ public class SeriesAjaxContrller {
 	request) {
 		String seriesId = request.getParameter("seriesId");
 		AttMain attMain = attMainService.getByModelId(seriesId);
-		Map map = new HashMap();
+		Map<String, String> map = new HashMap<String, String>();
 		if(attMain!=null){
 		map.put("coverUrl", attMain.getFdId());
 		}else{
@@ -223,11 +234,11 @@ public class SeriesAjaxContrller {
 		if(StringUtil.isNotEmpty(chapter)){
 			List<Map> chapters = JsonUtils.readObjectByJson(chapter, List.class);
 			if(chapters!=null && chapters.size()>0){
-				for(Map chapterMap:chapters){
+				for(Map<?, ?> chapterMap:chapters){
 					String chapterId = (String)chapterMap.get("id");
 					if(StringUtil.isNotEmpty(chapterId)){
 						SeriesInfo seriesInfo = seriesInfoService.get(chapterId);
-						seriesInfo.setFdSeiresNo((Integer)chapterMap.get("num"));
+						seriesInfo.setFdSeriesNo((Integer)chapterMap.get("num"));
 						seriesInfoService.save(seriesInfo);
 					}
 				}
@@ -245,7 +256,7 @@ public class SeriesAjaxContrller {
 		List<CourseInfo> courses=courseService.findCourseInfoByCouseNameTop10(key);
 		if(courses!=null&&courses.size()>0){
 			for(CourseInfo courseInfo:courses){
-				Map map=new HashMap();
+				Map<String, Object> map=new HashMap<String, Object>();
 				map.put("id", courseInfo.getFdId());//课程id
 				map.put("name", courseInfo.getFdTitle());//课程名称
 				courseInfos.add(map);
@@ -277,7 +288,7 @@ public class SeriesAjaxContrller {
 					//解析页面传递的素材列表
 					List<Map> cousers = JsonUtils.readObjectByJson(courseList, List.class);
 					if(cousers!=null && cousers.size()>0){
-						for(Map map:cousers){
+						for(Map<?, ?> map:cousers){
 							String courseId = (String)map.get("id");
 							String index = (String)map.get("index");
 							if(StringUtil.isNotEmpty(courseId)){
@@ -306,15 +317,15 @@ public class SeriesAjaxContrller {
 	public String getSeriesCourseById(HttpServletRequest request){
 		String phasesId=request.getParameter("phasesId");
 		List<SeriesCourses> sclist=seriesCoursesService.getSeriesCourseByseriesId(phasesId);
-		Map map=new HashMap();
-		List courselist=null;
+		Map<String, Object> map=new HashMap<String, Object>();
+		List<Map<String, Comparable>> courselist=null;
 		String phasesDes="";
 		if(sclist!=null){
-			courselist=new ArrayList();
+			courselist=new ArrayList<Map<String, Comparable>>();
 			SeriesInfo phases=sclist.get(0).getSeries();
 			phasesDes=phases.getFdDescription();
 			for(SeriesCourses seriescourse:sclist){
-				Map courseM=new HashMap();
+				Map<String, Comparable> courseM=new HashMap<String, Comparable>();
 				CourseInfo course=seriescourse.getCourses();
 				courseM.put("id", course.getFdId());
 				courseM.put("title", course.getFdTitle());
@@ -344,9 +355,9 @@ public class SeriesAjaxContrller {
 			if(serieses!=null && serieses.size()>0){
 				phaseses= new ArrayList<Map>();
 				for(SeriesInfo series:serieses){
-						Map phasesM = new HashMap();
+						Map<String, Object> phasesM = new HashMap<String, Object>();
 						phasesM.put("id", series.getFdId());
-						phasesM.put("index", series.getFdSeiresNo());
+						phasesM.put("index", series.getFdSeriesNo());
 						phasesM.put("num", serieses.size());
 						phasesM.put("title", series.getFdName());
 						phaseses.add(phasesM);
@@ -358,7 +369,7 @@ public class SeriesAjaxContrller {
 				}
 			}	
 		//将阶段信息转换成json返回到页面
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("chapter", phaseses);//阶段信息
 		map.put("courseCount",courseCount);//阶段课程统计
 		return JsonUtils.writeObjectToJson(map);
@@ -370,7 +381,7 @@ public class SeriesAjaxContrller {
 	@ResponseBody
 	public String getBaseSeriesInfoById(HttpServletRequest request){
 		String seriesId = request.getParameter("seriesId");
-		Map map=new HashMap();
+		Map<String, Comparable> map=new HashMap<String, Comparable>();
 		if(StringUtil.isNotEmpty(seriesId)){
 			SeriesInfo seriesInfo=seriesInfoService.get(seriesId);
 			map.put("fdName", seriesInfo.getFdName());
@@ -426,10 +437,10 @@ public class SeriesAjaxContrller {
 			for(int j=0;j<i;j++){
 				page = seriesInfoService.findSeriesInfosOrByName( fdTitle,
 						"1", orderbyStr);
-				List list = page.getList();
+				List<?> list = page.getList();
 				if(list!=null && list.size()>0){
 					for(Object obj:list){
-						Map map = (Map)obj;
+						Map<?, ?> map = (Map<?, ?>)obj;
 						String seriesId = (String)map.get("FDID");
 						deleteSeriesById(seriesId);
 					}
@@ -458,4 +469,141 @@ public class SeriesAjaxContrller {
 			}
 		}
 	}
+	/**
+	 * 系列首页
+	 */
+	public  SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
+	@RequestMapping(value="getSeriesHeardPage")
+	@ResponseBody
+	public String getSeriesHeardPage(HttpServletRequest request){
+		String seriesId=request.getParameter("seriesId");
+		Map<String, Object> map=new HashMap<String, Object>();
+		if(StringUtil.isNotEmpty(seriesId)){
+			SeriesInfo seriesInfo=seriesInfoService.get(seriesId);
+			
+			map.put("id", seriesInfo.getFdId());
+			map.put("seriesName", seriesInfo.getFdName());
+			map.put("seriesDesc", seriesInfo.getFdDescription());
+			map.put("createTime", sdf.format(seriesInfo.getFdCreateTime()));
+			AttMain attMain1 = attMainService.getByModelIdAndModelName(seriesInfo.getFdId(), SeriesInfo.class.getName());
+			if(attMain1!=null){
+				map.put("seriesImg", attMain1.getFdId());
+			}else{
+				map.put("seriesImg", "");	
+			}
+			Map<String, String> author=null;
+			if(StringUtil.isNotEmpty(seriesInfo.getFdAuthor())){
+				author=new HashMap<String, String>();
+				author.put("authorName", seriesInfo.getFdAuthor());//作者名称
+				author.put("imgUrl", "");//作者头像
+			}else{//否则默认为系列创建者
+				author=new HashMap<String, String>();
+				author.put("authorName", seriesInfo.getCreator().getNotifyEntity().getRealName());
+				author.put("imgUrl",seriesInfo.getCreator().getPoto());//作者头像
+				
+			}
+			map.put("author", author);
+			int sOfcount=0;//记录该系列下有多少课程
+			List<SeriesInfo> seriesList=seriesInfoService.getSeriesById(seriesId);
+			List<Map> phasesList=new ArrayList<Map>();
+			if(seriesList!=null&&seriesList.size()>0){
+				for(SeriesInfo series:seriesList){
+					Map<String, Object> phasesM=new HashMap<String, Object>();
+					phasesM.put("phasesNo", series.getFdSeriesNo());
+					phasesM.put("phasesName", series.getFdName());
+					phasesM.put("phasesDesc", series.getFdDescription());
+					List<SeriesCourses> sOfcourses=seriesCoursesService.getSeriesCourseByseriesId(series.getFdId());
+					List<Map> courselist=new ArrayList<Map>();
+					if(sOfcourses!=null&&sOfcourses.size()>0){
+						for(SeriesCourses course:sOfcourses){
+							Map<String, Object> mapc=new HashMap<String, Object>();
+							//课程id
+							mapc.put("courseId", course.getCourses().getFdId());
+							//课程编号
+							mapc.put("courseNo", sOfcount==0?course.getFdCourseNo():sOfcount+course.getFdCourseNo());
+							//课程名称
+							mapc.put("courseName", course.getCourses().getFdTitle());
+							//课程摘要
+							mapc.put("fdSummary", course.getCourses().getFdSummary());
+							//学习人数
+							mapc.put("countStudy",getLearningTotalNo(course.getCourses().getFdId()));
+							//课程状态
+							BamCourse bamCourse=bamCourseService.getCourseByUserIdAndCourseId(ShiroUtils.getUser().getId(), course.getCourses().getFdId());
+							if(bamCourse==null){
+								mapc.put("isThrough",false);
+							}else{
+								mapc.put("isThrough",bamCourse.getThrough());
+							}
+							//课程评分
+							ScoreStatistics statistic=scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(),course.getCourses().getFdId());
+							if(statistic==null){
+								mapc.put("average", 0);
+							}else{
+								mapc.put("average", statistic.getFdAverage()==null?0:statistic.getFdAverage());
+							}
+							//课程封面
+							AttMain attMain = attMainService.getByModelIdAndModelName(course.getCourses().getFdId(),CourseInfo.class.getName());
+							if(attMain!=null){
+								mapc.put("coverImg", attMain.getFdId());
+							}else{
+								mapc.put("coverImg", "");	
+							}
+							courselist.add(mapc);
+						}
+						sOfcount+=sOfcourses.size();
+						phasesM.put("courselist", courselist);
+					}
+					
+					phasesList.add(phasesM);
+					
+				}
+				map.put("phasesList", phasesList);
+				//获取最新系列课程
+				List<Map> newestSeries=new ArrayList<Map>();
+				Pagination page=seriesInfoService.findSeriesInfosOrByName("", "1", "fdcreatetime");
+				int i = page.getTotalPage();
+				if(i>0){
+					List seriesInfos=page.getList();
+					if(seriesInfos!=null&&seriesInfos.size()>0){
+						for(int ii=0;ii<seriesInfos.size()&&ii<=5;ii++){
+							Map seriesm=(Map) seriesInfos.get(ii);
+							//系列id
+							Map formatM=new HashMap();
+							formatM.put("seriesId", seriesm.get("FDID"));
+							//系列封页
+							AttMain attMain=attMainService.getByModelIdAndModelName(seriesm.get("FDID").toString(), SeriesInfo.class.getName());
+							if(attMain!=null){
+								formatM.put("seriesImg", attMain.getFdId());
+							}else{
+								formatM.put("seriesImg", "");
+							}
+							//系列名称fdAuthor
+							formatM.put("seriesName", seriesm.get("FDNAME"));
+							//系列作者
+							String fdAuthor=(String) seriesm.get("FDAUTHOR");
+							SysOrgPerson creator=accountService.get(seriesm.get("FDCREATORID").toString());
+							formatM.put("author", fdAuthor==null||fdAuthor==""?creator.getNotifyEntity().getRealName():fdAuthor);
+							newestSeries.add(formatM);
+						}
+					}
+					
+				}
+				map.put("newestSeries", newestSeries);
+			}
+		}
+		
+		return JsonUtils.writeObjectToJson(map);
+	}
+	/**
+	 * 从课程学习进程中获取当前学习的教师总数
+	 * @param courseId 课程ID
+	 * @return int 学习的教师总数
+	 */
+	private int getLearningTotalNo(String courseId) {
+		Finder finder = Finder.create(" from BamCourse where courseId = :courseId");
+		finder.setParam("courseId", courseId);
+		Pagination page = bamCourseService.getPage(finder, 1, 15);
+		return page.getTotalCount();
+	}
+	
 }

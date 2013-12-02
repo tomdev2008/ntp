@@ -78,7 +78,12 @@ public class SeriesInfo extends IdEntity implements IAttMain{
 	/**
 	 * 排序号
 	 */
-	private  Integer fdSeiresNo;
+	private  Integer fdSeriesNo;
+	/**
+	 * 
+	 * 作者
+	 */
+	private String fdAuthor;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdParentId")
@@ -150,12 +155,22 @@ public class SeriesInfo extends IdEntity implements IAttMain{
 		this.isPublish = isPublish;
 	}
 
-	public Integer getFdSeiresNo() {
-		return fdSeiresNo;
+	public Integer getFdSeriesNo() {
+		return fdSeriesNo;
 	}
 
-	public void setFdSeiresNo(Integer fdSeiresNo) {
-		this.fdSeiresNo = fdSeiresNo;
+	public void setFdSeriesNo(Integer fdSeriesNo) {
+		this.fdSeriesNo = fdSeriesNo;
 	}
+
+	public String getFdAuthor() {
+		return fdAuthor;
+	}
+
+	public void setFdAuthor(String fdAuthor) {
+		this.fdAuthor = fdAuthor;
+	}
+
+	
 	
 }
