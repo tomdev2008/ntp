@@ -269,7 +269,8 @@ public class CourseAjaxController {
 				// 课程摘要
 				map.put("courseAbstract", course.getFdSummary());
 				// 课程作者
-				map.put("courseAuthor", course.getFdAuthor());
+				map.put("courseAuthor", course.getFdAuthor()==null?
+						ShiroUtils.getUser().getName():course.getFdAuthor());
 				// 作者描述
 				map.put("authorDescrip", course.getFdAuthorDescription());
 				// 学习目标
@@ -285,6 +286,9 @@ public class CourseAjaxController {
 						: course.getFdDemand();
 				map.put("courseRequirements", buildString(courseRequirements));
 			}
+		}else{
+			//默认设置创建者为作者
+			map.put("courseAuthor", ShiroUtils.getUser().getName());
 		}
 		return JsonUtils.writeObjectToJson(map);
 	}

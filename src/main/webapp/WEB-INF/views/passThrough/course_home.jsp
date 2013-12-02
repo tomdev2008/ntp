@@ -75,8 +75,8 @@
                         <i class="icon-book icon-white"></i>开始学习
                     </a>
                     <span class="text-warning">${studayTotalNo}</span>位老师在学习
-                    <a href="#" title="课程列表" data-toggle="tooltip" class="btn-next icon-disc-lg-bg"><i class="icon-mylist"></i></a>
-                    <a href="#" title="课程跟踪" data-toggle="tooltip" class="btn-home icon-disc-lg-bg"><i class="icon-tracking"></i></a>
+                    <a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" title="课程列表" data-toggle="tooltip" class="btn-next icon-disc-lg-bg"><i class="icon-mylist"></i></a>
+                    <a href="${ctx}/studyTrack/getStudyTrackTutor" title="课程跟踪" data-toggle="tooltip" class="btn-home icon-disc-lg-bg"><i class="icon-tracking"></i></a>
                 </div>
                 
         	</div>
@@ -249,6 +249,22 @@
                 </c:import>
 			</div>
 			<div class="pull-right w225">
+			      <div class="section profile">
+                    <div class="hd">
+                    </div>
+                    <div class="bd">
+                        <div class="faceWrap">
+                          <tags:image href="${imgUrl}" clas="face img-polaroid"/>
+                        </div>
+                        <p>作者</p>
+                        <p class="muted">
+                          	 ${course.fdAuthor}
+                        </p>
+                    </div>
+                    <div class="ft">
+                        ${course.fdAuthorDescription}
+                    </div>
+                </div>
 				 <!-- 评分评论页面 -->
 	        	 <c:import url="/WEB-INF/views/passThrough/score_course.jsp">
                 	<c:param name="courseId" value="${course.fdId}" />
@@ -293,7 +309,7 @@ $("#verifyPwd").bind("click",function(){
 $("button[name='doButton']").bind("click",function(){
 	var fdid = $(this).attr("data-fdid");
 	var fdMtype = $(this).attr("data-fdMtype");
-   	window.location.href = "${ctx}/passThrough/getStudyContent?catalogId="+fdid+"&fdMtype="+fdMtype;
+   	window.location.href = "${ctx}/passThrough/getStudyContent?catalogId="+fdid+"&fdMtype="+fdMtype+"&courseId="+courseId;
 });
 </script>
 </body>

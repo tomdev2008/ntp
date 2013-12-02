@@ -16,7 +16,7 @@
     <b class="text-warning">{{=it.score}}</b>
 </script>
 <script src="${ctx}/resources/js/doT.min.js"></script>
-<div class="section">
+<div class="section mt20">
  		<div class="hd">
 		<h2 class="h2_r">评分 </h2>
             	<div class="ab_l rating-view" id="ratingDo">

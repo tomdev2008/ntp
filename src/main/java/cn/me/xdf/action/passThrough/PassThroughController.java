@@ -19,6 +19,7 @@ import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.common.utils.ComUtils;
 import cn.me.xdf.common.utils.array.ArrayUtils;
 import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.model.bam.BamCourse;
@@ -88,7 +89,12 @@ public class PassThroughController {
 						ArrayUtils.sortListByProperty(courseCatalogs, "fdTotalNo", SortType.HIGHT);
 					}
 					request.setAttribute("catalog", courseCatalogs);
-
+				}
+				//当前作者的图片(当作者和创建者是相同时候使用创建者的照片)
+				if(course.getFdAuthor().equals(course.getCreator().getRealName())){
+					request.setAttribute("imgUrl",course.getCreator().getPoto());
+				}else{
+					request.setAttribute("imgUrl",ComUtils.getDefaultPoto());
 				}
 				//获取当前课程正在学习的新教师
 				int studayTotalNo = getLearningTotalNo(course.getFdId());
