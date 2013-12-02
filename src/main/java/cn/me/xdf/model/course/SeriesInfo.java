@@ -17,6 +17,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import cn.me.xdf.annotaion.AttMainMachine;
+import cn.me.xdf.annotaion.AttValues;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.model.base.IdEntity;
@@ -33,6 +35,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_SERIES")
+@AttMainMachine(modelName="cn.me.xdf.model.course.SeriesInfo", value = { @AttValues(fild = "attMain") })
 public class SeriesInfo extends IdEntity implements IAttMain{
 
 	/**

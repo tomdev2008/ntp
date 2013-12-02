@@ -16,21 +16,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
-import cn.me.xdf.common.utils.array.ArrayUtils;
-import cn.me.xdf.common.utils.array.SortType;
-import cn.me.xdf.model.bam.BamCourse;
-import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
-import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.bam.BamCourseService;
+import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.log.LogLoginService;
+import cn.me.xdf.service.log.LogOnlineService;
 import cn.me.xdf.service.message.MessageService;
 import cn.me.xdf.service.studyTack.StudyTrackService;
 import cn.me.xdf.utils.DateUtil;
@@ -61,7 +58,23 @@ public class StudyTrackAjaxController {
 	
 	@Autowired
 	private MessageService messageService;
+	
+	@Autowired
+	private LogOnlineService logOnlineService;
+	
+	@Autowired
+	private LogLoginService logLoginService;
+	
+	@Autowired
+	private AttMainService attMainService;
 
+	
+	/**
+	 * 获取当前页学习跟踪信息
+	 * 
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "getTracks")
 	@ResponseBody
 	public String getTracks(HttpServletRequest request){
@@ -116,13 +129,18 @@ public class StudyTrackAjaxController {
 		}
 		Map returnMap = new HashMap();
 		returnMap.put("list", list);
-		returnMap.put("pageInfo", getCommentPageInfo(pagination));
+		returnMap.put("pageInfo", getPageInfo(pagination));
 		
 		return JsonUtils.writeObjectToJson(returnMap);
 	}
 	
-	
-	private Map getCommentPageInfo(Pagination pagination) {
+	/**
+	 * 获取分页信息
+	 * 
+	 * @param pagination
+	 * @return
+	 */
+	private Map getPageInfo(Pagination pagination) { 
 		int pageNo = pagination.getPageNo();
 		int pageSize = pagination.getPageSize();
 		int totalSize = pagination.getTotalCount();
@@ -153,8 +171,12 @@ public class StudyTrackAjaxController {
 		return map;
 	}
 	
-	
-	
+	/**
+	 * 获取用户信息
+	 * 
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "getPerson")
 	@ResponseBody
 	public String getPerson(HttpServletRequest request){
@@ -165,23 +187,9 @@ public class StudyTrackAjaxController {
 		map.put("org", orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
 		map.put("dep", orgPerson.getDeptName());
 		map.put("sex", orgPerson.getFdSex());
+		map.put("lastTime", logLoginService.getNewLoginDate());
+		map.put("onlineDay",logOnlineService.getOnlineByUserId(ShiroUtils.getUser().getId()).getLoginDay());
 		return JsonUtils.writeObjectToJson(map);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

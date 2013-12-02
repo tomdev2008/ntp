@@ -6,10 +6,16 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jxls.transformer.XLSTransformer;
+import cn.me.xdf.common.upload.UploadUtils;
+import cn.me.xdf.common.utils.ResourceBundleReader;
+import cn.me.xdf.common.web.Constants;
+import cn.me.xdf.model.base.AttMain;
 
 /**
  * 导出excel文件
@@ -82,6 +88,37 @@ public abstract class AbsExportExcel {
 
 	public static void main(String[] args) {
 		System.out.println(getExcelTemplate());
+	}
+	
+	/**
+	 * 导出excel文件(获得Attmain对象)
+	 * 
+	 * @param list
+	 * 
+	 * @param tempFileName
+	 * 
+	 * @param response
+	 */
+	public static AttMain exportExcels(List<?> list, String tempFileName) {
+		try {
+			HashMap<String, List<?>> map = new HashMap<String, List<?>>();
+			map.put("resultList", list);
+			XLSTransformer transformer = new XLSTransformer();
+			String modelFileName = getExcelTemplate()
+					+ System.getProperty("file.separator") + tempFileName;
+			
+			String filename = UploadUtils.generateFilename(Constants.UPLOAD_PATH, "xls");
+		    ResourceBundle bundle = ResourceBundleReader.getBundle();
+		    String destPath = bundle.getString("upload_path");
+		    transformer.transformXLS(modelFileName, map, (destPath + filename)); 
+			AttMain attMain = new AttMain();
+			attMain.setFdFilePath((destPath + filename));
+			attMain.setFdFileName(tempFileName);
+			return attMain;
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}		
 	}
 
 }

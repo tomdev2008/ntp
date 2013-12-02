@@ -36,6 +36,7 @@ public class CourseContentService extends BaseService{
 		//根据课程ID查找标签
 		Finder finder = Finder
 				.create(" from CourseContent content where content.catalog.fdId=:catalogId");	
+		finder.append(" order by content.fdMaterialNo ");
 		finder.setParam("catalogId", catalogId);		
 		return  super.find(finder);
 	}

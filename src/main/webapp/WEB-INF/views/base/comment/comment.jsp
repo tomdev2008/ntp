@@ -24,8 +24,8 @@
 				{{?it.isShowScore}}
                         <div class="rating-view">
                                     <span class="rating-all">
-                                        {{ for(var i=0; i<5; i++){ }}
-                                            <i class="icon-star{{?i < it.score}} active{{?}}"></i>
+                                        {{ for(var i=1; i<=5; i++){ }}
+                                            <i class="icon-star{{?i <= it.score}} active{{?}}"></i>
                                         {{ } }}
                                     </span>
                             <b class="text-warning">{{=it.score}}</b>
@@ -61,7 +61,7 @@
         </div>
     </script>
 <script src="${ctx}/resources/js/doT.min.js"></script>
-    <div class="section mt20">
+    <div class="section mt20" id="commentDiv">
        <div class="hd">
                 <div class="tit-icon_bg"><i class="icon-white-info"></i></div>
                 <h4>全部评论</h4>
@@ -117,6 +117,11 @@ function initCommentLines(modelName,modelId,pageNo){
 				  html = html + commentLineTemplate(result.listComments[i]);
 			  }
 			  $("#commentListUl").html(html);
+			  if(result.listComments.length==0){
+				  $("#commentDiv").addClass("hide");
+			  }else{
+				  $("#commentDiv").removeClass("hide");
+			  }
 		  }
 	});
 	$(".btnComment").bind("click",function(){

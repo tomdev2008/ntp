@@ -13,7 +13,7 @@
 						操作 <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<!-- <li><a href="#rightCont">导出列表</a></li> -->
+					    <li><a href="#rightCont" onclick="exportData();">导出列表</a></li>
 						<li><a href="#rightCont" onclick="downloadMater();">打包下载</a></li>
 						<li><a href="#rightCont" onclick="batchDelete();">批量删除</a></li>
 					</ul>
@@ -110,11 +110,13 @@
 				    <span class="rating-view">
 				      <c:if test="${bean.FDAVERAGE!=null}">
 					  <span class="rating-all">
-					  <c:forEach var="i" begin="1" end="${bean.FDAVERAGE}">
-					   <i class="icon-star active"></i>
-					  </c:forEach>
-					  <c:forEach var="i" begin="1" end="${5-bean.FDAVERAGE}">
-					   <i class="icon-star"></i>
+					   <c:forEach var="i" begin="1" end="5">
+					  	<c:if test="${i<=bean.FDAVERAGE}">
+					  	<i class="icon-star active"></i>
+					  	</c:if>
+					  	<c:if test="${i>bean.FDAVERAGE}">
+					  	<i class="icon-star"></i>
+					  	</c:if>
 					  </c:forEach>
 					  </span> 
 					  <b class="text-warning">${bean.FDAVERAGE}</b>
@@ -227,6 +229,7 @@
 $.Placeholder.init();
 //下载素材
 function downloadMater(){
+	 var key = $("#serach").val();
 	 var day=new Date();
 	 var Year = day.getFullYear();
 	 var  Month = day.getMonth()+1;
@@ -266,12 +269,29 @@ function downloadMater(){
 	}
 	if($("#allFlag").val()=='true'){
 		$.fn.jalert("您确定全部下载吗？",function(){
-			  window.location.href="${ctx}/common/file/allDownloadZip/${param.fdType}/xdf_"+fdType+"素材_"+CurrentDate;
+			  window.location.href="${ctx}/common/file/allDownloadZip/${param.fdType}/xdf_"+fdType+"素材_"+CurrentDate+"?key="+key;
 			  return;
 		});
 	} else {
 		window.location.href="${ctx}/common/file/batchDownloadZip/"+chk_value+"/xdf_"+fdType+"素材_"+CurrentDate;
 	}
+}
+//导出列表   
+function exportData(){
+   var fdType=$("#fdType").val();
+   var chk_value = [];
+   $('input[name="ids"]:checked').each(function() {
+		chk_value.push($(this).val());
+   });
+   if (chk_value.length == 0) {
+		$.fn.jalert2("请选择要导出的数据!");
+		return;
+   }
+   $.fn.jalert("您确定导出所选数据吗？",function(){
+		window.location.href="${ctx}/material/exportMaterialData/"+chk_value+"/"+fdType;
+		return;
+   });
+	
 }
 </script>
 

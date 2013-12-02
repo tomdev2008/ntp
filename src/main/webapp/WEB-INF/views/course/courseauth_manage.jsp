@@ -41,7 +41,7 @@
                     </div>
                     <div class="person">
                             <a href="{{=item.teacher.link}}" class="pull-left"><img style="width:50px;height:50px;" src="{{?item.teacher.imgUrl.indexOf('http')>-1}}{{=item.teacher.imgUrl}}{{??}}${ctx}/{{=item.teacher.imgUrl}}{{?}}" alt=""/></a>
-                            <span>{{=item.teacher.name}}（{{=item.teacher.mail}}）<br /> {{?item.teacher.department.length>8}}{{=item.teacher.department.substr(0,8)+"..."}}{{??}}{{=item.teacher.department}}{{?}}</span>
+                            <span title="{{=item.teacher.name}}（{{=item.teacher.mail}}）{{=item.teacher.department}}">{{=item.teacher.name}}（{{?item.teacher.mail.length>5}}{{=item.teacher.mail.substr(0,5)+"..."}}{{??}}{{=item.teacher.mail}}{{?}}）<br /> {{?item.teacher.department.length>8}}{{=item.teacher.department.substr(0,8)+"..."}}{{??}}{{=item.teacher.department}}{{?}}</span>
                     </div>
                     </div>
                     <div class="span2">
@@ -60,7 +60,7 @@
                         <div class="person">
                             {{?item.mentor}}
                                 <a href="{{=item.mentor.link}}" class="pull-left"><img  style="width:50px;height:50px;" src="{{?item.mentor.imgUrl.indexOf('http')>-1}}{{=item.mentor.imgUrl}}{{??}}${ctx}/{{=item.mentor.imgUrl}}{{?}}" alt=""/></a>
-                                <span>{{=item.mentor.name}}（{{=item.mentor.mail}}）<br /> {{?item.mentor.department.length>8}}{{=item.mentor.department.substr(0,8)+"..."}}{{??}}{{=item.mentor.department}}{{?}}</span>
+                                <span title="{{=item.mentor.name}}（{{=item.mentor.mail}}）{{=item.mentor.department}}">{{=item.mentor.name}}（{{?item.mentor.mail.length>5}}{{=item.mentor.mail.substr(0,5)+"..."}}{{??}}{{=item.mentor.mail}}{{?}}）<br /> {{?item.mentor.department.length>8}}{{=item.mentor.department.substr(0,8)+"..."}}{{??}}{{=item.mentor.department}}{{?}}</span>
                             {{??}}
                                 <p align="center">本课程不需要导师参与</p>
                             {{?}}
@@ -128,7 +128,7 @@
 			        <div class="page-header">
 		                <span class="muted">授权学习</span> 
 		                <div class="backHome">
-		                    <a href="#"><span class="muted">返回</span>主管<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
+		                    <a href="${ctx}/studyTrack/getStudyTrackDirector"><span class="muted">返回</span>主管<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
 		                </div>
 			        </div>
 			        <div class="page-body authorizedBody">
@@ -322,8 +322,8 @@
         	$("#coursepage").attr('src','${ctx}/resources/images/zht-main-img.jpg');
         }
         //课程评分
-        for(var i=0;i<result.courseScore;i++){
-        $("#cavg").find("i")[i].addClass("active");
+        for(var i=1;i<=result.courseScore;i++){
+        	$("#cavg i :eq("+(i-1)+")").addClass("active");
         }
         //课程评分
         $("#courseavg").html(result.courseScore);
@@ -448,7 +448,9 @@ function clearserach(){//清理搜索栏并显示数据列表
 function showSearch(){
 	var search = $("#search").val();
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
-	if(search.length>2){
+	if(search==''){
+		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
+	}else if(search.length>2){
 		$("#containkey").html(search.substr(0,2)+"...");
 		}else{
 			$("#containkey").html(search);

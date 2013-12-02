@@ -183,6 +183,11 @@ public class Constant {
 	public static final String TASK_STATUS_REJECT = "02";
 	
 	/**
+	 * 作业审批（代表当前记录已被导师审批）
+	 */
+	public static final String TASK_STATUS_CHECK = "05";
+	
+	/**
 	 * 作业交互方式：
 	 * 03未通过
 	 */
@@ -193,4 +198,26 @@ public class Constant {
 	 * 04通过
 	 */
 	public static final String TASK_STATUS_PASS = "04";
+	
+	/**
+	 * 数据库操作方式：
+	 * 01修改
+	 */
+	public static final String DB_UPDATE = "01";
+	
+	/**
+	 * 数据库操作方式：
+	 * 02删除
+	 */
+	public static final String DB_DELETE = "02";
+	
+	/**
+	 * 数据库操作方式：
+	 * 03插入
+	 */
+	public static final String DB_INSERT = "03";
+	
+	
+	
+	
 }

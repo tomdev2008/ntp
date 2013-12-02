@@ -29,7 +29,7 @@
 	  </section>
     	 
 		<section class="w790 pull-right" id="rightCont">
-	        <div class="page-header">
+	        <div class="page-header bder2">
 	           <c:if test="${param.fdType!=1000}">
                 <span class="muted">我正在看：</span> 
                  <c:if test="${param.fdType=='01'}">视频</c:if>
@@ -41,7 +41,7 @@
                 </c:if> 
               
                 <div class="backHome">
-                    <a href="#"><span class="muted">返回</span>主管<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
+                    <a href="${ctx}/studyTrack/getStudyTrackDirector"><span class="muted">返回</span>主管<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
                 </div>
 	        </div>
 	        <div class="page-body" id="pageBody">
@@ -68,11 +68,14 @@ function pressEnter(){
 function showSearch(){
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
 	var serach = $("#serach").val();
-	if(($("#serach").val()).length>2){
+	if(serach==''){
+		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
+	}else if(($("#serach").val()).length>2){
 		serach = ($("#serach").val()).substr(0,2);
 		serach= serach+"...";
+		$("#containkey").html(serach);
 	}
-	$("#containkey").html(serach);
+	
 }
 function clearserach(){
 	$("#serach").attr("value","");

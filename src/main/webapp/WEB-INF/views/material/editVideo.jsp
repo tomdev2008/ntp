@@ -44,10 +44,10 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="${ctx}/material/findList?fdType=${materialInfo.fdType}" class="backParent">
+                <a href="${ctx}/material/findList?fdType=${materialInfo.fdType}&order=FDCREATETIME" class="backParent">
                 <span id="back"></span>
                </a>
-                <h4>${materialInfo.fdName}</h4>
+                <h4><tags:title value="${materialInfo.fdName}" size="25" ></tags:title></h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
                     <c:if test="${materialInfo.fdId!=null}">
@@ -76,12 +76,14 @@
                                 <span class="rating-view">
                                     <span class="rating-all">
                                        <c:if test="${score.fdAverage!=null}">
-                                         <c:forEach var="i" begin="1" end="${score.fdAverage}">
-                                           <i class="icon-star active"></i>
-                                         </c:forEach>
-                                         <c:forEach var="i" begin="1" end="${5-score.fdAverage}">
-                                           <i class="icon-star"></i>
-                                         </c:forEach>
+                        <c:forEach var="i" begin="1" end="5">
+					  	<c:if test="${i<=score.fdAverage}">
+					  	<i class="icon-star active"></i>
+					  	</c:if>
+					  	<c:if test="${i>score.fdAverage}">
+					  	<i class="icon-star"></i>
+					  	</c:if>
+					  </c:forEach>                                         
                                        </c:if>
                                        <c:if test="${score.fdAverage==null}">
                                          <c:forEach var="i" begin="1" end="5">
@@ -209,8 +211,8 @@
                              </div>
                              <div class="tab-pane" id="encrypt">
                                 <table class="table table-bordered">
-                                    <thead><tr><th>授权用户</th><th>可使用</th>
-                                     <th>可编辑</th><th>删除</th></tr></thead>
+                                    <thead><tr><th>授权用户</th><th>可用</th>
+                                     <th>编辑</th><th>删除</th></tr></thead>
                                     <tbody id="list_user"></tbody>
                                 </table>
                                 <div class="pr">
@@ -225,8 +227,8 @@
                              </div>
                              <div class="tab-pane active" id="encrypt">
                                 <table class="table table-bordered">
-                                    <thead><tr><th>授权用户</th><th>可使用</th>
-                                     <th>可编辑</th><th>删除</th></tr></thead>
+                                    <thead><tr><th>授权用户</th><th>可用</th>
+                                     <th>编辑</th><th>删除</th></tr></thead>
                                     <tbody id="list_user"></tbody>
                                 </table>
                                 <div class="pr">

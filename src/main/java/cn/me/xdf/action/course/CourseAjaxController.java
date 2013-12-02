@@ -835,33 +835,5 @@ public class CourseAjaxController {
 			}
 		}
 	}
-	/**
-	 * 根据课程名称查询课程信息
-	 * 
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value = "findCourseByName")
-	@ResponseBody
-	public List<CourseInfo> findByName(HttpServletRequest request) {
-		String key = request.getParameter("q");
-		List<CourseInfo> courses = new ArrayList<CourseInfo>();
-		if (StringUtils.isBlank(key))
-			return null;
-
-		// 根据用户输入的关键字查询登录名和姓名，
-		// 排除最高用户admin
-		List<CourseInfo> courseInfos = courseService.findCourseInfoByCouseNameTop10(key);
-		CourseInfo couser = null;
-		for (CourseInfo couserInfo : courseInfos) {
-			couser= new CourseInfo();
-			couser.setFdId(couserInfo.getFdId());
-			couser.setFdTitle(couserInfo.getFdTitle());
-			couser.setFdSubTitle(couserInfo.getFdSubTitle());
-			couser.setFdAuthor(couserInfo.getFdAuthor());
-			couser.setFdAuthorDescription(couserInfo.getFdAuthorDescription());
-			courses.add(couser);
-		}
-		return courses;
-	}
+	
 }

@@ -19,7 +19,7 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <span class="name">{{=item.user.name}}</span>
-                        <span class="muted">{{=item.user.org}} {{=item.user.department}}</span>
+                        <span class="muted">{{=item.user.department}}</span>
                                             <span class="muted right">
                                                 <i class="icon-tel"></i>{{=item.user.phone || ''}}
                                                 <i class="icon-envelope"></i>{{=item.user.mail}}
@@ -100,7 +100,7 @@
                 </form>
             <span class="showState">
                 <span class="muted">当前显示：</span>         
-            		 <span id="markshow" >含“<a id="containkey" href="#"></a>”的用户</span>   
+            		 <span id="markshow" ><a id="containkey" href="#">全部条目</a></span>   
             </span>
                 <a class="btn btn-link" href="#rightCont" id="resetSelect">清空搜索结果</a>
             </div>
@@ -109,10 +109,10 @@
             <div class="btn-toolbar">
                 <label class="muted">排序</label>
                 <div class="btn-group btns-radio" data-toggle="buttons-radio" id="divOrder"> 
+               		<button  date-orderType="time" class="btn btn-large active" type="button">时间</button>
                     <button  date-orderType="course" class="btn btn-large"  type="button">课程</button>
                     <button  date-orderType="newTeacher" class="btn btn-large" type="button">新教师</button>
                     <button  date-orderType="teacher" class="btn btn-large" type="button">导师</button>
-                    <button  date-orderType="time" class="btn btn-large active" type="button">时间</button>
                 </div>
                 <label class="radio inline" for="selectCurrPage"><input value="noPage" type="radio" id="selectCurrPage" name="selectCheckbox" checked />选中本页</label>
                 <label class="radio inline" for="selectAll"><input value="all" type="radio" id="selectAll" name="selectCheckbox" />选中全部</label>
@@ -121,21 +121,20 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>    
     <section class="listWrap">
         <ul class="listTeacher media-list" id="listTeacher">
 
         </ul>
     </section>
     <div class="pages" id="pagebottom">
-        
     </div>
 </div>
 <script type="text/javascript">
 refreshTrackList("",1,10,"time");
 $("#resetSelect").bind("click",function(){
 	$("#serach").val("");
-	$("#markshow").html('含“<a id="containkey"href="#"></a>”的用户');
+	$("#markshow").html('<a id="containkey"href="#">全部条目</a>');
 	refreshTrackList("",1,10,"time");
 });
 
@@ -148,10 +147,10 @@ $("#divOrder button").bind("click",function(){
 	refreshTrackList('',1,10,$(this).attr("date-orderType"),$("#serach").val());
 });
 
-
-
-
 function refreshTrackList(type,pageNo,pageSize,order){
+	if(!order){
+		order=$("#divOrder .active").attr("date-ordertype");
+	}
 	resetOrderImg(order);
 	type=$("#selectTypeHidden").val();
 	/*老师列表模板函数*/
@@ -179,17 +178,12 @@ function refreshTrackList(type,pageNo,pageSize,order){
 	});
 	$("#expStudyTrackA").bind("click",function(){
 		var isAll=$(':radio[name="selectCheckbox"]:checked').val();
-		if(isAll=="noPage"){
-			var chk_value = [];
-			$("#listTeacher li").each(function() {
-				chk_value.push($(this).attr("data-fdid"));
-			});
-			window.location.href="${ctx}/studyTrack/expStudyTrackList/"+chk_value;
-		}else{
-			var serach = "";
-			serach = $("#serach").val();
-			window.location.href="${ctx}/studyTrack/expStudyTrackAll?selectType="+type+"&key="+serach+"&order="+order;
-		}
+		var chk_value = [];
+		$("#listTeacher li").each(function() {
+			chk_value.push($(this).attr("data-fdid"));
+		});
+		var serach = $("#serach").val();
+		window.location.href="${ctx}/common/exp/getExpStudyTrack?modelIds="+chk_value+"&selectType="+type+"&key="+serach+"&order="+order+"&isAll="+isAll;
 	});
 	$("#pageTop").html(pageTopFn(pageDate));
 	pageDate.type=type;
@@ -260,12 +254,14 @@ function refreshTrackList(type,pageNo,pageSize,order){
 
 function showSearch(){
 	var fdTitle = document.getElementById("serach").value;
-	$("#markshow").html('含“<a id="containkey"href="#"></a>”的用户');
-	if(fdTitle.length>2){
+	$("#markshow").html('含“<a id="containkey" href="#"></a>”的用户');
+	if(fdTitle==''){
+		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
+	}else if(fdTitle.length>2){
 		$("#containkey").html(fdTitle.substr(0,6)+"...");
-		}else{
-			$("#containkey").html(fdTitle);
-		}
+	}else{
+		$("#containkey").html(fdTitle);
+	}
 }
 
 function resetOrderImg(order){

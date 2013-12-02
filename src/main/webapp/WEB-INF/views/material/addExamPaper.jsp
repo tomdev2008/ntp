@@ -265,8 +265,8 @@
                                     <thead>
                                     <tr>
                                         <th>授权用户</th>
-                                        <th>可使用</th>
-                                        <th>可编辑</th>
+                                        <th>可用</th>
+                                        <th>编辑</th>
                                         <th>删除</th>
                                     </tr>
                                     </thead>

@@ -120,6 +120,9 @@ public class Pagination extends SimplePage implements java.io.Serializable,
 		if(pageNo>1){
 			startNum = pageSize*getPrePage()+1;
 		}
+		if(totalCount==0){
+			startNum=0;
+		}
 		return startNum;
 	}
 	/**

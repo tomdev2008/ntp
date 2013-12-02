@@ -33,7 +33,7 @@ public class LogLogin extends IdEntity{
 	private SysOrgPerson person;
 	
 	/**
-	 * 登录时间
+	 * 登录时间（带时分秒）
 	 */
 	private Date time;
 	
@@ -80,6 +80,9 @@ public class LogLogin extends IdEntity{
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
+
+	
+	
 	
 	
 }

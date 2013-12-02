@@ -277,22 +277,28 @@
                             title: $(this).find(".title>.name").text()
                         });
                     });
-                    $.post($('#ctx').val()+"/ajax/courseContent/saveCourseContent",{
-                    	catalogId:opt.id,
-                    	type:type,
-                    	isElective: $("#isElective").val(),
-                        pageTitle: $("#lectureName").val(),
-                        learnTime:  $("#learnTime").val(),
-                        sectionsIntro: $("#sectionsIntro").val(),
-                        mediaList:JSON.stringify(listArr)
-                    })
-                        .success(function(){
-                            // 提交成功
-	                        if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
-	                   		     $('#upMaterial').uploadify('destroy'); 
-	                   		}
-                        	urlRouter("sectionsDirectory");
-                        });
+                    if(listArr.length==0){
+                    	$("#materErr").html("请选择"+data_typeTxt);
+						$("#materErr").css("display", "block");
+                    	return false;
+                    }else{
+                    	$.post($('#ctx').val()+"/ajax/courseContent/saveCourseContent",{
+                        	catalogId:opt.id,
+                        	type:type,
+                        	isElective: $("#isElective").val(),
+                            pageTitle: $("#lectureName").val(),
+                            learnTime:  $("#learnTime").val(),
+                            sectionsIntro: $("#sectionsIntro").val(),
+                            mediaList:JSON.stringify(listArr)
+                        }).success(function(){
+                                // 提交成功
+    	                        if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+    	                   		     $('#upMaterial').uploadify('destroy'); 
+    	                   		}
+                            	urlRouter("sectionsDirectory");
+                            });
+                    }
+                    
                 }
             });
             $("#formMedia .btns-radio>.btn").click(function(){
@@ -353,6 +359,7 @@
                         }
                    });
                     if(flag){
+                    	$("#materErr").css("display","none");
                     	$listMedia.append(itemHtml)
                         .sortable();
                         $("#mediaCount").text($listMedia.children("li").length);
@@ -549,7 +556,7 @@
 					  data:{data:JSON.stringify(data)},
 					  dataType:'json',
 					  success: function(rsult){
-						  $.fn.jalert2("修改成功");
+						  //$.fn.jalert2("修改成功");
 					  },
 				});
 			});
@@ -751,8 +758,46 @@
 					  data = rsult;
 						data.pageTitle = title;
 						$("#rightCont").html(detailInfoFn(data));	
+						var editor = KindEditor.create('textarea[id="courseAbstract"]', {
+								resizeType : 1,
+								cssData : 'body {font-size:14px;}',
+								allowPreviewEmoticons : false,
+								allowImageUpload : true,
+								uploadJson : $('#ctx').val()+'/common/file/KEditor_uploadImg',
+								items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+									'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+									'insertunorderedlist', '|', 'undo', 'redo','link','image'],
+								afterBlur: function(){this.sync();}
+							});
+						editor.html(data.courseAbstract);
+						//ajax保存课程详细信息
+						$("#saveDetailInfo").click(function(e) {
+							if(!$("#formDetailInfo").valid()){
+								return;
+							}
+							saveDetailInfo();
+						});
 				  },
 			});
+			
+			//调用ajax保存课程模板的详细信息
+			function saveDetailInfo(){
+				$.post($('#ctx').val()+'/ajax/course/saveDetailInfo',{
+					 courseId : $("#courseId").val(),
+					 courseAbstract: $("#courseAbstract").val(),
+					 learnObjectives:  $("#learnObjectives").val(),
+					 suggestedGroup: $("#suggestedGroup").val(),
+					 courseRequirements: $("#courseRequirements").val(),
+					 courseAuthor: $("#courseAuthor").val(),
+					 authorDescrip: $("#authorDescrip").val()
+					})
+				.success(function(){
+					KindEditor.remove('textarea[name="courseAbstract"]');
+					//提交成功跳转到详细信息
+		       	    urlRouter("promotion");
+				});
+			}
+			
 			/*
 			 * data = {//ajax 成功后删除 action: "#",//form表单action courseAbstract:
 			 * "", learnObjectives: ["了解雅思考试基本情况","了解英国留学基本情况"], suggestedGroup:

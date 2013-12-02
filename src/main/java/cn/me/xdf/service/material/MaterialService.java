@@ -81,7 +81,6 @@ public class MaterialService extends BaseService {
 		}
 		return list;
 	}
-
 	/**
 	 * 编辑视频素材
 	 * 
@@ -197,6 +196,29 @@ public class MaterialService extends BaseService {
 			Pagination page = getPageBySql(finder, pageNo, pageSize);
 			return page;
 		}
+	  
+	  /**
+		 * 根据输入关键字查询(全部下载素材的时候)
+		 * @return
+		 */
+		@Transactional(readOnly = false)
+		public Pagination findMaterialByKey(String fdType, String key, Integer pageNo, Integer pageSize){
+			Finder finder = Finder.create("select info.* from IXDF_NTP_MATERIAL info ");
+			finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1");
+			finder.setParam("fdType", fdType);
+			if(StringUtil.isNotBlank(key)&&StringUtil.isNotEmpty(key)){
+				finder.append(" and info.FDNAME like :fdName");
+				finder.setParam("fdName", '%' + key + '%');
+			}
+			if(!ShiroUtils.isAdmin()){
+			    finder.append(" and ( info.fdCreatorId='"+ShiroUtils.getUser().getId()+"' or info.ispublish=1 ");
+				finder.append(" or exists ( select auth.fdid from IXDF_NTP_MATERIAL_AUTH auth where auth.fdmaterialId = info.fdid ");
+				finder.append(" and ( auth.isEditer=1 or auth.isreader=1) and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"')  )");
+			}
+			Pagination page = getPageBySql(finder, pageNo, pageSize);
+			return page;
+		}
+
 
 	/**
 	 * 查看当前用户可用的资源

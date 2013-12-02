@@ -145,7 +145,7 @@ public class MaterialAjaxController {
 		int i = page.getTotalPage();
 		if (i > 0) {
 			for (int j = 0; j < i; j++) {
-				page = materialService.findMaterialList(fdType, 1, 1, fdName,
+				page = materialService.findMaterialList(fdType, 1, j+1, fdName,
 						order);
 				List list = page.getList();
 				if (list != null && list.size() > 0) {
@@ -371,8 +371,8 @@ public class MaterialAjaxController {
 		Map map = new HashMap();
 		map.put("fdName",info.getFdName());
 		map.put("description", info.getFdDescription());
-		map.put("time", info.getFdStudyTime());
-		map.put("score", info.getFdScore());
+		map.put("time", info.getFdStudyTime()==null?"0":info.getFdStudyTime());
+		map.put("score", info.getFdScore()==null?"0":info.getFdScore());
 		map.put("fdAuthor", info.getFdAuthor());
 		map.put("fdAuthorDescription", info.getFdAuthorDescription());
 		map.put("isPublish", info.getIsPublish());

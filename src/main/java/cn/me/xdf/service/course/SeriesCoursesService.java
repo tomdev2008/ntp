@@ -57,4 +57,19 @@ public class SeriesCoursesService  extends BaseService{
 			}
 		}
 	}
+	 /**
+     * 根据阶段id查询课程信息
+     */
+	@Transactional(readOnly=false)
+	public List<SeriesCourses> getSeriesCourseByseriesId(String seriesId){
+		Finder finder=Finder.create("from SeriesCourses sc ");
+		finder.append(" where sc.series.fdId=:seriesId");
+		finder.append(" order by  sc.fdCourseNo ");
+		finder.setParam("seriesId", seriesId);	
+		List<SeriesCourses> sclist=find(finder);
+		if(sclist!=null&&sclist.size()>0){
+			return sclist;
+		}
+		return null;
+	}
 }

@@ -25,10 +25,10 @@
 		    	 <%@ include file="/WEB-INF/views/group/menu.jsp" %>
 			  </section>
 				<section class="w790 pull-right" id="rightCont">
-			        <div class="page-header">
+			        <div class="page-header bder2">
 		                <span class="muted">授权学习</span> 
 		                <div class="backHome">
-		                    <a href="#"><span class="muted">返回</span>主管<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
+		                    <a href="${ctx}/studyTrack/getStudyTrackDirector"><span class="muted">返回</span>主管<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
 		                </div>
 			        </div>
 			     
@@ -59,7 +59,9 @@ function clearserach(){//清理搜索栏并显示数据列表
 function showSearch(){
 	var fdTitle = document.getElementById("serach").value;
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
-	if(fdTitle.length>2){
+	if(fdTitle==''){
+		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
+	}else if(fdTitle.length>2){
 		$("#containkey").html(fdTitle.substr(0,2)+"...");
 		}else{
 			$("#containkey").html(fdTitle);
