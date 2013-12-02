@@ -22,8 +22,10 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.bam.BamCourseService;
+import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.message.MessageService;
@@ -52,6 +54,9 @@ public class StudyTrackService {
 	
 	@Autowired
 	private CourseService courseService;
+	
+	@Autowired
+	private SourceNodeService sourceNodeService;
 
 	
 	/**
@@ -262,6 +267,10 @@ public class StudyTrackService {
 	public Map passInfoByBamId(String bamId){
 		Map map = new HashMap();
 		BamCourse bamCourse = bamCourseService.get(BamCourse.class , bamId);
+		if(bamCourse.getThrough()==true){
+			map.put("coursePass", "true");
+			return map;
+		}
 		List<CourseCatalog> catalogs =bamCourse.getCatalogs();
 		ArrayUtils.sortListByProperty(catalogs, "fdTotalNo", SortType.HIGHT);
 		for (int i=0;i< catalogs.size();i++) {
@@ -269,12 +278,17 @@ public class StudyTrackService {
 			if(Constant.CATALOG_TYPE_CHAPTER == courseCatalog.getFdType()){
 				continue;
 			}
-			List<MaterialInfo> infos = bamCourse.getMaterialByCatalog(courseCatalog.getFdId());
-			for (int j=0; j<infos.size();j++) {
-				MaterialInfo materialInfo = infos.get(j);
-				if(materialInfo.getThrough()==true){
-					map.put("courseCatalogNow", courseCatalog);
-					map.put("materialInfoNow", materialInfo);
+			if(courseCatalog.getThrough()!=new Boolean(false)){
+				List<MaterialInfo> infos = bamCourse.getMaterialByCatalog(courseCatalog.getFdId());
+				for (int j=0; j<infos.size();j++) {
+					MaterialInfo materialInfo = infos.get(j);
+					SourceNote sourceNote = sourceNodeService.getSourceNote(materialInfo.getFdId(), courseCatalog.getFdId(), bamCourse.getPreTeachId());
+					if(sourceNote!=null){
+						if(sourceNote.getIsStudy()!=new Boolean(false)){
+							map.put("courseCatalogNow", courseCatalog);
+							map.put("materialInfoNow", materialInfo);
+						}
+					}
 				}
 			}
 		}
@@ -296,7 +310,7 @@ public class StudyTrackService {
 		finder.setParam("fdType", Constant.MESSAGE_TYPE_SYS);
 		finder.setParam("fdModelName", BamCourse.class.getName());
 		finder.setParam("fdModelId", bamId);
-		Message message =messageService.find(finder)==null?null:(Message) messageService.find(finder).get(0);
+		Message message =messageService.find(finder).size()==0?null:(Message) messageService.find(finder).get(0);
 		if(message!=null){
 			map.put("cot", message.getFdContent());
 			map.put("time", message.getFdCreateTime());

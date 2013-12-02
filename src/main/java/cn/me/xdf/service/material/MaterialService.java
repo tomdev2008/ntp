@@ -340,8 +340,8 @@ public class MaterialService extends BaseService {
 		map.put("materialId", materialId);
 		List<Map> maps = findBySQL(finder.toString(), Map.class, map);
 		Map returnMap = new HashMap();
-		returnMap.put("num", new Integer(maps.get(0).get("NUM").toString()));
-		returnMap.put("totalscore",  new Integer(maps.get(0).get("TOTALSCORE").toString()));
+		returnMap.put("num",maps.size()==0?0:new Integer(maps.get(0).get("NUM").toString()));
+		returnMap.put("totalscore", maps.size()==0?0:new Integer(maps.get(0).get("TOTALSCORE").toString()));
 		return returnMap;
 	}
 

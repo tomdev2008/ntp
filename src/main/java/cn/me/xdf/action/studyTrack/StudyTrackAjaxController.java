@@ -112,9 +112,14 @@ public class StudyTrackAjaxController {
 			if(passMap.size()==0){
 				currLecture="尚未开始学习";
 			}else{
-				CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");
-				MaterialInfo materialInfo = (MaterialInfo) passMap.get("materialInfoNow");
-				currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
+				if(passMap.get("coursePass")==null){
+					CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");
+					MaterialInfo materialInfo = (MaterialInfo) passMap.get("materialInfoNow");
+					currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
+				}else{
+					currLecture = "课程已全部通过";
+				}
+				
 			}
 			map.put("currLecture", currLecture);
 			Map map2 = studyTrackService.getMessageInfoByBamId((String)bamCourse.get("BAMID"));

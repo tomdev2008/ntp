@@ -37,7 +37,7 @@ public class LogApp extends IdEntity{
 	private Date time;
 	
 	/**
-	 * 操作类型
+	 * 操作类型（01:修改,02:删除,03:插入）
 	 */
 	private String method;
 	
