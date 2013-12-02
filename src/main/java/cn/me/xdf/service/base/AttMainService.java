@@ -28,6 +28,11 @@ public class AttMainService extends SimpleService {
         return get(AttMain.class, id);
     }
 
+    /**
+     *
+     * @param attMain
+     * @return
+     */
     @Transactional(readOnly = false)
     public AttMain save(AttMain attMain) {
         return super.save(attMain);
@@ -123,15 +128,6 @@ public class AttMainService extends SimpleService {
     }
 
 
-    public List<String> getFdIdsAttsByModelId(String modelId) {
-        List<AttMain> attMains = getAttsByModelId(modelId);
-        List<String> lists = new ArrayList<String>();
-        for (AttMain att : attMains) {
-            lists.add(att.getFdId());
-        }
-        return lists;
-    }
-
     /**
      * 根据模型ID和模型名称查询上传附件的信息
      *
@@ -149,95 +145,6 @@ public class AttMainService extends SimpleService {
         return null;
     }
 
-    public void convertModelAttMain(Object o) {
-        if (o instanceof IAttMain) {
-            AttMainMachine attMainMachine = o.getClass().getAnnotation(AttMainMachine.class);
-            String modelId = attMainMachine.modelId();
-            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
-            String modelName = attMainMachine.modelName();
-            AttValues[] attValues = attMainMachine.value();
-            for (AttValues v : attValues) {
-                String key = v.key();
-                //存储附件的主键属性
-                String field = v.fild();
-                List<AttMain> list = getByModeslIdAndModelNameAndKey(modelIdValue, modelName, key);
-                MyBeanUtils.setFieldValue(o, field, list);
-            }
-        }
-    }
 
-    @Transactional(readOnly = false)
-    public void updateAttMainMachine(Object o) {
-        if (o instanceof IAttMain) {
-            AttMainMachine attMainMachine = o.getClass().getAnnotation(AttMainMachine.class);
-            String modelId = attMainMachine.modelId();
-            String modelName = attMainMachine.modelName();
-            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
-            AttValues[] attValues = attMainMachine.value();
-            String fdId = modelIdValue;
-            List<String> allAttId = new ArrayList<String>();
-            for (AttValues v : attValues) {
-
-                String key = v.key();
-                //存储附件的主键属性
-                String field = v.fild();
-
-                Object fieldValue = MyBeanUtils.getFieldValue(o, field);
-                if (fieldValue != null) {
-                    List<AttMain> attIds = (List<AttMain>) fieldValue;
-
-                    //allAttId.addAll(attIds);
-                    for (AttMain attId : attIds) {
-                        AttMain att = get(AttMain.class, attId.getFdId());
-                        allAttId.add(attId.getFdId());
-                        if (att != null) {
-                            att.setFdKey(key);
-                            att.setFdModelId(modelIdValue);
-                            att.setFdModelName(modelName);
-                            super.update(att);
-                        }
-                    }
-                }
-            }
-
-            List<String> dbAttId = getFdIdsAttsByModelId(fdId);
-            dbAttId.removeAll(allAttId);
-            for (String id : dbAttId) {
-                deleteAttMain(id);
-            }
-
-        }
-    }
-
-    @Transactional(readOnly = false)
-    public void saveAttMainMachine(Object o) {
-        if (o instanceof IAttMain) {
-            AttMainMachine attMainMachine = o.getClass().getAnnotation(AttMainMachine.class);
-            String modelId = attMainMachine.modelId();
-            String modelName = attMainMachine.modelName();
-            String modelIdValue = ObjectUtils.toString(MyBeanUtils.getFieldValue(o, modelId));
-            AttValues[] attValues = attMainMachine.value();
-            for (AttValues v : attValues) {
-
-                String key = v.key();
-                //存储附件的主键属性
-                String field = v.fild();
-                Object fieldValue = MyBeanUtils.getFieldValue(o, field);
-                if (fieldValue != null) {
-                    List<AttMain> attIds = (List<AttMain>) fieldValue;
-                    for (AttMain attId : attIds) {
-                        AttMain att = get(AttMain.class, attId.getFdId());
-                        if (att != null) {
-                            att.setFdKey(key);
-                            att.setFdModelId(modelIdValue);
-                            att.setFdModelName(modelName);
-                            super.update(att);
-                        }
-                    }
-                }
-
-            }
-        }
-    }
 
 }

@@ -200,27 +200,6 @@ public class FileController {
 
 
     /**
-     * 文件下载（打包）
-     *
-     * @param ids
-     * @param zipname
-     * @param request
-     * @param response
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    @RequestMapping("/downloadZipsByArrayIds/{ids}/{zipname}")
-    public String downloadZipsByArrayIds(@PathVariable("ids") String ids, @PathVariable("zipname") String zipname,
-                                         HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-        DownloadHelper dh = new DownloadHelper();
-        dh.setRequest(request);
-        List<AttMain> attMains = attMainService.getAttsByIds(StringUtils.split(ids, ','));
-        String agent = request.getHeader("USER-AGENT");
-        downloadAttMain(attMains, agent, zipname, response);
-        return null;
-    }
-
-    /**
      * 文件下载 （打包）
      *
      * @param

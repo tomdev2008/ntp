@@ -61,7 +61,7 @@ public class UnitModelController {
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(Model model, @PathVariable("id") String id) {
         UnitModel unitModel = unitModelService.get(UnitModel.class, id);
-        attMainService.convertModelAttMain(unitModel);
+        //attMainService.convertModelAttMain(unitModel);
         model.addAttribute("bean", unitModel);
         return "/demo/unit/edit";
     }
@@ -69,7 +69,7 @@ public class UnitModelController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(UnitModel unitModel) {
         unitModelService.save(unitModel);
-        attMainService.updateAttMainMachine(unitModel);
+        //attMainService.updateAttMainMachine(unitModel);
         return "redirect:/demo/unit/index";
     }
 }
