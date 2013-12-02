@@ -15,7 +15,7 @@
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
 <![endif]-->
-    <script id="thumbnailsTemplate" type="text/x-dot-template">
+<script id="thumbnailsTemplate" type="text/x-dot-template">
         {{~it.list :item:index}}
             <li>
                 <div class="thumbnail">
@@ -62,8 +62,15 @@
                 </div>
             </li>
         {{~}}
-    </script>
-
+</script>
+<script id="courseCategoryTemplate" type="text/x-dot-template">
+<ul class="nav" id="navCourse">
+    <li class="active"><a href="#">全部课程</a></li>
+	{{~it.list :item:index}}
+	<li ><a href="#">{{=item.courseCategoryName}}</a></li>
+	{{~}}
+</ul>
+</script>
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
@@ -120,15 +127,8 @@
 
     <section class="md">
         <div class="hd navbar">
-            <div class="navbar-inner">
-                <ul class="nav" id="navCourse">
-                    <li><a href="#">全部课程</a></li>
-                    <li class="active"><a href="#">国外考试</a></li>
-                    <li><a href="#">国内考试</a></li>
-                    <li><a href="#">英语学习</a></li>
-                    <li><a href="#">优能中学</a></li>
-                    <li><a href="#">泡泡少儿</a></li>
-                </ul>
+            <div class="navbar-inner" id="courseCategoryDiv">
+               
             </div>
         </div>
         <div class="bd">
@@ -147,7 +147,10 @@
 
 <script type="text/javascript">	
 	var thumbnailsFn = doT.template(document.getElementById("thumbnailsTemplate").text);
+	var courseCategoryFn = doT.template(document.getElementById("courseCategoryTemplate").text);
 
+	//初始化课程分类
+	initCourseCategory();
     var seriesData = {
         type: "series",
         list:[
@@ -221,6 +224,7 @@
             }
         ]
     };
+    
     $("#list-series").append(thumbnailsFn(seriesData));
     $("#list-course").append(thumbnailsFn(courseData));
 
@@ -237,6 +241,18 @@
         e.preventDefault();
         $(this).parent().addClass("active").siblings().removeClass("active");
     })
+    
+    function initCourseCategory(){
+    	$.ajax({
+    		url : "${ctx}/ajax/category/getCourseCategory",
+    		async : false,
+    		dataType : 'json',
+    		type: "post",
+    		success : function(result) {
+    			$("#courseCategoryDiv").append(courseCategoryFn(result));
+    		}
+    	});
+    }
 </script>
 </body>
 </html>
