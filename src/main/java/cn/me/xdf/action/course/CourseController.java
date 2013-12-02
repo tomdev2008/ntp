@@ -190,4 +190,9 @@ public class CourseController {
 		return "/course/courseauth_manage";
 	}
 	
+	@RequestMapping(value = "courseIndex")
+	public String courseIndex(HttpServletRequest request) {
+		return "/course/course_index";
+	}
+	
 }
