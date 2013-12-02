@@ -674,13 +674,13 @@
         var formReplyCommentFn = doT.template(document.getElementById("formReplyCommentTemplate").text);
 
 		//课程进程Id
-        var bamId = "${param.bamId}";
+        var bamId = "${bamId}";
         
         //课程进程中的节Id
-        var catalogId = "${param.catalogId}";
+        var catalogId = "${catalogId}";
         
         //课程进行中节的内容类型
-        var fdMtype = "${param.fdMtype}";
+        var fdMtype = "${fdMtype}";
         
 		var leftData = {};
 				//ajax获取左侧章节展示树

@@ -15,45 +15,24 @@
 <![endif]-->
 </head>
 <body>
-<!--头部 S-->
-<!--  
-<header class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-    	<div class="container">
-			<a href="#" class="logo"></a>
-	        <ul class="nav">
-	          <li><a href="#">系统管理</a></li>
-	          <li><a href="#">我是导师</a></li>
-	          <li><a href="#">我是主管</a></li>
-	        </ul>
-			
-            <ul class="nav pull-right">
-              <li class="dropdown">
-              	<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                	<span class="top-face"><img src="./images/temp-face.jpg" alt=""><i class="icon-disc"></i></span>
-                    <span class="name">杨义锋</span>
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                	<li><a href="#"><i class="icon-home"></i>备课首页</a></li>
-                    <li><a href="#"><i class="icon-envelope"></i>我的私信<span class="icon-disc-bg">2</span></a></li>
-                    <li><a href="profile.html"><i class="icon-user"></i>个人资料</a></li>
-                    <li><a href="changePwd.html"><i class="icon-pencil"></i>修改密码</a></li>
-                    <li><a href="#"><i class="icon-off"></i>退出平台</a></li>
-                </ul>
-              </li>
-              <li><a href="#" class="btn-off"></a></li>
-            </ul>
-		</div>
-    </div>
-</header>
--->
 <!--头部 E-->
 
 <!--主体 S-->
 <section class="container">	
 		<div class="section mt20">
         	<div class="media box-pd20 media-main">
+        	 <!--
+		                根据类型选择性 为div.permission增加class
+		                默认： 公开
+		                授权： + authorize
+		                加密： + encrypt 
+		    -->
+		    <c:if test="${course.isPublish=='0'}">
+		      <c:if test="${course.fdPassword!=''}">
+                <div class="permission encrypt"></div>
+              </c:if>
+            </c:if>
+        	
             <a href="#" class="pull-left">
             <c:if test="${courseAtt==''}">
             	<img src="${ctx}/resources/images/zht-main-img.jpg" alt="" class="media-object">
@@ -63,13 +42,11 @@
             </c:if>
             </a>
        	    <div class="media-body">
+       	    
         		<div class="media-heading">
         		  <h2>${course.fdTitle}</h2>
-                  <a href="#" class="btn-next icon-disc-lg-bg"><i class="icon-chevronBig-right"></i></a>
-                  <a href="#" class="btn-home icon-disc-lg-bg"><i class="icon-home icon-white"></i></a>
         		</div>
-              <p>${course.fdAuthor}
-              </p>
+        		<p>${course.fdAuthor}</p>
               	<div class="rating-view" id="courseScore">
                 		<span class="rating-all">
                 		  <c:forEach var="i" begin="1" end="5">
@@ -83,10 +60,25 @@
                          </span>
                          <b class="text-warning">${courseScore}</b>
                  </div>
+              <c:if test="${course.isPublish=='0'}">
+		        <c:if test="${course.fdPassword!=''}">
+                 <!--加密类型时 start-->
+                 <form id="formPassword" action="#" >
+                     <input type="password" placeholder="输入授权密码" class="password" name="password" id="password" />
+                     <button class="btn btn-link" type="button" id="verifyPwd">确定</button>
+                 </form>
+                </c:if>
+               </c:if>
+                <!--加密类型时 end-->
                 <div class="media-foot">
-               		<a href="#" class="btn btn-warning"><i class="icon-gift icon-white"></i>免费</a>
+                    <a href="${ctx}/passThrough/getStudyContent?courseId=${course.fdId}" class="btn btn-warning" id="studyBegin">
+                        <i class="icon-book icon-white"></i>开始学习
+                    </a>
                     <span class="text-warning">${studayTotalNo}</span>位老师在学习
+                    <a href="#" title="课程列表" data-toggle="tooltip" class="btn-next icon-disc-lg-bg"><i class="icon-mylist"></i></a>
+                    <a href="#" title="课程跟踪" data-toggle="tooltip" class="btn-home icon-disc-lg-bg"><i class="icon-tracking"></i></a>
                 </div>
+                
         	</div>
             </div>
         </div>
@@ -100,16 +92,30 @@
                         </div>
 		        	</div>
                     <div class="bd">
-                    	<div class="box-pd20 box-txt">
-                        	<p>Welcome to NTP! If you're a new instructor (or a seasoned one looking for new tips), you're in the right place! This course is taught by NTP.                        	</p>
-                        	<p> In the first part of this course, you will learn essential information in creating a high quality online course on NTP. You will learn:</p>
-                          <ul>
-                              <li> what NTP is and what a NTP course looks like, including standards for the marketplace                                </li>
-                              <li>4 steps in designing and creating a NTP course</li>
-                              <li>what resources NTP provides to help you be a successful instructor on NTP</li>
-                              <li> technical know-how's on the platform                                </li>
-                              <li>tips in producing high quality video and other materials for teaching and learning </li>
-                          </ul>
+                    	<div class="box-txt">
+                            <dl>
+                                <dt>课程摘要</dt>
+                                <dd>${course.fdSummary} 
+                                </dd>
+                                <dt>学习目标</dt>
+                                <dd>
+                                    <ol>
+                                    <tags:stringli value="${course.fdLearnAim}" sign="#"/>
+                                    </ol>
+                                </dd>
+                                <dt>建议群体</dt>
+                                <dd>
+                                    <ol>
+                                    <tags:stringli value="${course.fdProposalsGroup}" sign="#"/>
+                                    </ol>
+                                </dd>
+                                <dt>课程要求</dt>
+                                <dd class="last">
+                                    <ol>
+                                    <tags:stringli value="${course.fdDemand}" sign="#"/>
+                                    </ol>
+                                </dd>
+                            </dl>
                         </div>
                     </div>
 		        </div>
@@ -256,30 +262,39 @@
 	        </div>
         </div>
 
-<!--底部 S-->
-<!--  
-	<footer>
-		<div class="navbar clearfix">
-			<div class="nav">
-				<li><a href="http://www.xdf.cn/" target="_blank">新东方网</a></li>
-				<li><a href="http://me.xdf.cn/" target="_blank">知识管理平台</a></li>
-				<li><a href="${ctx }/login">登录</a></li>
-				<li><a href="${ctx }/self_register">注册</a></li>
-				<li class="last"><a href="mailto:yangyifeng@xdf.cn">帮助</a></li>
-			</div>
-            <p style="font-size:13px">&copy; 2013 新东方教育科技集团&nbsp;知识管理中心</p>
-		</div>
-	</footer>
--->
-<!--底部 E-->
 </section>
 <!--主体 E-->
 <script type="text/javascript">
-	$("button[name='doButton']").bind("click",function(){
-		var fdid = $(this).attr("data-fdid");
-		var fdMtype = $(this).attr("data-fdMtype");
-    	window.location.href = "${ctx}/passThrough/getStudyContent?bamId=${bamId}&catalogId="+fdid+"&fdMtype="+fdMtype;
+var password = '${course.fdPassword}';
+
+var courseId = '${course.fdId}';
+
+if(password!=null&&password!=""){
+	$("button[name='doButton']").each(function(){
+		$(this).attr("disabled",true);
 	});
+	$("#studyBegin").attr("disabled",true);
+}
+/* $("#studyBegin").bind("click",function(){
+	window.location.href = "${ctx}/passThrough/getStudyContent?bamId=${bamId}&courseId="+courseId;
+}); */
+$("#verifyPwd").bind("click",function(){
+	var inputPassword = $("#password").val();
+    if(password==inputPassword){
+    	$("#formPassword").children().remove();
+    	$("button[name='doButton']").each(function(){
+    		$(this).attr("disabled",false);
+    	});
+    	$("#studyBegin").attr("disabled",false);
+    }else{
+    	$("#verifyPwd").after('<span class="error">输入密码错误！</span>');
+    }
+});
+$("button[name='doButton']").bind("click",function(){
+	var fdid = $(this).attr("data-fdid");
+	var fdMtype = $(this).attr("data-fdMtype");
+   	window.location.href = "${ctx}/passThrough/getStudyContent?catalogId="+fdid+"&fdMtype="+fdMtype;
+});
 </script>
 </body>
 </html>

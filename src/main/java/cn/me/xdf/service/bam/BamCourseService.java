@@ -16,6 +16,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
+import jodd.util.StringUtil;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -104,8 +106,9 @@ public class BamCourseService extends SimpleService {
         String courseContentJson = JsonUtils.writeObjectToJson(courseContents);
 
         BamCourse bamCourse;
-        //公开课
-        if (course.getIsPublish()) {
+        //公开课  或者 非公开 加密的
+        if (course.getIsPublish()||
+        		(!course.getIsPublish()&&StringUtil.isNotBlank(course.getFdPassword()))) {
             bamCourse = new BamCourse(userId, null, course.getFdId(),
                     courseJson, courseCatalogJson, courseContentJson);
         } else {

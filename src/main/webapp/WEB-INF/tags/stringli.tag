@@ -11,7 +11,14 @@
 		String [] lis = value.split(split);
 		for(String li:lis){
 %>
-<li><%=li%></li>
+        <%
+         if(StringUtils.isNotBlank(li)){
+        %>
+       <li><%=li%></li>
+         <%
+         }
+        %>
+
 <%
 		}
 	}

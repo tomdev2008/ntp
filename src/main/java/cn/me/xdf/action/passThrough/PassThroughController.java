@@ -23,6 +23,7 @@ import cn.me.xdf.common.utils.array.ArrayUtils;
 import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
@@ -80,31 +81,28 @@ public class PassThroughController {
 			if(course!=null && course.getIsAvailable()){
 				//从进程表中取当前用户所选课程的进程信息
 				BamCourse bamCourse = bamCourseService.findUniqueByProperty(BamCourse.class, Value.eq("courseId", course.getFdId()),Value.eq("preTeachId", ShiroUtils.getUser().getId()));
-				if(bamCourse==null){
-					//如果进程信息为空，则先保存进程信息
-					bamCourseService.saveBamCourse(course, ShiroUtils.getUser().getId());
-					bamCourse = bamCourseService.findUniqueByProperty(BamCourse.class, Value.eq("courseId", course.getFdId()),Value.eq("preTeachId", ShiroUtils.getUser().getId()));
+				if(bamCourse!=null){
+					//章节信息
+					List<CourseCatalog> courseCatalogs = bamCourse.getCatalogs();
+					if(courseCatalogs!=null){
+						ArrayUtils.sortListByProperty(courseCatalogs, "fdTotalNo", SortType.HIGHT);
+					}
+					request.setAttribute("catalog", courseCatalogs);
+
 				}
 				//获取当前课程正在学习的新教师
 				int studayTotalNo = getLearningTotalNo(course.getFdId());
 				request.setAttribute("studayTotalNo", studayTotalNo);
 				//获取该课程的评分统计值
-				ScoreStatistics scoreStatistics =  scoreStatisticsService.findUniqueByProperty(ScoreStatistics.class,Value.eq("fdModelName", CourseInfo.class.getName()),Value.eq("fdModelId", course.getFdId()));
-				//课程进程ID
-				request.setAttribute("bamId", bamCourse.getFdId());
 				//课程信息
 				request.setAttribute("course", course);
 				//课程图片
 				AttMain attMain = attMainService.getByModelIdAndModelName(courseId, CourseInfo.class.getName());
 				request.setAttribute("courseAtt", attMain!=null?attMain.getFdId():"");
 				//课程评分统计
+				ScoreStatistics scoreStatistics =  scoreStatisticsService.findUniqueByProperty(ScoreStatistics.class,Value.eq("fdModelName", CourseInfo.class.getName()),Value.eq("fdModelId", course.getFdId()));
 				request.setAttribute("courseScore", scoreStatistics==null?0:scoreStatistics.getFdAverage());
-				//章节信息
-				List<CourseCatalog> courseCatalogs = bamCourse.getCatalogs();
-				if(courseCatalogs!=null){
-					ArrayUtils.sortListByProperty(courseCatalogs, "fdTotalNo", SortType.HIGHT);
-				}
-				request.setAttribute("catalog", courseCatalogs);
+				
 			}else{
 				//否则需要跳转到发现课程
 				
@@ -122,10 +120,43 @@ public class PassThroughController {
 	 */
 	@RequestMapping(value = "getStudyContent")
 	public String getStudyContent(HttpServletRequest request) {
-		String bamId = request.getParameter("bamId");
-		if(StringUtil.isNotBlank(bamId)){
-			bamCourseService.updateCourseStartTime(bamId);
+		String courseId = request.getParameter("courseId");
+		String catalogId = request.getParameter("catalogId");
+		String fdMtype = request.getParameter("fdMtype");
+		CourseInfo course = courseService.get(courseId);
+		BamCourse bamCourse = bamCourseService.findUniqueByProperty(BamCourse.class, Value.eq("courseId", course.getFdId()),Value.eq("preTeachId", ShiroUtils.getUser().getId()));
+		if(bamCourse==null){
+			//如果进程信息为空，则先保存进程信息
+			bamCourseService.saveBamCourse(course, ShiroUtils.getUser().getId());
+			bamCourse = bamCourseService.findUniqueByProperty(BamCourse.class, Value.eq("courseId", course.getFdId()),Value.eq("preTeachId", ShiroUtils.getUser().getId()));
 		}
+		if(StringUtil.isBlank(catalogId)&&StringUtil.isBlank(fdMtype)){
+			List<CourseCatalog> courseCatalogs = bamCourse.getCatalogs();
+			if(courseCatalogs!=null){
+				ArrayUtils.sortListByProperty(courseCatalogs, "fdTotalNo", SortType.HIGHT);
+			    /////添加开始学习按钮 找出当前人员学习的当前节
+				for (CourseCatalog courseCatalog : courseCatalogs) {
+					 if(courseCatalog.getFdType().equals(Constant.CATALOG_TYPE_LECTURE)){//表示节
+						 if(courseCatalog.getThrough()!=null&&courseCatalog.getThrough()){
+							 continue;
+						 }else{
+							//设置正在学习的当前节
+							 request.setAttribute("catalogId", courseCatalog.getFdId());
+							 //设置正在学习的当前节的素材类型
+							 request.setAttribute("fdMtype", courseCatalog.getFdMaterialType());
+							 break; 
+						 }
+					  }
+				}
+			}
+		}else{
+			//设置正在学习的当前节
+			request.setAttribute("catalogId", catalogId);
+			request.setAttribute("fdMtype", fdMtype);
+			
+		}
+		request.setAttribute("bamId", bamCourse.getFdId());
+		bamCourseService.updateCourseStartTime(bamCourse.getFdId());
 		//页面跳转，跳转到课程学习页面
 		return "/passThrough/course_content_study";
 	}

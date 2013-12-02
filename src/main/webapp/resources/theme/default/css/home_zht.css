@@ -41,6 +41,7 @@
 .media-main .media-foot .icon-disc-lg-bg i{margin:5px 0 0 5px;}
 #formPassword .password{padding: 4px 5px;width:140px;background-color: #efefef;}
 #formPassword .btn{vertical-align: top}
+#formPassword .error{display:inline-block;vertical-align:top;padding:4px 0 6px;}
 .pub_time{color:#bbb;font-size:12px;margin-right:42px;}
 .pub_time i{margin-right:8px;}
 .hd .rating-view{padding-left:50px;top:18px;*top:20px;}
