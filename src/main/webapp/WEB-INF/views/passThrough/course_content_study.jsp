@@ -833,8 +833,7 @@
             		loadLeftData(bamId);
             		$("#sidenav>li>a").popover({
           	            trigger: "hover"
-          	        })
-          	                .click(function(e){
+          	        }).click(function(e){
           	                	$(".uploadify").each(function(){
                             		$(this).uploadify('destroy'); 
                             	});
@@ -844,6 +843,7 @@
           	                        $(this).parent().addClass("active").siblings().removeClass("active");
           	                    }
           	                });
+            		loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
             	}
                  
             });
@@ -854,8 +854,7 @@
             		loadLeftData(bamId);
             		$("#sidenav>li>a").popover({
           	            trigger: "hover"
-          	        })
-          	                .click(function(e){
+          	        }).click(function(e){
           	                	$(".uploadify").each(function(){
                             		$(this).uploadify('destroy'); 
                             	});
