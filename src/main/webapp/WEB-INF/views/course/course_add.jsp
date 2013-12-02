@@ -324,6 +324,11 @@ class="close">&times;</a></li>
 					<input id="courseCover" name="courseCover" class="input-block-level" type="hidden" 
 
 value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
+                <!--图片剪切-->
+                <div class="cutimg-box no" style="display:none;">
+                    <iframe id="iframeimg" width="100%" height="500" id="win" name="win" frameborder="0" scrolling="no"
+                            src=""></iframe>
+                </div>
 									<!--图片预览-->
 					<div class="courseCover"><img id="imgshow" name="imgshow" style="width: 
 
@@ -890,6 +895,18 @@ $.Placeholder.init();
 		
 		$("#coursePwd").val("");
 	}
+
+
+
+//图片剪切成功
+function successSelectArea(imgSrc){
+    var now=new Date();
+    var number = now.getSeconds();
+    jQuery("#imgshow").attr('src',  imgSrc+"?n="+number);
+    $(".cutimg-box").hide();
+    //imgshow
+    $("#imgshow").show();
+}
 	
 	//课程发布
 	function releaseCourse(){
