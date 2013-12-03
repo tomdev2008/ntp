@@ -108,10 +108,7 @@ public class SeriesCoursesService  extends BaseService{
 		for (SeriesInfo seriesInfo : infos) {
 			 List<SeriesCourses> seriesCourses = getSeriesCourseByseriesId(seriesInfo.getFdId());
 			 for (SeriesCourses seriesCourses2 : seriesCourses) { 
-				 if(!list.contains(seriesCourses2.getCourses())){
-					 list.add(seriesCourses2.getCourses());
-				 }
-				 
+					 list.add(seriesCourses2.getCourses());				 
 			}
 		}
 		return list;

@@ -157,42 +157,6 @@
 
 	//初始化课程
 	initCouese("all",1);
-  /*   var courseData = {
-        type: "single",
-        list:[
-            {
-                imgUrl: "./images/zht-main-img.jpg",
-                learnerNum: 17002,
-                name: "广东民俗与课堂教学",
-                issuer: "集团国外考试推广管理中心",
-                score: 4,
-                raterNum: 76,
-                link: "##",
-                isLearning: false
-            },
-            {
-                imgUrl: "./images/zht-main-img.jpg",
-                learnerNum: 17002,
-                name: "广东民俗与课堂教学",
-                issuer: "集团国外考试推广管理中心",
-                score: 4,
-                raterNum: 76,
-                link: "##",
-                isLearning: true
-            },
-            {
-                imgUrl: "./images/zht-main-img.jpg",
-                learnerNum: 17002,
-                name: "广东民俗与课堂教学",
-                issuer: "集团国外考试推广管理中心",
-                score: 4,
-                raterNum: 76,
-                link: "##",
-                isLearning: true
-            }
-        ]
-    };
-    $("#list-course").append(thumbnailsFn(courseData)); */
 
     $("#loadMoreSeries").click(function(e){//点击加载更多
     	 e.preventDefault();
