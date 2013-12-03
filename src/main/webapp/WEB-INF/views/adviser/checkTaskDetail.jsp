@@ -170,17 +170,17 @@
         <div class="timeLine">
             <div class="num">0</div>
             {{ for(var i=1; i <= total; i++){ }}
-            <a title="{{=i*it.timeLine.span}}{{=it.timeLine.unit || ''}}" href="#" style="width: {{=(it.timeLine.width-total-1)/total}}px"
+            <a title="{{=i*it.timeLine.span}}{{=it.timeLine.unit || ''}}" style="width: {{=(it.timeLine.width-total-1)/total}}px"
                class="{{?i*it.timeLine.span==it.timeLine.span}}first {{?}}{{?it.timeLine.curPos && i*it.timeLine.span<=it.timeLine.curPos}}active{{?}}"><span class="num">{{=i*it.timeLine.span}}</span></a>
             {{ } }}
         </div>
         #}}
 
 		{{##def.timeLineOnChecked:total:
-        <div class="timeLine">
+        <div class="timeLine onChecked">
             <div class="num">0</div>
             {{ for(var i=1; i <= total.totalScore; i++){ }}
-            <a title="{{=i*it.timeLine.span}}{{=it.timeLine.unit || ''}}" href="#" style="width: {{=(it.timeLine.width-total.totalScore-1)/total.totalScore}}px"
+            <a title="{{=i*it.timeLine.span}}{{=it.timeLine.unit || ''}}"  style="width: {{=(it.timeLine.width-total.totalScore-1)/total.totalScore}}px"
                class="{{?i*it.timeLine.span==it.timeLine.span}}first {{?}}{{?it.timeLine.curPos && i*it.timeLine.span<=it.timeLine.curPos || i*it.timeLine.span<=total.rating.score}}active{{?}}"><span class="num">{{=i*it.timeLine.span}}</span></a>
             {{ } }}
         </div>
@@ -388,6 +388,9 @@
 								$(this).parent().next(":hidden").val(
 										$(this).children(".num").text());
 							}).tooltip();
+			
+			$("#taskDetail").find(".timeLine.onChecked>a").unbind("click");
+			
 			if (taskData.status != "unfinish") {
 				var results = resultsBarFn(taskData);
 				$("#taskDetail").append(results).prepend(results);
@@ -475,8 +478,6 @@
 															+ score
 															+ '</span>分</div>'); */
 															
-											 $this.attr("fdStatus",0);
-											$boxScore.find(".timeLine").children("a").attr("disabled",false);
 											taskData.score = score;
 											var fdid = $boxScore.parent(
 													".ratingBox").attr("id");
@@ -502,16 +503,15 @@
 													"fdComment" : txt,
 												},
 												success: function(result){
-													$this.next(".error").remove();
+													//$this.next(".error").remove();
 													$("#navTask>a").eq(result).addClass("active").attr("data-original-title","已批改");
 												}
 											}); 
-											$this.attr("fdStatus",1); 
 											 var total = $("#nowScore").text();
 											 total = parseInt(total) + parseInt(taskData.score);
 											 $("#nowScore").text(total);
-											$boxScore.find(".timeLine").children("a").attr("disabled",true);
 										}
+										$boxScore.find(".timeLine>a").unbind("click");
 									}
 									if (score) {
 										$boxComm.after(boxCommentFn({
@@ -521,6 +521,15 @@
 										$(this).text("修改批改意见");
 									}
 								} else if ($boxComm.hasClass("box-comm")) {
+									$boxScore.find(".timeLine>a").click(
+											function(e) {
+												e.preventDefault();
+												$(this).prevAll("a").add(this).addClass(
+														"active");
+												$(this).nextAll("a").removeClass("active");
+												$(this).parent().next(":hidden").val(
+														$(this).children(".num").text());
+											}).tooltip();
 									$boxComm.after(
 											richTextFn({
 												comm : $boxComm.children(
