@@ -36,6 +36,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.SysOrgPersonService;
+import cn.me.xdf.service.UserRoleService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseAuthService;
@@ -107,7 +108,8 @@ public class CourseAjaxController {
 	@Autowired
 	private SysOrgPersonService sysOrgPersonService;
 	
-	
+	@Autowired
+	private UserRoleService userRoleService;
 	/**
 	 * 获取当前课程的基本信息
 	 * 
@@ -789,6 +791,10 @@ public class CourseAjaxController {
 		boolean isexist=courseParticipateAuthService.findCouseParticipateAuthById(courseId,teacherId);
 		if(isexist){
 			String mentorId=request.getParameter("mentor");
+			if(StringUtil.isNotEmpty(mentorId)){
+				//添加导师角色
+			    userRoleService.addUserRole(mentorId,"guidance");
+			}
 			CourseInfo courseInfo=courseService.load(courseId);
 			SysOrgPerson teacher=accountService.findById(teacherId);
 			SysOrgPerson mentor=accountService.findById(mentorId);
