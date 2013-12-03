@@ -682,7 +682,7 @@
         //课程进行中节的内容类型
         var fdMtype = "${fdMtype}";
         
-        var courseId = "${courseId}"
+        var courseId = "${courseId}";
         
 		var leftData = {};
 				//ajax获取左侧章节展示树
