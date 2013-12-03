@@ -1,10 +1,12 @@
 package cn.me.xdf.common.utils;
 
+
+import jodd.io.FileUtil;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,18 +24,10 @@ public class ByteFileObjectUtils {
 			return null;
 		}
 		try {
-			FileInputStream stream = new FileInputStream(f);
-			ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
-			byte[] b = new byte[1000];
-			for (int n; (n = stream.read(b)) != -1;) {
-				out.write(b, 0, n);
-			}
-			stream.close();
-			out.close();
-			return out.toByteArray();
+            return FileUtil.readBytes(f);
 		} catch (IOException e) {
+            throw new RuntimeException(e);
 		}
-		return null;
 	}
 
 	/**
