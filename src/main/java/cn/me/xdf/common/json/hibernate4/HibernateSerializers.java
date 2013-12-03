@@ -15,7 +15,7 @@ import org.hibernate.proxy.HibernateProxy;
  * Time: 上午10:16
  * To change this template use File | Settings | File Templates.
  */
-public class HibernateSerializers extends Serializers.None
+public class HibernateSerializers extends Serializers.Base
 {
     protected final int _moduleFeatures;
 

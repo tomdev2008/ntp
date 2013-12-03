@@ -2,7 +2,6 @@ package cn.me.xdf.aspect;
 
 
 import cn.me.xdf.model.base.AttMain;
-import cn.me.xdf.service.bam.aspect.SourceAspect;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.plugin.AttMainPlugin;
 import org.aspectj.lang.JoinPoint;
