@@ -277,34 +277,52 @@
                 <c:import url="/WEB-INF/views/passThrough/new_course_list.jsp"></c:import>
 	        </div>
         </div>
-
 </section>
 <!--主体 E-->
 <script type="text/javascript">
-var password = '${course.fdPassword}';
 
 var courseId = '${course.fdId}';
 
-if(password!=null&&password!=""){
-	$("button[name='doButton']").each(function(){
-		$(this).attr("disabled",true);
-	});
-	$("#studyBegin").attr("disabled",true);
-}
-/* $("#studyBegin").bind("click",function(){
-	window.location.href = "${ctx}/passThrough/getStudyContent?bamId=${bamId}&courseId="+courseId;
-}); */
+$.ajax({
+	type: "post",
+	url: "${ctx}/ajax/passThrough/checkCoursePwd/"+courseId,
+	cache :false,
+	dataType : 'json',
+	success:function(data){
+		var flag = data.flag;
+		if(flag=="0"){
+			$("button[name='doButton']").each(function(){
+				$(this).attr("disabled",true);
+			});
+			$("#studyBegin").attr("disabled",true);
+		} 
+	}
+}); 
 $("#verifyPwd").bind("click",function(){
 	var inputPassword = $("#password").val();
-    if(password==inputPassword){
-    	$("#formPassword").children().remove();
-    	$("button[name='doButton']").each(function(){
-    		$(this).attr("disabled",false);
-    	});
-    	$("#studyBegin").attr("disabled",false);
-    }else{
-    	$("#verifyPwd").after('<span class="error">输入密码错误！</span>');
-    }
+	$.ajax({
+		type: "post",
+		url: "${ctx}/ajax/passThrough/verifyPwd",
+		cache :false,
+		data:{
+			"courseId":courseId,
+			"userPwd" :inputPassword,
+		},
+		dataType : 'json',
+		success:function(data){
+			var flag = data.flag;
+			if(flag=="0"){
+				$("#verifyPwd").after('<span class="error">输入密码错误！</span>');	
+			}else{
+				$("#formPassword").children().remove();
+		    	$("button[name='doButton']").each(function(){
+		    		$(this).attr("disabled",false);
+		    	});
+		    	$("#studyBegin").attr("disabled",false);
+			}
+		}
+	}); 
+	
 });
 $("button[name='doButton']").bind("click",function(){
 	var fdid = $(this).attr("data-fdid");

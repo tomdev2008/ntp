@@ -12,6 +12,7 @@ import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
@@ -35,6 +36,7 @@ import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.material.ExamQuestionService;
 import cn.me.xdf.service.material.MaterialService;
@@ -70,6 +72,55 @@ public class PassThroughAjaxController {
 
 	@Autowired
 	private ExamQuestionService examQuestionService;
+	
+	@Autowired
+	private CourseParticipateAuthService courseParticipateAuthService;
+	
+	
+	/**
+	 * 检查当前课程 当前登录是否有权限进入
+	 * @param courseId
+	 * @return
+	 */
+	@RequestMapping(value = "checkCoursePwd/{courseId}")
+	@ResponseBody
+	public String checkCoursePwd(@PathVariable("courseId") String courseId){
+		Map<String,String> map = new HashMap<String,String>();
+		CourseInfo course = courseService.get(courseId);
+		if(!course.getIsPublish()){
+			if(StringUtil.isNotBlank(course.getFdPassword())){
+				map.put("flag", "0");//代表是有密码的加密课程
+			} else {
+				boolean canStudy= courseParticipateAuthService
+						.findCouseParticipateAuthById(courseId,ShiroUtils.getUser().getId());
+				if(canStudy){//无权学习的
+					map.put("flag", "0");//无权学习
+				} else {
+					map.put("flag", "1");//有权学习
+				}
+			}
+		} else {
+			map.put("flag", "1");//有权学习
+		}
+		
+		return JsonUtils.writeObjectToJson(map);
+	}
+	
+	@RequestMapping(value = "verifyPwd")
+	@ResponseBody
+	public String verifyPwd(HttpServletRequest request){
+		String courseId = request.getParameter("courseId");
+		String userPwd = request.getParameter("userPwd");
+		Map<String,String> map = new HashMap<String,String>();
+		CourseInfo course = courseService.get(courseId);
+		if(StringUtil.isNotBlank(userPwd)&&userPwd.equals(course.getFdPassword())){
+			map.put("flag", "1");
+		}else{
+			map.put("flag", "0");
+		}
+		return JsonUtils.writeObjectToJson(map);
+	}
+	
 	
 	/**
 	 * 点击学习通过，更改节的学习状态
@@ -273,7 +324,6 @@ public class PassThroughAjaxController {
 		}
 		return JsonUtils.writeObjectToJson(map);
 	}
-	
 
 	/**
 	 * 根据测试id获取测试信息

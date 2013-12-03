@@ -1,6 +1,7 @@
 package cn.me.xdf.action.passThrough;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -87,16 +88,17 @@ public class PassThroughController {
 			if(course!=null && course.getIsAvailable()){
 				//从进程表中取当前用户所选课程的进程信息
 				BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(ShiroUtils.getUser().getId(),course.getFdId());
-				List<CourseCatalog> courseCatalogs;
+				List<CourseCatalog> courseCatalogs = new ArrayList<CourseCatalog>();
 				if(bamCourse!=null){
 					//章节信息
 					courseCatalogs = bamCourse.getCatalogs();
+					if(courseCatalogs!=null){
+						ArrayUtils.sortListByProperty(courseCatalogs, "fdTotalNo", SortType.HIGHT);
+					}
 				}else{
-					courseCatalogs = courseCatalogService.findByProperty("courseInfo.fdId", course.getFdId());
+					courseCatalogs = courseCatalogService.getCatalogsByCourseId(course.getFdId());
 				}
-				if(courseCatalogs!=null){
-					ArrayUtils.sortListByProperty(courseCatalogs, "fdTotalNo", SortType.HIGHT);
-				}
+				
 				request.setAttribute("catalog", courseCatalogs);
 				//当前作者的图片(当作者和创建者是相同时候使用创建者的照片)
 				if(course.getFdAuthor().equals(course.getCreator().getRealName())){

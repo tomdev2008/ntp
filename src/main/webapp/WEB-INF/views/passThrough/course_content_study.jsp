@@ -166,6 +166,7 @@
             <input name="fdid" value="{{=it.id}}" type="hidden" />
 			<input name="bamId" value="{{=it.bamId}}" type="hidden" />
 			<input name="catalogId" value="{{=it.catalogId}}" type="hidden" />
+            <input name="courseId" value="{{=it.courseId}}" type="hidden" />
 			<input name="fdMtype" value="{{=it.fdMtype}}" type="hidden" />
 			<input name="startTime" value="{{=it.startTime}}" type="hidden" />
             {{?it.type=='exam'}}
@@ -1424,6 +1425,7 @@
 						tempData.action = "submitExamOrTask";
                         tempData.bamId=bamId ;
                         tempData.catalogId=catalogId ;
+                        tempData.courseId=courseId;
                         tempData.fdMtype=fdMtype ;
                         var date = new Date();
                         //tempData.startTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
