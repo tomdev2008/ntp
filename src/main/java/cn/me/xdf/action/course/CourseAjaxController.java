@@ -959,10 +959,10 @@ public class CourseAjaxController {
 		Finder finder = Finder.create("");
 		finder.append("select course from CourseInfo course" );
 		if(type.equals("all")){
-			finder.append(" where course.fdStatus=:fdStatus " );
+			finder.append(" where course.fdStatus=:fdStatus and course.isAvailable=1" );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 		}else{
-			finder.append(" where course.fdStatus=:fdStatus  and course.fdCategory.fdId=:type " );
+			finder.append(" where course.isAvailable=1 and course.fdStatus=:fdStatus  and course.fdCategory.fdId=:type " );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 			finder.setParam("type", type);
 		}		

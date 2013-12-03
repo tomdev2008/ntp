@@ -28,8 +28,8 @@ public class HomeController {
 
 	@RequestMapping(value = "/successPage", method = RequestMethod.GET)
 	public String successPage(Model model) {
-		
-		return "/home";
+		model.addAttribute("userId", ShiroUtils.getUser().getId());
+		return "/course/course_index";
 
 	}
 	/**
