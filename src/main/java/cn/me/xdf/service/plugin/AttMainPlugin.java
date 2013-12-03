@@ -75,10 +75,10 @@ public class AttMainPlugin {
      * @param attMain
      * @return
      */
-    public static String getSwfPath(AttMain attMain) {
+    public static String getSwfPath(AttMain attMain,String type) {
 
         try {
-            DocInterfaceModel model = new DocInterfaceModel(attMain, DocInterfaceModel.getSwfPath);
+            DocInterfaceModel model = new DocInterfaceModel(attMain, type);
             HttpClient client = new HttpClient();
             client.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET,
                     "utf-8");
@@ -90,7 +90,8 @@ public class AttMainPlugin {
                 Map<String, Object> map = JsonUtils.readObjectByJson(json, Map.class);
                 if ("1".equals(map.get("Status").toString())) {
                     List<Map<String, String>> lists = (List<Map<String, String>>) map.get("ResponseData");
-                    return lists.get(0).get("swf地址");
+                    return (String)lists.get(0).values().toArray()[0];
+                   
                 } else {
                     log.error("getSwfPath:" + map.get("Error").toString());
                     throw new RuntimeException("getSwfPath:" + map.get("Error").toString());
