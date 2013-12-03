@@ -82,15 +82,15 @@ public class SeriesController {
 	@RequestMapping(value = "previewSeries")
 	public String previewSeries(HttpServletRequest request) {
 		//获取课程ID
-		String courseId = request.getParameter("seriesId");
-		if(StringUtil.isNotEmpty(courseId)){
+		String seriesId = request.getParameter("seriesId");
+//		if(StringUtil.isNotEmpty(courseId)){
 //			CourseInfo course = courseService.get(courseId);
 //			if(course!=null){
 //				List<CourseCatalog> catalog = courseCatalogService.getCatalogsByCourseId(courseId);
 //				request.setAttribute("course", course);
 //				request.setAttribute("catalog", catalog);
 //			}
-		}
+//		}
 		return "/course/series_preview";
 	}
 }

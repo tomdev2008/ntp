@@ -763,6 +763,7 @@ public class CourseAjaxController {
 				coursepas.add(mcpa);
 			}
 		}
+		boolean isOftask=courseCatalogService.getIsCourseOfTask(courseId);
 		Map map=new HashMap();
 		map.put("totalPage", page.getTotalPage());
 		map.put("currentPage", pageNo);
@@ -773,6 +774,7 @@ public class CourseAjaxController {
 		map.put("EndPage",page.getEndPage());
 		map.put("StartOperate", page.getStartOperate());
 		map.put("EndOperate", page.getEndOperate());
+		map.put("isOftask", isOftask);//该课程是否包含作业;
 		return JsonUtils.writeObjectToJson(map);
 	}
 	/**

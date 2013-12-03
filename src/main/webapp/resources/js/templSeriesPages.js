@@ -190,6 +190,9 @@
 						  data.coverUrl =  $('#ctx').val()+"/common/file/image/"+rsult.coverUrl;
 					  }
 					  data.pageTitle = title;	// ajax 成功后删除
+					  data.courseSkinList = [
+					                         {title: "国外考试", imgUrl:  $('#ctx').val()+"/resources/images/courseSkin-01.png"}];
+					 data.courseSkin= {title: "国内考试"};
 					  $("#rightCont").html(promotionFn(data));// ajax 成功后删除
 				  },
 			});

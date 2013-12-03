@@ -136,10 +136,16 @@ public class SeriesAjaxContrller {
 		String seriesId=request.getParameter("seriesId");
 		String seriesTitle=request.getParameter("seriesTitle");
 		String seriesDesc=request.getParameter("seriesDesc");
+		String seriesAuthor=request.getParameter("seriesAuthor");
 //		String isavailable=request.getParameter("isavailable");
 		SeriesInfo series=seriesInfoService.get(seriesId);
 		series.setFdName(seriesTitle);
 		series.setFdDescription(seriesDesc);
+		if(StringUtil.isNotEmpty(seriesAuthor)){
+			series.setFdAuthor(seriesAuthor);
+		}else{
+			series.setFdAuthor(series.getCreator().getNotifyEntity().getRealName());
+		}
 		series.setIsAvailable(true);
 		seriesInfoService.save(series);
 	}
@@ -320,10 +326,12 @@ public class SeriesAjaxContrller {
 		Map<String, Object> map=new HashMap<String, Object>();
 		List<Map<String, Comparable>> courselist=null;
 		String phasesDes="";
+		String phasesTitle="";
 		if(sclist!=null){
 			courselist=new ArrayList<Map<String, Comparable>>();
 			SeriesInfo phases=sclist.get(0).getSeries();
 			phasesDes=phases.getFdDescription();
+			phasesTitle=phases.getFdName();
 			for(SeriesCourses seriescourse:sclist){
 				Map<String, Comparable> courseM=new HashMap<String, Comparable>();
 				CourseInfo course=seriescourse.getCourses();
@@ -333,8 +341,8 @@ public class SeriesAjaxContrller {
 				courselist.add(courseM);
 			}
 		}
+		map.put("seriesTitle", phasesTitle);
 		map.put("sectionsIntro", phasesDes);
-		map.put("mediaList" ,courselist);
 		return JsonUtils.writeObjectToJson(map);
 	}
 	/**
@@ -492,7 +500,8 @@ public class SeriesAjaxContrller {
 				map.put("seriesImg", "");	
 			}
 			Map<String, String> author=null;
-			if(StringUtil.isNotEmpty(seriesInfo.getFdAuthor())){
+			//在创建系列课程时,当作者为空时取的是创建者的名字,此处判断如果创建者和作者名字相同走默认即创建者,否则取作者字段
+			if(StringUtil.isNotEmpty(seriesInfo.getFdAuthor())&&!seriesInfo.getFdAuthor().equals(seriesInfo.getCreator().getNotifyEntity().getRealName())){
 				author=new HashMap<String, String>();
 				author.put("authorName", seriesInfo.getFdAuthor());//作者名称
 				author.put("imgUrl", "");//作者头像
