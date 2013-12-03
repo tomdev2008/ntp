@@ -22,6 +22,7 @@ import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
@@ -852,9 +853,9 @@ public class CourseAjaxController {
 		}
 	}
 
-	@RequestMapping(value="getCoursesIndexInfo")
+	@RequestMapping(value="getMyCoursesIndexInfo")
 	@ResponseBody
-	public String getCoursesIndexInfo(HttpServletRequest request){
+	public String getMyCoursesIndexInfo(HttpServletRequest request){
 		
 		Map returnMap = new HashMap();
 		String userId = request.getParameter("userId");
@@ -944,4 +945,52 @@ public class CourseAjaxController {
 		returnMap.put("unfinishSum",unfinishSum);
 		return JsonUtils.writeObjectToJson(returnMap);
 	}
+	
+	@RequestMapping(value="getAllCoursesIndexInfo")
+	@ResponseBody
+	public String getAllCoursesIndexInfo(HttpServletRequest request){
+		
+		Map returnMap = new HashMap();
+		String userId = request.getParameter("userId");
+		String type = request.getParameter("type");
+		int pageNo = new Integer(request.getParameter("pageNo"));
+		Finder finder = Finder.create("");
+		finder.append("select course from CourseInfo course" );
+		if(type.equals("all")){
+			finder.append(" where course.fdStatus=:fdStatus " );
+			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
+		}else{
+			finder.append(" where course.fdStatus=:fdStatus  and course.fdCategory.fdId=:type " );
+			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
+			finder.setParam("type", type);
+		}		
+		Pagination pag=	courseService.getPage(finder, pageNo, 3);
+		List<CourseInfo> courseInfos =  (List<CourseInfo>) pag.getList();
+		if(pag.getTotalPage()<=pageNo){
+			returnMap.put("hasMore", false);
+		}else{
+			returnMap.put("hasMore", true);
+		}
+		List<Map> lists = new ArrayList<Map>();
+		for (CourseInfo courseInfo : courseInfos) {
+			Map map = new HashMap();
+			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
+			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
+			map.put("learnerNum", getLearningTotalNo(courseInfo.getFdId()));
+			map.put("name", courseInfo.getFdTitle());
+			map.put("issuer", courseInfo.getCreator().getDeptName()); 
+			ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
+			map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
+			map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
+			BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseInfo.getFdId());
+			map.put("isLearning", bamCourse==null?false:true);
+			map.put("dataId", courseInfo.getFdId());
+			lists.add(map);
+		}
+		returnMap.put("list", lists);
+		returnMap.put("type", "single");
+		
+		return JsonUtils.writeObjectToJson(returnMap);
+	}
+	
 }

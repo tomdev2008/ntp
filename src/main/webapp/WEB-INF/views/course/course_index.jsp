@@ -37,7 +37,7 @@
                         <p class="rating">
                                     <span class="rating-view">
                                         <span class="rating-all">
-                                            {{ for(var i=0; i< 5; i++){ }}
+                                            {{ for(var i=1; i<= 5; i++){ }}
                                                 <i class="icon-star{{?i<item.score}} active{{?}}"></i>
                                             {{ } }}
                                          </span>
@@ -206,7 +206,7 @@
         var pageNo = $("#list-course li").length/3+1;
         var type = $("#navCourse .active a").attr("data-id");
         $.ajax({
-    		url : "${ctx}/ajax/course/getCoursesIndexInfo",
+    		url : "${ctx}/ajax/course/getMyCoursesIndexInfo",
     		async : false,
     		dataType : 'json',
     		data:{
@@ -234,7 +234,7 @@
     
     function initCouese(type,pageNo){
     	$.ajax({
-    		url : "${ctx}/ajax/course/getCoursesIndexInfo",
+    		url : "${ctx}/ajax/course/getMyCoursesIndexInfo",
     		async : false,
     		dataType : 'json',
     		data:{

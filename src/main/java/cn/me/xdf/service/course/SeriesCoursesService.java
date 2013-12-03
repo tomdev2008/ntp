@@ -81,10 +81,28 @@ public class SeriesCoursesService  extends BaseService{
 	}
 	
 	/**
-     * 查找系列下所有课程
+     * 查找系列下所有课程(去除重复)
      */
 	@Transactional(readOnly=false)
-	public List<CourseInfo> getCoursesByseriesId(String seriesId){
+	public List<CourseInfo> getCoursesByseriesId1(String seriesId){
+		List<CourseInfo> list = new ArrayList<CourseInfo>();
+		List<SeriesInfo> infos = seriesInfoService.getSeriesById(seriesId);
+		for (SeriesInfo seriesInfo : infos) {
+			 List<SeriesCourses> seriesCourses = getSeriesCourseByseriesId(seriesInfo.getFdId());
+			 for (SeriesCourses seriesCourses2 : seriesCourses) { 
+				 if(!list.contains(seriesCourses2.getCourses())){
+					 list.add(seriesCourses2.getCourses());
+				 }
+				 
+			}
+		}
+		return list;
+	}
+	/**
+     * 查找系列下所有课程(不去除重复)
+     */
+	@Transactional(readOnly=false)
+	public List<CourseInfo> getCoursesByseriesId2(String seriesId){
 		List<CourseInfo> list = new ArrayList<CourseInfo>();
 		List<SeriesInfo> infos = seriesInfoService.getSeriesById(seriesId);
 		for (SeriesInfo seriesInfo : infos) {
