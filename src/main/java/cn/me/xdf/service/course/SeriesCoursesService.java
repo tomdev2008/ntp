@@ -1,13 +1,17 @@
 package cn.me.xdf.service.course;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.model.course.CourseContent;
+import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.SeriesCourses;
+import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.BaseService;
 
 /**
@@ -25,6 +29,9 @@ public class SeriesCoursesService  extends BaseService{
 	public  Class<SeriesCourses> getEntityClass() {
 		return SeriesCourses.class;
 	}
+	
+	@Autowired
+	private SeriesInfoService seriesInfoService;
 	
 	/**
 	 * 根据课程ID删除课程与系列的关系
@@ -71,5 +78,24 @@ public class SeriesCoursesService  extends BaseService{
 			return sclist;
 		}
 		return null;
+	}
+	
+	/**
+     * 查找系列下所有课程
+     */
+	@Transactional(readOnly=false)
+	public List<CourseInfo> getCoursesByseriesId(String seriesId){
+		List<CourseInfo> list = new ArrayList<CourseInfo>();
+		List<SeriesInfo> infos = seriesInfoService.getSeriesById(seriesId);
+		for (SeriesInfo seriesInfo : infos) {
+			 List<SeriesCourses> seriesCourses = getSeriesCourseByseriesId(seriesInfo.getFdId());
+			 for (SeriesCourses seriesCourses2 : seriesCourses) { 
+				 if(!list.contains(seriesCourses2.getCourses())){
+					 list.add(seriesCourses2.getCourses());
+				 }
+				 
+			}
+		}
+		return list;
 	}
 }

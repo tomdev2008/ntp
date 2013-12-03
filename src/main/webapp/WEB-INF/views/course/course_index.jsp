@@ -19,8 +19,8 @@
         {{~it.list :item:index}}
             <li>
                 <div class="thumbnail">
-                    <img src="{{!item.imgUrl}}" alt=""/>
-                    {{?it.type == "series"}}
+					<img src="{{?item.imgUrl!=""}}${ctx}/common/file/image/{{=item.imgUrl}}{{??}}${ctx }/resources/images/temp-newClass.jpg{{?}}" alt="">
+					{{?it.type == "series"}}
                         <div class="hd2">
                                     <span>
                                         <strong>{{=item.docNum}}个</strong>精品文档
@@ -33,6 +33,7 @@
                     <div class="bd2">
                         <h3>{{=item.name}}</h3>
                         <p>{{=item.issuer}}</p>
+ 						{{?it.type == "single"}}
                         <p class="rating">
                                     <span class="rating-view">
                                         <span class="rating-all">
@@ -44,17 +45,22 @@
                                     </span>
                             ({{=item.raterNum}} 个评分)
                         </p>
+						{{?}}
                         {{?it.type == "series"}}
                             <dl>
                                 <dt>简介：</dt>
                                 <dd>{{=item.intro}}</dd>
-                                <dt>适合人群：</dt>
-                                <dd>{{=item.crowd}}</dd>
                             </dl>
                         {{?}}
                     </div>
                     <div class="ft2 clearfix{{?it.type == 'single'}} bdt1{{?}}">
-                        <a class="btn btn-primary pull-right" href="{{=item.link}}"><i class="{{?item.isLearning}}icon-progress-shadow"></i>继续学习{{??}}icon-book-shadow"></i>开始学习{{?}}</a>
+						{{?it.type == "series"}}
+                        	<a class="btn btn-primary pull-right" href="${ctx}/series/previewSeries?seriesId={{=item.dataId}}">
+ 						{{?}}
+						{{?it.type == "single"}}
+                        	<a class="btn btn-primary pull-right" href="${ctx}/passThrough/getCourseHome/{{=item.dataId}}">
+ 						{{?}}
+						<i class="{{?item.isLearning}}icon-progress-shadow"></i>继续学习{{??}}icon-book-shadow"></i>开始学习{{?}}</a>
                         {{?it.type == 'single'}}
                             <div class="pull-right"><strong>{{=item.learnerNum}}</strong>位老师在学习</div>
                         {{?}}
@@ -63,46 +69,48 @@
             </li>
         {{~}}
 </script>
-<script id="courseCategoryTemplate" type="text/x-dot-template">
-<ul class="nav" id="navCourse">
-    <li class="active"><a href="#">全部课程</a></li>
-	{{~it.list :item:index}}
-	<li ><a href="#">{{=item.courseCategoryName}}</a></li>
-	{{~}}
-</ul>
-</script>
-    <script src="${ctx}/resources/js/doT.min.js"></script>
-</head>
 
-<body>
-<section class="container">
-	<section class="mt20 section">
-        <div class="clearfix row1">
+<script id="courseCategoryTemplate" type="text/x-dot-template">
+    <li class="active"><a href="javascript:void(0)" data-id="all">全部课程</a></li>
+	{{~it.list :item:index}}
+	<li ><a href="javascript:void(0)" data-id="{{=item.courseCategoryId}}">{{=item.courseCategoryName}}</a></li>
+	{{~}}
+</script>
+
+<script id="userTemplate" type="text/x-dot-template">
+            <div class="clearfix row1">
             <div class="pull-left media profile">
-                <div class="pull-left"><img src="./images/temp-face70.jpg" class="media-object" alt=""/></div>
+                <div class="pull-left">
+<img src="{{?it.img.indexOf('http')>-1}}{{=it.img}}{{??}}${ctx}/{{=it.img}}{{?}}" class="media-object" alt="头像"/>
+</div>
                 <div class="media-body">
                     <div class="media-heading">
-                        杨义锋 <i class="icon-female"></i>
+                        {{=it.name}} 
+						{{?it.sex=='M'}}
+							<i class="icon-male"></i></h5>
+						{{??}}
+							<i class="icon-female"></i></h5>
+						{{?}}
                         <a class="icon-circle-bg" href="#"><i class="icon-pencil-mini"></i></a>
                         <a class="icon-circle-bg" href="#"><i class="icon-cloth"></i></a>
                     </div>
                     <p class="muted">
-                        机构  集团总公司 <br/>
-                        部门  知识管理中心<br/>
-                        电话  135-8165-1017<br/>
-                        年龄  27<br/>
-                        星座  射手座<br/>
-                        血型  A
+                        机构 {{=it.org}}  <br/>
+                        部门  {{=it.dep}} <br/>
+                        电话  {{=it.tel}} <br/>
+                        年龄  {{=it.name}} <br/>
+                        星座   {{=it.xz}}<br/>
+                        血型  {{=it.bool}}
                     </p>
                 </div>
             </div>
             <div class="pull-right box1">
                 <div class="clearfix">
                     <div class="pull-left">
-                        完成学习 <strong class="num">80</strong>个课程
+                        完成学习 <strong class="num">{{=it.finishSum}}</strong>个课程
                     </div>
                     <div class="pull-right">
-                        正在学习 <strong class="num">52</strong>个课程
+                        正在学习 <strong class="num">{{=it.unfinishSum}}</strong>个课程
                     </div>
                 </div>
                 <div class="well">
@@ -112,6 +120,14 @@
                 </div>
             </div>
         </div>
+</script>
+    <script src="${ctx}/resources/js/doT.min.js"></script>
+</head>
+
+<body>
+<section class="container">
+	<section class="mt20 section" id="userDiv">
+
 	</section>
 
     <section class="md">
@@ -127,8 +143,10 @@
 
     <section class="md">
         <div class="hd navbar">
-            <div class="navbar-inner" id="courseCategoryDiv">
-               
+            <div class="navbar-inner">
+               <ul class="nav" id="navCourse">
+
+			   </ul>
             </div>
         </div>
         <div class="bd">
@@ -148,108 +166,129 @@
 <script type="text/javascript">	
 	var thumbnailsFn = doT.template(document.getElementById("thumbnailsTemplate").text);
 	var courseCategoryFn = doT.template(document.getElementById("courseCategoryTemplate").text);
+	var userFn = doT.template(document.getElementById("userTemplate").text);
 
+	//初始化用户
+	initUser();
 	//初始化课程分类
 	initCourseCategory();
-    var seriesData = {
-        type: "series",
-        list:[
-            {
-                imgUrl: "./images/zht-main-img.jpg",
-                docNum: 254,
-                learnerNum: 17002,
-                name: "广东民俗与课堂教学",
-                issuer: "集团国外考试推广管理中心",
-                score: 4,
-                raterNum: 76,
-                intro: "300个实用、时鲜的英文词汇与100个生活必备句子，让学习的过程轻松愉快，效率更高。",
-                crowd: "办公人员、白领、职场新人、毕业生。",
-                isLearning: false
-            },
-            {
-                imgUrl: "./images/zht-main-img.jpg",
-                docNum: 254,
-                learnerNum: 17002,
-                name: "广东民俗与课堂教学",
-                issuer: "集团国外考试推广管理中心",
-                score: 4,
-                raterNum: 76,
-                intro: "300个实用、时鲜的英文词汇与100个生活必备句子，让学习的过程轻松愉快，效率更高。",
-                crowd: "办公人员、白领、职场新人、毕业生。",
-                isLearning: true
-            },
-            {
-                imgUrl: "./images/zht-main-img.jpg",
-                docNum: 254,
-                learnerNum: 17002,
-                name: "广东民俗与课堂教学",
-                issuer: "集团国外考试推广管理中心",
-                score: 4,
-                raterNum: 76,
-                intro: "300个实用、时鲜的英文词汇与100个生活必备句子，让学习的过程轻松愉快，效率更高。",
-                crowd: "办公人员、白领、职场新人、毕业生。",
-                isLearning: true
-            }
-        ]
-    };
-    var courseData = {
-        type: "single",
-        list:[
-            {
-                imgUrl: "./images/zht-main-img.jpg",
-                learnerNum: 17002,
-                name: "广东民俗与课堂教学",
-                issuer: "集团国外考试推广管理中心",
-                score: 4,
-                raterNum: 76,
-                isLearning: false
-            },
-            {
-                imgUrl: "./images/zht-main-img.jpg",
-                learnerNum: 17002,
-                name: "广东民俗与课堂教学",
-                issuer: "集团国外考试推广管理中心",
-                score: 4,
-                raterNum: 76,
-                isLearning: true
-            },
-            {
-                imgUrl: "./images/zht-main-img.jpg",
-                learnerNum: 17002,
-                name: "广东民俗与课堂教学",
-                issuer: "集团国外考试推广管理中心",
-                score: 4,
-                raterNum: 76,
-                isLearning: true
-            }
-        ]
-    };
-    
-    $("#list-series").append(thumbnailsFn(seriesData));
-    $("#list-course").append(thumbnailsFn(courseData));
-
+	//初始化课程
+	initCouese("all",1);
+	//初始化系列
+	initSeries(1);
+	
     $("#loadMoreSeries").click(function(e){//点击加载更多
-        e.preventDefault();
-        $("#list-series").append(thumbnailsFn(seriesData));
+    	 e.preventDefault();
+         var pageNo = $("#list-series li").length/3+1;
+         $.ajax({
+        	 url : "${ctx}/ajax/series/getSeries",
+     		async : false,
+     		dataType : 'json',
+     		data:{
+     			pageNo:pageNo
+     		},
+     		success : function(result) {
+     			$("#list-series").append(thumbnailsFn(result));
+     			if(result.hasMore){
+   				 	$("#loadMoreSeries").removeClass("hide");
+   				}else{
+   				 	$("#loadMoreSeries").addClass("hide");
+   				}
+     		}
+     	});
     });
     $("#loadMoreCourse").click(function(e){//点击加载更多
         e.preventDefault();
-        $("#list-course").append(thumbnailsFn(courseData));
+        var pageNo = $("#list-course li").length/3+1;
+        var type = $("#navCourse .active a").attr("data-id");
+        $.ajax({
+    		url : "${ctx}/ajax/course/getCoursesIndexInfo",
+    		async : false,
+    		dataType : 'json',
+    		data:{
+    			userId:"${userId}",
+    			type:type,
+    			pageNo:pageNo,
+    		},
+    		success : function(result) {
+    			$("#list-course").append(thumbnailsFn(result));
+    			if(result.hasMore){
+    				 $("#loadMoreCourse").removeClass("hide");
+    			}else{
+    				 $("#loadMoreCourse").addClass("hide");
+    			}
+    		}
+    	});
     });
 
     $("#navCourse>li>a").click(function(e){
         e.preventDefault();
+        var type = $(this).attr("data-id");
+        initCouese(type,1);
         $(this).parent().addClass("active").siblings().removeClass("active");
-    })
+    });
+    
+    function initCouese(type,pageNo){
+    	$.ajax({
+    		url : "${ctx}/ajax/course/getCoursesIndexInfo",
+    		async : false,
+    		dataType : 'json',
+    		data:{
+    			userId:"${userId}",
+    			type:type,
+    			pageNo:pageNo,
+    		},
+    		success : function(result) {
+    			$("#list-course").html(thumbnailsFn(result));
+    			if(result.hasMore){
+    				 $("#loadMoreCourse").removeClass("hide");
+    			}else{
+    				 $("#loadMoreCourse").addClass("hide");
+    			}
+    		}
+    	});
+    }
     
     function initCourseCategory(){
     	$.ajax({
     		url : "${ctx}/ajax/category/getCourseCategory",
     		async : false,
     		dataType : 'json',
-    		type: "post",
     		success : function(result) {
-    			$("#courseCategoryDiv").append(courseCategoryFn(result));
+    			$("#navCourse").html(courseCategoryFn(result));
+    		}
+    	});
+    }
+    
+    function initUser(){
+    	$.ajax({
+    		url : "${ctx}/ajax/course/getUserCourseInfo",
+    		async : false,
+    		dataType : 'json',
+    		data:{
+    			userId:"${userId}"
+    		},
+    		success : function(result) {
+    			$("#userDiv").html(userFn(result));
+    		}
+    	});
+    }
+    
+    function initSeries(pageNo){
+    	$.ajax({
+    		url : "${ctx}/ajax/series/getSeries",
+    		async : false,
+    		dataType : 'json',
+    		data:{
+    			pageNo:pageNo
+    		},
+    		success : function(result) {
+    			$("#list-series").html(thumbnailsFn(result));
+    			if(result.hasMore){
+   				 	$("#loadMoreSeries").removeClass("hide");
+   				}else{
+   				 	$("#loadMoreSeries").addClass("hide");
+   				}
     		}
     	});
     }
