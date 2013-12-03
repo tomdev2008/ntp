@@ -114,12 +114,12 @@
 							<label >作业打分</label>
 							<div class="box-score">
                                 {{#def.timeLine:task.totalScore}}
-                                <input type="hidden" value="0" min="1" name="taskScore" />
+                                <input type="hidden" value="0" name="taskScore" />
                             </div>
                             <label >说点什么</label>
                             {{#def.richText}}
                             <div class="clearfix">
-                               <button class="btn btn-primary btn-large pull-right" fdStatus="0" type="button">此题批改确认</button>
+                               <button class="btn btn-primary btn-large pull-right"  type="button">此题批改确认</button>
                             </div>
                         {{??}}
                             <label >作业打分</label>
@@ -127,7 +127,7 @@
                                 <div class="text-info"><span class="num">{{?task.status == "null"}}0{{??}}{{=task.rating.score}}{{?}}</span>分</div>
                             	{{?it.status == "unfinish" && task.status != "null"}}
 									{{#def.timeLineOnChecked:task}}
-                                	<input type="hidden" value="{{?task.status == "null"}}0{{??}}{{=task.rating.score}}{{?}}" min="1" name="taskScore" />
+                                	<input type="hidden" value="{{?task.status == "null"}}0{{??}}{{=task.rating.score}}{{?}}" name="taskScore" />
 								{{?}}
 							</div>
                             <label >说点什么</label>
@@ -145,7 +145,7 @@
                             </div>
                             {{?it.status == "unfinish" && task.status != "null"}}
                             <div class="clearfix">
-                                <button class="btn btn-primary btn-large pull-right" fdStatus="0" type="button">修改批改意见</button>
+                                <button class="btn btn-primary btn-large pull-right" type="button">修改批改意见</button>
                             </div>
                             {{?}}
                         {{?}}
@@ -167,7 +167,7 @@
 
         </div>
         {{##def.timeLine:total:
-        <div class="timeLine">
+        <div class="timeLine" fdStatus="0">
             <div class="num">0</div>
             {{ for(var i=1; i <= total; i++){ }}
             <a title="{{=i*it.timeLine.span}}{{=it.timeLine.unit || ''}}" style="width: {{=(it.timeLine.width-total-1)/total}}px"
@@ -177,7 +177,7 @@
         #}}
 
 		{{##def.timeLineOnChecked:total:
-        <div class="timeLine onChecked">
+        <div class="timeLine onChecked" fdStatus="1">
             <div class="num">0</div>
             {{ for(var i=1; i <= total.totalScore; i++){ }}
             <a title="{{=i*it.timeLine.span}}{{=it.timeLine.unit || ''}}"  style="width: {{=(it.timeLine.width-total.totalScore-1)/total.totalScore}}px"
@@ -421,28 +421,25 @@
 						}, 
 						ignore : "",*/
 						submitHandler : function(form) {
-							/* $("#formTask .timeLine").each(function(){
-								$(this).parent().nextAll(".clearfix").children(".btn-primary")
-								.after('<label class="error pull-right">请批改该作业！</label>');
-								$(this).parent().nextAll(".clearfix").children(".btn-primary").focus();
+							$("#formTask .timeLine").each(function(){
+							  if($(this).attr("fdStatus")=="0"){
+								$(this).parent().nextAll(".clearfix").children(".btn-primary").after('<label class="error pull-right">请批改该作业！</label>');
+							  }
 							});
-							if($("#formTask .timeLine").length>0){
-								return;
-							} */
-							$form.find(".bd .ratingBox .btn-primary").each(function(){
-								if($(this).attr("fdStatus")=="0"){
-									$(this).after('<label class="error pull-right">请批改该作业！</label>');
-								}
+							var flag = true;
+							$("#formTask .timeLine").each(function(){
+								 if($(this).attr("fdStatus")=="0"){
+									$(this).parent().nextAll(".clearfix").children(".btn-primary").focus(); 
+									flag = false;
+									return;
+								 }
 							});
-							$form.find(".bd .ratingBox .btn-primary").each(function(){
-								if($(this).attr("fdStatus")=="0"){
-								  $(this).focus();
-								  return;
-								}
-							});
+						    if(!flag){
+						    	return;
+						    }
 							taskData.status = taskData.score < taskData.scorePass ? "fail" : "pass";
 							//$.post()保存soursenote
-						  $.ajax({
+						   $.ajax({
 								type:"post",
 								url : "${ctx}/ajax/adviser/updateSourseNote/"+noteId,
 								async : false,
@@ -470,9 +467,9 @@
 									if ($boxScore.find(".timeLine").length) {
 										score = parseInt($boxScore.children(
 												"[name='taskScore']").val());
-										if (validator
+										 if (validator
 												.element($boxScore
-														.children("[name='taskScore']"))) {
+														.children("[name='taskScore']"))) { 
 											/* $boxScore
 													.html('<div class="text-info"><span class="num">'
 															+ score
@@ -503,16 +500,22 @@
 													"fdComment" : txt,
 												},
 												success: function(result){
-													//$this.next(".error").remove();
+													$this.next(".error").remove();
 													$("#navTask>a").eq(result).addClass("active").attr("data-original-title","已批改");
 												}
-											}); 
+											});  
 											 var total = $("#nowScore").text();
 											 total = parseInt(total) + parseInt(taskData.score);
+											 if($boxScore.find(".text-info .num").length){
+												 var preScore = $boxScore.find(".text-info .num").text();
+												 total = total - parseInt(preScore);
+												 $boxScore.find(".text-info .num").text(taskData.score);
+											 }
 											 $("#nowScore").text(total);
 										}
 										$boxScore.find(".timeLine>a").unbind("click");
-									}
+										$boxScore.find(".timeLine").attr("fdStatus",1);
+									 } 
 									if (score) {
 										$boxComm.after(boxCommentFn({
 											comment : txt,
@@ -530,6 +533,7 @@
 												$(this).parent().next(":hidden").val(
 														$(this).children(".num").text());
 											}).tooltip();
+									$boxScore.find(".timeLine").attr("fdStatus",0);
 									$boxComm.after(
 											richTextFn({
 												comm : $boxComm.children(

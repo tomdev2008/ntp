@@ -129,7 +129,7 @@ public class AdviserAjaxController {
 		taskData.put("taskCount", info.getTasks().size());//作业数量
 		taskData.put("intro", info.getFdDescription()==null?"":info.getFdDescription());//介绍
 		String status = note.getFdStatus();
-		if(status.equals(Constant.TASK_STATUS_FINISH)||status.equals(Constant.TASK_STATUS_FINISH)){
+		if(status.equals(Constant.TASK_STATUS_FINISH)||status.equals(Constant.TASK_STATUS_UNFINISH)){
 			taskData.put("status", "unfinish");//状态  unfinish, pass, fail
 		}else if(status.equals(Constant.TASK_STATUS_PASS)){
 			taskData.put("status", "pass");
