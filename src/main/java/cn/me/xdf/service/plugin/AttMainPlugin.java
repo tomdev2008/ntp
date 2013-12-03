@@ -28,6 +28,12 @@ public class AttMainPlugin {
     private static final Logger log = LoggerFactory.getLogger(AttMainPlugin.class);
 
 
+    /**
+     * 传输文档
+     *
+     * @param attMain
+     * @return
+     */
     public static String addDoc(AttMain attMain) {
 
         try {
@@ -63,6 +69,12 @@ public class AttMainPlugin {
         }
     }
 
+    /**
+     * 获取文档
+     *
+     * @param attMain
+     * @return
+     */
     public static String getSwfPath(AttMain attMain) {
 
         try {

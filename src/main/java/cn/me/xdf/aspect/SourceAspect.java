@@ -1,4 +1,5 @@
-package cn.me.xdf.service.bam.aspect;
+package cn.me.xdf.aspect;
+
 
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.bam.CourseLogic;
@@ -28,7 +29,7 @@ public class SourceAspect {
 
     @Autowired
     private BamCourseService bamCourseService;
-    
+
     @Autowired
     private MessageService messageService;
 
@@ -52,12 +53,12 @@ public class SourceAspect {
         }
         SourceNote note = (SourceNote) args[0];
         if (note == null || !BooleanUtils.toBoolean(note.getIsStudy())){
-        	if(note != null && !BooleanUtils.toBoolean(note.getIsStudy())){
-        		messageService.saveMaterialMessage(note);
-        	}
-        	 return "";
+            if(note != null && !BooleanUtils.toBoolean(note.getIsStudy())){
+                messageService.saveMaterialMessage(note);
+            }
+            return "";
         }
-           
+
         //更新素材
         BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(note.getFdUserId(), note.getFdCourseId());
         CourseLogic courseLogic = new CourseLogic(bamCourse, note,messageService);
