@@ -159,8 +159,8 @@ public class PassThroughController {
 			//设置正在学习的当前节
 			request.setAttribute("catalogId", catalogId);
 			request.setAttribute("fdMtype", fdMtype);
-			
 		}
+		request.setAttribute("courseId", course.getFdId());
 		request.setAttribute("bamId", bamCourse.getFdId());
 		bamCourseService.updateCourseStartTime(bamCourse.getFdId());
 		//页面跳转，跳转到课程学习页面

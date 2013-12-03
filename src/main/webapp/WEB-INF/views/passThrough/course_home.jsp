@@ -27,8 +27,8 @@
 		                授权： + authorize
 		                加密： + encrypt 
 		    -->
-		    <c:if test="${course.isPublish=='0'}">
-		      <c:if test="${course.fdPassword!=''}">
+		    <c:if test="${course.isPublish==false}">
+		      <c:if test="${course.fdPassword!=''&&course.fdPassword!=null}">
                 <div class="permission encrypt"></div>
               </c:if>
             </c:if>
@@ -60,8 +60,8 @@
                          </span>
                          <b class="text-warning">${courseScore}</b>
                  </div>
-              <c:if test="${course.isPublish=='0'}">
-		        <c:if test="${course.fdPassword!=''}">
+              <c:if test="${course.isPublish==false}">
+		        <c:if test="${course.fdPassword!=''&&course.fdPassword!=null}">
                  <!--加密类型时 start-->
                  <form id="formPassword" action="#" >
                      <input type="password" placeholder="输入授权密码" class="password" name="password" id="password" />

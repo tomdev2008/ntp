@@ -682,6 +682,8 @@
         //课程进行中节的内容类型
         var fdMtype = "${fdMtype}";
         
+        var courseId = "${courseId}"
+        
 		var leftData = {};
 				//ajax获取左侧章节展示树
 				
@@ -744,10 +746,10 @@
                 	 window.location.href = "${ctx}/common/file/downloadImg?bamId="+bamId;
                  });
         		 $("#firstC").click(function (e){
-                  	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+pageData.firstCId+"&fdMtype="+pageData.firstCType;
+                  	window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.firstCId+"&fdMtype="+pageData.firstCType;
                  }); 
         		 $("#lastC").click(function (e){
-                   	window.location.href = "${ctx}/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+pageData.listCId+"&fdMtype="+pageData.listCType;
+                   	window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.listCId+"&fdMtype="+pageData.listCType;
                  }); 
         	 }
         }
