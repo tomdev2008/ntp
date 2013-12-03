@@ -629,13 +629,14 @@ public class SeriesAjaxContrller {
 			Map map = new HashMap();
 			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(seriesInfo.getFdId(), SeriesInfo.class.getName());
 			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
-			map.put("docNum", "0");
+			
 			List<CourseInfo> list = seriesCoursesService.getCoursesByseriesId(seriesInfo.getFdId());
 			int count=0;
 			for (CourseInfo course : list) {
 				int courseSum = getLearningTotalNo(course.getFdId());
 				count=count+courseSum;
 			}
+			map.put("docNum",list.size());
 			map.put("learnerNum", count);
 			map.put("name", seriesInfo.getFdName());
 			map.put("issuer", seriesInfo.getCreator().getDeptName());

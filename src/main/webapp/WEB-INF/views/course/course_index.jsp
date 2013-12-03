@@ -23,7 +23,7 @@
 					{{?it.type == "series"}}
                         <div class="hd2">
                                     <span>
-                                        <strong>{{=item.docNum}}个</strong>精品文档
+                                        <strong>{{=item.docNum}}个</strong>课程
                                     </span>
                                      <span>
                                         <strong>{{=item.learnerNum}}位</strong>老师在学习
