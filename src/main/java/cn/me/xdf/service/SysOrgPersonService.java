@@ -1,6 +1,8 @@
 package cn.me.xdf.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,5 +38,23 @@ public class SysOrgPersonService extends BaseService{
 		return (List<SysOrgPerson>)getPage(finder, 1,10).getList();
 		
 	}
+	
+	public Map getUserInfo(String userId){
+		Map map = new HashMap();
+		Finder finder = Finder
+				.create("select p.fdBloodType from SysOrgPersonTemp p ");
+		finder.append("where p.fdId=:userId ");
+		finder.setParam("userId", userId);
+		String fdBloodType = findUnique(finder);
+		map.put("fdBloodType",fdBloodType==null?"不详":fdBloodType);
+		Finder finder1 = Finder
+				.create("select p.selfIntroduction from SysOrgPersonTemp p ");
+		finder1.append("where p.fdId=:userId ");
+		finder1.setParam("userId", userId);
+		String selfIntroduction = findUnique(finder);
+		map.put("selfIntroduction", selfIntroduction==null?"":selfIntroduction);
+		return map;
+	}
+	
 
 }

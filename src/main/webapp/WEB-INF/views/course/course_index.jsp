@@ -10,8 +10,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>新东方在线教师备课平台</title>
-<link href="${ctx}/resources/css/global.css" rel="stylesheet" type="text/css">
-<link href="${ctx}/resources/css/home-course.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/theme-profile/default/css/global.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/theme-profile/default/css/home-course.css" rel="stylesheet" type="text/css">
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
 <![endif]-->
@@ -91,15 +91,14 @@
 						{{??}}
 							<i class="icon-female"></i></h5>
 						{{?}}
-                        <a class="icon-circle-bg" href="#"><i class="icon-pencil-mini"></i></a>
+                        <a class="icon-circle-bg" href="${ctx}/register/updateTeacher"><i class="icon-pencil-mini"></i></a>
                         <a class="icon-circle-bg" href="#"><i class="icon-cloth"></i></a>
                     </div>
                     <p class="muted">
                         机构 {{=it.org}}  <br/>
                         部门  {{=it.dep}} <br/>
                         电话  {{=it.tel}} <br/>
-                        年龄  {{=it.name}} <br/>
-                        星座   {{=it.xz}}<br/>
+        QQ  {{=it.qq}} <br/>
                         血型  {{=it.bool}}
                     </p>
                 </div>
@@ -115,7 +114,12 @@
                 </div>
                 <div class="well">
                     <i class="icon-shyhl"></i>
-                    <span class="txt">这家伙很懒，也不好好介绍一下自己~ :-(</span>
+                    <span class="txt">
+{{?it.selfIntroduction==""}}这家伙很懒，也不好好介绍一下自己~ :-({{??}}
+{{=it.selfIntroduction}}
+{{?}}
+					
+					</span>
                     <i class="icon-shyhr"></i>
                 </div>
             </div>

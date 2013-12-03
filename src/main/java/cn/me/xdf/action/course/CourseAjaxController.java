@@ -30,11 +30,11 @@ import cn.me.xdf.model.course.CourseCategory;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.course.CourseTag;
-import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseAuthService;
@@ -102,6 +102,9 @@ public class CourseAjaxController {
 	
 	@Autowired
 	private BamCourseService bamCourseService;
+	
+	@Autowired
+	private SysOrgPersonService sysOrgPersonService;
 	
 	
 	/**
@@ -924,9 +927,11 @@ public class CourseAjaxController {
 		returnMap.put("org", orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
 		returnMap.put("dep", orgPerson.getDeptName());
 		returnMap.put("tel", orgPerson.getFdWorkPhone());
-		returnMap.put("age", "");
-		returnMap.put("xz", "不详");
-		returnMap.put("bool", "不详");
+		returnMap.put("qq", orgPerson.getFdQq()==null?"不详":orgPerson.getFdQq());
+		
+		Map userMap = sysOrgPersonService.getUserInfo(userId);
+		returnMap.put("bool", userMap.get("fdBloodType"));
+		returnMap.put("selfIntroduction", userMap.get("selfIntroduction"));
 		Finder finder1 = Finder.create("select count(*) from BamCourse b where b.preTeachId = :preTeachId and b.through=:through");
 		finder1.setParam("preTeachId", userId);
 		finder1.setParam("through", true);
