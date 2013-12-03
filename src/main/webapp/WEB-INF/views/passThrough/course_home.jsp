@@ -141,24 +141,24 @@
 		                                    	<span class="tit">${bean.fdNo}.${i}&nbsp;${lecture.fdName}</span>
 		                                        	<c:if test="${lecture.through==null}">
 		                                        	  <c:if test="${course.isOrder==false}">
-		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary">
+		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary" data-show="true">
 		                                        	  	  	开始学习
 		                                        	    </button>
 		                                        	  </c:if>
 		                                        	  <c:if test="${isorder==false && course.isOrder==true}">
-		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn btn-primary" disabled="disabled">
+		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn btn-primary" data-show="false" disabled="disabled">
 		                                        	  	  	开始学习
 		                                        	    </button>
 		                                        	  </c:if>
 		                                        	  <c:if test="${isorder==true && course.isOrder==true}">
 		                                        	    <c:set var="isorder" value="false"/>
-		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary">
+		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary" data-show="true">
 		                                        	  	  	开始学习
 		                                        	    </button>
 		                                        	  </c:if>
 		                                        	</c:if>
 		                                        	<c:if test="${lecture.through==true}">
-		                                        	  <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary">
+		                                        	  <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary" data-show="true">
 		                                        		再次学习
 		                                        	  </button>		                                        		
 		                                        	</c:if>
@@ -166,7 +166,7 @@
 		                                        	  <c:if test="${course.isOrder==true}">
 		                                        	    <c:set var="isorder" value="false"/>
 		                                        	  </c:if>
-		                                        	  <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary">
+		                                        	  <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary" data-show="true">
 		                                        		继续学习
 		                                        	  </button>		
 		                                        	</c:if>
@@ -195,24 +195,24 @@
                                     	<span class="tit">${bean.fdNo}&nbsp;${bean.fdName}</span>
                                         	<c:if test="${lecture.through==null}">
 		                                      <c:if test="${course.isOrder==false}">
-		                                       	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary">
+		                                       	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary" data-show="true">
 		                                        	开始学习
 		                                       	</button>
 		                                      </c:if>
 		                                      <c:if test="${isorder==false && course.isOrder==true}">
-		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn btn-primary" disabled="disabled">
+		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn btn-primary" data-show="false" disabled="disabled">
 		                                        	开始学习
 		                                        </button>
 		                                      </c:if>
 		                                      <c:if test="${isorder==true && course.isOrder==true}">
 		                                        <c:set var="isorder" value="false"/>
-		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary">
+		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary" data-show="true">
 		                                        	开始学习
 		                                        </button>
 		                                      </c:if>
 		                                    </c:if>
 		                                    <c:if test="${lecture.through==true}">
-		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary">
+		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary" data-show="true">
 		                                        	再次学习
 		                                        </button>		                                        		
 		                                    </c:if>
@@ -220,7 +220,7 @@
 		                                    	<c:if test="${course.isOrder==true}">
 		                                        	<c:set var="isorder" value="false"/>
 		                                        </c:if>
-		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary">
+		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary" data-show="true">
 		                                        	继续学习
 		                                        </button>		
 		                                    </c:if>
@@ -295,6 +295,7 @@ $.ajax({
 				$(this).attr("disabled",true);
 			});
 			$("#studyBegin").attr("disabled",true);
+			$("#studyBegin").removeAttr("href");
 		} 
 	}
 }); 
@@ -316,14 +317,18 @@ $("#verifyPwd").bind("click",function(){
 			}else{
 				$("#formPassword").children().remove();
 		    	$("button[name='doButton']").each(function(){
-		    		$(this).attr("disabled",false);
+		    		if($(this).attr("data-show")=="true"){
+		    			$(this).attr("disabled",false);
+		    		}
 		    	});
 		    	$("#studyBegin").attr("disabled",false);
+		    	$("#studyBegin").attr("href","${ctx}/passThrough/getStudyContent?courseId=${course.fdId}");
 			}
 		}
 	}); 
 	
 });
+
 $("button[name='doButton']").bind("click",function(){
 	var fdid = $(this).attr("data-fdid");
 	var fdMtype = $(this).attr("data-fdMtype");
