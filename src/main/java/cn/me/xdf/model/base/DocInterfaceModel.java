@@ -28,6 +28,8 @@ public class DocInterfaceModel {
 
     public static final String addDoc = "addDoc";
     public static final String getSwfPath = "getSwfPath";
+    public static final String getPlayCode = "getPlayCode";
+    
 
     private static final String pwdKey = "apidocumentsevel";
     private static final String userName = "kmsadmin";

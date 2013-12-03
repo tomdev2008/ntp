@@ -163,12 +163,16 @@ public class AttMain extends IdEntity {
     @Basic(fetch = FetchType.LAZY)
     public String getFileUrl() {
         try {
-            //视频、文档、幻灯片
-            if (("01".equals(fdFileType) || "04".equals(fdFileType) || "05".equals(fdFileType)) && StringUtils.isNotBlank(fileNetId)) {
-                if (StringUtils.isBlank(fileUrl)) {
-                    fileUrl = AttMainPlugin.getSwfPath(this);
-                }
-            }
+            //文档、幻灯片
+        	if(StringUtils.isNotBlank(fileNetId)&&StringUtils.isBlank(fileUrl)){
+        		 if ("04".equals(fdFileType) || "05".equals(fdFileType)) {
+        			 fileUrl = AttMainPlugin.getSwfPath(this,DocInterfaceModel.getSwfPath);
+                 }else if("01".equals(fdFileType)){//视频
+                	 String playCode = AttMainPlugin.getSwfPath(this,DocInterfaceModel.getPlayCode);
+                	 return "http://union.bokecc.com/player?vid="+playCode+"&siteid=8B90641B41283EDC&autoStart=true&playerid=628A174866D77DB5&playertype=1";
+                 }
+        	}
+           
         } catch (Exception e) {
             fileUrl = null;
         }
