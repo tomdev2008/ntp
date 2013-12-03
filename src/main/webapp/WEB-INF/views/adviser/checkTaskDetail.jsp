@@ -110,22 +110,26 @@
                         {{?}}
                     </div>
                     <div class="dashed-t1 pd20 ratingBox" id="{{=task.id}}">
-                         <label >作业打分</label>
-                            <div class="box-score">
+                        {{?task.status == "unchecked"}}
+							<label >作业打分</label>
+							<div class="box-score">
                                 {{#def.timeLine:task.totalScore}}
                                 <input type="hidden" value="0" min="1" name="taskScore" />
                             </div>
-                        {{?task.status == "unchecked"}}
                             <label >说点什么</label>
                             {{#def.richText}}
                             <div class="clearfix">
                                <button class="btn btn-primary btn-large pull-right" fdStatus="0" type="button">此题批改确认</button>
                             </div>
                         {{??}}
-                            <!--<label >作业打分</label>
+                            <label >作业打分</label>
                             <div class="box-score">
                                 <div class="text-info"><span class="num">{{?task.status == "null"}}0{{??}}{{=task.rating.score}}{{?}}</span>分</div>
-                            </div>-->
+                            	{{?it.status == "unfinish" && task.status != "null"}}
+									{{#def.timeLineOnChecked:task}}
+                                	<input type="hidden" value="{{?task.status == "null"}}0{{??}}{{=task.rating.score}}{{?}}" min="1" name="taskScore" />
+								{{?}}
+							</div>
                             <label >说点什么</label>
                             <div class="box-comm">
                                 {{?task.status == "null"}}
@@ -168,6 +172,16 @@
             {{ for(var i=1; i <= total; i++){ }}
             <a title="{{=i*it.timeLine.span}}{{=it.timeLine.unit || ''}}" href="#" style="width: {{=(it.timeLine.width-total-1)/total}}px"
                class="{{?i*it.timeLine.span==it.timeLine.span}}first {{?}}{{?it.timeLine.curPos && i*it.timeLine.span<=it.timeLine.curPos}}active{{?}}"><span class="num">{{=i*it.timeLine.span}}</span></a>
+            {{ } }}
+        </div>
+        #}}
+
+		{{##def.timeLineOnChecked:total:
+        <div class="timeLine">
+            <div class="num">0</div>
+            {{ for(var i=1; i <= total.totalScore; i++){ }}
+            <a title="{{=i*it.timeLine.span}}{{=it.timeLine.unit || ''}}" href="#" style="width: {{=(it.timeLine.width-total.totalScore-1)/total.totalScore}}px"
+               class="{{?i*it.timeLine.span==it.timeLine.span}}first {{?}}{{?it.timeLine.curPos && i*it.timeLine.span<=it.timeLine.curPos || i*it.timeLine.span<=total.rating.score}}active{{?}}"><span class="num">{{=i*it.timeLine.span}}</span></a>
             {{ } }}
         </div>
         #}}
