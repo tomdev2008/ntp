@@ -192,7 +192,14 @@ public class CourseController {
 	
 	@RequestMapping(value = "courseIndex")
 	public String courseIndex(HttpServletRequest request) {
+		request.setAttribute("userId", ShiroUtils.getUser().getId());
 		return "/course/course_index";
+	}
+	
+	@RequestMapping(value = "courseIndexAll")
+	public String courseIndexAll(HttpServletRequest request) {
+		request.setAttribute("userId", ShiroUtils.getUser().getId());
+		return "/course/course_index_all";
 	}
 	
 }

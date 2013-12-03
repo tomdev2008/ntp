@@ -83,19 +83,8 @@ input.error:focus,textarea.error:focus{border-color:#953b39;-webkit-box-shadow:i
 .rating-view .text-warning{vertical-align:middle}
 .rating-view .rating-all{margin-right:6px;font-size: 0;height: 20px;display: inline-block;vertical-align:middle}
 
-/*上传控件样式*/
-.control-upload{font-size: 0;margin-top: 10px;padding-top:5px;min-height:35px;position:relative}
-.control-upload .progress{width:450px;height:24px;padding:2px;border:solid #d0e3ee 1px;background-color:#FFF;display:inline-block;margin-bottom:0;vertical-align:middle;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
-.control-upload .progress .bar{background-image:-moz-linear-gradient(top,#499dcb,#3d82a9);
-    background-image:-webkit-gradient(linear,0 0,0 100%,from(#499dcb),to(#3d82a9));
-    background-image:-webkit-linear-gradient(top,#499dcb,#3d82a9);background-image:-o-linear-gradient(top,#499dcb,#3d82a9);background-image:linear-gradient(to bottom,#499dcb,#3d82a9);background-repeat:repeat-x;
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff499dcb',endColorstr='#ff3d82a9',GradientType=0)}
-.control-upload .txt{margin:0 10px;color:#888;font-size: 14px;vertical-align: middle;}
-.control-upload .upload-fileName{font-size: 14px;margin-bottom: 5px;color: #999999;}
-.control-upload .uploadify{position:absolute;right:10px;top:0;}
-
 /*头部导航*/
-.logo{float:left;display:block;width:187px;height:58px;background:#3c82a8 url(../images/logo.png) no-repeat 20px 10px;}
+.logo{float:left;display:block;width:187px;height:58px;background:#3c82a8 url(../../../images/logo.png) no-repeat 20px 10px;}
 .navbar-fixed-top .pull-right.nav>li>a{padding:19px 6px 19px 20px;}
 .navbar-fixed-top .pull-right.nav>li>a.dropdown-toggle{padding:7px 7px 6px 11px;white-space:nowrap;height:45px;}
 .navbar-fixed-top .nav>li>.dropdown-menu:before,.navbar .nav>li>.dropdown-menu:after{border:none;}

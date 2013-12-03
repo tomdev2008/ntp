@@ -42,6 +42,7 @@ public class CourseCategoryAjaxContorller {
 	@ResponseBody
 	public String getCourseCategory(HttpServletRequest request) {
 		List<CourseCategory> categories = courseCategoryService.findAll();
+		Map returnMap = new HashMap();
 		List<Map> lists = new ArrayList<Map>();
 		for (CourseCategory courseCategory : categories) {
 			Map map = new HashMap();
@@ -49,7 +50,8 @@ public class CourseCategoryAjaxContorller {
 			map.put("courseCategoryName", courseCategory.getFdName());
 			lists.add(map);
 		}
-		return JsonUtils.writeObjectToJson(lists);
+		returnMap.put("list", lists);
+		return JsonUtils.writeObjectToJson(returnMap);
 	}
 
 }

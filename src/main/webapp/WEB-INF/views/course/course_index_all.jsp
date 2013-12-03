@@ -10,17 +10,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>新东方在线教师备课平台</title>
-<link href="${ctx}/resources/theme-profile/default/css/global.css" rel="stylesheet" type="text/css">
-<link href="${ctx}/resources/theme-profile/default/css/home-course.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/css/global.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/css/home-course.css" rel="stylesheet" type="text/css">
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
 <![endif]-->
-<script id="thumbnailsTemplate" type="text/x-dot-template">
+    <script id="thumbnailsTemplate" type="text/x-dot-template">
         {{~it.list :item:index}}
             <li>
                 <div class="thumbnail">
 					<img src="{{?item.imgUrl!=""}}${ctx}/common/file/image/{{=item.imgUrl}}{{??}}${ctx }/resources/images/temp-newClass.jpg{{?}}" alt="">
-					{{?it.type == "series"}}
+                    {{?it.type == "series"}}
                         <div class="hd2">
                                     <span>
                                         <strong>{{=item.docNum}}个</strong>课程
@@ -33,7 +33,7 @@
                     <div class="bd2">
                         <h3>{{=item.name}}</h3>
                         <p>{{=item.issuer}}</p>
- 						{{?it.type == "single"}}
+						{{?it.type == "single"}}
                         <p class="rating">
                                     <span class="rating-view">
                                         <span class="rating-all">
@@ -52,13 +52,13 @@
                                 <dd>{{=item.intro}}</dd>
                             </dl>
                         {{?}}
-                    </div>
+                    </div> 
                     <div class="ft2 clearfix{{?it.type == 'single'}} bdt1{{?}}">
 						{{?it.type == "series"}}
-                        	<a class="btn btn-primary pull-right" href="${ctx}/series/previewSeries?seriesId={{=item.dataId}}">
+                        	<a class="btn btn-warning pull-right" href="${ctx}/series/previewSeries?seriesId={{=item.dataId}}">
  						{{?}}
 						{{?it.type == "single"}}
-                        	<a class="btn btn-primary pull-right" href="${ctx}/passThrough/getCourseHome/{{=item.dataId}}">
+                        	<a class="btn btn-warning pull-right" href="${ctx}/passThrough/getCourseHome/{{=item.dataId}}">
  						{{?}}
 						<i class="{{?item.isLearning}}icon-progress-shadow"></i>继续学习{{??}}icon-book-shadow"></i>开始学习{{?}}</a>
                         {{?it.type == 'single'}}
@@ -68,70 +68,51 @@
                 </div>
             </li>
         {{~}}
-</script>
-
+    </script>
 <script id="courseCategoryTemplate" type="text/x-dot-template">
     <li class="active"><a href="javascript:void(0)" data-id="all">全部课程</a></li>
 	{{~it.list :item:index}}
 	<li ><a href="javascript:void(0)" data-id="{{=item.courseCategoryId}}">{{=item.courseCategoryName}}</a></li>
 	{{~}}
 </script>
-
-<script id="userTemplate" type="text/x-dot-template">
-            <div class="clearfix row1">
-            <div class="pull-left media profile">
-                <div class="pull-left">
-<img src="{{?it.img.indexOf('http')>-1}}{{=it.img}}{{??}}${ctx}/{{=it.img}}{{?}}" class="media-object" alt="头像"/>
-</div>
-                <div class="media-body">
-                    <div class="media-heading">
-                        {{=it.name}} 
-						{{?it.sex=='M'}}
-							<i class="icon-male"></i></h5>
-						{{??}}
-							<i class="icon-female"></i></h5>
-						{{?}}
-                        <a class="icon-circle-bg" href="${ctx}/register/updateTeacher"><i class="icon-pencil-mini"></i></a>
-                        <a class="icon-circle-bg" href="#"><i class="icon-cloth"></i></a>
-                    </div>
-                    <p class="muted">
-                        机构 {{=it.org}}  <br/>
-                        部门  {{=it.dep}} <br/>
-                        电话  {{=it.tel}} <br/>
-        QQ  {{=it.qq}} <br/>
-                        血型  {{=it.bool}}
-                    </p>
-                </div>
-            </div>
-            <div class="pull-right box1">
-                <div class="clearfix">
-                    <div class="pull-left">
-                        完成学习 <strong class="num">{{=it.finishSum}}</strong>个课程
-                    </div>
-                    <div class="pull-right">
-                        正在学习 <strong class="num">{{=it.unfinishSum}}</strong>个课程
-                    </div>
-                </div>
-                <div class="well">
-                    <i class="icon-shyhl"></i>
-                    <span class="txt">
-{{?it.selfIntroduction==""}}这家伙很懒，也不好好介绍一下自己~ :-({{??}}
-{{=it.selfIntroduction}}
-{{?}}
-					
-					</span>
-                    <i class="icon-shyhr"></i>
-                </div>
-            </div>
-        </div>
-</script>
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
 <body>
-<section class="container">
-	<section class="mt20 section" id="userDiv">
 
+<section class="container">
+	<section class="mt20">
+        <div id="myCarousel" class="carousel slide" data-toggle="carousel" data-interval="4000">
+            <div class="carousel-l"><img src="${ctx}/resources/images/courseHomeSlider/slide-05.png" alt=""/></div>
+            <div class="carousel-r"><img src="${ctx}/resources/images/courseHomeSlider/slide-02.png" alt=""/></div>
+            <div class="carousel-mask"></div>
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="${ctx}/resources/images/courseHomeSlider/slide-01.jpg" alt=""/>
+                </div>
+                <div class="item">
+                    <img src="${ctx}/resources/images/courseHomeSlider/slide-02.png" alt=""/>
+                </div>
+                <div class="item">
+                    <img src="${ctx}/resources/images/courseHomeSlider/slide-03.png" alt=""/>
+                </div>
+                <div class="item">
+                    <img src="${ctx}/resources/images/courseHomeSlider/slide-04.png" alt=""/>
+                </div>
+                <div class="item">
+                    <img src="${ctx}/resources/images/courseHomeSlider/slide-05.png" alt=""/>
+                </div>
+            </div>
+            <div class="left carousel-btn" data-target="#myCarousel" data-slide="prev"></div>
+            <div class="right carousel-btn" data-target="#myCarousel" data-slide="next"></div>
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+                <li data-target="#myCarousel" data-slide-to="4"></li>
+            </ol>
+        </div>
 	</section>
 
     <section class="md">
@@ -148,9 +129,8 @@
     <section class="md">
         <div class="hd navbar">
             <div class="navbar-inner">
-               <ul class="nav" id="navCourse">
-
-			   </ul>
+                <ul class="nav" id="navCourse">
+                </ul>
             </div>
         </div>
         <div class="bd">
@@ -162,25 +142,22 @@
         </div>
     </section>
 
+<!--底部 E-->
 </section>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">	
 	var thumbnailsFn = doT.template(document.getElementById("thumbnailsTemplate").text);
 	var courseCategoryFn = doT.template(document.getElementById("courseCategoryTemplate").text);
-	var userFn = doT.template(document.getElementById("userTemplate").text);
-
-	//初始化用户
-	initUser();
 	//初始化课程分类
 	initCourseCategory();
-	//初始化课程
-	initCouese("all",1);
 	//初始化系列
 	initSeries(1);
-	
+
+	//初始化课程
+	initCouese("all",1);
+
     $("#loadMoreSeries").click(function(e){//点击加载更多
     	 e.preventDefault();
          var pageNo = $("#list-series li").length/3+1;
@@ -202,11 +179,11 @@
      	});
     });
     $("#loadMoreCourse").click(function(e){//点击加载更多
-        e.preventDefault();
+    	e.preventDefault();
         var pageNo = $("#list-course li").length/3+1;
         var type = $("#navCourse .active a").attr("data-id");
         $.ajax({
-    		url : "${ctx}/ajax/course/getMyCoursesIndexInfo",
+    		url : "${ctx}/ajax/course/getAllCoursesIndexInfo",
     		async : false,
     		dataType : 'json',
     		data:{
@@ -226,32 +203,39 @@
     });
 
     $("#navCourse>li>a").click(function(e){
-        e.preventDefault();
-        var type = $(this).attr("data-id");
-        initCouese(type,1);
-        $(this).parent().addClass("active").siblings().removeClass("active");
+    	 e.preventDefault();
+         var type = $(this).attr("data-id");
+         initCouese(type,1);
+         $(this).parent().addClass("active").siblings().removeClass("active");
     });
-    
-    function initCouese(type,pageNo){
-    	$.ajax({
-    		url : "${ctx}/ajax/course/getMyCoursesIndexInfo",
-    		async : false,
-    		dataType : 'json',
-    		data:{
-    			userId:"${userId}",
-    			type:type,
-    			pageNo:pageNo,
-    		},
-    		success : function(result) {
-    			$("#list-course").html(thumbnailsFn(result));
-    			if(result.hasMore){
-    				 $("#loadMoreCourse").removeClass("hide");
-    			}else{
-    				 $("#loadMoreCourse").addClass("hide");
-    			}
-    		}
-    	});
-    }
+    $("#myCarousel").on("slid",function(e){
+        var $this = $(this);
+        $this.find(".carousel-inner>.item").each(function(i){
+            if($(this).hasClass("active")){
+                $this.find(".carousel-l>img").attr("src",$(this).prev().length ? $(this).prev().children("img").attr("src") : $this.find(".carousel-inner>.item:last>img").attr("src"));
+                $this.find(".carousel-r>img").attr("src",$(this).next().length ? $(this).next().children("img").attr("src") : $this.find(".carousel-inner>.item:first>img").attr("src"));
+            }
+        })
+    });
+    $("#myCarousel>.carousel-inner>.item").click(function(e){
+        switch ($(this).index()){
+            case 0:
+                alert("第一张图链接");
+                break;
+            case 1:
+                alert("第二张图链接");
+                break;
+            case 2:
+                alert("第三张图链接");
+                break;
+            case 3:
+                alert("第四张图链接");
+                break;
+            case 4:
+                alert("第五张图链接");
+                break;
+        }
+    })
     
     function initCourseCategory(){
     	$.ajax({
@@ -263,21 +247,6 @@
     		}
     	});
     }
-    
-    function initUser(){
-    	$.ajax({
-    		url : "${ctx}/ajax/course/getUserCourseInfo",
-    		async : false,
-    		dataType : 'json',
-    		data:{
-    			userId:"${userId}"
-    		},
-    		success : function(result) {
-    			$("#userDiv").html(userFn(result));
-    		}
-    	});
-    }
-    
     function initSeries(pageNo){
     	$.ajax({
     		url : "${ctx}/ajax/series/getSeries",
@@ -293,6 +262,26 @@
    				}else{
    				 	$("#loadMoreSeries").addClass("hide");
    				}
+    		}
+    	});
+    }
+    function initCouese(type,pageNo){
+    	$.ajax({
+    		url : "${ctx}/ajax/course/getAllCoursesIndexInfo",
+    		async : false,
+    		dataType : 'json',
+    		data:{
+    			userId:"${userId}",
+    			type:type,
+    			pageNo:pageNo,
+    		},
+    		success : function(result) {
+    			$("#list-course").html(thumbnailsFn(result));
+    			if(result.hasMore){
+    				 $("#loadMoreCourse").removeClass("hide");
+    			}else{
+    				 $("#loadMoreCourse").addClass("hide");
+    			}
     		}
     	});
     }

@@ -73,6 +73,7 @@ public class MaterialController {
 		    AttMain main = attMainService.getByModelId(fdId);
 		    if(main!=null){
 		    	model.addAttribute("attId", main.getFdId());
+		    	model.addAttribute("attUrl", main.getFileUrl());
 		    }
 		    String creatorId = materialInfo.getCreator().getFdId();
 		    String loginUserId = ShiroUtils.getUser().getId();

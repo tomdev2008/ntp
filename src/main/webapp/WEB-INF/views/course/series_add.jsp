@@ -108,9 +108,11 @@
 	    	<div class="section" >   
 	            	<fieldset>
                     	<label for="seriesTitle">系列名称</label>
-                        <input type="text" id="seriesTitle" name="seriesTitle" required minlength="6" class="input-block-level" value="{{=it.fdName || ''}}"  />
+                        <input type="text" id="seriesTitle" name="seriesTitle" required minlength="6" class="input-block-level" value="{{=it.seriesTitle || ''}}"  />
                         <label for="seriesDesc">系列描述</label>
                         <textarea name="seriesDesc" id="seriesDesc" required minlength="12" class="input-block-level" rows="3">{{=it.fdDescription || ''}}</textarea>   
+						<label for="seriesAuthor">作者</label>
+                        <input type="text" name="seriesAuthor" id="seriesAuthor"  class="input-block-level" value="{{=it.seriesAuthor || ''}}"/>   
                     </fieldset>
 						<!--<input name="sectionIsava" id="sectionIsava" value="{{=it.isavailable||true}}" type="hidden">
 						<label for="sectionOrder"></label>
@@ -141,7 +143,16 @@
 						     <button id="upMovie" class="btn btn-primary btn-large" type="button" >上传</button>
 							<input type="hidden"  name="attId" id="attIdID">
 					</div>		
-	       </div>		  
+	       </div>
+	       <div class="courseSkins">
+		   		 <label >课程皮肤</label>
+				<input type="hidden" id="courseSkin" name="courseSkin" value="{{=it.courseSkin.title || ''}}" />
+				<ul class="nav courseSkinList clearfix">
+					{{~ it.courseSkinList :skin:index}}
+						 <li{{?skin.title == it.courseSkin.title}} class="active"{{?}}><a href="#"><img src="{{=skin.imgUrl}}" alt="{{=skin.title}}" /><i class="icon-right"></i></a><h5>{{=skin.title}}</h5></li>
+					{{~}}                    	                  
+				</ul>
+			</div>		  
            <button class="btn btn-block btn-submit btn-inverse" type="button"  onclick="saveSeriesPic();">保存</button>
        </form>	  
 	 </div> 	
@@ -169,7 +180,11 @@
     <div class="page-body mediaPage-content">
         <form id="formMedia" method="post" class="form-horizontal" action="{{=it.action || '##'}}">
 	    	<div class="section" >
-                <div class="control-group">
+				<div class="control-group">
+                    <label class="control-label" for="seriesTitle">阶段名称</label>
+                    <div class="controls"><input value="{{=it.seriesTitle || ''}}" id="seriesTitle" required minlength="3" class="input-xlarge" name="seriesTitle" type="text" /></div>
+                </div>
+				<div class="control-group">
                     <label class="control-label" for="sectionsIntro">阶段说明</label>
                     <div class="controls">
                         <textarea placeholder="请填写该阶段的描述信息" rows="4" required minlength="20" class="input-xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>

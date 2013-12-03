@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -19,9 +18,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
@@ -32,9 +33,10 @@ import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
-import cn.me.xdf.model.organization.User;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.SysOrgPersonService;
+import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseAuthService;
 import cn.me.xdf.service.course.CourseCatalogService;
@@ -95,6 +97,17 @@ public class CourseAjaxController {
 	
 	@Autowired
 	private ScoreStatisticsService statisticsService;
+	
+	@Autowired
+	private ScoreStatisticsService scoreStatisticsService;
+	
+	@Autowired
+	private BamCourseService bamCourseService;
+	
+	@Autowired
+	private SysOrgPersonService sysOrgPersonService;
+	
+	
 	/**
 	 * 获取当前课程的基本信息
 	 * 
@@ -750,6 +763,7 @@ public class CourseAjaxController {
 				coursepas.add(mcpa);
 			}
 		}
+		boolean isOftask=courseCatalogService.getIsCourseOfTask(courseId);
 		Map map=new HashMap();
 		map.put("totalPage", page.getTotalPage());
 		map.put("currentPage", pageNo);
@@ -760,6 +774,7 @@ public class CourseAjaxController {
 		map.put("EndPage",page.getEndPage());
 		map.put("StartOperate", page.getStartOperate());
 		map.put("EndOperate", page.getEndOperate());
+		map.put("isOftask", isOftask);//该课程是否包含作业;
 		return JsonUtils.writeObjectToJson(map);
 	}
 	/**
@@ -838,6 +853,146 @@ public class CourseAjaxController {
 				}
 			}
 		}
+	}
+
+	@RequestMapping(value="getMyCoursesIndexInfo")
+	@ResponseBody
+	public String getMyCoursesIndexInfo(HttpServletRequest request){
+		
+		Map returnMap = new HashMap();
+		String userId = request.getParameter("userId");
+		String type = request.getParameter("type");
+		int pageNo = new Integer(request.getParameter("pageNo"));
+		Finder finder = Finder.create("");
+		finder.append("select course from CourseInfo course , BamCourse bam " );
+		if(type.equals("all")){
+			finder.append(" where bam.courseId = course.fdId and bam.preTeachId = :userId " );
+			finder.setParam("userId", userId);
+		}else{
+			finder.append(" where bam.courseId = course.fdId and bam.preTeachId = :userId and course.fdCategory.fdId=:type " );
+			finder.setParam("userId", userId);
+			finder.setParam("type", type);
+		}		
+		Pagination pag=	courseService.getPage(finder, pageNo, 3);
+		List<CourseInfo> courseInfos =  (List<CourseInfo>) pag.getList();
+		if(pag.getTotalPage()<=pageNo){
+			returnMap.put("hasMore", false);
+		}else{
+			returnMap.put("hasMore", true);
+		}
+		List<Map> lists = new ArrayList<Map>();
+		for (CourseInfo courseInfo : courseInfos) {
+			Map map = new HashMap();
+			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
+			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
+			map.put("learnerNum", getLearningTotalNo(courseInfo.getFdId()));
+			map.put("name", courseInfo.getFdTitle());
+			map.put("issuer", courseInfo.getCreator().getDeptName()); 
+			ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
+			map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
+			map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
+			map.put("isLearning", true);
+			map.put("dataId", courseInfo.getFdId());
+			lists.add(map);
+		}
+		returnMap.put("list", lists);
+		returnMap.put("type", "single");
+		
+		return JsonUtils.writeObjectToJson(returnMap);
+	}
+	/**
+	 * 从课程学习进程中获取当前学习的教师总数
+	 * @param courseId 课程ID
+	 * @return int 学习的教师总数
+	 */
+	private int getLearningTotalNo(String courseId) {
+		Finder finder = Finder.create(" from BamCourse where courseId = :courseId");
+		finder.setParam("courseId", courseId);
+		Pagination page = bamCourseService.getPage(finder, 1, 15);
+		return page.getTotalCount();
+	}
+	
+	
+	/**
+	 * 获取用户课程信息
+	 * 
+	 * 
+	 */
+	@RequestMapping(value="getUserCourseInfo")
+	@ResponseBody
+	private String getUserCourseInfo(HttpServletRequest request) {
+		Map returnMap = new HashMap();
+		String userId = request.getParameter("userId");
+		SysOrgPerson orgPerson = accountService.load(userId);
+		returnMap.put("name", orgPerson.getRealName());
+		returnMap.put("img", orgPerson.getPoto());
+		returnMap.put("sex", orgPerson.getFdSex());
+		returnMap.put("org", orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
+		returnMap.put("dep", orgPerson.getDeptName());
+		returnMap.put("tel", orgPerson.getFdWorkPhone());
+		returnMap.put("qq", orgPerson.getFdQq()==null?"不详":orgPerson.getFdQq());
+		
+		Map userMap = sysOrgPersonService.getUserInfo(userId);
+		returnMap.put("bool", userMap.get("fdBloodType"));
+		returnMap.put("selfIntroduction", userMap.get("selfIntroduction"));
+		Finder finder1 = Finder.create("select count(*) from BamCourse b where b.preTeachId = :preTeachId and b.through=:through");
+		finder1.setParam("preTeachId", userId);
+		finder1.setParam("through", true);
+		long finishSum = bamCourseService.findUnique(finder1);
+		returnMap.put("finishSum", finishSum);
+		Finder finder2 = Finder.create("select count(*) from BamCourse b where b.preTeachId = :preTeachId and b.through=:through");
+		finder2.setParam("preTeachId", userId);
+		finder2.setParam("through", false);
+		long unfinishSum =bamCourseService.findUnique(finder2);
+		returnMap.put("unfinishSum",unfinishSum);
+		return JsonUtils.writeObjectToJson(returnMap);
+	}
+	
+	@RequestMapping(value="getAllCoursesIndexInfo")
+	@ResponseBody
+	public String getAllCoursesIndexInfo(HttpServletRequest request){
+		
+		Map returnMap = new HashMap();
+		String userId = request.getParameter("userId");
+		String type = request.getParameter("type");
+		int pageNo = new Integer(request.getParameter("pageNo"));
+		Finder finder = Finder.create("");
+		finder.append("select course from CourseInfo course" );
+		if(type.equals("all")){
+			finder.append(" where course.fdStatus=:fdStatus " );
+			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
+		}else{
+			finder.append(" where course.fdStatus=:fdStatus  and course.fdCategory.fdId=:type " );
+			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
+			finder.setParam("type", type);
+		}		
+		Pagination pag=	courseService.getPage(finder, pageNo, 3);
+		List<CourseInfo> courseInfos =  (List<CourseInfo>) pag.getList();
+		if(pag.getTotalPage()<=pageNo){
+			returnMap.put("hasMore", false);
+		}else{
+			returnMap.put("hasMore", true);
+		}
+		List<Map> lists = new ArrayList<Map>();
+		for (CourseInfo courseInfo : courseInfos) {
+			Map map = new HashMap();
+			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
+			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
+			map.put("learnerNum", getLearningTotalNo(courseInfo.getFdId()));
+			map.put("name", courseInfo.getFdTitle());
+			map.put("issuer", courseInfo.getCreator().getDeptName()); 
+			ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
+			map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
+			map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
+			BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseInfo.getFdId());
+			map.put("isLearning", bamCourse==null?false:true);
+			map.put("dataId", courseInfo.getFdId());
+			lists.add(map);
+		}
+		returnMap.put("list", lists);
+		returnMap.put("type", "single");
+		
+		return JsonUtils.writeObjectToJson(returnMap);
 	}
 	
 }

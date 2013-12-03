@@ -246,6 +246,7 @@
             <input type="hidden" id="cachorder"/>
             <input type="hidden" id="currentpage">
             <input type="hidden" id="orderBy"/>
+            <input type="hidden" id="isOftask"/>
 </section>
 <script type="text/javascript">	
 /**********************initpage*********************************************/
@@ -267,12 +268,12 @@
         $("#formAddTeacher").validate({
             submitHandler: function(form){
             	if($("#teacher").val()==null||$("#teacher").val()==""){
-            		$("#showerror").html("<font size='2' color='red'>输入数据有误,请从下来菜单中选择数据!</font>");
+            		$("#showerror").html("<font size='2' color='red'>输入数据有误,请从下拉菜单中选择数据!</font>");
             		return;
             	}
             	if($("#inputMentor").val()!=null&&$("#inputMentor").val()!=""){
             		if($("#mentor").val()==null||$("#mentor").val()==""){
-            			$("#showerror2").html("<font size='2' color='red'>输入数据有误,请从下来菜单中选择数据!</font>");
+            			$("#showerror2").html("<font size='2' color='red'>输入数据有误,请从下拉菜单中选择数据!</font>");
             			return;
             		}
             	}
@@ -312,9 +313,15 @@
        		    loadListTeacherMentor(data.list);
        		    result=data.course;
        		    pageInfo=data;
+       		    $("#isOftask").val(data.isOftask);
+       		    alert($("#isOftask").val());
         		 
         	}
-        }); 
+        });
+        //
+        if($("#isOftask").val()=='true'){//必须添加导师
+        	$("#inputMentor").attr("required","");
+        }
         //课程封面
         if(result.coverUrl!=""){
         	$("#coursepage").attr('src','${ctx}/common/file/image/'+result.coverUrl);

@@ -85,5 +85,19 @@ public class CourseCatalogService extends BaseService{
 		}
 		super.deleteEntity(catalog);
 	}
-	
+	/**
+	 * 查看课程下的节素材是否包含作业 
+	 */
+	@Transactional(readOnly=false)
+	public boolean getIsCourseOfTask(String courseId){
+		Finder finder=Finder.create("  from CourseCatalog cata");
+		finder.append(" where cata.courseInfo.fdId=:courseId and cata.fdMaterialType='10' ");
+		finder.setParam("courseId", courseId);
+		List catalist=find(finder);
+		if(catalist!=null&&catalist.size()>0){
+			return true;
+		}
+		
+		return false;
+	}
 }

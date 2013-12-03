@@ -166,6 +166,7 @@
             <input name="fdid" value="{{=it.id}}" type="hidden" />
 			<input name="bamId" value="{{=it.bamId}}" type="hidden" />
 			<input name="catalogId" value="{{=it.catalogId}}" type="hidden" />
+            <input name="courseId" value="{{=it.courseId}}" type="hidden" />
 			<input name="fdMtype" value="{{=it.fdMtype}}" type="hidden" />
 			<input name="startTime" value="{{=it.startTime}}" type="hidden" />
             {{?it.type=='exam'}}
@@ -682,7 +683,7 @@
         //课程进行中节的内容类型
         var fdMtype = "${fdMtype}";
         
-        var courseId = "${courseId}"
+        var courseId = "${courseId}";
         
 		var leftData = {};
 				//ajax获取左侧章节展示树
@@ -1313,7 +1314,7 @@
                 $(this).attr("disabled", true);
                 $.ajax({
           			type: "post",
-          			url: "${ctx}/passThrough/submitExamOrTask?bamId="+bamId+"&catalogId="+catalogId+"&fdMtype="+fdMtype+"&fdid="+$mediaToolbar.attr("data-fdid"),
+          			url: "${ctx}/passThrough/submitExamOrTask?bamId="+bamId+"&courseId="+courseId+"&catalogId="+catalogId+"&fdMtype="+fdMtype+"&fdid="+$mediaToolbar.attr("data-fdid"),
           			data : {
           				"materialId":$mediaToolbar.attr("data-fdid"),
           			},
@@ -1424,6 +1425,7 @@
 						tempData.action = "submitExamOrTask";
                         tempData.bamId=bamId ;
                         tempData.catalogId=catalogId ;
+                        tempData.courseId=courseId;
                         tempData.fdMtype=fdMtype ;
                         var date = new Date();
                         //tempData.startTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();

@@ -136,10 +136,16 @@ public class SeriesAjaxContrller {
 		String seriesId=request.getParameter("seriesId");
 		String seriesTitle=request.getParameter("seriesTitle");
 		String seriesDesc=request.getParameter("seriesDesc");
+		String seriesAuthor=request.getParameter("seriesAuthor");
 //		String isavailable=request.getParameter("isavailable");
 		SeriesInfo series=seriesInfoService.get(seriesId);
 		series.setFdName(seriesTitle);
 		series.setFdDescription(seriesDesc);
+		if(StringUtil.isNotEmpty(seriesAuthor)){
+			series.setFdAuthor(seriesAuthor);
+		}else{
+			series.setFdAuthor(series.getCreator().getNotifyEntity().getRealName());
+		}
 		series.setIsAvailable(true);
 		seriesInfoService.save(series);
 	}
@@ -320,10 +326,12 @@ public class SeriesAjaxContrller {
 		Map<String, Object> map=new HashMap<String, Object>();
 		List<Map<String, Comparable>> courselist=null;
 		String phasesDes="";
+		String phasesTitle="";
 		if(sclist!=null){
 			courselist=new ArrayList<Map<String, Comparable>>();
 			SeriesInfo phases=sclist.get(0).getSeries();
 			phasesDes=phases.getFdDescription();
+			phasesTitle=phases.getFdName();
 			for(SeriesCourses seriescourse:sclist){
 				Map<String, Comparable> courseM=new HashMap<String, Comparable>();
 				CourseInfo course=seriescourse.getCourses();
@@ -333,8 +341,8 @@ public class SeriesAjaxContrller {
 				courselist.add(courseM);
 			}
 		}
+		map.put("seriesTitle", phasesTitle);
 		map.put("sectionsIntro", phasesDes);
-		map.put("mediaList" ,courselist);
 		return JsonUtils.writeObjectToJson(map);
 	}
 	/**
@@ -492,7 +500,8 @@ public class SeriesAjaxContrller {
 				map.put("seriesImg", "");	
 			}
 			Map<String, String> author=null;
-			if(StringUtil.isNotEmpty(seriesInfo.getFdAuthor())){
+			//在创建系列课程时,当作者为空时取的是创建者的名字,此处判断如果创建者和作者名字相同走默认即创建者,否则取作者字段
+			if(StringUtil.isNotEmpty(seriesInfo.getFdAuthor())&&!seriesInfo.getFdAuthor().equals(seriesInfo.getCreator().getNotifyEntity().getRealName())){
 				author=new HashMap<String, String>();
 				author.put("authorName", seriesInfo.getFdAuthor());//作者名称
 				author.put("imgUrl", "");//作者头像
@@ -604,6 +613,49 @@ public class SeriesAjaxContrller {
 		finder.setParam("courseId", courseId);
 		Pagination page = bamCourseService.getPage(finder, 1, 15);
 		return page.getTotalCount();
+	}
+	
+	/**
+	 * 获取系列信息
+	 */
+	@RequestMapping(value="getSeries")
+	@ResponseBody
+	public String getSeries(HttpServletRequest request){
+		Map returnMap = new HashMap();
+		int pageNo = new Integer(request.getParameter("pageNo"));
+		Finder finder = Finder.create(" from SeriesInfo s where s.isPublish = :isPublish");
+		finder.setParam("isPublish", true);
+		Pagination pagination = seriesCoursesService.getPage(finder,pageNo,3);
+		if(pagination.getTotalPage()<=pageNo){
+			returnMap.put("hasMore", false);
+		}else{
+			returnMap.put("hasMore", true);
+		}
+		returnMap.put("type", "series");
+		List<SeriesInfo> infos = (List<SeriesInfo>) pagination.getList();
+		List<Map> lists = new ArrayList<Map>();
+		for (SeriesInfo seriesInfo : infos) {
+			Map map = new HashMap();
+			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(seriesInfo.getFdId(), SeriesInfo.class.getName());
+			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
+			
+			List<CourseInfo> list = seriesCoursesService.getCoursesByseriesId1(seriesInfo.getFdId());
+			int count=0;
+			for (CourseInfo course : list) {
+				int courseSum = getLearningTotalNo(course.getFdId());
+				count=count+courseSum;
+			}
+			map.put("docNum",seriesCoursesService.getCoursesByseriesId2(seriesInfo.getFdId()).size());
+			map.put("learnerNum", count);
+			map.put("name", seriesInfo.getFdName());
+			map.put("issuer", seriesInfo.getCreator().getDeptName());
+			map.put("intro", seriesInfo.getFdDescription().length()>=35?seriesInfo.getFdDescription().subSequence(0, 35)+"...":seriesInfo.getFdDescription());
+			map.put("isLearning", false);
+			map.put("dataId", seriesInfo.getFdId());
+			lists.add(map);
+		}
+		returnMap.put("list", lists);
+		return JsonUtils.writeObjectToJson(returnMap);
 	}
 	
 }
