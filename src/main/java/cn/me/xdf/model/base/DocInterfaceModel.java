@@ -1,10 +1,12 @@
 package cn.me.xdf.model.base;
 
+import cn.me.xdf.common.utils.ByteFileObjectUtils;
 import cn.me.xdf.common.utils.sso.AES;
 import cn.me.xdf.common.utils.sso.AESX3;
 import cn.me.xdf.utils.DateUtil;
 import jodd.io.FileNameUtil;
 import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.methods.multipart.Part;
@@ -69,7 +71,9 @@ public class DocInterfaceModel {
 
         String signText = (method + appId + appKey + timeStrap + title + modelName + docId + author + sysCode + isConvert).toLowerCase();
         this.sign = AESX3.md5(signText); // 签名
-        FilePart fp = new FilePart("file", new File(filePath));
+        File file = new File(filePath);
+        ByteArrayPartSource byteArrayPartSource = new ByteArrayPartSource(file.getName(), ByteFileObjectUtils.getBytesFromFile(file));
+        FilePart fp = new FilePart("file", byteArrayPartSource);
         StringPart username = new StringPart("username",
                 this.userName, "utf-8");
         StringPart password = new StringPart("password", AES.encode(
