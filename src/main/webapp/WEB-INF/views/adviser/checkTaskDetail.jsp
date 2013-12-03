@@ -110,22 +110,22 @@
                         {{?}}
                     </div>
                     <div class="dashed-t1 pd20 ratingBox" id="{{=task.id}}">
-                        {{?task.status == "unchecked"}}
-                            <label >作业打分</label>
+                         <label >作业打分</label>
                             <div class="box-score">
                                 {{#def.timeLine:task.totalScore}}
                                 <input type="hidden" value="0" min="1" name="taskScore" />
                             </div>
+                        {{?task.status == "unchecked"}}
                             <label >说点什么</label>
                             {{#def.richText}}
                             <div class="clearfix">
-                               <button class="btn btn-primary btn-large pull-right" type="button">此题批改确认</button>
+                               <button class="btn btn-primary btn-large pull-right" fdStatus="0" type="button">此题批改确认</button>
                             </div>
                         {{??}}
-                            <label >作业打分</label>
+                            <!--<label >作业打分</label>
                             <div class="box-score">
                                 <div class="text-info"><span class="num">{{?task.status == "null"}}0{{??}}{{=task.rating.score}}{{?}}</span>分</div>
-                            </div>
+                            </div>-->
                             <label >说点什么</label>
                             <div class="box-comm">
                                 {{?task.status == "null"}}
@@ -141,7 +141,7 @@
                             </div>
                             {{?it.status == "unfinish" && task.status != "null"}}
                             <div class="clearfix">
-                                <button class="btn btn-primary btn-large pull-right" type="button">修改批改意见</button>
+                                <button class="btn btn-primary btn-large pull-right" fdStatus="0" type="button">修改批改意见</button>
                             </div>
                             {{?}}
                         {{?}}
@@ -354,7 +354,7 @@
 					dataType : 'json',
 					success : function(result) {
 						taskData = result;
-						//alert(JSON.stringify(taskData.listTask));
+						//alert(JSON.stringify(taskData.listTask[0].rating.score));
 					}
 				});
 			
@@ -392,7 +392,7 @@
 			var $form = $("#formTask");
 			var validator = $form
 					.validate({
-						rules : {
+						/* rules : {
 							taskScore : {
 								min : 1
 							}
@@ -401,17 +401,28 @@
 							taskScore : {
 								min : "请为此题打分"
 							}
-						},
-						ignore : "",
+						}, 
+						ignore : "",*/
 						submitHandler : function(form) {
-							$("#formTask .timeLine").each(function(){
+							/* $("#formTask .timeLine").each(function(){
 								$(this).parent().nextAll(".clearfix").children(".btn-primary")
 								.after('<label class="error pull-right">请批改该作业！</label>');
 								$(this).parent().nextAll(".clearfix").children(".btn-primary").focus();
 							});
 							if($("#formTask .timeLine").length>0){
 								return;
-							}
+							} */
+							$form.find(".bd .ratingBox .btn-primary").each(function(){
+								if($(this).attr("fdStatus")=="0"){
+									$(this).after('<label class="error pull-right">请批改该作业！</label>');
+								}
+							});
+							$form.find(".bd .ratingBox .btn-primary").each(function(){
+								if($(this).attr("fdStatus")=="0"){
+								  $(this).focus();
+								  return;
+								}
+							});
 							taskData.status = taskData.score < taskData.scorePass ? "fail" : "pass";
 							//$.post()保存soursenote
 						  $.ajax({
@@ -445,10 +456,13 @@
 										if (validator
 												.element($boxScore
 														.children("[name='taskScore']"))) {
-											$boxScore
+											/* $boxScore
 													.html('<div class="text-info"><span class="num">'
 															+ score
-															+ '</span>分</div>');
+															+ '</span>分</div>'); */
+															
+											 $this.attr("fdStatus",0);
+											$boxScore.find(".timeLine").children("a").attr("disabled",false);
 											taskData.score = score;
 											var fdid = $boxScore.parent(
 													".ratingBox").attr("id");
@@ -464,7 +478,7 @@
 											}
 											//$.post("url",{id: fdid, score: taskData.score, comment: txt});
 											//提交每一到题目的情况
-											 $.ajax({
+											  $.ajax({
 												type:"post",
 												url : "${ctx}/ajax/adviser/updateTaskRecord/"+fdid,
 												async : false,
@@ -477,11 +491,12 @@
 													$this.next(".error").remove();
 													$("#navTask>a").eq(result).addClass("active").attr("data-original-title","已批改");
 												}
-											});
+											}); 
+											$this.attr("fdStatus",1); 
 											 var total = $("#nowScore").text();
-												total = parseInt(total) + parseInt(taskData.score);
-												$("#nowScore").text(total);
-											
+											 total = parseInt(total) + parseInt(taskData.score);
+											 $("#nowScore").text(total);
+											$boxScore.find(".timeLine").children("a").attr("disabled",true);
 										}
 									}
 									if (score) {

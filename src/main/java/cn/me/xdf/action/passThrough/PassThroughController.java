@@ -33,6 +33,8 @@ import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.course.CourseCatalogService;
+import cn.me.xdf.service.course.CourseCategoryService;
 import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
@@ -71,6 +73,9 @@ public class PassThroughController {
 	@Autowired
 	private AttMainService attMainService;
 	
+	@Autowired
+	private CourseCatalogService courseCatalogService;
+	
 	/**
 	 * 课程学习首页
 	 * @param request
@@ -81,15 +86,18 @@ public class PassThroughController {
 			CourseInfo course = courseService.get(courseId);
 			if(course!=null && course.getIsAvailable()){
 				//从进程表中取当前用户所选课程的进程信息
-				BamCourse bamCourse = bamCourseService.findUniqueByProperty(BamCourse.class, Value.eq("courseId", course.getFdId()),Value.eq("preTeachId", ShiroUtils.getUser().getId()));
+				BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(ShiroUtils.getUser().getId(),course.getFdId());
+				List<CourseCatalog> courseCatalogs;
 				if(bamCourse!=null){
 					//章节信息
-					List<CourseCatalog> courseCatalogs = bamCourse.getCatalogs();
-					if(courseCatalogs!=null){
-						ArrayUtils.sortListByProperty(courseCatalogs, "fdTotalNo", SortType.HIGHT);
-					}
-					request.setAttribute("catalog", courseCatalogs);
+					courseCatalogs = bamCourse.getCatalogs();
+				}else{
+					courseCatalogs = courseCatalogService.findByProperty("courseInfo.fdId", course.getFdId());
 				}
+				if(courseCatalogs!=null){
+					ArrayUtils.sortListByProperty(courseCatalogs, "fdTotalNo", SortType.HIGHT);
+				}
+				request.setAttribute("catalog", courseCatalogs);
 				//当前作者的图片(当作者和创建者是相同时候使用创建者的照片)
 				if(course.getFdAuthor().equals(course.getCreator().getRealName())){
 					request.setAttribute("imgUrl",course.getCreator().getPoto());
@@ -130,11 +138,12 @@ public class PassThroughController {
 		String catalogId = request.getParameter("catalogId");
 		String fdMtype = request.getParameter("fdMtype");
 		CourseInfo course = courseService.get(courseId);
-		BamCourse bamCourse = bamCourseService.findUniqueByProperty(BamCourse.class, Value.eq("courseId", course.getFdId()),Value.eq("preTeachId", ShiroUtils.getUser().getId()));
+		BamCourse bamCourse = bamCourseService.
+				getCourseByUserIdAndCourseId(ShiroUtils.getUser().getId(),courseId);
 		if(bamCourse==null){
 			//如果进程信息为空，则先保存进程信息
 			bamCourseService.saveBamCourse(course, ShiroUtils.getUser().getId());
-			bamCourse = bamCourseService.findUniqueByProperty(BamCourse.class, Value.eq("courseId", course.getFdId()),Value.eq("preTeachId", ShiroUtils.getUser().getId()));
+			bamCourse = bamCourseService.getCourseByUserIdAndCourseId(ShiroUtils.getUser().getId(),courseId);
 		}
 		if(StringUtil.isBlank(catalogId)&&StringUtil.isBlank(fdMtype)){
 			List<CourseCatalog> courseCatalogs = bamCourse.getCatalogs();
@@ -188,9 +197,9 @@ public class PassThroughController {
 	public String submitExamOrTask(WebRequest request) {
 		String fdMtype = request.getParameter("fdMtype");
 		String catalogId = request.getParameter("catalogId");
-		String bamId = request.getParameter("bamId");
+		String courseId =request.getParameter("courseId");
 		bamMaterialService.saveSourceNode(fdMtype, request);
-		return  "redirect:/passThrough/getStudyContent?bamId="+bamId+"&catalogId="+catalogId+"&fdMtype="+fdMtype;
+		return  "redirect:/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+catalogId+"&fdMtype="+fdMtype;
 	}
 	
 }

@@ -1313,7 +1313,7 @@
                 $(this).attr("disabled", true);
                 $.ajax({
           			type: "post",
-          			url: "${ctx}/passThrough/submitExamOrTask?bamId="+bamId+"&catalogId="+catalogId+"&fdMtype="+fdMtype+"&fdid="+$mediaToolbar.attr("data-fdid"),
+          			url: "${ctx}/passThrough/submitExamOrTask?bamId="+bamId+"&courseId="+courseId+"&catalogId="+catalogId+"&fdMtype="+fdMtype+"&fdid="+$mediaToolbar.attr("data-fdid"),
           			data : {
           				"materialId":$mediaToolbar.attr("data-fdid"),
           			},
