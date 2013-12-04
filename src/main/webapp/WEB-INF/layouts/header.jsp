@@ -18,11 +18,15 @@ request.setAttribute("path", path[path.length-1]);
 			<a href="#" class="logo"></a>
 	        <ul class="nav">
 	       	  <li><a href="${ctx}/course/courseIndexAll">全部课程</a></li>
-	          <shiro:hasAnyRoles name="admin,group">
+	          <shiro:hasRole name="admin">
 	          <li><a href="${ctx}/admin/role/list">系统管理</a></li>
-	          </shiro:hasAnyRoles>
+	          </shiro:hasRole>
+	          <shiro:hasRole name="guidance">
 	          <li><a href="${ctx}/studyTrack/getStudyTrackTutor">我是导师</a></li>
+	          </shiro:hasRole>
+	          <shiro:hasRole name="group">
 	          <li><a href="${ctx}/studyTrack/getStudyTrackDirector">我是主管</a></li>
+	          </shiro:hasRole>
 	        </ul>
 			<shiro:authenticated>
             <ul class="nav pull-right">
@@ -35,23 +39,7 @@ request.setAttribute("path", path[path.length-1]);
                     <b class="caret"></b>
                 </a>
                  <ul class="dropdown-menu">
-                   <shiro:hasRole name="trainee">
-                	<li><a href="${ctx}/trainee/welcome"><i class="icon-home"></i>备课首页</a></li>
-                   </shiro:hasRole>
-                   
                    <li><a href="${ctx}/course/courseIndex"><i class="icon-home"></i>个人首页</a></li>
-                   <shiro:hasAnyRoles name="admin,group">
-                	<li><a href="${ctx}/group/report/statList"><i class="icon-director"></i>集团主管</a></li>
-                  </shiro:hasAnyRoles>
-                  
-                   <shiro:hasRole name="campus">
-                	<li><a href="${ctx}/campus/flow/list"><i class="icon-director2"></i>学校主管</a></li>
-                   </shiro:hasRole>
-                   
-                   <shiro:hasRole name="coach">
-                	<li><a href="${ctx}/coach/progress/list"><i class="icon-teacher"></i>指导教师</a></li>
-                   </shiro:hasRole>
-
                     <li><a href="${ctx}/notify/list/1/ALL"><i class="icon-envelope"></i>我的私信
                     <span class="icon-disc-bg" id="msgNum"></span></a></li>
                     <li><a href="${ctx}/register/updateTeacher"><i class="icon-user"></i>账号设置</a></li>
