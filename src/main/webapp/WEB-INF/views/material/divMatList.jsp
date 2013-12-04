@@ -13,7 +13,7 @@
 						操作 <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-					    <!-- <li><a href="#rightCont" onclick="exportData();">导出列表</a></li> -->
+					    <li><a href="#rightCont" onclick="exportData();">导出列表</a></li>
 						<li><a href="#rightCont" onclick="downloadMater();">打包下载</a></li>
 						<li><a href="#rightCont" onclick="batchDelete();">批量删除</a></li>
 					</ul>
@@ -279,6 +279,14 @@ function downloadMater(){
 //导出列表   
 function exportData(){
    var fdType=$("#fdType").val();
+   if(document.getElementById("selectAll").checked){
+	  var keyword=$("#search").val();
+	  var order = $("#fdOrder").val();
+	  $.fn.jalert("您确定要导出全部数据吗？",function(){
+		window.location.href="${ctx}/common/exp/getExportMaterialList?fdType="+fdType+"&fdName="+keyword+"&order="+order;
+	  });
+	  return;
+   }
    var chk_value = [];
    $('input[name="ids"]:checked').each(function() {
 		chk_value.push($(this).val());
@@ -288,9 +296,9 @@ function exportData(){
 		return;
    }
    $.fn.jalert("您确定导出所选数据吗？",function(){
-		window.location.href="${ctx}/material/exportMaterialData/"+chk_value+"/"+fdType;
+		window.location.href="${ctx}/common/exp/getExportMaterialList?modelIds="+chk_value+"&fdType="+fdType+"&isAll=noPage";
 		return;
-   });
+   }); 
 	
 }
 </script>

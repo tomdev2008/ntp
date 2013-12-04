@@ -93,48 +93,6 @@ public class MaterialController {
 		}
 		return null;
 	}
-	/**
-	 * 导出素材列表
-	 * @param modelIds
-	 * @param fdType
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value = "/exportMaterialData/{modelIds}/{fdType}")
-	public String exportMaterialData(@PathVariable("modelIds") String[] modelIds,@PathVariable("fdType") String fdType,
-			 HttpServletRequest request, HttpServletResponse response){
-		List<VMaterialData> materialList = new ArrayList<VMaterialData>();
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
-		for (String modelId : modelIds) {
-			VMaterialData data = new VMaterialData();
-			MaterialInfo info = materialService.load(modelId);
-			data.setFdDownloads(info.getFdDownloads()==null?0:info.getFdDownloads());
-			data.setFdLauds(info.getFdLauds()==null?0:info.getFdLauds());
-			data.setFdPlays(info.getFdPlays()==null?0:info.getFdPlays());
-			data.setFdName(info.getFdName());
-			ScoreStatistics score = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(MaterialInfo.class.getName(), modelId);
-			if(score!=null){
-				data.setScore(score.getFdAverage()==null?0:score.getFdAverage());
-			}else{
-				data.setScore(0.0);
-			}
-			String time = sdf.format(info.getFdCreateTime());
-			data.setFdCreateTime(time);
-			if(info.getFdType().equals(Constant.MATERIAL_TYPE_VIDEO)){
-				data.setFdType("视频");
-			}else if(info.getFdType().equals(Constant.MATERIAL_TYPE_DOC)){
-				data.setFdType("文档");
-			}else if(info.getFdType().equals(Constant.MATERIAL_TYPE_PPT)){
-				data.setFdType("幻灯片");
-			}else{
-				data.setFdType("素材");
-			}
-			materialList.add(data);
-		}
-		AbsExportExcel.exportExcel(materialList, "materialData.xls", response);
-		return null;
-	}
 	
 	/**
 	 * 返回添加素材的页面

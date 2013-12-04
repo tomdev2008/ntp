@@ -1,5 +1,6 @@
 package cn.me.xdf.service.material;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +23,12 @@ import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.User;
+import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.BaseService;
-import cn.me.xdf.service.bam.source.ISourceService;
+import cn.me.xdf.service.score.ScoreStatisticsService;
 import cn.me.xdf.utils.ShiroUtils;
+import cn.me.xdf.view.model.VMaterialData;
 
 /**
  * 
@@ -43,6 +46,9 @@ public class MaterialService extends BaseService {
 
 	@Autowired
 	private MaterialAuthService materialAuthService;
+	
+	@Autowired
+	private ScoreStatisticsService scoreStatisticsService;
 
 
 	@SuppressWarnings("unchecked")
@@ -50,10 +56,83 @@ public class MaterialService extends BaseService {
 	public Class<MaterialInfo> getEntityClass() {
 		return MaterialInfo.class;
 	}
+	public SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
+	/**
+	 * 根据fdtype 和 modelId 拼接导出的list
+	 * @param modelIds
+	 * @param fdType
+	 * @return
+	 */
+	public List<VMaterialData> findExportMaterialList(String[] modelIds,String fdType){
+		List<VMaterialData> list = new ArrayList<VMaterialData>();
+		for (String modelId : modelIds) {
+			VMaterialData data = new VMaterialData();
+			MaterialInfo info = this.load(modelId);
+			data.setFdDownloads(info.getFdDownloads()==null?0:info.getFdDownloads());
+			data.setFdLauds(info.getFdLauds()==null?0:info.getFdLauds());
+			data.setFdPlays(info.getFdPlays()==null?0:info.getFdPlays());
+			data.setFdName(info.getFdName());
+			ScoreStatistics score = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(MaterialInfo.class.getName(), modelId);
+			if(score!=null){
+				data.setScore(score.getFdAverage()==null?0:score.getFdAverage());
+			}else{
+				data.setScore(0.0);
+			}
+			String time = sdf.format(info.getFdCreateTime());
+			data.setFdCreateTime(time);
+			if(info.getFdType().equals(Constant.MATERIAL_TYPE_VIDEO)){
+				data.setFdType("视频");
+			}else if(info.getFdType().equals(Constant.MATERIAL_TYPE_DOC)){
+				data.setFdType("文档");
+			}else if(info.getFdType().equals(Constant.MATERIAL_TYPE_PPT)){
+				data.setFdType("幻灯片");
+			}else{
+				data.setFdType("素材");
+			}
+			list.add(data);
+		}
+		return list;
+	}
+	/**
+	 * （按页）导出时 封装list 
+	 * @param list
+	 * @return
+	 */
+	public List<VMaterialData> findExportMaterialByPageList(List list){
+		List<VMaterialData> matreiallist = new ArrayList<VMaterialData>();
+		for (Object obj : list) {
+		  VMaterialData data = new VMaterialData();
+		  Map map = (Map) obj;
+		  MaterialInfo info = this.load((String)map.get("FDID"));
+		  data.setFdDownloads(info.getFdDownloads()==null?0:info.getFdDownloads());
+		  data.setFdLauds(info.getFdLauds()==null?0:info.getFdLauds());
+		  data.setFdPlays(info.getFdPlays()==null?0:info.getFdPlays());
+		  data.setFdName(info.getFdName());
+		  ScoreStatistics score = scoreStatisticsService
+				  .findScoreStatisticsByModelNameAndModelId(MaterialInfo.class.getName(), info.getFdId());
+			if(score!=null){
+				data.setScore(score.getFdAverage()==null?0:score.getFdAverage());
+			}else{
+				data.setScore(0.0);
+			}
+			String time = sdf.format(info.getFdCreateTime());
+			data.setFdCreateTime(time);
+			if(info.getFdType().equals(Constant.MATERIAL_TYPE_VIDEO)){
+				data.setFdType("视频");
+			}else if(info.getFdType().equals(Constant.MATERIAL_TYPE_DOC)){
+				data.setFdType("文档");
+			}else if(info.getFdType().equals(Constant.MATERIAL_TYPE_PPT)){
+				data.setFdType("幻灯片");
+			}else{
+				data.setFdType("素材");
+			}
+			matreiallist.add(data);
+		}
+		return matreiallist;
+	}
 
 	/**
 	 * 根据素材id获取素材权限信息
-	 *                                                               T
 	 * @param MaterialId
 	 *            yuhz
 	 * @return

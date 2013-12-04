@@ -258,8 +258,8 @@ function exportData(){
 		 var keyword=$("#search").val();
 		 $.fn.jalert("您确定要导出全部数据吗？",function(){
 			  window.location.href="${ctx}/common/exp/getExportAdviserTask?fdType="+fdType+"&fdName="+keyword;
-			  return;
 		 }); 
+		 return;
 	} else if(document.getElementById("selectCurrPage").checked){
 		var chk_value = [];
 		$("#listTeacher li").each(function() {
@@ -267,8 +267,8 @@ function exportData(){
 		});
 		$.fn.jalert("您确定导出本页数据吗？",function(){
 			window.location.href="${ctx}/common/exp/getExportAdviserTask?modelIds="+chk_value+"&fdType="+fdType+"&isAll=noPage";
-			return;
 		});
+		return;
 	} else{
 		 $.fn.jalert2("您好!您没有选择要导出的数据！");
 		  return;

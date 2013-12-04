@@ -26,9 +26,11 @@ import cn.me.xdf.service.adviser.AdviserService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.service.studyTack.StudyTrackService;
 import cn.me.xdf.utils.ShiroUtils;
 import cn.me.xdf.view.model.VCheckTaskData;
+import cn.me.xdf.view.model.VMaterialData;
 import cn.me.xdf.view.model.VStudyTrack;
 
 
@@ -61,6 +63,9 @@ public class ExpController {
     
     @Autowired
     private AdviserService adviserService;
+    
+    @Autowired
+    private MaterialService materialService;
 	
     /**
 	 * 导出学习跟踪excel方法
@@ -143,6 +148,41 @@ public class ExpController {
     	return null;
     }
      
+	@RequestMapping(value = "/getExportMaterialList")
+    public String getExportMaterialList(HttpServletRequest request,HttpServletResponse response){
+		String isAll = request.getParameter("isAll");
+		String fdType = request.getParameter("fdType");
+		String fdName = request.getParameter("fdName");
+		String order = request.getParameter("order");
+		if("noPage".equals(isAll)){
+			String [] modelIds = request.getParameter("modelIds").split(",");
+			List<VMaterialData> materialList = materialService.findExportMaterialList(modelIds, fdType);
+			AbsExportExcel.exportExcel(materialList, "materialData.xls", response);
+		}else{
+			Pagination page = materialService.findMaterialList(fdType, 1, 20000, fdName, order);
+			if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
+				List<VMaterialData> materialList = materialService.findExportMaterialByPageList(page.getList());
+				AbsExportExcel.exportExcel(materialList, "materialData.xls", response);
+			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
+				String [] attMainIds= new String[page.getTotalPage()];
+				for(int i=1;i<=page.getTotalPage();i++){
+					Pagination pageZip = materialService.findMaterialList(fdType, 1, 20000, fdName, order);
+					AttMain attMain = AbsExportExcel.exportExcels(
+							materialService.findExportMaterialByPageList(pageZip.getList()), "materialData.xls");
+					attMainService.save(attMain);
+					attMainIds[i-1] = attMain.getFdId();
+				}
+				try {
+					downloadZipsByArrayIds(attMainIds, "materialData.xls", request, response);
+				} catch (UnsupportedEncodingException e) {
+					  log.error("export excleZip error!", e);
+				}
+				//删除下载后的无用附件
+				attMainService.deleteAttMainByIds(attMainIds);
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * 
