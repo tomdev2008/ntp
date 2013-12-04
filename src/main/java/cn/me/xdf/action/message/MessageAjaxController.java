@@ -223,6 +223,7 @@ public class MessageAjaxController {
 			map.put("score", score==null?0:score.getFdScore());
 			map.put("canSport", messageReplyService.isSupportMessage(ShiroUtils.getUser().getId(), message.getFdId())==null?true:false);
 			map.put("canOppose", messageReplyService.isOpposeMessage(ShiroUtils.getUser().getId(), message.getFdId())==null?true:false);
+			map.put("userId", message.getFdUser().getFdId());
 			list.add(map);
 		}
 		Map maps = new HashMap();

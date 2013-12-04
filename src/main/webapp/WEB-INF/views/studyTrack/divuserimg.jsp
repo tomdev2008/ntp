@@ -6,7 +6,7 @@
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <script id="personTemplate" type="x-dot-template">
                     <div class="profile">
-                        <a href="#">
+                        <a href="${ctx}/course/courseIndex?userId={{=it.userId}}">
 				<img src="{{?it.url.indexOf('http')>-1}}{{=it.url}}{{??}}${ctx}/{{=it.url}}{{?}}" class="face" alt="头像" /></a>
                         <h5>{{=it.name}} 
 						{{?it.sex=='M'}}

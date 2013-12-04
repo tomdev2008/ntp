@@ -91,6 +91,7 @@ public class StudyTrackAjaxController {
 			map.put("id", (String)bamCourse.get("BAMID"));
 			SysOrgPerson person = ((SysOrgPerson)accountService.load((String)bamCourse.get("PREID")));
 			Map user = new HashMap();
+			user.put("userId", person.getFdId());
 			user.put("name", person.getRealName());
 			user.put("imgUrl", person.getPoto());
 			user.put("org", person.getHbmParent()==null?"":person.getHbmParent().getHbmParentOrg().getFdName());
@@ -187,6 +188,7 @@ public class StudyTrackAjaxController {
 	public String getPerson(HttpServletRequest request){
 		SysOrgPerson orgPerson = accountService.load(ShiroUtils.getUser().getId());
 		Map map = new HashMap();
+		map.put("userId", orgPerson.getFdId());
 		map.put("name", orgPerson.getRealName());
 		map.put("url", orgPerson.getPoto());
 		map.put("org", orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getHbmParentOrg().getFdName());

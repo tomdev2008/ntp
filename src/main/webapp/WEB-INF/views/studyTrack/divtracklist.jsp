@@ -10,7 +10,7 @@
             {{~it :item:index}}
             <li class="media" data-fdid="{{=item.id}}">
                 <div class="pull-left">
-                    <a href="{{!item.user.link || '#'}}" class="face" target="_blank">
+                    <a href="${ctx}/course/courseIndex?userId={{=item.user.userId}}" class="face" target="_blank">
                         <img src="{{?item.user.imgUrl.indexOf('http')>-1}}{{=item.user.imgUrl}}{{??}}${ctx}/{{=item.user.imgUrl}}{{?}}" class="media-object img-polaroid" alt="头像"/>
                     </a>
                     <a href="#" class="send msg" ><i class="icon-msg"></i>发私信</a>

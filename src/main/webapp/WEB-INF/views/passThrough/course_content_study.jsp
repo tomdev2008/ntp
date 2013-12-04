@@ -478,7 +478,7 @@
     <script id="listCommentTemplate" type="x-dot-template">
         {{~it :item:index}}
         <li class="media" data-fdid="{{=item.fdId}}">
-			<a href="#" class="pull-left">
+			<a href="${ctx}/course/courseIndex?userId={{=item.userId}}" class="pull-left">
 				{{?item.isAnonymous}}
 				<img class="media-object" src="/JensProject/resources/images/face-placeholder.png" />
 				{{??}}

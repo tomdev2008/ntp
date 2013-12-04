@@ -10,7 +10,7 @@
 <!-- 评论条目模板 -->
 <script id="commentLineTemplate" type="text/x-dot-template">
   <li class="media" dataId="{{=it.fdId}}">
-            <a href="#" class="pull-left">
+            <a href="${ctx}/course/courseIndex?userId={{=it.userId}}" class="pull-left">
 			<img src="{{?it.fdUserURL.indexOf('http')>-1}}{{=it.fdUserURL}}{{??}}${ctx}/{{=it.fdUserURL}}{{?}}" />
 			</a>
            	 <div class="media-body">
