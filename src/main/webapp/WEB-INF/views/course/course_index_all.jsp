@@ -75,6 +75,40 @@
 	<li ><a href="javascript:void(0)" data-id="{{=item.courseCategoryId}}">{{=item.courseCategoryName}}</a></li>
 	{{~}}
 </script>
+<script id="courseTopTemplate" type="text/x-dot-template">
+			<div class="carousel-l">
+			<img src="{{?it.list[it.list.length-1].attId!=""}}${ctx}/common/file/image/{{=it.list[it.list.length-1].attId}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
+			</div>
+            <div class="carousel-r">
+			<img src="{{?it.list[1].attId!=""}}${ctx}/common/file/image/{{=it.list[1].attId}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
+			</div>
+            <div class="carousel-mask"></div>
+            <div class="carousel-inner">
+  			{{for(var index=0;index<it.list.length;index++){}}
+				{{?index==0}}
+				 <div class="item active">
+					<img src="{{?it.list[index].attId!=""}}${ctx}/common/file/image/{{=it.list[index].attId}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
+                </div>
+				{{??}}
+ 				<div class="item">
+					<img src="{{?it.list[index].attId!=""}}${ctx}/common/file/image/{{=it.list[index].attId}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
+                </div>
+				{{?}}
+               
+			{{}}}
+            </div>
+            <div class="left carousel-btn" data-target="#myCarousel" data-slide="prev"></div>
+            <div class="right carousel-btn" data-target="#myCarousel" data-slide="next"></div>
+            <ol class="carousel-indicators">
+				{{for(var index=0;index<it.list.length;index++){}}
+					{{?index==0}}
+                	<li data-target="#myCarousel" data-slide-to="{{=index}}" class="active"></li>
+					{{??}}
+					<li data-target="#myCarousel" data-slide-to="{{=index}}" class=""></li>
+					{{?}}
+				{{}}}
+            </ol>
+</script>
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
@@ -83,35 +117,10 @@
 <section class="container">
 	<section class="mt20">
         <div id="myCarousel" class="carousel slide" data-toggle="carousel" data-interval="4000">
-            <div class="carousel-l"><img src="${ctx}/resources/images/courseHomeSlider/slide-05.png" alt=""/></div>
-            <div class="carousel-r"><img src="${ctx}/resources/images/courseHomeSlider/slide-02.png" alt=""/></div>
-            <div class="carousel-mask"></div>
-            <div class="carousel-inner">
-                <div class="item active">
-                    <img src="${ctx}/resources/images/courseHomeSlider/slide-01.jpg" alt=""/>
-                </div>
-                <div class="item">
-                    <img src="${ctx}/resources/images/courseHomeSlider/slide-02.png" alt=""/>
-                </div>
-                <div class="item">
-                    <img src="${ctx}/resources/images/courseHomeSlider/slide-03.png" alt=""/>
-                </div>
-                <div class="item">
-                    <img src="${ctx}/resources/images/courseHomeSlider/slide-04.png" alt=""/>
-                </div>
-                <div class="item">
-                    <img src="${ctx}/resources/images/courseHomeSlider/slide-05.png" alt=""/>
-                </div>
-            </div>
-            <div class="left carousel-btn" data-target="#myCarousel" data-slide="prev"></div>
-            <div class="right carousel-btn" data-target="#myCarousel" data-slide="next"></div>
-            <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
-                <li data-target="#myCarousel" data-slide-to="2"></li>
-                <li data-target="#myCarousel" data-slide-to="3"></li>
-                <li data-target="#myCarousel" data-slide-to="4"></li>
-            </ol>
+            
+            
+            
+            
         </div>
 	</section>
 
@@ -150,11 +159,13 @@
 <script type="text/javascript">	
 	var thumbnailsFn = doT.template(document.getElementById("thumbnailsTemplate").text);
 	var courseCategoryFn = doT.template(document.getElementById("courseCategoryTemplate").text);
+	var courseTopFn = doT.template(document.getElementById("courseTopTemplate").text);
+	//初始化top
+	initCourseTop();
 	//初始化课程分类
 	initCourseCategory();
 	//初始化系列
 	initSeries(1);
-
 	//初始化课程
 	initCouese("all",1);
 
@@ -217,25 +228,7 @@
             }
         })
     });
-    $("#myCarousel>.carousel-inner>.item").click(function(e){
-        switch ($(this).index()){
-            case 0:
-                alert("第一张图链接");
-                break;
-            case 1:
-                alert("第二张图链接");
-                break;
-            case 2:
-                alert("第三张图链接");
-                break;
-            case 3:
-                alert("第四张图链接");
-                break;
-            case 4:
-                alert("第五张图链接");
-                break;
-        }
-    })
+    
     
     function initCourseCategory(){
     	$.ajax({
@@ -284,6 +277,38 @@
     			}
     		}
     	});
+    }
+    
+    function initCourseTop(){
+    	var data={};
+    	$.ajax({
+    		url : "${ctx}/ajax/course/getCoursesTop5ByScore",
+    		async : false,
+    		dataType : 'json',
+    		success : function(result) {
+    			data=result;
+    		}
+    	});
+    	$("#myCarousel").html(courseTopFn(data));
+    	$("#myCarousel>.carousel-inner>.item").click(function(e){
+            switch ($(this).index()){
+                case 0:
+                    window.location.href="${ctx}/passThrough/getCourseHome/"+data.list[0].courseId;
+                    break;
+                case 1:
+                	window.location.href="${ctx}/passThrough/getCourseHome/"+data.list[1].courseId;
+                    break;
+                case 2:
+                	window.location.href="${ctx}/passThrough/getCourseHome/"+data.list[2].courseId;
+                    break;
+                case 3:
+                	window.location.href="${ctx}/passThrough/getCourseHome/"+data.list[3].courseId;
+                    break;
+                case 4:
+                	window.location.href="${ctx}/passThrough/getCourseHome/"+data.list[4].courseId;
+                    break;
+            }
+        });
     }
 </script>
 </body>

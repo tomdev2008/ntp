@@ -872,10 +872,10 @@ public class CourseAjaxController {
 		Finder finder = Finder.create("");
 		finder.append("select course from CourseInfo course , BamCourse bam " );
 		if(type.equals("all")){
-			finder.append(" where bam.courseId = course.fdId and bam.preTeachId = :userId " );
+			finder.append(" where bam.courseId = course.fdId and bam.preTeachId = :userId order by bam.startDate desc " );
 			finder.setParam("userId", userId);
 		}else{
-			finder.append(" where bam.courseId = course.fdId and bam.preTeachId = :userId and course.fdCategory.fdId=:type " );
+			finder.append(" where bam.courseId = course.fdId and bam.preTeachId = :userId and course.fdCategory.fdId=:type order by bam.startDate desc " );
 			finder.setParam("userId", userId);
 			finder.setParam("type", type);
 		}		
@@ -973,24 +973,25 @@ public class CourseAjaxController {
 		String type = request.getParameter("type");
 		int pageNo = new Integer(request.getParameter("pageNo"));
 		Finder finder = Finder.create("");
-		finder.append("select course from CourseInfo course" );
+		finder.append("select c.fdId ID from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId " );
 		if(type.equals("all")){
-			finder.append(" where course.fdStatus=:fdStatus and course.isAvailable=1" );
+			finder.append(" where c.fdStatus=:fdStatus and c.isAvailable=1 order by s.fdAverage " );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 		}else{
-			finder.append(" where course.isAvailable=1 and course.fdStatus=:fdStatus  and course.fdCategory.fdId=:type " );
+			finder.append(" where c.isAvailable=1 and c.fdStatus=:fdStatus  and c.fdcategoryid=:type order by s.fdAverage " );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 			finder.setParam("type", type);
 		}		
-		Pagination pag=	courseService.getPage(finder, pageNo, 3);
-		List<CourseInfo> courseInfos =  (List<CourseInfo>) pag.getList();
+		Pagination pag=	courseService.getPageBySql(finder, pageNo, 3);
+		List<Map> courseInfos =  (List<Map>) pag.getList();
 		if(pag.getTotalPage()<=pageNo){
 			returnMap.put("hasMore", false);
 		}else{
 			returnMap.put("hasMore", true);
 		}
 		List<Map> lists = new ArrayList<Map>();
-		for (CourseInfo courseInfo : courseInfos) {
+		for (Map map1 : courseInfos) {
+			CourseInfo courseInfo = courseService.get((String)map1.get("ID"));
 			Map map = new HashMap();
 			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
 			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
@@ -1010,5 +1011,22 @@ public class CourseAjaxController {
 		
 		return JsonUtils.writeObjectToJson(returnMap);
 	}
-	
+	@RequestMapping(value="getCoursesTop5ByScore")
+	@ResponseBody
+	public String getCoursesTop5ByScore(HttpServletRequest request){
+		Map returnMap = new HashMap();
+		Finder finder = Finder.create("");
+		finder.append("select c.fdId ID from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId order by s.fdAverage " );
+		List<Map> list = (List<Map>) courseService.getPageBySql(finder, 1,5).getList();
+		List<Map> list2 = new ArrayList<Map>();
+		for (Map map1 : list) {
+			Map map = new HashMap();
+			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName((String)map1.get("ID"), CourseInfo.class.getName());
+			map.put("attId", attMains.size()==0?"":attMains.get(0).getFdId());
+			map.put("courseId", (String)map1.get("ID"));
+			list2.add(map);
+		}
+		returnMap.put("list", list2);
+		return JsonUtils.writeObjectToJson(returnMap);
+	}
 }
