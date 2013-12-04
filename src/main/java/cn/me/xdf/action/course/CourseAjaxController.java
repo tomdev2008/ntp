@@ -973,12 +973,12 @@ public class CourseAjaxController {
 		String type = request.getParameter("type");
 		int pageNo = new Integer(request.getParameter("pageNo"));
 		Finder finder = Finder.create("");
-		finder.append("select c.fdId ID from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId " );
+		finder.append("select c.fdId ID , case when s.fdAverage is null THEN 0 else s.fdAverage end aver from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId " );
 		if(type.equals("all")){
-			finder.append(" where c.fdStatus=:fdStatus and c.isAvailable=1 order by s.fdAverage " );
+			finder.append(" where c.fdStatus=:fdStatus and c.isAvailable=1 order by aver desc" );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 		}else{
-			finder.append(" where c.isAvailable=1 and c.fdStatus=:fdStatus  and c.fdcategoryid=:type order by s.fdAverage " );
+			finder.append(" where c.isAvailable=1 and c.fdStatus=:fdStatus  and c.fdcategoryid=:type order by aver desc" );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 			finder.setParam("type", type);
 		}		
@@ -1016,7 +1016,7 @@ public class CourseAjaxController {
 	public String getCoursesTop5ByScore(HttpServletRequest request){
 		Map returnMap = new HashMap();
 		Finder finder = Finder.create("");
-		finder.append("select c.fdId ID from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId order by s.fdAverage " );
+		finder.append("select c.fdId ID,case when s.fdAverage is null THEN 0 else s.fdAverage end aver from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId order by aver desc" );
 		List<Map> list = (List<Map>) courseService.getPageBySql(finder, 1,5).getList();
 		List<Map> list2 = new ArrayList<Map>();
 		for (Map map1 : list) {

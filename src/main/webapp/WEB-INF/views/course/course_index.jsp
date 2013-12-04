@@ -38,7 +38,7 @@
                                     <span class="rating-view">
                                         <span class="rating-all">
                                             {{ for(var i=1; i<= 5; i++){ }}
-                                                <i class="icon-star{{?i<item.score}} active{{?}}"></i>
+                                                <i class="icon-star{{?i<=item.score}} active{{?}}"></i>
                                             {{ } }}
                                          </span>
                                         <b class="text-warning">{{=item.score}}</b>
@@ -175,9 +175,6 @@
     </section>
 
 </section>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
-<script type="text/javascript" src="${ctx}/resources/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">	
 	var thumbnailsFn = doT.template(document.getElementById("thumbnailsTemplate").text);
