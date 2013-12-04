@@ -40,7 +40,7 @@
                             <span>教  师</span>
                     </div>
                     <div class="person">
-                            <a href="{{=item.teacher.link}}" class="pull-left"><img style="width:50px;height:50px;" src="{{?item.teacher.imgUrl.indexOf('http')>-1}}{{=item.teacher.imgUrl}}{{??}}${ctx}/{{=item.teacher.imgUrl}}{{?}}" alt=""/></a>
+                            <a href="${ctx}/course/courseIndex?userId={{=item.teacher.tid}}" class="pull-left"><img style="width:50px;height:50px;" src="{{?item.teacher.imgUrl.indexOf('http')>-1}}{{=item.teacher.imgUrl}}{{??}}${ctx}/{{=item.teacher.imgUrl}}{{?}}" alt=""/></a>
                             <span title="{{=item.teacher.name}}（{{=item.teacher.mail}}）{{=item.teacher.department}}">{{=item.teacher.name}}（{{?item.teacher.mail.length>5}}{{=item.teacher.mail.substr(0,5)+"..."}}{{??}}{{=item.teacher.mail}}{{?}}）<br /> {{?item.teacher.department.length>8}}{{=item.teacher.department.substr(0,8)+"..."}}{{??}}{{=item.teacher.department}}{{?}}</span>
                     </div>
                     </div>
@@ -59,7 +59,7 @@
                         </div>
                         <div class="person">
                             {{?item.mentor}}
-                                <a href="{{=item.mentor.link}}" class="pull-left"><img  style="width:50px;height:50px;" src="{{?item.mentor.imgUrl.indexOf('http')>-1}}{{=item.mentor.imgUrl}}{{??}}${ctx}/{{=item.mentor.imgUrl}}{{?}}" alt=""/></a>
+                                <a href="${ctx}/course/courseIndex?userId={{=item.mentor.mid}}" class="pull-left"><img  style="width:50px;height:50px;" src="{{?item.mentor.imgUrl.indexOf('http')>-1}}{{=item.mentor.imgUrl}}{{??}}${ctx}/{{=item.mentor.imgUrl}}{{?}}" alt=""/></a>
                                 <span title="{{=item.mentor.name}}（{{=item.mentor.mail}}）{{=item.mentor.department}}">{{=item.mentor.name}}（{{?item.mentor.mail.length>5}}{{=item.mentor.mail.substr(0,5)+"..."}}{{??}}{{=item.mentor.mail}}{{?}}）<br /> {{?item.mentor.department.length>8}}{{=item.mentor.department.substr(0,8)+"..."}}{{??}}{{=item.mentor.department}}{{?}}</span>
                             {{??}}
                                 <p align="center">本课程不需要导师参与</p>
@@ -435,6 +435,8 @@
         		$(this).val("");
         	}
         });
+        //点击头像事件
+        $(".person").find(".")
     });
 /**********************methods***************************************************/
 /* function pressEnter(){//回车事件
