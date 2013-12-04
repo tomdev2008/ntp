@@ -265,7 +265,7 @@
                             <div class="bdt1 pd20">
                                 <div class="media teacherRating">
                                     <div class="pull-left">
-                                        <a href="#"><img class="media-object" src="{{=task.teacherRating.teacher.imgUrl}}" alt="指导老师"/></a>
+                                        <a href="${ctx}/course/courseIndex?userId={{=task.teacherRating.teacher.link}}"><img class="media-object" src="{{=task.teacherRating.teacher.imgUrl}}" alt="指导老师"/></a>
                                         <h3>指导老师</h3>
                                     </div>
                                     <div class="media-body">

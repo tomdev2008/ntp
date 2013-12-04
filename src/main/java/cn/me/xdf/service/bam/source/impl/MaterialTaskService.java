@@ -159,6 +159,7 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 							SysOrgPerson person = accountService.load(taskRecord.getFdAppraiserId());
 							Map teacher= new HashMap();
 							teacher.put("imgUrl", person.getPoto());
+							teacher.put("link", person.getFdId());
 							record.put("teacher", teacher);
 						}
 						taskMap.put("teacherRating", record);
