@@ -78,8 +78,8 @@
                         <i class="icon-book icon-white"></i>开始学习
                     </a>
                     <span class="text-warning">${studayTotalNo}</span>位老师在学习
-                    <a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" title="课程列表" data-toggle="tooltip" class="btn-next icon-disc-lg-bg"><i class="icon-mylist"></i></a>
-                    <a href="${ctx}/studyTrack/getStudyTrackTutor" title="课程跟踪" data-toggle="tooltip" class="btn-home icon-disc-lg-bg"><i class="icon-tracking"></i></a>
+                    <a href="${ctx}/course/courseIndex" title="课程列表" data-toggle="tooltip" class="btn-next icon-disc-lg-bg"><i class="icon-mylist"></i></a>
+                    <a href="#" title="课程跟踪" data-toggle="tooltip" class="btn-home icon-disc-lg-bg"><i class="icon-tracking"></i></a>
                 </div>
                 
         	</div>
