@@ -17,6 +17,7 @@ request.setAttribute("path", path[path.length-1]);
     	<div class="container pr">
 			<a href="#" class="logo"></a>
 	        <ul class="nav">
+	       	  <li><a href="${ctx}/course/courseIndexAll">全部课程</a></li>
 	          <shiro:hasAnyRoles name="admin,group">
 	          <li><a href="${ctx}/admin/role/list">系统管理</a></li>
 	          </shiro:hasAnyRoles>
@@ -38,7 +39,7 @@ request.setAttribute("path", path[path.length-1]);
                 	<li><a href="${ctx}/trainee/welcome"><i class="icon-home"></i>备课首页</a></li>
                    </shiro:hasRole>
                    
-                   
+                   <li><a href="${ctx}/course/courseIndex"><i class="icon-home"></i>个人首页</a></li>
                    <shiro:hasAnyRoles name="admin,group">
                 	<li><a href="${ctx}/group/report/statList"><i class="icon-director"></i>集团主管</a></li>
                   </shiro:hasAnyRoles>
