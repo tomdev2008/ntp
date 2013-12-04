@@ -50,7 +50,7 @@ import cn.me.xdf.service.course.SeriesCoursesService;
 import cn.me.xdf.service.course.TagInfoService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
 import cn.me.xdf.utils.ShiroUtils;
-
+import cn.me.xdf.model.organization.RoleEnum;
 /**
  * 课程信息的ajax
  * 
@@ -792,8 +792,10 @@ public class CourseAjaxController {
 		if(isexist){
 			String mentorId=request.getParameter("mentor");
 			if(StringUtil.isNotEmpty(mentorId)){
-				//添加导师角色
-			    userRoleService.addUserRole(mentorId,"guidance");
+				//添加导师角色,如果已存在则不能保存
+				if(userRoleService.isEmptyPerson(mentorId, RoleEnum.valueOf("guidance"))){
+					userRoleService.addUserRole(mentorId,"guidance");
+				}
 			}
 			CourseInfo courseInfo=courseService.load(courseId);
 			SysOrgPerson teacher=accountService.findById(teacherId);
