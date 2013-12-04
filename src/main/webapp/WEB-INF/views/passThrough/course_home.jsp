@@ -31,6 +31,9 @@
 		      <c:if test="${course.fdPassword!=''&&course.fdPassword!=null}">
                 <div class="permission encrypt"></div>
               </c:if>
+              <c:if test="${course.fdPassword==''||course.fdPassword==null}">
+                <div class="permission authorize"></div>
+              </c:if>
             </c:if>
         	
             <a href="#" class="pull-left">

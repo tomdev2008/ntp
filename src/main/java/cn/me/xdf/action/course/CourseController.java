@@ -26,6 +26,7 @@ import sun.java2d.pipe.SpanShapeRenderer.Simple;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
+import cn.me.xdf.common.utils.ComUtils;
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
@@ -134,6 +135,15 @@ public class CourseController {
 				List<CourseCatalog> catalog = courseCatalogService.getCatalogsByCourseId(courseId);
 				request.setAttribute("course", course);
 				request.setAttribute("catalog", catalog);
+				//课程图片
+				AttMain attMain = attMainService.getByModelIdAndModelName(courseId, CourseInfo.class.getName());
+				request.setAttribute("courseAtt", attMain!=null?attMain.getFdId():"");
+				//当前作者的图片(当作者和创建者是相同时候使用创建者的照片)
+				if(course.getFdAuthor().equals(course.getCreator().getRealName())){
+					request.setAttribute("imgUrl",course.getCreator().getPoto());
+				}else{
+					request.setAttribute("imgUrl",ComUtils.getDefaultPoto());
+				}
 			}
 		}
 		return "/course/course_preview";
