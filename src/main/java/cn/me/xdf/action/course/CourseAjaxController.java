@@ -743,7 +743,7 @@ public class CourseAjaxController {
 				mcpa.put("id", cpa.getFdId());
 				mcpa.put("time", sdf.format(cpa.getFdCreateTime()));
 				Map teacher=new HashMap();//教师信息
-				cpa.getFdUser();
+				teacher.put("tid", cpa.getFdUser().getFdId());
 				teacher.put("imgUrl",  cpa.getFdUser().getPoto());
 				teacher.put("link",  "");
 				teacher.put("name",cpa.getFdUser().getNotifyEntity().getRealName());
@@ -753,6 +753,7 @@ public class CourseAjaxController {
 				Map mentor=null;//导师信息
 				if(cpa.getFdTeacher()!=null){
 					mentor=new HashMap();
+					mentor.put("mid", cpa.getFdTeacher().getFdId());
 					mentor.put("imgUrl",  cpa.getFdTeacher().getPoto());
 					mentor.put("link",  "");
 					mentor.put("name",cpa.getFdTeacher().getNotifyEntity().getRealName());
