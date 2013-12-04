@@ -194,6 +194,8 @@ public class CourseController {
 	public String courseIndex(HttpServletRequest request) {
 		if(StringUtil.isEmpty(request.getParameter("userId"))){
 			request.setAttribute("userId", ShiroUtils.getUser().getId());
+		}else{
+			request.setAttribute("userId",request.getParameter("userId"));
 		}
 		return "/course/course_index";
 	}

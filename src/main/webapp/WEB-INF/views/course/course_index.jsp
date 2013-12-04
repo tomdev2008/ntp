@@ -91,8 +91,10 @@
 						{{??}}
 							<i class="icon-female"></i></h5>
 						{{?}}
-                        <a class="icon-circle-bg" href="${ctx}/register/updateTeacher"><i class="icon-pencil-mini"></i></a>
-                        <a class="icon-circle-bg" href="#"><i class="icon-cloth"></i></a>
+						{{?it.isme==true}}
+							 <a class="icon-circle-bg" href="${ctx}/register/updateTeacher"><i class="icon-pencil-mini"></i></a>
+                       		 <a class="icon-circle-bg" href="#"><i class="icon-cloth"></i></a>
+						{{?}}
                     </div>
                     <p class="muted">
                         机构 {{=it.org}}  <br/>
