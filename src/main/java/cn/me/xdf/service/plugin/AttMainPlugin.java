@@ -34,6 +34,7 @@ public class AttMainPlugin {
      * @param attMain
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static String addDoc(AttMain attMain) {
 
         try {
