@@ -153,18 +153,25 @@ public class PassThroughController {
 				ArrayUtils.sortListByProperty(courseCatalogs, "fdTotalNo", SortType.HIGHT);
 			    /////添加开始学习按钮 找出当前人员学习的当前节
 				for (CourseCatalog courseCatalog : courseCatalogs) {
-					 if(courseCatalog.getFdType().equals(Constant.CATALOG_TYPE_LECTURE)){//表示节
-						 if(courseCatalog.getThrough()!=null&&courseCatalog.getThrough()){
-							 continue;
-						 }else{
-							//设置正在学习的当前节
-							 request.setAttribute("catalogId", courseCatalog.getFdId());
-							 //设置正在学习的当前节的素材类型
-							 request.setAttribute("fdMtype", courseCatalog.getFdMaterialType());
-							 break; 
-						 }
-					  }
-				}
+				  if(bamCourse.getThrough()){
+					 //设置正在学习的当前节
+					 request.setAttribute("catalogId", courseCatalog.getFdId());
+					 //设置正在学习的当前节的素材类型
+					 request.setAttribute("fdMtype", courseCatalog.getFdMaterialType());
+					 break;   
+				  }
+				  if(courseCatalog.getFdType().equals(Constant.CATALOG_TYPE_LECTURE)){//表示节
+					if(courseCatalog.getThrough()!=null&&courseCatalog.getThrough()){
+						continue;
+					}else{
+						//设置正在学习的当前节
+						request.setAttribute("catalogId", courseCatalog.getFdId());
+						//设置正在学习的当前节的素材类型
+						request.setAttribute("fdMtype", courseCatalog.getFdMaterialType());
+						break; 
+					}
+				 }
+			   }
 			}
 		}else{
 			//设置正在学习的当前节

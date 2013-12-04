@@ -1,10 +1,11 @@
 package cn.me.xdf.common.upload;
 
-import cn.me.xdf.model.base.AttMain;
-import cn.me.xdf.utils.ShiroUtils;
+import java.util.Date;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-import java.util.Date;
+import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.utils.ShiroUtils;
 
 /**
  * 文件上传存储类
@@ -13,8 +14,28 @@ import java.util.Date;
  */
 public class FileModel {
 
-
+	/**
+	 * 视频类型
+	 */
+	public static final String VIDEO = ".wmv.wm.asf.asx.rm.rmvb.ra.ram.mpg.mpeg.mpe.vob.dat.mov.3gp.mp4.mp4v.m4v.mkv.avi.flv.f4v.mts";
     /**
+     * 音频
+     */
+	public static final String AUDIO = ".mp3.mv";
+	/**
+	 * 图片
+	 */
+	public static final String PICTURE = ".jpg.jpeg.gif.png";
+	/**
+	 * 文档
+	 */
+	public static final String DOC = ".doc.xls.docx";
+	/**
+	 * 幻灯片
+	 */
+	public static final String PPT = ".ppt";
+	
+	/**
      * 附件ID，对应AttMain的主键
      */
     private String attId;
@@ -200,7 +221,17 @@ public class FileModel {
         if (ShiroUtils.getUser() != null) {
             att.setFdCreatorId(ShiroUtils.getUser().id);
         }
-
+        if(ext.contains(VIDEO)){
+        	att.setFdFileType("01");//视频
+        }else if(ext.contains(AUDIO)){
+        	att.setFdFileType("02");//音频
+        }else if(ext.contains(PICTURE)){
+        	att.setFdFileType("03");//图片
+        }else if(ext.contains(DOC)){
+        	att.setFdFileType("04");//文档
+        }else if(ext.contains(PPT)){
+        	att.setFdFileType("05");//幻灯片
+        }
         att.setFdFilePath(getFilePath());
         att.setFdStoreType(getStoreType().getName());
         return att;
