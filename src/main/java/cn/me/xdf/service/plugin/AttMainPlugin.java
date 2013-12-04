@@ -75,7 +75,8 @@ public class AttMainPlugin {
      * @param attMain
      * @return
      */
-    public static String getSwfPath(AttMain attMain,String type) {
+    @SuppressWarnings("unchecked")
+    public static String getSwfPath(AttMain attMain, String type) {
 
         try {
             DocInterfaceModel model = new DocInterfaceModel(attMain, type);
@@ -90,8 +91,8 @@ public class AttMainPlugin {
                 Map<String, Object> map = JsonUtils.readObjectByJson(json, Map.class);
                 if ("1".equals(map.get("Status").toString())) {
                     List<Map<String, String>> lists = (List<Map<String, String>>) map.get("ResponseData");
-                    return (String)lists.get(0).values().toArray()[0];
-                   
+                    return lists.get(0).values().toArray(new String[lists.get(0).values().size()])[0];
+
                 } else {
                     log.error("getSwfPath:" + map.get("Error").toString());
                     throw new RuntimeException("getSwfPath:" + map.get("Error").toString());
