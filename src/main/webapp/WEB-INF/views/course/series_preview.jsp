@@ -253,7 +253,7 @@
         	 window.location.href="${ctx}/series/pagefoward?seriesId="+$(this).attr("data-fdid");
          });
          $("#findAll").bind("click",function(){
-        	 alert("链接至发现课程!!");
+        	 window.location.href="${ctx}/course/courseIndexAll";
          });
     });
     

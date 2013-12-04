@@ -13,10 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-
 /**
  * 附件存储表
- *
+ * 
  * @author zuoyi
  */
 @SuppressWarnings("serial")
@@ -25,250 +24,250 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AttMain extends IdEntity {
 
-    /**
-     * 附件名称
-     */
-    private String fdFileName;
+	/**
+	 * 附件名称
+	 */
+	private String fdFileName;
 
-    /**
-     * 排序号
-     */
-    private String fdOrder;
+	/**
+	 * 排序号
+	 */
+	private String fdOrder;
 
-    /**
-     * 附件路径
-     */
-    private String fdFilePath;
+	/**
+	 * 附件路径
+	 */
+	private String fdFilePath;
 
-    /**
-     * 附件大小
-     */
-    private Double fdSize;
+	/**
+	 * 附件大小
+	 */
+	private Double fdSize;
 
-    /**
-     * 存储方式01:数据库 02:磁盘
-     */
-    private String fdStoreType;
+	/**
+	 * 存储方式01:数据库 02:磁盘
+	 */
+	private String fdStoreType;
 
-    /**
-     * 文档类型
-     * 01视频
-     * 02音频
-     * 03图片
-     * 04文档
-     * 05幻灯片
-     */
-    private String fdFileType;
+	/**
+	 * 文档类型 01视频 02音频 03图片 04文档 05幻灯片
+	 */
+	private String fdFileType;
 
-    /**
-     * 文件上传头
-     */
-    private String fdContentType;
+	/**
+	 * 文件上传头
+	 */
+	private String fdContentType;
 
-    /**
-     * 文件的URL路径
-     */
-    private String fileUrl;
+	/**
+	 * 文件的URL路径
+	 */
+	private String fileUrl;
 
-    /**
-     * 内容
-     */
-    private byte[] fdData;
+	/**
+	 * 内容
+	 */
+	private byte[] fdData;
 
-    /**
-     * 业务模型
-     */
-    private String fdModelName;
+	/**
+	 * 业务模型
+	 */
+	private String fdModelName;
 
-    /**
-     * 业务Id
-     */
-    private String fdModelId;
+	/**
+	 * 业务Id
+	 */
+	private String fdModelId;
 
-    /**
-     * 关键字
-     */
-    private String fdKey;
+	/**
+	 * 关键字
+	 */
+	private String fdKey;
 
-    /**
-     * 位置编号
-     */
-    private String fdPositionNo;
+	/**
+	 * 位置编号
+	 */
+	private String fdPositionNo;
 
-    /**
-     * 创建时间
-     */
-    private Date fdCreateTime;
+	/**
+	 * 创建时间
+	 */
+	private Date fdCreateTime;
 
-    /**
-     * 创建者
-     */
-    private String fdCreatorId;
+	/**
+	 * 创建者
+	 */
+	private String fdCreatorId;
 
-    /**
-     * 文档转化标志   0：正在转换中、1：转化完成。
-     */
-    private Integer flag;
+	/**
+	 * 文档转化标志 0：正在转换中、1：转化完成。
+	 */
+	private Integer flag;
 
-    private String fileNetId;
+	private String fileNetId;
 
-    public String getFdFileName() {
-        return fdFileName;
-    }
+	public String getFdFileName() {
+		return fdFileName;
+	}
 
-    public void setFdFileName(String fdFileName) {
-        this.fdFileName = fdFileName;
-    }
+	public void setFdFileName(String fdFileName) {
+		this.fdFileName = fdFileName;
+	}
 
-    public String getFdOrder() {
-        return fdOrder;
-    }
+	public String getFdOrder() {
+		return fdOrder;
+	}
 
-    public void setFdOrder(String fdOrder) {
-        this.fdOrder = fdOrder;
-    }
+	public void setFdOrder(String fdOrder) {
+		this.fdOrder = fdOrder;
+	}
 
-    public String getFdContentType() {
-        return fdContentType;
-    }
+	public String getFdContentType() {
+		return fdContentType;
+	}
 
-    public void setFdContentType(String fdContentType) {
-        this.fdContentType = fdContentType;
-    }
+	public void setFdContentType(String fdContentType) {
+		this.fdContentType = fdContentType;
+	}
 
-    public String getFdFilePath() {
-        return fdFilePath;
-    }
+	public String getFdFilePath() {
+		return fdFilePath;
+	}
 
-    public void setFdFilePath(String fdFilePath) {
-        this.fdFilePath = fdFilePath;
-    }
+	public void setFdFilePath(String fdFilePath) {
+		this.fdFilePath = fdFilePath;
+	}
 
-    public Double getFdSize() {
-        return fdSize;
-    }
+	public Double getFdSize() {
+		return fdSize;
+	}
 
-    public void setFdSize(Double fdSize) {
-        this.fdSize = fdSize;
-    }
+	public void setFdSize(Double fdSize) {
+		this.fdSize = fdSize;
+	}
 
-    public String getFdStoreType() {
-        return fdStoreType;
-    }
+	public String getFdStoreType() {
+		return fdStoreType;
+	}
 
-    public void setFdStoreType(String fdStoreType) {
-        this.fdStoreType = fdStoreType;
-    }
+	public void setFdStoreType(String fdStoreType) {
+		this.fdStoreType = fdStoreType;
+	}
 
-    @Basic(fetch = FetchType.LAZY)
-    public String getFileUrl() {
-        try {
-            //文档、幻灯片
-        	if(StringUtils.isNotBlank(fileNetId)&&StringUtils.isBlank(fileUrl)){
-        		 if ("04".equals(fdFileType) || "05".equals(fdFileType)) {
-        			 fileUrl = AttMainPlugin.getSwfPath(this,DocInterfaceModel.getSwfPath);
-                 }else if("01".equals(fdFileType)){//视频
-                	 String playCode = AttMainPlugin.getSwfPath(this,DocInterfaceModel.getPlayCode);
-                	 return "http://union.bokecc.com/player?vid="+playCode+"&siteid=8B90641B41283EDC&autoStart=true&playerid=628A174866D77DB5&playertype=1";
-                 }
-        	}
-           
-        } catch (Exception e) {
-            fileUrl = null;
-        }
-        return fileUrl;
-    }
+	@Basic(fetch = FetchType.LAZY)
+	public String getFileUrl() {
+		try {
+			// 文档、幻灯片
+			if (StringUtils.isNotBlank(fileNetId)
+					&& StringUtils.isBlank(fileUrl)) {
+				if ("04".equals(fdFileType) || "05".equals(fdFileType)) {
+					fileUrl = AttMainPlugin.getSwfPath(this,
+							DocInterfaceModel.getSwfPath);
+				} else if ("01".equals(fdFileType)) {// 视频
+					String playCode = AttMainPlugin.getSwfPath(this,
+							DocInterfaceModel.getPlayCode);
+					return "http://union.bokecc.com/player?vid="
+							+ playCode
+							+ "&siteid=8B90641B41283EDC&autoStart=true&playerid=628A174866D77DB5&playertype=1";
+				}
+			}
 
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
-    }
+		} catch (Exception e) {
+			fileUrl = null;
+		}
+		return fileUrl;
+	}
 
-    public String getFdFileType() {
-        return fdFileType;
-    }
+	public void setFileUrl(String fileUrl) {
+		this.fileUrl = fileUrl;
+	}
 
-    public void setFdFileType(String fdFileType) {
-        this.fdFileType = fdFileType;
-    }
+	public String getFdFileType() {
+		return fdFileType;
+	}
 
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    public byte[] getFdData() {
-        return fdData;
-    }
+	public void setFdFileType(String fdFileType) {
+		this.fdFileType = fdFileType;
+	}
 
-    public void setFdData(byte[] fdData) {
-        this.fdData = fdData;
-    }
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	public byte[] getFdData() {
+		return fdData;
+	}
 
-    public String getFdModelName() {
-        return fdModelName;
-    }
+	public void setFdData(byte[] fdData) {
+		this.fdData = fdData;
+	}
 
-    public void setFdModelName(String fdModelName) {
-        this.fdModelName = fdModelName;
-    }
+	public String getFdModelName() {
+		return fdModelName;
+	}
 
-    public String getFdModelId() {
-        return fdModelId;
-    }
+	public void setFdModelName(String fdModelName) {
+		this.fdModelName = fdModelName;
+	}
 
-    public void setFdModelId(String fdModelId) {
-        this.fdModelId = fdModelId;
-    }
+	public String getFdModelId() {
+		return fdModelId;
+	}
 
-    public String getFdKey() {
-        return fdKey;
-    }
+	public void setFdModelId(String fdModelId) {
+		this.fdModelId = fdModelId;
+	}
 
-    public void setFdKey(String fdKey) {
-        this.fdKey = fdKey;
-    }
+	public String getFdKey() {
+		return fdKey;
+	}
 
-    public String getFdPositionNo() {
-        return fdPositionNo;
-    }
+	public void setFdKey(String fdKey) {
+		this.fdKey = fdKey;
+	}
 
-    public void setFdPositionNo(String fdPositionNo) {
-        this.fdPositionNo = fdPositionNo;
-    }
+	public String getFdPositionNo() {
+		return fdPositionNo;
+	}
 
-    public Date getFdCreateTime() {
-        return fdCreateTime;
-    }
+	public void setFdPositionNo(String fdPositionNo) {
+		this.fdPositionNo = fdPositionNo;
+	}
 
-    public void setFdCreateTime(Date fdCreateTime) {
-        this.fdCreateTime = fdCreateTime;
-    }
+	public Date getFdCreateTime() {
+		return fdCreateTime;
+	}
 
-    public String getFdCreatorId() {
-        return fdCreatorId;
-    }
+	public void setFdCreateTime(Date fdCreateTime) {
+		this.fdCreateTime = fdCreateTime;
+	}
 
-    public void setFdCreatorId(String fdCreatorId) {
-        this.fdCreatorId = fdCreatorId;
-    }
+	public String getFdCreatorId() {
+		return fdCreatorId;
+	}
 
-    /**
-     * 0：正在转换中、1：转化完成。
-     *
-     * @return
-     */
-    @Basic(fetch = FetchType.LAZY)
-    public Integer getFlag() {
-        flag = StringUtils.isBlank(getFileUrl()) ? 0 : 1;
-        return flag;
-    }
+	public void setFdCreatorId(String fdCreatorId) {
+		this.fdCreatorId = fdCreatorId;
+	}
 
-    public void setFlag(Integer flag) {
-        this.flag = flag;
-    }
+	/**
+	 * 0：正在转换中、1：转化完成。
+	 * 
+	 * @return
+	 */
+	@Basic(fetch = FetchType.LAZY)
+	public Integer getFlag() {
+		flag = StringUtils.isBlank(getFileUrl()) ? 0 : 1;
+		return flag;
+	}
 
-    public String getFileNetId() {
-        return fileNetId;
-    }
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
 
-    public void setFileNetId(String fileNetId) {
-        this.fileNetId = fileNetId;
-    }
+	public String getFileNetId() {
+		return fileNetId;
+	}
+
+	public void setFileNetId(String fileNetId) {
+		this.fileNetId = fileNetId;
+	}
 }
