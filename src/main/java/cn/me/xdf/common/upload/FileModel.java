@@ -221,15 +221,15 @@ public class FileModel {
         if (ShiroUtils.getUser() != null) {
             att.setFdCreatorId(ShiroUtils.getUser().id);
         }
-        if(ext.contains(VIDEO)){
+        if(VIDEO.contains(ext)){
         	att.setFdFileType("01");//视频
-        }else if(ext.contains(AUDIO)){
+        }else if(AUDIO.contains(ext)){
         	att.setFdFileType("02");//音频
-        }else if(ext.contains(PICTURE)){
+        }else if(PICTURE.contains(ext)){
         	att.setFdFileType("03");//图片
-        }else if(ext.contains(DOC)){
+        }else if(DOC.contains(ext)){
         	att.setFdFileType("04");//文档
-        }else if(ext.contains(PPT)){
+        }else if(PPT.contains(ext)){
         	att.setFdFileType("05");//幻灯片
         }
         att.setFdFilePath(getFilePath());
