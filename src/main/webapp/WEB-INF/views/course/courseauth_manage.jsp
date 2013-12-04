@@ -314,7 +314,6 @@
        		    result=data.course;
        		    pageInfo=data;
        		    $("#isOftask").val(data.isOftask);
-       		    alert($("#isOftask").val());
         		 
         	}
         });
@@ -446,7 +445,6 @@
 
 }  */
 function clearserach(){//清理搜索栏并显示数据列表
-	//alert('ss');
 	$("#search").val("");
 	$("#markshow").html('<a id="containkey"href="#">全部条目</a>');
 	pageNavClick('1');

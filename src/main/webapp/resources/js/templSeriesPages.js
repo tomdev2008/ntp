@@ -114,6 +114,7 @@
                    // alert(JSON.stringify(listArr));
                     $.post($('#ctx').val()+"/ajax/series/saveSeriesCourse",{
                     	phasesId:opt.id,
+                    	phaseTitle:$("#seriesTitle").val(),
                         sectionsIntro: $("#sectionsIntro").val(),
                         mediaList:JSON.stringify(listArr)
                     })

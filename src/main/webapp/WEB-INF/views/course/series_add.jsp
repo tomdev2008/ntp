@@ -182,7 +182,7 @@
 	    	<div class="section" >
 				<div class="control-group">
                     <label class="control-label" for="seriesTitle">阶段名称</label>
-                    <div class="controls"><input value="{{=it.seriesTitle || ''}}" id="seriesTitle" required minlength="3" class="input-xlarge" name="seriesTitle" type="text" /></div>
+                    <div class="controls"><input value="{{=it.pageTitle || ''}}" id="seriesTitle" required minlength="3" class="input-xlarge" name="seriesTitle" type="text" /></div>
                 </div>
 				<div class="control-group">
                     <label class="control-label" for="sectionsIntro">阶段说明</label>
@@ -311,28 +311,25 @@ $.Placeholder.init();
 			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass("active");
 			switch(param){			
 	  			case "basicInfo":
-	  			//	if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
+	  				if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 	  					rightCont.loadBasicInfoPage("系列信息");
-	  			//	}else{
-	  			//		$.fn.jalert2("请先设置系列信息");
-	  			//		urlRouter("basicInfo");
-	  			//	}
+	  				}else{
+	  					$.fn.jalert2("请先设置系列阶段信息");
+	  					urlRouter("sectionsDirectory");
+	  				}
 	  				break;
 	  			case "promotion":
-	  			//	if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
+	  				if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 	  					rightCont.loadPromotionPage("系列推广");
-	  			//	}else{
-	  			//		$.fn.jalert2("请先设置系列信息");
-	  			//		urlRouter("basicInfo");
-	  			//	}
+	  				}else{
+	  					$.fn.jalert2("请先设置系列信息");
+	  					urlRouter("basicInfo");
+	  				}
 	  				break;
 				case "deleteSeries":
-				//	if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
+					if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 						rightCont.loadDeleteCoursePage("删除系列",$("#seriesId").val());
-	  			//	}else{
-	  			//		$.fn.jalert2("请先设置系列信息");
-	  			//		urlRouter("basicInfo");
-	  			//	}
+	  				}
 	  				break;
 				case "course":
                     if(opt) {
@@ -387,8 +384,8 @@ $.Placeholder.init();
 	
 	//系列预览
 	function previewCourse(){
-		window.location.href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime";
-		//window.open("${ctx}/course/previewCourse?courseId="+$("#courseId").val(),'_blank');
+		//window.location.href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime";
+		window.open("${ctx}/series/previewSeries?seriesId="+$("#seriesId").val(),'_blank');
 	} 
 </script>
 </body>

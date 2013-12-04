@@ -280,12 +280,15 @@ public class SeriesAjaxContrller {
 		String phasesId = request.getParameter("phasesId");
 		//获取阶段描述
 		String seriesDesc = request.getParameter("sectionsIntro");
+		//阶段名称
+		String phaseTitle=request.getParameter("phaseTitle");
 		//获取节内容列表
 		String courseList = request.getParameter("mediaList");
 		if(StringUtil.isNotEmpty(phasesId)){
 			SeriesInfo seriesSub=seriesInfoService.get(phasesId);
 			if(seriesSub!=null){
 				if(StringUtil.isNotEmpty(seriesDesc)){
+					seriesSub.setFdName(phaseTitle);//修改后的阶段名称
 					seriesSub.setFdDescription(seriesDesc);//阶段描述
 					seriesInfoService.save(seriesSub);//保存阶段信息
 				}

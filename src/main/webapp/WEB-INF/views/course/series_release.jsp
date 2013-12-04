@@ -62,6 +62,11 @@
                                                 	{{=course.fdSummary||""}}
                                             
                                             <div class="media-foot">
+												{{?course.isThrough}}
+													<button class="btn btn-primary" data-fdid="{{=course.courseId}}">开始学习</button>
+												{{??}}
+                                                	<button class="btn"  data-fdid="{{=course.courseId}}">再次学习</button>
+												{{?}}
                                             </div>
                                         </div>
                                     </div>
@@ -73,7 +78,19 @@
 			{{~}}
 		
 </script>
-
+<!-- 最新系列 -->
+<script id="seriesTemplate" type="text/x-dot-template">
+						{{~it.newestSeries:series:index}}
+							<a href="javascript:void(0)" data-fdid="{{=series.seriesId}}">
+                    			<img src="{{?series.seriesImg!=""}}${ctx}/common/file/image/{{=series.seriesImg}}{{??}}${ctx }/resources/images/temp-newClass.jpg{{?}}" alt="">
+                    			<span class="mask"></span>
+                    			<span class="caption">
+                                	<h6 id="seriesName">{{=series.seriesName}}</h6>
+                                    <span class="text-warning" id="author">{{=series.author}}</span>
+                                </span>
+                            </a>
+						{{~}}
+</script>
 <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 <body>
@@ -141,7 +158,19 @@
                     </div>
                 </div>
 
-           
+                <div class="section newClass mt20">
+                	<div class="hd">
+                		<h5>最新系列课程</h5>
+                        <a href="javascript:void(0)" class="ab_r" id="findAll">发现全部</a>
+                	</div>
+                    <div class="bd">
+                    	<div class="list-class" id="serieslist">
+                    	
+                        	
+                            
+                        </div>
+                    </div>
+                </div>
 	        </div>
         </div>
 </section>
@@ -150,23 +179,27 @@
   //  $("a[data-toggle='tooltip']").tooltip();
     $(function(){
     	 var editMediaTitleFn = doT.template(document.getElementById("phasesTemplate").text);//阶段列表
-    	 
+    	 var serieslistFn=doT.template(document.getElementById("seriesTemplate").text);//最新课程列表
     	 var result;
     	 $.ajax({
          	type: "post",
          	url: "${ctx}/ajax/series/getSeriesHeardPage",
          	data : {
-         		seriesId : "${param.seriesId}"
+         		"seriesId" : "${param.seriesId}"
          	},
          	async:false,
          	cache: false, 
          	dataType: "json",
          	success:function(data){
          		$("#phaseslistData").html(editMediaTitleFn(data));
+         		$("#serieslist").html(serieslistFn(data));
          		result=data;
          	}
          }); 	
-         
+         //绑定按钮事件
+         $(".btn").bind("click",function(){
+        	 window.location.href="${ctx}/course/pagefoward?courseId="+$(this).attr("data-fdid");
+         });
          //初始化系列头部信息
          //系列封面
          if(result.seriesImg!=""){
@@ -213,6 +246,13 @@
            	 $("#authorImg").attr("src","${ctx }/resources/images/face-placeholder.png");
             }
           }
+         //最新课程列表点击
+         $("#serieslist>a").bind("click",function(){
+        	 window.location.href="${ctx}/series/pagefoward?seriesId="+$(this).attr("data-fdid");
+         });
+         $("#findAll").bind("click",function(){
+        	 window.location.href="${ctx}/course/courseIndexAll";
+         });
     });
     
 </script>
