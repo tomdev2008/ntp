@@ -929,6 +929,11 @@ public class CourseAjaxController {
 	private String getUserCourseInfo(HttpServletRequest request) {
 		Map returnMap = new HashMap();
 		String userId = request.getParameter("userId");
+		if(userId.equals(ShiroUtils.getUser().getId())){
+			returnMap.put("isme", true);
+		}else{
+			returnMap.put("isme", false);
+		}
 		SysOrgPerson orgPerson = accountService.load(userId);
 		returnMap.put("name", orgPerson.getRealName());
 		returnMap.put("img", orgPerson.getPoto());

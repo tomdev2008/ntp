@@ -128,9 +128,9 @@
         </div>
         <div class="section mt20">
             <div class="hd">
-                <h2>作者  <label id="seriesAuthor2"></label></h2>
+                <h2>作者  <span id="seriesAuthor2"></span></h2>
                 <div class="ab_r">
-                    <span class="pub_time" ><i class="icon-time"></i><label id="createTime"></label></span>
+                    <span class="pub_time" ><i class="icon-time"></i><span id="createTime"></span></span>
                 </div>
             </div>
             <div class="bd">
@@ -161,7 +161,7 @@
                 <div class="section newClass mt20">
                 	<div class="hd">
                 		<h5>最新系列课程</h5>
-                        <a href="#" class="ab_r" id="findAll">发现全部</a>
+                        <a href="javascript:void(0)" class="ab_r" id="findAll">发现全部</a>
                 	</div>
                     <div class="bd">
                     	<div class="list-class" id="serieslist">
