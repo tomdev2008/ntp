@@ -60,7 +60,17 @@
 						{{?it.type == "single"}}
                         	<a class="btn btn-primary pull-right" href="${ctx}/passThrough/getCourseHome/{{=item.dataId}}">
  						{{?}}
-						<i class="{{?item.isLearning}}icon-progress-shadow"></i>继续学习{{??}}icon-book-shadow"></i>开始学习{{?}}</a>
+							{{?it.type == "series"}}
+								<i class="{{?item.isLearning}}icon-progress-shadow"></i>继续学习{{??}}icon-book-shadow"></i>开始学习{{?}}
+ 							{{?}}
+							{{?it.type == "single"}}
+								{{?item.isme == true}}
+									<i class="{{?item.isLearning}}icon-progress-shadow"></i>继续学习{{??}}icon-book-shadow"></i>开始学习{{?}}
+								{{??}}
+									<i class="icon-book-shadow"></i>进入课程
+								{{?}}
+							{{?}}
+							</a>
                         {{?it.type == 'single'}}
                             <div class="pull-right"><strong>{{=item.learnerNum}}</strong>位老师在学习</div>
                         {{?}}
