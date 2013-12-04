@@ -230,6 +230,7 @@ public class AdviserAjaxController {
 		user.put("department", person.getDeptName());
 		user.put("phone", person.getFdMobileNo());
 		user.put("mail", person.getFdEmail());
+		user.put("link", person.getFdId());
 		introData.put("user", user);////封装人员信息
 		return JsonUtils.writeObjectToJson(introData);
 	}
@@ -342,6 +343,7 @@ public class AdviserAjaxController {
 				user.put("department", person.getDeptName());
 				user.put("phone", person.getFdMobileNo());
 				user.put("mail", person.getFdEmail());
+				user.put("link", person.getFdId());//人员id
 				map.put("user", user);////封装人员信息
 				CourseInfo courseInfo = courseService.get((String)pageMap.get("FDCOURSEID"));
 				map.put("courseName", courseInfo.getFdTitle());//课程名字
