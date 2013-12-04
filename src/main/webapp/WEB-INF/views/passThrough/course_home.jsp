@@ -313,7 +313,9 @@ $("#verifyPwd").bind("click",function(){
 		success:function(data){
 			var flag = data.flag;
 			if(flag=="0"){
-				$("#verifyPwd").after('<span class="error">输入密码错误！</span>');	
+				if($("#formPassword").find(".error").length==0){
+					$("#verifyPwd").after('<span class="error">输入密码错误！</span>');	
+				}
 			}else{
 				$("#formPassword").children().remove();
 		    	$("button[name='doButton']").each(function(){
