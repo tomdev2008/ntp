@@ -213,7 +213,7 @@ function CountStrByte(){
         <div class="page-header">
         	<div class="tit-icon_bg"><i class="icon-user icon-white"></i><i class="icon-sj"></i></div>
         	<h5>个人资料</h5>
-            <a href="${ctx}/dashboard" title="返回主页" class="replyMybk"><i class="icon-home icon-white"></i></a>
+            <a href="${ctx}/course/courseIndex" title="返回主页" class="replyMybk"><i class="icon-home icon-white"></i></a>
         </div> 
        <div class="page-body"> 
           <form method="post" id="inputForm" onsubmit="return checkSubmit();" action="${ctx}/register/updateOtherData" class="reg_form form-horizontal">
