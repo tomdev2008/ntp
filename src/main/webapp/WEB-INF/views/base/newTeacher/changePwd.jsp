@@ -115,7 +115,7 @@ function checkSubmit(){
         <div class="page-header">
         	<div class="tit-icon_bg"><i class="icon-pencil icon-white"></i><i class="icon-sj"></i></div>
         	<h5>修改密码</h5>
-            <a href="${ctx}/dashboard" class="replyMybk" title="返回主页" ><i class="icon-home icon-white"></i></a>
+            <a href="${ctx}/course/courseIndex" class="replyMybk" title="返回主页" ><i class="icon-home icon-white"></i></a>
         </div>        
        <div class="page-body"> 
       	 

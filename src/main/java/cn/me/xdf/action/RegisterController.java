@@ -147,10 +147,10 @@ public class RegisterController {
 						person.getFdIdentityCard());
 		if(personTemp != null){
 		  model.addAttribute("fdId", personTemp.getFdId());
-		  model.addAttribute("fdEmail", personTemp.getFdEmail());
 		}
+		model.addAttribute("fdEmail", person.getFdEmail());
 		model.addAttribute("fdIcoUrl", person.getPoto());
-		model.addAttribute("fdIsEmp", personTemp.getFdIsEmp());
+		model.addAttribute("fdIsEmp", person.getFdIsEmp());
 		return "/base/newTeacher/changePwd";
 	}
 	/**
