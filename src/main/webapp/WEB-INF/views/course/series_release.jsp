@@ -156,6 +156,9 @@
                         <p class="muted" id="seriesAuthor3">
                         </p>
                     </div>
+                      <div class="ft">
+                    	<span id="authorDesc"></span>
+                    </div>
                 </div>
 
                 <div class="section newClass mt20">
@@ -198,7 +201,7 @@
          }); 	
          //绑定按钮事件
          $(".btn").bind("click",function(){
-        	 window.location.href="${ctx}/course/pagefoward?courseId="+$(this).attr("data-fdid");
+        	 window.location.href="${ctx}/course/studyfoward?courseId="+$(this).attr("data-fdid");
          });
          //初始化系列头部信息
          //系列封面
@@ -230,13 +233,12 @@
          if(result.seriesDesc!=""){
         	 $("#seriesDesc").html(result.seriesDesc);
          }
-         //系列作者名称头像信息
-         if(result.author!=null){
+         //系列作者信息
+         
+         if(result.author!=null){authorDesc
         	 $("#seriesAuthor3").html(result.author.authorName);
-         }
-         //头像信息
-         if(result.author!=null){
-          	if(result.author.imgUrl!=""){
+       			//头像信息
+          	 if(result.author.imgUrl!=""){
              if(result.author.imgUrl.indexOf('http')>-1){
             	 $("#authorImg").attr("src",result.author.imgUrl); 
              }else{
@@ -245,6 +247,9 @@
             }else{
            	 $("#authorImg").attr("src","${ctx }/resources/images/face-placeholder.png");
             }
+       		//作者简介
+          	 $("#authorDesc").html(result.author.authorDesc);
+          	
           }
          //最新课程列表点击
          $("#serieslist>a").bind("click",function(){

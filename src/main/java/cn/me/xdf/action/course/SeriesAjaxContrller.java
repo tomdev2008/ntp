@@ -137,15 +137,13 @@ public class SeriesAjaxContrller {
 		String seriesTitle=request.getParameter("seriesTitle");
 		String seriesDesc=request.getParameter("seriesDesc");
 		String seriesAuthor=request.getParameter("seriesAuthor");
-//		String isavailable=request.getParameter("isavailable");
-		SeriesInfo series=seriesInfoService.get(seriesId);
+		String authorDesc = request.getParameter("authorDesc");
+		// String isavailable=request.getParameter("isavailable");
+		SeriesInfo series = seriesInfoService.get(seriesId);
 		series.setFdName(seriesTitle);
 		series.setFdDescription(seriesDesc);
-		if(StringUtil.isNotEmpty(seriesAuthor)){
-			series.setFdAuthor(seriesAuthor);
-		}else{
-			series.setFdAuthor(series.getCreator().getNotifyEntity().getRealName());
-		}
+		series.setFdAuthor(seriesAuthor);
+		series.setFdAuthorDescription(authorDesc);
 		series.setIsAvailable(true);
 		seriesInfoService.save(series);
 	}
@@ -346,6 +344,7 @@ public class SeriesAjaxContrller {
 		}
 		map.put("seriesTitle", phasesTitle);
 		map.put("sectionsIntro", phasesDes);
+		map.put("mediaList" ,courselist);
 		return JsonUtils.writeObjectToJson(map);
 	}
 	/**
@@ -393,11 +392,13 @@ public class SeriesAjaxContrller {
 	public String getBaseSeriesInfoById(HttpServletRequest request){
 		String seriesId = request.getParameter("seriesId");
 		Map<String, Comparable> map=new HashMap<String, Comparable>();
-		if(StringUtil.isNotEmpty(seriesId)){
-			SeriesInfo seriesInfo=seriesInfoService.get(seriesId);
-			map.put("fdName", seriesInfo.getFdName());
+		if (StringUtil.isNotEmpty(seriesId)) {
+			SeriesInfo seriesInfo = seriesInfoService.get(seriesId);
+			map.put("seriesTitle", seriesInfo.getFdName());
 			map.put("fdDescription", seriesInfo.getFdDescription());
-			map.put("isavailable", seriesInfo.getIsAvailable());
+			// map.put("isavailable", seriesInfo.getIsAvailable());//如果当前没有作者信息 则去创建者的名字
+			map.put("seriesAuthor", seriesInfo.getFdAuthor()==null||seriesInfo.getFdAuthor()==""?seriesInfo.getCreator().getNotifyEntity().getRealName():seriesInfo.getFdAuthor());// 作者
+			map.put("authorDesc", seriesInfo.getFdAuthorDescription());// 作者简介
 			
 		}
 		return JsonUtils.writeObjectToJson(map);
@@ -508,12 +509,14 @@ public class SeriesAjaxContrller {
 				author=new HashMap<String, String>();
 				author.put("authorName", seriesInfo.getFdAuthor());//作者名称
 				author.put("imgUrl", "");//作者头像
+				author.put("authorDesc", seriesInfo.getFdAuthorDescription());
 			}else{//否则默认为系列创建者
 				author=new HashMap<String, String>();
 				author.put("authorName", seriesInfo.getCreator().getNotifyEntity().getRealName());
 				author.put("imgUrl",seriesInfo.getCreator().getPoto());//作者头像
-				
+				author.put("authorDesc", seriesInfo.getFdAuthorDescription());
 			}
+			
 			map.put("author", author);
 			int sOfcount=0;//记录该系列下有多少课程
 			List<SeriesInfo> seriesList=seriesInfoService.getSeriesById(seriesId);

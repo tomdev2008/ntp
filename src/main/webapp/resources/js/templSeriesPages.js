@@ -57,7 +57,7 @@
 				  data:{phasesId:opt.id},
 				  dataType:'json',
 				  success: function(rsult){
-					  //alert(JSON.stringify(rsult));
+					 // alert(JSON.stringify(rsult));
 					  data = rsult;
 		              data.pageTitle = opt.title;
 		              data.lectureIndex = numParseCN(opt.index);

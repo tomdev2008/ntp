@@ -61,7 +61,7 @@ public class SeriesController {
 		return "/course/series_add";
 	}
 	/**
-	 * 系列系列首页
+	 * 后台管理系列系列首页
 	 */
 	@RequestMapping(value="pagefoward")
 	public String pagefoward(HttpServletRequest request){
@@ -77,12 +77,19 @@ public class SeriesController {
 		}
 	}
 	/**
-	 * 预览系列
+	 * 后台管理预览系列
 	 * @param request
 	 */
 	@RequestMapping(value = "previewSeries")
 	public String previewSeries(HttpServletRequest request) {
 	
 		return "/course/series_preview";
+	}
+	/**
+	 * 学习系列系列首页
+	 */
+	@RequestMapping(value="studayfoward")
+	public String studayfoward(HttpServletRequest request){
+				return "/course/series_release";
 	}
 }

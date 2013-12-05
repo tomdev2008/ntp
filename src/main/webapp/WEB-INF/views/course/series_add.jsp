@@ -110,10 +110,12 @@
                     	<label for="seriesTitle">系列名称</label>
                         <input type="text" id="seriesTitle" name="seriesTitle" required minlength="6" class="input-block-level" value="{{=it.seriesTitle || ''}}"  />
                         <label for="seriesDesc">系列描述</label>
-                        <textarea name="seriesDesc" id="seriesDesc" required minlength="12" class="input-block-level" rows="3">{{=it.fdDescription || ''}}</textarea>   
+                        <textarea name="seriesDesc" id="seriesDesc" required  minlength="12" class="input-block-level" rows="3">{{=it.fdDescription || ''}}</textarea>   
 						<label for="seriesAuthor">作者</label>
-                        <input type="text" name="seriesAuthor" id="seriesAuthor"  class="input-block-level" value="{{=it.seriesAuthor || ''}}"/>   
-                    </fieldset>
+                        <input type="text" name="seriesAuthor" required  minlength="3" id="seriesAuthor"  class="input-block-level" value="{{=it.seriesAuthor || ''}}"/>   
+						<label for="authorDesc">作者简介</label>
+                        <textarea name="authorDesc" id="authorDesc"  class="input-block-level" rows="3">{{=it.authorDesc || ''}}</textarea>                    
+					</fieldset>
 						<!--<input name="sectionIsava" id="sectionIsava" value="{{=it.isavailable||true}}" type="hidden">
 						<label for="sectionOrder"></label>
 						<div class="btn-group btns-radio" data-toggle="buttons-radio">
@@ -354,7 +356,9 @@ $.Placeholder.init();
 		$.post('${ctx}/ajax/series/saveSeriesBaseInfo',{
 			 seriesId:$("#seriesId").val(),
 			 seriesTitle: $("#seriesTitle").val(),
-			 seriesDesc:  $("#seriesDesc").val()
+			 seriesDesc:  $("#seriesDesc").val(),
+			 seriesAuthor: $("#seriesAuthor").val(),
+			 authorDesc: $("#authorDesc").val()
 			 //isavailable:$("#sectionIsava").val()
 			})
 		.success(function(){

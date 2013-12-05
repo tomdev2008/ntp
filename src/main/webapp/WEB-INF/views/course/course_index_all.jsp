@@ -55,7 +55,7 @@
                     </div> 
                     <div class="ft2 clearfix{{?it.type == 'single'}} bdt1{{?}}">
 						{{?it.type == "series"}}
-                        	<a class="btn btn-warning pull-right" href="${ctx}/series/previewSeries?seriesId={{=item.dataId}}">
+                        	<a class="btn btn-warning pull-right" href="${ctx}/series/studayfoward?seriesId={{=item.dataId}}">
  						{{?}}
 						{{?it.type == "single"}}
                         	<a class="btn btn-warning pull-right" href="${ctx}/passThrough/getCourseHome/{{=item.dataId}}">

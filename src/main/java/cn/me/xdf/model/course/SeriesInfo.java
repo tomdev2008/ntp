@@ -84,7 +84,11 @@ public class SeriesInfo extends IdEntity implements IAttMain{
 	 * 作者
 	 */
 	private String fdAuthor;
-	
+	/**
+	 * 
+	 * 
+	 */
+	private String fdAuthorDescription;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fdParentId")
 	public SeriesInfo getHbmParent() {
@@ -169,6 +173,14 @@ public class SeriesInfo extends IdEntity implements IAttMain{
 
 	public void setFdAuthor(String fdAuthor) {
 		this.fdAuthor = fdAuthor;
+	}
+	@Column(length = 2000)
+	public String getFdAuthorDescription() {
+		return fdAuthorDescription;
+	}
+
+	public void setFdAuthorDescription(String fdAuthorDescription) {
+		this.fdAuthorDescription = fdAuthorDescription;
 	}
 
 	
