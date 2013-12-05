@@ -78,7 +78,6 @@
           <input type="hidden" id="fdIcoUrl" name="fdIcoUrl" value="${fdIcoUrl}" />
           <input type="hidden" id="fdIdentityCard" name="fdIdentityCard" value="${fdIdentityCard}">
            
-        	<p class="reg_form-intro">请确认您填写的个人资料，完成临时账号注册。</p>
         	<div class="control-group">
         		<div class="controls" style="height: 110px;">
         		   <label for="face" class="control-label">头像</label>
@@ -88,12 +87,7 @@
         		  <tr>
         		   <td>
                 	 <a href="#" class="face pull-left">
-                    	<c:if test="${fdIsEmp == '0'}">
-                         <img id="imgshow"  align="bottom" src="<%=request.getContextPath()%>/${fdIcoUrl}"/>
-                        </c:if>
-                        <c:if test="${fdIsEmp != '0'}">
-                          <img id="imgshow"  align="bottom" src="${fdIcoUrl}"/>
-                        </c:if>
+                         <tags:image href="${fdIcoUrl}" id="imgshow" clas="media-object img-face" />
                     	
                         <h6>
                         </h6>
@@ -104,11 +98,11 @@
                 </tr>
                 <tr>
                 <td>
-                 <div style="position: relative;top:-20px;">
+                <div style="position: relative;top:-20px;">
                  	<tags:simpleupload filename="fdName"
                        filevalue="" id="upPic" exts="*.jpg;*.JPEG;*.png;*.bmp;" imgshow="imgshow" attIdName="attId" attIdID="attIdID">
     			     </tags:simpleupload> 
-                </div> 
+                </div>  
                 </td>
                 </tr>
                </table>

@@ -49,12 +49,7 @@
         		<div class="controls">
         		   
                 	<a class="face pull-left">                	
-                	 <c:if test="${fdIsEmp == '0'}">
-                       <img id="imgshow" style="width: 60px;height: 60px" align="bottom" src="<%=request.getContextPath()%>/${bean.fdIcoUrl}"/>
-                     </c:if>
-                     <c:if test="${fdIsEmp != '0'}">
-                       <img id="imgshow" style="width: 60px;height: 60px" align="bottom" src="${bean.fdIcoUrl}"/>
-                     </c:if>
+                	 <tags:image href="${bean.fdIcoUrl}" clas="media-object img-face" />
                         <h6 align="left" >
                         </h6>
                     </a>
