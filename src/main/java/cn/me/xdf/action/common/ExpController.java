@@ -3,6 +3,7 @@ package cn.me.xdf.action.common;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import cn.me.xdf.common.download.DownloadHelper;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.utils.Zipper;
+import cn.me.xdf.common.utils.array.ArrayUtils;
+import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.common.utils.excel.AbsExportExcel;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.material.MaterialAuth;
+import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.material.Task;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.adviser.AdviserService;
 import cn.me.xdf.service.bam.BamCourseService;
@@ -32,6 +38,8 @@ import cn.me.xdf.utils.ShiroUtils;
 import cn.me.xdf.view.model.VCheckTaskData;
 import cn.me.xdf.view.model.VMaterialData;
 import cn.me.xdf.view.model.VStudyTrack;
+import cn.me.xdf.view.model.VTaskPaperAuth;
+import cn.me.xdf.view.model.VTaskPaperData;
 
 
 /**
@@ -66,6 +74,59 @@ public class ExpController {
     
     @Autowired
     private MaterialService materialService;
+    
+    public SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
+    /**
+     * 导出单个作业包信息
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getExpTaskPaper/{id}")
+    public String getExpTaskPaper(@PathVariable("id") String id,
+    		HttpServletRequest request,HttpServletResponse response){
+    	MaterialInfo info = materialService.get(id);
+    	List<VTaskPaperData> studyTrackList = new ArrayList<VTaskPaperData>();	
+    	VTaskPaperData data = new VTaskPaperData();
+    	data.setFdAuthor(info.getFdAuthor());//作者
+    	data.setFdAuthorDescription(info.getFdAuthorDescription());//作者简介
+    	data.setFdStudyTime(info.getFdStudyTime());//建议学习时间
+    	data.setTaskPaperName(info.getFdName());//作业包名
+    	data.setTaskPaperDescription(info.getFdDescription()==null?"":info.getFdDescription());//作业包简介
+    	data.setFdCreateTime(sdf.format(info.getFdCreateTime()));//创建时间
+    	data.setCreatorName(info.getCreator().getRealName());//创建者
+    	List<Task> taskList = info.getTasks();
+    	ArrayUtils.sortListByProperty(taskList, "fdOrder", SortType.HIGHT); 
+    	data.setTasks(taskList);//作业list
+    	Integer totalScore = 0;
+    	for (Task task : taskList) {
+    		totalScore += task.getFdStandardScore().intValue();
+		}
+    	data.setTotalScore(totalScore);//总分
+    	data.setTotalTask(taskList.size());//题数
+    	data.setPassScore(info.getFdScore().intValue());//及格分
+    	List<VTaskPaperAuth> taskPaperAuthList = new ArrayList<VTaskPaperAuth>();
+    	List<MaterialAuth> authList = info.getAuthList();//权限列表
+    	data.setAuthCategory(info.getIsPublish()==true?"公开":"加密");//权限
+    	for (MaterialAuth materialAuth : authList) {
+    		VTaskPaperAuth auth = new VTaskPaperAuth();
+    		auth.setFdName(materialAuth.getFdUser().getRealName());
+    		auth.setDept(materialAuth.getFdUser().getDeptName());
+    		auth.setIsEditer(materialAuth.getIsEditer()==true?"是":"否");
+    		auth.setIsReader(materialAuth.getIsReader()==true?"是":"否");
+    		taskPaperAuthList.add(auth);
+		}
+    	if(taskPaperAuthList!=null&&!taskPaperAuthList.isEmpty()){
+    		data.setTaskPaperAuth(taskPaperAuthList);
+    	}
+    	studyTrackList.add(data);
+    	if(info.getIsPublish()){
+    		exportExcel(studyTrackList, "taskPaperDetail.xls", response);
+    	}else{
+    		exportExcel(studyTrackList, "taskPaperEncrypt.xls", response);
+    	}
+    	return null;
+    }
 	
     /**
 	 * 导出学习跟踪excel方法

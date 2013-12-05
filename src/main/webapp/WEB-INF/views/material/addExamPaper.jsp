@@ -175,7 +175,7 @@
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" id="saveExamPaper" type="button">保存</button>
                     <c:if test="${param.fdId!=null}">
-                    <button class="btn btn-large btn-primary" disabled id="exportExamPaper" type="button">导出</button>
+                    <button class="btn btn-large btn-primary" id="exportExamPaper" type="button">导出</button>
                     <button class="btn btn-white btn-large " onclick="deleteMaterial();" id="delExamPaper" type="button">删除</button>
                     </c:if>
                 </div>
@@ -316,7 +316,11 @@ $(function(){
 			  dataType : 'json',
 			  success: function(result){
 				  $("#examPaperIntro").val(result.description);
-				  $("#fdName").html(result.fdName);
+				  var fdName = result.fdName;
+				  if(fdName.length>14){
+					  fdName = fdName.substring(0, 14)+"...";
+				  } 
+				  $("#fdName").html(fdName);
 				  $("#examPaperName").val(result.fdName);
 				  $("#passScore").val(result.score);
 				  $("#examPaperTime").val(result.time);
@@ -458,6 +462,9 @@ $(function(){
     //删除作业包事件
     $("#delExamPaper").click(function(e){
     	
+    });
+    $("#exportExamPaper").click(function(e){
+    	window.location.href="${ctx}/common/exp/getExpTaskPaper/${param.fdId}";
     });
 
     /*提交表单函数*/
@@ -633,7 +640,11 @@ $(function(){
 				  },
 			});
         }
-        data.examPaperName = $("#examPaperName").val();  //当前作业包名称
+        var fdName = $("#examPaperName").val();
+    	if(fdName.length>14){
+			  fdName = fdName.substring(0, 14)+"...";
+		  } 
+        data.examPaperName = fdName;  //当前作业包名称
         data.timeLine = {//时间轴控件 配置数据
             width: 670, //时间轴控件 宽度
             total: 20, //总格数
