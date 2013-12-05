@@ -16,7 +16,7 @@
   <div class="container banner">
     <div class="start-prepare">
       <p>赶快点击下面的按钮，开始备课闯关之旅吧！</p>
-      <a href="${ctx}/course/courseIndexAll" class="start-btn"><span class="txt">开始备课吧</span><span><b class="caret"></b></span></a>
+      <a href="${ctx}/course/courseIndex" class="start-btn"><span class="txt">开始备课吧</span><span><b class="caret"></b></span></a>
     </div>
   </div>
 </div>
