@@ -23,10 +23,10 @@
                     {{?it.type == "series"}}
                         <div class="hd2">
                                     <span>
-                                        <strong>{{=item.docNum}}个</strong>课程
+                                        <strong>{{=item.docNum}}&nbsp;个</strong>课程
                                     </span>
                                      <span>
-                                        <strong>{{=item.learnerNum}}位</strong>老师在学习
+                                        <strong>{{=item.learnerNum}}&nbsp;位</strong>老师在学习
                                     </span>
                         </div>
                     {{?}}
