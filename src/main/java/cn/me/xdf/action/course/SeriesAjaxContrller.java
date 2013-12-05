@@ -651,7 +651,7 @@ public class SeriesAjaxContrller {
 			map.put("docNum",seriesCoursesService.getCoursesByseriesId2(seriesInfo.getFdId()).size());
 			map.put("learnerNum", count);
 			map.put("name", seriesInfo.getFdName());
-			map.put("issuer", seriesInfo.getCreator().getDeptName());
+			map.put("issuer", seriesInfo.getFdAuthor());
 			map.put("intro", seriesInfo.getFdDescription().length()>=35?seriesInfo.getFdDescription().subSequence(0, 35)+"...":seriesInfo.getFdDescription());
 			map.put("isLearning", false);
 			map.put("dataId", seriesInfo.getFdId());

@@ -896,7 +896,7 @@ public class CourseAjaxController {
 			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
 			map.put("learnerNum", getLearningTotalNo(courseInfo.getFdId()));
 			map.put("name", courseInfo.getFdTitle());
-			map.put("issuer", courseInfo.getCreator().getDeptName()); 
+			map.put("issuer", courseInfo.getFdAuthor()); 
 			ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
 			map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
 			map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
@@ -946,9 +946,9 @@ public class CourseAjaxController {
 		returnMap.put("name", orgPerson.getRealName());
 		returnMap.put("img", orgPerson.getPoto());
 		returnMap.put("sex", orgPerson.getFdSex());
-		returnMap.put("org", orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
-		returnMap.put("dep", orgPerson.getDeptName());
-		returnMap.put("tel", orgPerson.getFdWorkPhone());
+		returnMap.put("org", orgPerson.getHbmParent()==null?"不详":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
+		returnMap.put("dep", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
+		returnMap.put("tel", orgPerson.getFdWorkPhone()==null?"不详":orgPerson.getFdWorkPhone());
 		returnMap.put("qq", orgPerson.getFdQq()==null?"不详":orgPerson.getFdQq());
 		
 		Map userMap = sysOrgPersonService.getUserInfo(userId);
@@ -1000,7 +1000,7 @@ public class CourseAjaxController {
 			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
 			map.put("learnerNum", getLearningTotalNo(courseInfo.getFdId()));
 			map.put("name", courseInfo.getFdTitle());
-			map.put("issuer", courseInfo.getCreator().getDeptName()); 
+			map.put("issuer", courseInfo.getFdAuthor()); 
 			ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
 			map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
 			map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
@@ -1019,7 +1019,8 @@ public class CourseAjaxController {
 	public String getCoursesTop5ByScore(HttpServletRequest request){
 		Map returnMap = new HashMap();
 		Finder finder = Finder.create("");
-		finder.append("select c.fdId ID,case when s.fdAverage is null THEN 0 else s.fdAverage end aver from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId order by aver desc" );
+		finder.append("select c.fdId ID,case when s.fdAverage is null THEN 0 else s.fdAverage end aver from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId where c.fdStatus=:fdStatus and c.isAvailable=1 order by aver desc" );
+		finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 		List<Map> list = (List<Map>) courseService.getPageBySql(finder, 1,5).getList();
 		List<Map> list2 = new ArrayList<Map>();
 		for (Map map1 : list) {
