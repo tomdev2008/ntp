@@ -338,7 +338,7 @@
         //课程作者
         $("#courseAuthor").html(result.courseAuthor);
         //详细课程
-        $("#coursedetail").attr('href',"${ctx}/course/pagefoward?courseId="+courseId);
+        $("#coursedetail").attr('href',"${ctx}/course/previewCourse?courseId="+courseId);
         deleteByhref(pageInfo.currentPage);
         /*******************************选择教师 导师**************************************/
         var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
