@@ -702,7 +702,11 @@
 					});
 
 				}
-				data.examPaperName = $("#examPaperName").val(); //当前试卷名称
+				var fdName = $("#examPaperName").val();
+				  if(fdName.length>14){
+					  fdName = fdName.substring(0, 14)+"...";
+				  } 
+				data.examPaperName = fdName; //当前试卷名称
 				$("#rightCont").html(examDetailFn(data));
 
 				//应用拖放效果
@@ -1083,8 +1087,12 @@
 									$("#list_exam_table").css("display","table");
 								}
 								$("#list_exam").html(html);
+								var fdName = result.name;
+								  if(fdName.length>14){
+									  fdName = fdName.substring(0, 14)+"...";
+								  } 
 								$("#examPaperName").val(result.name);
-								$("#examMainName").html(result.name);
+								$("#examMainName").html(fdName);
 								initScore();
 
 							}
