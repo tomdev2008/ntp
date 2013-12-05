@@ -24,18 +24,12 @@ import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
-import cn.me.xdf.model.base.Constant;
-import cn.me.xdf.model.course.CourseCatalog;
-import cn.me.xdf.model.course.CourseCategory;
-import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.SeriesCourses;
 import cn.me.xdf.model.course.SeriesInfo;
-import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
-import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
@@ -68,7 +62,7 @@ public class SeriesAjaxContrller {
 	
 	@Autowired
     private ScoreStatisticsService scoreStatisticsService;
-	/*
+	/**
 	 * 保存阶段信息
 	 * author hanhl
 	 */
@@ -187,7 +181,7 @@ public class SeriesAjaxContrller {
 			attMainService.save(attMain);
 		}
 	}
-	/*
+	/**
 	 * 查询课程列表 或者根据关键字搜索 author hanhl
 	 */
 	@RequestMapping(value = "getSeriesInfosOrByKey")
@@ -201,7 +195,7 @@ public class SeriesAjaxContrller {
 	}
 	
 	
-	/*
+	/**
 	 * 选择课程删除时:删除课程与系列的关系  author hanhl
 	 */
 	@RequestMapping(value="deleteSeriesOfCourse")
@@ -416,7 +410,7 @@ public class SeriesAjaxContrller {
 			seriesInfoService.save(seriesInfo);
 		}
 	}
-	/*
+	/**
 	 *  author hanhl
 	 * 系列课程列表单一删除
 	 */
@@ -432,7 +426,7 @@ public class SeriesAjaxContrller {
 		}
 		
 	}
-	/*
+	/**
 	 * author hanhl
 	 * 系列课程列表全删
 	 */
@@ -547,7 +541,7 @@ public class SeriesAjaxContrller {
 							if(bamCourse==null){
 								mapc.put("isThrough",false);
 							}else{
-								mapc.put("isThrough",bamCourse.getThrough());
+								mapc.put("isThrough",true);
 							}
 							//课程评分
 							ScoreStatistics statistic=scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(),course.getCourses().getFdId());

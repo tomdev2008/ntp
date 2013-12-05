@@ -63,9 +63,9 @@
                                             
                                             <div class="media-foot">
 												{{?course.isThrough}}
-													<button class="btn btn-primary" data-fdid="{{=course.courseId}}">开始学习</button>
+													<button class="btn btn-primary" data-fdid="{{=course.courseId}}">继续学习</button>
 												{{??}}
-                                                	<button class="btn"  data-fdid="{{=course.courseId}}">再次学习</button>
+                                                	<button class="btn btn-primary"  data-fdid="{{=course.courseId}}">开始学习</button>
 												{{?}}
                                             </div>
                                         </div>
@@ -201,7 +201,7 @@
          }); 	
          //绑定按钮事件
          $(".btn").bind("click",function(){
-        	 window.location.href="${ctx}/course/studyfoward?courseId="+$(this).attr("data-fdid");
+        	 window.location.href="${ctx}/passThrough/getCourseHome/"+$(this).attr("data-fdid");
          });
          //初始化系列头部信息
          //系列封面
@@ -253,7 +253,7 @@
           }
          //最新课程列表点击
          $("#serieslist>a").bind("click",function(){
-        	 window.location.href="${ctx}/series/pagefoward?seriesId="+$(this).attr("data-fdid");
+        	 window.location.href="${ctx}/series/studayfoward?seriesId="+$(this).attr("data-fdid");
          });
          $("#findAll").bind("click",function(){
         	 window.location.href="${ctx}/course/courseIndexAll";

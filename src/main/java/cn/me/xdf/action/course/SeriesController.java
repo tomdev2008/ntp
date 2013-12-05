@@ -1,7 +1,5 @@
 package cn.me.xdf.action.course;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
@@ -13,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.me.xdf.common.page.Pagination;
-import cn.me.xdf.model.course.CourseCatalog;
-import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.SeriesInfo;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.SeriesInfoService;
@@ -33,7 +29,7 @@ public class SeriesController {
 	private AttMainService attMainService;
 	
 	
-	/*
+	/**
 	 * 查询系列课程;
 	 * author hanhl
 	 */
@@ -61,7 +57,7 @@ public class SeriesController {
 		return "/course/series_add";
 	}
 	/**
-	 * 后台管理系列系列首页
+	 * 后台系列课程管理预览或编辑
 	 */
 	@RequestMapping(value="pagefoward")
 	public String pagefoward(HttpServletRequest request){
@@ -69,15 +65,15 @@ public class SeriesController {
 		if(StringUtil.isNotEmpty(seriesId)){
 			if(seriesInfoService.getSeriesOfUser(seriesId)||ShiroUtils.isAdmin()){//如果是系列创建者跳转到系列编辑页
 			return "redirect:/series/add?seriesId="+seriesId;
-			}else{                                          //其他则跳转到系列课程首页
-				return "/course/series_release";
+			}else{                                          
+				return "/course/series_preview";//其他则跳转到系列预览
 			}
 		}else{
 			return "redirect:/series/add";
 		}
 	}
 	/**
-	 * 后台管理预览系列
+	 * 后台系列课程管理预览系列
 	 * @param request
 	 */
 	@RequestMapping(value = "previewSeries")
