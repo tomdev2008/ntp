@@ -13,7 +13,7 @@
                 <i class="icon-star{{?i <= it.score}} active{{?}}"></i>
           {{ } }}
     </span>
-    <b class="text-warning">{{=it.score}}</b>
+    <b class="text-warning">{{?(it.score+"").length==1}} {{=it.score}}.0 {{??}} {{=it.score}} {{?}} </b>
 </script>
 <script src="${ctx}/resources/js/doT.min.js"></script>
 <div class="section mt20">
@@ -101,7 +101,7 @@ function scoreing(){
 		  success: function(result){
 			  $.fn.jalert2("评分成功");
 			  //$("#ratingDo  i").unbind();
-			  var score = (parseInt($("#myScore").html()));
+			  var score = ($("#myScore").html());
 			  $("#ratingDo  i").each(function(index){	
 					$(this).bind("mouseout",function(){
 						  setMyScore(score);
@@ -121,7 +121,7 @@ function setMyScore(score){
 		}else{
 			$(this).removeClass("active");
 		}
-		$("#myScore").html(parseInt(score));
+		$("#myScore").html(score);
 	}); 
 }
 //重置课程情分信息

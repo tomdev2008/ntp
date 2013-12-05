@@ -52,7 +52,7 @@ public class ScoreAjaxController {
 		if(scoreStatistics==null){
 			map.put("fdId", "");
 			map.put("fdModelId", "");
-			map.put("fdAverage", 0);
+			map.put("fdAverage", 0.0);
 			map.put("fdScoreNum", 0);
 			map.put("fdFiveScoreNum", 0);
 			map.put("fdFourScoreNum", 0);

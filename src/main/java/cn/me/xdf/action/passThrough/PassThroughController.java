@@ -117,7 +117,7 @@ public class PassThroughController {
 				request.setAttribute("courseAtt", attMain!=null?attMain.getFdId():"");
 				//课程评分统计
 				ScoreStatistics scoreStatistics =  scoreStatisticsService.findUniqueByProperty(ScoreStatistics.class,Value.eq("fdModelName", CourseInfo.class.getName()),Value.eq("fdModelId", course.getFdId()));
-				request.setAttribute("courseScore", scoreStatistics==null?0:scoreStatistics.getFdAverage());
+				request.setAttribute("courseScore", scoreStatistics==null?0.0:scoreStatistics.getFdAverage());
 				
 			}else{
 				//否则需要跳转到发现课程

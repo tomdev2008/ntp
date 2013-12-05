@@ -344,7 +344,7 @@
                                     <i class="icon-star{{?i < param.rating.average}} active{{?}}"></i>
                                 {{ } }}
                              </span>
-                        <b class="text-warning">{{=param.rating.average || 0}}</b>
+                        <b class="text-warning">{{=param.rating.average}}.0</b>
                     </div>
                 </div>
                 <div class="clearfix mt20">
@@ -903,13 +903,19 @@
   		  			  },
   		  			  dataType:'json',
   		  			  success: function(result){
+  		  				  var ave;
+  		  				  if((result[0].fdAverage+"").length==1){
+  		  					ave= result[0].fdAverage+".0";
+  		  				  }else{
+  		  					ave= result[0].fdAverage+""; 
+  		  				  }
   		  				$("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
   		                    if((i+1) <= result[0].fdAverage){
   		                        $(this).addClass("active");
   		                    } else {
   		                        $(this).removeClass("active");
   		                    }
-  		                }).end().children("b.text-warning").text(result[0].fdAverage);
+  		                }).end().children("b.text-warning").text(ave);
   		  				var scoreInfoHtml = doT.template(document.getElementById("scoreInfo").text);
   		  				$("#pullrightInfo").html(scoreInfoHtml(result[0]));
   		  			  },
@@ -1042,13 +1048,19 @@
             			  fdModelName:"<%=MaterialInfo.class.getName()%>",
             		  },
             		  success: function(result){
+            			  var ave;
+  		  				  if((result[0].fdAverage+"").length==1){
+  		  					ave= result[0].fdAverage+".0";
+  		  				  }else{
+  		  					ave= result[0].fdAverage+""; 
+  		  				  }
             			  $("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
     		                    if((i+1) <= result[0].fdAverage){
     		                        $(this).addClass("active");
     		                    } else {
     		                        $(this).removeClass("active");
     		                    }
-    		                }).end().children("b.text-warning").text(result[0].fdAverage);
+    		                }).end().children("b.text-warning").text(ave);
     		  				var scoreInfoHtml = doT.template(document.getElementById("scoreInfo").text);
     		  				$("#pullrightInfo").html(scoreInfoHtml(result[0]));
             		  }
@@ -1225,13 +1237,19 @@
                 $("#btnPraise").attr("praisedstatus",result.mePraised);
                 $("#mediaName").text($this.attr("title"));
                 $("#mediaIntro").text(result.intro);
+                var ave;
+ 				  if((result.rating.average+"").length==1){
+ 					ave= result.rating.average+".0";
+ 				  }else{
+ 					ave= result.rating.average+""; 
+ 				  }
                 $("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
-                    if(i < result.rating.average){
-                        $(this).addClass("active");
-                    } else {
-                        $(this).removeClass("active");
-                    }
-                }).end().children("b.text-warning").text(result.rating.average);
+                if(i < result.rating.average){
+                    $(this).addClass("active");
+                } else {
+                    $(this).removeClass("active");
+                }
+                }).end().children("b.text-warning").text(ave);
                 $("#ratingFive").find(".progress-gray>.bar")
                         .width(result.rating.five/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.five);
                 $("#ratingFour").find(".progress-gray>.bar")
