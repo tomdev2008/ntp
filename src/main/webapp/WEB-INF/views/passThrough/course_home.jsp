@@ -149,7 +149,7 @@
 		                                        	    </button>
 		                                        	  </c:if>
 		                                        	  <c:if test="${isorder==false && course.isOrder==true}">
-		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn btn-primary" data-show="false" disabled="disabled">
+		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn" data-show="false">
 		                                        	  	  	开始学习
 		                                        	    </button>
 		                                        	  </c:if>
@@ -203,7 +203,7 @@
 		                                       	</button>
 		                                      </c:if>
 		                                      <c:if test="${isorder==false && course.isOrder==true}">
-		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn btn-primary" data-show="false" disabled="disabled">
+		                                        <button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn" data-show="false">
 		                                        	开始学习
 		                                        </button>
 		                                      </c:if>
@@ -295,10 +295,20 @@ $.ajax({
 		var flag = data.flag;
 		if(flag=="0"){
 			$("button[name='doButton']").each(function(){
-				$(this).attr("disabled",true);
+				$(this).removeClass("btn-primary");
 			});
 			$("#studyBegin").attr("disabled",true);
 			$("#studyBegin").removeAttr("href");
+		}else{
+			$("button[name='doButton']").each(function(){
+				if($(this).hasClass("btn-primary")){
+					$(this).bind("click",function(){
+						var fdid = $(this).attr("data-fdid");
+						var fdMtype = $(this).attr("data-fdMtype");
+					   	window.location.href = "${ctx}/passThrough/getStudyContent?catalogId="+fdid+"&fdMtype="+fdMtype+"&courseId="+courseId;
+					});
+				}
+			});
 		} 
 	}
 }); 
@@ -323,7 +333,12 @@ $("#verifyPwd").bind("click",function(){
 				$("#formPassword").children().remove();
 		    	$("button[name='doButton']").each(function(){
 		    		if($(this).attr("data-show")=="true"){
-		    			$(this).attr("disabled",false);
+		    			$(this).addClass("btn-primary");
+		    			$(this).bind("click",function(){
+							var fdid = $(this).attr("data-fdid");
+							var fdMtype = $(this).attr("data-fdMtype");
+						   	window.location.href = "${ctx}/passThrough/getStudyContent?catalogId="+fdid+"&fdMtype="+fdMtype+"&courseId="+courseId;
+						});
 		    		}
 		    	});
 		    	$("#studyBegin").attr("disabled",false);
@@ -332,12 +347,6 @@ $("#verifyPwd").bind("click",function(){
 		}
 	}); 
 	
-});
-
-$("button[name='doButton']").bind("click",function(){
-	var fdid = $(this).attr("data-fdid");
-	var fdMtype = $(this).attr("data-fdMtype");
-   	window.location.href = "${ctx}/passThrough/getStudyContent?catalogId="+fdid+"&fdMtype="+fdMtype+"&courseId="+courseId;
 });
 </script>
 </body>
