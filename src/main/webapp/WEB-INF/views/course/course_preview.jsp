@@ -27,6 +27,9 @@
 		                授权： + authorize
 		                加密： + encrypt 
 		    -->
+		    <c:if test="${course.isPublish==true}">
+		      <div class="permission"></div>
+		    </c:if>
 		    <c:if test="${course.isPublish==false}">
 		      <c:if test="${course.fdPassword!=''&&course.fdPassword!=null}">
                 <div class="permission encrypt"></div>
