@@ -320,7 +320,7 @@
             <div class="section mt20">
                 <div class="mediaWrap bdbt2">
                     <div class="mediaObject">
-                        <div id="flashcontent"></div>
+                        <iframe id="iframeVideo" width="100%" height="510" frameBorder="0" scrolling="no" src="${ctx}/video.jsp"></iframe>
                     </div>
                 </div>
                 <div class="mediaToolbarWrap">
@@ -1176,10 +1176,10 @@
               return false;
             }
 
-            $("head").loadJS({name: "SWFobject.js"});
+            
 
             /**************************  如下代码把 videoplayer.swf 嵌入到 id 为 flashcontent 的div中  *********************/
-            var flashvars =
+            /* var flashvars =
             {
                 //flash接收的参数
                 autoPlay:'true',
@@ -1199,7 +1199,9 @@
                 id: "myflash"
             };
             swfobject.embedSWF("http://me.xdf.cn:80/iportal/sys/attachment/video/videoplayer.swf", "flashcontent",
-                    "100%", "510", "6.0.0", "expressInstall.swf", flashvars, params, attributes);
+                    "100%", "510", "6.0.0", "expressInstall.swf", flashvars, params, attributes); */
+            
+                    $('#iframeVideo').html('');
             var $mediaToolbar = $("#mediaToolbar");
 
             $("#listMedia>li>a").bind("click",function(e){
