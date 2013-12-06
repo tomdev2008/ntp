@@ -169,7 +169,7 @@
                     </section>
                     
                     <section class="section mt20">
-                        <div class="media-placeholder">
+                        
                            		 <%
                            		 AttMain attMain = (AttMain)request.getAttribute("main");
                            		 System.out.println(attMain.getFileUrl());
@@ -183,10 +183,12 @@
 											<iframe width="100%" height="437" id="iframe_ppt" src="${main.fileUrl}" frameBorder="0" scrolling="no"></iframe>
 									</j:if>
 									<j:else>
+									<div class="media-placeholder">
 									正在转化中......
+									</div>
 									</j:else>
 								</j:ifelse>
-                        </div>
+                        
                     </section>
                     <section class="section">
                         <div class="control-group">
