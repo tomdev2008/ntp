@@ -142,8 +142,8 @@ public class RegisterAjaxController {
 	public boolean checkOldPwd(HttpServletRequest request) {
 		
 		String oldPwd = request.getParameter("str");
-		String uid = ShiroUtils.getUser().getId();
-		SysOrgPersonTemp fdPerson = accountService.load(uid);
+		String fdId = request.getParameter("fdId");
+		SysOrgPersonTemp fdPerson = registerService.findUniqueByProperty(SysOrgPersonTemp.class,"fdId",fdId);
         String userPwd = fdPerson.getFdPassword();
         if(oldPwd.equals(userPwd)){
         	return true;

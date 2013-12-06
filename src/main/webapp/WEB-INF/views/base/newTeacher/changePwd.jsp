@@ -23,7 +23,8 @@ function checkOldPwd(){
 		dataType : "json",
 		url : "${ctx}/ajax/register/checkOldPwd",
 		data : {
-			"str" : oldPwd
+			"str" : oldPwd,
+			"fdId": $("#fdId").val(),
 		},
 		success : function(data) {
 			if (data) {
@@ -115,13 +116,12 @@ function checkSubmit(){
         <div class="page-header">
         	<div class="tit-icon_bg"><i class="icon-pencil icon-white"></i><i class="icon-sj"></i></div>
         	<h5>修改密码</h5>
-            <a href="${ctx}/course/courseIndex" class="replyMybk" title="返回主页" ><i class="icon-home icon-white"></i></a>
+            <a href="${ctx}/course/courseIndex" class="replyMybk" title="个人主页" ><i class="icon-home icon-white"></i></a>
         </div>        
        <div class="page-body"> 
-      	 
           <form id="subForm" onsubmit="return checkSubmit();" action="${ctx}/register/updateTeacherPwd" method="post" class="reg_form form-horizontal">
-           <input type="hidden" name="fdId" value="${fdId}"/>
-           <input type="hidden" name="fdIsEmp" value="${fdIsEmp}"/>
+           <c:if test="${fdIsEmp=='0'}">
+           <input type="hidden" id="fdId" name="fdId" value="${fdId}"/>
         	<p class="reg_form-intro">请确认您要修改的新密码。</p>
         	<div class="control-group" style="height: 40px;">
         		<label for="user" class="control-label">临时账号</label>
@@ -132,50 +132,49 @@ function checkSubmit(){
              <div class="control-group" style="height: 40px;">
         		<label for="oldPwd" class="control-label">原密码 <span class="text-error">*</span></label>
         		<div class="controls">
-        		   <c:if test="${fdIsEmp != '0'}">
-        		     <input id="oldPwd" type="password" class="span4" value="" disabled="disabled" readonly/>
-        		   </c:if>
-        		   <c:if test="${fdIsEmp == '0'}">
                 	<input id="oldPwd" type="password" onclick="clearCss(this);" onblur="checkOldPwd();"class="span4" value="" placeholder="请填写您的原密码" />
-                   </c:if>
                     <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写原密码</span>
                 </div>
         	</div>
             <div class="control-group" style="height: 40px;">
         		<label for="newPwd" class="control-label">新密码<span class="text-error">*</span></label>
         		<div class="controls">
-        		   <c:if test="${fdIsEmp != '0'}">
-        		     <input id="newPwd" type="password" name="fdPassword"   class="span4"  disabled="disabled" readonly>
-        		   </c:if>
-        		   <c:if test="${fdIsEmp == '0'}">
                 	 <input id="newPwd" type="password" name="fdPassword"  onclick="clearCss(this);" onblur="checkNewPwd();"  class="span4" placeholder="请填写您的新密码">
-                    </c:if>
                     <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写新密码</span>
                 </div>
         	</div>     
             <div class="control-group" style="height: 40px;">
         		<label for="confirmPwd" class="control-label">确认密码<span class="text-error">*</span></label>
         		<div class="controls">
-        		<c:if test="${fdIsEmp != '0'}">
-        		<input id="confirmPwd" type="password" class="span4"  value=""  disabled="disabled" readonly>         
-        		</c:if>
-        		<c:if test="${fdIsEmp == '0'}">
                   <input id="confirmPwd" type="password" class="span4" onblur="confirmNewPwd();" onclick="clearCss(this);" value="" placeholder="请再次确认您的新密码 ">         
-                </c:if>
                   <span class="help-inline"><b class="icon-disc-bg warning">!</b>密码输入不一致，请重新确认</span>
                 </div>
         	</div>           
             <div class="control-group" style="height: 40px;">
             	<div class="controls">
-            	<c:if test="${fdIsEmp != '0'}">
-            	<button type="submit" disabled="disabled" id="submitForm" class="submit btn btn-primary btn-large" >确认修改</button>
-            	</c:if>
-            	<c:if test="${fdIsEmp == '0'}">
                 	<button type="submit" id="submitForm"  class="submit btn btn-primary btn-large" >确认修改</button>
-                </c:if>
                 </div>
             </div>
+             </c:if>
+        <c:if test="${fdIsEmp=='1'}">
+            <p class="reg_form-intro">请确认您要修改的新密码。</p>
+        	<div class="control-group" >
+        		<label for="user" class="control-label">集团账号</label>
+        		<div class="controls">
+                	<span class="inp-placeholder">${fdEmail}</span>
+                </div>
+        	</div>    
+            <div class="control-group">
+               <label class="control-label">修改密码<span class="text-error">*</span></label>
+            	<div class="controls">
+            	  <a href="https://adpassport.xdf.cn/changePassword.aspx">
+                	<button type="button" class="btn btn-primary btn-large" >修改密码</button>
+                 </a>
+                </div>
+            </div>
+        </c:if>
         </form>
+       
         </div>
       </div>
     

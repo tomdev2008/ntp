@@ -71,6 +71,10 @@ public class RegisterController {
 		if(personTemp != null){
 			registerService.updateOtherData(sysOrgPersonTemp,sysOrgPersonTemp.getPersonId());
 		}else {
+			SysOrgPerson person = accountService.load(sysOrgPersonTemp.getPersonId());
+			sysOrgPersonTemp.setFdIsEmp(person.getFdIsEmp());
+			sysOrgPersonTemp.setDepatId(person.getDepatId());
+			registerService.save(sysOrgPersonTemp);
 			registerService.updatePersonData(sysOrgPersonTemp,sysOrgPersonTemp.getPersonId());
 		}
 		
@@ -182,58 +186,21 @@ public class RegisterController {
 		}
 		String uid = ShiroUtils.getUser().getId();
 		SysOrgPerson person = accountService.load(uid);
-		if ("0".equals(person.getFdIsEmp())){
-			SysOrgPersonTemp sysOrgPersonTemp = registerService
-					.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-							person.getFdIdentityCard());
-			if (sysOrgPersonTemp == null) {
-		        sysOrgPersonTemp = new SysOrgPersonTemp();
-			    sysOrgPersonTemp.setDeptName(person.getDeptName());
-			    sysOrgPersonTemp.setDepatId(person.getDepatId());;
-			    sysOrgPersonTemp.setFdIcoUrl(person.getPoto());
-			    sysOrgPersonTemp.setFdSex(person.getFdSex());
-			    sysOrgPersonTemp.setFdIdentityCard(person.getFdIdentityCard());
-			    NotifyEntity notifyEntity = new NotifyEntity();
-			    notifyEntity.setFdMobileNo(person.getFdMobileNo()==null?"":person.getFdMobileNo());
-			    sysOrgPersonTemp.setNotifyEntity(notifyEntity);
-			    sysOrgPersonTemp.setPersonId(person.getFdId());
-				model.addAttribute("bean", sysOrgPersonTemp);
-			}else {
-			   sysOrgPersonTemp.setPersonId(person.getFdId());
-			   model.addAttribute("bean", sysOrgPersonTemp);
-			}
-		}else{
-			SysOrgPersonTemp sysOrgPersonTemp = new SysOrgPersonTemp();
-		    sysOrgPersonTemp.setDeptName(person.getDeptName());
-		    sysOrgPersonTemp.setDepatId(person.getDepatId());;
-		    sysOrgPersonTemp.setFdIcoUrl(person.getPoto());
-		    sysOrgPersonTemp.setFdSex(person.getFdSex());
-		    sysOrgPersonTemp.setFdIdentityCard(person.getFdIdentityCard());
-		    NotifyEntity notifyEntity = new NotifyEntity();
-		    notifyEntity.setFdMobileNo(person.getFdMobileNo()==null?"":person.getFdMobileNo());
-		    sysOrgPersonTemp.setNotifyEntity(notifyEntity);
-		    sysOrgPersonTemp.setPersonId(person.getFdId());
-		    SysOrgPersonTemp personTemp = registerService
-					.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-							person.getFdIdentityCard());
-			if (personTemp != null) {		        
-			    sysOrgPersonTemp.setFdBirthDay(personTemp.getFdBirthDay());
-			    sysOrgPersonTemp.setFdBloodType(personTemp.getFdBloodType());				
-			}		    
+		SysOrgPersonTemp sysOrgPersonTemp = registerService
+				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+						person.getFdIdentityCard());
+		model.addAttribute("person", person);
+		if (sysOrgPersonTemp != null) {	
 			model.addAttribute("bean", sysOrgPersonTemp);
-		}
+		}	
 		model.addAttribute("fdIcoUrl",person.getPoto());
-		model.addAttribute("fdIsEmp", person.getFdIsEmp());
 		if(person.getHbmParent() != null && person.getHbmParent().getHbmParentOrg()!= null){
 			   model.addAttribute("sysParOrg",person.getHbmParent().getHbmParentOrg().getFdName());
 			   model.addAttribute("sysParOrgId",person.getHbmParent().getHbmParentOrg().getFdId());
 		}
 		List<SysOrgElement> elements = sysOrgElementService.findTypeis1();
 		model.addAttribute("elements", elements);
-		if("0".equals(person.getFdIsEmp())){
-			return "/base/newTeacher/edit";
-		}
-		return "/base/newTeacher/view";
+		return "/base/newTeacher/edit";
 	}
 
 	/*

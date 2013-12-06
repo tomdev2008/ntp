@@ -213,23 +213,23 @@ function CountStrByte(){
         <div class="page-header">
         	<div class="tit-icon_bg"><i class="icon-user icon-white"></i><i class="icon-sj"></i></div>
         	<h5>个人资料</h5>
-            <a href="${ctx}/course/courseIndex" title="返回主页" class="replyMybk"><i class="icon-home icon-white"></i></a>
+            <a href="${ctx}/course/courseIndex" title="个人主页" class="replyMybk"><i class="icon-home icon-white"></i></a>
         </div> 
        <div class="page-body"> 
           <form method="post" id="inputForm" onsubmit="return checkSubmit();" action="${ctx}/register/updateOtherData" class="reg_form form-horizontal">
           <input type="hidden" name="fdId" value="${bean.fdId}"/>
-          <input type="hidden" name="personId" value="${bean.personId}"/>
-          <input type="hidden" id="depName" name="deptName" value="${bean.deptName}" />
-          <input type="hidden" id="depId" name="depatId" value="${bean.depatId}" />
+          <input type="hidden" name="personId" value="${person.fdId}"/>
+          <input type="hidden" id="depName" name="deptName" value="${person.deptName}" />
+          <input type="hidden" id="depId" name="depatId" value="${person.depatId}" />
           <input type="hidden" id="sysParOrgId" value="${sysParOrgId}" />
         	<p class="reg_form-intro">以下信息将显示在您的
-        	<a href="${ctx}/trainee/welcome">备课主页</a>
+        	<a href="${ctx}/course/courseIndex">个人主页</a>
         	上，方便大家了解您。</p>
         	<div class="control-group" style="height: 70px;">
         		<label for="face" class="control-label">头像</label>
         		<div class="controls">
                 	<a class="face pull-left">                	
-                     <tags:image href="${bean.fdIcoUrl}" clas="media-object img-face" />
+                     <tags:image href="${fdIcoUrl}" clas="media-object img-face" />
                         <h6 align="left" >
                         </h6>
                      </a>
@@ -239,24 +239,39 @@ function CountStrByte(){
              <div class="control-group">
         		<label for="name" class="control-label">姓名<span class="text-error">*</span></label>
         		<div class="controls">
-                	<input id="inputrealname" type="text" class="span4"
-                	  name="notifyEntity.realName"  value="${bean.notifyEntity.realName}" 
+        		<input type="hidden"  name="notifyEntity.fdEmail" value="${person.notifyEntity.fdEmail}" >
+        		 <j:if test="${person.fdIsEmp=='1'}">
+        		  <input id="inputrealname" type="text" class="span4"
+                	  name="notifyEntity.realName"  value="${person.notifyEntity.realName}" readOnly>
+        		</j:if>
+        	   <j:if test="${person.fdIsEmp=='0'}">
+        		  <input id="inputrealname" type="text" class="span4"
+                	  name="notifyEntity.realName"  value="${person.notifyEntity.realName}" 
                 	  onblur="checkName();" onclick="clearCss(this);" placeholder="请填写您的真实姓名">
                    <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写真实姓名</span>
+        		</j:if>
+                	
                </div>
         	</div>
             <div class="control-group">
         		<label for="ID" class="control-label">证件号码<span class="text-error">*</span></label>
         		<div class="controls">
                 	<input type="text" id="fdIdentityCard" name="fdIdentityCard"class="span4" 
-                	value="${bean.fdIdentityCard}" readOnly>
+                	value="${person.fdIdentityCard}" readOnly>
                 </div>
         	</div>
              <div class="control-group">
         		<label for="org" class="control-label">机构/部门<span class="text-error">*</span></label>
         		<div class="controls">
-                <%-- 	<input id="org" type="text" class="span2" value="${sysParOrg}" >
-                    <input id="department" type="text" class="span2" value="${bean.deptName}" > --%>
+        		 <j:if test="${person.fdIsEmp=='1'}">
+        		    <select name="org" disabled="disabled">
+                      <option value="">${sysParOrg}</option>
+                	</select>
+                    <select  disabled="disabled">
+                	    <option value='${person.deptName}'>${person.deptName}</option>
+                	</select> 
+                 </j:if>
+        		 <j:if test="${person.fdIsEmp=='0'}">
                     <select name="org" id="org" onchange="changedepart(this)">
                       <option value="0">请输入您的机构</option>
                        <c:forEach items="${elements }" var="e">
@@ -264,16 +279,16 @@ function CountStrByte(){
 					   </c:forEach>
                 	</select>
                     <select name="department" id="department" onchange="checkdepart()">
-                	
                 	</select>  
                      <span class="help-inline"><b class="icon-disc-bg warning">!</b>请认真选择机构/部门</span>
+                 </j:if>
                 </div>
         	</div>
             <div class="control-group">
         		<label for="tel" class="control-label">电话<span class="text-error">*</span></label>
         		<div class="controls">
                 	<input id="tel" type="text" class="span4" 
-                	  name="notifyEntity.fdMobileNo" value="${bean.notifyEntity.fdMobileNo}" 
+                	  name="notifyEntity.fdMobileNo" value="${person.notifyEntity.fdMobileNo}" 
                 	  onblur="checkTel();" onclick="clearCss(this);" placeholder="请填写您的常用联系方式，如手机/座机等 ">
                     <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写通讯方式</span>
                 </div>
@@ -289,7 +304,7 @@ function CountStrByte(){
         		<label for="birthday" class="control-label">出生日期</label>
         		<div class="controls">
         		 <div class="input-append date" id="dpYear" data-date="1990/01/10" data-date-format="yyyy/mm/dd" >
-					  <input id="birthday" type="text" name="fdBirthDay" value="${bean.fdBirthDay}" class="span4" placeholder="请输入您的出生日期 " readonly>
+					  <input id="birthday" type="text" name="fdBirthDay" value="${bean.fdBirthDay}" class="span4" placeholder="请输入您的出生日期 ">
 					  <span class="add-on"><i class="icon-th"></i></span>
 				 </div>
                 </div>
