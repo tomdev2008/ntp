@@ -1,3 +1,4 @@
+<%@page import="cn.me.xdf.model.base.AttMain"%>
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
@@ -169,7 +170,10 @@
                     
                     <section class="section mt20">
                         <div class="media-placeholder">
-                           		 
+                           		 <%
+                           		 AttMain attMain = (AttMain)request.getAttribute("main");
+                           		 System.out.println(attMain.getFileUrl());
+                           		 %>
 								<j:ifelse test="${main.flag==1}">
 									<j:if test="${main.fdFileType=='01'}">
 											<script type="text/javascript" 
