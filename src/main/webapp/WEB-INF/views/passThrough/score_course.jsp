@@ -35,6 +35,8 @@
 $.Placeholder.init();
 //初始化评论按钮
 $("#addMessage").bind("click",function(){
+	var mess = $("#courseMessage").val();
+	$("#courseMessage").val("");
 	$.ajax({
 		  url: "${ctx}/ajax/message/addCourseMessage",
 		  async:false,
@@ -42,7 +44,7 @@ $("#addMessage").bind("click",function(){
 		  dataType : 'json',
 		  data:{
 			  courseId:"${param.courseId}",
-			  fdContent:$("#courseMessage").val(),
+			  fdContent:mess,
 		  },
 		  success: function(result){
 			  //$.fn.jalert2("评论发布成功");
