@@ -480,7 +480,7 @@
         <li class="media" data-fdid="{{=item.fdId}}">
 			<a href="${ctx}/course/courseIndex?userId={{=item.userId}}" class="pull-left">
 				{{?item.isAnonymous}}
-				<img class="media-object" src="/JensProject/resources/images/face-placeholder.png" />
+				<img class="media-object" src="${ctx}/resources/images/face-placeholder.png" />
 				{{??}}
 				<img class="media-object" src="{{?item.fdUserURL.indexOf('http')>-1}}{{=item.fdUserURL}}{{??}}${ctx}/{{=item.fdUserURL}}{{?}}" />
 				{{?}}
@@ -628,7 +628,7 @@
 </head>
 
 <body>
-
+<input type="hidden" value="ldfklgsjkdfj">
 <section class="container pr">
     <section class="clearfix" >
         <section class="col-left" id="sideBar">
@@ -747,10 +747,14 @@
                 	 window.location.href = "${ctx}/common/file/downloadImg?bamId="+bamId;
                  });
         		 $("#firstC").click(function (e){
-                  	window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.firstCId+"&fdMtype="+pageData.firstCType;
+        		    loadRightCont(pageData.firstCId,pageData.firstCType);
+        		    loadLeftData(bamId);
+                  	//window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.firstCId+"&fdMtype="+pageData.firstCType;
                  }); 
         		 $("#lastC").click(function (e){
-                   	window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.listCId+"&fdMtype="+pageData.listCType;
+        			loadRightCont(pageData.firstCId,pageData.firstCType);
+        			loadLeftData(bamId);
+                   	//window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.listCId+"&fdMtype="+pageData.listCType;
                  }); 
         	 }
         }
@@ -1332,8 +1336,13 @@
                 $(this).attr("disabled", true);
                 $.ajax({
           			type: "post",
-          			url: "${ctx}/passThrough/submitExamOrTask?bamId="+bamId+"&courseId="+courseId+"&catalogId="+catalogId+"&fdMtype="+fdMtype+"&fdid="+$mediaToolbar.attr("data-fdid"),
+          			url: "${ctx}/passThrough/submitExamOrTask",
           			data : {
+          				"bamId":bamId,
+          				"courseId":courseId,
+          				"catalogId":catalogId,
+          				"fdMtype":fdMtype,
+          				"fdid":$mediaToolbar.attr("data-fdid"),
           				"materialId":$mediaToolbar.attr("data-fdid"),
           			},
           			success:function(data){
