@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import jodd.io.FileNameUtil;
+
 import cn.me.xdf.service.plugin.AttMainPlugin;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cache;
@@ -161,8 +163,8 @@ public class AttMain extends IdEntity {
                     && StringUtils.isBlank(fileUrl)) {
                 // 文档、幻灯片
                 if ("04".equals(fdFileType) || "05".equals(fdFileType)) {
-                    fileUrl = AttMainPlugin.getSwfPath(this,
-                            DocInterfaceModel.getSwfPath);
+                	String fName = FileNameUtil.getName(fdFilePath);
+                    fileUrl = "http://me.xdf.cn/iportal/sys/attachment/sys_att_swf/viewer.do;jsessionid=ubFBr_W9GMSBzUvrtu3cqdX?method=viewerOtp&fdId="+fileNetId+"&seq=0&type=otp&fileName="+fName+"";
                 } else if ("01".equals(fdFileType)) {// 视频
                     String playCode = AttMainPlugin.getSwfPath(this,
                             DocInterfaceModel.getPlayCode);
