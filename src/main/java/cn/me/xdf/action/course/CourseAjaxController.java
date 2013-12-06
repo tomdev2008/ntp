@@ -957,12 +957,12 @@ public class CourseAjaxController {
 		Finder finder1 = Finder.create("select count(*) from BamCourse b where b.preTeachId = :preTeachId and b.through=:through");
 		finder1.setParam("preTeachId", userId);
 		finder1.setParam("through", true);
-		long finishSum = bamCourseService.findUnique(finder1);
+		Long finishSum = bamCourseService.findUnique(finder1);
 		returnMap.put("finishSum", finishSum);
 		Finder finder2 = Finder.create("select count(*) from BamCourse b where b.preTeachId = :preTeachId and b.through=:through");
 		finder2.setParam("preTeachId", userId);
 		finder2.setParam("through", false);
-		long unfinishSum =bamCourseService.findUnique(finder2);
+		Long unfinishSum =bamCourseService.findUnique(finder2);
 		returnMap.put("unfinishSum",unfinishSum);
 		return JsonUtils.writeObjectToJson(returnMap);
 	}

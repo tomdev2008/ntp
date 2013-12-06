@@ -9,6 +9,7 @@
             classpath:spring/root-context.xml,
             classpath:spring/applicationContext-shiro.xml,
             classpath:spring/applicationContext-service.xml,
+            classpath:spring/applicationContext-quartz.xml,
             <!-- classpath:spring/applicationContext-sso.xml,-->
             <!--
             classpath:spring/applicationContext-notify.xml,
