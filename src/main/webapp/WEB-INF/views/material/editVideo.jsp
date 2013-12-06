@@ -169,7 +169,19 @@
                     
                     <section class="section mt20">
                         <div class="media-placeholder">
-                           		 格式转换中 ... ...
+                           		 
+								<j:ifelse test="${main.flag==1}">
+									<j:if test="${main.fdFileType=='01'}">
+											<script type="text/javascript" 
+											src="${main.fileUrl}&width=614&height=396"></script>
+									</j:if>
+									<j:if test="${main.fdFileType=='04'||main.fdFileType=='05'}">
+											<iframe width="100%" height="437" id="iframe_ppt" src="${main.fileUrl}" frameBorder="0" scrolling="no"></iframe>
+									</j:if>
+									<j:else>
+									正在转化中......
+									</j:else>
+								</j:ifelse>
                         </div>
                     </section>
                     <section class="section">
@@ -309,7 +321,7 @@ $(function(){
     	$("#videoText").html("");
     	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的视频将会显示在下面的文档列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
-    	uptype='*.doc;*.xls;';
+    	uptype='*.doc;*.docx;*.xls;*.xlsx;';
         break;
     case "05":
     	$("#materialIntro").html("幻灯片简介");
