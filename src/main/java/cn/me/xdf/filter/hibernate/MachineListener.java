@@ -39,7 +39,7 @@ public class MachineListener
 
     @Override
     public void onPostUpdate(PostUpdateEvent event) {
-        if (ShiroUtils.getUser() == null)
+        if (ShiroUtils.getSubject() == null)
             return;
         try {
             if (event.getEntity() instanceof IdEntity
@@ -82,7 +82,7 @@ public class MachineListener
 
     @Override
     public void onPostDelete(PostDeleteEvent event) {
-        if (ShiroUtils.getUser() == null)
+        if (ShiroUtils.getSubject() == null)
             return;
         try {
             if (event.getEntity() instanceof IdEntity
@@ -122,7 +122,7 @@ public class MachineListener
 
     @Override
     public void onPostInsert(PostInsertEvent event) {
-        if (ShiroUtils.getUser() == null)
+        if (ShiroUtils.getSubject() == null)
             return;
         try {
             if (event.getEntity() instanceof IdEntity
