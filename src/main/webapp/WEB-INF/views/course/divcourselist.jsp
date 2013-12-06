@@ -129,7 +129,14 @@
 					  	</c:if>
 					  </c:forEach>
 					  </span> 
-					  <b class="text-warning">${bean.FDAVERAGE}</b>
+					  <b class="text-warning">
+					  <c:if test="${bean.FDAVERAGE*10%10==0}">
+					  ${bean.FDAVERAGE}.0
+					  </c:if>
+					  <c:if test="${bean.FDAVERAGE*10%10!=0}">
+					  ${bean.FDAVERAGE}
+					  </c:if>
+					  </b>
 					  </c:if>
 					  <c:if test="${bean.FDAVERAGE==null}">
 					  <span class="rating-all">
@@ -137,7 +144,7 @@
 					   <i class="icon-star"></i>
 					  </c:forEach>
 					  </span> 
-					  <b class="text-warning">0</b>
+					  <b class="text-warning">0.0</b>
 					  </c:if>
 					  </span> <span class="date"><i class="icon-time"></i><fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
 				</a></li>
