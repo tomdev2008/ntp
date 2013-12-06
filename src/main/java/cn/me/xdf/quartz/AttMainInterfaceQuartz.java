@@ -28,6 +28,7 @@ public class AttMainInterfaceQuartz implements Serializable {
             return;
         for (AttMain attMain : attMainList) {
             attMain.setFileUrl(attMain.getFileUrl());
+            attMainService.update(attMain);
         }
     }
 }
