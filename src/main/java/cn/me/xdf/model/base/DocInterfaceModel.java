@@ -24,8 +24,9 @@ import java.util.Date;
  */
 public class DocInterfaceModel {
 
-    public static final String url = "http://192.168.25.225:9080/ixdf/doc/docServlet";
-
+//    public static final String url = "http://192.168.25.225:9080/ixdf/doc/docServlet";//testurl
+    public static final String url = "http://me.xdf.cn/iportal/doc/docServlet";
+    
     public static final String addDoc = "addDoc";
     public static final String getSwfPath = "getSwfPath";
     public static final String getPlayCode = "getPlayCode";
@@ -36,7 +37,7 @@ public class DocInterfaceModel {
     private static final String passWord = "filenet20_";
     private static final String appId = "0";
     private static final String appKey = "1";
-    private static final String sysCode = "NTS";
+    private static final String sysCode = "NTP";
     private static final String isConvert = "1";
 
 

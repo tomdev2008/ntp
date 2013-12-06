@@ -33,7 +33,7 @@ public class AttMainAspect {
      * @param result
      * @return
      */
-    //@AfterReturning(value = "execution(* cn.me.xdf.service.base.AttMainService.save(..))", returning = "result")
+    @AfterReturning(value = "execution(* cn.me.xdf.service.base.AttMainService.save(..))", returning = "result")
     public Object afterSaveAttMain(JoinPoint joinPoint, Object result) {
         log.info("开始启动资源过滤------------afterSaveAttMain----------");
         if (result == null) {
