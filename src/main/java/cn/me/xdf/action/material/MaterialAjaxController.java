@@ -449,4 +449,29 @@ public class MaterialAjaxController {
 		map.put("url", person.getPoto());
 		return JsonUtils.writeObjectToJson(map);
 	}
+	
+	/**
+	 * 获得资源状态（是否转换成功）
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "getMaterialStu")
+	@ResponseBody
+	public String getMaterialStu(HttpServletRequest request) {
+		// 获取课程ID
+		String MaterialId = request.getParameter("materialId");
+		MaterialInfo info = materialService.get(MaterialId);
+		List<AttMain> attMains = info.getAttMains();
+		if(attMains==null||attMains.size()==0){
+			return JsonUtils.writeObjectToJson("ok");
+		}else{
+			if(attMains.get(0).getFlag()==null||attMains.get(0).getFlag()==0){
+				return JsonUtils.writeObjectToJson("noOk");
+			}else{
+				return JsonUtils.writeObjectToJson("ok");
+			}
+		}
+		
+	}
 }
