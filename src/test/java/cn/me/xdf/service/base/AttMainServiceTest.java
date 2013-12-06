@@ -1,6 +1,7 @@
 package cn.me.xdf.service.base;
 
 import cn.me.xdf.BaseTest;
+import cn.me.xdf.model.base.DocInterfaceModel;
 import cn.me.xdf.service.plugin.AttMainPlugin;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,11 @@ public class AttMainServiceTest extends BaseTest {
 
     @Test
     public void testAddAttMain() {
-        //attMainService.save(null);
-        System.out.println(AttMainPlugin.getSwfPath(attMainService.get("1429d050d954ab9842240c146a2a8189")));
+      attMainService.save(null);
+       // System.out.println(AttMainPlugin.getSwfPath(attMainService.get("142bbbca857f4b136ef702041b59781a"),DocInterfaceModel.getPlayCode));
+    	
+    //System.out.println(attMainService.get("142bbbca857f4b136ef702041b59781a").getFileUrl());
+    	
+    	//System.out.println(attMainService.get("142bce9c6e47bc8a2ead7054ef49a26c").getFileUrl());
     }
 }
