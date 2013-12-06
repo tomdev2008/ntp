@@ -72,6 +72,7 @@ public class MaterialController {
 			}
 		    AttMain main = attMainService.getByModelId(fdId);
 		    if(main!=null){
+		    	String url = main.getFileUrl();
 		    	model.addAttribute("main", main);
 		    }
 		    String creatorId = materialInfo.getCreator().getFdId();

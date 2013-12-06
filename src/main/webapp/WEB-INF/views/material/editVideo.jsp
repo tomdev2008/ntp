@@ -170,13 +170,9 @@
                     
                     <section class="section mt20">
                         
-                           		<%--  <%
-                           		 AttMain attMain = (AttMain)request.getAttribute("main");
-                           		 System.out.println(attMain.getFileUrl());
-                           		 %> --%>
 								<j:ifelse test="${main.flag==1}">
 									<j:if test="${main.fdFileType=='01'}">
-											<script type="text/javascript" 
+										<script type="text/javascript" 
 											src="${main.fileUrl}&width=750&height=510"></script>
 									</j:if>
 									<j:if test="${main.fdFileType=='04'||main.fdFileType=='05'}">

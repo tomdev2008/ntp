@@ -1,12 +1,15 @@
 package cn.me.xdf.model.base;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import jodd.io.FileNameUtil;
 
@@ -178,6 +181,27 @@ public class AttMain extends IdEntity {
             fileUrl = null;
         }
         return fileUrl;
+    }
+    
+    
+    @Basic(fetch = FetchType.LAZY)
+    @Transient
+    public Map<String, String> getCode() {
+    	Map<String, String> map = new HashMap<String, String>();
+	    // 文档、幻灯片
+	    if ("04".equals(fdFileType) || "05".equals(fdFileType)) {
+	    	map.put("type", "doc");
+	    	String fName = FileNameUtil.getName(fdFilePath);
+	    	map.put("fileNetId", fileNetId);
+	    	map.put("fName", fName);
+	    } else if ("01".equals(fdFileType)) {// 视频
+	    	map.put("type", "video");
+	    	String playCode = AttMainPlugin.getSwfPath(this, DocInterfaceModel.getPlayCode);
+	    	map.put("playCode", playCode);
+	    }else{
+	    	map.put("type", "none");
+	    }
+        return map;
     }
 
     public void setFileUrl(String fileUrl) {
