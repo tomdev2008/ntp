@@ -309,6 +309,9 @@ $.ajax({
 			$("button[name='doButton']").each(function(){
 				if($(this).hasClass("btn-primary")){
 					$(this).bind("click",function(){
+						var fdid = $(this).attr("data-fdid");
+						
+						var fdMtype = $(this).attr("data-fdMtype");
 						$("#catalogId").val(fdid);
 						$("#fdMtype").val(fdMtype);
 						$("#studyBeginForm").trigger("submit");
@@ -345,6 +348,7 @@ $("#verifyPwd").bind("click",function(){
 		    			$(this).addClass("btn-primary");
 		    			$(this).bind("click",function(){
 							var fdid = $(this).attr("data-fdid");
+							
 							var fdMtype = $(this).attr("data-fdMtype");
 							$("#catalogId").val(fdid);
 							$("#fdMtype").val(fdMtype);
