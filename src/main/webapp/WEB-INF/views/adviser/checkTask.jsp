@@ -153,10 +153,10 @@
 							     </a>
 							     <a onclick="getDataOrderBy('1','user');">
 							      <c:if test="${param.order=='user'}">
-							        <button class="btn btn-large active" type="button">新教师</button>
+							        <button class="btn btn-large active" type="button">教师</button>
 							      </c:if>
 							      <c:if test="${param.order!='user'}">
-							        <button class="btn btn-large" type="button">新教师</button>
+							        <button class="btn btn-large" type="button">教师</button>
 							      </c:if>
 							     </a>
                                 </div>
