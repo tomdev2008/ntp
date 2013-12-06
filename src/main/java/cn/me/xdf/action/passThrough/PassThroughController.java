@@ -17,9 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.hibernate4.Value;
-import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
-import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.common.utils.ComUtils;
 import cn.me.xdf.common.utils.array.ArrayUtils;
 import cn.me.xdf.common.utils.array.SortType;
@@ -27,15 +25,12 @@ import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
-import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
-import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseCatalogService;
-import cn.me.xdf.service.course.CourseCategoryService;
 import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
@@ -121,11 +116,11 @@ public class PassThroughController {
 				
 			}else{
 				//否则需要跳转到发现课程
-				
+				return "redirect:/course/courseIndex";
 			}
 		}else{
 			//否则需要跳转到发现课程
-			
+			return "redirect:/course/courseIndex";
 		}
 		return "/passThrough/course_home";
 	}
@@ -139,7 +134,22 @@ public class PassThroughController {
 		String courseId = request.getParameter("courseId");
 		String catalogId = request.getParameter("catalogId");
 		String fdMtype = request.getParameter("fdMtype");
+		String fdPassword = request.getParameter("fdPassword");
 		CourseInfo course = courseService.get(courseId);
+		if(!course.getIsPublish()){
+			if(course.getFdPassword()!=null){//密码课
+				if(StringUtil.isBlank(fdPassword)||
+						(StringUtil.isNotBlank(fdPassword)&&!fdPassword.equals(course.getFdPassword()))){
+					return "redirect:/passThrough/getCourseHome/"+courseId;
+				}
+			}else{//授权课
+				boolean canStudy= courseParticipateAuthService
+						.findCouseParticipateAuthById(courseId,ShiroUtils.getUser().getId());
+				if(canStudy){//无权
+					return "redirect:/passThrough/getCourseHome/"+courseId;
+				}
+			}
+		}
 		BamCourse bamCourse = bamCourseService.
 				getCourseByUserIdAndCourseId(ShiroUtils.getUser().getId(),courseId);
 		if(bamCourse==null){
@@ -208,7 +218,7 @@ public class PassThroughController {
 		String catalogId = request.getParameter("catalogId");
 		String courseId =request.getParameter("courseId");
 		bamMaterialService.saveSourceNode(fdMtype, request);
-		return  "redirect:/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+catalogId+"&fdMtype="+fdMtype;
+		return  "forward:/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+catalogId+"&fdMtype="+fdMtype;
 	}
 	
 }

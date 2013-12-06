@@ -74,14 +74,19 @@
                </c:if>
                 <!--加密类型时 end-->
                 <div class="media-foot">
-                    <a href="${ctx}/passThrough/getStudyContent?courseId=${course.fdId}" class="btn btn-warning" id="studyBegin">
-                        <i class="icon-book icon-white"></i>开始学习
-                    </a>
+                <form id="studyBeginForm" method="post" action="${ctx}/passThrough/getStudyContent"> 
+                <input type="hidden" name="courseId" value="${course.fdId}">
+                <input type="hidden" name="fdPassword" id="fdPassword">
+                <input type="hidden" name="catalogId" id="catalogId">
+                <input type="hidden" name="fdMtype" id="fdMtype">
+                </form>
+                <a id="studyBegin" class="btn btn-warning">
+                   <i class="icon-book icon-white"></i>开始学习
+                </a>
                     <span class="text-warning">${studayTotalNo}</span>位老师在学习
                     <a href="${ctx}/course/courseIndex" title="课程列表" data-toggle="tooltip" class="btn-next icon-disc-lg-bg"><i class="icon-mylist"></i></a>
                     <a href="#" title="课程跟踪" data-toggle="tooltip" class="btn-home icon-disc-lg-bg"><i class="icon-tracking"></i></a>
                 </div>
-                
         	</div>
             </div>
         </div>
@@ -290,6 +295,7 @@ $.ajax({
 	type: "post",
 	url: "${ctx}/ajax/passThrough/checkCoursePwd/"+courseId,
 	cache :false,
+	async: false,
 	dataType : 'json',
 	success:function(data){
 		var flag = data.flag;
@@ -297,25 +303,27 @@ $.ajax({
 			$("button[name='doButton']").each(function(){
 				$(this).removeClass("btn-primary");
 			});
-			$("#studyBegin").attr("disabled",true);
-			$("#studyBegin").removeAttr("href");
+			$("#studyBegin").unbind("click");
+		    $("#studyBegin").attr("disabled",true);
 		}else{
 			$("button[name='doButton']").each(function(){
 				if($(this).hasClass("btn-primary")){
 					$(this).bind("click",function(){
-						var fdid = $(this).attr("data-fdid");
-						var fdMtype = $(this).attr("data-fdMtype");
-					   	window.location.href = "${ctx}/passThrough/getStudyContent?catalogId="+fdid+"&fdMtype="+fdMtype+"&courseId="+courseId;
-					});
+						$("#catalogId").val(fdid);
+						$("#fdMtype").val(fdMtype);
+						$("#studyBeginForm").trigger("submit");
+					 });
 				}
 			});
 		} 
 	}
 }); 
+
 $("#verifyPwd").bind("click",function(){
 	var inputPassword = $("#password").val();
 	$.ajax({
 		type: "post",
+		async: false,
 		url: "${ctx}/ajax/passThrough/verifyPwd",
 		cache :false,
 		data:{
@@ -330,6 +338,7 @@ $("#verifyPwd").bind("click",function(){
 					$("#verifyPwd").after('<span class="error">输入密码错误！</span>');	
 				}
 			}else{
+				$("#fdPassword").val(inputPassword);
 				$("#formPassword").children().remove();
 		    	$("button[name='doButton']").each(function(){
 		    		if($(this).attr("data-show")=="true"){
@@ -337,16 +346,21 @@ $("#verifyPwd").bind("click",function(){
 		    			$(this).bind("click",function(){
 							var fdid = $(this).attr("data-fdid");
 							var fdMtype = $(this).attr("data-fdMtype");
-						   	window.location.href = "${ctx}/passThrough/getStudyContent?catalogId="+fdid+"&fdMtype="+fdMtype+"&courseId="+courseId;
+							$("#catalogId").val(fdid);
+							$("#fdMtype").val(fdMtype);
+							$("#studyBeginForm").trigger("submit");
 						});
 		    		}
 		    	});
 		    	$("#studyBegin").attr("disabled",false);
-		    	$("#studyBegin").attr("href","${ctx}/passThrough/getStudyContent?courseId=${course.fdId}");
+		    	$("#studyBegin").bind("click");
 			}
 		}
 	}); 
 	
+});
+$("#studyBegin").bind("click",function(){
+	$("#studyBeginForm").trigger("submit");
 });
 </script>
 </body>

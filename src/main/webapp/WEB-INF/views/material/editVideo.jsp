@@ -247,7 +247,7 @@
 	</section>
 </section>
 <input type="hidden" id="fdType" value="${param.fdType}">
-<input type="hidden" id="fdattId" value="${attId}">
+<input type="hidden" id="fdattId" value="${main.fdId}">
 <script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
