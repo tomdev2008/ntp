@@ -211,8 +211,10 @@
 					<div class="btn-group">
 						<button class="btn btn-large btn-primary" id="saveExamPaper"
 							type="button">保存</button>
-						<button class="btn btn-white btn-large " id="delExamPaper"
-							type="button">删除</button>
+					<c:if test="${param.fdId!=null}">
+					    <button class="btn btn-large btn-primary" id="exportExamPaper" type="button">导出</button>
+						<button class="btn btn-white btn-large " id="delExamPaper" type="button">删除</button>
+					</c:if>
 					</div>
 				</div>
 				<div class="page-body editingBody">
@@ -358,7 +360,12 @@
 	<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
 	<script src="${ctx}/resources/js/jquery.jalert.js"
 		type="text/javascript"></script>
+<script type="text/javascript">
+$("#exportExamPaper").click(function(e){
+	window.location.href="${ctx}/common/exp/getExpExamPaper/${param.fdId}";
+});
 
+</script>
 
 
 	<script type="text/javascript">

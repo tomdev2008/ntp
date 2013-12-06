@@ -24,6 +24,9 @@ import cn.me.xdf.common.utils.array.ArrayUtils;
 import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.common.utils.excel.AbsExportExcel;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.Constant;
+import cn.me.xdf.model.material.ExamOpinion;
+import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.material.Task;
@@ -36,8 +39,12 @@ import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.service.studyTack.StudyTrackService;
 import cn.me.xdf.utils.ShiroUtils;
 import cn.me.xdf.view.model.VCheckTaskData;
+import cn.me.xdf.view.model.VExamOpinion;
+import cn.me.xdf.view.model.VExamPaperData;
+import cn.me.xdf.view.model.VExamQuestion;
 import cn.me.xdf.view.model.VMaterialData;
 import cn.me.xdf.view.model.VStudyTrack;
+import cn.me.xdf.view.model.VTask;
 import cn.me.xdf.view.model.VTaskPaperAuth;
 import cn.me.xdf.view.model.VTaskPaperData;
 
@@ -76,6 +83,80 @@ public class ExpController {
     private MaterialService materialService;
     
     public SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
+    
+    @RequestMapping(value = "/getExpExamPaper/{id}")
+    public String getExpExamPaper(@PathVariable("id") String id,
+    		HttpServletRequest request,HttpServletResponse response){
+    	MaterialInfo info = materialService.get(id);
+    	List<VExamPaperData> examPaperList = new ArrayList<VExamPaperData>();	
+    	VExamPaperData data = new VExamPaperData();
+    	data.setFdAuthor(info.getFdAuthor());//作者
+    	data.setFdAuthorDescription(info.getFdAuthorDescription());//作者简介
+    	data.setFdStudyTime(info.getFdStudyTime());//建议学习时间
+    	data.setFdName(info.getFdName());//作业包名
+    	data.setFdDescription(info.getFdDescription()==null?"":info.getFdDescription());//作业包简介
+    	data.setFdCreateTime(sdf.format(info.getFdCreateTime()));//创建时间
+    	data.setCreatorName(info.getCreator().getRealName());//创建者
+    	List<VExamQuestion> vExamList = new ArrayList<VExamQuestion>();
+    	List<ExamQuestion> examList = info.getQuestions();
+    	ArrayUtils.sortListByProperty(examList, "fdOrder", SortType.HIGHT); 
+    	Integer totalScore = 0;
+    	for (ExamQuestion examQuestion : examList) {
+    		VExamQuestion question = new VExamQuestion();
+    		question.setFdStandardScore(examQuestion.getFdStandardScore().intValue());//标准分
+    		totalScore += examQuestion.getFdStandardScore().intValue();//总分
+    		question.setFdSubject(examQuestion.getFdSubject());//简介
+    		question.setFdOrder(examQuestion.getFdOrder()+1);
+    		Integer fdType = examQuestion.getFdType();
+    		if(fdType.equals(Constant.EXAM_QUESTION_SINGLE_SELECTION)){
+    			question.setFdType("单选题");
+    			question.setFdQuestion("");
+    		}else if(fdType.equals(Constant.EXAM_QUESTION_MULTIPLE_SELECTION)){
+    			question.setFdType("多选题");
+    			question.setFdQuestion("");
+    		}else if(fdType.equals(Constant.EXAM_QUESTION_CLOZE)){
+    			question.setFdType("填空题");
+    			question.setFdQuestion(examQuestion.getFdQuestion());
+    		}
+    		List<VExamOpinion> vOpinionList = new ArrayList<VExamOpinion>();
+			List<ExamOpinion> opinion = examQuestion.getOpinions();
+    		ArrayUtils.sortListByProperty(opinion, "fdOrder", SortType.HIGHT); 
+    		for (ExamOpinion examOpinion : opinion) {
+    			VExamOpinion vOpinion = new VExamOpinion();
+    			vOpinion.setIsAnswer(examOpinion.getIsAnswer()==true?"是":"否");
+    			vOpinion.setOpinion(examOpinion.getOpinion());
+    			vOpinionList.add(vOpinion);
+			}
+    		question.setOpinions(vOpinionList);	
+    		vExamList.add(question);
+		}
+    	data.setQuestions(vExamList);//设置试题
+    	data.setTotalScore(totalScore);//总分
+    	data.setTotalExam(examList.size());//题数
+    	data.setPassScore(info.getFdScore().intValue());//及格分
+    	List<VTaskPaperAuth> taskPaperAuthList = new ArrayList<VTaskPaperAuth>();
+    	List<MaterialAuth> authList = info.getAuthList();//权限列表
+    	data.setAuthCategory(info.getIsPublish()==true?"公开":"加密");//权限
+    	for (MaterialAuth materialAuth : authList) {
+    		VTaskPaperAuth auth = new VTaskPaperAuth();
+    		auth.setFdName(materialAuth.getFdUser().getRealName());
+    		auth.setDept(materialAuth.getFdUser().getDeptName());
+    		auth.setIsEditer(materialAuth.getIsEditer()==true?"是":"否");
+    		auth.setIsReader(materialAuth.getIsReader()==true?"是":"否");
+    		taskPaperAuthList.add(auth);
+		}
+    	if(taskPaperAuthList!=null&&!taskPaperAuthList.isEmpty()){
+    		data.setTaskPaperAuth(taskPaperAuthList);
+    	}
+    	examPaperList.add(data);
+    	if(info.getIsPublish()){
+    		exportExcel(examPaperList, "examPaperDetail.xls", response);
+    	}else{
+    		exportExcel(examPaperList, "examPaperEncrypt.xls", response);
+    	}
+    	
+    	return null;
+    }
     /**
      * 导出单个作业包信息
      * @param request
@@ -95,9 +176,23 @@ public class ExpController {
     	data.setTaskPaperDescription(info.getFdDescription()==null?"":info.getFdDescription());//作业包简介
     	data.setFdCreateTime(sdf.format(info.getFdCreateTime()));//创建时间
     	data.setCreatorName(info.getCreator().getRealName());//创建者
+    	List<VTask> vtaskList = new ArrayList<VTask>();
     	List<Task> taskList = info.getTasks();
     	ArrayUtils.sortListByProperty(taskList, "fdOrder", SortType.HIGHT); 
-    	data.setTasks(taskList);//作业list
+    	for (Task task : taskList) {
+			VTask vtask = new VTask();
+			vtask.setFdName(task.getFdName());
+			vtask.setFdOrder(task.getFdOrder()+1);
+			vtask.setFdSubject(task.getFdSubject());
+			vtask.setFdStandardScore(task.getFdStandardScore());
+			if(task.getFdType().equals(Constant.TASK_TYPE_UPLOAD)){
+				vtask.setFdType("上传作业");
+			}else{
+				vtask.setFdType("在线作答");
+			}
+			vtaskList.add(vtask);
+		}
+    	data.setTasks(vtaskList);//作业list
     	Integer totalScore = 0;
     	for (Task task : taskList) {
     		totalScore += task.getFdStandardScore().intValue();
