@@ -102,9 +102,9 @@
 		</div>
 	</section>
 	<section class="section listWrap">
-		<ul class="nav list">
+		<ul class="nav list" id="materialList">
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
-				<li><a href="${ctx}/material/materialFoward?fdId=${bean.FDID}&fdType=${bean.FDTYPE}"> 
+				<li data-id="${bean.FDID}"><a href="${ctx}/material/materialFoward?fdId=${bean.FDID}&fdType=${bean.FDTYPE}"> 
 				<input type="checkbox" name="ids" value="${bean.FDID}"/> 
 				    <span class="title">${bean.FDNAME}</span> 
 				    <span class="rating-view">
@@ -137,8 +137,8 @@
 					  </span> 
 					  <b class="text-warning">0.0</b>
 					  </c:if>
-					  
-					</span> <span class="date"><i class="icon-time"></i>
+					  <span id="${bean.FDID}div"></span>
+					</span><span class="date"><i class="icon-time"></i>
 					<fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
 						<span class="btns">
 						
@@ -308,6 +308,28 @@ function exportData(){
    }); 
 	
 }
+//更新资源状态
+function initStu(){
+	$("#materialList li").each(function(i){
+		var id=$(this).attr("data-id");
+		$.ajax({
+			url : "${ctx}/ajax/material/getMaterialStu",
+			async : false,
+			dataType : 'json',
+			type: "post",
+			data:{
+				materialId:id,
+			},
+			success : function(result) {
+				if(result=="noOk"){
+					$("#"+id+"div").html("（正在转换中）");
+				}
+			}
+		});
+	});
+	
+}
+initStu();
 </script>
 
 
