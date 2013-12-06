@@ -101,7 +101,7 @@ public class PassThroughController {
 				
 				request.setAttribute("catalog", courseCatalogs);
 				//当前作者的图片(当作者和创建者是相同时候使用创建者的照片)
-				if(course.getFdAuthor().equals(course.getCreator().getRealName())){
+				if(course.getFdAuthor()!=null&&course.getFdAuthor().equals(course.getCreator().getRealName())){
 					request.setAttribute("imgUrl",course.getCreator().getPoto());
 				}else{
 					request.setAttribute("imgUrl",ComUtils.getDefaultPoto());
