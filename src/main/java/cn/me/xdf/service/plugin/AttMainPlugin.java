@@ -28,7 +28,7 @@ public class AttMainPlugin {
     public static String addDocNtp(AttMain attMain) {
         CCUploader.uid = "8B90641B41283EDC";
         CCUploader.apiKey = "2EaTCqspjp28b8T0nxpwexa0dy76SbPd";
-        String vid = CCUploader.upload(attMain.getFdFilePath(), null, null, null, null);
+        String vid = CCUploader.upload(attMain.getFdFilePath(), attMain.getFdFileName(), null, null, "NTP");
         log.info("vid====" + vid);
         return vid;
     }
