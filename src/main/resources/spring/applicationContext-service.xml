@@ -53,5 +53,6 @@
 
     <bean id="accessArgAspect" class="cn.me.xdf.aspect.SourceAspect"/>
     <bean id="attMainAspect" class="cn.me.xdf.aspect.AttMainAspect"/>
+    <bean id="attMainTask" class="cn.me.xdf.task.AttMainTask"></bean>
 
 </beans>

@@ -285,7 +285,7 @@ public class AttMain extends IdEntity {
      */
     @Basic(fetch = FetchType.LAZY)
     public Integer getFlag() {
-        flag = StringUtils.isBlank(getFileUrl()) ? 0 : 1;
+       // flag = StringUtils.isBlank(getFileUrl()) ? 0 : 1;
         return flag;
     }
 

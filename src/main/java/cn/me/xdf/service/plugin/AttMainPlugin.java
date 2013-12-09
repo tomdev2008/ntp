@@ -67,20 +67,20 @@ public class AttMainPlugin {
                     return lists.get(0).get("filenetId");
                 } else {
                     log.error("addDoc:" + map.get("Error").toString());
-                    throw new RuntimeException("addDoc:"
-                            + map.get("Error").toString());
+                    return null;
                 }
             } else {
                 log.error("addDoc：连接失败,httpCode=" + status);
-                throw new RuntimeException("addDoc：连接失败,httpCode=" + status);
+                //throw new RuntimeException("addDoc：连接失败,httpCode=" + status);
+                return null;
                 // e.printStackTrace();
             }
         } catch (Exception e) {
             log.error("addDoc:" + e.getCause());
-            // throw new RuntimeException("addDoc:" + e.getCause());
-            e.printStackTrace();
+            //throw new RuntimeException("出现异常addDoc:" + e.getCause());
+            return null;
+            // e.printStackTrace();
         }
-        return null;
     }
 
     /**

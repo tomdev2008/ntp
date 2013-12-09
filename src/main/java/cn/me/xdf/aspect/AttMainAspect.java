@@ -4,6 +4,7 @@ package cn.me.xdf.aspect;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.plugin.AttMainPlugin;
+import cn.me.xdf.task.AttMainTask;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -26,10 +27,9 @@ public class AttMainAspect {
     private static final Logger log = LoggerFactory.getLogger(SourceAspect.class);
 
     @Autowired
-    private AttMainService attMainService;
+    private AttMainTask attMainTask;
 
-    @Autowired
-    private TaskExecutor taskExecutor;
+
 
     /**
      * 資源接口
@@ -49,35 +49,10 @@ public class AttMainAspect {
             throw new RuntimeException("不支持的格式类型");
         }
         AttMain attMain = (AttMain) result;
-        run(attMain);
+        attMainTask.run(attMain);
         return joinPoint.getTarget();
     }
 
 
-    private void run(final AttMain attMain) {
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                if ("04".equals(attMain.getFdFileType()) || "05".equals(attMain.getFdFileType())) {
-                    log.info("开始执行文档上传接口");
-                    String fileNetId = AttMainPlugin.addDoc(attMain, "1");
-                    attMain.setFileNetId(fileNetId);
-                    log.info("fileNameId======" + fileNetId);
-                } else if ("01".equals(attMain.getFdFileType())) {
-                    log.info("开始执行视频上传接口");
-                    String playCode = AttMainPlugin.addDocNtp(attMain);
-                    if (StringUtils.isNotBlank(playCode) && !("-1".equals(playCode))) {
-                        String fileNetId = AttMainPlugin.addDoc(attMain, "0");
-                        String playUrl = "http://union.bokecc.com/player?vid="
-                                + playCode
-                                + "&siteid=8B90641B41283EDC&autoStart=true&playerid=628A174866D77DB5&playertype=1";
-                        attMain.setFileNetId(fileNetId);
-                        attMain.setPlayCode(playCode);
-                        attMain.setFileUrl(playUrl);
-                    }
-                }
-                attMainService.update(attMain);
-            }
-        });
-    }
+
 }
