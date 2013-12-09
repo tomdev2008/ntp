@@ -32,7 +32,7 @@
 	    	<div class="section" id="progress_courses">          
 	       		
 	            	<div class="progress progress-course">
-	            		<div class="bar" style="width:20%;"></div>
+	            		<div class="bar" style="width:0%;"></div>
 	            	</div>
 	                您已经完成了本课程的 <span class="num_comp"></span> 个章节内容，共计 <span class="num_all">
 
@@ -672,14 +672,12 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 </a>
 	        	&nbsp;&nbsp;&nbsp; ${course.fdTitle}</h5>
 	            <div class="btn-group">
-	                <c:if test="${course.fdStatus==null || course.fdStatus=='00'}">
 		            <button class="btn btn-primary btn-large" disabled type="button" onclick="previewCourse()">预览
 
 </button>
 		            <button class="btn btn-primary btn-large" disabled type="button" onclick="releaseCourse()">发布
 
 </button>
-		            </c:if>
 	            </div>
 	        </div>
 	        <img src="${ctx}/resources/images/admin-leftImg.png" width="187" height="60">
