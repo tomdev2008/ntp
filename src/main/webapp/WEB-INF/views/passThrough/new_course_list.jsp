@@ -16,7 +16,7 @@
 		{{?}}
         <span class="mask"></span>
         <span class="caption">
-     		<h6>{{=item.FDTITLE }}</h6>
+     		<h6>{{?item.FDTITLE.length>15 }}{{=item.FDTITLE.substring(0, 15)+"..." }}{{??}}{{=item.FDTITLE}}{{?}}</h6>
             <span class="text-warning">{{=item.FDAUTHOR || ''}}</span>
         </span>
     </a>
