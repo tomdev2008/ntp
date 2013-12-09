@@ -254,7 +254,7 @@
 	        <div class="page-title section" id="page-title">
 	        	<input type='hidden' id='seriesId' value='${series.fdId}' />
 	        	<h5>
-	        	<a href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime" class="backParent">返回系列课程列表</a>
+	        	我正在看：<a href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime" class="backParent">我的系列课程</a>
 	        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	        	${series.fdName}
 	        	</h5>
