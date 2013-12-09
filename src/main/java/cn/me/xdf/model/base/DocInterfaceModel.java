@@ -38,7 +38,7 @@ public class DocInterfaceModel {
     private static final String appId = "0";
     private static final String appKey = "1";
     private static final String sysCode = "NTP";
-    private static final String isConvert = "1";
+    private String isConvert = "1";
 
 
     private String timeStrap;
@@ -55,7 +55,7 @@ public class DocInterfaceModel {
     private String sign;
 
 
-    public DocInterfaceModel(AttMain attMain, String method) {
+    public DocInterfaceModel(AttMain attMain, String method, String isConvert) {
         this.timeStrap = DateUtil.convertDateToString(new Date());
         this.method = method;
         this.title = attMain.getFdFileName();

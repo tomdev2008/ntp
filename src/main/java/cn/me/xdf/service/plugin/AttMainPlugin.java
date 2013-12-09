@@ -40,11 +40,11 @@ public class AttMainPlugin {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static String addDoc(AttMain attMain) {
+    public static String addDoc(AttMain attMain, String isConvert) {
 
         try {
             DocInterfaceModel model = new DocInterfaceModel(attMain,
-                    DocInterfaceModel.addDoc);
+                    DocInterfaceModel.addDoc, isConvert);
             HttpClient client = new HttpClient();
             client.getParams().setParameter(
                     HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
@@ -93,7 +93,7 @@ public class AttMainPlugin {
     public static String getSwfPath(AttMain attMain, String type) {
 
         try {
-            DocInterfaceModel model = new DocInterfaceModel(attMain, type);
+            DocInterfaceModel model = new DocInterfaceModel(attMain, type, "1");
             HttpClient client = new HttpClient();
             client.getParams().setParameter(
                     HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
