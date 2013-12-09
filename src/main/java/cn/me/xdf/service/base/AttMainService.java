@@ -35,6 +35,11 @@ public class AttMainService extends SimpleService {
     }
 
 
+    @Transactional(readOnly = false)
+    public AttMain saveOnInit(AttMain attMain) {
+        return super.save(attMain);
+    }
+
     public List<AttMain> getByModeslIdAndModelNameAndKey(String modelId,
                                                          String modelName, String key) {
         List<AttMain> attMains = findByCriteria(AttMain.class,

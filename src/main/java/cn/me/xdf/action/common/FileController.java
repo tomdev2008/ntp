@@ -89,7 +89,7 @@ public class FileController {
         MultipartFile file = multipartRequest.getFile("Filedata");
         FileModel fileModel = fileRepository.storeByExt(file);
         AttMain attMain = fileModel.toAttMain();
-        attMain = attMainService.save(attMain);
+        attMain = attMainService.saveOnInit(attMain);
         fileModel.setAttId(attMain.getFdId());
         return fileModel;
     }
@@ -107,7 +107,7 @@ public class FileController {
         MultipartFile file = multipartRequest.getFile("imgFile");
         FileModel fileModel = fileRepository.storeByExt(file);
         AttMain attMain = fileModel.toAttMain();
-        attMain = attMainService.save(attMain);
+        attMain = attMainService.saveOnInit(attMain);
         Map map = new HashMap();
         map.put("error", 0);
 		map.put("url", request.getContextPath() + "/common/file/image/"+attMain.getFdId());
