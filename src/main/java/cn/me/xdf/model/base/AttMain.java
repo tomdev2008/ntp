@@ -174,8 +174,6 @@ public class AttMain extends IdEntity {
                     String fName = FileNameUtil.getName(fdFilePath);
                     fileUrl = "http://me.xdf.cn/iportal/sys/attachment/sys_att_swf/viewer.do;jsessionid=ubFBr_W9GMSBzUvrtu3cqdX?method=viewerOtp&fdId=" + fileNetId + "&seq=0&type=otp&fileName=" + fName + "";
                 } else if ("01".equals(fdFileType)) {// 视频
-                    String playCode = AttMainPlugin.getSwfPath(this,
-                            DocInterfaceModel.getPlayCode);
                     return "http://union.bokecc.com/player?vid="
                             + playCode
                             + "&siteid=8B90641B41283EDC&autoStart=true&playerid=628A174866D77DB5&playertype=1";
