@@ -464,16 +464,23 @@
 											.val();
 									var score = parseInt($boxScore.find(
 											".text-info>.num").text());
+									var hsiscore = 0;
+									if($boxScore.find(".text-info .num").length){
+										hsiscore = score;
+									 }
+									
 									if ($boxScore.find(".timeLine").length) {
 										score = parseInt($boxScore.children(
 												"[name='taskScore']").val());
 										 if (validator
 												.element($boxScore
-														.children("[name='taskScore']"))) { 
-											/* $boxScore
+														.children("[name='taskScore']"))) {
+											 $boxScore.find('.text-info').remove();
+											 var boxScore = $boxScore.html();
+											 $boxScore
 													.html('<div class="text-info"><span class="num">'
 															+ score
-															+ '</span>分</div>'); */
+															+ '</span>分</div>'+boxScore); 
 															
 											taskData.score = score;
 											var fdid = $boxScore.parent(
@@ -505,12 +512,7 @@
 												}
 											});  
 											 var total = $("#nowScore").text();
-											 total = parseInt(total) + parseInt(taskData.score);
-											 if($boxScore.find(".text-info .num").length){
-												 var preScore = $boxScore.find(".text-info .num").text();
-												 total = total - parseInt(preScore);
-												 $boxScore.find(".text-info .num").text(taskData.score);
-											 }
+											 total = parseInt(total) - parseInt(hsiscore) + parseInt(taskData.score);
 											 $("#nowScore").text(total);
 										}
 										$boxScore.find(".timeLine>a").unbind("click");
