@@ -174,6 +174,7 @@ public class AdviserService extends BaseService{
 		 }
 		 finder.append(" and exists(select auth.fdid from ixdf_ntp_course_partici_auth auth");
 		 finder.append(" where note.fdcourseid=auth.fdcourseid");
+		 finder.append(" and note.fduserid=auth.fduserid");
 		 finder.append(" and auth.fdteacherid=:teacherId )");
 		 finder.setParam("teacherId", ShiroUtils.getUser().getId());
 		 finder.append(" and exists(select material.fdid from ixdf_ntp_material material where material.fdid=note.fdmaterialid");
