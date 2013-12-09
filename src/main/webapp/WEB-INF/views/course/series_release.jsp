@@ -16,7 +16,7 @@
 <!--阶段列表模板-->
 <script id="phasesTemplate" type="text/x-dot-template">
 			{{~it.phasesList :phases:index}}
-    	    <div class="section section-phase">
+    	    <div class="section section-phase {{?index>0}}mt20{{?}}">
           				<div class="hd">
 							 <span class="sign"><i class="icon-phase"></i>阶段 {{=phases.phasesNo}}</span>
                         	 <span>{{=phases.phasesName}}</span>

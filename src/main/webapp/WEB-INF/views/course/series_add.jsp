@@ -259,10 +259,8 @@
 	        	${series.fdName}
 	        	</h5>
 	            <div class="btn-group">
-	                <c:if test="${series.isPublish==null ||!series.isPublish}">
 		            <button class="btn btn-primary btn-large" disabled  type="button" onclick="previewCourse()">预览</button>
 		            <button class="btn btn-primary btn-large" disabled type="button" onclick="releaseCourse()">发布</button>
-		            </c:if>
 	            </div>
 	        </div>
 	        <img src="${ctx}/resources/images/admin-leftImg.png" width="187" height="60">

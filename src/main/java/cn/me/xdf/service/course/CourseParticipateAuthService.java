@@ -53,20 +53,23 @@ public class CourseParticipateAuthService extends BaseService{
 		finder.setParam("courseId", courseId);
 		if("mentor".equals(orderStr)){//按导师查询
 			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
-				finder.append(" and cpa.fdTeacher.notifyEntity.realName like :namestr");
+				finder.append(" and (cpa.fdTeacher.notifyEntity.realName like :namestr  or cpa.fdTeacher.hbmParent.fdName like:deptstr)");
 				finder.setParam("namestr", "%"+keyword+"%");
+				finder.setParam("deptstr", "%"+keyword+"%");
 			}
 			finder.append(" order by nlssort(person.notifyEntity.realName,'NLS_SORT=SCHINESE_PINYIN_M')");
 		}else if("teacher".equals(orderStr)){
 			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
-				finder.append(" and cpa.fdUser.notifyEntity.realName like :namestr");
+				finder.append(" and (cpa.fdUser.notifyEntity.realName like :namestr  or cpa.fdUser.hbmParent.fdName like:deptstr)" );
 				finder.setParam("namestr", "%"+keyword+"%");
+				finder.setParam("deptstr", "%"+keyword+"%");
 			}
 			finder.append(" order by nlssort(cpa.fdUser.notifyEntity.realName,'NLS_SORT=SCHINESE_PINYIN_M')");
 		}else if("createtime".equals(orderStr)){
 			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
-				finder.append(" and cpa.fdUser.notifyEntity.realName like :namestr");
+				finder.append("and ( cpa.fdUser.notifyEntity.realName like :namestr  or cpa.fdUser.hbmParent.fdName like:deptstr)");
 				finder.setParam("namestr", "%"+keyword+"%");
+				finder.setParam("deptstr", "%"+keyword+"%");
 			}
 			finder.append(" order by cpa.fdCreateTime desc");
 		}else{

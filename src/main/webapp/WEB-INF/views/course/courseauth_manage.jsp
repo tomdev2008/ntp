@@ -182,9 +182,9 @@
                                     <li><a href="#rightCont" onclick="confirmDel();">批量删除</a></li>
                                 </ul>
                             </div>
-                            <form class="toolbar-search" onclick="pressEnter();" >
+                            <form class="toolbar-search" >
                                 <input type="text" class="search" onkeydown="showSearch();" onkeyup="showSearch();" id="search">
-                                <i class="icon-search" onclick="pageNavClick('1');"></i>
+                                <i class="icon-search" ></i>
                             </form>
                             <span class="showState">
                                 <span class="muted">当前显示：</span>
@@ -417,12 +417,19 @@
         	$("#inputMentor").val(item.name + '（' + item.mail + '），' + item.org + '  ' + item.department);
         	$("#mentor").val(item.id);
     	});
-        $(this).keypress( function(e) {  //屏蔽回车事件 由于目前回车会提交两次表单原因找不到 暂时如此处理
+        /* $(this).keypress( function(e) {  //屏蔽回车事件 由于目前回车会提交两次表单原因找不到 暂时如此处理
                var key = window.event ? e.keyCode : e.which;  
                if(key.toString() == "13"){  
-                            return false;  
+                          //  return false;  
                }  
-        }); 
+        });  */
+        $("#search").keypress( function(e) {  //屏蔽回车事件 由于目前回车会提交两次表单原因找不到 暂时如此处理
+            var key = window.event ? e.keyCode : e.which;  
+            if(key.toString() == "13"){  
+          	  pageNavClick('1');
+        	  return false;
+            }  
+     }); 
         $("#inputTeacher").bind("focus",function(){
         	if($("#showerror").html()!=null&&$("#showerror").html()!=""){
         		$("#showerror").html("");
@@ -435,17 +442,13 @@
         		$(this).val("");
         	}
         });
-        //点击头像事件
-        $(".person").find(".")
     });
 /**********************methods***************************************************/
-/* function pressEnter(){//回车事件
-	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
-	if (keyCode == 13) {
-		pageNavClick('1');//return false;
-	}
 
-}  */
+
+
+
+ 
 function clearserach(){//清理搜索栏并显示数据列表
 	$("#search").val("");
 	$("#markshow").html('<a id="containkey"href="#">全部条目</a>');
