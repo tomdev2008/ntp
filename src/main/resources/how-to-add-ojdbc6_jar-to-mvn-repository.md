@@ -2,3 +2,6 @@ mvn install:install-file -Dfile=ojdbc6.jar -Dpackaging=jar -DgroupId=com.oracle 
 
 
 mvn install:install-file -Dfile=html2image-0.9.jar -Dpackaging=jar -DgroupId=gui.ava -DartifactId=html2image -Dversion=0.9
+
+
+mvn install:install-file -Dfile=ccuploader.jar -Dpackaging=jar -DgroupId=com.dreamwin -DartifactId=ccuploader -Dversion=1.0

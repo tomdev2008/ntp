@@ -4,12 +4,14 @@ package cn.me.xdf.aspect;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.plugin.AttMainPlugin;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,6 +28,9 @@ public class AttMainAspect {
     @Autowired
     private AttMainService attMainService;
 
+    @Autowired
+    private TaskExecutor taskExecutor;
+
     /**
      * 資源接口
      *
@@ -35,6 +40,7 @@ public class AttMainAspect {
      */
     @AfterReturning(value = "execution(* cn.me.xdf.service.base.AttMainService.save(..))", returning = "result")
     public Object afterSaveAttMain(JoinPoint joinPoint, Object result) {
+
         log.info("开始启动资源过滤------------afterSaveAttMain----------");
         if (result == null) {
             return null;
@@ -43,13 +49,30 @@ public class AttMainAspect {
             throw new RuntimeException("不支持的格式类型");
         }
         AttMain attMain = (AttMain) result;
-
-
-        String fileNetId = AttMainPlugin.addDoc(attMain);
-
-        attMain.setFileNetId(fileNetId);
-        attMainService.update(attMain);
-        log.info("fileNameId======" + fileNetId);
+        run(attMain);
         return joinPoint.getTarget();
+    }
+
+
+    private void run(final AttMain attMain) {
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                if ("04".equals(attMain.getFdFileType()) || "05".equals(attMain.getFdFileType())) {
+                    String fileNetId = AttMainPlugin.addDoc(attMain);
+                    attMain.setFileNetId(fileNetId);
+                    log.info("fileNameId======" + fileNetId);
+                } else if ("01".equals(attMain.getFdFileType())) {
+                    String playCode = AttMainPlugin.addDocNtp(attMain);
+                    if (StringUtils.isNotBlank(playCode)) {
+                        String playUrl = "http://union.bokecc.com/player?vid="
+                                + playCode
+                                + "&siteid=8B90641B41283EDC&autoStart=true&playerid=628A174866D77DB5&playertype=1";
+                        attMain.setFileUrl(playUrl);
+                    }
+                }
+                attMainService.update(attMain);
+            }
+        });
     }
 }

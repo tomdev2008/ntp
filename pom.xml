@@ -177,6 +177,13 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -293,6 +300,17 @@
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc6</artifactId>
             <version>11.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dreamwin</groupId>
+            <artifactId>ccuploader</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.1</version>
         </dependency>
         <dependency>
             <groupId>gui.ava</groupId>
