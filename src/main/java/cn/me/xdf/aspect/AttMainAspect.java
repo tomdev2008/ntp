@@ -60,18 +60,19 @@ public class AttMainAspect {
             public void run() {
                 if ("04".equals(attMain.getFdFileType()) || "05".equals(attMain.getFdFileType())) {
                     log.info("开始执行文档上传接口");
-                    String fileNetId = AttMainPlugin.addDoc(attMain,"1");
+                    String fileNetId = AttMainPlugin.addDoc(attMain, "1");
                     attMain.setFileNetId(fileNetId);
                     log.info("fileNameId======" + fileNetId);
                 } else if ("01".equals(attMain.getFdFileType())) {
                     log.info("开始执行视频上传接口");
                     String playCode = AttMainPlugin.addDocNtp(attMain);
                     if (StringUtils.isNotBlank(playCode) && !("-1".equals(playCode))) {
-                        String fileNetId = AttMainPlugin.addDoc(attMain,"0");
+                        String fileNetId = AttMainPlugin.addDoc(attMain, "0");
                         String playUrl = "http://union.bokecc.com/player?vid="
                                 + playCode
                                 + "&siteid=8B90641B41283EDC&autoStart=true&playerid=628A174866D77DB5&playertype=1";
                         attMain.setFileNetId(fileNetId);
+                        attMain.setPlayCode(playCode);
                         attMain.setFileUrl(playUrl);
                     }
                 }

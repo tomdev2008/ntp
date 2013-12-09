@@ -111,6 +111,11 @@ public class AttMain extends IdEntity {
 
     private String fileNetId;
 
+    /**
+     * CC平臺返回的播放代碼
+     */
+    private String playCode;
+
     public String getFdFileName() {
         return fdFileName;
     }
@@ -166,8 +171,8 @@ public class AttMain extends IdEntity {
                     && StringUtils.isBlank(fileUrl)) {
                 // 文档、幻灯片
                 if ("04".equals(fdFileType) || "05".equals(fdFileType)) {
-                	String fName = FileNameUtil.getName(fdFilePath);
-                    fileUrl = "http://me.xdf.cn/iportal/sys/attachment/sys_att_swf/viewer.do;jsessionid=ubFBr_W9GMSBzUvrtu3cqdX?method=viewerOtp&fdId="+fileNetId+"&seq=0&type=otp&fileName="+fName+"";
+                    String fName = FileNameUtil.getName(fdFilePath);
+                    fileUrl = "http://me.xdf.cn/iportal/sys/attachment/sys_att_swf/viewer.do;jsessionid=ubFBr_W9GMSBzUvrtu3cqdX?method=viewerOtp&fdId=" + fileNetId + "&seq=0&type=otp&fileName=" + fName + "";
                 } else if ("01".equals(fdFileType)) {// 视频
                     String playCode = AttMainPlugin.getSwfPath(this,
                             DocInterfaceModel.getPlayCode);
@@ -182,25 +187,24 @@ public class AttMain extends IdEntity {
         }
         return fileUrl;
     }
-    
-    
+
+
     @Basic(fetch = FetchType.LAZY)
     @Transient
     public Map<String, String> getCode() {
-    	Map<String, String> map = new HashMap<String, String>();
-	    // 文档、幻灯片
-	    if ("04".equals(fdFileType) || "05".equals(fdFileType)) {
-	    	map.put("type", "doc");
-	    	String fName = FileNameUtil.getName(fdFilePath);
-	    	map.put("fileNetId", fileNetId);
-	    	map.put("fName", fName);
-	    } else if ("01".equals(fdFileType)) {// 视频
-	    	map.put("type", "video");
-	    	String playCode = AttMainPlugin.getSwfPath(this, DocInterfaceModel.getPlayCode);
-	    	map.put("playCode", playCode);
-	    }else{
-	    	map.put("type", "none");
-	    }
+        Map<String, String> map = new HashMap<String, String>();
+        // 文档、幻灯片
+        if ("04".equals(fdFileType) || "05".equals(fdFileType)) {
+            map.put("type", "doc");
+            String fName = FileNameUtil.getName(fdFilePath);
+            map.put("fileNetId", fileNetId);
+            map.put("fName", fName);
+        } else if ("01".equals(fdFileType)) {// 视频
+            map.put("type", "video");
+            map.put("playCode", playCode);
+        } else {
+            map.put("type", "none");
+        }
         return map;
     }
 
@@ -295,5 +299,13 @@ public class AttMain extends IdEntity {
 
     public void setFileNetId(String fileNetId) {
         this.fileNetId = fileNetId;
+    }
+
+    public String getPlayCode() {
+        return playCode;
+    }
+
+    public void setPlayCode(String playCode) {
+        this.playCode = playCode;
     }
 }
