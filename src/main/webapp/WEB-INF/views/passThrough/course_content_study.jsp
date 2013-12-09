@@ -324,7 +324,6 @@
 							<iframe width="100%" height="437" id="iframeVideo" src="http://me.xdf.cn/iportal/sys/attachment/sys_att_swf/viewer.do;jsessionid=ubFBr_W9GMSBzUvrtu3cqdX?method=viewerOtp&fdId={{=param.code.fileNetId}}&seq=0&type=otp&fileName={{=param.code.fName}}" frameBorder="0" scrolling="no"></iframe>
 						{{?}}
 						{{?param.code.type=='video'}}
-                        {{=param.code.playCode}}
 							<iframe id="iframeVideo" width="100%" height="510" frameBorder="0" scrolling="no" src="${ctx}/video.jsp?code={{=param.code.playCode}}"></iframe>
 						{{?}}
 						{{?param.code.type=='none'}}
