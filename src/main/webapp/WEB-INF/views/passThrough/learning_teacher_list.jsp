@@ -17,8 +17,8 @@
 	{{~}}
 	</ul>
 	<div class="page-group clearfix">
-	   <a href="#" class="btn-prev" {{?it.currentPage <= 1}} disabled {{?}} onclick='pageNavClick({{=it.currentPage-1}})'>上一页</a>
-	   <a href="#" class="btn-next" {{?it.currentPage == it.totalPage}} disabled {{?}} onclick='pageNavClick({{=it.currentPage+1}})'>下一页</a>
+	   <a href="javascript:void(0)" class="btn-prev" {{?it.currentPage <= 1}} disabled {{?}} onclick='pageNavClick({{=it.currentPage-1}})'>上一页</a>
+	   <a href="javascript:void(0)" class="btn-next" {{?it.currentPage == it.totalPage}} disabled {{?}} onclick='pageNavClick({{=it.currentPage+1}})'>下一页</a>
 	</div>
 </script>
 <div class="section mt20 list-face">
