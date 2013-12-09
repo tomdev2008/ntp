@@ -5,7 +5,7 @@
 	 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <!-- 启动触发器的配置开始 -->
-    <bean name="startQuertz" lazy-init="false" autowire="no"
+    <bean id="startQuertz" name="startQuertz" lazy-init="false" autowire="no"
           class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="startupDelay" value="60000" />
         <property name="triggers">

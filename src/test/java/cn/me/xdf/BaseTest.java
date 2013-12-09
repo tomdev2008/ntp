@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  * To change this template use File | Settings | File Templates.
  */
 @ContextConfiguration(locations = {"/spring/root-context.xml",
-        "/spring/applicationContext-shiro.xml","/spring/applicationContext-service.xml"})
+        "/spring/applicationContext-shiro.xml", "/spring/applicationContext-service.xml", "/spring/applicationContext-quartz.xml"})
 @ActiveProfiles("production")
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public class BaseTest extends AbstractTransactionalJUnit4SpringContextTests {
