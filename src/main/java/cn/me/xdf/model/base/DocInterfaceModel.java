@@ -24,13 +24,13 @@ import java.util.Date;
  */
 public class DocInterfaceModel {
 
-//    public static final String url = "http://192.168.25.225:9080/ixdf/doc/docServlet";//testurl
+    //    public static final String url = "http://192.168.25.225:9080/ixdf/doc/docServlet";//testurl
     public static final String url = "http://me.xdf.cn/iportal/doc/docServlet";
-    
+
     public static final String addDoc = "addDoc";
     public static final String getSwfPath = "getSwfPath";
     public static final String getPlayCode = "getPlayCode";
-    
+
 
     private static final String pwdKey = "apidocumentsevel";
     private static final String userName = "kmsadmin";
@@ -48,6 +48,7 @@ public class DocInterfaceModel {
     private String docId;
     private String author;
     private String filePath;
+    private String fdFileName;
 
     private String attName;
     private String attId;
@@ -68,6 +69,7 @@ public class DocInterfaceModel {
         this.filePath = attMain.getFdFilePath();
         this.attName = FileNameUtil.getName(filePath);
         this.attId = attMain.getFileNetId();
+        this.fdFileName = attMain.getFdFileName();
     }
 
     public Part[] getCCToAddModel() throws Exception {
@@ -75,7 +77,7 @@ public class DocInterfaceModel {
         String signText = (method + appId + appKey + timeStrap + title + modelName + docId + author + sysCode + isConvert).toLowerCase();
         this.sign = AESX3.md5(signText); // 签名
         File file = new File(filePath);
-        ByteArrayPartSource byteArrayPartSource = new ByteArrayPartSource(file.getName(), ByteFileObjectUtils.getBytesFromFile(file));
+        ByteArrayPartSource byteArrayPartSource = new ByteArrayPartSource(fdFileName, ByteFileObjectUtils.getBytesFromFile(file));
         FilePart fp = new FilePart("file", byteArrayPartSource);
         StringPart username = new StringPart("username",
                 this.userName, "utf-8");
