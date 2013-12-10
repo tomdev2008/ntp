@@ -113,7 +113,7 @@ public class BamCourseService extends SimpleService {
                     courseJson, courseCatalogJson, courseContentJson);
         } else {
             CourseParticipateAuth auth = findUniqueByProperty(CourseParticipateAuth.class, Value.eq("course.fdId", course.getFdId()), Value.eq("fdUser.fdId", userId));
-            bamCourse = new BamCourse(auth.getFdUser().getFdId(), auth.getFdTeacher().getFdId(), course.getFdId(),
+            bamCourse = new BamCourse(auth.getFdUser().getFdId(), auth.getFdTeacher()==null?null:auth.getFdTeacher().getFdId(), course.getFdId(),
                     courseJson, courseCatalogJson, courseContentJson);
         }
         save(bamCourse);

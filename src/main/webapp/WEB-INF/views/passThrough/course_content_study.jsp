@@ -335,17 +335,17 @@
                     </div>
                 </div>
                 <div class="mediaToolbarWrap">
-                    <div class="mediaToolbar" id="mediaToolbar" data-fdid="{{=param.id}}">
+                    <div class="mediaToolbar {{?param.code==""||param.code.type=='none'}}hide{{?}}" id="mediaToolbar" data-fdid="{{=param.id}}">
                         <div class="btn-group">
-                            <a id="btnPraise" class="btn btn-link{{?!param.mePraised&&(param.code!=""||param.code.type=="none")}} active{{?}}" href="javascript:void(0)" title="赞" praisedstatus="{{=param.mePraised}}"><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
-                           <a id="btnDownload" title="{{?param.canDownload&&(param.code!=""||param.code.type=="none")}}点击{{??}}无权{{?}}下载" canDownload="{{=param.canDownload}}" class="btn btn-link" {{?param.canDownload}}href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
+                            <a id="btnPraise" class="btn btn-link{{?!param.mePraised}} active{{?}}" title="赞" href="javascript:void(0)"  praisedstatus="{{=param.mePraised}}"><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
+                           <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" canDownload="{{=param.canDownload}}" class="btn btn-link" {{?param.canDownload}}href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
                         </div>
                         <span class="playCount">{{?it.type == 'video'}}播放{{??}}阅读{{?}}  <strong class="num">{{=param.readCount || 0 }}</strong>  次</span>
                       <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}}><i class="icon-right"></i>我学会了</button>
                     </div>
                     {{#def.listMedia}}
                 </div>
-                <div class="hd">
+                <div class="hd" id="materialinfo">
                     <div class="tit-icon_bg"><i class="icon-video-intro"></i></div>
                     <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}信息</h5>
                     <div class="pos-right" id="ratingTotal">
@@ -358,7 +358,7 @@
                         <b class="text-warning">{{=param.rating.average}}.0</b>
                     </div>
                 </div>
-                <div class="clearfix mt20">
+                <div class="clearfix mt20" id="materialpf">
                     <div class="pull-left video-info">
                         <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}名称  <span class="name" id="mediaName">{{=param.name}}</span></h5>
                         <p class="mediaIntro" id="mediaIntro">
@@ -422,7 +422,7 @@
             <ul class="mediaList nav nav-pills" id="listMedia">
                 {{~it.listMedia :media:index}}
                 <li class="{{?it.defaultMedia.id == media.id}}active{{?}} {{?media.isPass}}pass{{?}}">
-                    <a href="{{=media.url}}" data-fdid="{{=media.id}}" title="{{=media.name}}">
+                    <a href="{{=media.url}}" data-fdid="{{=media.id}}" title="{{=media.name}}" {{?media.url==undefined}}disabled{{?}}>
                         <i class="icon-circle-success"></i>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}{{=index+1}}
                     </a>
                 </li>
@@ -788,6 +788,7 @@
 		function loadRightCont(fdid,type){
         	catalogId=fdid;
 		    fdMtype=type;
+		    var mdata;
 	        $.ajax({
 		  			  url: "${ctx}/ajax/passThrough/getCourseContent",
 		  			  async:false,
@@ -805,11 +806,21 @@
 		  	            } else if(result.type == "video" || result.type == "doc"||result.type == "ppt"){
 		  	            	$("#mainContent").html(rightMaterialContentFn(result));
 		  	                afterLoadMediaPage(result);
+		  	                mdata=result.defaultMedia;
 		  	            }
 		  				
 		  			  },
 	  			});
-
+			//调用方法时 如果素材为空  则隐藏素材下的 下载赞等信息 、 素材信息、  评分信息 、评分的列表信息 这几个信息分别代表一个div
+			//这块只针对视频
+			if(mdata!=""||mdata!=null){
+				if(mdata.code==""||mdata.code.type=="none"){
+					$("#mediaToolbar").hide();
+					$("#materialinfo").hide();
+					$("#mediaComment").hide();
+					$("#materialpf").hide();
+				}
+			}
             //可选章节按钮
             $("#btnOptionalLecture").css("cursor","pointer")
                     .click(function(e){
@@ -1235,13 +1246,13 @@
 		  			  dataType:'json',
 		  			  success: function(data){
 		  				 // alert(JSON.stringify());
-		  			/* 	if(data.type == "exam" || data.type == "task"){
+		  			 	if(data.type == "exam" || data.type == "task"){
 		  					$("#mainContent").html(rightContentFn(data));
 		  					afterLoadExamOrTaskPage(data);
 		  	            } else if(data.type == "video" || data.type == "doc"||data.type == "ppt"){
 		  	            	$("#mainContent").html(rightMaterialContentFn(data));
 		  	                afterLoadMediaPage(data);
-		  	            } */
+		  	            } 
 		  				result = data.defaultMedia;
 		  			  },
                 });
@@ -1307,21 +1318,21 @@
                     $this.addClass("active").attr("data-original-title","取消赞").children(".num").text(parseInt($this.text())+1);
                 } */
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
-                if($this.attr("praisedstatus")=='true'){
-	                $.ajax({
-	         			type: "post",
-	         			url: "${ctx}/ajax/material/saveLaud",
-	         			data : {
-	         				"materialId":$mediaToolbar.attr("data-fdid"),
-	         			},
-	         			success:function(data){
-	         				 $this.addClass("active").attr("data-original-title","赞").children(".num").text(data); 
-	         				 $this.attr("praisedstatus",'false');
-	         			}
-	         		}); 
-                }else{
-                	$.fn.jalert2("您已经赞过该资源!");
-                }
+	                if($this.attr("praisedstatus")=='true'){
+		                $.ajax({
+		         			type: "post",
+		         			url: "${ctx}/ajax/material/saveLaud",
+		         			data : {
+		         				"materialId":$mediaToolbar.attr("data-fdid"),
+		         			},
+		         			success:function(data){
+		         				 $this.addClass("active").attr("data-original-title","赞").children(".num").text(data); 
+		         				 $this.attr("praisedstatus",'false');
+		         			}
+		         		}); 
+	                }else{
+	                	$.fn.jalert2("您已经赞过该资源!");
+	                }
             });
 
             /*点下载事件*/
@@ -1352,6 +1363,7 @@
             });
 
             $("#btnDoPass").on("click",function(e){
+            	
                 $("#listMedia>li.active").addClass("pass");
                 $(this).attr("disabled", true);
                 $.ajax({
