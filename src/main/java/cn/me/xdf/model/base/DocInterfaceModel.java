@@ -1,5 +1,6 @@
 package cn.me.xdf.model.base;
 
+import cn.me.xdf.common.httpclient.StringPart2;
 import cn.me.xdf.common.utils.ByteFileObjectUtils;
 import cn.me.xdf.common.utils.sso.AES;
 import cn.me.xdf.common.utils.sso.AESX3;
@@ -8,7 +9,6 @@ import jodd.io.FileNameUtil;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.lang3.StringUtils;
 
@@ -79,35 +79,35 @@ public class DocInterfaceModel {
         File file = new File(filePath);
         ByteArrayPartSource byteArrayPartSource = new ByteArrayPartSource(file.getName(), ByteFileObjectUtils.getBytesFromFile(file));
         FilePart fp = new FilePart("file", byteArrayPartSource);
-        StringPart username = new StringPart("username",
+        StringPart2 username = new StringPart2("username",
                 this.userName, "utf-8");
-        StringPart password = new StringPart("password", AES.encode(
+        StringPart2 password = new StringPart2("password", AES.encode(
                 this.passWord, pwdKey), "utf-8");
-        StringPart appId = new StringPart("appId",
+        StringPart2 appId = new StringPart2("appId",
                 this.appId, "utf-8");
-        StringPart appKey = new StringPart("appKey",
+        StringPart2 appKey = new StringPart2("appKey",
                 this.appKey, "utf-8");
 
-        StringPart timestrap = new StringPart("timestamp",
+        StringPart2 timestrap = new StringPart2("timestamp",
                 this.timeStrap, "utf-8");
-        StringPart method = new StringPart("method",
+        StringPart2 method = new StringPart2("method",
                 this.method, "utf-8");
-        StringPart title = new StringPart("title",
+        StringPart2 title = new StringPart2("title",
                 this.title, "utf-8");
-        StringPart modelName = new StringPart("modelName",
+        StringPart2 modelName = new StringPart2("modelName",
                 this.modelName, "utf-8");
-        StringPart docId = new StringPart("docId",
+        StringPart2 docId = new StringPart2("docId",
                 this.docId, "utf-8");
 
-        StringPart author = new StringPart("author",
+        StringPart2 author = new StringPart2("author",
                 this.author, "utf-8");
 
 
-        StringPart sysCode = new StringPart("sysCode",
+        StringPart2 sysCode = new StringPart2("sysCode",
                 this.sysCode);
-        StringPart sign = new StringPart("sign", this.sign,
+        StringPart2 sign = new StringPart2("sign", this.sign,
                 "utf-8");
-        StringPart isConver = new StringPart("isConver",
+        StringPart2 isConver = new StringPart2("isConver",
                 this.isConvert, "utf-8");
         Part[] parts = {username, password, method, appId, appKey, timestrap,
                 modelName, docId, author, sign, sysCode, title, fp, isConver};
