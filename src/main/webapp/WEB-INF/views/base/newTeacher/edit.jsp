@@ -191,30 +191,6 @@ function CountStrByte(){
 </head>
 
 <body>
-
-<div class="fixed-left">
-	<div class="container">
-		<div class="col-left">
-    	<ul class="nav nav-list sidenav">
-        	<li class="nav-header">
-            	<div class="tit-icon_bg"><i class="icon-gear"></i><i class="icon-sj"></i></div>
-                            账号设置
-            </li>
-    		<li class="active"><a href="${ctx}/register/updateTeacher"><i class="icon-user"></i>个人资料</a></li>
-            <li><a href="${ctx}/register/updateIco"><i class="icon-user"></i>修改头像</a></li>
-            <li><a href="${ctx}/register/changePwd"><i class="icon-pencil"></i>修改密码</a></li>
-    	</ul>
-    	</div>
-    </div>
-</div>
-<div class="container">
-	<div class="col-right">   	
-    	<div class="section">
-        <div class="page-header">
-        	<div class="tit-icon_bg"><i class="icon-user icon-white"></i><i class="icon-sj"></i></div>
-        	<h5>个人资料</h5>
-            <a href="${ctx}/course/courseIndex" title="个人主页" class="replyMybk"><i class="icon-home icon-white"></i></a>
-        </div> 
        <div class="page-body"> 
           <form method="post" id="inputForm" onsubmit="return checkSubmit();" action="${ctx}/register/updateOtherData" class="reg_form form-horizontal">
           <input type="hidden" name="fdId" value="${bean.fdId}"/>
@@ -340,9 +316,6 @@ function CountStrByte(){
             </div>
         </form>
         </div>
-      </div>
-    </div>
-</div>
 
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">

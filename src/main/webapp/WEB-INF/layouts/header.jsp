@@ -21,7 +21,7 @@ request.setAttribute("path", path[path.length-1]);
 	        	<li><a href="${ctx}/course/courseIndexAll">全部课程</a></li>
 	          <%} %>
 	          <shiro:hasRole name="admin">
-	          <li><a href="${ctx}/admin/role/list">系统管理</a></li>
+	          <li><a href="${ctx}/admin/user/list">系统管理</a></li>
 	          </shiro:hasRole>
 	          <shiro:hasRole name="guidance">
 	          <li><a href="${ctx}/studyTrack/getStudyTrackTutor">我是导师</a></li>

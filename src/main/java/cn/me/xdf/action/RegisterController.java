@@ -92,6 +92,7 @@ public class RegisterController {
         if (ShiroUtils.getUser() == null) {
             return "redirect:/login";
         }
+        model.addAttribute("active", "photo");
         String uid = ShiroUtils.getUser().getId();
         SysOrgPerson person = accountService.load(uid);
         SysOrgPersonTemp personTemp = registerService
@@ -152,6 +153,7 @@ public class RegisterController {
         if (ShiroUtils.getUser() == null) {
             return "redirect:/login";
         }
+        model.addAttribute("active", "pwd");
         String uid = ShiroUtils.getUser().getId();
         SysOrgPerson person = accountService.load(uid);
         SysOrgPersonTemp personTemp = registerService
@@ -191,11 +193,12 @@ public class RegisterController {
      * @param model
      */
     @RequestMapping(value = "updateTeacher")
-    public String updateTeacher(Model model) {
-        if (ShiroUtils.getUser() == null) {
-            return "redirect:/login";
+    public String updateTeacher(Model model,HttpServletRequest request) {
+        String uid = request.getParameter("id");
+        if(StringUtil.isBlank(uid)){
+        	uid = ShiroUtils.getUser().getId();
         }
-        String uid = ShiroUtils.getUser().getId();
+        model.addAttribute("active", "user");
         SysOrgPerson person = accountService.load(uid);
         SysOrgPersonTemp sysOrgPersonTemp = registerService
                 .findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
