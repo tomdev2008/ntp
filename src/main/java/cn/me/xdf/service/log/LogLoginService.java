@@ -50,10 +50,10 @@ public class LogLoginService extends BaseService{
 		finder.setParam("userid", ShiroUtils.getUser().getId());
 		List<LogLogin> logins = (List<LogLogin>)getPage(finder, 1,10).getList();
 		if(logins==null||logins.size()<=1){
-			return "首次登录";
+			return "0";
 		}else{
 			Date date = logins.get(1).getTime();
-			return "最近登录 "+ DateUtil.getIntervalDate(DateUtil.convertDateToString(date), "yyyy/MM/dd hh:mm aa");
+			return ""+ DateUtil.getIntervalDate(DateUtil.convertDateToString(date), "yyyy/MM/dd hh:mm aa");
 		}
 		
 	}

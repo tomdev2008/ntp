@@ -326,15 +326,19 @@
 						{{?param.code.type=='video'}}
 							<iframe id="iframeVideo" width="100%" height="510" frameBorder="0" scrolling="no" src="${ctx}/video.jsp?code={{=param.code.playCode}}"></iframe>
 						{{?}}
-						{{?param.code.type=='none'}}
+						{{?param.code==""||param.code.type=='none'}}
+						
+								<div class="media-placeholder">
+									素材不存在......
+								</div>
 						{{?}}
                     </div>
                 </div>
                 <div class="mediaToolbarWrap">
                     <div class="mediaToolbar" id="mediaToolbar" data-fdid="{{=param.id}}">
                         <div class="btn-group">
-                            <a id="btnPraise" class="btn btn-link{{?!param.mePraised}} active{{?}}" href="javascript:void(0)" title="赞" praisedstatus="{{=param.mePraised}}"><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
-                           <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" canDownload="{{=param.canDownload}}" class="btn btn-link" {{?param.canDownload}}href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
+                            <a id="btnPraise" class="btn btn-link{{?!param.mePraised&&(param.code!=""||param.code.type=="none")}} active{{?}}" href="javascript:void(0)" title="赞" praisedstatus="{{=param.mePraised}}"><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
+                           <a id="btnDownload" title="{{?param.canDownload&&(param.code!=""||param.code.type=="none")}}点击{{??}}无权{{?}}下载" canDownload="{{=param.canDownload}}" class="btn btn-link" {{?param.canDownload}}href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
                         </div>
                         <span class="playCount">{{?it.type == 'video'}}播放{{??}}阅读{{?}}  <strong class="num">{{=param.readCount || 0 }}</strong>  次</span>
                       <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}}><i class="icon-right"></i>我学会了</button>
@@ -948,7 +952,7 @@
 	                          			fdType :"01",
 	                          		  },
 	                          		  success: function(result){
-	                          			  if(result=='"err"'){
+	                          			  if(result=='"cannot"'){
 	                          				pushok=false;
 	                          			  }else{
 	                          				pushok=true;
@@ -971,7 +975,7 @@
 	                          			fdType :"02",
 	                          		  },
 	                          		  success: function(result){
-	                          			  if(result=='"err"'){
+	                          			  if(result=='"cannot"'){
 	                          				pushok=false;
 	                          			  }else{
 	                          				pushok=true;
@@ -1208,16 +1212,15 @@
             swfobject.embedSWF("http://me.xdf.cn:80/iportal/sys/attachment/video/videoplayer.swf", "flashcontent",
                     "100%", "510", "6.0.0", "expressInstall.swf", flashvars, params, attributes); */
             
-                    $('#iframeVideo').html('');
             var $mediaToolbar = $("#mediaToolbar");
 
             $("#listMedia>li>a").bind("click",function(e){
                 e.preventDefault();
                 var $this = $(this);
                 $this.parent("li").addClass("active").siblings().removeClass("active");
-                flashvars.video = $this.attr("href");
-                swfobject.embedSWF("http://me.xdf.cn:80/iportal/sys/attachment/video/videoplayer.swf", "myflash",
-                        "100%", "510", "6.0.0", "expressInstall.swf", flashvars, params, attributes);
+                /* flashvars.video = $this.attr("href"); */
+                /* swfobject.embedSWF("http://me.xdf.cn:80/iportal/sys/attachment/video/videoplayer.swf", "myflash",
+                        "100%", "510", "6.0.0", "expressInstall.swf", flashvars, params, attributes); */
                 var result;
                 $.ajax({
                 	  cache:false,
@@ -1231,6 +1234,14 @@
 		  			  },
 		  			  dataType:'json',
 		  			  success: function(data){
+		  				 // alert(JSON.stringify());
+		  			/* 	if(data.type == "exam" || data.type == "task"){
+		  					$("#mainContent").html(rightContentFn(data));
+		  					afterLoadExamOrTaskPage(data);
+		  	            } else if(data.type == "video" || data.type == "doc"||data.type == "ppt"){
+		  	            	$("#mainContent").html(rightMaterialContentFn(data));
+		  	                afterLoadMediaPage(data);
+		  	            } */
 		  				result = data.defaultMedia;
 		  			  },
                 });

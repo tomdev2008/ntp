@@ -43,67 +43,26 @@
             <div class="tit-icon_bg"><i class="icon-gear"></i><i class="icon-sj"></i></div>
                               系统管理
             </li>
-    		<li><a href="${ctx}/admin/role/list"><i class="icon-user"></i>角色管理</a></li>
+            <!-- 
+            <tags:shirourl url="${ctx}/admin/user/list" active="user" text="用户管理"  para="${active}"></tags:shirourl>
+             -->
+            <tags:shirourl url="${ctx}/admin/role/list" active="role" text="角色管理"  para="${active}"></tags:shirourl>
     	</ul>
     	</div>
     </div>
   </div>
-  <!--  
-  <div class="container mt20">
-    <div class="row">
-      <div class="span3">
-        <ul class="nav nav-list well">
-  -->
-          <!-- 集团主管 -->
-          <!--  
-          <shiro:hasAnyRoles name="admin,group">
-            <li class="nav-header">集团教研</li>
-            <tags:shirourl url="${ctx}/group/report/statList" active="lesson" text="集团备课跟踪" iconName="dashboard-01_16.png" para="${active}"></tags:shirourl>
-            <tags:shirourl url="${ctx}/group/report/guidList" active="groupguidList" text="集团绩效分析" iconName="dashboard-02_16.png" para="${active}"></tags:shirourl>
-            <tags:shirourl url="${ctx}/group/template/list" active="template" text="国外备课模板配置" iconName="dashboard-08_16.png" para="${active}"></tags:shirourl>
-            <tags:shirourl url="${ctx}/group/template/ntp_list" active="ntp_template" text="国内备课模板配置" iconName="dashboard-08_16.png" para="${active}"></tags:shirourl>
-            <li class="divider"></li>
-          </shiro:hasAnyRoles>
-          -->
-          <!-- 学校主管 -->
-          <!-- 
-          <shiro:hasAnyRoles name="admin,group,campus">
-            <li class="nav-header">学校教研</li>
-            <tags:shirourl url="${ctx}/register/list" active="register" text="新教师注册" iconName="dashboard-04_16.png" para="${active}"></tags:shirourl>
-          </shiro:hasAnyRoles>
-          
-          <shiro:hasAnyRoles name="admin,group,campus">
-            <li class="divider"></li>
-          </shiro:hasAnyRoles>
-         
-          <shiro:hasAnyRoles name="admin,group">
-            <li class="nav-header">基础配置</li>
-            <tags:shirourl url="${ctx}/group/diction/list" active="diction" text="基本信息" iconName="dashboard-08_16.png" para="${active}"></tags:shirourl>
-            <tags:shirourl url="${ctx}/group/contentMovie/list" active="contentMovie" text="文档视频" iconName="dashboard-08_16.png" para="${active}"></tags:shirourl>
-            <tags:shirourl url="${ctx}/group/examCategory/list" active="examCategory" text="试卷试题" iconName="dashboard-08_16.png" para="${active}"></tags:shirourl>
-            <tags:shirourl url="${ctx}/group/operPackage/list" active="operPackage" text="学术作业包" iconName="dashboard-08_16.png" para="${active}"></tags:shirourl>
-            <li class="divider"></li>
-          </shiro:hasAnyRoles>
-          
-          <shiro:hasAnyRoles name="admin,group">
-            <li class="nav-header">系统管理</li>
-            <tags:shirourl url="${ctx}/admin/role/list" active="role" text="用户管理" iconName="dashboard-03_16.png" para="${active}"></tags:shirourl>
-            <li class="divider"></li>
-          </shiro:hasAnyRoles>
-          -->
-          <!-- 
-          <li class="nav-header">消息中心</li>
-          <tags:shirourl url="${ctx}/notify/list/1/ALL" active="notify" text="我的消息" iconName="dashboard-06_16.png" para="${active}"></tags:shirourl>
-          -->
-          <!-- 
-        </ul>
-      </div>
-      <div class="span9">
-      </div>
+  <div class="container">
+	<div class="col-right">    	
+    	<div class="section">
+	        <div class="page-header">
+	        	<div class="tit-icon_bg"><i class="icon-pencil icon-white"></i><i class="icon-sj"></i></div>
+	        	<h5>角色管理</h5>
+	            <a href="${ctx}/course/courseIndex" class="replyMybk" title="个人首页" ><i class="icon-home icon-white"></i></a>
+	        </div>
+  <sitemesh:body />
+         </div>
     </div>
   </div>
-  -->
-  <sitemesh:body />
   <%@ include file="/WEB-INF/layouts/footer.jsp"%>
 </body>
 </html>

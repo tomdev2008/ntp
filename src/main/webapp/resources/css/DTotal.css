@@ -46,8 +46,7 @@
 .box-control .hd .btn-toolbar .btn-link{border: none;margin-right: 0;position: absolute;right: 0;top:1px;}
 .box-control .hd .toolbar-search {display: inline-block;*display: inline;position: relative;margin-bottom:0; margin-left: 5px;}
 .box-control .hd .toolbar-search .icon-search{position: absolute;right: 10px;top: 5px;*top:10px;}
-.box-control .hd .toolbar-search .search{
-    width: 180px;padding: 4px 10px;border: solid #e5e5e5 1px;margin-bottom: 0;}
+.box-control .hd .toolbar-search .search{   width: 160px;padding: 4px 30px 4px 10px;border: solid #e5e5e5 1px;margin-bottom: 0;}
 .box-control .hd .btn-toolbar .showState{font-size: 14px;line-height: 20px;padding: 5px 15px;margin-right:20px;vertical-align: middle;}
 .box-control .bd .btn-toolbar{margin:10px;position: relative;}
 .btns-radio{margin-right: 12px;}
@@ -66,14 +65,16 @@
 .listWrap .list>li>a .date > i{margin-right: 8px;}
 .listWrap .list>li>a .rating-view{position: relative;top: -1px;}
 .listWrap .list>li>a .btns{position: absolute;right: 20px;bottom: 12px;}
-.listWrap .list>li>a .btns > b,.btns-handle > b{color:#999999;font-size: 12px;}
+.listWrap .list>li>a .btns > b,.btns-handle > b{color:#999999;font-size: 12px;font-weight: normal;}
 .listWrap .list>li>a .btns .btn,.btns-handle .btn{padding: 0 6px;color: #999;text-decoration: none;border: none;}
+.listWrap .list>li>a .btns .btn:focus,.btns-handle .btn:focus{outline: none;}
 .listWrap .list>li>a .btns .btn strong,.btns-handle .btn strong{color: #4391bb;font-weight: normal;}
 .listWrap .list>li>a .btns .btn i,.btns-handle .btn i{margin-right: 5px;}
+.btns-handle{margin-left: 6px;}
 .btns-handle .active.btn {    background-color: transparent;}
-.listWrap .list>li>a:hover .icon-thumbs-up,.btn:hover .icon-thumbs-up,.active.btn .icon-thumbs-up {background-position: right -296px;}
-.listWrap .list>li>a:hover .icon-eye,.btn:hover .icon-eye,.active.btn .icon-eye{background-position: right -256px;}
-.listWrap .list>li>a:hover .icon-download,.btn:hover .icon-download,.active.btn .icon-download{background-position: right -336px;}
+.listWrap .list>li>a:hover .icon-thumbs-up,.btn:hover .icon-thumbs-up,.active.btn .icon-thumbs-up,.editingBody .controls .btns-handle .btn  .icon-thumbs-up{background-position: right -296px;}
+.listWrap .list>li>a:hover .icon-eye,.btn:hover .icon-eye,.active.btn .icon-eye,.editingBody .controls .btns-handle .btn .icon-eye{background-position: right -256px;}
+.listWrap .list>li>a:hover .icon-download,.btn:hover .icon-download,.active.btn .icon-download,.editingBody .controls .btns-handle .btn .icon-download{background-position: right -336px;}
 .page-body > .pages{text-align: right;margin-top: 20px;}
 .media-placeholder{color:#fff;font-size:16px;height:510px;text-align:center;line-height:700px;overflow:hidden;background: #a0c9db url("../images/video-transform-type.png") no-repeat 50% 50%;*background-position: 50% 180px;}
 .state-dragable{position:absolute;cursor:move;z-index:10;}
@@ -90,6 +91,7 @@
 .editingBody .section .control-group .input-block-level{*width: 648px;}
 .controls-txt{padding-top: 8px;}
 .editingBody .controls .date{  position: absolute;right: 0;top: 10px;color: #999;}
+.editingBody .controls .btns-handle .btn{cursor: default;}
 .editingBody .nav-pills{margin:-32px 0 0 74px;}
 .editingBody .nav-pills li a{margin:0;border:solid #e5e4e5 1px;padding:10px 16px;color:#000;}
 .editingBody .nav-pills .active a{border-color:#4391bb;background-color:#4391bb;color:#fff;}

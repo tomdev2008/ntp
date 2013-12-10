@@ -5,6 +5,7 @@
 .page-title{height:58px;padding-left:212px;overflow:hidden;position:relative;}
 .page-title h5{font-weight:normal;margin:19px 0;}
 .page-title .btn-group{position:absolute;right:20px;top:8px;}
+.page-title .btn-group .btn{margin-left: 10px;}
 
 /*left nav*/
 .sidenav{background-color:#FFF;border-bottom:solid #d7d7d7 2px;}

@@ -173,7 +173,7 @@ function initCommentLines(modelName,modelId,pageNo){
           			fdType :"01",
           		  },
           		  success: function(result){
-          			  if(result=='"err"'){
+          			  if(result=='"cannot"'){
           				pushok=false;
           			  }else{
           				pushok=true;
@@ -201,7 +201,7 @@ function initCommentLines(modelName,modelId,pageNo){
       			fdType :"02",
       		  },
       		  success: function(result){
-      			  if(result=='"err"'){
+      			  if(result=='"cannot"'){
       				pushok=false;
       			  }else{
       				pushok=true;

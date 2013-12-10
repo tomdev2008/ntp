@@ -2,7 +2,9 @@ package cn.me.xdf.action.passThrough;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,14 +28,21 @@ import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.ScoreStatistics;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.log.LogLoginService;
+import cn.me.xdf.service.log.LogOnlineService;
+import cn.me.xdf.service.message.MessageService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
+import cn.me.xdf.service.studyTack.StudyTrackService;
 import cn.me.xdf.utils.ShiroUtils;
 
 /**
@@ -72,6 +81,7 @@ public class PassThroughController {
 	@Autowired
 	private CourseCatalogService courseCatalogService;
 	
+	
 	/**
 	 * 课程学习首页
 	 * @param request
@@ -93,7 +103,7 @@ public class PassThroughController {
 				}else{
 					courseCatalogs = courseCatalogService.getCatalogsByCourseId(course.getFdId());
 				}
-				
+				request.setAttribute("userId", bamCourse.getPreTeachId());
 				request.setAttribute("catalog", courseCatalogs);
 				//当前作者的图片(当作者和创建者是相同时候使用创建者的照片)
 				if(course.getFdAuthor()!=null&&course.getFdAuthor().equals(course.getCreator().getRealName())){
@@ -226,5 +236,31 @@ public class PassThroughController {
 		bamMaterialService.saveSourceNode(fdMtype, request);
 		return  "forward:/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+catalogId+"&fdMtype="+fdMtype;
 	}
+	
+	/**
+	 * 备课心情页面
+	 * @param request
+	 */
+	@RequestMapping(value = "getCourseFeeling")
+	public String getCourseFeeling(HttpServletRequest request) {
+		String userId="";
+		if (StringUtil.isEmpty(request.getParameter("userId"))) {
+			userId = ShiroUtils.getUser().getId();
+		} else {
+			userId = request.getParameter("userId");
+		}
+		request.setAttribute("userId", userId);
+		request.setAttribute("courseId", request.getParameter("courseId"));
+		request.setAttribute("isMe", userId.equals(ShiroUtils.getUser().getId()));
+		BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, request.getParameter("courseId"));
+		if(bamCourse==null){
+			return "/course/course_index";
+		}else{
+			return "/passThrough/course_feeling";
+		}
+		
+	}
+	
+	
 	
 }

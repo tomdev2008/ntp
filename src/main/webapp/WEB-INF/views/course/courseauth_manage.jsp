@@ -271,12 +271,15 @@
             		$("#showerror").html("<font size='2' color='red'>输入数据有误,请从下拉菜单中选择数据!</font>");
             		return;
             	}
-            	if($("#inputMentor").val()!=null&&$("#inputMentor").val()!=""){
-            		if($("#mentor").val()==null||$("#mentor").val()==""){
-            			$("#showerror2").html("<font size='2' color='red'>输入数据有误,请从下拉菜单中选择数据!</font>");
-            			return;
-            		}
-            	}
+				if($("#isOftask").val()=='true'){//是否需要添加导师
+	            	if($("#inputMentor").val()!=null&&$("#inputMentor").val()!=""){
+	            		if($("#mentor").val()==null||$("#mentor").val()==""){
+	            			$("#showerror2").html("<font size='2' color='red'>输入数据有误,请从下拉菜单中选择数据!</font>");
+	            			return;
+	            		}
+	            	}
+				}
+            	
             	 $.post("${ctx}/ajax/course/saveCourseParticipateAuth",{
                  	'courseId':"${param.courseId}",//课程id
                  	'teacher':$("#teacher").val(),//教师id//导师id
@@ -320,6 +323,8 @@
         //
         if($("#isOftask").val()=='true'){//必须添加导师
         	$("#inputMentor").attr("required","");
+        }else{
+        	$("#inputMentor").hide();
         }
         //课程封面
         if(result.coverUrl!=""){
