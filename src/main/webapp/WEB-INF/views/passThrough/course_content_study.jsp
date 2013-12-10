@@ -328,7 +328,7 @@
 						{{?}}
 						{{?param.code==""||param.code.type=='none'}}
 						
-								<div>
+								<div class="media-placeholder">
 									素材不存在......
 								</div>
 						{{?}}
