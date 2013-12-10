@@ -31,6 +31,7 @@
 .box1 .well{text-align: center;margin-bottom: 0}
 .box1 .txt{padding: 0 25px;color: #989898;}
 
+.thumbnails{margin-bottom: 0;}
 .thumbnails>li{width: 320px;}
 .thumbnail>img{height: 140px;width: 100%;}
 .thumbnail .hd2{padding: 18px 0;text-align: center;border-bottom: solid #ededed 1px;}
@@ -42,14 +43,14 @@
 .thumbnail .rating{margin-top: 5px;}
 .thumbnail dl{margin-top: 15px;}
 .thumbnail dt{color: #000000;float: left}
-.thumbnail dd{overflow: hidden;}
+.thumbnail dd{overflow: hidden;min-height: 40px;}
 .thumbnail .bd2{padding: 10px 20px;}
-.thumbnail .ft2{padding: 12px;}
+.thumbnail .ft2{padding: 12px;margin-bottom: 15px;}
 .thumbnail .ft2 .btn{font-size: 16px;padding: 17px 20px 1px 0;}
 .thumbnail .ft2 div.pull-right{padding: 17px 10px 0;}
 .thumbnail .ft2 div.pull-right strong{color: #888888}
 .rating-view{display: inline-block;margin-right: 5px;}
-.md {margin-top: 25px;}
+.md {margin-top: 25px;overflow: hidden}
 .md .hd h2,.md .navbar-inner,.md .navbar .nav li a{border-bottom:solid #dcdcdc 2px; background-color:#FFF;}
 .md .hd h2,.md .navbar .nav li a{font-weight:normal;margin: 0;padding: 13px 20px;line-height: 20px;font-size: 16px;}
 .md .navbar-inner{min-height: 46px;height: 46px;padding: 0;}
@@ -57,7 +58,7 @@
 .md .navbar .nav li a:hover{color: #4391bb}
 .md .navbar .nav .active a,.md .navbar .nav .active a:hover{border-color: #acacac;background-color: #c8c8c8;color: #ffffff}
 .md .bd{margin-top: 20px;}
-.md .ft{text-align: center}
+.md .ft{text-align: center;margin-bottom: 15px;}
 .md .ft a{color: #949494;}
 .md .ft .icon-circle{margin-left: 5px;}
 
