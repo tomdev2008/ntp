@@ -596,11 +596,11 @@ public class PassThroughAjaxController {
 							item.put("mood",  messages.get(i).getFdContent());
 							Map praise = new HashMap();
 							praise.put("count", messageService.getSupportCount(messages.get(i).getFdId()));
-							praise.put("did", !messageService.canSupport(ShiroUtils.getUser().getId(), messages.get(i).getFdId()));
+							praise.put("did", messageReplyService.isSupportMessage(ShiroUtils.getUser().getId(), messages.get(i).getFdId())!=null);
 							item.put("praise", praise);
 							Map weak = new HashMap();
 							weak.put("count", messageService.getOpposeCount(messages.get(i).getFdId()));
-							weak.put("did", !messageService.canOppose(ShiroUtils.getUser().getId(), messages.get(i).getFdId()));
+							weak.put("did", messageReplyService.isOpposeMessage(ShiroUtils.getUser().getId(), messages.get(i).getFdId())!=null);
 							item.put("weak", weak);
 							Map comment = new HashMap();
 							List<MessageReply> messageReplies = messageReplyService.findByProperty("message.fdId", messages.get(i).getFdId());
