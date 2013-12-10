@@ -72,7 +72,7 @@
 .carousel-btn.left{left: 0;}
 .carousel-btn.right{right: 0;}
 .carousel-inner{height: 280px;width: 584px;margin-left:-293px;left:50%;border: solid #ffffff 1px;}
-.carousel-inner>.item>img{height: 280px;width: 584px;}
+.carousel-inner>.item>img,.carousel-l img,.carousel-r img{height: 280px;width: 584px;}
 .carousel-indicators{top:302px;right: 50%;margin-right: -35px;}
 .carousel-indicators li{background-color: #c9c9c9;background-color: rgba(0,0,0,0.25)}
 .carousel-indicators .active{background-color: #4391bb;}
