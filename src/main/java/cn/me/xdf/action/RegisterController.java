@@ -32,199 +32,210 @@ import cn.me.xdf.utils.ShiroUtils;
 @RequestMapping(value = "/register")
 @Scope("request")
 public class RegisterController {
-	
 
-	@Autowired
-	private RegisterService registerService;
 
-	@Autowired
-	private AccountService accountService;
+    @Autowired
+    private RegisterService registerService;
 
-	@Autowired
-	private SysOrgElementService sysOrgElementService;
-	
-	@Autowired
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private SysOrgElementService sysOrgElementService;
+
+    @Autowired
     private AttMainService attMainService;
 
-	@RequestMapping(value = "add")
-	public String registerForm(Model model) {
-		List<SysOrgElement> elements = sysOrgElementService.findTypeis1();
-		model.addAttribute("elements", elements);
-		return "/base/register/add";
-	}
-	
-	/**
-	 * 更改用户基本信息)
-	 * @param sysOrgPersonTemp
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value = "updateOtherData", method = RequestMethod.POST)
-	public String updateOtherData(SysOrgPersonTemp sysOrgPersonTemp,
-			HttpServletRequest request) {
-		if (ShiroUtils.getUser() == null) {
-			return "redirect:/login";
-		}
-		SysOrgPersonTemp personTemp = registerService
-				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-						sysOrgPersonTemp.getFdIdentityCard());
-		if(personTemp != null){
-			registerService.updateOtherData(sysOrgPersonTemp,sysOrgPersonTemp.getPersonId());
-		}else {
-			SysOrgPerson person = accountService.load(sysOrgPersonTemp.getPersonId());
-			sysOrgPersonTemp.setFdIsEmp(person.getFdIsEmp());
-			sysOrgPersonTemp.setDepatId(person.getDepatId());
-			registerService.save(sysOrgPersonTemp);
-			registerService.updatePersonData(sysOrgPersonTemp,sysOrgPersonTemp.getPersonId());
-		}
-		
-		return "redirect:/register/updateTeacher";
-	}
-	/**
-	 * 返回修改图像
-	 * @return
-	 */
-	@RequestMapping(value = "updateIco")
-	public String updateIco(Model model){
-		if (ShiroUtils.getUser() == null) {
-			return "redirect:/login";
-		}
-		String uid = ShiroUtils.getUser().getId();
-		SysOrgPerson person = accountService.load(uid);
-		SysOrgPersonTemp personTemp = registerService
-				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-						person.getFdIdentityCard());
-		if(personTemp !=null){
-			model.addAttribute("fdId",personTemp.getFdId());
-		}
-		model.addAttribute("fdIsEmp",person.getFdIsEmp());
-		model.addAttribute("fdIdentityCard",person.getFdIdentityCard());
-		model.addAttribute("fdIcoUrl",person.getPoto());
-		return "/base/newTeacher/editIco";
-	}
-	/**
-	 * 更新新教师图像
-	 * @param sysOrgPersonTemp
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value = "updateTeacher", method = RequestMethod.POST)
-	public String updateTeacher(SysOrgPersonTemp sysOrgPersonTemp,
-			HttpServletRequest request) {
-		if (ShiroUtils.getUser() == null) {
-			return "redirect:/login";
-		}
-		String uid = ShiroUtils.getUser().getId();
-		SysOrgPersonTemp personTemp = registerService
-				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-						sysOrgPersonTemp.getFdIdentityCard());
-		if(personTemp != null){
-	    	String attMainId=request.getParameter("attId");
-	    	if(StringUtil.isNotBlank(attMainId)){
-		    	AttMain attMain = attMainService.get(attMainId);
-		    	attMain.setFdModelId(personTemp.getFdId());
-		    	attMain.setFdModelName(SysOrgPersonTemp.class.getName());
-		    	attMain.setFdKey("Person");
-		    	attMainService.update(attMain);
-			}
-	    	
-		  registerService.updateTeacherPic(sysOrgPersonTemp,uid);
-		} else {
-		  registerService.updatePerToDBIXDF(sysOrgPersonTemp.getFdIcoUrl(),uid);
-		}
-		return "redirect:/register/updateTeacher";
-	}
-	/**
-	 * 点击修改密码时返回修改密码页面
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "changePwd")
-	public String changePwd(Model model){
-		if (ShiroUtils.getUser() == null) {
-			return "redirect:/login";
-		}
-		String uid = ShiroUtils.getUser().getId();
-		SysOrgPerson person = accountService.load(uid);
-		SysOrgPersonTemp personTemp = registerService
-				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-						person.getFdIdentityCard());
-		if(personTemp != null){
-		  model.addAttribute("fdId", personTemp.getFdId());
-		}
-		model.addAttribute("fdEmail", person.getFdEmail());
-		model.addAttribute("fdIcoUrl", person.getPoto());
-		model.addAttribute("fdIsEmp", person.getFdIsEmp());
-		return "/base/newTeacher/changePwd";
-	}
-	/**
-	 * 修改密码的方法
-	 * @param sysOrgPersonTemp
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value = "updateTeacherPwd", method = RequestMethod.POST)
-	public String updateTeacherPwd(SysOrgPersonTemp sysOrgPersonTemp,HttpServletRequest request){
-		if (ShiroUtils.getUser() == null) {
-			return "redirect:/login";
-		}
-		String uid = ShiroUtils.getUser().getId();
-		String newPwd = sysOrgPersonTemp.getFdPassword();
-		String fdId = sysOrgPersonTemp.getFdId();
-		registerService.updateTeacherPwd(fdId, newPwd, uid);
-		return "redirect:/register/changePwd";
-	}
-	
-	/**
-	 * 新老师更改信息
-	 * @param model
-	 */
-	@RequestMapping(value = "updateTeacher")
-	public String updateTeacher(Model model) {
-		if (ShiroUtils.getUser() == null) {
-			return "redirect:/login";
-		}
-		String uid = ShiroUtils.getUser().getId();
-		SysOrgPerson person = accountService.load(uid);
-		SysOrgPersonTemp sysOrgPersonTemp = registerService
-				.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-						person.getFdIdentityCard());
-		model.addAttribute("person", person);
-		if (sysOrgPersonTemp != null) {	
-			model.addAttribute("bean", sysOrgPersonTemp);
-		}	
-		model.addAttribute("fdIcoUrl",person.getPoto());
-		if(person.getHbmParent() != null && person.getHbmParent().getHbmParentOrg()!= null){
-			   model.addAttribute("sysParOrg",person.getHbmParent().getHbmParentOrg().getFdName());
-			   model.addAttribute("sysParOrgId",person.getHbmParent().getHbmParentOrg().getFdId());
-		}
-		List<SysOrgElement> elements = sysOrgElementService.findTypeis1();
-		model.addAttribute("elements", elements);
-		return "/base/newTeacher/edit";
-	}
+    @RequestMapping(value = "add")
+    public String registerForm(Model model) {
+        List<SysOrgElement> elements = sysOrgElementService.findTypeis1();
+        model.addAttribute("elements", elements);
+        return "/base/register/add";
+    }
 
-	/*
-	 * 邮件注册入口
-	 */
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "register/{randomCode}")
-	public String register(Model model,
-			@PathVariable("randomCode") String randomCode) {
-		Finder finder = Finder
-				.create("from SysOrgPersonTemp sopt where sopt.isRegistered = '0' and sopt.randomCode = :randomCode");
-		finder.setParam("randomCode", randomCode);
-		List<SysOrgPersonTemp> sysOrgPersonTempList = registerService
-				.find(finder);
-		SysOrgPersonTemp sysOrgPersonTemp = new SysOrgPersonTemp();
-		if (sysOrgPersonTempList != null && sysOrgPersonTempList.size() > 0) {
-			sysOrgPersonTemp = sysOrgPersonTempList.get(0);
-		} else {
-			return "/login";
-		}
+    /**
+     * 更改用户基本信息)
+     *
+     * @param sysOrgPersonTemp
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "updateOtherData", method = RequestMethod.POST)
+    public String updateOtherData(SysOrgPersonTemp sysOrgPersonTemp,
+                                  HttpServletRequest request) {
+        if (ShiroUtils.getUser() == null) {
+            return "redirect:/login";
+        }
+        SysOrgPersonTemp personTemp = registerService
+                .findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+                        sysOrgPersonTemp.getFdIdentityCard());
+        if (personTemp != null) {
+            registerService.updateOtherData(sysOrgPersonTemp, sysOrgPersonTemp.getPersonId());
+        } else {
+            SysOrgPerson person = accountService.load(sysOrgPersonTemp.getPersonId());
+            sysOrgPersonTemp.setFdIsEmp(person.getFdIsEmp());
+            sysOrgPersonTemp.setDepatId(person.getDepatId());
+            registerService.save(sysOrgPersonTemp);
+            registerService.updatePersonData(sysOrgPersonTemp, sysOrgPersonTemp.getPersonId());
+        }
 
-		model.addAttribute("sopt", sysOrgPersonTemp);
+        return "redirect:/register/updateTeacher";
+    }
 
-		return "/base/register/register";
-	}
-	
+    /**
+     * 返回修改图像
+     *
+     * @return
+     */
+    @RequestMapping(value = "updateIco")
+    public String updateIco(Model model) {
+        if (ShiroUtils.getUser() == null) {
+            return "redirect:/login";
+        }
+        String uid = ShiroUtils.getUser().getId();
+        SysOrgPerson person = accountService.load(uid);
+        SysOrgPersonTemp personTemp = registerService
+                .findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+                        person.getFdIdentityCard());
+        if (personTemp != null) {
+            model.addAttribute("fdId", personTemp.getFdId());
+        }
+        model.addAttribute("fdIsEmp", person.getFdIsEmp());
+        model.addAttribute("fdIdentityCard", person.getFdIdentityCard());
+        model.addAttribute("fdIcoUrl", person.getPoto());
+        model.addAttribute("fdUserName", person.getLoginName());
+        return "/base/newTeacher/editIco";
+    }
+
+    /**
+     * 更新新教师图像
+     *
+     * @param sysOrgPersonTemp
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "updateTeacher", method = RequestMethod.POST)
+    public String updateTeacher(SysOrgPersonTemp sysOrgPersonTemp,
+                                HttpServletRequest request) {
+        if (ShiroUtils.getUser() == null) {
+            return "redirect:/login";
+        }
+        String uid = ShiroUtils.getUser().getId();
+        SysOrgPersonTemp personTemp = registerService
+                .findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+                        sysOrgPersonTemp.getFdIdentityCard());
+        String fdUserName = request.getParameter("fdUserName");
+        String attMainId = request.getParameter("attId");
+        if (StringUtil.isNotBlank(attMainId)) {
+            AttMain attMain = attMainService.get(attMainId);
+            if (personTemp != null) {
+                attMain.setFdModelId(personTemp.getFdId());
+                attMain.setFdModelName(SysOrgPersonTemp.class.getName());
+                attMain.setFdKey("Person");
+                attMainService.update(attMain);
+                registerService.updateTeacherPic(sysOrgPersonTemp, uid);
+            } else {
+                registerService.updatePerToDBIXDF(fdUserName, attMain.getFdFilePath(), uid);
+            }
+        }
+        return "redirect:/register/updateTeacher";
+    }
+
+    /**
+     * 点击修改密码时返回修改密码页面
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "changePwd")
+    public String changePwd(Model model) {
+        if (ShiroUtils.getUser() == null) {
+            return "redirect:/login";
+        }
+        String uid = ShiroUtils.getUser().getId();
+        SysOrgPerson person = accountService.load(uid);
+        SysOrgPersonTemp personTemp = registerService
+                .findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+                        person.getFdIdentityCard());
+        if (personTemp != null) {
+            model.addAttribute("fdId", personTemp.getFdId());
+        }
+        model.addAttribute("fdEmail", person.getFdEmail());
+        model.addAttribute("fdIcoUrl", person.getPoto());
+        model.addAttribute("fdIsEmp", person.getFdIsEmp());
+        return "/base/newTeacher/changePwd";
+    }
+
+    /**
+     * 修改密码的方法
+     *
+     * @param sysOrgPersonTemp
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "updateTeacherPwd", method = RequestMethod.POST)
+    public String updateTeacherPwd(SysOrgPersonTemp sysOrgPersonTemp, HttpServletRequest request) {
+        if (ShiroUtils.getUser() == null) {
+            return "redirect:/login";
+        }
+        String uid = ShiroUtils.getUser().getId();
+        String newPwd = sysOrgPersonTemp.getFdPassword();
+        String fdId = sysOrgPersonTemp.getFdId();
+        registerService.updateTeacherPwd(fdId, newPwd, uid);
+        return "redirect:/register/changePwd";
+    }
+
+    /**
+     * 新老师更改信息
+     *
+     * @param model
+     */
+    @RequestMapping(value = "updateTeacher")
+    public String updateTeacher(Model model) {
+        if (ShiroUtils.getUser() == null) {
+            return "redirect:/login";
+        }
+        String uid = ShiroUtils.getUser().getId();
+        SysOrgPerson person = accountService.load(uid);
+        SysOrgPersonTemp sysOrgPersonTemp = registerService
+                .findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
+                        person.getFdIdentityCard());
+        model.addAttribute("person", person);
+        if (sysOrgPersonTemp != null) {
+            model.addAttribute("bean", sysOrgPersonTemp);
+        }
+        model.addAttribute("fdIcoUrl", person.getPoto());
+        if (person.getHbmParent() != null && person.getHbmParent().getHbmParentOrg() != null) {
+            model.addAttribute("sysParOrg", person.getHbmParent().getHbmParentOrg().getFdName());
+            model.addAttribute("sysParOrgId", person.getHbmParent().getHbmParentOrg().getFdId());
+        }
+        List<SysOrgElement> elements = sysOrgElementService.findTypeis1();
+        model.addAttribute("elements", elements);
+        return "/base/newTeacher/edit";
+    }
+
+    /*
+     * 邮件注册入口
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "register/{randomCode}")
+    public String register(Model model,
+                           @PathVariable("randomCode") String randomCode) {
+        Finder finder = Finder
+                .create("from SysOrgPersonTemp sopt where sopt.isRegistered = '0' and sopt.randomCode = :randomCode");
+        finder.setParam("randomCode", randomCode);
+        List<SysOrgPersonTemp> sysOrgPersonTempList = registerService
+                .find(finder);
+        SysOrgPersonTemp sysOrgPersonTemp = new SysOrgPersonTemp();
+        if (sysOrgPersonTempList != null && sysOrgPersonTempList.size() > 0) {
+            sysOrgPersonTemp = sysOrgPersonTempList.get(0);
+        } else {
+            return "/login";
+        }
+
+        model.addAttribute("sopt", sysOrgPersonTemp);
+
+        return "/base/register/register";
+    }
+
 }

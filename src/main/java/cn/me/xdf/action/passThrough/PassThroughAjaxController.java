@@ -176,14 +176,14 @@ public class PassThroughAjaxController {
 			pageNo = 1;
 		}
 		List result = new ArrayList();
-		Finder finder = Finder.create(" from BamCourse b where b.courseId = :courseId ");
+		Finder finder = Finder.create(" select preTeachId  from ixdf_ntp_bam_score b where b.courseId = :courseId order by dbms_random.value ");
 		finder.setParam("courseId", courseId);
-		Pagination page = bamCourseService.getPage(finder, pageNo, SimplePage.DEF_COUNT);
+		Pagination page = bamCourseService.getPageBySql(finder, pageNo, 15);
 		if(page.getTotalCount()>0){
 			List list = page.getList();
 			for(int i=0;i<list.size();i++){
-				BamCourse bam = (BamCourse)list.get(i);
-				SysOrgPerson person = accountService.load(bam.getPreTeachId());
+				Map bam = (Map)list.get(i);
+				SysOrgPerson person = accountService.load((String)bam.get("PRETEACHID"));
 				Map people = new HashMap();
 				people.put("id", person.getFdId());
 				people.put("name", person.getRealName());
