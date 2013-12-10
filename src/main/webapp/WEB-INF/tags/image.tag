@@ -18,16 +18,16 @@
 <%
 if(StringUtils.isBlank(href)){
 	%>
-	<img class="<%=clas%>" src="${ctx}/<%=ComUtils.getDefaultPoto()%>" onerror=""/>	
+	<img class="<%=clas%>" id="<%=id%>" src="${ctx}/<%=ComUtils.getDefaultPoto()%>" onerror=""/>
 	<%
 }
 else if (ishttp) {
 %>
-<img class="<%=clas%>" src="<%=href%>" />
+<img class="<%=clas%>" id="<%=id%>" src="<%=href%>" />
 <%
 	} else {
 %>
-<img class="<%=clas%>" src="${ctx}/<%=href%>" />
+<img class="<%=clas%>" id="<%=id%>" src="${ctx}/<%=href%>" />
 <%
 	}
 %>
