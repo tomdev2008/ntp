@@ -332,7 +332,7 @@ $(function(){
     	$("#videoText").html("");
     	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的视频将会显示在下面的幻灯片列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
-    	uptype='*.ppt;';
+    	uptype='*.ppt;*.pptx;';
         break;
   }
 	var $progress ,

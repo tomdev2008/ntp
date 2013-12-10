@@ -140,6 +140,9 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                     if (attMain != null) {
                         defaultMedia.put("url", attMain.getFdId());//附件id
                     }
+                    List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(minfo.getFdId(), MaterialInfo.class.getName());
+                    defaultMedia.put("code", attMains.size() == 0 ? "" : attMains.get(0).getCode());
+                    defaultMedia.put("isPass", minfo.getThrough());
                     defaultMedia.put("isPass", minfo.getThrough());
                     Map memap = new HashMap();
                     memap.put("id", minfo.getFdId());
@@ -152,6 +155,9 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                     if (attMain != null) {
                         defaultMedia.put("url", attMain.getFdId());//附件id
                     }
+                    List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(minfo.getFdId(), MaterialInfo.class.getName());
+                    defaultMedia.put("code", attMains.size() == 0 ? "" : attMains.get(0).getCode());
+                    defaultMedia.put("isPass", minfo.getThrough());
                     defaultMedia.put("isPass", minfo.getThrough());
                     Map memap = new HashMap();
                     memap.put("id", minfo.getFdId());
