@@ -194,7 +194,7 @@ public class StudyTrackAjaxController {
 		map.put("org", orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
 		map.put("dep", orgPerson.getDeptName());
 		map.put("sex", orgPerson.getFdSex());
-		map.put("lastTime", logLoginService.getNewLoginDate());
+		map.put("lastTime", logLoginService.getNewLoginDate().equals("0")?"首次登录":"最近登录 "+logLoginService.getNewLoginDate());
 		map.put("onlineDay",logOnlineService.getOnlineByUserId(ShiroUtils.getUser().getId()).getLoginDay());
 		return JsonUtils.writeObjectToJson(map);
 	}

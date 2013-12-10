@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
@@ -22,6 +23,7 @@ import cn.me.xdf.model.message.MessageReply;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.Score;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.message.MessageReplyService;
 import cn.me.xdf.service.message.MessageService;
 import cn.me.xdf.service.score.ScoreService;
@@ -50,6 +52,9 @@ public class MessageAjaxController {
 	
 	@Autowired
 	private ScoreService scoreService;
+	
+	@Autowired
+	private BamCourseService bamCourseService;
 	
 	/**
 	 * 支持或反对评论
@@ -154,6 +159,20 @@ public class MessageAjaxController {
 	}
 	
 	/**
+	 * 添加备课心情
+	 * 
+	 */
+	@RequestMapping(value = "addMessageFeeling")
+	@ResponseBody
+	public void addMessageFeeling(String userId ,String courseId,String fdContent) {
+		BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseId);
+		if(bamCourse!=null){
+			addMessage(BamCourse.class.getName(), bamCourse.getFdId(), fdContent, Constant.MESSAGE_TYPE_MOOD, false, ShiroUtils.getUser().getId());
+
+		}
+	}
+	
+	/**
 	 * 添加评论的评论(针对资源，当前用户)
 	 * 
 	 */
@@ -189,6 +208,37 @@ public class MessageAjaxController {
 		message.setFdId(messageId);
 		messageReply.setMessage(message);
 		messageReplyService.save(messageReply);
+	}
+	
+	
+	/**
+	 * 添加评论的评论(针对备课心情，当前用户)
+	 * 
+	 */
+	@RequestMapping(value = "addFeelingMessagesMessage")
+	@ResponseBody
+	private String addFeelingMessagesMessage(String fdContent,String messageId) {
+		MessageReply messageReply = new MessageReply();
+		messageReply.setFdContent(fdContent);
+		messageReply.setFdType("03");
+		messageReply.setFdCreateTime(new Date());
+		messageReply.setFdUser((SysOrgPerson)accountService.load(ShiroUtils.getUser().getId()));
+		Message message = new Message();
+		message.setFdId(messageId);
+		messageReply.setMessage(message);
+		messageReplyService.save(messageReply);
+		Map map = new HashMap();
+		map.put("comment", messageReply.getFdContent());
+		map.put("time", DateUtil.getInterval(DateUtil.convertDateToString(messageReply.getFdCreateTime()), "yyyy/MM/dd hh:mm aa"));
+		SysOrgPerson orgPerson = messageReply.getFdUser();
+		Map userMap = new HashMap();
+		userMap.put("imgUrl", orgPerson.getPoto());
+		userMap.put("link", "/course/courseIndex?userId="+orgPerson.getFdId());
+		userMap.put("name", orgPerson.getRealName());
+		userMap.put("mail", orgPerson.getFdEmail()==null?"不详":orgPerson.getFdEmail());
+		userMap.put("org", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
+		map.put("issuer", userMap);
+		return JsonUtils.writeObjectToJson(map);
 	}
 	
 	/**
