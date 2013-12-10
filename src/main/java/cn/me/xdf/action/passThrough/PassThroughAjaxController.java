@@ -603,7 +603,8 @@ public class PassThroughAjaxController {
 							weak.put("did", messageReplyService.isOpposeMessage(ShiroUtils.getUser().getId(), messages.get(i).getFdId())!=null);
 							item.put("weak", weak);
 							Map comment = new HashMap();
-							List<MessageReply> messageReplies = messageReplyService.findByProperty("message.fdId", messages.get(i).getFdId());
+							List<MessageReply> messageReplies = messageReplyService.findByCriteria(MessageReply.class,
+									Value.eq("message.fdId", messages.get(i).getFdId()), Value.eq("fdType", "03"));
 							comment.put("count", messageReplies.size());
 							List<Map> messageRepliesMap = new ArrayList<Map>();
 							for (MessageReply messageReply : messageReplies) {
