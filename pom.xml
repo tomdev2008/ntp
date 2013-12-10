@@ -12,7 +12,7 @@
         <org.springframework-version>3.2.4.RELEASE</org.springframework-version>
         <org.aspectj-version>1.7.4</org.aspectj-version>
         <org.slf4j-version>1.5.10</org.slf4j-version>
-        <org.hibernate>4.2.8.Final</org.hibernate>
+        <org.hibernate>4.2.7.SP1</org.hibernate>
         <encoding>UTF-8</encoding>
     </properties>
 
@@ -27,10 +27,6 @@
                 <exclusion>
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jstl</artifactId>
-                    <groupId>javax.servlet</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -181,13 +177,6 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.1</version>
         </dependency>
-
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -243,7 +232,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>5.0.0.Final</version>
+            <version>5.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.apache.shiro</groupId>
@@ -448,7 +437,6 @@
                             <goal>stop</goal>
                         </goals>
                     </execution>
-
                 </executions>
             </plugin>
             <plugin>
