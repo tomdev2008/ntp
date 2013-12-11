@@ -103,7 +103,6 @@ public class PassThroughController {
 				}else{
 					courseCatalogs = courseCatalogService.getCatalogsByCourseId(course.getFdId());
 				}
-				request.setAttribute("userId", bamCourse.getPreTeachId());
 				request.setAttribute("catalog", courseCatalogs);
 				//当前作者的图片(当作者和创建者是相同时候使用创建者的照片)
 				if(course.getFdAuthor()!=null&&course.getFdAuthor().equals(course.getCreator().getRealName())){

@@ -95,29 +95,7 @@ function checkSubmit(){
 		}
 }
 </script>
-<div class="fixed-left">
-	<div class="container">
-		<div class="col-left">
-    	<ul class="nav nav-list sidenav">
-        	<li class="nav-header">
-            	<div class="tit-icon_bg"><i class="icon-gear"></i><i class="icon-sj"></i></div>
-                            账号设置
-            </li>
-    		<li><a href="${ctx}/register/updateTeacher"><i class="icon-user"></i>个人资料</a></li>
-            <li><a href="${ctx}/register/updateIco"><i class="icon-user"></i>修改头像</a></li>
-            <li class="active"><a href="${ctx}/register/changePwd"><i class="icon-pencil"></i>修改密码</a></li>
-    	</ul>
-    	</div>
-    </div>
-</div>
-<div class="container">
-	<div class="col-right">    	
-    	<div class="section">
-        <div class="page-header">
-        	<div class="tit-icon_bg"><i class="icon-pencil icon-white"></i><i class="icon-sj"></i></div>
-        	<h5>修改密码</h5>
-            <a href="${ctx}/course/courseIndex" class="replyMybk" title="个人主页" ><i class="icon-home icon-white"></i></a>
-        </div>        
+       
        <div class="page-body"> 
           <form id="subForm" onsubmit="return checkSubmit();" action="${ctx}/register/updateTeacherPwd" method="post" class="reg_form form-horizontal">
            <c:if test="${fdIsEmp=='0'}">
@@ -174,13 +152,6 @@ function checkSubmit(){
             </div>
         </c:if>
         </form>
-       
         </div>
-      </div>
-    
-    </div>
-	
-</div>
-
 </body>
 </html>

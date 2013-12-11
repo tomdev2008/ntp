@@ -747,37 +747,20 @@ $("#exportExamPaper").click(function(e){
 									$name.html($inpt).append(
 											$checkbox.removeClass("inline"))
 											.append($btns);
-									$btns
-											.find(".btn")
-											.click(
-													function(e) {
-														if ($(this).hasClass(
-																"btn-primary")) {
-															if (validator
-																	.element($inpt)) {
-																$name
-																		.html($inpt
-																				.val());
-																$name
-																		.next(
-																				".item-ctrl")
-																		.prepend(
-																				$checkbox
-																						.addClass("inline").detach());
-																$this.show();
-															}
-														} else {
-															$name.html($inpt
-																	.val());
-															$name
-																	.next(
-																			".item-ctrl")
-																	.prepend(
-																			$checkbox
-																					.addClass("inline").detach());
-															$this.show();
-														}
-													});
+									$btns.find(".btn").click(function(e) {
+										var $checkbox = $(this).parent().prev("label").detach();
+										if ($(this).hasClass("btn-primary")) {
+											if (validator.element($inpt)) {
+												$name.html($inpt.val());
+												$name.next(".item-ctrl").prepend($checkbox.addClass("inline").detach());
+												$this.show();
+											}
+										} else {
+											$name.html($inpt.val());
+											$name.next(".item-ctrl").prepend($checkbox.addClass("inline").detach());
+											$this.show();
+										}
+									});
 								});
 
 				$(".scoreLine>a").tooltip().click(function(e) {//分数控制
