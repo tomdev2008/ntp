@@ -254,7 +254,7 @@ function refreshTrackList(type,pageNo,pageSize,order){
 
 function showSearch(){
 	var fdTitle = document.getElementById("serach").value;
-	$("#markshow").html('含“<a id="containkey" href="#"></a>”的用户');
+	$("#markshow").html('含“<a id="containkey" href="#"></a>”的条目');
 	if(fdTitle==''){
 		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
 	}else if(fdTitle.length>2){
