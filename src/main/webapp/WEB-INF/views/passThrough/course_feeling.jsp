@@ -191,7 +191,7 @@
     </section>
 
     <section class="mt20 clearfix">
-        <section class="pull-left w760">
+        <section class="pull-left w760" id="feelingDiv">
             <div class="section box-pd20">
                 <form id="formAddMood" action="##">
                 	<c:if test="${isMe==true}">
@@ -511,6 +511,9 @@
     		},
     		success : function(result) {
     			$("#listMood").html(moodFn(result));
+    			if(result.list.length==0){
+    				$("#feelingDiv").addClass("hide");
+    			}
     		}
     	});
     	$("#listMood dd .btn-ctrl>a").tooltip()
