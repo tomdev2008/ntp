@@ -9,7 +9,7 @@
 	<ul class="thumbnails" >
 	{{~it.list :item:index}}
        <li>
-		  <a href="#" class="thumbnail">
+		  <a href="${ctx}/passThrough/getCourseFeeling?courseId=${param.courseId}&userId={{=item.id}}" class="thumbnail">
 		    <img src="{{?item.photoUrl.indexOf('http')>-1}}{{=item.photoUrl}}{{??}}${ctx}/{{=item.photoUrl}}{{?}}" />
           </a>
           <h6>{{=item.name}}</h6>
