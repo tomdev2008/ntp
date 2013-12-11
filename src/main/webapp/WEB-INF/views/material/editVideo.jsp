@@ -103,6 +103,7 @@
                                       </b>
                                 </span>
                                 <span class="btns-handle">
+                                <b>|</b>
                                     <button type="button" class="btn btn-link"><i class="icon-eye"></i>
                                        <c:if test="${materialInfo.fdPlays==null}">
                                           0
@@ -110,7 +111,7 @@
                                        <c:if test="${materialInfo.fdPlays!=null}">
                                           ${materialInfo.fdPlays}
                                        </c:if>
-                                     </button>
+                                     </button><b>|</b>
                                     <button type="button" class="btn btn-link"><i class="icon-thumbs-up"></i>
                                       <c:if test="${materialInfo.fdLauds==null}">
                                           0
@@ -118,7 +119,7 @@
                                        <c:if test="${materialInfo.fdLauds!=null}">
                                           ${materialInfo.fdLauds}
                                        </c:if>
-                                    </button>
+                                    </button><b>|</b>
                                     <button type="button" class="btn btn-link"><i class="icon-download"></i>0</button>
                                 </span>
                             </div>

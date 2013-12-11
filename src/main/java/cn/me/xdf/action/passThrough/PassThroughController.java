@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.hibernate4.Value;
@@ -144,6 +146,13 @@ public class PassThroughController {
 		String catalogId = request.getParameter("catalogId");
 		String fdMtype = request.getParameter("fdMtype");
 		String fdPassword = request.getParameter("fdPassword");
+		Map<String,?> map = RequestContextUtils.getInputFlashMap(request);   
+        if (map!=null)  {
+        	courseId = (String)map.get("courseId");
+    		catalogId = (String)map.get("catalogId");
+    		fdMtype = (String)map.get("fdMtype");
+    		fdPassword = (String)map.get("fdPassword");
+        }
 		if(StringUtil.isBlank(courseId)){
 			return "redirect:/course/courseIndex";
 		}
@@ -228,12 +237,19 @@ public class PassThroughController {
 	 * @param request
 	 */
 	@RequestMapping(value = "submitExamOrTask")
-	public String submitExamOrTask(WebRequest request) {
+	public String submitExamOrTask(WebRequest request,RedirectAttributes redirectAttributes) {
 		String fdMtype = request.getParameter("fdMtype");
 		String catalogId = request.getParameter("catalogId");
 		String courseId =request.getParameter("courseId");
 		bamMaterialService.saveSourceNode(fdMtype, request);
-		return  "forward:/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+catalogId+"&fdMtype="+fdMtype;
+		redirectAttributes.addFlashAttribute("courseId", courseId);
+		redirectAttributes.addFlashAttribute("catalogId", catalogId);
+		redirectAttributes.addFlashAttribute("fdMtype", fdMtype);
+		CourseInfo course = courseService.get(courseId);
+		if(!course.getIsPublish()&&StringUtil.isNotBlank(course.getFdPassword())){
+			redirectAttributes.addFlashAttribute("fdPassword", course.getFdPassword());
+		}
+		return  "redirect:/passThrough/getStudyContent";
 	}
 	
 	/**
