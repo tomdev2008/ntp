@@ -93,9 +93,9 @@ footer .navbar .nav li.last a{border-right:none;}
 /* star */
 .icon-star{*margin-right:0;vertical-align:middle;}
 .rating-all .icon-star{margin-top:0;}
-.rating-view{line-height:20px;}
+.rating-view{line-height:20px;height:20px;}
 .rating-view .text-warning{vertical-align:middle}
-.rating-view .rating-all{margin-right:6px;}
+.rating-view .rating-all{margin-right:6px;font-size: 0;height: 20px;display: inline-block;vertical-align:middle}
 
 /*上传控件样式*/
 .control-upload{font-size: 0;margin-top: 10px;padding-top:5px;min-height:35px;position:relative}
