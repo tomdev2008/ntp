@@ -146,10 +146,10 @@ public class MessageService extends BaseService implements InitializingBean{
 			throw new RuntimeException("只有评论消息才能支持或反对");
 		}*/
 		if(fdType.equals("02")&&!canOppose(userId,messageId)){
-			return "err";
+			return "cannot";
 		}
 		if(fdType.equals("01")&&!canSupport(userId,messageId)){
-			return "err";
+			return "cannot";
 		}
 		MessageReply messageReply = new MessageReply();
 		messageReply.setMessage(message);

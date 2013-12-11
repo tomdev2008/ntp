@@ -1,9 +1,12 @@
 package cn.me.xdf.action.passThrough;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
@@ -30,16 +34,24 @@ import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.message.Message;
+import cn.me.xdf.model.message.MessageReply;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.log.LogLoginService;
+import cn.me.xdf.service.log.LogOnlineService;
 import cn.me.xdf.service.material.ExamQuestionService;
 import cn.me.xdf.service.material.MaterialService;
+import cn.me.xdf.service.message.MessageReplyService;
+import cn.me.xdf.service.message.MessageService;
+import cn.me.xdf.service.studyTack.StudyTrackService;
 import cn.me.xdf.utils.DateUtil;
 import cn.me.xdf.utils.ShiroUtils;
 
@@ -75,6 +87,15 @@ public class PassThroughAjaxController {
 	
 	@Autowired
 	private CourseParticipateAuthService courseParticipateAuthService;
+	
+	@Autowired
+	private SysOrgPersonService sysOrgPersonService;
+	
+	@Autowired
+	private MessageService messageService;
+	
+	@Autowired
+	private MessageReplyService messageReplyService;
 	
 	
 	/**
@@ -488,4 +509,260 @@ public class PassThroughAjaxController {
 			}
 		}
 		
+		/**
+		 * 获取用户课程信息
+		 * 
+		 * 
+		 */
+		@RequestMapping(value="getUserCourseInfo")
+		@ResponseBody
+		private String getUserCourseInfo(HttpServletRequest request) {
+			Map returnMap = new HashMap();
+			String userId = request.getParameter("userId");
+			String courseId = request.getParameter("courseId");
+			if(userId.equals(ShiroUtils.getUser().getId())){
+				returnMap.put("isme", true);
+			}else{
+				returnMap.put("isme", false);
+			}
+			SysOrgPerson orgPerson = accountService.load(userId);
+			returnMap.put("name", orgPerson.getRealName());
+			returnMap.put("img", orgPerson.getPoto());
+			returnMap.put("sex", orgPerson.getFdSex());
+			returnMap.put("org", orgPerson.getHbmParent()==null?"不详":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
+			returnMap.put("dep", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
+			returnMap.put("tel", orgPerson.getFdWorkPhone()==null?"不详":orgPerson.getFdWorkPhone());
+			returnMap.put("qq", orgPerson.getFdQq()==null?"不详":orgPerson.getFdQq());
+			Map userMap = sysOrgPersonService.getUserInfo(userId);
+			returnMap.put("bool", userMap.get("fdBloodType"));
+			returnMap.put("selfIntroduction", userMap.get("selfIntroduction"));
+			CourseInfo courseInfo = courseService.get(courseId);
+			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
+			returnMap.put("courseName",courseInfo.getFdTitle());
+			returnMap.put("courseAuther", courseInfo.getFdAuthor());
+			returnMap.put("courseImg",attMains.size()==0?"":attMains.get(0).getFdId());
+			return JsonUtils.writeObjectToJson(returnMap);
+		}
+		
+		/**
+		 * 获取备课心情
+		 * 
+		 * 
+		 */
+		@RequestMapping(value="getMessageFeeling")
+		@ResponseBody
+		private String getMessageFeeling(HttpServletRequest request) {
+			String userId = request.getParameter("userId");
+			String courseId = request.getParameter("courseId");
+			BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseId);
+			Map returnMap = new HashMap();
+			if(bamCourse==null){
+				returnMap.put("list", new ArrayList());
+				return JsonUtils.writeObjectToJson(returnMap);
+			}else{
+				List<Map> list =  new ArrayList<Map>();
+				Finder finder = Finder.create("");
+				finder.append("from Message m where m.fdType=:fdType and m.fdModelName=:fdModelName and m.fdModelId=:fdModelId order by m.fdCreateTime desc ");
+				finder.setParam("fdType",Constant.MESSAGE_TYPE_MOOD);
+				finder.setParam("fdModelName",BamCourse.class.getName());
+				finder.setParam("fdModelId",bamCourse.getFdId());
+				List<Message> messages = messageService.find(finder);
+				if(messages.size()==0){
+					returnMap.put("list", new ArrayList());
+					return JsonUtils.writeObjectToJson(returnMap);
+				}
+				List<String> dateList = new ArrayList<String>();
+				//Set<String> dateSet = new HashSet<String>();
+				for ( int i=0;i<messages.size();i++) {
+					Message message = messages.get(i);
+					SimpleDateFormat sim = new SimpleDateFormat("MM dd yyyy");
+					String date = sim.format(message.getFdCreateTime().getTime());
+					if(!dateList.contains(date)){
+						dateList.add(date);
+					}
+				}
+				for(int j=0;j<dateList.size();j++){
+					String string = dateList.get(j);
+				//for (String string : dateSet) {
+					Map map = new HashMap();
+					map.put("date", string);
+					List<Map> items = new ArrayList<Map>();
+					for(int i=0;i<messages.size();i++){
+						SimpleDateFormat sim = new SimpleDateFormat("MM dd yyyy");
+						String c2s = sim.format(messages.get(i).getFdCreateTime().getTime()); 
+						if(string.equals(c2s)){
+							Map item = new HashMap();
+							item.put("id", messages.get(i).getFdId());
+							item.put("mood",  messages.get(i).getFdContent());
+							Map praise = new HashMap();
+							praise.put("count", messageService.getSupportCount(messages.get(i).getFdId()));
+							praise.put("did", messageReplyService.isSupportMessage(ShiroUtils.getUser().getId(), messages.get(i).getFdId())!=null);
+							item.put("praise", praise);
+							Map weak = new HashMap();
+							weak.put("count", messageService.getOpposeCount(messages.get(i).getFdId()));
+							weak.put("did", messageReplyService.isOpposeMessage(ShiroUtils.getUser().getId(), messages.get(i).getFdId())!=null);
+							item.put("weak", weak);
+							Map comment = new HashMap();
+							List<MessageReply> messageReplies = messageReplyService.findByCriteria(MessageReply.class,
+									Value.eq("message.fdId", messages.get(i).getFdId()), Value.eq("fdType", "03"));
+							comment.put("count", messageReplies.size());
+							List<Map> messageRepliesMap = new ArrayList<Map>();
+							for (MessageReply messageReply : messageReplies) {
+								Map messageReplyMap = new HashMap();
+								SysOrgPerson orgPerson = messageReply.getFdUser();
+								Map userMap = new HashMap();
+								userMap.put("imgUrl", orgPerson.getPoto());
+								userMap.put("link", "/course/courseIndex?userId="+orgPerson.getFdId());
+								userMap.put("name", orgPerson.getRealName());
+								userMap.put("mail", orgPerson.getFdEmail()==null?"不详":orgPerson.getFdEmail());
+								userMap.put("org", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
+								messageReplyMap.put("issuer", userMap);
+								messageReplyMap.put("comment", messageReply.getFdContent());
+								messageReplyMap.put("time", DateUtil.getInterval(DateUtil.convertDateToString(messageReply.getFdCreateTime()), "yyyy/MM/dd hh:mm aa"));
+								messageRepliesMap.add(messageReplyMap);
+							}
+							ArrayUtils.sortListByProperty(messageRepliesMap, "time", SortType.LOW); 
+							comment.put("list", messageRepliesMap);
+							item.put("comment", comment);
+							item.put("time", DateUtil.getInterval(DateUtil.convertDateToString(messages.get(i).getFdCreateTime()), "yyyy/MM/dd hh:mm aa"));
+							items.add(item);
+						}
+					}
+					map.put("items", items);
+					list.add(map);
+				}
+				returnMap.put("list",list);
+				return JsonUtils.writeObjectToJson(returnMap);
+			}
+		}
+		
+		@Autowired
+		private LogLoginService logLoginService;
+		
+		@Autowired
+		private LogOnlineService logOnlineService;
+		
+		@Autowired
+		private StudyTrackService studyTrackService;
+		
+		/**
+		 * 备课心情页面，活跃天数
+		 * @param request
+		 */
+		@RequestMapping(value = "getCourseFeelingActive")
+		@ResponseBody
+		public String getCourseFeelingActive(HttpServletRequest request) {
+			String userId = request.getParameter("userId");
+			String courseId= request.getParameter("courseId");
+			SysOrgPerson orgPerson = accountService.load(userId);
+			Map map = new HashMap();
+			map.put("lastTime", logLoginService.getNewLoginDate());
+			map.put("onlineDay",logOnlineService.getOnlineByUserId(ShiroUtils.getUser().getId()).getLoginDay());
+			BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseId);
+			Map passMap = studyTrackService.passInfoByBamId(bamCourse.getFdId());
+			String currLecture="";
+			//String nextCatalog="";
+			if(passMap.size()==0){
+				currLecture="0%";
+			}else{
+				if(passMap.get("coursePass")==null){
+					List<CourseCatalog> catalogs =bamCourse.getCatalogs();
+					int sum=0;
+					int finishSum=0;
+					for (int i=0;i< catalogs.size();i++) {
+						CourseCatalog courseCatalog = catalogs.get(i);
+						if(Constant.CATALOG_TYPE_CHAPTER == courseCatalog.getFdType()){
+							continue;
+						}
+						sum++;
+						if(courseCatalog.getThrough()!=null&&courseCatalog.getThrough()){
+							finishSum++;
+						}
+					}
+					currLecture=(finishSum*100/sum)+"%";
+				}else{
+					currLecture = "100%";
+				}
+			}
+			int messageCount = messageService.findByCriteria(Message.class,
+	                Value.eq("fdModelId", bamCourse.getFdId()),
+	                Value.eq("fdModelName", BamCourse.class.getName()),Value.eq("fdType", "02")).size();
+			map.put("messageCount", messageCount);
+			map.put("currLecture", currLecture);
+			return JsonUtils.writeObjectToJson(map);
+		}
+		
+		
+		/**
+		 * 备课心情页面，进度条
+		 * @param request
+		 */
+		@RequestMapping(value = "getCourseFeelingSchedule")
+		@ResponseBody
+		public String getCourseFeelingSchedule(HttpServletRequest request) {
+			String userId = request.getParameter("userId");
+			String courseId= request.getParameter("courseId");
+			BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseId);
+			Map map = new HashMap();
+			Map passMap = studyTrackService.passInfoByBamId(bamCourse.getFdId());
+			int sums;//共完成数
+			String nextCatalog="";
+			String width="";//百分比
+			if(passMap.size()==0){
+				List<CourseCatalog> catalogs =bamCourse.getCatalogs();
+				for (int i=0;i< catalogs.size();i++) {
+					CourseCatalog courseCatalog = catalogs.get(i);
+					if(Constant.CATALOG_TYPE_LECTURE == courseCatalog.getFdType()){
+						nextCatalog = courseCatalog.getFdName();
+						break;
+					}
+				}
+				sums=0;
+				width="0%";
+			}else{
+				if(passMap.get("coursePass")==null){
+					CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");//当前环节
+					List<CourseCatalog> catalogs =bamCourse.getCatalogs();
+					int sum=0;
+					int finishSum=0;
+					for (int i=0;i< catalogs.size();i++) {
+						CourseCatalog courseCatalog = catalogs.get(i);
+						if(Constant.CATALOG_TYPE_CHAPTER == courseCatalog.getFdType()){
+							continue;
+						}
+						sum++;
+						if(courseCatalog.getThrough()!=null&&courseCatalog.getThrough()){
+							finishSum++;
+						}
+						//取出当前环节的下一节
+						if(courseCatalog.getFdId().equals(catalog.getFdId())){
+							try {
+								nextCatalog = catalogs.get(i).getFdName();
+							} catch (Exception e) {
+								nextCatalog = "证书预览";
+							}
+						}
+					}
+					sums=finishSum;
+					width=(finishSum*100/sum)+"%";
+				}else{
+					sums=0;
+					List<CourseCatalog> catalogs =bamCourse.getCatalogs();
+					for (int i=0;i< catalogs.size();i++) {
+						CourseCatalog courseCatalog = catalogs.get(i);
+						if(Constant.CATALOG_TYPE_CHAPTER == courseCatalog.getFdType()){
+							continue;
+						}else{
+							sums++;
+						}
+					}
+					width="100%";
+					nextCatalog = "证书预览";
+				}
+			}
+			map.put("sums", sums);
+			map.put("width", width);
+			map.put("nextCatalog", nextCatalog);
+			return JsonUtils.writeObjectToJson(map);
+		}
 }

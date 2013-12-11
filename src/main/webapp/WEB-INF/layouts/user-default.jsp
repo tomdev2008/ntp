@@ -40,23 +40,24 @@
 		<div class="col-left">
     	<ul class="nav nav-list sidenav">
         	<li class="nav-header">
-            <div class="tit-icon_bg"><i class="icon-gear"></i><i class="icon-sj"></i></div>
-                              系统管理
+            	<div class="tit-icon_bg"><i class="icon-gear"></i><i class="icon-sj"></i></div>
+                            账号设置
             </li>
-            <tags:shirourl url="${ctx}/admin/user/list" active="user" text="用户管理" iconName="icon-user"  para="${active}"></tags:shirourl>
-            <tags:shirourl url="${ctx}/admin/role/list" active="role" text="角色管理" iconName="icon-user"  para="${active}"></tags:shirourl>
+            <tags:shirourl url="${ctx}/register/updateTeacher" active="user" text="个人资料" iconName="icon-user"  para="${active}"></tags:shirourl>
+    		<tags:shirourl url="${ctx}/register/updateIco" active="photo" text="修改头像" iconName="icon-user" para="${active}"></tags:shirourl>
+    		<tags:shirourl url="${ctx}/register/changePwd" active="pwd" text="修改密码" iconName="icon-pencil"  para="${active}"></tags:shirourl>
     	</ul>
     	</div>
     </div>
-  </div>
-  <div class="container">
+</div>
+<div class="container">
 	<div class="col-right">    	
     	<div class="section">
-	        <div class="page-header">
-	        	<div class="tit-icon_bg"><i class="icon-pencil icon-white"></i><i class="icon-sj"></i></div>
-	        	<h5><j:if test="${active=='user'}">用户管理</j:if><j:if test="${active=='role'}">角色管理</j:if></h5>
-	            <a href="${ctx}/course/courseIndex" class="replyMybk" title="个人首页" ><i class="icon-home icon-white"></i></a>
-	        </div>
+        <div class="page-header">
+        	<div class="tit-icon_bg"><i class="icon-user icon-white"></i><i class="icon-sj"></i></div>
+        	<h5><j:if test="${active=='user'}">个人资料</j:if><j:if test="${active=='photo'}">修改头像</j:if><j:if test="${active=='pwd'}">修改密码</j:if></h5>
+            <a href="${ctx}/course/courseIndex" title="个人首页" class="replyMybk"><i class="icon-home icon-white"></i></a>
+        </div>
   <sitemesh:body />
          </div>
     </div>

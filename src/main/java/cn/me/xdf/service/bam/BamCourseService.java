@@ -4,6 +4,8 @@ import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.utils.MyBeanUtils;
 import cn.me.xdf.model.bam.BamCourse;
+import cn.me.xdf.model.bam.CourseLogic;
+import cn.me.xdf.model.bam.CourseReLoad;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
@@ -117,6 +119,40 @@ public class BamCourseService extends SimpleService {
                     courseJson, courseCatalogJson, courseContentJson);
         }
         save(bamCourse);
+    }
+    
+    /**
+     * 重新根据课程模板更新进程
+     *
+     * @param course 课程信息
+     * @param userId 备课老师ID
+     */
+    public BamCourse updateBamCourse(CourseInfo course, String userId) {
+        //课程章节
+        List<CourseCatalog> courseCatalogs = findByCriteria(CourseCatalog.class, Value.eq("courseInfo.fdId", course.getFdId()));
+        List<Object> catalogId = getCatalogIds(courseCatalogs);
+        //课程关系素材实体
+        List<CourseContent> courseContents = findByCriteria(CourseContent.class, Value.in("catalog.fdId", catalogId));
+
+        String courseJson = JsonUtils.writeObjectToJson(course);
+        String courseCatalogJson = JsonUtils.writeObjectToJson(courseCatalogs);
+        String courseContentJson = JsonUtils.writeObjectToJson(courseContents);
+
+        BamCourse newBamCourse;
+        //公开课  或者 非公开 加密的
+        if (course.getIsPublish()||
+        		(!course.getIsPublish()&&StringUtil.isNotBlank(course.getFdPassword()))) {
+        	newBamCourse = new BamCourse(userId, null, course.getFdId(),
+                    courseJson, courseCatalogJson, courseContentJson);
+        } else {
+            CourseParticipateAuth auth = findUniqueByProperty(CourseParticipateAuth.class, Value.eq("course.fdId", course.getFdId()), Value.eq("fdUser.fdId", userId));
+            newBamCourse = new BamCourse(auth.getFdUser().getFdId(), auth.getFdTeacher()==null?null:auth.getFdTeacher().getFdId(), course.getFdId(),
+                    courseJson, courseCatalogJson, courseContentJson);
+        }
+        
+        BamCourse hisBamCourse = getCourseByUserIdAndCourseId(userId,course.getFdId());
+        CourseReLoad courseReLoad = new CourseReLoad(hisBamCourse,newBamCourse);
+        return save(courseReLoad.getBamCourse());
     }
 
     /**

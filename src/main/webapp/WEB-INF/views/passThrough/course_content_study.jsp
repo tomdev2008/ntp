@@ -963,7 +963,7 @@
 	                          			fdType :"01",
 	                          		  },
 	                          		  success: function(result){
-	                          			  if(result=='"err"'){
+	                          			  if(result=='"cannot"'){
 	                          				pushok=false;
 	                          			  }else{
 	                          				pushok=true;
@@ -986,7 +986,7 @@
 	                          			fdType :"02",
 	                          		  },
 	                          		  success: function(result){
-	                          			  if(result=='"err"'){
+	                          			  if(result=='"cannot"'){
 	                          				pushok=false;
 	                          			  }else{
 	                          				pushok=true;
