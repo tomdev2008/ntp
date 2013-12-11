@@ -312,7 +312,7 @@ $(function(){
     	$("#materialIntro").html("音频简介");
     	$("#back").html("返回音频列表");
     	$("#typeTxt").html("音&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
-    	data_uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的视频将会显示在下面的音频列表中。";
+    	data_uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的音频将会显示在下面的音频列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
     	uptype='*.mp3;*.mv;';
         break;
@@ -321,7 +321,7 @@ $(function(){
     	$("#back").html("返回文档列表");
     	$("#typeTxt").html("文&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;档");
     	$("#videoText").html("");
-    	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的视频将会显示在下面的文档列表中。";
+    	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的文档将会显示在下面的文档列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
     	uptype='*.doc;*.docx;*.xls;*.xlsx;';
         break;
@@ -330,7 +330,7 @@ $(function(){
     	$("#back").html("返回幻灯片列表");
     	$("#typeTxt").html("幻&nbsp;&nbsp;灯&nbsp;&nbsp;片");
     	$("#videoText").html("");
-    	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的视频将会显示在下面的幻灯片列表中。";
+    	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的幻灯片将会显示在下面的幻灯片列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
     	uptype='*.ppt;*.pptx;';
         break;
