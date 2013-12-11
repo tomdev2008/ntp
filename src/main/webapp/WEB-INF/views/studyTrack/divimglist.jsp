@@ -18,47 +18,23 @@
             <c:if test="${param.type=='tutor'}">
             <a href="${ctx}/studyTrack/getStudyTrackTutor">
                  <img src="${ctx}/resources/images/iAmTeacher/track.jpg" alt="">
-                    <span class="mask"></span>
-                    <span class="caption">
-                         <h6>学习跟踪</h6>
-                    </span>
              </a>
             <a href="${ctx}/adviser/checkTask?order=fdcreatetime">
-    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
-    			<span class="mask"></span>
-    			<span class="caption">
-                	<h6>批改作业</h6>
-                </span>
+    			<img src="${ctx}/resources/images/iAmTeacher/checkwork.jpg" alt="">
             </a>            
             </c:if>
              <c:if test="${param.type=='director'}">
              <a href="#">
                  <img src="${ctx}/resources/images/iAmTeacher/track.jpg" alt="">
-                    <span class="mask"></span>
-                    <span class="caption">
-                         <h6>学习跟踪</h6>
-                    </span>
              </a>
               <a href="${ctx}/course/getCourseAuthInfos?fdType=13&order=fdcreatetime">
-    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
-    			<span class="mask"></span>
-    			<span class="caption">
-                	<h6>授权学习</h6>
-                </span>
+    			<img src="${ctx}/resources/images/iAmDirector/authorized.jpg" alt="">
             </a>
              <a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime">
-    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
-    			<span class="mask"></span>
-    			<span class="caption">
-                	<h6>课程管理</h6>
-                </span>
+    			<img src="${ctx}/resources/images/iAmDirector/manage-course.jpg" alt="">
             </a>
             <a href="${ctx}/material/findList?fdType=01&order=FDCREATETIME">
-    			<img src="${ctx}/resources/images/iAmTeacher/schedule.jpg" alt="">
-    			<span class="mask"></span>
-    			<span class="caption">
-                	<h6>课程素材库</h6>
-                </span>
+    			<img src="${ctx}/resources/images/iAmDirector/manage-course.jpg" alt="">
             </a>
             </c:if>
         </div>
