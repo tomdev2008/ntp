@@ -22,7 +22,7 @@
     <script id="pageLeftTemplate" type="text/x-dot-template">
             <div id="sidebar" class="sidebar" >
                 {{#def.sidenav:it.sidenav}}
-                <div class="bdbt2 leftBox mt20" >
+                <div class="bdbt2 leftBox mt20" id="cordPage" >
                     <a href="javascript:void(0)" id="courseOverBtn"><i class="icon-disc-lg-bg"><i class="icon-medal"></i></i>
                         结业证书</a>
                 </div>
@@ -724,6 +724,7 @@
                         loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
                         $(this).parent().addClass("active").siblings().removeClass("active");
                     }
+                    $("#cordPage").removeClass("hide");
                 });
 		$("#courseOverBtn").bind("click",function(){
 			loadOverCard();
@@ -760,13 +761,40 @@
         		 $("#firstC").click(function (e){
         		    loadRightCont(pageData.firstCId,pageData.firstCType);
         		    loadLeftData(bamId);
+        		    $("#sidenav>li>a").popover({
+          	            trigger: "hover"
+          	        }).click(function(e){
+          	                	$(".uploadify").each(function(){
+                            		$(this).uploadify('destroy'); 
+                            	});
+          	                    e.preventDefault();
+          	                    if($(this).attr("href")){//已通章节可点
+          	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
+          	                        $(this).parent().addClass("active").siblings().removeClass("active");
+          	                    }
+          	                  $("#cordPage").removeClass("hide");
+          	                });
                   	//window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.firstCId+"&fdMtype="+pageData.firstCType;
                  }); 
         		 $("#lastC").click(function (e){
         			loadRightCont(pageData.firstCId,pageData.firstCType);
         			loadLeftData(bamId);
+        			$("#sidenav>li>a").popover({
+          	            trigger: "hover"
+          	        }).click(function(e){
+          	                	$(".uploadify").each(function(){
+                            		$(this).uploadify('destroy'); 
+                            	});
+          	                    e.preventDefault();
+          	                    if($(this).attr("href")){//已通章节可点
+          	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
+          	                        $(this).parent().addClass("active").siblings().removeClass("active");
+          	                    }
+          	                  $("#cordPage").removeClass("hide");
+          	                });
                    	//window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.listCId+"&fdMtype="+pageData.listCType;
                  }); 
+        		 $("#cordPage").addClass("hide");
         	 }
         }
 		
@@ -782,7 +810,6 @@
 					  $("#sideBar").html(pageLeftBarFn(leftData));
 				  },
 			});
-			 
 		 }
         
 		function loadRightCont(fdid,type){
@@ -850,6 +877,7 @@
       		                          loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
       		                          $(this).parent().addClass("active").siblings().removeClass("active");
       		                      }
+      		                    $("#cordPage").removeClass("hide");
       		                  });
       		  			  },
       	  			}); 
@@ -872,10 +900,13 @@
           	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
           	                        $(this).parent().addClass("active").siblings().removeClass("active");
           	                    }
+          	                  $("#cordPage").removeClass("hide");
           	                });
             		loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
             	}
-                 
+            	$("#courseOverBtn").bind("click",function(){
+        			loadOverCard();
+        		}); 
             });
             //下一节
             $("#nextLecture").click(function (e){
@@ -893,10 +924,13 @@
           	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
           	                        $(this).parent().addClass("active").siblings().removeClass("active");
           	                    }
+          	                  $("#cordPage").removeClass("hide");
           	                });
             		loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
             	}
-                
+            	$("#courseOverBtn").bind("click",function(){
+        			loadOverCard();
+        		});
             }); 
             $("#nextOver").click(function (e){
             	loadOverCard();
@@ -1393,6 +1427,7 @@
           	                        loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
           	                        $(this).parent().addClass("active").siblings().removeClass("active");
           	                    }
+          	                  $("#cordPage").removeClass("hide");
           	                });
           				
           			}
