@@ -307,15 +307,15 @@ public class ExamQuestionAjaxController {
 	 * @param examQuestionId
 	 */
 	private void updateAttMain(String attString,String examQuestionId){
+		//删除之前的选项
+		List<AttMain> oldAttMains =attMainService.getAttMainsByModelIdAndModelName(examQuestionId, ExamQuestion.class.getName());
+		for (AttMain attMain : oldAttMains) {
+			attMain.setFdModelId("");
+			attMain.setFdModelName("");
+			attMainService.save(attMain);
+		}
 		// 更新选项附件
 		if (StringUtil.isNotBlank(attString)) {
-			//删除之前的选项
-			List<AttMain> oldAttMains =attMainService.getAttMainsByModelIdAndModelName(examQuestionId, ExamQuestion.class.getName());
-			for (AttMain attMain : oldAttMains) {
-				attMain.setFdModelId("");
-				attMain.setFdModelName("");
-				attMainService.save(attMain);
-			}
 			List<Map> att = JsonUtils.readObjectByJson(attString, List.class);
 			for (Map map : att) {
 				AttMain e = attMainService.get(map.get("id").toString());
