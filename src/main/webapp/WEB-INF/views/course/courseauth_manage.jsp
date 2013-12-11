@@ -199,30 +199,24 @@
                         <div class="btn-toolbar">
                             <label class="muted">排序</label>
                             <div class="btn-group btns-radio" data-toggle="buttons-radio">
-                             <a onclick="getDataOrderBy('1','createtime')">
 							   <c:if test="${param.order=='createtime'}">
-								<button class="btn btn-large active" type="button">时间</button>
+								<button class="btn btn-large active" type="button" onclick="getDataOrderBy('1','createtime')">时间</button>
 							   </c:if>
 							   <c:if test="${param.order!='createtime'}">
-								<button class="btn btn-large" type="button">时间</button>
+								<button class="btn btn-large" type="button" onclick="getDataOrderBy('1','createtime')">时间</button>
 							   </c:if>
-							</a>
-							 <a onclick="getDataOrderBy('1','teacher')">
 							   <c:if test="${param.order=='teacher'}">
-								<button class="btn btn-large active" type="button">教师</button>
+								<button class="btn btn-large active" type="button" onclick="getDataOrderBy('1','teacher')">教师</button>
 							   </c:if>
 							   <c:if test="${param.order!='teacher'}">
-								<button class="btn btn-large" type="button">教师</button>
+								<button class="btn btn-large" type="button" onclick="getDataOrderBy('1','teacher')">教师</button>
 							   </c:if>
-							 </a>
-						    <a onclick="getDataOrderBy('1','mentor')">
 						      <c:if test="${param.order=='mentor'}">
-								<button class="btn btn-large active" type="button">导师</button>
+								<button class="btn btn-large active" type="button" onclick="getDataOrderBy('1','mentor')">导师</button>
 							   </c:if>
 							   <c:if test="${param.order!='mentor'}">
-								<button class="btn btn-large" type="button">导师</button>
+								<button class="btn btn-large" type="button" onclick="getDataOrderBy('1','mentor')">导师</button>
 							   </c:if>
-							</a> 
                             </div>
                             <label class="checkbox inline" for="selectCurrPage"><input type="checkbox" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage()" value="0" />选中本页</label>
                             <label class="checkbox inline" for="selectAll"><input type="checkbox" id="selectAll" name="selectCheckbox" onclick="selectAll()" value="1"/>选中全部</label>
