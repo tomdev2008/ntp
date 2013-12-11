@@ -96,39 +96,50 @@
 				<li data-id="${bean.FDID}"><a href="${ctx}/material/materialFoward?fdId=${bean.FDID}&fdType=${bean.FDTYPE}"> 
 				<input type="checkbox" name="ids" value="${bean.FDID}"/> 
 				    <span class="title">${bean.FDNAME}</span> 
+				    <c:if test="${bean.ISPUBLISH=='1'}">
+				      <span class="label label-info">公开</span>
+				    </c:if>
+				    <c:if test="${bean.ISPUBLISH=='0'}">
+				      <span class="label label-info">加密</span>
+				    </c:if>
 				    <span class="rating-view">
 				      <c:if test="${bean.FDAVERAGE!=null}">
-					  <span class="rating-all">
-					   <c:forEach var="i" begin="1" end="5">
-					  	<c:if test="${i<=bean.FDAVERAGE}">
-					  	<i class="icon-star active"></i>
-					  	</c:if>
-					  	<c:if test="${i>bean.FDAVERAGE}">
-					  	<i class="icon-star"></i>
-					  	</c:if>
-					  </c:forEach>
+					    <span class="rating-all">
+					      <c:forEach var="i" begin="1" end="5">
+					  	     <c:if test="${i<=bean.FDAVERAGE}">
+					  	       <i class="icon-star active"></i>
+					         </c:if>
+					  	     <c:if test="${i>bean.FDAVERAGE}">
+					       	  <i class="icon-star"></i>
+					     	 </c:if>
+					      </c:forEach>
 					  </span> 
 					  <b class="text-warning">
 					  <c:if test="${bean.FDAVERAGE*10%10==0}">
-					  ${bean.FDAVERAGE}.0
+					      ${bean.FDAVERAGE}.0
 					  </c:if>
 					  <c:if test="${bean.FDAVERAGE*10%10!=0}">
-					  ${bean.FDAVERAGE}
+					      ${bean.FDAVERAGE}
 					  </c:if>
 					  </b>
 					  </c:if>
 					  
 					  <c:if test="${bean.FDAVERAGE==null}">
-					  <span class="rating-all">
-					  <c:forEach var="i" begin="1" end="5">
-					   <i class="icon-star"></i>
-					  </c:forEach>
-					  </span> 
-					  <b class="text-warning">0.0</b>
+					   <span class="rating-all">
+					    <c:forEach var="i" begin="1" end="5">
+					  	  <i class="icon-star"></i>
+					    </c:forEach>
+					   </span> 
+					   <b class="text-warning">0.0</b>
 					  </c:if>
 					  <span id="${bean.FDID}div"></span>
-					</span><span class="date"><i class="icon-time"></i>
-					<fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
+					</span>
+					<c:if test="${bean.FLAG=='0'}">
+				      <i class="icon-transforming" data-toggle="tooltip" data-original-title="转换中..."></i>
+				    </c:if>
+					<span class="date"><i class="icon-time"></i>
+					   <fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/>
+					</span>
 						<span class="btns">
 						
 						 <button type="button" class="btn btn-link">

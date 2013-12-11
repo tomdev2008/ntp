@@ -63,13 +63,15 @@
 .listWrap .list>li>a>input[type="checkbox"]{float: left;margin-left: -20px;}
 .listWrap .list>li>a .date{color: #bbbbbb;margin-top: 6px; font-size: 12px;display: block;}
 .listWrap .list>li>a .date > i{margin-right: 8px;}
-.listWrap .list>li>a .rating-view{position: relative;top: -1px;}
+.listWrap .list>li>a .rating-view{position: relative;top: -2px;margin-left: 5px;}
 .listWrap .list>li>a .btns{position: absolute;right: 20px;bottom: 12px;}
 .listWrap .list>li>a .btns > b,.btns-handle > b{color:#999999;font-size: 12px;font-weight: normal;}
 .listWrap .list>li>a .btns .btn,.btns-handle .btn{padding: 0 6px;color: #999;text-decoration: none;border: none;}
 .listWrap .list>li>a .btns .btn:focus,.btns-handle .btn:focus{outline: none;}
 .listWrap .list>li>a .btns .btn strong,.btns-handle .btn strong{color: #4391bb;font-weight: normal;}
 .listWrap .list>li>a .btns .btn i,.btns-handle .btn i{margin-right: 5px;}
+.listWrap .list>li>a .icon-transforming{background-color: #a2c8dd;margin-left: 5px;}
+.listWrap .list>li>a .label{vertical-align: top;margin-left: 5px;}
 .btns-handle{margin-left: 6px;}
 .btns-handle .active.btn {    background-color: transparent;}
 .listWrap .list>li>a:hover .icon-thumbs-up,.btn:hover .icon-thumbs-up,.active.btn .icon-thumbs-up,.editingBody .controls .btns-handle .btn  .icon-thumbs-up{background-position: right -296px;}

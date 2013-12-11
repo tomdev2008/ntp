@@ -230,7 +230,7 @@ public class MaterialService extends BaseService {
 	 */
 	  @Transactional(readOnly = false)
 		public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName,String order){
-			Finder finder = Finder.create("select * from ( select info.*,score.fdaverage ");
+			Finder finder = Finder.create("select * from ( select info.*,score.fdaverage,att.flag ");
 			if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){//测试统计
 				finder.append(" ,a.questionNum,a.fdtotalnum");
 			}
@@ -239,6 +239,9 @@ public class MaterialService extends BaseService {
 			}
 			finder.append(" from IXDF_NTP_MATERIAL info ");
 			finder.append(" left join IXDF_NTP_SCORE_STATISTICS score on info.FDID = score.fdModelId and score.fdmodelname = '"+MaterialInfo.class.getName()+"' ");
+			//附件
+			finder.append(" left join ixdf_ntp_att_main att on info.FDID = att.fdModelId and att.fdmodelname = '"+MaterialInfo.class.getName()+"' ");
+			
 			if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
 				finder.append(" left join ( ");
 				finder.append(" select count(*) as questionNum,sum(fdstandardscore) as fdtotalnum,fdmaterialid from IXDF_NTP_EXAM_QUESTION group by fdmaterialid) a ");
