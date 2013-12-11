@@ -111,6 +111,17 @@
 						未命名
 					</c:if>
 					</span> 
+					<c:if test="${bean.ISPUBLISH=='1'}">
+				      <span class="label label-info">公开</span>
+				    </c:if>
+				    <c:if test="${bean.ISPUBLISH=='0'}">
+				      <c:if test="${bean.FDPASSWORD==''||bean.FDPASSWORD==null}">
+				       <span class="label label-info">授权</span>
+				      </c:if> 
+				      <c:if test="${bean.FDPASSWORD!=''&&bean.FDPASSWORD!=null}">
+				       <span class="label label-info">加密</span>
+				      </c:if>
+				    </c:if>
 				    <span class="rating-view">
 				    <c:if test="${bean.FDAVERAGE!=null}">
 					  <span class="rating-all">
@@ -140,6 +151,9 @@
 					  </span> 
 					  <b class="text-warning">0.0</b>
 					  </c:if>
+					  <c:if test="${bean.FDSTATUS=='00'}">
+				         <i class="icon-unpublished" data-toggle="tooltip" data-original-title="未发布"></i>
+				      </c:if>
 					  </span> <span class="date"><i class="icon-time"></i><fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
 				</a></li>
 			</j:iter> 
