@@ -54,6 +54,7 @@ public class AttMainPlugin {
 
             MultipartRequestEntity mre = new MultipartRequestEntity(
                     model.getCCToAddModel(), filePost.getParams());
+            filePost.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET,"utf-8");
             filePost.setRequestEntity(mre);
             int status = client.executeMethod(filePost);
             if (status == HttpStatus.SC_OK) {

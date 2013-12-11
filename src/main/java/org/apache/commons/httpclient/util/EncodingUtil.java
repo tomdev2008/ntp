@@ -1,4 +1,4 @@
-package cn.me.xdf.common.httpclient;
+package org.apache.commons.httpclient.util;
 
 
 import java.io.UnsupportedEncodingException;
@@ -17,13 +17,13 @@ import org.apache.commons.logging.LogFactory;
  *
  * @since 2.0 final
  */
-public class EncodingUtil2 {
+public class EncodingUtil {
 
     /** Default content encoding chatset */
     private static final String DEFAULT_CHARSET = "ISO-8859-1";
 
     /** Log object for this class. */
-    private static final Log LOG = LogFactory.getLog(EncodingUtil2.class);
+    private static final Log LOG = LogFactory.getLog(EncodingUtil.class);
 
     /**
      * Form-urlencoding routine.
@@ -255,7 +255,7 @@ public class EncodingUtil2 {
     /**
      * This class should not be instantiated.
      */
-    private EncodingUtil2() {
+    private EncodingUtil() {
     }
 
 }

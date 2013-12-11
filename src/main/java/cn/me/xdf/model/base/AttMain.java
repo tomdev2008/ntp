@@ -194,9 +194,9 @@ public class AttMain extends IdEntity {
         // 文档、幻灯片
         if ("04".equals(fdFileType) || "05".equals(fdFileType)) {
             map.put("type", "doc");
-            String fName = FileNameUtil.getName(fdFilePath);
+            //String fName = FileNameUtil.getName(fdFilePath);
             map.put("fileNetId", fileNetId);
-            map.put("fName", fName);
+            map.put("fName", fdFileName);
         } else if ("01".equals(fdFileType)) {// 视频
             map.put("type", "video");
             map.put("playCode", playCode);

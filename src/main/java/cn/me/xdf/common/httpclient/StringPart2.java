@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 import org.apache.commons.httpclient.methods.multipart.PartBase;
+import org.apache.commons.httpclient.util.EncodingUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -82,7 +83,7 @@ public class StringPart2 extends PartBase {
      */
     private byte[] getContent() {
         if (content == null) {
-            content = EncodingUtil2.getBytes(value, getCharSet());
+            content = EncodingUtil.getBytes(value, getCharSet());
         }
         return content;
     }

@@ -1,5 +1,6 @@
 package cn.me.xdf.model.base;
 
+import cn.me.xdf.common.httpclient.FilePart2;
 import cn.me.xdf.common.httpclient.StringPart2;
 import cn.me.xdf.common.utils.ByteFileObjectUtils;
 import cn.me.xdf.common.utils.sso.AES;
@@ -78,7 +79,7 @@ public class DocInterfaceModel {
         this.sign = AESX3.md5(signText); // 签名
         File file = new File(filePath);
         ByteArrayPartSource byteArrayPartSource = new ByteArrayPartSource(file.getName(), ByteFileObjectUtils.getBytesFromFile(file));
-        FilePart fp = new FilePart("file", byteArrayPartSource);
+        FilePart2 fp = new FilePart2("file", byteArrayPartSource);
         StringPart2 username = new StringPart2("username",
                 this.userName, "utf-8");
         StringPart2 password = new StringPart2("password", AES.encode(
