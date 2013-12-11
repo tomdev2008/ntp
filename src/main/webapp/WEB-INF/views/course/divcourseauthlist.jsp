@@ -20,7 +20,7 @@
 							 </span>
 							 </span>
 							
-							 <a class="btn btn-link"  style="position:relative;right: 5px;padding-right:1px;padding-left:1px" href="#" onclick="clearserach();" >清空搜索结果</a>
+							 <a class="btn btn-link"   href="#" onclick="clearserach();" >清空搜索结果</a>
 						</div>
 					</div>
 					<div class="bd">
@@ -160,11 +160,9 @@
 						</button>
 					</c:if>
 					<c:if test="${page.firstPage==false}">
-						<a onclick="findeCoursesByKey('${page.prePage}','${param.order}')">
-							<button class="btn btn-primary btn-ctrl" type="button">
+							<button class="btn btn-primary btn-ctrl" type="button" onclick="findeCoursesByKey('${page.prePage}','${param.order}')">
 								<i class="icon-chevron-left icon-white"></i>
 							</button>
-						</a>
 					</c:if>
 					<c:forEach var="i" begin="1" end="${page.totalPage}">
 			            <c:choose>
@@ -172,9 +170,7 @@
 			                    <button class="btn btn-primary btn-num active" type="button" >${i}</button>
 			                </c:when>
 			                <c:otherwise>
-			                    <a onclick="findeCoursesByKey('${i}','${param.order}')">
-			                    <button class="btn btn-primary btn-num" type="button">${i}</button>
-			                	</a>
+			                    <button class="btn btn-primary btn-num" type="button" onclick="findeCoursesByKey('${i}','${param.order}')">${i}</button>
 			                </c:otherwise>
 			            </c:choose>
 			          </c:forEach>
@@ -196,11 +192,9 @@
 						</button>
 					</c:if>
 					<c:if test="${page.lastPage!=true}">
-						<a onclick="findeCoursesByKey('${page.nextPage}','${param.order}')">
-							<button class="btn btn-primary btn-ctrl" type="button">
+							<button class="btn btn-primary btn-ctrl" type="button" onclick="findeCoursesByKey('${page.nextPage}','${param.order}')">
 								<i class="icon-chevron-right icon-white"></i>
 							</button>
-						</a>
 					</c:if>
 			
 				</div>

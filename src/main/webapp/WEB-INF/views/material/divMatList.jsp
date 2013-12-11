@@ -26,7 +26,7 @@
 					<span id="markshow">
 							 	<a id="containkey"href="#">全部条目</a>
 					</span>
-				</span> <a class="btn btn-link" href="#rightCont" style="position:relative;right: 5px;padding-right:1px;padding-left:1px" onclick="clearserach();">清空搜索结果</a>
+				</span> <a class="btn btn-link" href="#rightCont"  onclick="clearserach();">清空搜索结果</a>
 			</div>
 		</div>
 		<div class="bd">
@@ -71,11 +71,9 @@
 						</button>
 					</c:if>
 					<c:if test="${page.pageNo > 1}">
-						<a onclick="pageNavClick('${param.fdType}','${page.prePage}','${param.order}')">
-							<button class="btn btn-primary btn-ctrl" type="button">
+							<button class="btn btn-primary btn-ctrl" type="button" onclick="pageNavClick('${param.fdType}','${page.prePage}','${param.order}')">
 								<i class="icon-chevron-left icon-white"></i>
 							</button>
-						</a>
 					</c:if>
 					<c:if test="${page.pageNo >= page.totalPage}">
 						<button class="btn btn-primary btn-ctrl" type="button" disabled>
@@ -83,11 +81,9 @@
 						</button>
 					</c:if>
 					<c:if test="${page.pageNo < page.totalPage}">
-						<a onclick="pageNavClick('${param.fdType}','${page.nextPage}','${param.order}')">
-							<button class="btn btn-primary btn-ctrl" type="button">
+							<button class="btn btn-primary btn-ctrl" type="button" onclick="pageNavClick('${param.fdType}','${page.nextPage}','${param.order}')">
 								<i class="icon-chevron-right icon-white"></i>
 							</button>
-						</a>
 					</c:if>
 				</div>
 				</div>
