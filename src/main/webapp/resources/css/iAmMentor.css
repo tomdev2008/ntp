@@ -123,7 +123,7 @@
 .navTeacher .ab_r{right:20px;}
 .navTeacher .listImg{padding:0 17px;padding-bottom:6px;}
 .navTeacher .listImg > a{display:block;position:relative;margin-bottom:10px;}
-.navTeacher .listImg > a > img{width:191px;height: 105px;}
+.navTeacher .listImg > a > img{width:190px;height: 105px;}
 .navTeacher .mask{background-color:#000; opacity:0.5; filter: alpha(opacity=50);position:absolute;height:30px;width:100%;left:0;bottom:0;}
 .navTeacher .listImg .caption{position:absolute;left:0;bottom:0;height:30px;padding-left:20px;font-size:12px;}
 .navTeacher a:hover .mask{background-color:rgb(67, 145, 187);opacity:1; filter: alpha(opacity=100);}

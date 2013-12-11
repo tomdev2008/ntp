@@ -244,7 +244,7 @@ function refreshTrackList(type,pageNo,pageSize,order){
 	    "click": function(e){
 	        var $target = $(e.target);
 	        if(!$target.hasClass("send")){
-	            //window.open("http://ntp.xdf.cn/" + $(this).attr("data-fdid"));//打开老师页面
+	            window.open("${ctx}/passThrough/getCourseFeelingByBamId?bamId="+$(this).attr("data-fdid"));//打开老师页面
 	        } else if($target.hasClass("msg")){
 	            alert("发私信");
 	        }
@@ -254,7 +254,7 @@ function refreshTrackList(type,pageNo,pageSize,order){
 
 function showSearch(){
 	var fdTitle = document.getElementById("serach").value;
-	$("#markshow").html('含“<a id="containkey" href="#"></a>”的用户');
+	$("#markshow").html('含“<a id="containkey" href="#"></a>”的条目');
 	if(fdTitle==''){
 		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
 	}else if(fdTitle.length>2){

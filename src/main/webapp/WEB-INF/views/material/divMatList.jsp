@@ -331,6 +331,7 @@ function initStu(){
 }
 initStu();
 </script>
-
-
+<script type="text/javascript">	
+	$('[data-toggle="tooltip"]').tooltip();
+</script>
 

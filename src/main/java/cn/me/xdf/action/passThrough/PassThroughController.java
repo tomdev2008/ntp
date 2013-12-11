@@ -275,7 +275,19 @@ public class PassThroughController {
 		}
 		
 	}
-	
+	/**
+	 * 备课心情页面
+	 * @param request
+	 */
+	@RequestMapping(value = "getCourseFeelingByBamId")
+	public String getCourseFeelingByBamId(HttpServletRequest request){
+		String bamId=request.getParameter("bamId");
+		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
+		request.setAttribute("userId", bamCourse.getPreTeachId());
+		request.setAttribute("courseId", bamCourse.getCourseId());
+		request.setAttribute("isMe", bamCourse.getPreTeachId().equals(ShiroUtils.getUser().getId()));
+		return "/passThrough/course_feeling";
+	}
 	
 	
 }
