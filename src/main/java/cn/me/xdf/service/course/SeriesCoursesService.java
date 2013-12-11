@@ -89,12 +89,15 @@ public class SeriesCoursesService  extends BaseService{
 		List<SeriesInfo> infos = seriesInfoService.getSeriesById(seriesId);
 		for (SeriesInfo seriesInfo : infos) {
 			 List<SeriesCourses> seriesCourses = getSeriesCourseByseriesId(seriesInfo.getFdId());
-			 for (SeriesCourses seriesCourses2 : seriesCourses) { 
-				 if(!list.contains(seriesCourses2.getCourses())){
-					 list.add(seriesCourses2.getCourses());
-				 }
-				 
-			}
+			 if(seriesCourses!=null){
+				 for (SeriesCourses seriesCourses2 : seriesCourses) { 
+					 if(!list.contains(seriesCourses2.getCourses())){
+						 list.add(seriesCourses2.getCourses());
+					 }
+					 
+				} 
+			 }
+			 
 		}
 		return list;
 	}
@@ -107,9 +110,11 @@ public class SeriesCoursesService  extends BaseService{
 		List<SeriesInfo> infos = seriesInfoService.getSeriesById(seriesId);
 		for (SeriesInfo seriesInfo : infos) {
 			 List<SeriesCourses> seriesCourses = getSeriesCourseByseriesId(seriesInfo.getFdId());
-			 for (SeriesCourses seriesCourses2 : seriesCourses) { 
-					 list.add(seriesCourses2.getCourses());				 
-			}
+			 if(seriesCourses!=null){
+				 for (SeriesCourses seriesCourses2 : seriesCourses) { 
+						 list.add(seriesCourses2.getCourses());				 
+				 }
+			 }
 		}
 		return list;
 	}

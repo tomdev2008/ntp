@@ -244,7 +244,7 @@ function refreshTrackList(type,pageNo,pageSize,order){
 	    "click": function(e){
 	        var $target = $(e.target);
 	        if(!$target.hasClass("send")){
-	            //window.open("http://ntp.xdf.cn/" + $(this).attr("data-fdid"));//打开老师页面
+	            window.open("${ctx}/passThrough/getCourseFeelingByBamId?bamId="+$(this).attr("data-fdid"));//打开老师页面
 	        } else if($target.hasClass("msg")){
 	            alert("发私信");
 	        }
