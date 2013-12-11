@@ -151,10 +151,11 @@
 					  </span> 
 					  <b class="text-warning">0.0</b>
 					  </c:if>
+					  </span> 
 					  <c:if test="${bean.FDSTATUS=='00'}">
 				         <i class="icon-unpublished" data-toggle="tooltip" data-original-title="未发布"></i>
 				      </c:if>
-					  </span> <span class="date"><i class="icon-time"></i><fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
+					  <span class="date"><i class="icon-time"></i><fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
 				</a></li>
 			</j:iter> 
 		</ul>
@@ -206,3 +207,6 @@
 			
 				</div>
 			</div>               
+<script type="text/javascript">	
+	$('[data-toggle="tooltip"]').tooltip();
+</script>

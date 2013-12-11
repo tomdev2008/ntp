@@ -234,6 +234,7 @@ public class FileModel {
         }
         att.setFdFilePath(getFilePath());
         att.setFdStoreType(getStoreType().getName());
+        att.setFlag(0);//设置为转换中 状态
         return att;
     }
 
