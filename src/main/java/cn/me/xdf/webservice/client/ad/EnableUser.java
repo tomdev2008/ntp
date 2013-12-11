@@ -3,7 +3,6 @@ package cn.me.xdf.webservice.client.ad;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -18,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="GetUserThumbnailphotoResult" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
+ *         &lt;element name="userInfo" type="{http://tempuri.org/}UserInfo" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,34 +28,35 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "getUserThumbnailphotoResult"
+    "userInfo"
 })
-@XmlRootElement(name = "GetUserThumbnailphotoResponse")
-public class GetUserThumbnailphotoResponse {
+@XmlRootElement(name = "EnableUser")
+public class EnableUser {
 
-    @XmlElement(name = "GetUserThumbnailphotoResult")
-    protected byte[] getUserThumbnailphotoResult;
+    protected UserInfo userInfo;
 
     /**
-     * Gets the value of the getUserThumbnailphotoResult property.
+     * Gets the value of the userInfo property.
      * 
      * @return
      *     possible object is
-     *     byte[]
+     *     {@link UserInfo }
+     *     
      */
-    public byte[] getGetUserThumbnailphotoResult() {
-        return getUserThumbnailphotoResult;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
     /**
-     * Sets the value of the getUserThumbnailphotoResult property.
+     * Sets the value of the userInfo property.
      * 
      * @param value
      *     allowed object is
-     *     byte[]
+     *     {@link UserInfo }
+     *     
      */
-    public void setGetUserThumbnailphotoResult(byte[] value) {
-        this.getUserThumbnailphotoResult = ((byte[]) value);
+    public void setUserInfo(UserInfo value) {
+        this.userInfo = value;
     }
 
 }

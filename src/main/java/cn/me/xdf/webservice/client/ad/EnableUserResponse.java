@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="GetUserThumbnailphotoResult" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
+ *         &lt;element name="EnableUserResult" type="{http://tempuri.org/}StateInfo" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,34 +29,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "getUserThumbnailphotoResult"
+    "enableUserResult"
 })
-@XmlRootElement(name = "GetUserThumbnailphotoResponse")
-public class GetUserThumbnailphotoResponse {
+@XmlRootElement(name = "EnableUserResponse")
+public class EnableUserResponse {
 
-    @XmlElement(name = "GetUserThumbnailphotoResult")
-    protected byte[] getUserThumbnailphotoResult;
+    @XmlElement(name = "EnableUserResult")
+    protected StateInfo enableUserResult;
 
     /**
-     * Gets the value of the getUserThumbnailphotoResult property.
+     * Gets the value of the enableUserResult property.
      * 
      * @return
      *     possible object is
-     *     byte[]
+     *     {@link StateInfo }
+     *     
      */
-    public byte[] getGetUserThumbnailphotoResult() {
-        return getUserThumbnailphotoResult;
+    public StateInfo getEnableUserResult() {
+        return enableUserResult;
     }
 
     /**
-     * Sets the value of the getUserThumbnailphotoResult property.
+     * Sets the value of the enableUserResult property.
      * 
      * @param value
      *     allowed object is
-     *     byte[]
+     *     {@link StateInfo }
+     *     
      */
-    public void setGetUserThumbnailphotoResult(byte[] value) {
-        this.getUserThumbnailphotoResult = ((byte[]) value);
+    public void setEnableUserResult(StateInfo value) {
+        this.enableUserResult = value;
     }
 
 }

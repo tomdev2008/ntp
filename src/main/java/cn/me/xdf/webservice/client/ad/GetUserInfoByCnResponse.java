@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="GetUserThumbnailphotoResult" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
+ *         &lt;element name="GetUserInfoByCnResult" type="{http://tempuri.org/}ArrayOfUserInfo" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,34 +29,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "getUserThumbnailphotoResult"
+    "getUserInfoByCnResult"
 })
-@XmlRootElement(name = "GetUserThumbnailphotoResponse")
-public class GetUserThumbnailphotoResponse {
+@XmlRootElement(name = "GetUserInfoByCnResponse")
+public class GetUserInfoByCnResponse {
 
-    @XmlElement(name = "GetUserThumbnailphotoResult")
-    protected byte[] getUserThumbnailphotoResult;
+    @XmlElement(name = "GetUserInfoByCnResult")
+    protected ArrayOfUserInfo getUserInfoByCnResult;
 
     /**
-     * Gets the value of the getUserThumbnailphotoResult property.
+     * Gets the value of the getUserInfoByCnResult property.
      * 
      * @return
      *     possible object is
-     *     byte[]
+     *     {@link ArrayOfUserInfo }
+     *     
      */
-    public byte[] getGetUserThumbnailphotoResult() {
-        return getUserThumbnailphotoResult;
+    public ArrayOfUserInfo getGetUserInfoByCnResult() {
+        return getUserInfoByCnResult;
     }
 
     /**
-     * Sets the value of the getUserThumbnailphotoResult property.
+     * Sets the value of the getUserInfoByCnResult property.
      * 
      * @param value
      *     allowed object is
-     *     byte[]
+     *     {@link ArrayOfUserInfo }
+     *     
      */
-    public void setGetUserThumbnailphotoResult(byte[] value) {
-        this.getUserThumbnailphotoResult = ((byte[]) value);
+    public void setGetUserInfoByCnResult(ArrayOfUserInfo value) {
+        this.getUserInfoByCnResult = value;
     }
 
 }

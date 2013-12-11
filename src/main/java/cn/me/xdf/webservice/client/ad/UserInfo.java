@@ -29,6 +29,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="InBeijing" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="Level" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="Name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="OperatePeople" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="PWD" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="Sign" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="SystemTag" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -57,6 +58,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "inBeijing",
     "level",
     "name",
+    "operatePeople",
     "pwd",
     "sign",
     "systemTag",
@@ -88,6 +90,8 @@ public class UserInfo {
     protected int level;
     @XmlElement(name = "Name")
     protected String name;
+    @XmlElement(name = "OperatePeople")
+    protected String operatePeople;
     @XmlElement(name = "PWD")
     protected String pwd;
     @XmlElement(name = "Sign")
@@ -331,6 +335,30 @@ public class UserInfo {
     }
 
     /**
+     * Gets the value of the operatePeople property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getOperatePeople() {
+        return operatePeople;
+    }
+
+    /**
+     * Sets the value of the operatePeople property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setOperatePeople(String value) {
+        this.operatePeople = value;
+    }
+
+    /**
      * Gets the value of the pwd property.
      * 
      * @return
@@ -445,7 +473,7 @@ public class UserInfo {
      *     byte[]
      */
     public void setThumbnailphoto(byte[] value) {
-        this.thumbnailphoto = (value);
+        this.thumbnailphoto = ((byte[]) value);
     }
 
     /**

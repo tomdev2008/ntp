@@ -18,10 +18,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="AccountID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="Thumbnailphoto" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
+ *         &lt;element name="accountId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="SystemTag" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="Sign" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="sign" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,67 +31,40 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "accountID",
-    "thumbnailphoto",
+    "accountId",
     "systemTag",
     "sign"
 })
-@XmlRootElement(name = "UpdateUserthumbnailphotoV2")
-public class UpdateUserthumbnailphotoV2 {
+@XmlRootElement(name = "GetUserInfoByCn")
+public class GetUserInfoByCn {
 
-    @XmlElement(name = "AccountID")
-    protected String accountID;
-    @XmlElement(name = "Thumbnailphoto")
-    protected byte[] thumbnailphoto;
+    protected String accountId;
     @XmlElement(name = "SystemTag")
     protected String systemTag;
-    @XmlElement(name = "Sign")
     protected String sign;
 
     /**
-     * Gets the value of the accountID property.
+     * Gets the value of the accountId property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getAccountID() {
-        return accountID;
+    public String getAccountId() {
+        return accountId;
     }
 
     /**
-     * Sets the value of the accountID property.
+     * Sets the value of the accountId property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setAccountID(String value) {
-        this.accountID = value;
-    }
-
-    /**
-     * Gets the value of the thumbnailphoto property.
-     * 
-     * @return
-     *     possible object is
-     *     byte[]
-     */
-    public byte[] getThumbnailphoto() {
-        return thumbnailphoto;
-    }
-
-    /**
-     * Sets the value of the thumbnailphoto property.
-     * 
-     * @param value
-     *     allowed object is
-     *     byte[]
-     */
-    public void setThumbnailphoto(byte[] value) {
-        this.thumbnailphoto = ((byte[]) value);
+    public void setAccountId(String value) {
+        this.accountId = value;
     }
 
     /**

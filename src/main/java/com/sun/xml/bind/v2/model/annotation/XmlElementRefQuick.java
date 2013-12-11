@@ -40,7 +40,7 @@ final class XmlElementRefQuick
         return core.type();
     }
 
-	@Override
+
 	public boolean required() {
 		// TODO Auto-generated method stub
 		return false;

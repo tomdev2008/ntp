@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="GetUserThumbnailphotoResult" type="{http://www.w3.org/2001/XMLSchema}base64Binary" minOccurs="0"/>
+ *         &lt;element name="GetGroupToUserListResult" type="{http://tempuri.org/}ArrayOfString" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,34 +29,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "getUserThumbnailphotoResult"
+    "getGroupToUserListResult"
 })
-@XmlRootElement(name = "GetUserThumbnailphotoResponse")
-public class GetUserThumbnailphotoResponse {
+@XmlRootElement(name = "GetGroupToUserListResponse")
+public class GetGroupToUserListResponse {
 
-    @XmlElement(name = "GetUserThumbnailphotoResult")
-    protected byte[] getUserThumbnailphotoResult;
+    @XmlElement(name = "GetGroupToUserListResult")
+    protected ArrayOfString getGroupToUserListResult;
 
     /**
-     * Gets the value of the getUserThumbnailphotoResult property.
+     * Gets the value of the getGroupToUserListResult property.
      * 
      * @return
      *     possible object is
-     *     byte[]
+     *     {@link ArrayOfString }
+     *     
      */
-    public byte[] getGetUserThumbnailphotoResult() {
-        return getUserThumbnailphotoResult;
+    public ArrayOfString getGetGroupToUserListResult() {
+        return getGroupToUserListResult;
     }
 
     /**
-     * Sets the value of the getUserThumbnailphotoResult property.
+     * Sets the value of the getGroupToUserListResult property.
      * 
      * @param value
      *     allowed object is
-     *     byte[]
+     *     {@link ArrayOfString }
+     *     
      */
-    public void setGetUserThumbnailphotoResult(byte[] value) {
-        this.getUserThumbnailphotoResult = ((byte[]) value);
+    public void setGetGroupToUserListResult(ArrayOfString value) {
+        this.getGroupToUserListResult = value;
     }
 
 }

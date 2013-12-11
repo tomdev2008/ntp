@@ -29,7 +29,7 @@
 
                  user.setExtensionData(_getUserThumbnailphoto_userInfoExtensionData);
              }  catch (Exception e){
-                 out.println(e.getCause());
+                 e.printStackTrace();
              }
         %>
 </body>
