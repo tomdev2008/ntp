@@ -807,20 +807,21 @@
 		  	            	$("#mainContent").html(rightMaterialContentFn(result));
 		  	                afterLoadMediaPage(result);
 		  	                mdata=result.defaultMedia;
+			  	            //调用方法时 如果素材为空  则隐藏素材下的 下载赞等信息 、 素材信息、  评分信息 、评分的列表信息 这几个信息分别代表一个div
+			  	  			//这块只针对视频
+			  	  			if(mdata!=""||mdata!=null){
+			  	  				if(mdata.code==""||mdata.code.type=="none"){
+			  	  					$("#mediaToolbar").hide();
+			  	  					$("#materialinfo").hide();
+			  	  					$("#mediaComment").hide();
+			  	  					$("#materialpf").hide();
+			  	  				}
+			  	  			}
 		  	            }
 		  				
 		  			  },
 	  			});
-			//调用方法时 如果素材为空  则隐藏素材下的 下载赞等信息 、 素材信息、  评分信息 、评分的列表信息 这几个信息分别代表一个div
-			//这块只针对视频
-			if(mdata!=""||mdata!=null){
-				if(mdata.code==""||mdata.code.type=="none"){
-					$("#mediaToolbar").hide();
-					$("#materialinfo").hide();
-					$("#mediaComment").hide();
-					$("#materialpf").hide();
-				}
-			}
+			
             //可选章节按钮
             $("#btnOptionalLecture").css("cursor","pointer")
                     .click(function(e){
