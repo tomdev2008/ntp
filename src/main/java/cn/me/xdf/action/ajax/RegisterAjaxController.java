@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.NotifyEntity;
-import cn.me.xdf.model.organization.SysOrgElement;
+import cn.me.xdf.model.organization.SysOrgDepart;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.SysOrgPersonTemp;
 import cn.me.xdf.service.AccountService;
@@ -65,10 +65,10 @@ public class RegisterAjaxController {
 	public String getDeparts(HttpServletRequest request) {
 		String str = request.getParameter("id");
 		String info = "";
-		List<SysOrgElement> list1 = registerService.getDepartsByParent(str);
-		for (SysOrgElement sysOrgElement : list1) {
-			String id = sysOrgElement.getFdId();
-			String name = sysOrgElement.getFdName();
+		List<SysOrgDepart> list1 = registerService.getDepartsByParent(str);
+		for (SysOrgDepart SysOrgDepart : list1) {
+			String id = SysOrgDepart.getFdId();
+			String name = SysOrgDepart.getFdName();
 			info = info + id + ":" + name + "=";
 
 		}

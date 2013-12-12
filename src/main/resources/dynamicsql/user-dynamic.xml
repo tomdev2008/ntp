@@ -17,7 +17,7 @@
           P.REALNAME,
           P.FD_SEX,
           P.FD_IS_EMP,E.FD_NAME,P.FD_PHOTO_URL
-        FROM SYS_ORG_PERSON P,SYS_ORG_ELEMENT E
+        FROM SYS_ORG_PERSON P,SYS_ORG_DEPART E
         WHERE P.DEPATID=E.FDID
         <#if key??>
             and (P.FD_LOGIN_NAME LIKE '%${key}%' or
@@ -43,7 +43,7 @@
           P.REALNAME,
           P.FD_SEX,
           P.FD_IS_EMP,E.FD_NAME,P.FD_PHOTO_URL
-        FROM SYS_ORG_PERSON P,SYS_ORG_ELEMENT E,SYS_USER_ROLE R
+        FROM SYS_ORG_PERSON P,SYS_ORG_DEPART E,SYS_USER_ROLE R
         WHERE P.DEPATID=E.FDID AND P.FDID = R.PERSON_ID
         <#if key??>
             and (P.FD_INIT_PASSWORD LIKE '%${key}%' or
@@ -73,7 +73,7 @@
           P.REALNAME,
           P.FD_SEX,
           P.FD_IS_EMP,E.FD_NAME,P.FD_PHOTO_URL
-        FROM SYS_ORG_PERSON P LEFT JOIN SYS_ORG_ELEMENT E ON
+        FROM SYS_ORG_PERSON P LEFT JOIN SYS_ORG_DEPART E ON
          P.DEPATID=E.FDID WHERE P.FD_LOGIN_NAME IS NOT NULL
         <#if id??>
             and P.FDID=:id
@@ -104,7 +104,7 @@
           P.REALNAME,
           P.FD_SEX,
           P.FD_IS_EMP,E.FD_NAME,P.FD_PHOTO_URL
-        FROM SYS_ORG_PERSON P,SYS_ORG_ELEMENT E
+        FROM SYS_ORG_PERSON P,SYS_ORG_DEPART E
         WHERE P.DEPATID=E.FDID
         <#if key??>
             and (P.FD_INIT_PASSWORD LIKE '%${key}%' or

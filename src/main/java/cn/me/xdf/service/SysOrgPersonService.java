@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
-import cn.me.xdf.model.organization.SysOrgElement;
+import cn.me.xdf.model.organization.SysOrgDepart;
 import cn.me.xdf.model.organization.SysOrgPerson;
 
 @Service

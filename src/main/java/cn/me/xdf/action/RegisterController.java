@@ -19,12 +19,12 @@ import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.NotifyEntity;
 import cn.me.xdf.model.course.CourseInfo;
-import cn.me.xdf.model.organization.SysOrgElement;
+import cn.me.xdf.model.organization.SysOrgDepart;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.SysOrgPersonTemp;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.RegisterService;
-import cn.me.xdf.service.SysOrgElementService;
+import cn.me.xdf.service.SysOrgDepartService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.utils.ShiroUtils;
 
@@ -41,14 +41,14 @@ public class RegisterController {
     private AccountService accountService;
 
     @Autowired
-    private SysOrgElementService sysOrgElementService;
+    private SysOrgDepartService SysOrgDepartService;
 
     @Autowired
     private AttMainService attMainService;
 
     @RequestMapping(value = "add")
     public String registerForm(Model model) {
-        List<SysOrgElement> elements = sysOrgElementService.findTypeis1();
+        List<SysOrgDepart> elements = SysOrgDepartService.findTypeis1();
         model.addAttribute("elements", elements);
         return "/base/register/add";
     }
@@ -212,7 +212,7 @@ public class RegisterController {
             model.addAttribute("sysParOrg", person.getHbmParent().getHbmParentOrg().getFdName());
             model.addAttribute("sysParOrgId", person.getHbmParent().getHbmParentOrg().getFdId());
         }
-        List<SysOrgElement> elements = sysOrgElementService.findTypeis1();
+        List<SysOrgDepart> elements = SysOrgDepartService.findTypeis1();
         model.addAttribute("elements", elements);
         return "/base/newTeacher/edit";
     }

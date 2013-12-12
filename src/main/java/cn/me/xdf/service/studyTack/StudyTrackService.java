@@ -194,7 +194,7 @@ public class StudyTrackService {
 		finder.append("  ( ");
 		finder.append(" select * from IXDF_NTP_BAM_SCORE  bamc  ");
 		finder.append(" where bamc.PRETEACHID in ");
-		finder.append(" (select person.FDID from SYS_ORG_PERSON person ,SYS_ORG_ELEMENT dep,SYS_ORG_ELEMENT org");
+		finder.append(" (select person.FDID from SYS_ORG_PERSON person ,SYS_ORG_DEPART dep,SYS_ORG_DEPART org");
 		finder.append("  where dep.fd_parentid = org.fdid and person.depatid=dep.fdid and org.fdid='"+(orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getFdParentId())+"' )");
 		finder.append("  )  b ");
 		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");		
