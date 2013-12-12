@@ -185,7 +185,7 @@
         </div>
         <div class="pull-right section">
             <div class="box-nextBtn">
-                <a class="icon-circle-lg-bg" href="${ctx}passThrough/getCourseHome/${courseId}"><i class="icon-chevron-right"></i></a>
+                <a class="icon-circle-lg-bg" href="${ctx}/passThrough/getCourseHome/${courseId}"><i class="icon-chevron-right"></i></a>
             </div>
         </div>
     </section>
