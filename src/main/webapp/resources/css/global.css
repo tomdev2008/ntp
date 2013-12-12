@@ -61,6 +61,7 @@ input.error:focus,textarea.error:focus{border-color:#953b39;-webkit-box-shadow:i
 .icon-ppt{background-position:0 -659px;}
 .icon-img{background-position:0 -755px;}
 .icon-task{background-position:0 -707px;}
+.icon-none{background-position:right -971px;}
 .icon-calendar{background-position:0 -731px;}
 .icon-course{background-position: 0 -883px;}
 .icon-course-series{background-position: 0 -907px;}

@@ -893,36 +893,42 @@ public class CourseAjaxController {
 		}		
 		Pagination pag=	courseService.getPageBySql(finder, pageNo, 3);
 		List<Map> courseInfos =  (List<Map>) pag.getList();
-		if(pag.getTotalPage()<=pageNo){
-			returnMap.put("hasMore", false);
+		if(pag.getTotalPage()>=pageNo){
+			if(pag.getList().size()==3){
+				returnMap.put("hasMore", true);
+			}else{
+				returnMap.put("hasMore", false);
+			}
 		}else{
-			returnMap.put("hasMore", true);
+			returnMap.put("hasMore", false);
 		}
 		List<Map> lists = new ArrayList<Map>();
-		for (Map courseInfoMap : courseInfos) {
-			CourseInfo courseInfo = courseService.get((String)courseInfoMap.get("ID")); 
-			Map map = new HashMap();
-			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
-			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
-			map.put("learnerNum", getLearningTotalNo(courseInfo.getFdId()));
-			map.put("name", courseInfo.getFdTitle());
-			map.put("issuer", courseInfo.getFdAuthor()); 
-			ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
-			map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
-			map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
-			if(userId.equals(ShiroUtils.getUser().getId())){
-				map.put("isme", true);
-			}else{
-				map.put("isme", false);
+		if(pag.getTotalPage()>=pageNo){
+			for (Map courseInfoMap : courseInfos) {
+				CourseInfo courseInfo = courseService.get((String)courseInfoMap.get("ID")); 
+				Map map = new HashMap();
+				List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
+				map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
+				map.put("learnerNum", getLearningTotalNo(courseInfo.getFdId()));
+				map.put("name", courseInfo.getFdTitle());
+				map.put("issuer", courseInfo.getFdAuthor()); 
+				ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
+				map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
+				map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
+				if(userId.equals(ShiroUtils.getUser().getId())){
+					map.put("isme", true);
+				}else{
+					map.put("isme", false);
+				}
+				BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseInfo.getFdId());
+				if(bamCourse==null){
+					map.put("isLearning", false);
+				}else{
+					map.put("isLearning", true);
+				}
+				map.put("dataId", courseInfo.getFdId());
+				lists.add(map);
 			}
-			BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseInfo.getFdId());
-			if(bamCourse==null){
-				map.put("isLearning", false);
-			}else{
-				map.put("isLearning", true);
-			}
-			map.put("dataId", courseInfo.getFdId());
-			lists.add(map);
 		}
 		returnMap.put("list", lists);
 		returnMap.put("type", "single");
@@ -1002,27 +1008,33 @@ public class CourseAjaxController {
 		}		
 		Pagination pag=	courseService.getPageBySql(finder, pageNo, 3);
 		List<Map> courseInfos =  (List<Map>) pag.getList();
-		if(pag.getTotalPage()<=pageNo){
-			returnMap.put("hasMore", false);
+		if(pag.getTotalPage()>=pageNo){
+			if(pag.getList().size()==3){
+				returnMap.put("hasMore", true);
+			}else{
+				returnMap.put("hasMore", false);
+			}
 		}else{
-			returnMap.put("hasMore", true);
+			returnMap.put("hasMore", false);
 		}
 		List<Map> lists = new ArrayList<Map>();
-		for (Map map1 : courseInfos) {
-			CourseInfo courseInfo = courseService.get((String)map1.get("ID"));
-			Map map = new HashMap();
-			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
-			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
-			map.put("learnerNum", getLearningTotalNo(courseInfo.getFdId()));
-			map.put("name", courseInfo.getFdTitle());
-			map.put("issuer", courseInfo.getFdAuthor()); 
-			ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
-			map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
-			map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
-			BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseInfo.getFdId());
-			map.put("isLearning", bamCourse==null?false:true);
-			map.put("dataId", courseInfo.getFdId());
-			lists.add(map);
+		if(pag.getTotalPage()>=pageNo){
+			for (Map map1 : courseInfos) {
+				CourseInfo courseInfo = courseService.get((String)map1.get("ID"));
+				Map map = new HashMap();
+				List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
+				map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
+				map.put("learnerNum", getLearningTotalNo(courseInfo.getFdId()));
+				map.put("name", courseInfo.getFdTitle());
+				map.put("issuer", courseInfo.getFdAuthor()); 
+				ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
+				map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
+				map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
+				BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseInfo.getFdId());
+				map.put("isLearning", bamCourse==null?false:true);
+				map.put("dataId", courseInfo.getFdId());
+				lists.add(map);
+			}
 		}
 		returnMap.put("list", lists);
 		returnMap.put("type", "single");

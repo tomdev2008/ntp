@@ -88,6 +88,8 @@
 
 .md .bd .thumbnails{margin-bottom: 0;}
 .md .bd .thumbnails>li{width: 320px;}
+.thumbnails>li .moreCourse{border: solid #3c81a8 2px;background: #abcbdd url("../images/moreCourse.png") no-repeat center 30%;padding-top: 240px;min-height: 77px;font-size: 16px;color: #ffffff;text-align: center;}
+#list-series .moreCourse{height: 133px;padding-top: 300px;background-position: center 40%;}
 .md .bd .thumbnail>img{height: 140px;width: 100%;}
 .md .bd .thumbnail .hd2{padding: 18px 0;text-align: center;border-bottom: solid #ededed 1px;}
 .md .bd .thumbnail .hd2 span{padding: 0 16px;display: inline-block}

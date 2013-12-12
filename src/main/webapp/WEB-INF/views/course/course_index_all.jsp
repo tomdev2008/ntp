@@ -68,6 +68,17 @@
                 </div>
             </li>
         {{~}}
+		{{?it.list.length<3}}
+        	<li>
+ 			{{?it.type == 'single'}}
+            	<div class="moreCourse">更多课程，敬请期待。</div>
+ 			{{?}}
+			{{?it.type == 'series'}}
+            	<div class="moreCourse">更多系列，敬请期待。</div>
+ 			{{?}}
+        	</li>
+		{{?}}
+
     </script>
 <script id="courseCategoryTemplate" type="text/x-dot-template">
     <li class="active"><a href="javascript:void(0)" data-id="all">全部课程</a></li>
