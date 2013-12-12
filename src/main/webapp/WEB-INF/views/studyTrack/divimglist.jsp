@@ -34,7 +34,7 @@
     			<img src="${ctx}/resources/images/iAmDirector/manage-course.jpg" alt="">
             </a>
             <a href="${ctx}/material/findList?fdType=01&order=FDCREATETIME">
-    			<img src="${ctx}/resources/images/iAmDirector/manage-course.jpg" alt="">
+    			<img src="${ctx}/resources/images/iAmDirector/dtotal.jpg" alt="">
             </a>
             </c:if>
         </div>
