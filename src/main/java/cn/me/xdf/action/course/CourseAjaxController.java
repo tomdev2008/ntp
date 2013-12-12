@@ -915,7 +915,12 @@ public class CourseAjaxController {
 			}else{
 				map.put("isme", false);
 			}
-			map.put("isLearning", true);
+			BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseInfo.getFdId());
+			if(bamCourse==null){
+				map.put("isLearning", false);
+			}else{
+				map.put("isLearning", true);
+			}
 			map.put("dataId", courseInfo.getFdId());
 			lists.add(map);
 		}
