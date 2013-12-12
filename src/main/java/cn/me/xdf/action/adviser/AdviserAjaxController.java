@@ -182,8 +182,8 @@ public class AdviserAjaxController {
 					attMap.put("name", attMain.getFdFileName());
 					attMap.put("fileUrl", attMain.getFdFilePath());
 					String name = FilenameUtils.getExtension(attMain.getFdFileName()).toLowerCase(Locale.ENGLISH);
-					if(name.endsWith(".mp4")||name.endsWith(".avi")||name.endsWith(".wmv")||name.endsWith(".rmvb")
-							||name.endsWith(".doc")||name.endsWith(".xls")||name.endsWith(".ppt")){
+					if(name.endsWith("mp4")||name.endsWith("avi")||name.endsWith("wmv")||name.endsWith("rmvb")
+							||name.endsWith("doc")||name.endsWith("xls")||name.endsWith("ppt")){
 						attMap.put("type", "onlinePlay");	
 					}else{
 						attMap.put("type", "notOnlinePlay");	
