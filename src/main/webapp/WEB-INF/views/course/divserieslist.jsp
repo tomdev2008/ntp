@@ -106,6 +106,9 @@
 							未命名
 						</c:if>
 					</span> 
+					<c:if test="${bean.ISPUBLISH=='0'}">
+				         <i class="icon-unpublished" data-toggle="tooltip" data-original-title="未发布"></i>
+				      </c:if>
 				    <span class="date">
 				    	<i class="icon-time"></i>
 				    	<fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/>
@@ -161,3 +164,6 @@
 			
 				</div>
 			</div>               
+<script type="text/javascript">	
+	$('[data-toggle="tooltip"]').tooltip();
+</script>
