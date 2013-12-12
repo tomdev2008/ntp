@@ -19,7 +19,7 @@
         {{~it.list :item:index}}
             <li>
                 <div class="thumbnail">
-					<img src="{{?item.imgUrl!=""}}${ctx}/common/file/image/{{=item.imgUrl}}{{??}}${ctx }/resources/images/temp-newClass.jpg{{?}}" alt="">
+					<img src="{{?item.imgUrl!=""}}${ctx}/common/file/image/{{=item.imgUrl}}{{??}}${ctx }/resources/images/default-cover.png{{?}}" alt="">
 					{{?it.type == "series"}}
                         <div class="hd2">
                                     <span>
