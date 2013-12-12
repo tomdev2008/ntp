@@ -250,7 +250,7 @@ public class MessageService extends BaseService implements InitializingBean{
 	public void saveCourseMessage(BamCourse bamCourse){
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("courseName", bamCourse.getCourseInfo().getFdTitle());
-		param.put("link", "http://www.baidu.com");
+		param.put("link", "#");
 		saveSysMessage(bamCourse.getFdId(),"source",param);
 	}
 	
