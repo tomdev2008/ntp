@@ -170,22 +170,22 @@
                     </section>
                     
                     <section class="section mt20">
-                        
-								<j:ifelse test="${main.flag==1}">
-									<j:if test="${main.fdFileType=='01'}">
+                        	
+	                                <c:choose >
+	                                   <c:when test="${main.flag==1&&main.fdFileType=='01'}">
 										<script type="text/javascript" 
 											src="${main.fileUrl}&width=750&height=510"></script>
-									</j:if>
-									<j:if test="${main.fdFileType=='04'||main.fdFileType=='05'}">
-											<iframe width="100%" height="510" id="iframe_ppt" src="${main.fileUrl}" frameBorder="0" scrolling="no"></iframe>
-									</j:if>
-									<j:else>
+									   </c:when>
+									 <c:when test="${main.flag==1&&(main.fdFileType=='04'||main.fdFileType=='05')}">
+										<iframe width="100%" height="510" id="iframe_ppt"   src="${main.fileUrl}" frameBorder="0" scrolling="no"></iframe>
+									   </c:when>
+									<c:otherwise>
 									<div class="media-placeholder">
-									正在转化中......
+										  正在转化中......
 									</div>
-									</j:else>
-								</j:ifelse>
-                        
+									</c:otherwise>
+								</c:choose>
+								
                     </section>
                     <section class="section">
                         <div class="control-group">
