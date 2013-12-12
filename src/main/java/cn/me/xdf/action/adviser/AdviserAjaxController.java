@@ -299,6 +299,27 @@ public class AdviserAjaxController {
 		attmap.put("attIds", findAtt(note));
 		return JsonUtils.writeObjectToJson(attmap);
 	}
+	/**
+	 * 批量下载时 根据soursenodeId 找出附件 id
+	 * @param fdIds
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/findAttsBySoureceIds/{fdIds}")
+	@ResponseBody
+	public String findAttsBySoureceIds(@PathVariable("fdIds") String[] fdIds,HttpServletRequest request){
+		
+		List<String> attMainList = new ArrayList<String>();
+        for (int i = 0; i < fdIds.length; i++) {
+            List<AttMain> attMains = adviserService.findNotesAtts(fdIds[i]);
+            for (AttMain attMain : attMains) {
+            	attMainList.add(attMain.getFdId());
+			}
+        }
+        Map attmap = new HashMap();
+        attmap.put("attIds", attMainList);
+		return JsonUtils.writeObjectToJson(attmap);
+	}
 	
 	/**
 	 * 找出我所批改的作业

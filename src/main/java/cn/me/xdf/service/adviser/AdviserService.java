@@ -77,7 +77,7 @@ public class AdviserService extends BaseService{
 		List<VCheckTaskData> adviserList = new ArrayList<VCheckTaskData>();
 		for (String modelId : modelIds) {
 			SourceNote note = sourceNodeService.get(SourceNote.class, modelId);
-			SysOrgPerson person = (SysOrgPerson)accountService.load(note.getFdUserId());//人员信息
+			SysOrgPerson person = accountService.load(note.getFdUserId());//人员信息
 			VCheckTaskData vdata = new VCheckTaskData();
 			vdata.setUserName(person.getRealName());//名字
 			vdata.setUserDept(person.getDeptName());//部门名字
@@ -99,10 +99,10 @@ public class AdviserService extends BaseService{
 				vdata.setPassScore(info.getFdScore());//标准分
 				vdata.setGuideScore(note.getFdScore());//导师打分
 				if(note.getFdStatus().equals(Constant.TASK_STATUS_FAIL)){
-					vdata.setPass("否");
+					vdata.setIsPass("否");
 				}
 				if(note.getFdStatus().equals(Constant.TASK_STATUS_PASS)){
-					vdata.setPass("是");
+					vdata.setIsPass("是");
 				}
 			}
 			adviserList.add(vdata);
@@ -141,10 +141,10 @@ public class AdviserService extends BaseService{
 				vdata.setGuideScore(new Double(map.get("FDSCORE").toString()));//导师打分
 				String fdStatus = (String)map.get("FDSTATUS");
 				if(fdStatus.equals(Constant.TASK_STATUS_FAIL)){
-					vdata.setPass("否");
+					vdata.setIsPass("否");
 				}
 				if(fdStatus.equals(Constant.TASK_STATUS_PASS)){
-					vdata.setPass("是");
+					vdata.setIsPass("是");
 				}
 			}
 			
