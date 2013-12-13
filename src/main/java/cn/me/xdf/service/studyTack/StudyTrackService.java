@@ -132,8 +132,8 @@ public class StudyTrackService {
 		finder.append(" or ");
 		finder.append(" bamc.COURSEID in (select courseAuth.FDCOURSEID from IXDF_NTP_COURSE_AUTH courseAuth where courseAuth.ISAUTHSTUDY=1 and courseAuth.FDUSERID='"+ShiroUtils.getUser().getId()+"')");
 		finder.append(" )  b ");
-		finder.append("  left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");
-		finder.append("    where o2.realname like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
+		finder.append("  left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_ELEMENT o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_ELEMENT o2 on b.PRETEACHID = o2.fdid");
+		finder.append("    where o2.fd_name like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
 		finder = addOrder(finder, orderType);
 		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 		
@@ -153,8 +153,8 @@ public class StudyTrackService {
 		finder.append(" select * from IXDF_NTP_BAM_SCORE  bamc ");
 		finder.append(" where bamc.GUIDETEACHID = '"+ShiroUtils.getUser().getId()+"'");
 		finder.append(" )  b ");
-		finder.append("  left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");
-		finder.append("    where o2.realname like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
+		finder.append("  left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_ELEMENT o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_ELEMENT o2 on b.PRETEACHID = o2.fdid");
+		finder.append("    where o2.fd_name like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
 		finder = addOrder(finder, orderType);
 		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 	}
@@ -174,8 +174,8 @@ public class StudyTrackService {
 		finder.append(" where bamc.PRETEACHID in  ");
 		finder.append(" (select person.FDID from SYS_ORG_PERSON person where person.depatid='"+((SysOrgPerson)accountService.get(ShiroUtils.getUser().getId())).getDepatId()+"') ");
 		finder.append("  )  b  ");
-		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");
-		finder.append("    where o2.realname like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
+		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_ELEMENT o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_ELEMENT o2 on b.PRETEACHID = o2.fdid");
+		finder.append("    where o2.fd_name like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
 		finder = addOrder(finder, orderType);
 		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 	}
@@ -197,8 +197,8 @@ public class StudyTrackService {
 		finder.append(" (select person.FDID from SYS_ORG_PERSON person ,SYS_ORG_DEPART dep,SYS_ORG_DEPART org");
 		finder.append("  where dep.fd_parentid = org.fdid and person.depatid=dep.fdid and org.fdid='"+(orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getFdParentId())+"' )");
 		finder.append("  )  b ");
-		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");		
-		finder.append("    where o2.realname like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
+		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_ELEMENT o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_ELEMENT o2 on b.PRETEACHID = o2.fdid");		
+		finder.append("    where o2.fd_name like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
 		finder = addOrder(finder, orderType);
 		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 	}
@@ -220,8 +220,8 @@ public class StudyTrackService {
 		finder.append("  or ");
 		finder.append(" (bamc.COURSEID in (select courseAuth.FDCOURSEID from IXDF_NTP_COURSE_AUTH courseAuth where courseAuth.Isediter=1 and courseAuth.Fduserid='"+ShiroUtils.getUser().getId()+"'))"); 
 		finder.append("  )  b ");
-		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_PERSON o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_PERSON o2 on b.PRETEACHID = o2.fdid");
-		finder.append("    where o2.realname like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
+		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_ELEMENT o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_ELEMENT o2 on b.PRETEACHID = o2.fdid");
+		finder.append("    where o2.fd_name like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
 		finder = addOrder(finder, orderType);
 		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 	}
@@ -243,11 +243,11 @@ public class StudyTrackService {
 			finder.append(" order by c.FDTITLE desc ");
 			return finder;
 		}else if(orderType.equals("newTeacher")){
-			finder.append(" order by o2.REALNAME desc ");
+			finder.append(" order by o2.FD_NAME desc ");
 			finder.append("");
 			return finder;
 		}else if(orderType.equals("teacher")){
-			finder.append(" order by o1.REALNAME desc ");
+			finder.append(" order by o1.FD_NAME desc ");
 			finder.append("");
 			return finder;
 		}else if(orderType.equals("time")){

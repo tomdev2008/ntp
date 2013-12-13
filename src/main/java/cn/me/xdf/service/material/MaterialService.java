@@ -241,7 +241,7 @@ public class MaterialService extends BaseService {
 			}
 			finder.append(" as authflag,");
 			
-			finder.append(" sysperson.realname as creatorName");
+			finder.append(" sysperson.fd_name as creatorName");
 			
 			if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){//测试统计
 				finder.append(" ,a.questionNum,a.fdtotalnum");
@@ -258,7 +258,7 @@ public class MaterialService extends BaseService {
 			finder.append(" where ma.isediter=1 and ma.fduserid='"+ShiroUtils.getUser().getId()+"') temp");
 			finder.append(" on info.FDID = temp.fdmaterialid");
 			//找出创建者
-			finder.append(" left join (select person.fdid,person.realname from Sys_Org_Person person ) sysperson on sysperson.fdid = info.fdcreatorid");
+			finder.append(" left join (select person.fdid,person.fd_name from Sys_Org_Element person ) sysperson on sysperson.fdid = info.fdcreatorid");
 			 
 				       
 			if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
@@ -271,11 +271,11 @@ public class MaterialService extends BaseService {
 				finder.append(" select count(*) as tasknum,sum(fdstandardscore) as fullmarks,fdmaterialid from ixdf_ntp_task group by fdmaterialid) t ");
 				finder.append(" on t.fdmaterialid=info.fdid  ");
 			}
-			finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1 ");
+			finder.append(" where info.FDTYPE=:fdType and info.isAvailable='Y' ");
 			if(!ShiroUtils.isAdmin()){
-			    finder.append(" and ( info.fdCreatorId='"+ShiroUtils.getUser().getId()+"' or info.ispublish=1 ");
+			    finder.append(" and ( info.fdCreatorId='"+ShiroUtils.getUser().getId()+"' or info.ispublish='Y' ");
 				finder.append(" or exists ( select auth.fdid from IXDF_NTP_MATERIAL_AUTH auth where auth.fdmaterialId = info.fdid ");
-				finder.append(" and ( auth.isEditer=1 or auth.isreader=1) and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"')  )");
+				finder.append(" and ( auth.isEditer='Y' or auth.isreader=1) and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"')  )");
 			}
 			finder.setParam("fdType", fdType);
 			if(StringUtil.isNotBlank(fdName)&&StringUtil.isNotEmpty(fdName)){

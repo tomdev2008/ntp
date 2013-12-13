@@ -76,7 +76,7 @@ public class CourseService  extends BaseService{
 		}
 		finder.append(" as authflag,");
 		//创建者
-		finder.append(" sysperson.realname as creatorName");
+		finder.append(" sysperson.fd_name as creatorName");
 		
 		finder.append(" from IXDF_NTP_COURSE course ");
 		finder.append(" left join IXDF_NTP_SCORE_STATISTICS scorestatis " );
@@ -87,7 +87,7 @@ public class CourseService  extends BaseService{
 		finder.append(" where ma.isediter=1 and ma.fduserid='"+ShiroUtils.getUser().getId()+"') temp");
 		finder.append(" on course.fdid = temp.fdcourseid");
 		//找出创建者
-		finder.append(" left join (select person.fdid,person.realname from Sys_Org_Person person ) sysperson on sysperson.fdid = course.fdcreatorid");
+		finder.append(" left join (select person.fdid,person.fd_name from Sys_Org_Element person ) sysperson on sysperson.fdid = course.fdcreatorid");
 		 
 		
 		//课程列表中有效的
