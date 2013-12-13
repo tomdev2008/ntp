@@ -64,6 +64,7 @@ input.error:focus,textarea.error:focus{border-color#f39800;-webkit-box-shadow:in
 .icon-circle-bg.blue{background-position:right -801px;}
 .icon-mylist{background-position: right -490px;}
 .icon-tracking{background-position: right -514px;}
+.icon-chevron-up-large{background-position: 0 -1111px;background-image: url(../../../images/icon-png.png)}
 
 /*头部导航*/
 .logo{float:left;display:block;width:187px;height:58px;background:#3c82a8 url(../../../images/logo.png) no-repeat 20px 10px;}
@@ -107,3 +108,8 @@ footer .navbar .nav li.last a{border-right:none;}
 .control-upload .upload-fileName{font-size: 14px;margin-bottom: 5px;color: #999999;}
 .control-upload .uploadify{position:absolute;right:10px;top:0;}
 .control-upload .pr .uploadify{top:-5px;}
+
+/*回到顶部*/
+.goTopWrap {position: fixed;z-index:1000;bottom: 70px;right: 60px;}
+.goTop{width: 24px;height: 24px;padding: 18px;background-color: #4391bb}
+.goTopWrap .help{background-color:#a8c9da;display:block;width:60px;height:60px;text-align:center;line-height:60px;font-family: arial;font-size: 35px;d;color: #ffffff;}

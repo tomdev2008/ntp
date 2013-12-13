@@ -78,6 +78,7 @@ input.error:focus,textarea.error:focus{border-color:#953b39;-webkit-box-shadow:i
 .icon-cloth{background-position: right -827px}
 .icon-transforming{background-position: right -931px;}
 .icon-unpublished{background-position: right -951px;}
+.icon-chevron-up-large{background-position: 0 -1111px;}
 
 /* star */
 .icon-star{*margin-right:0;vertical-align:middle;}
@@ -120,3 +121,8 @@ footer{border-top:solid #ddd 1px;margin-top:30px;}
 footer .navbar {text-align:right;padding-top:19px;font-size:12px;}
 footer .navbar .nav li a{padding:0 12px;border-right:solid #ddd 1px;font-size:13px;}
 footer .navbar .nav li.last a{border-right:none;}
+
+/*回到顶部*/
+.goTopWrap {position: fixed;z-index:1000;bottom: 70px;right: 60px;}
+.goTop{width: 24px;height: 24px;padding: 18px;background-color: #4391bb}
+.goTopWrap .help{background-color:#a8c9da;display:block;width:60px;height:60px;text-align:center;line-height:60px;font-family: arial;font-size: 35px;d;color: #ffffff;}
