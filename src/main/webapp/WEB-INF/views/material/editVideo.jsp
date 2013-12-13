@@ -171,20 +171,33 @@
                     
                     <section class="section mt20">
                         	
-	                                <c:choose >
-	                                   <c:when test="${main.flag==1&&main.fdFileType=='01'}">
-										<script type="text/javascript" 
+                        <c:if test="${materialInfo.fdLink==null||materialInfo.fdLink==''}">
+								<c:choose>
+									<c:when test="${main.flag==1&&main.fdFileType=='01'}">
+										<script type="text/javascript"
 											src="${main.fileUrl}&width=750&height=510"></script>
-									   </c:when>
-									 <c:when test="${main.flag==1&&(main.fdFileType=='04'||main.fdFileType=='05')}">
-										<iframe width="100%" height="510" id="iframe_ppt"   src="${main.fileUrl}" frameBorder="0" scrolling="no"></iframe>
-									   </c:when>
+									</c:when>
+									<c:when
+										test="${main.flag==1&&(main.fdFileType=='04'||main.fdFileType=='05')}">
+										<iframe width="100%" height="510" id="iframe_ppt"
+											src="${main.fileUrl}" frameBorder="0" scrolling="no"></iframe>
+									</c:when>
 									<c:otherwise>
-									<div class="media-placeholder">
-										  正在转化中......
-									</div>
+										<div class="media-placeholder">正在转化中......</div>
 									</c:otherwise>
 								</c:choose>
+						</c:if>
+						<c:if test="${materialInfo.fdLink!=null&&materialInfo.fdLink!=''}">
+									<c:if test="${materialInfo.fdType=='01'}">
+										<script type="text/javascript"
+											src="${materialInfo.fdLink}&width=750&height=510"></script>
+									</c:if>
+									<c:if test="${materialInfo.fdType=='04'||materialInfo.fdType=='05'}">
+										<iframe width="100%" height="510" id="iframe_ppt"
+											src="${materialInfo.fdLink}" frameBorder="0" scrolling="no"></iframe>
+								    </c:if>
+						</c:if>
+	                               
 								
                     </section>
                     <section class="section">
