@@ -50,7 +50,7 @@ public class UserController {
 		Finder finder = Finder.create(" from SysOrgPerson p where p.loginName <> 'admin' ");
 		String param = request.getParameter("fdKey");
 		if (StringUtils.isNotBlank(param)) {
-			finder.append(" and lower(p.loginName) like :param  or lower(p.notifyEntity.realName) like :param or lower(p.hbmParent.fdName) like :param  ").setParam("param",
+			finder.append(" and lower(p.loginName) like :param  or lower(p.fdName) like :param or lower(p.hbmParent.fdName) like :param  ").setParam("param",
 					"%"+param+"%");
 		}
 		Pagination page = sysOrgPersonService.getPage(finder,

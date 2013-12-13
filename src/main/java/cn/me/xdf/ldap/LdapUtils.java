@@ -20,6 +20,8 @@ public class LdapUtils {
         String v = context.getStringAttribute(name);
         if (v != null)
             map.put(key, v);
+        else
+            map.put(key,"");
     }
 
     /**

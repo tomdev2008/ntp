@@ -84,7 +84,7 @@
             <div class="control-group">
         		<label for="tel" class="control-label">电话<span class="text-error">*</span></label>
         		<div class="controls">
-                	<input id="tel" type="text" class="span4" name="notifyEntity.fdMobileNo" value="${bean.notifyEntity.fdMobileNo}"  readonly>
+                	<input id="tel" type="text" class="span4" name="notifyEntity.fdMobileNo" value="${bean.fdMobileNo}"  readonly>
                 </div>
         	</div>
             <div class="control-group">

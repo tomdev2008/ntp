@@ -21,13 +21,6 @@ public class PersonLdapTest extends BaseTest {
 
     @Test
     public void testInitData(){
-        Pagination p1 = personLdapInService.getPages(1,500000, new PeronLdap());
-
-        for(Object o : p1.getList()){
-            PeronLdap p = (PeronLdap)o;
-            System.out.println(p.getUserName());
-        }
-
-        System.out.println("总条目="+p1.getTotalCount());
+        personLdapInService.executeUpdateData(5);
     }
 }

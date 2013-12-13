@@ -9,7 +9,9 @@ import cn.me.xdf.ldap.model.PeronLdap;
 import cn.me.xdf.model.organization.SysOrgConstant;
 import cn.me.xdf.model.organization.SysOrgElement;
 import cn.me.xdf.service.SysOrgPersonService;
+import cn.me.xdf.utils.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.ldap.control.PagedResult;
@@ -34,15 +36,33 @@ import java.util.concurrent.ConcurrentHashMap;
  * To change this template use File | Settings | File Templates.
  */
 @Service
-public class PersonLdapInService extends BaseLdapDao<PeronLdap> {
-
+public class PersonLdapInService extends LdapInService {
 
     @Autowired
-    private SysOrgPersonService sysOrgPersonService;
+    private LdapLogService ldapLogService;
+
+    @Autowired
+    private LdapTemplate ldapTemplate;
 
 
     public void initData(List<Map<String, Object>> values) {
         updateOrg(values);
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public String executeUpdateData(int day) {
+        String date = DateUtil.convertDateToString(DateUtils.addDays(new Date(), 0 - day), "yyyyMMddHHmmss.ssssss");
+        List<Map<String, Object>> list = ldapTemplate.search(
+                "cn=users", "(&(objectClass=xdf-person)(modifyTimeStamp>=" + date + "))",
+                new PersonContextMapper());
+        String msg = updateOrg(list);
+        ldapLogService.saveLog(msg);
+        return msg;
     }
 
 
@@ -50,29 +70,54 @@ public class PersonLdapInService extends BaseLdapDao<PeronLdap> {
         int insertSize = 0;
         int updateSize = 0;
         for (Map<String, Object> map : values) {
-            List<Map> lists = sysOrgPersonService.findByNamedQuery("person.selectElementByKey", map, Map.class);
-            List<Map> departList = sysOrgPersonService.findByNamedQuery("person.selectElementByFdNo", map, Map.class);
-            if (CollectionUtils.isEmpty(lists)) {
+            List<Map> lists = findByNamedQuery("person.selectElementByKey", map, Map.class);
+            List<Map> departList = findByNamedQuery("person.selectElementByFdNo", map, Map.class);
+            if (departList.size() > 0) {
                 Map departMap = departList.get(0);
                 Object v = departMap.get("FDID");
-                if(v!=null){
-                    departMap.put("FD_PARENTID",v);
+                if (v != null) {
+                    map.put("FD_PARENTID", v);
                 }
             }
             if (CollectionUtils.isEmpty(lists)) {
-                sysOrgPersonService.updateByNamedQuery("saveElement", map);
-                System.out.println("INSERT INTO SYS_ORG_PERSON(FDID,FD_LOGIN_NAME,FD_PASSWORD,FDEMAIL,FDMOBILENO,FD_WORK_PHONE,FD_IDENTITY_CARD,FD_IS_EMP,FD_SEX)\n" +
-                        "\t\tVALUES('"+map.get("FDID")+"','"+map.get("FD_LOGIN_NAME")+"','"+map.get("FD_PASSWORD")+"','"+map.get("FD_EMAIL")+"','"+map.get("FDMOBILENO")+"','"+map.get("FD_WORK_PHONE")+"','"+map.get("FD_IDENTITY_CARD")+"','"+map.get("FD_IS_EMP")+"','"+map.get("FD_SEX")+"')");
-                sysOrgPersonService.updateByNamedQuery("person.saveElement", map);
+                updateByNamedQuery("saveElement", map);
+                updateByNamedQuery("person.saveElement", map);
                 insertSize++;
             } else {
-                //sysOrgPersonService.updateByNamedQuery("person.updateElement", map);
+                updateByNamedQuery("person.updateElement", map);
                 updateSize++;
             }
         }
 
 
         return "人员：本次新增" + insertSize + ",更新:" + updateSize;
+    }
+
+
+    private static class PersonContextMapper implements ContextMapper {
+        public Object mapFromContext(Object ctx) {
+            DirContextAdapter context = (DirContextAdapter) ctx;
+            Map<String, Object> map = new ConcurrentHashMap<String, Object>();
+            //FD_ID,AVAILABLE,CREATETIME,FD_NAME,FD_NO,FD_ORG_TYPE,LDAPDN,FD_PARENTID
+            map.put("FDID", Identities.generateID());
+            map.put("AVAILABLE", "1".equals(context.getStringAttribute("displayed")));
+            map.put("CREATETIME", new Date());
+            LdapUtils.setStringAttribute(context, map, "FD_NAME", "name_attribute");
+            LdapUtils.setStringAttribute(context, map, "FD_NO", "employeeNumber");
+            LdapUtils.setStringAttribute(context, map, "LDAPDN", "dn");
+            LdapUtils.setStringAttribute(context, map, "PARENTID", "parentId");
+            LdapUtils.setStringAttribute(context, map, "EMAIL", "mail");
+            LdapUtils.setStringAttribute(context, map, "FDMOBILENO", "mobile");
+            LdapUtils.setStringAttribute(context, map, "FD_WORK_PHONE", "telephonenumber");
+            LdapUtils.setStringAttribute(context, map, "FD_IDENTITY_CARD", "uid");
+            LdapUtils.setStringAttribute(context, map, "FD_IS_EMP", "fdIsEmp");
+            LdapUtils.setStringAttribute(context, map, "FD_SEX", "sex");
+            map.put("FD_ORG_TYPE", SysOrgConstant.ORG_TYPE_PERSON);
+
+            map.put("FD_PASSWORD", "c4ca4238a0b923820dcc509a6f75849b");
+
+            return map;
+        }
     }
 
 

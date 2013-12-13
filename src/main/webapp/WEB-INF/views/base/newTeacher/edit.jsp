@@ -215,14 +215,14 @@ function CountStrByte(){
              <div class="control-group">
         		<label for="name" class="control-label">姓名<span class="text-error">*</span></label>
         		<div class="controls">
-        		<input type="hidden"  name="notifyEntity.fdEmail" value="${person.notifyEntity.fdEmail}" >
+        		<input type="hidden"  name="notifyEntity.fdEmail" value="${person.fdEmail}" >
         		 <j:if test="${person.fdIsEmp=='1'}">
         		  <input id="inputrealname" type="text" class="span4"
-                	  name="notifyEntity.realName"  value="${person.notifyEntity.realName}" readOnly>
+                	  name="notifyEntity.realName"  value="${person.realName}" readOnly>
         		</j:if>
         	   <j:if test="${person.fdIsEmp=='0'}">
         		  <input id="inputrealname" type="text" class="span4"
-                	  name="notifyEntity.realName"  value="${person.notifyEntity.realName}" 
+                	  name="notifyEntity.realName"  value="${person.realName}"
                 	  onblur="checkName();" onclick="clearCss(this);" placeholder="请填写您的真实姓名">
                    <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写真实姓名</span>
         		</j:if>
@@ -264,7 +264,7 @@ function CountStrByte(){
         		<label for="tel" class="control-label">电话<span class="text-error">*</span></label>
         		<div class="controls">
                 	<input id="tel" type="text" class="span4" 
-                	  name="notifyEntity.fdMobileNo" value="${person.notifyEntity.fdMobileNo}" 
+                	  name="notifyEntity.fdMobileNo" value="${person.fdMobileNo}"
                 	  onblur="checkTel();" onclick="clearCss(this);" placeholder="请填写您的常用联系方式，如手机/座机等 ">
                     <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写通讯方式</span>
                 </div>
