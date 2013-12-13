@@ -347,9 +347,13 @@ public class StudyTrackService {
 			if(passMap.size()==0){
 				currLecture="尚未开始学习";
 			}else{
-				CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");
-				MaterialInfo materialInfo = (MaterialInfo) passMap.get("materialInfoNow");
-				currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
+				if(passMap.get("coursePass")!=null&&passMap.get("coursePass").equals("true")){
+					currLecture = "学习通过";
+				}else{
+					CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");
+					MaterialInfo materialInfo = (MaterialInfo) passMap.get("materialInfoNow");
+					currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
+				}
 			}
 			vStudyTrack.setLinkNow(currLecture);
 			Map map2 = getMessageInfoByBamId(bamCourse.getFdId());
@@ -392,9 +396,13 @@ public class StudyTrackService {
 			if(passMap.size()==0){
 				currLecture="尚未开始学习";
 			}else{
-				CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");
-				MaterialInfo materialInfo = (MaterialInfo) passMap.get("materialInfoNow");
-				currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
+				if(passMap.get("coursePass")!=null&&passMap.get("coursePass").equals("true")){
+					currLecture = "学习通过";
+				}else{
+					CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");
+					MaterialInfo materialInfo = (MaterialInfo) passMap.get("materialInfoNow");
+					currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
+				}
 			}
 			vStudyTrack.setLinkNow(currLecture);
 			Map map2 = getMessageInfoByBamId(bamCourse.getFdId());

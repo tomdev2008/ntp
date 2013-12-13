@@ -29,6 +29,7 @@ request.setAttribute("path", path[path.length-1]);
 	          <shiro:hasRole name="group">
 	          <li><a href="${ctx}/studyTrack/getStudyTrackDirector">我是主管</a></li>
 	          </shiro:hasRole>
+	          <li><a href="${ctx}/course/courseIndex">个人首页</a></li>
 	        </ul>
 			<shiro:authenticated>
             <ul class="nav pull-right">
