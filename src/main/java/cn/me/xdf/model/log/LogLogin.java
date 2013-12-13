@@ -25,7 +25,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_LOGLOGIN")
-public class LogLogin extends IdEntity{
+public class LogLogin extends BaseLog{
 
 	/**
 	 * 登录人

@@ -81,7 +81,7 @@ public class UserController {
                 .findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
                         person.getFdIdentityCard());
 		request.setAttribute("fdTmpId", personTemp!=null?personTemp.getFdId():id);
-		request.setAttribute("fdEmail", person.getNotifyEntity().getFdEmail());
+		request.setAttribute("fdEmail", person.getFdEmail());
 		return "/admin/user/rePassword";
 	}
 	

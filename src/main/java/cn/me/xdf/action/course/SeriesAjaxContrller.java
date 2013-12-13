@@ -120,7 +120,7 @@ public class SeriesAjaxContrller {
 	}
 	/**
 	 * 保存系列基本信息
-	 * @param model
+	 * @param
 	 * @param request
 	 * @return
 	 */
@@ -161,7 +161,7 @@ public class SeriesAjaxContrller {
 	}
 	/**
 	 * 保存系列封页信息
-	 * @param model
+	 * @param
 	 * @param request
 	 * @return
 	 */
@@ -391,7 +391,7 @@ public class SeriesAjaxContrller {
 			map.put("seriesTitle", seriesInfo.getFdName());
 			map.put("fdDescription", seriesInfo.getFdDescription());
 			// map.put("isavailable", seriesInfo.getIsAvailable());//如果当前没有作者信息 则去创建者的名字
-			map.put("seriesAuthor", seriesInfo.getFdAuthor()==null||seriesInfo.getFdAuthor()==""?seriesInfo.getCreator().getNotifyEntity().getRealName():seriesInfo.getFdAuthor());// 作者
+			map.put("seriesAuthor", seriesInfo.getFdAuthor()==null||seriesInfo.getFdAuthor()==""?seriesInfo.getCreator().getRealName():seriesInfo.getFdAuthor());// 作者
 			map.put("authorDesc", seriesInfo.getFdAuthorDescription());// 作者简介
 			
 		}
@@ -499,14 +499,14 @@ public class SeriesAjaxContrller {
 			}
 			Map<String, String> author=null;
 			//在创建系列课程时,当作者为空时取的是创建者的名字,此处判断如果创建者和作者名字相同走默认即创建者,否则取作者字段
-			if(StringUtil.isNotEmpty(seriesInfo.getFdAuthor())&&!seriesInfo.getFdAuthor().equals(seriesInfo.getCreator().getNotifyEntity().getRealName())){
+			if(StringUtil.isNotEmpty(seriesInfo.getFdAuthor())&&!seriesInfo.getFdAuthor().equals(seriesInfo.getCreator().getRealName())){
 				author=new HashMap<String, String>();
 				author.put("authorName", seriesInfo.getFdAuthor());//作者名称
 				author.put("imgUrl", "");//作者头像
 				author.put("authorDesc", seriesInfo.getFdAuthorDescription());
 			}else{//否则默认为系列创建者
 				author=new HashMap<String, String>();
-				author.put("authorName", seriesInfo.getCreator().getNotifyEntity().getRealName());
+				author.put("authorName", seriesInfo.getCreator().getRealName());
 				author.put("imgUrl",seriesInfo.getCreator().getPoto());//作者头像
 				author.put("authorDesc", seriesInfo.getFdAuthorDescription());
 			}
@@ -591,7 +591,7 @@ public class SeriesAjaxContrller {
 							//系列作者
 							String fdAuthor=(String) seriesm.get("FDAUTHOR");
 							SysOrgPerson creator=accountService.get(seriesm.get("FDCREATORID").toString());
-							formatM.put("author", fdAuthor==null||fdAuthor==""?creator.getNotifyEntity().getRealName():fdAuthor);
+							formatM.put("author", fdAuthor==null||fdAuthor==""?creator.getRealName():fdAuthor);
 							newestSeries.add(formatM);
 						}
 					}

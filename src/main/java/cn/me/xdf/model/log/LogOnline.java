@@ -24,7 +24,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_LOGONLINE")
-public class LogOnline extends IdEntity{
+public class LogOnline extends BaseLog{
 
 	/**
 	 * 在线记录用户

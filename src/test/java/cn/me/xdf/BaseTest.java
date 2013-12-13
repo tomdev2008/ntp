@@ -17,10 +17,14 @@ import javax.sql.DataSource;
  * Time: 下午12:02
  * To change this template use File | Settings | File Templates.
  */
-@ContextConfiguration(locations = {"/spring/root-context.xml",
-        "/spring/applicationContext-shiro.xml", "/spring/applicationContext-service.xml", "/spring/applicationContext-quartz.xml"})
+@ContextConfiguration(locations = {
+        "/spring/root-context.xml",
+        "/spring/applicationContext-shiro.xml",
+        "/spring/applicationContext-service.xml",
+        "/spring/applicationContext-quartz.xml",
+        "/spring/applicationContext-ldap.xml"})
 @ActiveProfiles("production")
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 public class BaseTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     private long starttime;

@@ -8,6 +8,7 @@ import java.util.Map;
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.model.organization.SysOrgDepart;
+import cn.me.xdf.model.organization.SysOrgElement;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +23,9 @@ public class SysOrgDepartService extends BaseService {
 	 * @param orgId
 	 * @return
 	 */
-	public List<SysOrgDepart> findAllChildrenById(String orgId) {
-		List<SysOrgDepart> elements = new ArrayList<SysOrgDepart>();
-		SysOrgDepart element = load(orgId);
+	public List<SysOrgElement> findAllChildrenById(String orgId) {
+		List<SysOrgElement> elements = new ArrayList<SysOrgElement>();
+        SysOrgElement element = load(orgId);
 		if (element != null) {
 			elements.add(element);
 			loadAllChildren(element.getFdChildren(), elements);
@@ -58,9 +59,9 @@ public class SysOrgDepartService extends BaseService {
 
 
 
-	private void loadAllChildren(List<SysOrgDepart> elements,
-			List<SysOrgDepart> targetEelements) {
-		for (SysOrgDepart e : elements) {
+	private void loadAllChildren(List<SysOrgElement> elements,
+			List<SysOrgElement> targetEelements) {
+		for (SysOrgElement e : elements) {
 			targetEelements.add(e);
 			if (e.getHbmChildren() != null) {
 				loadAllChildren(e.getFdChildren(), targetEelements);

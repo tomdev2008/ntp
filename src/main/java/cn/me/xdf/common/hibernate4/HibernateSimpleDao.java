@@ -204,8 +204,6 @@ public abstract class HibernateSimpleDao {
 	 * @param crit
 	 * @param pageNo
 	 * @param pageSize
-	 * @param projection
-	 * @param orders
 	 * @return
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -18,6 +18,14 @@ public class DateUtil {
 		SimpleDateFormat df = new SimpleDateFormat(pattern);
 		return df.format(aDate);
 	}
+
+
+    public static String convertDateToString(Date aDate,String pattern) {
+        if (aDate == null)
+            return null;
+        SimpleDateFormat df = new SimpleDateFormat(pattern);
+        return df.format(aDate);
+    }
 	
 	public static Date convertStringToDate(String strDate) {
 		if (strDate==null)

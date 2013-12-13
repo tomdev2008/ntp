@@ -23,7 +23,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "IXDF_NTP_LOGLOGOUT")
-public class LogLogout extends IdEntity{
+public class LogLogout extends BaseLog{
 	
 	/**
 	 * 登出人

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dynamic-hibernate-statement name="group">
+    <!--根据组织架构编号查询-->
+    <sql-query name="selectElementByFdNo">
+        <![CDATA[
+		SELECT FDID FROM SYS_ORG_ELEMENT WHERE FD_NO=:FD_NO
+		]]>
+    </sql-query>
+</dynamic-hibernate-statement>

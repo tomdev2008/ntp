@@ -311,7 +311,7 @@ public class CourseAjaxController {
 	/**
 	 * 根据#号分隔字符串,返回list
 	 * 
-	 * @param String
+	 * @param
 	 * @return List
 	 */
 	private static List buildString(String s) {
@@ -746,8 +746,8 @@ public class CourseAjaxController {
 				teacher.put("tid", cpa.getFdUser().getFdId());
 				teacher.put("imgUrl",  cpa.getFdUser().getPoto());
 				teacher.put("link",  "");
-				teacher.put("name",cpa.getFdUser().getNotifyEntity().getRealName());
-				teacher.put("mail",  cpa.getFdUser().getNotifyEntity().getFdEmail());
+				teacher.put("name",cpa.getFdUser().getRealName());
+				teacher.put("mail",  cpa.getFdUser().getFdEmail());
 				teacher.put("department",  cpa.getFdUser().getDeptName());
 //				teacher.put("org", cpa.getFdUser().getHbmParent().getFdName());
 				Map mentor=null;//导师信息
@@ -756,8 +756,8 @@ public class CourseAjaxController {
 					mentor.put("mid", cpa.getFdTeacher().getFdId());
 					mentor.put("imgUrl",  cpa.getFdTeacher().getPoto());
 					mentor.put("link",  "");
-					mentor.put("name",cpa.getFdTeacher().getNotifyEntity().getRealName());
-					mentor.put("mail",  cpa.getFdTeacher().getNotifyEntity().getFdEmail());
+					mentor.put("name",cpa.getFdTeacher().getRealName());
+					mentor.put("mail",  cpa.getFdTeacher().getFdEmail());
 					mentor.put("department",  cpa.getFdTeacher().getDeptName());
 //					mentor.put("org", cpa.getFdTeacher().getHbmParent().getFdName());
 				}

@@ -3,6 +3,7 @@ package cn.me.xdf.filter.hibernate;
 
 import java.util.Date;
 
+import cn.me.xdf.model.log.*;
 import org.hibernate.event.spi.PostDeleteEvent;
 import org.hibernate.event.spi.PostDeleteEventListener;
 import org.hibernate.event.spi.PostInsertEvent;
@@ -15,10 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.base.IdEntity;
-import cn.me.xdf.model.log.LogApp;
-import cn.me.xdf.model.log.LogLogin;
-import cn.me.xdf.model.log.LogLogout;
-import cn.me.xdf.model.log.LogOnline;
 import cn.me.xdf.service.log.LogAppService;
 import cn.me.xdf.utils.ShiroUtils;
 
@@ -42,12 +39,7 @@ public class MachineListener
         if (ShiroUtils.getSubject() == null)
             return;
         try {
-            if (event.getEntity() instanceof IdEntity
-                    && !(event.getEntity() instanceof LogApp)
-                    && !(event.getEntity() instanceof LogLogin)
-                    && !(event.getEntity() instanceof LogLogout)
-                    && !(event.getEntity() instanceof LogOnline)
-                    ) {
+            if (!(event.getEntity() instanceof BaseLog)) {
                 String modelName = event.getEntity().getClass().getName();
                 String modelId = ((IdEntity) event.getEntity()).getFdId();
                 Object[] oldState = event.getOldState();
@@ -85,12 +77,7 @@ public class MachineListener
         if (ShiroUtils.getSubject() == null)
             return;
         try {
-            if (event.getEntity() instanceof IdEntity
-                    && !(event.getEntity() instanceof LogApp)
-                    && !(event.getEntity() instanceof LogLogin)
-                    && !(event.getEntity() instanceof LogLogout)
-                    && !(event.getEntity() instanceof LogOnline)
-                    ) {
+            if (!(event.getEntity() instanceof BaseLog)) {
                 // 保存 删除日志
                 String modelName = event.getEntity().getClass().getName();
                 String modelId = ((IdEntity) event.getEntity()).getFdId();
@@ -125,12 +112,7 @@ public class MachineListener
         if (ShiroUtils.getSubject() == null)
             return;
         try {
-            if (event.getEntity() instanceof IdEntity
-                    && !(event.getEntity() instanceof LogApp)
-                    && !(event.getEntity() instanceof LogLogin)
-                    && !(event.getEntity() instanceof LogLogout)
-                    && !(event.getEntity() instanceof LogOnline)
-                    ) {
+            if (!(event.getEntity() instanceof BaseLog)) {
                 String modelName = event.getEntity().getClass().getName();
                 String modelId = ((IdEntity) event.getEntity()).getFdId();
                 Object[] state = event.getState();

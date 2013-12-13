@@ -83,6 +83,10 @@ public abstract class DynamicBaseDaoImpl extends HibernateSimpleDao implements
     public <X> List<X> findByNamedQuery(final String queryName,
                                         final Map<String, Object> parameters, Class<X> clazz) {
         StatementTemplate statementTemplate = templateCache.get(queryName);
+        if (statementTemplate == null) {
+            log.error("没有找到:" + queryName);
+            return null;
+        }
         String statement = processTemplate(statementTemplate, parameters);
         //log.info(String.format("sql=%s", statement));
         //System.out.println("sql="+statement);
@@ -96,6 +100,10 @@ public abstract class DynamicBaseDaoImpl extends HibernateSimpleDao implements
     public Pagination findByNamedPage(final String queryName,
                                       final Map<String, Object> parameters, Class<?> clazz, int pageNo) {
         StatementTemplate statementTemplate = templateCache.get(queryName);
+        if (statementTemplate == null) {
+            log.error("没有找到:" + queryName);
+            return null;
+        }
         String statement = processTemplate(statementTemplate, parameters);
 
         StatementTemplate statementTemplate_pagecount = templateCache
@@ -182,9 +190,14 @@ public abstract class DynamicBaseDaoImpl extends HibernateSimpleDao implements
     public int updateByNamedQuery(final String queryName,
                                   final Map<String, ?> parameters) {
         StatementTemplate statementTemplate = templateCache.get(queryName);
+        if (statementTemplate == null) {
+            log.error("没有找到:" + queryName);
+            return 0;
+        }
         String statement = processTemplate(statementTemplate, parameters);
         //log.info(String.format("sql=%s", statement));
         if (statementTemplate.getType() == StatementTemplate.TYPE.HQL) {
+
             return batchExecuteHQL(statement, parameters);
         } else {
             return batchExecuteSQL(statement, parameters);
@@ -208,6 +221,8 @@ public abstract class DynamicBaseDaoImpl extends HibernateSimpleDao implements
      * @return 更新记录数.
      */
     protected int batchExecuteSQL(final String sql, final Map<String, ?> values) {
+        //System.out.println("sql=="+sql);
+        //System.out.println("FD_PARENTID="+values.get("FD_PARENTID")+",FD_NO="+values.get("FD_NO"));
         return createSQLQuery(sql, null, values).executeUpdate();
     }
 
@@ -354,8 +369,7 @@ public abstract class DynamicBaseDaoImpl extends HibernateSimpleDao implements
         configuration.setTemplateLoader(stringLoader);
 
 
-
-     EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory).getServiceRegistry().getService(
+        EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory).getServiceRegistry().getService(
                 EventListenerRegistry.class);
         registry.getEventListenerGroup(EventType.POST_INSERT).appendListener(listener);
         registry.getEventListenerGroup(EventType.POST_UPDATE).appendListener(listener);

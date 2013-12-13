@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.model.base.AttMain;
-import cn.me.xdf.model.base.NotifyEntity;
 import cn.me.xdf.model.organization.SysOrgDepart;
-import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.SysOrgPersonTemp;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.RegisterService;
@@ -93,11 +91,10 @@ public class RegisterAjaxController {
 			String bloodend = request.getParameter("bloodend");
 			SysOrgPersonTemp sysOrgPersonTemp = new SysOrgPersonTemp();
 			sysOrgPersonTemp.setFdPassword(password);
-		    NotifyEntity notifyEntity = new NotifyEntity();
-		    notifyEntity.setFdMobileNo(tel);
-		    notifyEntity.setFdEmail(email);
-		    notifyEntity.setRealName(name);
-		    sysOrgPersonTemp.setNotifyEntity(notifyEntity);
+
+            sysOrgPersonTemp.setFdMobileNo(tel);
+            sysOrgPersonTemp.setFdEmail(email);
+            sysOrgPersonTemp.setRealName(name);
 			sysOrgPersonTemp.setDeptName(deptName);
 			sysOrgPersonTemp.setFdSex(sex);
 			sysOrgPersonTemp.setFdIdentityCard(cradid);

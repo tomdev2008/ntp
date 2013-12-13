@@ -26,7 +26,6 @@
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath*:/application.properties</value>
                 <value>classpath*:/development.properties</value>
                 <value>classpath*:/production.properties</value>
             </list>
@@ -85,7 +84,8 @@
         <property name="hibernateProperties">
             <value>
                 <!-- org.hibernate.dialect.Oracle9Dialect -->
-                hibernate.dialect=${jdbc.dialect}
+                <!--hibernate.dialect=org.hibernate.dialect.MySQLDialect-->
+                hibernate.dialect=org.hibernate.dialect.Oracle9Dialect
                 hibernate.show_sql=false
                 hibernate.format_sql=false
                 hibernate.query.substitutions=true 1,false 0
@@ -112,6 +112,8 @@
         <property name="fileNames">
             <list>
                 <value>classpath:dynamicsql/*-dynamic.xml</value>
+                <value>classpath:dynamicsql/ldap/*-dynamic.xml</value>
+                <value>classpath:dynamicsql/ldap/*/*-dynamic.xml</value>
             </list>
         </property>
     </bean>

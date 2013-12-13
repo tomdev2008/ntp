@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.model.base.AttMain;
-import cn.me.xdf.model.base.NotifyEntity;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.organization.SysOrgDepart;
 import cn.me.xdf.model.organization.SysOrgPerson;
