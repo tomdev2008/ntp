@@ -999,7 +999,7 @@ public class CourseAjaxController {
 		Finder finder = Finder.create("");
 		finder.append("select c.fdId ID , case when s.fdAverage is null THEN 0 else s.fdAverage end aver from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId " );
 		if(type.equals("all")){
-			finder.append(" where c.fdStatus=:fdStatus and c.isAvailable=1 order by aver desc" );
+			finder.append(" where c.fdStatus=:fdStatus and c.isAvailable='Y' order by aver desc" );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 		}else{
 			finder.append(" where c.isAvailable='Y' and c.fdStatus=:fdStatus  and c.fdcategoryid=:type order by aver desc" );
