@@ -320,28 +320,17 @@
             <div class="section mt20">
                 <div class="mediaWrap bdbt2">
                     <div class="mediaObject">
-						{{?param.code.type=='doc'}}
-							<iframe width="100%" height="437" id="iframeVideo" src="http://me.xdf.cn/iportal/sys/attachment/sys_att_swf/viewer.do;jsessionid=ubFBr_W9GMSBzUvrtu3cqdX?method=viewerOtp&fdId={{=param.code.fileNetId}}&seq=0&type=otp&fileName={{=param.code.fName}}" frameBorder="0" scrolling="no"></iframe>
-						{{?}}
-						{{?param.code.type=='video'}}
-							<iframe id="iframeVideo" width="100%" height="510" frameBorder="0" scrolling="no" src="${ctx}/video.jsp?code={{=param.code.playCode}}"></iframe>
-						{{?}}
-						{{?param.code==""||param.code.type=='none'}}
-						
-								<div class="media-placeholder">
-									素材不存在......
-								</div>
-						{{?}}
+									<iframe width="100%" height="510" id="iframeVideo" src="" frameBorder="0" scrolling="no"></iframe>
                     </div>
                 </div>
                 <div class="mediaToolbarWrap">
                     <div class="mediaToolbar {{?param.code==""||param.code.type=='none'}}hide{{?}}" id="mediaToolbar" data-fdid="{{=param.id}}">
                         <div class="btn-group">
-                            <a id="btnPraise" class="btn btn-link{{?!param.mePraised}} active{{?}}" title="赞" href="javascript:void(0)"  praisedstatus="{{=param.mePraised}}"><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
-                           <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" canDownload="{{=param.canDownload}}" class="btn btn-link" {{?param.canDownload}}href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
+                            <a id="btnPraise"  converStatus="" title="赞"  class="btn btn-link{{?!param.mePraised}} active {{?}}"  href="javascript:void(0)"  praisedstatus="{{=param.mePraised}}" ><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
+                           <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" canDownload="{{=param.canDownload}}"  class="btn btn-link {{?param.canDownload}}active{{?}}" {{?param.canDownload}}href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
                         </div>
                         <span class="playCount">{{?it.type == 'video'}}播放{{??}}阅读{{?}}  <strong class="num">{{=param.readCount || 0 }}</strong>  次</span>
-                      <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}}><i class="icon-right"></i>我学会了</button>
+                      <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}} converStatus=""><i class="icon-right"></i>我学会了</button>
                     </div>
                     {{#def.listMedia}}
                 </div>
@@ -450,7 +439,7 @@
                         <label for="isAnonymity" class="checkbox span1">
                             <input id="isAnonymity" name="isAnonymity" type="checkbox">匿名发表
                         </label>
-                        <button class="btn btn-primary" type="submit">发表</button>
+                        <button class="btn btn-primary" id="commentSub" type="submit">发表</button>
                     </div>
                 </form>
             </div>
@@ -638,7 +627,7 @@
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
-<body>
+<body onbeforeunload="test()" onunload="test()" >
 <input type="hidden" value="ldfklgsjkdfj">
 <section class="container pr">
     <section class="clearfix" >
@@ -654,6 +643,8 @@
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+
     $(function(){
     	$.Placeholder.init();
         //页面左侧模板函数
@@ -721,6 +712,7 @@
                 	});
                     e.preventDefault();
                     if($(this).attr("href")){//已通章节可点
+                    	$("#iframeVideo").attr("src","");
                         loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
                         $(this).parent().addClass("active").siblings().removeClass("active");
                     }
@@ -759,6 +751,7 @@
                 	 window.location.href = "${ctx}/common/file/downloadImg?bamId="+bamId;
                  });
         		 $("#firstC").click(function (e){
+        			 $("#iframeVideo").attr("src","");
         		    loadRightCont(pageData.firstCId,pageData.firstCType);
         		    loadLeftData(bamId);
         		    $("#sidenav>li>a").popover({
@@ -811,7 +804,7 @@
 				  },
 			});
 		 }
-        
+		 
 		function loadRightCont(fdid,type){
         	catalogId=fdid;
 		    fdMtype=type;
@@ -831,24 +824,61 @@
 		  					$("#mainContent").html(rightContentFn(result));
 		  					afterLoadExamOrTaskPage(result);
 		  	            } else if(result.type == "video" || result.type == "doc"||result.type == "ppt"){
+		  	            	mdata=result.defaultMedia;
+		  	            	 
+		  	                // alert($("#iframeVideo"));
+		  	                // $("#iframeVideo").contents().find("body").empty();
 		  	            	$("#mainContent").html(rightMaterialContentFn(result));
 		  	                afterLoadMediaPage(result);
-		  	                mdata=result.defaultMedia;
+		  	                loadvideoOrDoc(mdata);
+		  	                
 			  	            //调用方法时 如果素材为空  则隐藏素材下的 下载赞等信息 、 素材信息、  评分信息 、评分的列表信息 这几个信息分别代表一个div
-			  	  			//这块只针对视频
-			  	  			if(mdata!=""||mdata!=null){
-			  	  				if(mdata.code==""||mdata.code.type=="none"){
-			  	  					$("#mediaToolbar").hide();
-			  	  					$("#materialinfo").hide();
+			  	  			//这块只针对视频和文档
+			  	  			     
+                			  	 if(mdata.code==""||mdata.code.type=="none"){
+			  	  					$("#btnDownload").attr("title","当前没有可下载素材");
 			  	  					$("#mediaComment").hide();
-			  	  					$("#materialpf").hide();
 			  	  				}
+			  	                //素材转换中
+			  	                if(mdata.code!=""&&mdata.code.type!='none'){
+			  	                	//不能点赞  可以下载 不能学习通过 没有评论; 
+			  	                	 if(mdata.code.type=="video"&&mdata.code.playCode==null){
+					  	              		$("#btnPraise").attr("converStatus","");
+					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+					  	              	    $("#mediaComment").hide();
+					  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+					  	              		$("#btnPraise").attr("converStatus","");
+					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+					  	                    $("#mediaComment").hide();
+							  	         }else{
+						  	        	 	$("#btnPraise").attr("converStatus","true");
+						  	        	 	$("#btnPraise").attr("data-original-title","赞");
+						  	        	 	$("#mediaComment").removeClass("hide");
+							  	         }
+			  	                }else{
+			  	                	$("#btnPraise").attr("converStatus","");
+			  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+			  	              		$("#mediaComment").hide();
+			  	                }
+			  	                //学习通过控制
+			  	              if(mdata.code==""||mdata.code.type=="none"){
+				  	            	$("#btnDoPass").attr("converStatus","");
+			  	                  }else{
+			  	                	if(mdata.code.type=="video"&&mdata.code.playCode==null){
+			  	              			$("#btnDoPass").attr("converStatus","");
+				  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+				  	            		$("#btnDoPass").attr("converStatus","");
+				  	            	 }else{
+				  	            		 $("#btnDoPass").attr("converStatus","true");
+				  	            	 }
+			  	                  }
+			  	                
 			  	  			}
 		  	            }
 		  				
-		  			  },
 	  			});
-			
+	
+			//
             //可选章节按钮
             $("#btnOptionalLecture").css("cursor","pointer")
                     .click(function(e){
@@ -874,6 +904,7 @@
                             	});
       		                      e.preventDefault();
       		                      if($(this).attr("href")){//已通章节可点
+      		            			$("#iframeVideo").attr("src","");
       		                          loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
       		                          $(this).parent().addClass("active").siblings().removeClass("active");
       		                      }
@@ -1261,14 +1292,15 @@
             var $mediaToolbar = $("#mediaToolbar");
 
             $("#listMedia>li>a").bind("click",function(e){
+            	
                 e.preventDefault();
                 var $this = $(this);
                 $this.parent("li").addClass("active").siblings().removeClass("active");
                 /* flashvars.video = $this.attr("href"); */
                 /* swfobject.embedSWF("http://me.xdf.cn:80/iportal/sys/attachment/video/videoplayer.swf", "myflash",
                         "100%", "510", "6.0.0", "expressInstall.swf", flashvars, params, attributes); */
-                var result;
-                $.ajax({
+                
+                 $.ajax({
                 	  cache:false,
 		  			  url: "${ctx}/ajax/passThrough/getCourseContent",
 		  			  async:false,
@@ -1280,65 +1312,107 @@
 		  			  },
 		  			  dataType:'json',
 		  			  success: function(data){
-		  				 // alert(JSON.stringify());
-		  			 	if(data.type == "exam" || data.type == "task"){
-		  					$("#mainContent").html(rightContentFn(data));
-		  					afterLoadExamOrTaskPage(data);
-		  	            } else if(data.type == "video" || data.type == "doc"||data.type == "ppt"){
-		  	            	$("#mainContent").html(rightMaterialContentFn(data));
-		  	                afterLoadMediaPage(data);
-		  	            } 
-		  				result = data.defaultMedia;
-		  			  },
-                });
-                if(result.mePraised){
-                	$("#btnPraise").removeClass("active").children(".num").text(result.praiseCount);
-                }else{
-                	 $("#btnPraise").addClass("active").children(".num").text(result.praiseCount);
-                }
-               
-                $("#btnDownload").addClass(result.canDownload ? "active" : "disabled").attr("data-original-title",result.canDownload ? '点击下载' : '无权下载')
-                        .children(".num").text(result.downloadCount);
-                $("#btnDoPass").attr("disabled",result.isPass ? true : false);
-                $mediaToolbar.find(".playCount>.num").text(result.readCount);
-                $("#mediaToolbar").attr("data-fdid",result.id);
-                $("#btnDownload").attr("data-fdid",result.url);
-                $("#btnDownload").attr("canDownload",result.canDownload);
-                $("#btnPraise").attr("praisedstatus",result.mePraised);
-                $("#mediaName").text($this.attr("title"));
-                $("#mediaIntro").text(result.intro);
-                var ave;
- 				  if((result.rating.average+"").length==1){
- 					ave= result.rating.average+".0";
- 				  }else{
- 					ave= result.rating.average+""; 
- 				  }
-                $("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
-                if(i < result.rating.average){
-                    $(this).addClass("active");
-                } else {
-                    $(this).removeClass("active");
-                }
-                }).end().children("b.text-warning").text(ave);
-                $("#ratingFive").find(".progress-gray>.bar")
-                        .width(result.rating.five/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.five);
-                $("#ratingFour").find(".progress-gray>.bar")
-                        .width(result.rating.four/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.four);
-                $("#ratingThree").find(".progress-gray>.bar")
-                        .width(result.rating.three/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.three);
-                $("#ratingTwo").find(".progress-gray>.bar")
-                        .width(result.rating.two/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.two);
-                $("#ratingOne").find(".progress-gray>.bar")
-                        .width(result.rating.one/result.rating.total*100 + "%").end().children(".fs9").text(result.rating.one);
-                $("#mediaComment").after(mediaCommentFn(result)).remove();
-                //$("#listComment").html(listCommentFn(result.mediaComment.listComment));
+		  	                   mdata=data.defaultMedia;
+		  	                // alert(JSON.stringify(mdata))
+		  	                   //重新定位播放视频
+		  	                  loadvideoOrDoc(mdata);
+		  	            	  //是否允许赞
+			  	              if(mdata.mePraised){
+			  	              	$("#btnPraise").removeClass("active").children(".num").text(mdata.praiseCount);
+			  	                $("#btnPraise").attr("data-original-title","赞");
+			  	              }else{
+			  	              	 $("#btnPraise").addClass("active").children(".num").text(mdata.praiseCount);
+			  	              	$("#btnPraise").attr("data-original-title","已赞");
+			  	              }
+		  	            	  //判断素材状态  空 转换中都不允许点赞
+			  	              if(mdata.code==""||mdata.code.type=="none"){
+			  	            	$("#btnPraise").attr("converStatus","");
+		  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+		  	                  }else{
+		  	                	    if(mdata.code.type=="video"&&mdata.code.playCode==null){
+				  	              		$("#btnPraise").attr("converStatus","");
+				  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+				  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+					  	              		$("#btnPraise").attr("converStatus","");
+					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+						  	         }else{
+						  	        	 	$("#btnPraise").attr("converStatus","true");
+						  	        	 	$("#btnPraise").attr("data-original-title","赞");
+						  	         }
+		  	                				
+		  	                  }
+			  	  			  //通过素材转换状态判断是否可以点赞
+			  	            	 
+			  	              $("#btnDownload").addClass(mdata.canDownload ? "active" : "disabled").attr("data-original-title",mdata.canDownload ? '点击下载' : '无权下载')
+			  	                      .children(".num").text(mdata.downloadCount);
+			  	              $("#btnDoPass").attr("disabled",mdata.isPass ? true : false);
+			  	          		//判断素材状态  空 转换中都不允许学习
+			  	              if(mdata.code==""||mdata.code.type=="none"){
+			  	            	$("#btnDoPass").attr("converStatus","");
+		  	                  }else{
+		  	                	if(mdata.code.type=="video"&&mdata.code.playCode==null){
+		  	              			$("#btnDoPass").attr("converStatus","");
+			  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+			  	            		$("#btnDoPass").attr("converStatus","");
+			  	            	 }else{
+			  	            		 $("#btnDoPass").attr("converStatus","true");
+			  	            	 }
+		  	                  }
+			  	              $mediaToolbar.find(".playCount>.num").text(mdata.readCount);
+			  	              $("#mediaToolbar").attr("data-fdid",mdata.id);
+			  	              $("#btnDownload").attr("data-fdid",mdata.url);
+			  	              $("#btnDownload").attr("canDownload",mdata.canDownload);
+			  	              $("#btnPraise").attr("praisedstatus",mdata.mePraised);
+			  	              $("#mediaName").text($this.attr("title"));
+			  	              $("#mediaIntro").text(mdata.intro);
+			  	              var ave;
+			  	  				  if((mdata.rating.average+"").length==1){
+			  	  					ave= mdata.rating.average+".0";
+			  	  				  }else{
+			  	  					ave= mdata.rating.average+""; 
+			  	  				  }
+			  	              $("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
+			  	              if(i < mdata.rating.average){
+			  	                  $(this).addClass("active");
+			  	              } else {
+			  	                  $(this).removeClass("active");
+			  	              }
+			  	              }).end().children("b.text-warning").text(ave);
+			  	              $("#ratingFive").find(".progress-gray>.bar")
+			  	                      .width(mdata.rating.five/mdata.rating.total*100 + "%").end().children(".fs9").text(mdata.rating.five);
+			  	              $("#ratingFour").find(".progress-gray>.bar")
+			  	                      .width(mdata.rating.four/mdata.rating.total*100 + "%").end().children(".fs9").text(mdata.rating.four);
+			  	              $("#ratingThree").find(".progress-gray>.bar")
+			  	                      .width(mdata.rating.three/mdata.rating.total*100 + "%").end().children(".fs9").text(mdata.rating.three);
+			  	              $("#ratingTwo").find(".progress-gray>.bar")
+			  	                      .width(mdata.rating.two/mdata.rating.total*100 + "%").end().children(".fs9").text(mdata.rating.two);
+			  	              $("#ratingOne").find(".progress-gray>.bar")
+			  	                      .width(mdata.rating.one/mdata.rating.total*100 + "%").end().children(".fs9").text(mdata.rating.one);
+			  	              $("#mediaComment").after(mediaCommentFn(mdata)).remove();
+			  	              //$("#mediaComment").show();  
+			  	              if(mdata.code==""||mdata.code.type=='none'){
+			  	            		$("#mediaComment").hide();
+				  	            }else{
+				  	            	if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+										$("#mediaComment").hide();
+			  	                	}else if(mdata.code.type=="video"&&mdata.code.playCode==null){
+										$("#mediaComment").hide();
+			  	                	}else{
+			  	                		$("#mediaComment").removeClass("hide");
+			  	                	}
+				  	            }
+			  	              //$("#listComment").html(listCommentFn(mdata.mediaComment.listComment));
 
-                /*评分表单*/
-                $("#formMakeComments").validate({
-                    submitHandler: submitFormComment,
-                });
-                resetComment(1,10);
-    			resetScoreInfo();
+			  	              /*评分表单*/
+			  	              $("#formMakeComments").validate({
+			  	                  submitHandler: submitFormComment,
+			  	              });
+			  	              resetComment(1,10);
+			  	  			  resetScoreInfo();	
+		  	            
+		  			  }
+                }); 
+
             });
 
             $mediaToolbar.find(".btn-group>.btn").tooltip();
@@ -1353,6 +1427,9 @@
                     $this.addClass("active").attr("data-original-title","取消赞").children(".num").text(parseInt($this.text())+1);
                 } */
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
+	            	if($this.attr("converStatus")==""){
+	            		return;
+	            	}
 	                if($this.attr("praisedstatus")=='true'){
 		                $.ajax({
 		         			type: "post",
@@ -1398,7 +1475,10 @@
             });
 
             $("#btnDoPass").on("click",function(e){
-            	
+            	if($(this).attr("converStatus")==""){
+            		$.fn.jalert2("该状态不学习!");
+            		return ;
+            	}
                 $("#listMedia>li.active").addClass("pass");
                 $(this).attr("disabled", true);
                 $.ajax({
@@ -1435,7 +1515,7 @@
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
             });
         }
-
+       
 
         /*测试页加载完成后执行方法*/
         function afterLoadExamOrTaskPage(data){
@@ -1654,7 +1734,19 @@
                         })
                     });
         }
-
+        function loadvideoOrDoc(data){
+        	if(data.code!=""&&data.code.type!='none'){
+	           	   if(data.code.type=='doc'&&data.code.fileNetId!=null){//文档
+	           		 $("#iframeVideo").removeClass("hide").attr("src",'http://me.xdf.cn/iportal/sys/attachment/sys_att_swf/viewer.do;jsessionid=ubFBr_W9GMSBzUvrtu3cqdX?method=viewerOtp&fdId='+data.code.fileNetId+'&seq=0&type=otp&fileName='+ data.code.fName).next().remove();;
+	           	   }else if(data.code.type=='video'&&data.code.playCode!=null){//视频
+	           		   $("#iframeVideo").removeClass("hide").attr("src",'${ctx}/video.jsp?code=' + data.code.playCode).next().remove();
+	           	   }else{
+	            		$("#iframeVideo").attr("src","").addClass("hide").after("<div class='media-placeholder'>正在转换中......</div>");	
+	               }
+              }else{
+           			$("#iframeVideo").attr("src","").addClass("hide").after("<div class='media-placeholder'>素材不存在......</div>");
+              } 
+        }
 
     });
 

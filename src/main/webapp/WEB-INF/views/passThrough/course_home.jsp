@@ -77,7 +77,7 @@
                </c:if>
                 <!--加密类型时 end-->
                 <div class="media-foot">
-                <form id="studyBeginForm" method="post" action="${ctx}/passThrough/getStudyContent"> 
+                <form id="studyBeginForm" class="hide" method="post" action="${ctx}/passThrough/getStudyContent"> 
                 <input type="hidden" name="courseId" value="${course.fdId}">
                 <input type="hidden" name="fdPassword" id="fdPassword">
                 <input type="hidden" name="catalogId" id="catalogId">
