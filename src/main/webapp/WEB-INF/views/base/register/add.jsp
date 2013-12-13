@@ -471,7 +471,7 @@ $.Placeholder.init();
 						<div class="input-append date" id="dpYear" data-date="1986/01/10"
 							data-date-format="yyyy/mm/dd">
 							<input id="birthday" type="text" class="span4" value="1986/01/10"
-								placeholder="请输入您的出生日期 "> <span class="add-on"><i
+								placeholder="请输入您的出生日期 " readonly /> <span class="add-on"><i
 								class="icon-th"></i></span>
 						</div>
 
