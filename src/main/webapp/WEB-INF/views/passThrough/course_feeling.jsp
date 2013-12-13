@@ -115,7 +115,7 @@
 						{{??}}
 							<i class="icon-female"></i></h5>
 						{{?}}
-						{{?it.isme==true}}
+						{{?it.isme=='true'}}
 							 <a class="icon-circle-bg" href="${ctx}/register/updateTeacher"><i class="icon-pencil-mini"></i></a>
                        		 <a class="icon-circle-bg" href="#"><i class="icon-cloth"></i></a>
 						{{?}}
@@ -131,8 +131,8 @@
             </div>
             <div class="pull-right box1">
                 <div class="mainCourse">
-                    <img src="{{?it.courseImg!=""}}${ctx}/common/file/image/{{=it.courseImg}}{{??}}${ctx }/resources/images/temp-newClass.jpg{{?}}" alt="">
-                    <a href="##" class="courseLink">
+                    <img src="{{?it.courseImg!=""}}${ctx}/common/file/image/{{=it.courseImg}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
+                    <a href="${ctx}/passThrough/getCourseHome/${courseId}" class="courseLink">
                         <h1>{{=it.courseName}}</h1>
                         <p class="sub">{{=it.courseAuther}}</p>
                     </a>
@@ -194,7 +194,7 @@
         <section class="pull-left w760" id="feelingDiv">
             <div class="section box-pd20">
                 <form id="formAddMood" action="##">
-                	<c:if test="${isMe==true}">
+                	<c:if test="${isMe=='true'}">
                     <textarea name="field-mood" required id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
                     <div class="clearfix">
                         <button type="submit" class="btn btn-primary pull-right">写备课心情</button>
@@ -342,9 +342,9 @@
     var scheduleFn = doT.template(document.getElementById("scheduleTemplate").text);
     
     initUser();
-    initmoodData();
     initActive();
     initSchedule();
+    initmoodData();
     $("#listMood").delegate("dd .btn-ctrl>a","click",function(e){
         e.preventDefault();
         var $this = $(this);
@@ -511,7 +511,7 @@
     		},
     		success : function(result) {
     			$("#listMood").html(moodFn(result));
-    			if(result.list.length==0){
+    			if(result.list.length==0&&!("${isMe}"=="true")){
     				$("#feelingDiv").addClass("hide");
     			}
     		}

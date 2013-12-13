@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import jodd.io.FileNameUtil;
 import jodd.util.StringUtil;
 
 import org.apache.commons.io.FilenameUtils;
@@ -182,9 +183,13 @@ public class AdviserAjaxController {
 					attMap.put("name", attMain.getFdFileName());
 					attMap.put("fileUrl", attMain.getFdFilePath());
 					String name = FilenameUtils.getExtension(attMain.getFdFileName()).toLowerCase(Locale.ENGLISH);
-					if(name.endsWith(".mp4")||name.endsWith(".avi")||name.endsWith(".wmv")||name.endsWith(".rmvb")
-							||name.endsWith(".doc")||name.endsWith(".xls")||name.endsWith(".ppt")){
-						attMap.put("type", "onlinePlay");	
+					if(name.endsWith("mp4")||name.endsWith("avi")||name.endsWith("wmv")||name.endsWith("rmvb")
+							||name.endsWith("doc")||name.endsWith("xls")||name.endsWith("docx")||name.endsWith("xlsx")||name.endsWith("ppt")){
+						attMap.put("type", "onlinePlay");
+						attMap.put("mtype", attMain.getFdFileType());//增加类型
+						attMap.put("fileNetId", attMain.getFileNetId());
+						attMap.put("fName", FileNameUtil.getName(attMain.getFdFilePath()));
+						attMap.put("playCode", attMain.getPlayCode());
 					}else{
 						attMap.put("type", "notOnlinePlay");	
 					}
@@ -297,6 +302,27 @@ public class AdviserAjaxController {
 		SourceNote note = sourceNodeService.get(SourceNote.class, fdId);
 		Map attmap = new HashMap();
 		attmap.put("attIds", findAtt(note));
+		return JsonUtils.writeObjectToJson(attmap);
+	}
+	/**
+	 * 批量下载时 根据soursenodeId 找出附件 id
+	 * @param fdIds
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/findAttsBySoureceIds/{fdIds}")
+	@ResponseBody
+	public String findAttsBySoureceIds(@PathVariable("fdIds") String[] fdIds,HttpServletRequest request){
+		
+		List<String> attMainList = new ArrayList<String>();
+        for (int i = 0; i < fdIds.length; i++) {
+            List<AttMain> attMains = adviserService.findNotesAtts(fdIds[i]);
+            for (AttMain attMain : attMains) {
+            	attMainList.add(attMain.getFdId());
+			}
+        }
+        Map attmap = new HashMap();
+        attmap.put("attIds", attMainList);
 		return JsonUtils.writeObjectToJson(attmap);
 	}
 	

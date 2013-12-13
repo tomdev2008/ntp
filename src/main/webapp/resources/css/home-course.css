@@ -33,6 +33,8 @@
 
 .thumbnails{margin-bottom: 0;}
 .thumbnails>li{width: 320px;}
+.thumbnails>li .moreCourse{border: solid #3c81a8 2px;background: #abcbdd url("../images/moreCourse.png") no-repeat center 30%;padding-top: 225px;min-height: 77px;font-size: 16px;color: #ffffff;text-align: center;}
+#list-series .moreCourse{height: 118px;padding-top: 300px;background-position: center 40%;}
 .thumbnail>img{height: 140px;width: 100%;}
 .thumbnail .hd2{padding: 18px 0;text-align: center;border-bottom: solid #ededed 1px;}
 .thumbnail .hd2 span{padding: 0 16px;display: inline-block}
@@ -45,7 +47,7 @@
 .thumbnail dt{color: #000000;float: left}
 .thumbnail dd{overflow: hidden;min-height: 40px;}
 .thumbnail .bd2{padding: 10px 20px;}
-.thumbnail .ft2{padding: 12px;margin-bottom: 15px;}
+.thumbnail .ft2{padding: 12px;}
 .thumbnail .ft2 .btn{font-size: 16px;padding: 17px 20px 1px 0;}
 .thumbnail .ft2 div.pull-right{padding: 17px 10px 0;}
 .thumbnail .ft2 div.pull-right strong{color: #888888}
@@ -62,8 +64,8 @@
 .md .ft a{color: #949494;}
 .md .ft .icon-circle{margin-left: 5px;}
 
-.carousel{margin: 0 20px;text-align: center;height: 312px;}
-.carousel-l,.carousel-r,.carousel-mask,.carousel-inner,.carousel-btn{position: absolute;top: 0;height: 282px;}
+.carousel{margin: 0 20px;text-align: center;height: 290px;}
+.carousel-l,.carousel-r,.carousel-mask,.carousel-inner,.carousel-btn{position: absolute;top: 0;height: 260px;}
 .carousel-l{left: 0;}
 .carousel-r{right: 0;}
 .carousel-mask{background: url("../images/carousel-bg.png") no-repeat 0 0;width: 100%;left: 0;}
@@ -71,8 +73,8 @@
 .carousel-btn{width: 187px;}
 .carousel-btn.left{left: 0;}
 .carousel-btn.right{right: 0;}
-.carousel-inner{height: 280px;width: 584px;margin-left:-293px;left:50%;border: solid #ffffff 1px;}
-.carousel-inner>.item>img,.carousel-l img,.carousel-r img{height: 280px;width: 584px;}
-.carousel-indicators{top:302px;right: 50%;margin-right: -35px;}
+.carousel-inner{height: 258px;width: 584px;margin-left:-293px;left:50%;border: solid #ffffff 1px;}
+.carousel-inner>.item>img,.carousel-l img,.carousel-r img{height: 258px;width: 584px;}
+.carousel-indicators{top:280px;right: 50%;margin-right: -35px;}
 .carousel-indicators li{background-color: #c9c9c9;background-color: rgba(0,0,0,0.25)}
 .carousel-indicators .active{background-color: #4391bb;}

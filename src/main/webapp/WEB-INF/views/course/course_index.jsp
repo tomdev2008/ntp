@@ -19,7 +19,7 @@
         {{~it.list :item:index}}
             <li>
                 <div class="thumbnail">
-					<img src="{{?item.imgUrl!=""}}${ctx}/common/file/image/{{=item.imgUrl}}{{??}}${ctx }/resources/images/temp-newClass.jpg{{?}}" alt="">
+					<img src="{{?item.imgUrl!=""}}${ctx}/common/file/image/{{=item.imgUrl}}{{??}}${ctx }/resources/images/default-cover.png{{?}}" alt="">
 					{{?it.type == "series"}}
                         <div class="hd2">
                                     <span>
@@ -78,6 +78,16 @@
                 </div>
             </li>
         {{~}}
+{{?it.list.length<3}}
+        	<li>
+ 			{{?it.type == 'single'}}
+            	<div class="moreCourse">更多课程，敬请期待。</div>
+ 			{{?}}
+			{{?it.type == 'series'}}
+            	<div class="moreCourse">更多系列，敬请期待。</div>
+ 			{{?}}
+        	</li>
+		{{?}}
 </script>
 
 <script id="courseCategoryTemplate" type="text/x-dot-template">

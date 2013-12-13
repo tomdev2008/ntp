@@ -30,7 +30,7 @@
 .lt-ie9 .input-block-level{min-height: 20px;}
 .bder2{border-bottom:solid #dcdcdc 2px;}
 .page-header{position:relative;overflow:hidden;background-color:#FFF;margin:0;padding:18px 20px;line-height:24px;height:24px;}
-.page-header .backHome{position: absolute;right: 20px;top: 14px;}
+.page-header .backHome{position: absolute;right: 14px;top: 14px;}
 .page-header .backHome a{color: #000000;display: block;
     line-height: 34px;}
 .page-header .backParent{position: absolute;left: 20px;top:18px;}
@@ -48,7 +48,7 @@
 .box-control .hd .toolbar-search .icon-search{position: absolute;right: 10px;top: 5px;*top:10px;}
 .box-control .hd .toolbar-search .search{   width: 160px;padding: 4px 30px 4px 10px;border: solid #e5e5e5 1px;margin-bottom: 0;}
 .box-control .hd .btn-toolbar .showState{font-size: 14px;line-height: 20px;padding: 5px 15px;margin-right:20px;vertical-align: middle;}
-.box-control .bd .btn-toolbar{margin:10px;position: relative;}
+.box-control .bd .btn-toolbar{margin:10px 16px 10px 10px;position: relative;}
 .btns-radio{margin-right: 12px;}
 .btns-radio .btn{border: solid #e5e5e5 1px;background-color: #FFFFFF;}
 .btns-radio .active.btn{background-color: #4391bb;border-color:#4391bb;color: #fff;text-shadow: none; }
@@ -63,6 +63,8 @@
 .listWrap .list>li>a>input[type="checkbox"]{float: left;margin-left: -20px;}
 .listWrap .list>li>a .date{color: #bbbbbb;margin-top: 6px; font-size: 12px;display: block;}
 .listWrap .list>li>a .date > i{margin-right: 8px;}
+.listWrap .list>li>a .date .dt{margin:0 8px 0 16px;}
+.listWrap .list>li>a .date em{font-style: normal;color: #999;}
 .listWrap .list>li>a .rating-view{position: relative;top: -2px;margin-left: 5px;}
 .listWrap .list>li>a .btns{position: absolute;right: 20px;bottom: 12px;}
 .listWrap .list>li>a .btns > b,.btns-handle > b{color:#999999;font-size: 12px;font-weight: normal;}

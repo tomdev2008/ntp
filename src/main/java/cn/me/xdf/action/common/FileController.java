@@ -215,25 +215,7 @@ public class FileController {
         downloadAttMain(attMains, agent, zipname, response);
         return null;
     }
-    /**
-     * 指导老师批量下载作业附件
-     */
-    @RequestMapping("/batchDownloadTaskZip/{noteIds}/{zipname}")
-    public String batchDownloadTaskZip(@PathVariable("noteIds") String[] noteIds, @PathVariable("zipname") String zipname,
-                                   HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-        DownloadHelper dh = new DownloadHelper();
-        dh.setRequest(request);
-        List<AttMain> attMainList = new ArrayList<AttMain>();
-        for (int i = 0; i < noteIds.length; i++) {
-            List<AttMain> attMains = adviserService.findNotesAtts(noteIds[i]);
-            for (AttMain attMain : attMains) {
-            	attMainList.add(attMain);
-			}
-        }
-        String agent = request.getHeader("USER-AGENT");
-        downloadAttMain(attMainList, agent, zipname, response);
-        return null;
-    }
+    
     /**
      * 指导老师批量下载作业附件
      */

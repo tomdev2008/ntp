@@ -225,10 +225,14 @@
 	                        	$progress.find(".countdown").empty();
 	                        	var objvalue = eval("(" + data + ")");
 	                            jQuery("#attIdID").val(objvalue.attId);
-	                           if (jQuery("#imgshow")) {
+	                         /*  if (jQuery("#imgshow")) {
                        			jQuery("#imgshow").attr('src',  $('#ctx').val()+'/common/file/image/' + objvalue.attId);
-                   			   } 
-	                          
+                   			   } */
+	                           $("#imgshow").hide();
+                               $(".cutimg-box").show();
+                               var preImg = $('#ctx').val()+'/common/file/image/' + objvalue.attId;
+                               var imgSrc = escape(preImg);
+                               $("#iframeimg").attr("src",$('#ctx').val()+"/common/imageCut/page?imgSrcPath="+imgSrc+"&zoomWidth=430&zoomHeight=190&imgId="+objvalue.attId);
 	                        }
 	                    },
 	                    'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {

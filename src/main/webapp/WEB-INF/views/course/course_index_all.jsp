@@ -19,7 +19,7 @@
         {{~it.list :item:index}}
             <li>
                 <div class="thumbnail">
-					<img src="{{?item.imgUrl!=""}}${ctx}/common/file/image/{{=item.imgUrl}}{{??}}${ctx }/resources/images/temp-newClass.jpg{{?}}" alt="">
+					<img src="{{?item.imgUrl!=""}}${ctx}/common/file/image/{{=item.imgUrl}}{{??}}${ctx }/resources/images/default-cover.png{{?}}" alt="">
                     {{?it.type == "series"}}
                         <div class="hd2">
                                     <span>
@@ -68,6 +68,17 @@
                 </div>
             </li>
         {{~}}
+		{{?it.list.length<3}}
+        	<li>
+ 			{{?it.type == 'single'}}
+            	<div class="moreCourse">更多课程，敬请期待。</div>
+ 			{{?}}
+			{{?it.type == 'series'}}
+            	<div class="moreCourse">更多系列，敬请期待。</div>
+ 			{{?}}
+        	</li>
+		{{?}}
+
     </script>
 <script id="courseCategoryTemplate" type="text/x-dot-template">
     <li class="active"><a href="javascript:void(0)" data-id="all">全部课程</a></li>
@@ -79,21 +90,21 @@
 {{?it.list.length>=3}}
  <div id="myCarousel" class="carousel slide" data-toggle="carousel" data-interval="4000">
 			<div class="carousel-l">
-			<img src="{{?it.list[it.list.length-1].attId!=""}}${ctx}/common/file/image/{{=it.list[it.list.length-1].attId}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
+			<img src="{{?it.list[it.list.length-1].attId!=""}}${ctx}/common/file/image/{{=it.list[it.list.length-1].attId}}{{??}}${ctx}/resources/images/default-cover.png{{?}}" alt="">
 			</div>
             <div class="carousel-r">
-			<img src="{{?it.list[1].attId!=""}}${ctx}/common/file/image/{{=it.list[1].attId}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
+			<img src="{{?it.list[1].attId!=""}}${ctx}/common/file/image/{{=it.list[1].attId}}{{??}}${ctx}/resources/images/default-cover.png{{?}}" alt="">
 			</div>
             <div class="carousel-mask"></div>
             <div class="carousel-inner">
   			{{for(var index=0;index<it.list.length;index++){}}
 				{{?index==0}}
 				 <div class="item active">
-					<img src="{{?it.list[index].attId!=""}}${ctx}/common/file/image/{{=it.list[index].attId}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
+					<img src="{{?it.list[index].attId!=""}}${ctx}/common/file/image/{{=it.list[index].attId}}{{??}}${ctx}/resources/images/default-cover.png{{?}}" alt="">
                 </div>
 				{{??}}
  				<div class="item">
-					<img src="{{?it.list[index].attId!=""}}${ctx}/common/file/image/{{=it.list[index].attId}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
+					<img src="{{?it.list[index].attId!=""}}${ctx}/common/file/image/{{=it.list[index].attId}}{{??}}${ctx}/resources/images/default-cover.png{{?}}" alt="">
                 </div>
 				{{?}}
                

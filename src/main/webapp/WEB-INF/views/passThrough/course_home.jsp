@@ -77,7 +77,7 @@
                </c:if>
                 <!--加密类型时 end-->
                 <div class="media-foot">
-                <form id="studyBeginForm" method="post" action="${ctx}/passThrough/getStudyContent"> 
+                <form id="studyBeginForm" class="hide" method="post" action="${ctx}/passThrough/getStudyContent"> 
                 <input type="hidden" name="courseId" value="${course.fdId}">
                 <input type="hidden" name="fdPassword" id="fdPassword">
                 <input type="hidden" name="catalogId" id="catalogId">
@@ -141,7 +141,7 @@
                     			<dt>
                                 	<span class="icon-disc-lg-bg disc-bd">${bean.fdNo}</span>
                                     <b class="caret"></b>
-                                    <div class="span5"><span class="tit">业务学习</span></div>
+                                    <div class="span5"><span class="tit">${bean.fdName}</span></div>
                                     <div class="span2">建议时长</div>
                                     <div class="span1">学习进度</div>
                                 </dt>

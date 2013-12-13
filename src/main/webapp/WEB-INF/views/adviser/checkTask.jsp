@@ -289,10 +289,27 @@ function batchDownload(){
 		$("#listTeacher li").each(function() {
 			chk_value.push($(this).attr("data-fdid"));
 		});
-		$.fn.jalert("您确定下载本页数据吗？",function(){
-			window.location.href="${ctx}/common/file/batchDownloadTaskZip/"+chk_value+"/作业";
+		 $.ajax({
+      		url : "${ctx}/ajax/adviser/findAttsBySoureceIds/"+chk_value,
+      		async : true,
+      		dataType : 'json',
+      		success : function(result) {
+      			if(result.attIds==null||result.attIds==''){
+      				 $.fn.jalert2("您好!当前页没有数据可下载！");
+      				   return;
+      			}else{
+      				$.fn.jalert("您确定下载本页作业附件吗？",function(){
+        				window.location.href= window.location.href="${ctx}/common/file/downloadZipsByArrayIds/"+result.attIds+"/作业";
+        				return;
+        			});
+      			}
+      		}
+	     }); 
+		
+		/* $.fn.jalert("您确定下载本页数据吗？",function(){
+			window.open("${ctx}/common/file/batchDownloadTaskZip/"+chk_value+"/作业", _self);
 			return;
-		});
+		}); */
 	} else{
 		 $.fn.jalert2("您好!您没有选择要下载的数据！");
 		  return;

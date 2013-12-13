@@ -137,11 +137,11 @@ public class VCheckTaskData {
 		this.guideScore = guideScore;
 	}
 
-	public String isPass() {
+	public String getIsPass() {
 		return isPass;
 	}
 
-	public void setPass(String isPass) {
+	public void setIsPass(String isPass) {
 		this.isPass = isPass;
 	}
 	

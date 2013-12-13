@@ -626,33 +626,39 @@ public class SeriesAjaxContrller {
 		Finder finder = Finder.create(" from SeriesInfo s where s.isPublish = :isPublish");
 		finder.setParam("isPublish", true);
 		Pagination pagination = seriesCoursesService.getPage(finder,pageNo,3);
-		if(pagination.getTotalPage()<=pageNo){
-			returnMap.put("hasMore", false);
+		if(pagination.getTotalPage()>=pageNo){
+			if(pagination.getList().size()==3){
+				returnMap.put("hasMore", true);
+			}else{
+				returnMap.put("hasMore", false);
+			}
 		}else{
-			returnMap.put("hasMore", true);
+			returnMap.put("hasMore", false);
 		}
 		returnMap.put("type", "series");
 		List<SeriesInfo> infos = (List<SeriesInfo>) pagination.getList();
 		List<Map> lists = new ArrayList<Map>();
-		for (SeriesInfo seriesInfo : infos) {
-			Map map = new HashMap();
-			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(seriesInfo.getFdId(), SeriesInfo.class.getName());
-			map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
-			
-			List<CourseInfo> list = seriesCoursesService.getCoursesByseriesId1(seriesInfo.getFdId());
-			int count=0;
-			for (CourseInfo course : list) {
-				int courseSum = getLearningTotalNo(course.getFdId());
-				count=count+courseSum;
+		if(pagination.getTotalPage()>=pageNo){
+			for (SeriesInfo seriesInfo : infos) {
+				Map map = new HashMap();
+				List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(seriesInfo.getFdId(), SeriesInfo.class.getName());
+				map.put("imgUrl", attMains.size()==0?"":attMains.get(0).getFdId());
+				
+				List<CourseInfo> list = seriesCoursesService.getCoursesByseriesId1(seriesInfo.getFdId());
+				int count=0;
+				for (CourseInfo course : list) {
+					int courseSum = getLearningTotalNo(course.getFdId());
+					count=count+courseSum;
+				}
+				map.put("docNum",seriesCoursesService.getCoursesByseriesId2(seriesInfo.getFdId()).size());
+				map.put("learnerNum", count);
+				map.put("name", seriesInfo.getFdName());
+				map.put("issuer", seriesInfo.getFdAuthor());
+				map.put("intro", seriesInfo.getFdDescription().length()>=35?seriesInfo.getFdDescription().subSequence(0, 35)+"...":seriesInfo.getFdDescription());
+				map.put("isLearning", false);
+				map.put("dataId", seriesInfo.getFdId());
+				lists.add(map);
 			}
-			map.put("docNum",seriesCoursesService.getCoursesByseriesId2(seriesInfo.getFdId()).size());
-			map.put("learnerNum", count);
-			map.put("name", seriesInfo.getFdName());
-			map.put("issuer", seriesInfo.getFdAuthor());
-			map.put("intro", seriesInfo.getFdDescription().length()>=35?seriesInfo.getFdDescription().subSequence(0, 35)+"...":seriesInfo.getFdDescription());
-			map.put("isLearning", false);
-			map.put("dataId", seriesInfo.getFdId());
-			lists.add(map);
 		}
 		returnMap.put("list", lists);
 		return JsonUtils.writeObjectToJson(returnMap);
