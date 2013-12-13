@@ -263,6 +263,7 @@ public class BamCourse extends IdEntity implements BamProcess {
     }
 
     @Override
+    @org.hibernate.annotations.Type(type="yes_no")
     public boolean getThrough() {
         return through;
     }
@@ -277,6 +278,7 @@ public class BamCourse extends IdEntity implements BamProcess {
      *
      * @return
      */
+    @org.hibernate.annotations.Type(type="yes_no")
     public boolean getIsOpen() {
         return isOpen;
     }

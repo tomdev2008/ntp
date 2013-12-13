@@ -133,6 +133,7 @@ public class SourceNote extends IdEntity{
 		this.fdCourseId = fdCourseId;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsStudy() {
 		return isStudy;
 	}

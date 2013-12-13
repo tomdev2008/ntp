@@ -98,6 +98,7 @@ public class Message extends IdEntity{
 		this.fdContent = fdContent;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsAnonymous() {
 		return isAnonymous;
 	}

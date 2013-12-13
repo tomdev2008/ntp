@@ -66,7 +66,9 @@ public class MaterialAuth extends IdEntity{
 	public void setFdUser(SysOrgPerson fdUser) {
 		this.fdUser = fdUser;
 	}
+	
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsReader() {
 		return isReader;
 	}
@@ -75,6 +77,7 @@ public class MaterialAuth extends IdEntity{
 		this.isReader = isReader;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsEditer() {
 		return isEditer;
 	}

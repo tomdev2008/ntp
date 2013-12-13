@@ -67,6 +67,7 @@ public class CourseAuth extends IdEntity{
 		this.fdUser = fdUser;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsAuthStudy() {
 		return isAuthStudy;
 	}
@@ -75,6 +76,7 @@ public class CourseAuth extends IdEntity{
 		this.isAuthStudy = isAuthStudy;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsEditer() {
 		return isEditer;
 	}

@@ -233,6 +233,7 @@ public class CourseCatalog extends IdEntity {
      * @return
      */
     @Transient
+    @org.hibernate.annotations.Type(type="yes_no")
     public Boolean getThrough() {
         return through;
     }

@@ -125,6 +125,7 @@ public class SeriesInfo extends IdEntity implements IAttMain{
 		this.attMain = attMain;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsAvailable() {
 		return isAvailable;
 	}
@@ -151,6 +152,7 @@ public class SeriesInfo extends IdEntity implements IAttMain{
 		this.creator = creator;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsPublish() {
 		return isPublish;
 	}

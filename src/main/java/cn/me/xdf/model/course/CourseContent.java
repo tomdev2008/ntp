@@ -86,6 +86,7 @@ public class CourseContent extends IdEntity{
 		this.fdMaterialNo = fdMaterialNo;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsDownload() {
 		return isDownload;
 	}

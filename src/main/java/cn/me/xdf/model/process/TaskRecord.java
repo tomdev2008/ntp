@@ -127,6 +127,7 @@ public class TaskRecord extends IdEntity implements IAttMain{
 		this.fdComment = fdComment;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getThrough() {
 		return through;
 	}

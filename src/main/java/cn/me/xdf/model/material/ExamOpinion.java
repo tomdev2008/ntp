@@ -72,6 +72,7 @@ public class ExamOpinion extends IdEntity{
 		this.opinion = opinion;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsAnswer() {
 		return isAnswer;
 	}

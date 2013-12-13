@@ -89,7 +89,8 @@ public class LogOnline extends BaseLog{
 	public void setLoginNum(Integer loginNum) {
 		this.loginNum = loginNum;
 	}
-
+	
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsOnline() {
 		return isOnline;
 	}

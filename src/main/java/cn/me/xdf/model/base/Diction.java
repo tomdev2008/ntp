@@ -87,6 +87,7 @@ public class Diction extends IdEntity {
 	 * 
 	 * @return
 	 */
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getFdStatus() {
 		return fdStatus;
 	}
@@ -169,6 +170,7 @@ public class Diction extends IdEntity {
 	private boolean hasChecked;
 
 	@Transient
+	@org.hibernate.annotations.Type(type="yes_no")
 	public boolean getHasChecked() {
 		return hasChecked;
 	}

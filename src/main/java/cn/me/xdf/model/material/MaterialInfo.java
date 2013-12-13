@@ -274,6 +274,7 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 		this.fdAuthorDescription = fdAuthorDescription;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsPublish() {
 		return isPublish;
 	}
@@ -282,6 +283,7 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 		this.isPublish = isPublish;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsDownload() {
 		return isDownload;
 	}
@@ -340,6 +342,7 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 		this.creator = creator;
 	}
 
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsAvailable() {
 		return isAvailable;
 	}
@@ -379,6 +382,7 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
      * @return
      */
     @Transient
+    @org.hibernate.annotations.Type(type="yes_no")
     public boolean getThrough() {
         return through;
     }

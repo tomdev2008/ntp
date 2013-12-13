@@ -224,7 +224,7 @@ public class CourseInfo extends IdEntity implements IAttMain{
 	public void setFdSkin(String fdSkin) {
 		this.fdSkin = fdSkin;
 	}
-
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsPublish() {
 		return isPublish;
 	}
@@ -240,7 +240,7 @@ public class CourseInfo extends IdEntity implements IAttMain{
 	public void setFdPassword(String fdPassword) {
 		this.fdPassword = fdPassword;
 	}
-
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsCompulsoryCourse() {
 		return isCompulsoryCourse;
 	}
@@ -291,7 +291,7 @@ public class CourseInfo extends IdEntity implements IAttMain{
 	public void setFdTotalPart(Integer fdTotalPart) {
 		this.fdTotalPart = fdTotalPart;
 	}
-
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsOrder() {
 		return isOrder;
 	}
@@ -299,7 +299,7 @@ public class CourseInfo extends IdEntity implements IAttMain{
 	public void setIsOrder(Boolean isOrder) {
 		this.isOrder = isOrder;
 	}
-
+	@org.hibernate.annotations.Type(type="yes_no")
 	public Boolean getIsAvailable() {
 		return isAvailable;
 	}

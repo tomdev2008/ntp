@@ -18,7 +18,7 @@ public class UserDaoImpl extends HibernateSimpleDao implements UserDao {
 	@Override
 	public SysOrgPerson findByLoginName(String loginName) {
 		Finder finder = Finder
-				.create("from SysOrgPerson where loginName=:fdname or notifyEntity.fdEmail=:emailName");
+				.create("from SysOrgPerson where loginName=:fdname or fdEmail=:emailName");
 		finder.setParam("fdname", loginName);
 		finder.setParam("emailName", loginName);
 		List lists = find(finder);
