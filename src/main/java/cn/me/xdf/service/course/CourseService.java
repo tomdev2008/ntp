@@ -84,7 +84,7 @@ public class CourseService  extends BaseService{
 		
 		//可编辑的
 		finder.append(" left join (select ma.fdcourseid from Ixdf_Ntp_Course_Auth ma");
-		finder.append(" where ma.isediter=1 and ma.fduserid='"+ShiroUtils.getUser().getId()+"') temp");
+		finder.append(" where ma.isediter='Y' and ma.fduserid='"+ShiroUtils.getUser().getId()+"') temp");
 		finder.append(" on course.fdid = temp.fdcourseid");
 		//找出创建者
 		finder.append(" left join (select person.fdid,person.fd_name from Sys_Org_Element person ) sysperson on sysperson.fdid = course.fdcreatorid");

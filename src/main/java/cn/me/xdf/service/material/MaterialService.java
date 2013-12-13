@@ -275,7 +275,7 @@ public class MaterialService extends BaseService {
 			if(!ShiroUtils.isAdmin()){
 			    finder.append(" and ( info.fdCreatorId='"+ShiroUtils.getUser().getId()+"' or info.ispublish='Y' ");
 				finder.append(" or exists ( select auth.fdid from IXDF_NTP_MATERIAL_AUTH auth where auth.fdmaterialId = info.fdid ");
-				finder.append(" and ( auth.isEditer='Y' or auth.isreader=1) and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"')  )");
+				finder.append(" and ( auth.isEditer='Y' or auth.isreader='Y') and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"')  )");
 			}
 			finder.setParam("fdType", fdType);
 			if(StringUtil.isNotBlank(fdName)&&StringUtil.isNotEmpty(fdName)){
