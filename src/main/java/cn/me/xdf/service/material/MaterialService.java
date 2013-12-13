@@ -305,16 +305,16 @@ public class MaterialService extends BaseService {
 		@Transactional(readOnly = false)
 		public Pagination findMaterialByKey(String fdType, String key, Integer pageNo, Integer pageSize){
 			Finder finder = Finder.create("select info.* from IXDF_NTP_MATERIAL info ");
-			finder.append(" where info.FDTYPE=:fdType and info.isAvailable=1");
+			finder.append(" where info.FDTYPE=:fdType and info.isAvailable='Y'");
 			finder.setParam("fdType", fdType);
 			if(StringUtil.isNotBlank(key)&&StringUtil.isNotEmpty(key)){
 				finder.append(" and info.FDNAME like :fdName");
 				finder.setParam("fdName", '%' + key + '%');
 			}
 			if(!ShiroUtils.isAdmin()){
-			    finder.append(" and ( info.fdCreatorId='"+ShiroUtils.getUser().getId()+"' or info.ispublish=1 ");
+			    finder.append(" and ( info.fdCreatorId='"+ShiroUtils.getUser().getId()+"' or info.ispublish='Y' ");
 				finder.append(" or exists ( select auth.fdid from IXDF_NTP_MATERIAL_AUTH auth where auth.fdmaterialId = info.fdid ");
-				finder.append(" and ( auth.isEditer=1 or auth.isreader=1) and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"')  )");
+				finder.append(" and ( auth.isEditer='Y' or auth.isreader='Y') and auth.FDUSERID='"+ShiroUtils.getUser().getId()+"')  )");
 			}
 			Pagination page = getPageBySql(finder, pageNo, pageSize);
 			return page;
@@ -354,10 +354,10 @@ public class MaterialService extends BaseService {
 		Finder finder = Finder
 				.create("select info.FDID as id , info.FDNAME as name from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
 		finder.append(" on info.FDID=auth.FDMATERIALID ");
-		finder.append(" where info.FDTYPE=:fdType and info.ISAVAILABLE=1 and lower(info.FDNAME) like :key ");
+		finder.append(" where info.FDTYPE=:fdType and info.ISAVAILABLE='Y' and lower(info.FDNAME) like :key ");
 		finder.append(" and ( (auth.FDUSERID='" + ShiroUtils.getUser().getId()
-				+ "' and auth.ISREADER=1 ) ");
-		finder.append("  or info.ISPUBLISH=1 or info.FDCREATORID = :user) ");
+				+ "' and auth.ISREADER='Y' ) ");
+		finder.append("  or info.ISPUBLISH='Y' or info.FDCREATORID = :user) ");
 		finder.setParam("fdType", type);
 		finder.setParam("key", "%" + key + "%");
 		finder.setParam("user", ShiroUtils.getUser().getId());

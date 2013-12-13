@@ -91,12 +91,12 @@ public class CourseService  extends BaseService{
 		 
 		
 		//课程列表中有效的
-		finder.append("where course.isavailable='1'");/*有效的*/
+		finder.append("where course.isavailable='Y'");/*有效的*/
 		
 		
 		if(Constant.COUSER_AUTH_MANAGE.equals(seleType)){//课程授权
 		  //非公开  已发布  无密码
-			finder.append(" and course.ispublish=0  and  course.fdstatus='01'  and course.fdpassword is null ");
+			finder.append(" and course.ispublish='N'  and  course.fdstatus='01'  and course.fdpassword is null ");
 		}
 		//如果是管理员就显示所有有效的
 		if(!ShiroUtils.isAdmin()){
