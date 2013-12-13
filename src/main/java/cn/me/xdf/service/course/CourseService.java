@@ -65,11 +65,35 @@ public class CourseService  extends BaseService{
 	public  Pagination findCourseInfosByName(String fdName,String pageNo ,String orderbyStr,String seleType){
 
 		String userId = ShiroUtils.getUser().getId();
-		Finder finder = Finder.create("select course.*,scorestatis.fdaverage from IXDF_NTP_COURSE course ");
+		Finder finder = Finder.create("select course.*,scorestatis.fdaverage,");
+		//课程权限
+		if(ShiroUtils.isAdmin()){
+			finder.append(" '1'");
+		} else {
+			finder.append(" case when  course.fdcreatorid = '"+ShiroUtils.getUser().getId()+"' then '1'");
+			finder.append(" else (case when temp.fdcourseid is null then '0' else '1' end ) end");
+			
+		}
+		finder.append(" as authflag,");
+		//创建者
+		finder.append(" sysperson.realname as creatorName");
+		
+		finder.append(" from IXDF_NTP_COURSE course ");
 		finder.append(" left join IXDF_NTP_SCORE_STATISTICS scorestatis " );
 		finder.append(" on course.fdid=scorestatis.fdmodelid  and scorestatis.fdmodelname='"+CourseInfo.class.getName()+"' ");
+		
+		//可编辑的
+		finder.append(" left join (select ma.fdcourseid from Ixdf_Ntp_Course_Auth ma");
+		finder.append(" where ma.isediter=1 and ma.fduserid='"+ShiroUtils.getUser().getId()+"') temp");
+		finder.append(" on course.fdid = temp.fdcourseid");
+		//找出创建者
+		finder.append(" left join (select person.fdid,person.realname from Sys_Org_Person person ) sysperson on sysperson.fdid = course.fdcreatorid");
+		 
+		
 		//课程列表中有效的
 		finder.append("where course.isavailable='1'");/*有效的*/
+		
+		
 		if(Constant.COUSER_AUTH_MANAGE.equals(seleType)){//课程授权
 		  //非公开  已发布  无密码
 			finder.append(" and course.ispublish=0  and  course.fdstatus='01'  and course.fdpassword is null ");
