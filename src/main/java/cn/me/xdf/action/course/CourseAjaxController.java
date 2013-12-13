@@ -877,14 +877,14 @@ public class CourseAjaxController {
 		finder.setParam("userId", userId);
 		if(type.equals("all")){
 			finder.append(" where (course.isPublish = 1 or ");
-			finder.append(" (course.fdPassword is not null and course.fdPassword != '') or ");
+			finder.append(" (course.fdPassword is not null or course.fdPassword != '') or ");
 			finder.append(" (cpa.fduserid = :user)) ");
 			finder.append(" and course.fdStatus = '01' ");
 			finder.append(" and course.isAvailable = 1 " );
 			finder.setParam("user", userId);
 		}else{
 			finder.append(" where (course.isPublish = 1 or ");
-			finder.append(" (course.fdPassword is not null and course.fdPassword != '') or ");
+			finder.append(" (course.fdPassword is not null or course.fdPassword != '') or ");
 			finder.append(" (cpa.fduserid = :user)) ");
 			finder.append(" and course.fdStatus = '01' ");
 			finder.append(" and course.isAvailable = 1 and course.fdcategoryid=:type " );
