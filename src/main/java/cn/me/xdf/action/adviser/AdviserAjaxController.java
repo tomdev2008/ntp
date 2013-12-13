@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import jodd.io.FileNameUtil;
 import jodd.util.StringUtil;
 
 import org.apache.commons.io.FilenameUtils;
@@ -183,8 +184,12 @@ public class AdviserAjaxController {
 					attMap.put("fileUrl", attMain.getFdFilePath());
 					String name = FilenameUtils.getExtension(attMain.getFdFileName()).toLowerCase(Locale.ENGLISH);
 					if(name.endsWith("mp4")||name.endsWith("avi")||name.endsWith("wmv")||name.endsWith("rmvb")
-							||name.endsWith("doc")||name.endsWith("xls")||name.endsWith("ppt")){
-						attMap.put("type", "onlinePlay");	
+							||name.endsWith("doc")||name.endsWith("xls")||name.endsWith("docx")||name.endsWith("xlsx")||name.endsWith("ppt")){
+						attMap.put("type", "onlinePlay");
+						attMap.put("mtype", attMain.getFdFileType());//增加类型
+						attMap.put("fileNetId", attMain.getFileNetId());
+						attMap.put("fName", FileNameUtil.getName(attMain.getFdFilePath()));
+						attMap.put("playCode", attMain.getPlayCode());
 					}else{
 						attMap.put("type", "notOnlinePlay");	
 					}

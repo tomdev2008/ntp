@@ -712,7 +712,6 @@
                 	});
                     e.preventDefault();
                     if($(this).attr("href")){//已通章节可点
-                    	$("#iframeVideo").attr("src","");
                         loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
                         $(this).parent().addClass("active").siblings().removeClass("active");
                     }
@@ -751,7 +750,6 @@
                 	 window.location.href = "${ctx}/common/file/downloadImg?bamId="+bamId;
                  });
         		 $("#firstC").click(function (e){
-        			 $("#iframeVideo").attr("src","");
         		    loadRightCont(pageData.firstCId,pageData.firstCType);
         		    loadLeftData(bamId);
         		    $("#sidenav>li>a").popover({
@@ -904,7 +902,6 @@
                             	});
       		                      e.preventDefault();
       		                      if($(this).attr("href")){//已通章节可点
-      		            			$("#iframeVideo").attr("src","");
       		                          loadRightCont($(this).attr("data-fdid"),$(this).attr("data-type"));
       		                          $(this).parent().addClass("active").siblings().removeClass("active");
       		                      }

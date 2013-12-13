@@ -96,7 +96,7 @@
                                     <span><i class="icon-paperClip"></i><span class="name">{{=att2.name}}</span></span>
                                     <div class="pos-r">
                                         {{?att2.type == "onlinePlay"}}
-                                        <a class="read" href="{{=att2.mediaUrl}}"><i class="icon-eye blue"></i>在线阅读</a>
+                                        <a class="read" href="{{=att2.mediaUrl}}" playType="{{=att2.mtype}}" {{?att2.mtype=="01"}} playCode="{{=att2.playCode}}"{{??}}fileNetId="{{=att2.fileNetId}}" fname="{{=att2.fName}}" {{?}}><i class="icon-eye blue"></i>在线阅读</a>
                                         <em>|</em>
                                         {{?}}
                                         <a href="${ctx}/common/file/download/{{=att2.id}}" target="_blank" class="download"><i class="icon-downloadbox blue"></i>下载</a>
@@ -210,7 +210,9 @@
     <script id="mediaPlayerTemplate" type="x-dot-template">
         <div class="md-media" id="mediaPlayer">
             <div class="bd2">
-                <div id="flashcontent"></div>
+                <div id="flashcontent">
+					<iframe width="100%" height="510" id="iframeVideo" src="" frameBorder="0" scrolling="no"></iframe>
+                </div>
             </div>
             <div class="ft2 clearfix">
                 <div class="pull-left">
@@ -553,44 +555,26 @@
 				})
 			});
 		}
-		/**************************  如下代码把 videoplayer.swf 嵌入到 id 为 flashcontent 的div中  *********************/
-		var flashvars = {
-			//flash接收的参数
-			autoPlay : 'true',
-			skin : "http://me.xdf.cn:80/iportal/sys/attachment/video/videoPlayerSkin.swf",
-			video : "",
-			fms : "rtmp://video.xdf.cn/V3/"
-		};
-		var params = {
-			allowScriptAccess : "always",
-			allowFullScreen : "true",
-			wmode : "transparent",
-			quality : "high"
-		};
-		var attributes = {
-			id : "flashcontent"
-		};
-
+		
 		function loadVideo($ele, $list) {
-			flashvars.video = $ele.attr("href");
-			$("head").loadJS({
-				name : "SWFobject.js"
-			});
-
+			playUrl = $ele.attr("href");
+			mtype=$ele.attr("playType");
 			if ($("#mediaPlayer").length) {
 				$("#mediaPlayer").remove();
 			}
 			$list.before(mediaPlayerFn({
 				name : $ele.parent().prev().children(".name").text()
 			}));
-			swfobject
-					.embedSWF(
-							"http://me.xdf.cn:80/iportal/sys/attachment/video/videoplayer.swf",
-							"flashcontent", "100%", "510", "6.0.0",
-							"expressInstall.swf", flashvars, params, attributes);
+			//$("#iframeVideo").attr("src","");
+			if(mtype=='04'||mtype=="05"){//文档
+          		 $("#iframeVideo").attr("src",'http://me.xdf.cn/iportal/sys/attachment/sys_att_swf/viewer.do;jsessionid=ubFBr_W9GMSBzUvrtu3cqdX?method=viewerOtp&fdId='+$ele.attr("fileNetId")+'&seq=0&type=otp&fileName='+$ele.attr("fileName"));
+          	   }else if(mtype=='01'){//视频
+          		   $("#iframeVideo").attr("src",'${ctx}/video.jsp?code=' + $ele.attr("playCode"));
+          	   }
 			var $player = $("#mediaPlayer");
 			$window.scrollTop($player.parent().offset().top - 60);
 			$player.find(".ft2 .btn-primary").click(function() {
+				//$("#iframeVideo").contents().find("object").empty();
 				$player.remove();
 			})
 		}
