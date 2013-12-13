@@ -102,7 +102,12 @@
 		<ul class="nav list">
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
 				<li><a href="${ctx}/course/pagefoward?courseId=${bean.FDID}"> 
-				<input type="checkbox" name="ids" value="${bean.FDID}"/>
+				<c:if test="${bean.AUTHFLAG=='1'}">
+				 <input type="checkbox" name="ids" value="${bean.FDID}"/> 
+				</c:if>
+				<c:if test="${bean.AUTHFLAG!='1'}">
+				 <input type="checkbox" name="ids" value="${bean.FDID}" disabled/> 
+				</c:if>
 				    <span class="title">
 					<c:if test="${bean.FDTITLE!=null && bean.FDTITLE!=''}">
 						${bean.FDTITLE}
@@ -121,6 +126,10 @@
 				      <c:if test="${bean.FDPASSWORD!=''&&bean.FDPASSWORD!=null}">
 				       <span class="label label-info">加密</span>
 				      </c:if>
+				    </c:if>
+				    <span class="label label-info">可用</span>
+				    <c:if test="${bean.AUTHFLAG=='1'}">
+				      <span class="label label-info">编辑</span>
 				    </c:if>
 				    <span class="rating-view">
 				    <c:if test="${bean.FDAVERAGE!=null}">
@@ -155,7 +164,10 @@
 					  <c:if test="${bean.FDSTATUS=='00'}">
 				         <i class="icon-unpublished" data-toggle="tooltip" data-original-title="未发布"></i>
 				      </c:if>
-					  <span class="date"><i class="icon-time"></i><fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/></span>
+					  <span class="date"><i class="icon-time"></i>
+					  <fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/>
+					  <span class="dt">发布者</span><em>${bean.CREATORNAME}</em>
+					  </span>
 				</a></li>
 			</j:iter> 
 		</ul>

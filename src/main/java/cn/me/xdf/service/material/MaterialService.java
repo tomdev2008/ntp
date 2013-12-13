@@ -230,7 +230,19 @@ public class MaterialService extends BaseService {
 	 */
 	  @Transactional(readOnly = false)
 		public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName,String order){
-			Finder finder = Finder.create("select * from ( select info.*,score.fdaverage,att.flag ");
+			Finder finder = Finder.create("select * from ( select info.*,score.fdaverage,att.flag,");
+			
+			if(ShiroUtils.isAdmin()){
+				finder.append(" '1'");
+			} else {
+				finder.append(" case when info.fdCreatorId = '"+ShiroUtils.getUser().getId()+"' then '1'");
+				finder.append(" else (case when temp.fdmaterialid is null then '0' else '1' end ) end");
+				
+			}
+			finder.append(" as authflag,");
+			
+			finder.append(" sysperson.realname as creatorName");
+			
 			if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){//测试统计
 				finder.append(" ,a.questionNum,a.fdtotalnum");
 			}
@@ -241,7 +253,14 @@ public class MaterialService extends BaseService {
 			finder.append(" left join IXDF_NTP_SCORE_STATISTICS score on info.FDID = score.fdModelId and score.fdmodelname = '"+MaterialInfo.class.getName()+"' ");
 			//附件
 			finder.append(" left join ixdf_ntp_att_main att on info.FDID = att.fdModelId and att.fdmodelname = '"+MaterialInfo.class.getName()+"' ");
-			
+		    //可编辑的
+			finder.append(" left join (select ma.fdmaterialid from IXDF_NTP_MATERIAL_AUTH ma");
+			finder.append(" where ma.isediter=1 and ma.fduserid='"+ShiroUtils.getUser().getId()+"') temp");
+			finder.append(" on info.FDID = temp.fdmaterialid");
+			//找出创建者
+			finder.append(" left join (select person.fdid,person.realname from Sys_Org_Person person ) sysperson on sysperson.fdid = info.fdcreatorid");
+			 
+				       
 			if(Constant.MATERIAL_TYPE_TEST.equals(fdType)){
 				finder.append(" left join ( ");
 				finder.append(" select count(*) as questionNum,sum(fdstandardscore) as fdtotalnum,fdmaterialid from IXDF_NTP_EXAM_QUESTION group by fdmaterialid) a ");
