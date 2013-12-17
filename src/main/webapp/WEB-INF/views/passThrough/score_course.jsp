@@ -23,7 +23,7 @@
               	<span class="rating-all">
              		<i class="icon-star" ></i><i class="icon-star" ></i><i class="icon-star" ></i><i class="icon-star" ></i><i class="icon-star" ></i>
                   </span>
-                  <span class="text-warning" id="myScore">0</span>
+                  <span class="text-warning" id="myScore">0.0</span>
               </div>
 	</div>
           <div class="bd comment-form box-pd15">
@@ -68,7 +68,7 @@ $.ajax({
 				$(this).bind("mouseover",function(){
 					$(this).addClass("active").prevAll().addClass("active");
 					$(this).nextAll().removeClass("active");
-					$("#myScore").html((index+1));
+					$("#myScore").html((index+1)+".0");
 				});
 				$(this).bind("click",function(){
 					scoreing();
@@ -123,7 +123,7 @@ function setMyScore(score){
 		}else{
 			$(this).removeClass("active");
 		}
-		$("#myScore").html(score);
+		$("#myScore").html(score+".0");
 	}); 
 }
 //重置课程情分信息
