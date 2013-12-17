@@ -104,7 +104,7 @@ public class RegisterAjaxController {
 			orgPerson.setFdIdentityCard(cradid);
 			SysOrgElement element = sysOrgDepartService.getSysOrgElementById(departid);
 			orgPerson.setHbmParent(element);
-			orgPerson.setFdWorkPhone(tel);
+			orgPerson.setFdMobileNo(tel);
 			orgPerson.setFdSex(sex);
 			orgPerson.setFdBirthDay(birthday);
 			orgPerson.setFdBloodType(bloodend);
