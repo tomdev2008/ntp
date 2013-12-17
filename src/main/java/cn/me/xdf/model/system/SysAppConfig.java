@@ -1,6 +1,7 @@
 package cn.me.xdf.model.system;
 
 import cn.me.xdf.ldap.model.BaseModel;
+import cn.me.xdf.model.base.IdEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "SYS_APP_CONFIG")
-public class SysAppConfig extends BaseModel {
+public class SysAppConfig extends IdEntity {
 
     public static final String FD_KEY = "cn.me.xdf.model.system.SysAppConfig";
 
