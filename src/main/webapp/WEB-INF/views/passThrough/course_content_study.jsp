@@ -495,7 +495,13 @@
                                             <i class="icon-star{{?i <= item.score}} active{{?}}"></i>
                                         {{ } }}
                                     </span>
-                            <b class="text-warning">{{=item.score}}</b>
+                            <b class="text-warning">
+{{?(item.score+"").length==1}}
+{{=item.score}}.0
+{{??}}
+{{=item.score}}
+{{?}}
+							</b>
                         </div>
                     {{?}}
                 </div>
@@ -982,7 +988,7 @@
                         index = $this.index();
                     $this.addClass("active").prevAll().addClass("active");
                     $this.nextAll().removeClass("active");
-                    $this.parent().nextAll(".point").text(index+1);  
+                    $this.parent().nextAll(".point").text((index+1)+".0");  
                     $.ajax({
   		  			  url: "${ctx}/ajax/score/pushMaterialToCourse",
   		  			  async:false,
@@ -1125,7 +1131,7 @@
   		                        $(this).removeClass("active");
   		                    }
   		                });
-          			  $("#ratingDoScore").text(score);
+          			  $("#ratingDoScore").text(score+".0");
           		  }
       		});
             	$.ajax({
