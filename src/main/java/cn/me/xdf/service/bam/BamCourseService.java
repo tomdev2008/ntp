@@ -173,5 +173,17 @@ public class BamCourseService extends SimpleService {
         }
     }
 
+    /**
+     * 根据课程ID将该课程所有进程记录设置为需要更新
+     *
+     * @param courseId
+     * 
+     */
+	public void setCourseIsUpdate(String courseId) {
+		// TODO Auto-generated method stub
+		String sql = "update ixdf_ntp_bam_score set isUpdate=? where courseId=?";
+		super.executeSql(sql, "Y",courseId);
+	}
+
 
 }

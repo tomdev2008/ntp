@@ -75,6 +75,10 @@ public class BamCourse extends IdEntity implements BamProcess {
 
     }
 
+    /**
+     * 模板是否更新
+     */
+    private boolean isUpdate;
 
     /**
      * 开始时间
@@ -286,6 +290,21 @@ public class BamCourse extends IdEntity implements BamProcess {
     public void setIsOpen(boolean open) {
         isOpen = open;
     }
+    
+    /**
+     * 模板是否更新
+     *
+     * @return
+     */
+    @org.hibernate.annotations.Type(type="yes_no")
+    public boolean getIsUpdate() {
+		return isUpdate;
+	}
+
+
+	public void setIsUpdate(boolean isUpdate) {
+		this.isUpdate = isUpdate;
+	}
 
     /**
      * ************************************************************************************************
