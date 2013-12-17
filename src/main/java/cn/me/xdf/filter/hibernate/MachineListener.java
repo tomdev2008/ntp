@@ -126,7 +126,12 @@ public class MachineListener
                     }
                 }
                 String content = "[" + con + "]";
-                String personId = ShiroUtils.getUser().getId();
+                String personId="";
+                try {
+                	personId = ShiroUtils.getUser().getId();
+				} catch (Exception e) {
+					personId = "";
+				}
                 LogApp logApp = new LogApp();
                 logApp.setPersonId(personId);
                 logApp.setTime(new Date());
