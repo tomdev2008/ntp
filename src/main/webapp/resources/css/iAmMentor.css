@@ -30,7 +30,7 @@
 .pd15{padding:15px;}
 .pd20{padding:20px;}
 .box-txt,.box-txt li{line-height:32px;}
-.section,.page-header,.listTeacher .media{border-bottom:solid #dcdcdc 2px;display:block; background-color:#FFF;}
+.section,.page-header{border-bottom:solid #dcdcdc 2px;display:block; background-color:#FFF;}
 .hd{position: relative;}
 .hd .ab_r{position:absolute;right:0;top:20px;}
 .hd .ab_l{position:absolute;left:0;top:20px;}
@@ -38,7 +38,8 @@
 
 .page-header{position:relative;margin:0;padding:15px 20px;line-height:30px;height:30px;}
 .page-header .pos-r{position: absolute;right: 20px;top: 0;}
-.page-header .pos-r .btn-link {line-height: 24px;margin-top: 14px;}
+.page-header .pos-r .btn-link {line-height: 24px;margin-top: 19px;padding: 0;}
+.page-header .pos-r .btn-link:focus{outline: 0;}
 .page-header .pos-r .btn-link i{margin-right: 5px;}
 .page-header .pos-r .btn-large{margin-top: 10px;}
 .box-control{margin-top: 15px}
@@ -76,13 +77,12 @@
 .listTeacher .media>.pull-left>.send{margin-top: 10px;line-height: 24px;color: #666666;}
 .listTeacher .media>.pull-left>.send i{margin-right: 2px;}
 .listTeacher .media-object{height: 70px;padding: 5px;}
-.listTeacher .media{overflow: visible; margin-bottom: 24px;}
+.listTeacher .media{overflow: visible; margin-bottom: 24px;border: solid #ffffff 2px; border-bottom-color: #dcdcdc;background-color: #ffffff}
 .media-list .media{cursor:pointer;}
 .listTeacher .media .pull-left a:hover,.listTeacher .media-foot a:hover{color: #4391bb}
-.listTeacher .media.active{background-color: #eff4f7}
+.listTeacher .media.active{border:solid #4391bb 2px;}
 .listTeacher .media-body{padding: 0 20px;}
 .listTeacher .media-heading{line-height: 24px;padding:11px;margin: 20px 0;background-color: #f7f7f7;position: relative}
-.listTeacher .active .media-heading{background-color: #ffffff}
 .listTeacher .media-heading .name{margin-right: 10px;}
 .listTeacher .media-heading .right{position: absolute;right: 11px; }
 .listTeacher .media-heading .right i{margin: 0 3px 0 10px;}
