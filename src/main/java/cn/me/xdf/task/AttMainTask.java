@@ -2,8 +2,10 @@ package cn.me.xdf.task;
 
 import cn.me.xdf.aspect.SourceAspect;
 import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.system.SysAppConfig;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.plugin.AttMainPlugin;
+import cn.me.xdf.service.system.SysAppConfigService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +29,13 @@ public class AttMainTask {
     @Autowired
     private AttMainService attMainService;
 
+    @Autowired
+    private SysAppConfigService sysAppConfigService;
 
-    private int getFlagByFileNetId(String fileNetId){
-        if(StringUtils.isBlank(fileNetId)){
-           return -1;
+
+    private int getFlagByFileNetId(String fileNetId) {
+        if (StringUtils.isBlank(fileNetId)) {
+            return -1;
         }
         return 1;
 
@@ -50,7 +55,12 @@ public class AttMainTask {
                     attMainService.update(attMain);
                 } else if ("01".equals(attMain.getFdFileType())) {
                     log.info("开始执行视频上传接口");
-                    String playCode = AttMainPlugin.addDocNtp(attMain);
+                    SysAppConfig sysAppConfig = sysAppConfigService.findByKeyAndParam(SysAppConfig.FD_KEY, "CALL_BACK_URL");
+                    String callback_url = "NTP";
+                    if (sysAppConfig != null) {
+                        callback_url = sysAppConfig.getFdValue();
+                    }
+                    String playCode = AttMainPlugin.addDocNtp(attMain,callback_url);
                     String fileNetId = AttMainPlugin.addDoc(attMain, "0");
                     if (StringUtils.isNotBlank(playCode)) {
                         if ("-1".equals(playCode)) {

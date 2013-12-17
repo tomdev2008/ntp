@@ -79,6 +79,8 @@
 
                 <value>cn.me.xdf.model.bam</value>
 
+                <value>cn.me.xdf.model.system</value>
+
             </list>
         </property>
         <property name="hibernateProperties">

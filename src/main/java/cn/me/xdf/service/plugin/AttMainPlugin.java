@@ -3,6 +3,7 @@ package cn.me.xdf.service.plugin;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.DocInterfaceModel;
+
 import com.dreamwin.upfile.main.CCUploader;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -25,10 +26,10 @@ public class AttMainPlugin {
             .getLogger(AttMainPlugin.class);
 
 
-    public static String addDocNtp(AttMain attMain) {
+    public static String addDocNtp(AttMain attMain, String callbackUrl) {
         CCUploader.uid = "B47D5D75B8086E19";
         CCUploader.apiKey = "JIXP3eHWGZ5YVFzLM19QZiP5x7iknbE3";
-        String vid = CCUploader.upload(attMain.getFdFilePath(), attMain.getFdFileName(), null, "NTP", "NTP");
+        String vid = CCUploader.upload(attMain.getFdFilePath(), attMain.getFdFileName(), null, "NTP", callbackUrl);
         log.info("vid====" + vid);
         return vid;
     }
@@ -54,7 +55,7 @@ public class AttMainPlugin {
 
             MultipartRequestEntity mre = new MultipartRequestEntity(
                     model.getCCToAddModel(), filePost.getParams());
-            filePost.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET,"utf-8");
+            filePost.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
             filePost.setRequestEntity(mre);
             int status = client.executeMethod(filePost);
             if (status == HttpStatus.SC_OK) {
