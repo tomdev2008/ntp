@@ -562,8 +562,9 @@ public class PassThroughAjaxController {
 			}else{
 				List<Map> list =  new ArrayList<Map>();
 				Finder finder = Finder.create("");
-				finder.append("from Message m where m.fdType=:fdType and m.fdModelName=:fdModelName and m.fdModelId=:fdModelId order by m.fdCreateTime desc ");
-				finder.setParam("fdType",Constant.MESSAGE_TYPE_MOOD);
+				finder.append("from Message m where (m.fdType=:fdType1 or m.fdType=:fdType2) and m.fdModelName=:fdModelName and m.fdModelId=:fdModelId order by m.fdCreateTime desc ");
+				finder.setParam("fdType1",Constant.MESSAGE_TYPE_MOOD);
+				finder.setParam("fdType2",Constant.MESSAGE_TYPE_SYS);
 				finder.setParam("fdModelName",BamCourse.class.getName());
 				finder.setParam("fdModelId",bamCourse.getFdId());
 				List<Message> messages = messageService.find(finder);
