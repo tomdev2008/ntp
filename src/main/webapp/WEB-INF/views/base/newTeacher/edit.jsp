@@ -54,11 +54,12 @@ function clearCss(node){
 function checkdepart() {
 	var node = document.getElementById("department");
     var val = document.getElementById("department").value;
-    if(val == "0"){
+    if(val == "0" || val==''){
     	checkFlag.depart = false;
     	var child1 = node.parentNode;
 		var child2 = child1.parentNode;
 		child2.className = "control-group warning";
+		node.focus();
     }else{
     	checkFlag.depart = true;
     	var child1 = node.parentNode;
@@ -100,6 +101,7 @@ function checkTel() {
 		var child1 = node.parentNode;
 		var child2 = child1.parentNode;
 		child2.className = "control-group warning";
+		node.focus();
 	} else if (!myreg.test(tel)) {
 		checkFlag.tel = false;
 		var child1 = node.parentNode;
@@ -122,11 +124,13 @@ function checkName() {
 		var child1 = node.parentNode;
 		var child2 = child1.parentNode;
 		child2.className = "control-group warning";
+		node.focus();
 	} else if (!myreg.test(val)) {
 		checkFlag.inputrealname = false;
 		var child1 = node.parentNode;
 		var child2 = child1.parentNode;
 		child2.className = "control-group warning";
+		node.focus();
 	} else {
 		checkFlag.inputrealname = true;
 		var child1 = node.parentNode;
@@ -146,9 +150,7 @@ function checkSubmit(){
 	var depart = document.getElementById("department");
 	var index = depart.selectedIndex;
 	var departid = depart.options[index].value;
-	var deptName = depart.options[index].text;
-	document.getElementById("depName").value = deptName;
-	document.getElementById("depId").value = departid;
+	document.getElementById("deptId").value = departid;
 	 if(!checkFlag.tel ){
 		  checkTel();
 	  }
@@ -189,14 +191,12 @@ function CountStrByte(){
 </script>
 
 </head>
-
 <body>
        <div class="page-body"> 
           <form method="post" id="inputForm" onsubmit="return checkSubmit();" action="${ctx}/register/updateOtherData" class="reg_form form-horizontal">
-          <input type="hidden" name="fdId" value="${bean.fdId}"/>
-          <input type="hidden" name="personId" value="${person.fdId}"/>
-          <input type="hidden" id="depName" name="deptName" value="${person.deptName}" />
-          <input type="hidden" id="depId" name="depatId" value="${person.depatId}" />
+          <input type="hidden" name="fdId" value="${person.fdId}"/>
+         <%--  <input type="hidden" id="depName" name="deptName" value="${person.deptName}" />--%>
+          <input type="hidden" id="deptId" name="deptId" value="${person.deptId}" /> 
           <input type="hidden" id="sysParOrgId" value="${sysParOrgId}" />
         	<p class="reg_form-intro">以下信息将显示在您的
         	<a href="${ctx}/course/courseIndex">个人主页</a>
@@ -218,11 +218,11 @@ function CountStrByte(){
         		<input type="hidden"  name="notifyEntity.fdEmail" value="${person.fdEmail}" >
         		 <j:if test="${person.fdIsEmp=='1'}">
         		  <input id="inputrealname" type="text" class="span4"
-                	  name="notifyEntity.realName"  value="${person.realName}" readOnly>
+                	  name="fdName"  value="${person.realName}" readOnly>
         		</j:if>
         	   <j:if test="${person.fdIsEmp=='0'}">
         		  <input id="inputrealname" type="text" class="span4"
-                	  name="notifyEntity.realName"  value="${person.realName}"
+                	  name="fdName"  value="${person.realName}"
                 	  onblur="checkName();" onclick="clearCss(this);" placeholder="请填写您的真实姓名">
                    <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写真实姓名</span>
         		</j:if>
@@ -251,10 +251,11 @@ function CountStrByte(){
                     <select name="org" id="org" onchange="changedepart(this)">
                       <option value="0">请输入您的机构</option>
                        <c:forEach items="${elements }" var="e">
-								<option value="${e.fdId }" <j:if test="${e.fdId== sysParOrgId}"> selected="selected" </j:if>>${e.fdName }</option>
+							<option value="${e.fdId }" <j:if test="${e.fdId== sysParOrgId}"> selected="selected" </j:if>>${e.fdName}</option>
 					   </c:forEach>
                 	</select>
-                    <select name="department" id="department" onchange="checkdepart()">
+                    <select  id="department" onchange="checkdepart()">
+                       <option value='${person.deptName}'>${person.deptName}</option>
                 	</select>  
                      <span class="help-inline"><b class="icon-disc-bg warning">!</b>请认真选择机构/部门</span>
                  </j:if>
@@ -264,7 +265,7 @@ function CountStrByte(){
         		<label for="tel" class="control-label">电话<span class="text-error">*</span></label>
         		<div class="controls">
                 	<input id="tel" type="text" class="span4" 
-                	  name="notifyEntity.fdMobileNo" value="${person.fdMobileNo}"
+                	  name="fdMobileNo" value="${person.fdMobileNo}"
                 	  onblur="checkTel();" onclick="clearCss(this);" placeholder="请填写您的常用联系方式，如手机/座机等 ">
                     <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写通讯方式</span>
                 </div>
@@ -272,15 +273,15 @@ function CountStrByte(){
             <div class="control-group">
         		<label for="sex" class="control-label">性别<span class="text-error">*</span></label>
         		<div class="controls">
-                 	<label for="male" class="radio inline"><input name="fdSex" id="male" type="radio" value="M"  <j:if test="${bean.fdSex=='M' || bean.fdSex==null || bean.fdSex==''}">checked</j:if>> 男</label>
-                    <label for="female" class="radio inline"><input name="fdSex" id="female" type="radio" value="F" <j:if test="${bean.fdSex=='F'}">checked</j:if>> 女</label>
+                 	<label for="male" class="radio inline"><input name="fdSex" id="male" type="radio" value="M"  <j:if test="${person.fdSex=='M' || person.fdSex==null || person.fdSex==''}">checked</j:if>> 男</label>
+                    <label for="female" class="radio inline"><input name="fdSex" id="female" type="radio" value="F" <j:if test="${person.fdSex=='F'}">checked</j:if>> 女</label>
               </div>
         	</div>
              <div class="control-group">
         		<label for="birthday" class="control-label">出生日期</label>
         		<div class="controls">
         		 <div class="input-append date" id="dpYear" data-date="1990/01/10" data-date-format="yyyy/mm/dd" >
-					  <input id="birthday" type="text" name="fdBirthDay" value="${bean.fdBirthDay}" class="span4" placeholder="请输入您的出生日期 ">
+					  <input id="birthday" type="text" name="fdBirthDay" value="${person.fdBirthDay}" class="span4" placeholder="请输入您的出生日期 ">
 					  <span class="add-on"><i class="icon-th"></i></span>
 				 </div>
                 </div>
@@ -289,23 +290,23 @@ function CountStrByte(){
         		<label for="blood" class="control-label">血型</label>
         		<div class="controls">
                     <label for="A" class="radio inline">
-                    <input name="fdBloodType" id="A" type="radio" value="A" <j:if test="${bean.fdBloodType =='A'}">checked</j:if> > A</label>
+                    <input name="fdBloodType" id="A" type="radio" value="A" <j:if test="${person.fdBloodType =='A'}">checked</j:if> > A</label>
                     <label for="B" class="radio inline">
-                    <input name="fdBloodType" id="B" type="radio" value="B" <j:if test="${bean.fdBloodType =='B'}">checked</j:if> > B </label>
+                    <input name="fdBloodType" id="B" type="radio" value="B" <j:if test="${person.fdBloodType =='B'}">checked</j:if> > B </label>
                     <label for="AB" class="radio inline">
-                    <input name="fdBloodType" id="AB" type="radio" value="AB"  <j:if test="${bean.fdBloodType =='AB'}">checked</j:if> > AB</label>
+                    <input name="fdBloodType" id="AB" type="radio" value="AB"  <j:if test="${person.fdBloodType =='AB'}">checked</j:if> > AB</label>
                     <label for="O" class="radio inline">
-                    <input name="fdBloodType" id="O" type="radio" value="O" <j:if test="${bean.fdBloodType =='O'}">checked</j:if> >O </label>
+                    <input name="fdBloodType" id="O" type="radio" value="O" <j:if test="${person.fdBloodType =='O'}">checked</j:if> >O </label>
                     <label for="RH" class="radio inline">
-                    <input name="fdBloodType" id="RH" type="radio" value="RH" <j:if test="${bean.fdBloodType =='RH'}">checked</j:if> >RH </label>
+                    <input name="fdBloodType" id="RH" type="radio" value="RH" <j:if test="${person.fdBloodType =='RH'}">checked</j:if> >RH </label>
                     <label for="OTHER" class="radio inline">
-                    <input name="fdBloodType" id="OTHER" type="radio" value="OTHER" <j:if test="${bean.fdBloodType == 'OTHER'}">checked</j:if> >不详 </label>
+                    <input name="fdBloodType" id="OTHER" type="radio" value="OTHER" <j:if test="${person.fdBloodType == 'OTHER'}">checked</j:if> >不详 </label>
                 </div>
         	</div>
             <div class="control-group">
         		<label for="selfIntro" class="control-label">自我介绍</label>
         		<div class="controls">
-                	<textarea id="selfIntro" onblur="CountStrByte();" onclick="clearCss(this);" name="selfIntroduction" class="span4" rows="5" placeholder="请填写200字以内的自我介绍">${bean.selfIntroduction}</textarea>
+                	<textarea id="selfIntro" onblur="CountStrByte();" onclick="clearCss(this);" name="selfIntroduction" class="span4" rows="5" placeholder="请填写200字以内的自我介绍">${person.selfIntroduction}</textarea>
                     <span class="help-inline"><b class="icon-disc-bg warning">!</b>请填写200字以内的自我介绍</span>
                 </div>
         	</div>

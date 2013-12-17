@@ -101,12 +101,12 @@
 				 <input type="checkbox" name="ids" value="${bean.FDID}" disabled/> 
 				</c:if>
 				    <span class="title">${bean.FDNAME}</span> 
-				    <j:if test="${bean.PUBLISHSTATUS=='1'}">
+				    <c:if test="${bean.ISPUBLISH=='Y'}">
 				      <span class="label label-info">公开</span>
-				    </j:if>
-				    <c:if test="${bean.PUBLISHSTATUS=='0'}">
+				    </c:if>
+				    <c:if test="${bean.ISPUBLISH=='N'}">
 				      <span class="label label-info">加密</span>
-				    </c:if> 
+				    </c:if>
 				    <c:if test="${bean.AUTHFLAG=='0'}">
 				      <span class="label label-info">可用</span>
 				    </c:if>

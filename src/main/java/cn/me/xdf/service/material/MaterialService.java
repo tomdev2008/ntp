@@ -232,11 +232,6 @@ public class MaterialService extends BaseService {
 		public Pagination findMaterialList(String fdType,Integer pageNo, Integer pageSize,String fdName,String order){
 			Finder finder = Finder.create("select * from ( select info.*,score.fdaverage,att.flag,");
 			
-			finder.append(" case when info.ISPUBLISH = 'Y' then '1' ");
-			finder.append(" else (case when info.ISPUBLISH = 'N' then '0' else '1' end ) end");
-			
-			finder.append(" as publishStatus,");
-			
 			if(ShiroUtils.isAdmin()){
 				finder.append(" '1'");
 			} else {
