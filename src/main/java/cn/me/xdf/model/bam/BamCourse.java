@@ -55,12 +55,13 @@ public class BamCourse extends IdEntity implements BamProcess {
         this.courseContentJson = courseContentJson;
         this.through = false;
         this.isOpen = false;
+        this.isUpdate = false;
     }
 
 
     public BamCourse(String preTeachId, String guideTeachId, String courseId,
                      String courseJson, String catalogJson, String courseContentJson,
-                     boolean through, boolean isOpen) {
+                     boolean through, boolean isOpen,boolean isUpdate) {
         this.preTeachId = preTeachId;
         this.guideTeachId = guideTeachId;
         this.courseId = courseId;
@@ -72,7 +73,7 @@ public class BamCourse extends IdEntity implements BamProcess {
         this.courseContentJson = courseContentJson;
         this.through = through;
         this.isOpen = isOpen;
-
+        this.isUpdate = isUpdate;
     }
 
     /**
