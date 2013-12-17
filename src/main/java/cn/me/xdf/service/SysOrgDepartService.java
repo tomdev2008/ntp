@@ -47,9 +47,15 @@ public class SysOrgDepartService extends BaseService {
 	public List<SysOrgDepart> findTypeis1(){
 		Finder finder = Finder
 				.create("from SysOrgElement e where e.hbmParent is not null and e.fdOrgType=1");
-		/*finder.setParam("fdId", "142eac9fb5c0d723f6327f448049ba9c");
-		finder.setParam("fdNo", "105");*/
 		return find(finder);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public SysOrgElement getSysOrgElementById(String id){
+		Finder finder = Finder
+				.create("from SysOrgElement e where e.fdId=:id");
+		finder.setParam("id", id);
+		return findUnique(finder);
 	}
 	
 	public List<SysOrgDepart> findElement(String fdId){
