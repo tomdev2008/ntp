@@ -13,6 +13,6 @@ import cn.me.xdf.service.plugin.AttMainPlugin;
 public class AttMainPluginTest extends JunitBaseTest {
 
     public void testAddDoc() {
-        AttMainPlugin.addDocNtp(null);
+        AttMainPlugin.addDocNtp(null,null);
     }
 }
