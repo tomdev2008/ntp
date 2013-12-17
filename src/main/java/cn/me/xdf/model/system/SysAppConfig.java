@@ -1,6 +1,5 @@
 package cn.me.xdf.model.system;
 
-import cn.me.xdf.ldap.model.BaseModel;
 import cn.me.xdf.model.base.IdEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
