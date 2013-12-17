@@ -90,12 +90,14 @@ public class LogSessionDAO extends HibernateSimpleDao implements SessionDAO  {
 	    }
 	
 	    public void delete(Session session) {
-	    	LogLogout logLogout = new LogLogout();
-	    	logLogout.setIp(session.getHost());
-        	logLogout.setPerson(logLoginService.getPersonBySessionId(session.getId().toString()));
-        	logLogout.setSessionId(session.getId().toString());
-        	logLogout.setTime(new Date());
-        	logLogoutService.saveAndUpdateOnine(logLogout);
+	    	if(logLoginService.getPersonBySessionId(session.getId().toString())!=null){
+	    		LogLogout logLogout = new LogLogout();
+		    	logLogout.setIp(session.getHost());
+	        	logLogout.setPerson(logLoginService.getPersonBySessionId(session.getId().toString()));
+	        	logLogout.setSessionId(session.getId().toString());
+	        	logLogout.setTime(new Date());
+	        	logLogoutService.saveAndUpdateOnine(logLogout);
+	    	}
 	    	online_sessions.remove(session);
 	        if (session == null) {
 	            throw new NullPointerException("session argument cannot be null.");

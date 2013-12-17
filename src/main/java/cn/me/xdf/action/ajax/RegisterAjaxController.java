@@ -89,20 +89,8 @@ public class RegisterAjaxController {
 			String sex = request.getParameter("sex");
 			String birthday = request.getParameter("birthday");
 			String bloodend = request.getParameter("bloodend");
-			SysOrgPersonTemp sysOrgPersonTemp = new SysOrgPersonTemp();
-			sysOrgPersonTemp.setFdPassword(password);
-
-            sysOrgPersonTemp.setFdMobileNo(tel);
-            sysOrgPersonTemp.setFdEmail(email);
-            sysOrgPersonTemp.setRealName(name);
-			sysOrgPersonTemp.setDeptName(deptName);
-			sysOrgPersonTemp.setFdSex(sex);
-			sysOrgPersonTemp.setFdIdentityCard(cradid);
-			sysOrgPersonTemp.setDepatId(departid);
-			sysOrgPersonTemp.setFdBirthDay(birthday);
-			sysOrgPersonTemp.setFdBloodType(bloodend);
-			sysOrgPersonTemp.setFdIcoUrl(img);
-			registerService.registerTemp(sysOrgPersonTemp);
+			
+			/*registerService.registerTemp(sysOrgPersonTemp);
 			String attMainId=request.getParameter("attId");
 			if(StringUtil.isNotBlank(attMainId)){
 				SysOrgPersonTemp personTemp = registerService
@@ -116,7 +104,7 @@ public class RegisterAjaxController {
 			}
 			if (ShiroUtils.getUser() == null) {
 				return "redirect:/login";
-			}
+			}*/
 			return "redirect:/register/list";
 		} catch (Exception e) {
 			e.printStackTrace();
