@@ -78,6 +78,8 @@ input.error:focus,textarea.error:focus{border-color:#f39800;}
 .icon-cloth{background-position: right -827px}
 .icon-disc-blue{background-position: right -931px;}
 .icon-chevron-up-large{background-position: 0 -1111px;background-image: url(../../../images/icon-png.png)}
+.icon-chevron-left{background-position: right -196px}
+.icon-chevron-right{background-position: right -216px}
 
 /* star */
 .icon-star{*margin-right:0;vertical-align:middle;}

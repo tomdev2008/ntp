@@ -79,6 +79,8 @@ input.error:focus,textarea.error:focus{border-color:#953b39;-webkit-box-shadow:i
 .icon-transforming{background-position: right -931px;}
 .icon-unpublished{background-position: right -951px;}
 .icon-chevron-up-large{background-position: 0 -1111px;}
+.icon-chevron-left{background-position: right -196px}
+.icon-chevron-right{background-position: right -216px}
 
 /* star */
 .icon-star{*margin-right:0;vertical-align:middle;}
