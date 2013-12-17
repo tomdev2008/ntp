@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.organization.SysOrgDepart;
+import cn.me.xdf.model.organization.SysOrgElement;
+import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.SysOrgPersonTemp;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.RegisterService;
+import cn.me.xdf.service.SysOrgDepartService;
 import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.utils.MD5Util;
 import cn.me.xdf.utils.ShiroUtils;
 
 /**
@@ -38,6 +42,9 @@ public class RegisterAjaxController {
 	private RegisterService registerService;
 	
 	@Autowired
+	private SysOrgDepartService sysOrgDepartService;
+	
+	@Autowired
     private AttMainService attMainService;
 
 	@RequestMapping(value = "checkIdentityCard")
@@ -47,7 +54,7 @@ public class RegisterAjaxController {
 
 		int count = registerService.checkIdentityCard(str);
 
-		return count;
+		return 0;
 	}
 	
 	@RequestMapping(value = "checkIdentitymail")
@@ -89,22 +96,33 @@ public class RegisterAjaxController {
 			String sex = request.getParameter("sex");
 			String birthday = request.getParameter("birthday");
 			String bloodend = request.getParameter("bloodend");
-			
-			/*registerService.registerTemp(sysOrgPersonTemp);
+			SysOrgPerson orgPerson = new SysOrgPerson();
+			//orgPerson.setPassword(password);
+			orgPerson.setPassword(MD5Util.getMD5String(password));
+			orgPerson.setFdEmail(email);
+			orgPerson.setFdName(name);
+			orgPerson.setFdIdentityCard(cradid);
+			SysOrgElement element = sysOrgDepartService.getSysOrgElementById(departid);
+			orgPerson.setHbmParent(element);
+			orgPerson.setFdWorkPhone(tel);
+			orgPerson.setFdSex(sex);
+			orgPerson.setFdBirthDay(birthday);
+			orgPerson.setFdBloodType(bloodend);
+			orgPerson.setAvailable(true);
+			orgPerson.setFdPhotoUrl(img);
+			orgPerson.setFdIsEmp("0");
+			registerService.registerPerson(orgPerson);
 			String attMainId=request.getParameter("attId");
 			if(StringUtil.isNotBlank(attMainId)){
-				SysOrgPersonTemp personTemp = registerService
-						.findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-								sysOrgPersonTemp.getFdIdentityCard());
 				AttMain attMain = attMainService.get(attMainId);
-		    	attMain.setFdModelId(personTemp.getFdId());
-		    	attMain.setFdModelName(SysOrgPersonTemp.class.getName());
+		    	attMain.setFdModelId(orgPerson.getFdId());
+		    	attMain.setFdModelName(SysOrgPerson.class.getName());
 		    	attMain.setFdKey("Person");
 		    	attMainService.update(attMain);
 			}
 			if (ShiroUtils.getUser() == null) {
 				return "redirect:/login";
-			}*/
+			}
 			return "redirect:/register/list";
 		} catch (Exception e) {
 			e.printStackTrace();
