@@ -237,7 +237,7 @@
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
                                 <input id="author" required class="input-block-level"
-                                       name="author" type="text">
+                                       name="author" type="text" value="${loginName}">
                             </div>
                         </div>
                         <div class="control-group">
