@@ -54,7 +54,7 @@ public class RegisterAjaxController {
 
 		int count = registerService.checkIdentityCard(str);
 
-		return count;
+		return 0;
 	}
 	
 	@RequestMapping(value = "checkIdentitymail")
