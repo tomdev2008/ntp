@@ -1261,7 +1261,7 @@
                     	fdContent: $("#textComment").val(),
               	  	},
           		});
-               $.fn.jalert2("您已评论成功");  
+               $.fn.jalert2("评论发表成功");  
                $("#textComment").val("");
                resetComment(1,10);
                return false;
