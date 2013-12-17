@@ -35,6 +35,7 @@ public class AttMainService extends SimpleService {
         //return get("142bbbca857f4b136ef702041b59781a");//视频
     }
 
+    @Transactional(readOnly = false)
     public void setConvertThrough(String playCode) {
         List<AttMain> attMains = findByCriteria(AttMain.class, Value.eq("playCode", playCode));
         for (AttMain attMain : attMains) {
