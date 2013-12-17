@@ -95,6 +95,9 @@ public class MessageService extends BaseService implements InitializingBean{
 		/*if(!message.getFdType().equals("01")){
 			throw new RuntimeException("只有评论消息才能支持或反对");
 		}*/
+		if(message.getFdType().equals(Constant.MESSAGE_TYPE_SYS)){
+			return true;
+		}
 		if(messageReplyService.isSupportMessage(userId, messageId)!=null){
 			return false;
 		}else{
@@ -121,6 +124,9 @@ public class MessageService extends BaseService implements InitializingBean{
 		/*if(!message.getFdType().equals("01")){
 			throw new RuntimeException("只有评论消息才能支持或反对");
 		}*/
+		if(message.getFdType().equals(Constant.MESSAGE_TYPE_SYS)){
+			return true;
+		}
 		if(messageReplyService.isOpposeMessage(userId, messageId)!=null){
 			return false;
 		}else{
