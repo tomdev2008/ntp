@@ -62,7 +62,7 @@ public class AttMainTask {
                                     + "&siteid=8B90641B41283EDC&autoStart=true&playerid=628A174866D77DB5&playertype=1";
                             attMain.setFileNetId(fileNetId);
                             attMain.setPlayCode(playCode);
-                            attMain.setFlag(getFlagByFileNetId(fileNetId));
+                            attMain.setFlag(0);
                             attMain.setFileUrl(playUrl);
                             attMainService.update(attMain);
                         }

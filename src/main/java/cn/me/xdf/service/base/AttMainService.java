@@ -1,6 +1,7 @@
 package cn.me.xdf.service.base;
 
 import java.util.List;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +29,18 @@ public class AttMainService extends SimpleService {
      */
     @Transactional(readOnly = false)
     public AttMain save(AttMain attMain) {
-    	return super.save(attMain);
-    	//return get("142c0f7aa5b3faa6efca6da479cb0c54");//图片
+        return super.save(attMain);
+        //return get("142c0f7aa5b3faa6efca6da479cb0c54");//图片
         //return get("142bce9c6e47bc8a2ead7054ef49a26c");//文档
-       //return get("142bbbca857f4b136ef702041b59781a");//视频
+        //return get("142bbbca857f4b136ef702041b59781a");//视频
+    }
+
+    public void setConvertThrough(String playCode) {
+        List<AttMain> attMains = findByCriteria(AttMain.class, Value.eq("playCode", playCode));
+        for (AttMain attMain : attMains) {
+            attMain.setFlag(1);
+            update(attMain);
+        }
     }
 
 
