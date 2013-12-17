@@ -35,12 +35,12 @@ public class SeriesInfoService extends BaseService {
 	@Transactional(readOnly = false)
 	public  Pagination findSeriesInfosOrByName(String fdName,String pageNo ,String orderbyStr){
 		Finder finder = Finder.create("select *  from ixdf_ntp_series seriesInfo ");
-		finder.append(" where seriesInfo.isavailable=1 and seriesInfo.fdparentid is null " );
+		finder.append(" where seriesInfo.isavailable='Y' and seriesInfo.fdparentid is null " );
 		if(!ShiroUtils.isAdmin()){
 			//条件一  发布的系列
-			finder.append(" and  seriesInfo.ispublish='1' ");
+			finder.append(" and  seriesInfo.ispublish='Y' ");
 			//条件二 如果是当前用户的草稿系列
-			finder.append(" or ( seriesInfo.ispublish='0' and seriesInfo.fdcreatorid=:creatorId)");
+			finder.append(" or ( seriesInfo.ispublish='N' and seriesInfo.fdcreatorid=:creatorId)");
 			finder.setParam("creatorId", ShiroUtils.getUser().getId());
 		}
 		//设置页码

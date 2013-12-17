@@ -31,6 +31,9 @@ public class LogLoginService extends BaseService{
 
 	public SysOrgPerson getPersonBySessionId(String sesstionId){
 	 	LogLogin login = this.findUniqueByProperty("sessionId", sesstionId);
+	 	if(login==null){
+	 		return null;
+	 	}
 	 	return login.getPerson();
 	}
 	

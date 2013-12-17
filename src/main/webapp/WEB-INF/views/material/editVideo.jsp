@@ -204,8 +204,14 @@
                         <div class="control-group">
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
-                                <input value="${materialInfo.fdAuthor}" id="author" required class="input-block-level"
+                             <c:if test="${materialInfo==null||materialInfo==''}">
+                               <input value="${loginName}" id="author" required class="input-block-level"
                                        name="fdAuthor" type="text">
+                             </c:if>
+                             <c:if test="${materialInfo!=null&&materialInfo!=''}">
+                             <input value="${materialInfo.fdAuthor}" id="author" required class="input-block-level"
+                                       name="fdAuthor" type="text"> 
+                             </c:if>
                             </div>
                         </div>
                         <div class="control-group">

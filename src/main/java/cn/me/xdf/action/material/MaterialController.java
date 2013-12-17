@@ -1,11 +1,6 @@
 package cn.me.xdf.action.material;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import jodd.util.StringUtil;
 
@@ -13,14 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.page.SimplePage;
-import cn.me.xdf.common.utils.excel.AbsExportExcel;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.material.MaterialAuth;
@@ -31,8 +23,6 @@ import cn.me.xdf.service.material.MaterialAuthService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
 import cn.me.xdf.utils.ShiroUtils;
-import cn.me.xdf.view.model.VCheckTaskData;
-import cn.me.xdf.view.model.VMaterialData;
 
 /**
  * 材料信息
@@ -72,7 +62,6 @@ public class MaterialController {
 			}
 		    AttMain main = attMainService.getByModelId(fdId);
 		    if(main!=null){
-		    	String url = main.getFileUrl();
 		    	model.addAttribute("main", main);
 		    }
 		    String creatorId = materialInfo.getCreator().getFdId();
@@ -100,8 +89,9 @@ public class MaterialController {
 	 * @return
 	 */
 	@RequestMapping(value="materialAddFoward")
-	public String materialAddFoward(HttpServletRequest request){
+	public String materialAddFoward(HttpServletRequest request,Model model){
 		String fdType = request.getParameter("fdType");
+		model.addAttribute("loginName",ShiroUtils.getUser().getName());
 		return fowardEdit(fdType);
 	}
 	//返回的是view页面

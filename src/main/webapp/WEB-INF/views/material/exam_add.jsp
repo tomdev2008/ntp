@@ -291,8 +291,8 @@
 							<div class="control-group">
 								<label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
 								<div class="controls">
-									<input value="" id="author" required class="input-block-level"
-										name="author" type="text">
+									<input value="${loginName}" id="author" required class="input-block-level"
+										name="author" type="text" >
 								</div>
 							</div>
 							<div class="control-group">

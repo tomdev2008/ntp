@@ -876,18 +876,18 @@ public class CourseAjaxController {
 		finder.append("select course.fdId id from ixdf_ntp_course course left join IXDF_NTP_COURSE_PARTICI_AUTH cpa on (course.fdId = cpa.fdcourseid and cpa.fduserid = :userId) " );
 		finder.setParam("userId", userId);
 		if(type.equals("all")){
-			finder.append(" where (course.isPublish = 1 or ");
+			finder.append(" where (course.isPublish = 'Y' or ");
 			finder.append(" (course.fdPassword is not null or course.fdPassword != '') or ");
 			finder.append(" (cpa.fduserid = :user)) ");
 			finder.append(" and course.fdStatus = '01' ");
-			finder.append(" and course.isAvailable = 1 " );
+			finder.append(" and course.isAvailable = 'Y' " );
 			finder.setParam("user", userId);
 		}else{
-			finder.append(" where (course.isPublish = 1 or ");
+			finder.append(" where (course.isPublish = 'Y' or ");
 			finder.append(" (course.fdPassword is not null or course.fdPassword != '') or ");
 			finder.append(" (cpa.fduserid = :user)) ");
 			finder.append(" and course.fdStatus = '01' ");
-			finder.append(" and course.isAvailable = 1 and course.fdcategoryid=:type " );
+			finder.append(" and course.isAvailable = 'Y' and course.fdcategoryid=:type " );
 			finder.setParam("user", userId);
 			finder.setParam("type", type);
 		}		
@@ -999,10 +999,10 @@ public class CourseAjaxController {
 		Finder finder = Finder.create("");
 		finder.append("select c.fdId ID , case when s.fdAverage is null THEN 0 else s.fdAverage end aver from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId " );
 		if(type.equals("all")){
-			finder.append(" where c.fdStatus=:fdStatus and c.isAvailable=1 order by aver desc" );
+			finder.append(" where c.fdStatus=:fdStatus and c.isAvailable='Y' order by aver desc" );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 		}else{
-			finder.append(" where c.isAvailable=1 and c.fdStatus=:fdStatus  and c.fdcategoryid=:type order by aver desc" );
+			finder.append(" where c.isAvailable='Y' and c.fdStatus=:fdStatus  and c.fdcategoryid=:type order by aver desc" );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 			finder.setParam("type", type);
 		}		
@@ -1046,7 +1046,7 @@ public class CourseAjaxController {
 	public String getCoursesTop5ByScore(HttpServletRequest request){
 		Map returnMap = new HashMap();
 		Finder finder = Finder.create("");
-		finder.append("select c.fdId ID,case when s.fdAverage is null THEN 0 else s.fdAverage end aver from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId where c.fdStatus=:fdStatus and c.isAvailable=1 order by aver desc" );
+		finder.append("select c.fdId ID,case when s.fdAverage is null THEN 0 else s.fdAverage end aver from IXDF_NTP_COURSE c left join IXDF_NTP_SCORE_STATISTICS s on c.fdId=s.fdModelId where c.fdStatus=:fdStatus and c.isAvailable='Y' order by aver desc" );
 		finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 		List<Map> list = (List<Map>) courseService.getPageBySql(finder, 1,5).getList();
 		List<Map> list2 = new ArrayList<Map>();
