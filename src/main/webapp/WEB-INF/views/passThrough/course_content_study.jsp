@@ -1261,10 +1261,10 @@
                     	fdContent: $("#textComment").val(),
               	  	},
           		});
+               $.fn.jalert2("您已评论成功");  
+               $("#textComment").val("");
                resetComment(1,10);
-                //刷新评论列表信息
-                /* resetComment(1,10); */
-              return false;
+               return false;
             }
 
             
