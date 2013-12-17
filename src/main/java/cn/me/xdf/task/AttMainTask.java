@@ -55,7 +55,7 @@ public class AttMainTask {
                     attMainService.update(attMain);
                 } else if ("01".equals(attMain.getFdFileType())) {
                     log.info("开始执行视频上传接口");
-                    SysAppConfig sysAppConfig = sysAppConfigService.findByKeyAndParam(SysAppConfig.FD_KEY, "CALL_BACK_URL");
+                    SysAppConfig sysAppConfig = sysAppConfigService.findByKeyAndParam("cn.me.xdf.model.base.AttMain", "CALL_BACK_URL");
                     String callback_url = "NTP";
                     if (sysAppConfig != null) {
                         callback_url = sysAppConfig.getFdValue();
