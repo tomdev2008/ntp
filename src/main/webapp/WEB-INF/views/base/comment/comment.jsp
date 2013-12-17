@@ -28,7 +28,13 @@
                                             <i class="icon-star{{?i <= it.score}} active{{?}}"></i>
                                         {{ } }}
                                     </span>
-                            <b class="text-warning">{{=it.score}}</b>
+                            <b class="text-warning">
+							{{?(it.score+"").length==1}}
+								{{=it.score}}.0
+							{{??}}
+								{{=it.score}}
+							{{?}}
+							</b>
                         </div>
                  {{?}}
               </div>
