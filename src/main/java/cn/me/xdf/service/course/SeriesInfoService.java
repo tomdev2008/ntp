@@ -34,7 +34,10 @@ public class SeriesInfoService extends BaseService {
 	 * */
 	@Transactional(readOnly = false)
 	public  Pagination findSeriesInfosOrByName(String fdName,String pageNo ,String orderbyStr){
-		Finder finder = Finder.create("select *  from ixdf_ntp_series seriesInfo ");
+		Finder finder = Finder.create("select seriesInfo.*");
+		finder.append(" ,person.fd_name as creatorName ");
+		finder.append(" from ixdf_ntp_series seriesInfo ");
+		finder.append(" left join Sys_Org_Element person on person.fdid = seriesInfo.fdcreatorid");
 		finder.append(" where seriesInfo.isavailable='Y' and seriesInfo.fdparentid is null " );
 		if(!ShiroUtils.isAdmin()){
 			//条件一  发布的系列

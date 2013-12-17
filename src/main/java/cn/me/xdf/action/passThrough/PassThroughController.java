@@ -97,6 +97,9 @@ public class PassThroughController {
 				BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(ShiroUtils.getUser().getId(),course.getFdId());
 				List<CourseCatalog> courseCatalogs = new ArrayList<CourseCatalog>();
 				if(bamCourse!=null){
+					if(bamCourse.getIsUpdate()){
+						bamCourse = bamCourseService.updateBamCourse(course, ShiroUtils.getUser().getId());
+					}
 					//章节信息
 					courseCatalogs = bamCourse.getCatalogs();
 					if(courseCatalogs!=null){

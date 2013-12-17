@@ -106,12 +106,13 @@
 							未命名
 						</c:if>
 					</span> 
-					<c:if test="${bean.ISPUBLISH=='0'}">
+					<c:if test="${bean.ISPUBLISH=='N'}">
 				         <i class="icon-unpublished" data-toggle="tooltip" data-original-title="未发布"></i>
 				      </c:if>
 				    <span class="date">
 				    	<i class="icon-time"></i>
 				    	<fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/>
+				    	<span class="dt">发布者</span><em>${bean.CREATORNAME}</em>
 				    </span>
 				</a></li>
 			</j:iter> 

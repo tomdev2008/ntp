@@ -405,6 +405,11 @@ $.Placeholder.init();
                          imgshow="imgshow" attIdName="attId" attIdID="attIdID">
     			      </tags:simpleupload> 
                      </div> 
+                      <!--图片剪切-->
+                       <div class="cutimg-box no" style="display:none;">
+                           <iframe id="iframeimg" width="600" height="500" id="win" name="win" frameborder="0" scrolling="no"
+                                   src=""></iframe>
+                       </div>
                    </td>
                   </tr>
                  </table>

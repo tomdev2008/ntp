@@ -20,6 +20,7 @@ import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseAuthService;
 import cn.me.xdf.service.course.CourseCatalogService;
@@ -58,6 +59,9 @@ public class CourseController {
 
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private BamCourseService bamCourseService;
 
 	/*
 	 * 
@@ -98,11 +102,16 @@ public class CourseController {
 		String courseId = request.getParameter("courseId");
 		if (StringUtil.isNotEmpty(courseId)) {
 			CourseInfo course = courseService.get(courseId);
-			if (course != null
-					&& Constant.COURSE_TEMPLATE_STATUS_DRAFT.equals(course
-							.getFdStatus())) {
-				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_RELEASE);
-				courseService.save(course);
+			if (course != null)
+			{
+				if(Constant.COURSE_TEMPLATE_STATUS_DRAFT.equals(course
+						.getFdStatus())){
+					course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_RELEASE);
+					courseService.save(course);
+				}else{
+					//如果是已经发布的课程再次发布需要标识进程中相应的课程为已更新
+					bamCourseService.setCourseIsUpdate(courseId);
+				}
 			}
 		}
 		return "redirect:/course/findcourseInfos?fdType=12&order=fdcreatetime";

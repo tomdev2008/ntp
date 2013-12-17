@@ -98,13 +98,15 @@
 				 <input type="checkbox" name="ids" value="${bean.FDID}" disabled/> 
 				</c:if>
 				    <span class="title">${bean.FDNAME}</span>
-				    <c:if test="${bean.ISPUBLISH=='1'}">
+				    <c:if test="${bean.ISPUBLISH=='Y'}">
 				      <span class="label label-info">公开</span>
 				    </c:if>
-				    <c:if test="${bean.ISPUBLISH=='0'}">
+				    <c:if test="${bean.ISPUBLISH=='N'}">
 				      <span class="label label-info">加密</span>
 				    </c:if>
-				    <span class="label label-info">可用</span>
+				    <c:if test="${bean.AUTHFLAG=='0'}">
+				      <span class="label label-info">可用</span>
+				    </c:if>
 				    <c:if test="${bean.AUTHFLAG=='1'}">
 				      <span class="label label-info">编辑</span>
 				    </c:if>
