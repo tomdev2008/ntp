@@ -41,7 +41,13 @@
                                                 <i class="icon-star{{?i<=item.score}} active{{?}}"></i>
                                             {{ } }}
                                          </span>
-                                        <b class="text-warning">{{=item.score}}</b>
+                                        <b class="text-warning">
+										{{?(item.score+"").length==1}}
+											{{=item.score}}.0
+										{{??}}
+											{{=item.score}}
+										{{?}}														
+										</b>
                                     </span>
                             ({{=item.raterNum}} 个评分)
                         </p>
