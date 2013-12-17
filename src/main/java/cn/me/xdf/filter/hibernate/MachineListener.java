@@ -4,6 +4,7 @@ package cn.me.xdf.filter.hibernate;
 import java.util.Date;
 
 import cn.me.xdf.model.log.*;
+import cn.me.xdf.service.ShiroDbRealm;
 import org.hibernate.event.spi.PostDeleteEvent;
 import org.hibernate.event.spi.PostDeleteEventListener;
 import org.hibernate.event.spi.PostInsertEvent;
@@ -36,7 +37,7 @@ public class MachineListener
 
     @Override
     public void onPostUpdate(PostUpdateEvent event) {
-        if (ShiroUtils.getSubject() == null)
+        if (!validationUser())
             return;
         try {
             if (!(event.getEntity() instanceof BaseLog)) {
@@ -74,7 +75,7 @@ public class MachineListener
 
     @Override
     public void onPostDelete(PostDeleteEvent event) {
-        if (ShiroUtils.getSubject() == null)
+        if (!validationUser())
             return;
         try {
             if (!(event.getEntity() instanceof BaseLog)) {
@@ -109,7 +110,7 @@ public class MachineListener
 
     @Override
     public void onPostInsert(PostInsertEvent event) {
-        if (ShiroUtils.getSubject() == null)
+        if (!validationUser())
             return;
         try {
             if (!(event.getEntity() instanceof BaseLog)) {
@@ -167,5 +168,14 @@ public class MachineListener
                 "\",oldValue:\"" + (oldState == null ? "" : String.valueOf(oldState[i])) +
                 "\",newValue:\"" + String.valueOf(newState[i]) + "\"}";
         return content;
+    }
+
+    private boolean validationUser(){
+        if (ShiroUtils.getSubject() == null)
+            return false;
+        ShiroDbRealm.ShiroUser user = ShiroUtils.getUser();
+        if(user==null )
+            return false;
+        return true;
     }
 }
