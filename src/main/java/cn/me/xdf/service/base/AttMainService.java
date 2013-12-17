@@ -36,7 +36,7 @@ public class AttMainService extends SimpleService {
     }
 
     @Transactional(readOnly = false)
-    public void setConvertThrough(String playCode) {
+    public void updateConvertThrough(String playCode) {
         List<AttMain> attMains = findByCriteria(AttMain.class, Value.eq("playCode", playCode));
         for (AttMain attMain : attMains) {
             attMain.setFlag(1);
