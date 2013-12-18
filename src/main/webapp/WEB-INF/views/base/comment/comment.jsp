@@ -48,6 +48,9 @@
 						<a href="javascript:void(0)" class="btnPraise{{?!it.canSport}} active{{?}}"><i class="icon-thumbs-up"></i><span class="num">{{=it.supportCount}}</span></a>
                         <a href="javascript:void(0)" class="btnWeak{{?!it.canOppose}} active{{?}}"><i class="icon-thumbs-down"></i><span class="num">{{=it.opposeCount}}</span></a>
                 		<a href="javascript:void(0)" class="btnComment"><i class="icon-dialog"></i><span class="num">{{=it.replyCount}}</span></a>
+						{{?it.canDelete}}
+						<a href="javascript:void(0)" class="btndeleteM" >删除</a>
+						{{?}}
                	</div>
               </div>
             </div>
@@ -116,6 +119,7 @@ function initCommentLines(modelName,modelId,pageNo){
 			  pageNo:pageNo,
 			  pageSize:pageSize,
 		  },
+		  type:"post",
 		  success: function(result){
 			  var html ="";
 			  var commentLineTemplate = doT.template(document.getElementById("commentLineTemplate").text);
@@ -197,7 +201,7 @@ function initCommentLines(modelName,modelId,pageNo){
 	$(".btnWeak").bind("click",function(){
 		var $this = $(this);
 		var itemId = $this.closest(".media").attr("dataId");
-		 var $num = $this.children(".num");
+		var $num = $this.children(".num");
 		var pushok;
     	$.ajax({
       		  url: "${ctx}/ajax/message/supportOrOpposeMessage",
@@ -220,6 +224,23 @@ function initCommentLines(modelName,modelId,pageNo){
     	}else{
     		$.fn.jalert("不能支持和反对自己的评论");
     	}
+	});
+	$(".btndeleteM").bind("click",function(){
+		var $this = $(this);
+		var itemId = $this.closest(".media").attr("dataId");
+		$.fn.jalert("您确定删除该评论吗？",function(){
+			$.ajax({
+	    		  url: "${ctx}/ajax/message/removeMessage",
+	    		  async:false,
+	    		  data:{
+	    			  messageId :itemId,
+	    		  },
+	    		  success: function(result){
+	    			 initCommentLines("${param.modelName}","${param.modelId}",1);
+	      			 initCommentPageInfo("${param.modelName}","${param.modelId}",1);
+	    		  }
+			});
+		});
 	});
 }
 //初始化分页信息

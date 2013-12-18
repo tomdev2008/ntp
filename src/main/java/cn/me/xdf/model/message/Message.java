@@ -64,6 +64,12 @@ public class Message extends IdEntity{
 	 * 操作时间
 	 */
 	private Date fdCreateTime;
+	
+	/**
+	 * 楼层号
+	 */
+	private Integer fdFloorNo;
+
 
 	public String getFdType() {
 		return fdType;
@@ -124,5 +130,16 @@ public class Message extends IdEntity{
 	public void setFdCreateTime(Date fdCreateTime) {
 		this.fdCreateTime = fdCreateTime;
 	}
+
+	public Integer getFdFloorNo() {
+		return fdFloorNo;
+	}
+
+	public void setFdFloorNo(Integer fdFloorNo) {
+		this.fdFloorNo = fdFloorNo;
+	}
+	
+	
+	
 	
 }
