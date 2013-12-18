@@ -47,29 +47,35 @@ public class CourseParticipateAuthService extends BaseService{
 	 */
 	@Transactional(readOnly=false)
 	public Pagination findSingleCourseAuthList(String courseId,String orderStr,Integer pageNo,Integer pageSize,String keyword){
-		Finder finder=Finder.create(" from CourseParticipateAuth cpa left join cpa.fdTeacher person");
+		Finder finder=Finder.create(" from CourseParticipateAuth cpa left join cpa.fdTeacher person ");
 //		Finder finder=Finder.create("from CourseParticipateAuth cpa ");//该方式会过滤掉无导师课程
 		finder.append(" where cpa.course.fdId=:courseId  ");
 		finder.setParam("courseId", courseId);
 		if("mentor".equals(orderStr)){//按导师查询
 			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
-				finder.append(" and (cpa.fdTeacher.realName like :namestr  or cpa.fdTeacher.hbmParent.fdName like:deptstr)");
+				finder.append(" and (cpa.fdTeacher.fdName like :namestr or cpa.fdTeacher.fdEmail like :emailstr or cpa.fdTeacher.hbmParent.fdName like:deptstr)");
 				finder.setParam("namestr", "%"+keyword+"%");
 				finder.setParam("deptstr", "%"+keyword+"%");
+				finder.setParam("emailstr", "%"+keyword+"%");
 			}
-			finder.append(" order by nlssort(person.realName,'NLS_SORT=SCHINESE_PINYIN_M')");
+			finder.append(" order by nlssort(person.fdName,'NLS_SORT=SCHINESE_PINYIN_M')");
 		}else if("teacher".equals(orderStr)){
 			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
-				finder.append(" and (cpa.fdUser.realName like :namestr  or cpa.fdUser.hbmParent.fdName like:deptstr)" );
+				finder.append(" and (cpa.fdUser.fdName like :namestr  or cpa.fdUser.fdEmail like :emailstr or cpa.fdUser.hbmParent.fdName like:deptstr)" );
 				finder.setParam("namestr", "%"+keyword+"%");
 				finder.setParam("deptstr", "%"+keyword+"%");
+				finder.setParam("emailstr", "%"+keyword+"%");
 			}
-			finder.append(" order by nlssort(cpa.fdUser.realName,'NLS_SORT=SCHINESE_PINYIN_M')");
+			finder.append(" order by nlssort(cpa.fdUser.fdName,'NLS_SORT=SCHINESE_PINYIN_M')");
 		}else if("createtime".equals(orderStr)){
 			if(StringUtil.isNotBlank(keyword)){//搜索关键字是否存在
-				finder.append("and ( cpa.fdUser.realName like :namestr  or cpa.fdUser.hbmParent.fdName like:deptstr)");
+				finder.append("and ( cpa.fdUser.fdName like :namestr  or cpa.fdTeacher.fdName like :tnamestr or cpa.fdUser.fdEmail like :emailstr or cpa.fdUser.hbmParent.fdName like:deptstr or cpa.fdTeacher.fdEmail like :temailstr or cpa.fdTeacher.hbmParent.fdName like:tdeptstr)");
 				finder.setParam("namestr", "%"+keyword+"%");
 				finder.setParam("deptstr", "%"+keyword+"%");
+				finder.setParam("emailstr", "%"+keyword+"%");
+				finder.setParam("tnamestr", "%"+keyword+"%");
+				finder.setParam("tdeptstr", "%"+keyword+"%");
+				finder.setParam("temailstr", "%"+keyword+"%");
 			}
 			finder.append(" order by cpa.fdCreateTime desc");
 		}else{

@@ -7,8 +7,8 @@
 	 <section class="section box-control">
 					     <div class="hd">
 						<div class="btn-toolbar">
-							<a class="btn" style="padding-left: 10px;padding-right: 10px;" href="${ctx}/course/add">新建模版</a>
-							<a class="btn" style="padding-left: 10px;padding-right: 10px;" href="#">查看全部</a>
+							
+							<a class="btn" style="padding-left: 60px;padding-right: 60px;" href="#">导出列表</a>
 							<form class="toolbar-search" onkeydown="pressEnter();">
 								<input type="text" id="serach" class="search" placeholder="搜索课程"
 								   onblur="" onkeydown="showSearch();" onkeyup="showSearch();" > 
