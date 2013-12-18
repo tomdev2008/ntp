@@ -422,11 +422,11 @@
                           //  return false;  
                }  
         });  */
-        $("#search").keypress( function(e) {  //屏蔽回车事件 由于目前回车会提交两次表单原因找不到 暂时如此处理
+        $("#search").keypress( function(e) {  //回车事件 
             var key = window.event ? e.keyCode : e.which;  
             if(key.toString() == "13"){  
           	  pageNavClick('1');
-        	  return false;
+        	  return false;//此处代码作用防止回车提交两次表单  原因可能为页面存在两个form所致
             }  
      }); 
         $("#inputTeacher").bind("focus",function(){
