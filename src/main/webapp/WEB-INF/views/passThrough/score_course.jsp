@@ -27,7 +27,7 @@
               </div>
 	</div>
           <div class="bd comment-form box-pd15">
-          	<textarea name="" id="courseMessage" class="input-block-level" placeholder="感谢您的宝贵意见与建议" cols="10" rows="4"></textarea>
+          	<textarea name="" onkeydown="return pushMessage();" id="courseMessage" class="input-block-level" placeholder="感谢您的宝贵意见与建议" cols="10" rows="4"></textarea>
               <button class="btn btn-primary btn-block" id="addMessage">我来说两句</button>
           </div>                    
 </div>
@@ -35,6 +35,11 @@
 $.Placeholder.init();
 //初始化评论按钮
 $("#addMessage").bind("click",function(){
+	addMessagemethod();
+});
+
+//课程评论
+function addMessagemethod(){
 	var mess = $("#courseMessage").val();
 	$("#courseMessage").val("");
 	$.ajax({
@@ -54,7 +59,7 @@ $("#addMessage").bind("click",function(){
 		  }
 	});
 	
-});
+}
 //初始化分数列表
 $.ajax({
 	  url: "${ctx}/ajax/score/canPushScoreToCourse",
@@ -146,5 +151,13 @@ function setCourseScore(){
 	var data={};
 	data.score=courseScore;
 	$("#courseScore").html(xingxingTemplate(data));
+}
+
+function pushMessage(){
+	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+	if (keyCode == 13) {
+		addMessagemethod();
+		return false;
+	}
 }
 </script>
