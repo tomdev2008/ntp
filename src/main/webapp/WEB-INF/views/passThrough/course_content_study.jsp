@@ -324,7 +324,7 @@
                     </div>
                 </div>
                 <div class="mediaToolbarWrap">
-                    <div class="mediaToolbar {{?param.code==""||param.code.type=='none'}}hide{{?}}" id="mediaToolbar" data-fdid="{{=param.id}}">
+                    <div class="mediaToolbar" id="mediaToolbar" data-fdid="{{=param.id}}">
                         <div class="btn-group">
                             <a id="btnPraise"  converStatus="" title="赞"  class="btn btn-link{{?!param.mePraised}} active {{?}}"  href="javascript:void(0)"  praisedstatus="{{=param.mePraised}}" ><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
                            <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" canDownload="{{=param.canDownload}}"  class="btn btn-link {{?param.canDownload}}active{{?}}" {{?param.canDownload}}href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
@@ -851,7 +851,8 @@
 			  	  			     
                 			  	 if(mdata.code==""||mdata.code.type=="none"){
 			  	  					$("#btnDownload").attr("title","当前没有可下载素材");
-			  	  					$("#mediaComment").hide();
+			  	  					$("#mediaComment").addClass("hide");
+			  	  				    $("#mediaToolbar").addClass("hide");
 			  	  				}
 			  	                //素材转换中
 			  	                if(mdata.code!=""&&mdata.code.type!='none'){
@@ -859,11 +860,11 @@
 			  	                	 if(mdata.code.type=="video"&&mdata.code.playCode==null){
 					  	              		$("#btnPraise").attr("converStatus","");
 					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-					  	              	    $("#mediaComment").hide();
+					  	              	    $("#mediaComment").addClass("hide");
 					  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
 					  	              		$("#btnPraise").attr("converStatus","");
 					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-					  	                    $("#mediaComment").hide();
+					  	                    $("#mediaComment").addClass("hide");
 							  	         }else{
 						  	        	 	$("#btnPraise").attr("converStatus","true");
 						  	        	 	$("#btnPraise").attr("data-original-title","赞");
@@ -872,7 +873,7 @@
 			  	                }else{
 			  	                	$("#btnPraise").attr("converStatus","");
 			  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-			  	              		$("#mediaComment").hide();
+			  	              		$("#mediaComment").addClass("hide");
 			  	                }
 			  	                //学习通过控制
 			  	              if(mdata.code==""||mdata.code.type=="none"){
@@ -1432,14 +1433,16 @@
 			  	              $("#mediaComment").after(mediaCommentFn(mdata)).remove();
 			  	              //$("#mediaComment").show();  
 			  	              if(mdata.code==""||mdata.code.type=='none'){
-			  	            		$("#mediaComment").hide();
+			  	            		$("#mediaComment").addClass("hide");
+			  	            		 $("#mediaToolbar").addClass("hide");
 				  	            }else{
 				  	            	if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
-										$("#mediaComment").hide();
+										$("#mediaComment").addClass("hide");
 			  	                	}else if(mdata.code.type=="video"&&mdata.code.playCode==null){
-										$("#mediaComment").hide();
+										$("#mediaComment").addClass("hide");
 			  	                	}else{
 			  	                		$("#mediaComment").removeClass("hide");
+			  	                		$("#mediaToolbar").removeClass("hide");
 			  	                	}
 				  	            }
 			  	              //$("#listComment").html(listCommentFn(mdata.mediaComment.listComment));
