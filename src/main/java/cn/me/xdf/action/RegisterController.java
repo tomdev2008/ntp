@@ -156,6 +156,10 @@ public class RegisterController {
         String uid = request.getParameter("id");
         if(StringUtil.isBlank(uid)){
         	uid = ShiroUtils.getUser().getId();
+        }else{
+        	if(!ShiroUtils.isAdmin()){
+        		uid = ShiroUtils.getUser().getId();
+        	}
         }
         model.addAttribute("active", "user");
         SysOrgPerson person = accountService.get(uid);
