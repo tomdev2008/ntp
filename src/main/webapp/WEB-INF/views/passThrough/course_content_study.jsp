@@ -1606,7 +1606,7 @@
                             e.preventDefault();
                             var $this = $(this);
                             var id = $this.attr("href");
-                            $window.scrollTop($(id).offset().top - $("#pageHeader").height() - 60);
+                            $("html,body").animate({scrollTop: $(id).offset().top - $("#pageHeader").height() - 60},"fast","swing");
                         })
                                 .tooltip({
                                     placement: "bottom"
@@ -1654,7 +1654,7 @@
                         } else{
                             sTop = pos.top - 60 - $pageHead.height() - $pageHead.children(".hd").height() -$("#headToolsBar").height();
                         }
-                        $window.scrollTop(sTop);
+                        $("html,body").animate({scrollTop: sTop},pos.top-sTop,"swing");
                         
                         var $progress ,flag = true,pct,interval,countdown = 0,byteUped = 0;
                         $("button[name='answerAtt']").each(function(){
