@@ -363,6 +363,9 @@ public class MessageService extends BaseService implements InitializingBean{
         		messageReplyService.delete(message2.getFdId());
 			}
         	delete(messageId);
+        	if(message.getFdType().equals(Constant.MESSAGE_TYPE_REPLY)){
+        		messageReplyService.delete(messageId);
+        	}
     	}
     }
     

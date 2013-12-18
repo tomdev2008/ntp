@@ -203,7 +203,7 @@ public class MessageAjaxController {
 	@RequestMapping(value = "addMaterialMessagesMessage")
 	@ResponseBody
 	private void addMaterialMessagesMessage(String materialId,String fdContent,String messageId) {
-		addMessage(MaterialInfo.class.getName(), materialId, fdContent, Constant.MESSAGE_TYPE_REPLY, false, ShiroUtils.getUser().getId());
+		Message m = addMessage(MaterialInfo.class.getName(), materialId, fdContent, Constant.MESSAGE_TYPE_REPLY, false, ShiroUtils.getUser().getId());
 		MessageReply messageReply = new MessageReply();
 		messageReply.setFdContent(fdContent);
 		messageReply.setFdType("03");
@@ -212,6 +212,7 @@ public class MessageAjaxController {
 		Message message = new Message();
 		message.setFdId(messageId);
 		messageReply.setMessage(message);
+		messageReply.setFdId(m.getFdId());
 		messageReplyService.save(messageReply);
 	}
 	
@@ -222,7 +223,7 @@ public class MessageAjaxController {
 	@RequestMapping(value = "addCourseMessagesMessage")
 	@ResponseBody
 	private void addCourseMessagesMessage(String materialId,String fdContent,String messageId) {
-		addMessage(CourseInfo.class.getName(), materialId, fdContent, Constant.MESSAGE_TYPE_REPLY, false, ShiroUtils.getUser().getId());
+		Message m = addMessage(CourseInfo.class.getName(), materialId, fdContent, Constant.MESSAGE_TYPE_REPLY, false, ShiroUtils.getUser().getId());
 		MessageReply messageReply = new MessageReply();
 		messageReply.setFdContent(fdContent);
 		messageReply.setFdType("03");
@@ -231,6 +232,7 @@ public class MessageAjaxController {
 		Message message = new Message();
 		message.setFdId(messageId);
 		messageReply.setMessage(message);
+		messageReply.setFdId(m.getFdId());
 		messageReplyService.save(messageReply);
 	}
 	
