@@ -244,5 +244,36 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 		map.put("listExamPaper", list);
 		return map;
 	}
+
+	@Override
+	public Object reCalculateMaterial(String catalogId, String materialId) {
+		MaterialInfo materialInfo = materialService.get(materialId); 
+		if(!materialInfo.getIsAvailable()){
+			return null;
+		}
+		
+		SourceNote sourceNote = sourceNodeService.getSourceNote(materialId, catalogId, ShiroUtils.getUser().getId());
+		if(sourceNote==null){
+			return null;
+		}
+		//素材中的试题
+		List<ExamQuestion> examQuestions = materialInfo.getQuestions();
+		//学习记录中的最近一次答题记录
+		Set<AnswerRecord> answerRecords = sourceNote.getAnswerRecords();
+		double score = 0;
+		for (ExamQuestion examQuestion2 : examQuestions) {
+				for (AnswerRecord answerRecord : answerRecords) {
+					if(examQuestion2.getFdId().equals(answerRecord.getFdQuestionId())
+						&& examQuestion2.getFdQuestion().equals(answerRecord.getFdAnswer()+"#")){
+						score += examQuestion2.getFdStandardScore();
+					}
+				}
+			
+		}
+		if(score>=materialInfo.getFdScore()){
+			return true;
+		}
+		return false;
+	}
 	
 }

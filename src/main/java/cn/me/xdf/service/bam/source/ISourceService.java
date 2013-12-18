@@ -44,4 +44,12 @@ public interface ISourceService {
      */
     public Object findMaterialDetailInfo(BamCourse bamCourse, CourseCatalog catalog, String fdid);
 
+    /**
+     * 根据学习记录重新计算模板素材是否通过
+     * @param catalogId 节ID
+     * @param materialId   素材ID
+     * @return
+     */
+	public Object reCalculateMaterial(String catalogId, String materialId);
+
 }
