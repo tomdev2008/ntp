@@ -623,7 +623,7 @@ $("#exportExamPaper").click(function(e){
 								matchContains : true,
 								max : 10,
 								scroll : false,
-								width : 688
+								width : 748
 							})
 					.result(
 							function(e, item) {
