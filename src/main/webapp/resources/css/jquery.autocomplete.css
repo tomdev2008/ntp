@@ -34,8 +34,11 @@
 	overflow: hidden;
 }
 .ac_results li img{height:36px;margin-right:14px;}
+.ac_input{
+    background: white url('../images/icon-search.png') 99% center no-repeat;
+}
 .ac_loading {
-	background: white url('indicator.gif') right center no-repeat;
+	background: white url('../images/indicator.gif') 99% center no-repeat;
 }
 
 .ac_odd {

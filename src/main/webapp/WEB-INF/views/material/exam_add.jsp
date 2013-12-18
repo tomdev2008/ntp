@@ -334,8 +334,7 @@
 									<div class="pr">
 										<input type="text" id="addUser"
 											class="autoComplete input-block-level"
-											placeholder="请输入人名、邮箱、机构或者部门查找用户"> <i
-											class="icon-search"></i>
+											placeholder="请输入人名、邮箱、机构或者部门查找用户"> 
 									</div>
 								</div>
 							</div>
@@ -623,7 +622,6 @@ $("#exportExamPaper").click(function(e){
 									}
 									return rows;
 								},
-								dataType : 'json',
 								matchContains : true,
 								max : 10,
 								scroll : false,

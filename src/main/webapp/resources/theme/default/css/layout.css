@@ -15,10 +15,10 @@
 .sidenav li .dt > b{position: absolute;right: -1px;top: 50%;margin: -10px -10px 0 0;}
 .sidenav li.nav-hd .dt{margin-right: 20px;padding: 30px 0 30px 10px;}
 .sidenav li.nav-hd .dt > b{text-align: center;line-height: 30px;font-weight: normal;margin: -15px -15px 0 0;}
-.sidenav li .name{font-size: 14px;*vertical-align: middle}
+.sidenav li .name{font-size: 14px;*vertical-align: middle;}
 .sidenav li .name i{vertical-align: middle;}
 .sidenav li.active .name i{   -ms-background-position-x: right;  background-position-x: right; }
-.sidenav li > a{display:block; color: #999999;}
+.sidenav li > a{display:block; color: #999999;white-space: nowrap;overflow: hidden}
 .sidenav li.active a{background-color: #4491bb;color: #FFFFFF;}
 .sidenav li .popover-content{font-size: 14px;color: #999999;}
 .leftBox {padding: 12px 20px;}
@@ -84,6 +84,7 @@
 .listExamPaper>li, .titBar{display: block;}
 .titBar.hide{display: none;}
 .listExamPaper>li{margin-top: 10px;background-color: #FFFFFF;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0; border:none;border-bottom: solid #dcdcdc 2px;}
+.listExamPaper>li:hover{border-color: #c0c6ca; }
 .listExamPaper li .titBar{padding: 15px 30px 20px;position: relative;}
 .listExamPaper li .titBar h2,.listExamPaper .accordion-inner .hd h2{color: #000000;font-size: 14px;line-height:30px;font-weight: normal;margin: 0;}
 .listExamPaper li .titBar p{margin-bottom: 0;}
@@ -105,8 +106,10 @@
 .listExamPaper .listExam .examStem .line label{cursor: pointer;}
 .listExamPaper .listExam dd + .examStem{border-top: dashed #cdcdcd 1px;margin-top: 20px;}
 .listExamPaper .listExam dd{margin-left: 0;padding-bottom: 1px;}
-.listExamPaper .listExam dd label{margin-bottom: 12px;}
-.listExamPaper .listExam dd label.input{position: relative;margin-left: 12px;}
+.listExamPaper .listExam dd label{}
+.listExamPaper .listExam dd label.radio,.listExamPaper .listExam dd label.checkbox{padding-top: 6px;padding-bottom: 6px;padding-left: 30px;cursor: pointer}
+.listExamPaper .listExam dd label.radio:hover,.listExamPaper .listExam dd label.checkbox:hover{background-color: #d2e0e8;}
+.listExamPaper .listExam dd label.input{position: relative;margin-left: 12px;margin-bottom: 12px;}
 .listExamPaper .listExam dd label.input .icon-circle-bg{position: absolute;left: -10px;top: 12px;}
 .listExamPaper .listExam dd label.input .input-xxlarge{padding: 11px 22px;width: 647px;}
 .listExamPaper .listExam dd label label.error{}

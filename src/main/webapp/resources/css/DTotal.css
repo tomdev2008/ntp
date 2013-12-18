@@ -105,7 +105,6 @@
 .editingBody .tab-content{margin-top:20px;overflow: visible;}
 .editingBody #open.tab-pane{padding:16px;background-color:#efefef;border:solid #d7d6d6 1px;}
 .editingBody .tab-content .autoComplete{*width: 728px}
-.editingBody .tab-content .autoComplete + .icon-search{position: absolute;right: 10px;top: 10px;}
 .editingBody  .table td,.editingBody .table th{text-align:center;line-height:36px;height:36px;padding:12px;}
 .editingBody  .table .tdTit img{width:36px;height:36px;margin-right:8px;}
 .editingBody  .table .tdTit .pr{text-align:left;padding-left:50px;}
