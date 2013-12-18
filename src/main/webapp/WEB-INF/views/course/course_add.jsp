@@ -600,7 +600,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
 					<label>{{=it.uploadIntro || ''}}</label>
 					<div class="control-upload">
 
-						
+							<input type="hidden"  name="attId" id="attId">
 						     <button id="upMaterial" class="btn btn-primary btn-large" type="button" 
 
 >上传</button>

@@ -266,12 +266,8 @@ public class MaterialAjaxController {
 		SysOrgPerson creator = accountService
 				.load(ShiroUtils.getUser().getId());
 		materialInfo.setCreator(creator);
-		List<AttMain> attMains = new ArrayList<AttMain>();
-		AttMain attMain = new AttMain();
-		attMain.setFdId(attId);
-		attMains.add(attMain);
-		materialInfo.setAttMains(attMains);
 		materialService.save(materialInfo);
+		saveAtt(attId,materialInfo.getFdId());
 		Map map = new HashMap();
 		map.put("id", materialInfo.getFdId());
 		map.put("name", materialInfo.getFdName());

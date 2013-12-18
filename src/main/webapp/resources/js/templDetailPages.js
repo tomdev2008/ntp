@@ -161,7 +161,10 @@
                         if (Response) {
                         	$progress.find(".countdown").empty();
                             var objvalue = eval("(" + data + ")");
+                            jQuery("#attId").val(objvalue.attId);
                             jQuery("#upMaterial").val(objvalue.attId);
+                            //上传成功后把该素材放到节的素材列表中
+                            
                         }
                         $.ajax({
           				  url: $("#ctx").val()+"/ajax/material/saveMaterial",
