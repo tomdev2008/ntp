@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.hibernate.event.service.spi.EventListenerRegistry;
-import org.hibernate.event.spi.EventType;
-import org.hibernate.internal.SessionFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,12 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sun.tools.corba.se.idl.ConstEntry;
-
 import cn.me.xdf.common.hibernate4.Finder;
-import cn.me.xdf.common.hibernate4.dynamic.DynamicBaseDaoImpl;
-import cn.me.xdf.common.hibernate4.dynamic.DynamicHibernateAssembleBuilder;
-import cn.me.xdf.common.hibernate4.dynamic.StatementTemplate;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.Constant;
@@ -36,9 +28,7 @@ import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.BaseService;
-import cn.me.xdf.service.ShiroDbRealm.ShiroUser;
 import cn.me.xdf.service.bam.BamCourseService;
-import cn.me.xdf.utils.ShiroUtils;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
