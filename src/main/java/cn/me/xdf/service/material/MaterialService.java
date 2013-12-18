@@ -190,7 +190,6 @@ public class MaterialService extends BaseService {
 	public void saveMaterAuth(String kingUser, String materialId) {
 		if (StringUtil.isNotBlank(kingUser)) {
 			List<Map> list = JsonUtils.readObjectByJson(kingUser, List.class);
-			List<MaterialAuth> auths = new ArrayList<MaterialAuth>();
 			MaterialInfo info = this.get(materialId);
 			// 删除素材的权限
 			if (StringUtil.isNotBlank(materialId)
@@ -204,15 +203,10 @@ public class MaterialService extends BaseService {
 				}
 				MaterialAuth auth = new MaterialAuth();
 				auth.setMaterial(info);
-				SysOrgPerson fdUser = accountService.load((String) map
-						.get("id"));
+				SysOrgPerson fdUser = accountService.get((String) map.get("id"));
 				auth.setFdUser(fdUser);
 				auth.setIsReader((Boolean) map.get("tissuePreparation"));
 				auth.setIsEditer((Boolean) map.get("editingCourse"));
-				auths.add(auth);
-			}
-			// 插入权限信息
-			for (MaterialAuth auth : auths) {
 				materialAuthService.save(auth);
 			}
 		}

@@ -3,6 +3,7 @@ package cn.me.xdf.model.material;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
@@ -165,9 +167,24 @@ public class MaterialInfo  extends IdEntity implements IAttMain{
 	private List<Task> tasks;
 	
 	/**
+	 * 富文本内容
+	 */
+	private String richContent;
+	
+	/**
 	 * 权限
 	 */
 	private List<MaterialAuth> authList;
+
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	public String getRichContent() {
+		return richContent;
+	}
+
+	public void setRichContent(String richContent) {
+		this.richContent = richContent;
+	}
 
 	@OneToMany(cascade = { CascadeType.REFRESH, CascadeType.REMOVE }, fetch = FetchType.LAZY, mappedBy = "material")
 	public List<MaterialAuth> getAuthList() {

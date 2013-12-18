@@ -287,6 +287,7 @@ public class MaterialAjaxController {
 		String permission = request.getParameter("permission");
 		String kingUser = request.getParameter("kingUser");
 		String attId = request.getParameter("attId");
+		String richText = request.getParameter("richText");//富文本内容
 		MaterialInfo info;
 		if (StringUtil.isBlank(fdId)) {
 			info = new MaterialInfo();
@@ -302,23 +303,18 @@ public class MaterialAjaxController {
 			attMainService.deleteAttMainByModelId(info.getFdId());
 			saveAtt(attId, info.getFdId());
 		}
-		if (permission.equals("open")) {
-			info.setIsPublish(true);
-			// 删除素材的权限
-			materialAuthService.deleMaterialAuthByMaterialId(fdId);
-		} else {
-			info.setIsPublish(false);
-			// 保存权限信息
-			materialService.saveMaterAuth(kingUser, info.getFdId());
-		}
+		info.setIsPublish(permission.equals("open")?true:false);
 		info.setIsDownload(true);
 		info.setFdAuthor(request.getParameter("author"));
 		info.setFdAuthorDescription(request.getParameter("authorIntro"));
 		info.setFdLink(request.getParameter("videoUrl"));
 		info.setFdName(request.getParameter("videoName"));
 		info.setFdDescription(request.getParameter("videoIntro"));
-		
+		info.setRichContent(richText);
 		materialService.save(info);
+		if (!permission.equals("open")) {
+			materialService.saveMaterAuth(kingUser, info.getFdId());
+		}
 	}
 
 	/**

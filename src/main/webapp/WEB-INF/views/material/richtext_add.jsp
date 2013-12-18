@@ -45,23 +45,22 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="${ctx}/material/findList?fdType=${materialInfo.fdType}&order=FDCREATETIME" class="backParent">
+                <a href="${ctx}/material/findList?fdType=07&order=FDCREATETIME" class="backParent">返回在线创作列表
                 <span id="back"></span>
                </a>
                 <h4><tags:title value="${materialInfo.fdName}" size="25" ></tags:title></h4>
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
                     <c:if test="${materialInfo.fdId!=null}">
-                    <button class="btn btn-large btn-primary" type="button" onclick="downloadMater();">下载</button>
                     <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
                     </c:if> 
                </div>
 	        </div>
             <div class="page-body editingBody">
-                <form action="#" id="formEditDTotal" class="form-horizontal" onkeyup="pressEnter();" method="post">
+                <form action="#" id="formEditDTotal" class="form-horizontal" method="post">
                     <section class="section">
                         <div class="control-group">
-                            <label class="control-label" for="videoName" id="typeTxt"></label>
+                            <label class="control-label" for="videoName" id="typeTxt">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
                             <div class="controls">
                                 <input value="${materialInfo.fdName}" 
                                     id="videoName" required class="span6" name="videoName" type="text">
@@ -72,135 +71,21 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" >统&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</label>
-                            <div class="controls controls-txt">
-                                <span class="rating-view">
-                                    <span class="rating-all">
-                                       <c:if test="${score.fdAverage!=null}">
-                        <c:forEach var="i" begin="1" end="5">
-					  	<c:if test="${i<=score.fdAverage}">
-					  	<i class="icon-star active"></i>
-					  	</c:if>
-					  	<c:if test="${i>score.fdAverage}">
-					  	<i class="icon-star"></i>
-					  	</c:if>
-					  </c:forEach>                                         
-                                       </c:if>
-                                       <c:if test="${score.fdAverage==null}">
-                                         <c:forEach var="i" begin="1" end="5">
-					   					   <i class="icon-star"></i>
-					  				     </c:forEach>
-                                       </c:if>
-                                       
-                                     </span>
-                                      <b class="text-warning">
-                                       <c:if test="${score.fdAverage==null}">
-                                          0
-                                       </c:if>
-                                       <c:if test="${score.fdAverage!=null}">
-                                          ${score.fdAverage}
-                                       </c:if>
-                                      </b>
-                                </span>
-                                <span class="btns-handle">
-                                <b>|</b>
-                                    <button type="button" class="btn btn-link"><i class="icon-eye"></i>
-                                       <c:if test="${materialInfo.fdPlays==null}">
-                                          0
-                                       </c:if>
-                                       <c:if test="${materialInfo.fdPlays!=null}">
-                                          ${materialInfo.fdPlays}
-                                       </c:if>
-                                     </button><b>|</b>
-                                    <button type="button" class="btn btn-link"><i class="icon-thumbs-up"></i>
-                                      <c:if test="${materialInfo.fdLauds==null}">
-                                          0
-                                       </c:if>
-                                       <c:if test="${materialInfo.fdLauds!=null}">
-                                          ${materialInfo.fdLauds}
-                                       </c:if>
-                                    </button><b>|</b>
-                                    <button type="button" class="btn btn-link"><i class="icon-download"></i>0</button>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="control-group" id="videoText">
-                            <label class="control-label" for="videoUrl">播放地址</label>
-                            <div class="controls">
-                             <input value="${materialInfo.fdLink}" 
-                                  placeholder="请认真填写该章节的 建议学习时长"
-                                id="videoUrl" class="input-block-level" name="fdLink" type="text">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="videoIntro" id="materialIntro"></label>
+                            <label class="control-label" for="videoIntro" id="materialIntro">简&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介</label>
                             <div class="controls">
                               <textarea placeholder="非必填项" rows="4"
                                         class="input-block-level" id="videoIntro"
                                         name="fdDescription">${materialInfo.fdDescription}</textarea>
                             </div>
                         </div>
-                        
-                        <div class="control-group">
-                           <label class="control-label">允许下载</label>
-                           <div class="controls">
-                             <div class="btn-group btns-radio" data-toggle="buttons-radio">
-                              <c:if test="${materialInfo.isDownload==true}">
-                               <button class="btn btn-large active" id="yes" type="button">是</button>
-                               <button class="btn btn-large" id="no" type="button">否</button>
-                               <input type="hidden" value="yes" id="isDownload">
-                              </c:if> 
-                               <c:if test="${materialInfo.isDownload!=true}">
-                               <button class="btn btn-large" id="yes" type="button">是</button>
-                               <button class="btn btn-large active" id="no" type="button">否</button>
-                               <input type="hidden" value="no" id="isDownload">
-                              </c:if> 
-                             </div>
-                           </div>
-                        </div>
-                        
                     </section>
                     <section class="section mt20">
-                        <label id="uploadIntro"></label>
-                        <div class="control-upload">
-                        	
-						    <button id="upMaterial"class="btn btn-primary btn-large" type="button" >上传</button>
-						  <input type="hidden"  name="attId" id="attId" value="">
-                        </div>
+                    <textarea id="richText" name="richText" 
+                        style="width:100%;height:400px;visibility:hidden;">
+                        ${materialInfo.richContent}
+                    </textarea>
                     </section>
-                    
                     <section class="section mt20">
-                        	
-                        <c:if test="${materialInfo.fdLink==null||materialInfo.fdLink==''}">
-								<c:choose>
-									<c:when test="${main.flag==1&&main.fdFileType=='01'}">
-										<script type="text/javascript"
-											src="${main.fileUrl}&width=750&height=510"></script>
-									</c:when>
-									<c:when
-										test="${main.flag==1&&(main.fdFileType=='04'||main.fdFileType=='05')}">
-										<iframe width="100%" height="510" id="iframe_ppt"
-											src="${main.fileUrl}" frameBorder="0" scrolling="no"></iframe>
-									</c:when>
-									<c:otherwise>
-										<div class="media-placeholder">正在转化中......</div>
-									</c:otherwise>
-								</c:choose>
-						</c:if>
-						<c:if test="${materialInfo.fdLink!=null&&materialInfo.fdLink!=''}">
-									<c:if test="${materialInfo.fdType=='01'}">
-										<script type="text/javascript"
-											src="${materialInfo.fdLink}&width=750&height=510"></script>
-									</c:if>
-									<c:if test="${materialInfo.fdType=='04'||materialInfo.fdType=='05'}">
-										<iframe width="100%" height="510" id="iframe_ppt"
-											src="${materialInfo.fdLink}" frameBorder="0" scrolling="no"></iframe>
-								    </c:if>
-						</c:if>
-	                               
-								
-                    </section>
-                    <section class="section">
                         <div class="control-group">
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
@@ -251,7 +136,7 @@
                                 </table>
                                 <div class="pr">
                                     <input type="text" id="addUser" class="autoComplete input-block-level" placeholder="请输入人名、邮箱、机构或者部门查找用户">
-                                    
+                                    <i class="icon-search"></i>
                                 </div>
                             </div>
                           </c:if>
@@ -267,7 +152,7 @@
                                 </table>
                                 <div class="pr">
                                     <input type="text" id="addUser" class="autoComplete input-block-level" placeholder="请输入人名、邮箱、机构或者部门查找用户">
-                                    
+                                    <i class="icon-search"></i>
                                 </div>
                             </div>
                           </c:if>
@@ -287,15 +172,10 @@
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
-<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
+<script charset="utf-8" src="${ctx}/resources/kindeditor/kindeditor-all-min.js"></script>
+<script charset="utf-8" src="${ctx}/resources/kindeditor/lang/zh_CN.js"></script>
 <script type="text/javascript">
-function pressEnter(){
-	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
-	if (keyCode == 13) {
-		return false;
-	}
-}
 function confirmDel(){
 	$.fn.jalert("您确认要删除该素材吗？",deleteMaterial);
 }
@@ -311,123 +191,19 @@ function deleteMaterial(){
 		}
 	}); 
 }
-//下载素材
-function downloadMater(){
-  var attId = $("#fdattId").val();
-  if(attId!=null&&attId!=""){
-	  window.location.href="${ctx}/common/file/download/"+attId;
-  } else {
-	  $.fn.jalert("您好！该视频没有对应附件");
-  } 
-}
 </script>
 <script type="text/javascript">
-$(function(){
-	var data_uploadIntro;
-	var uptype;
-	switch($("#fdType").val()){
-  	case "01":
-  		$("#materialIntro").html("视频简介");
-  		$("#back").html("返回视频列表");
-  		$("#typeTxt").html("视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
-  		data_uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
-  		$("#uploadIntro").html(data_uploadIntro);
-  		uptype='*.mp4;*.avi;*.wmv;';
-  		break;
-    case "02":
-    	$("#materialIntro").html("音频简介");
-    	$("#back").html("返回音频列表");
-    	$("#typeTxt").html("音&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
-    	data_uploadIntro = "上传音频（支持MP3、MV格式的音频，建议小于10G）：成功上传的音频将会显示在下面的音频列表中。";
-    	$("#uploadIntro").html(data_uploadIntro);
-    	uptype='*.mp3;*.mv;';
-        break;
-    case "04":
-    	$("#materialIntro").html("文档简介");
-    	$("#back").html("返回文档列表");
-    	$("#typeTxt").html("文&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;档");
-    	$("#videoText").html("");
-    	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的文档将会显示在下面的文档列表中。";
-    	$("#uploadIntro").html(data_uploadIntro);
-    	uptype='*.doc;*.docx;*.xls;*.xlsx;';
-        break;
-    case "05":
-    	$("#materialIntro").html("幻灯片简介");
-    	$("#back").html("返回幻灯片列表");
-    	$("#typeTxt").html("幻&nbsp;&nbsp;灯&nbsp;&nbsp;片");
-    	$("#videoText").html("");
-    	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的幻灯片将会显示在下面的幻灯片列表中。";
-    	$("#uploadIntro").html(data_uploadIntro);
-    	uptype='*.ppt;*.pptx;';
-        break;
-  }
-	var $progress ,
-	flag = true,
-	pct,interval,countdown = 0,byteUped = 0;
-
-	$("#upMaterial").uploadify({
-    'height' : 40,
-    'width' : 68,
-    'multi' : false,
-    'simUploadLimit' : 1,
-    'swf' : '${ctx}/resources/uploadify/uploadify.swf',
-    "buttonClass": "btn btn-primary btn-large",
-    'buttonText' : '上传',
-    'uploader' : '${ctx}/common/file/o_upload',
-    'auto' : true,
-    'fileTypeExts' : uptype,
-    'onInit' : function(){
-    	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
-		<span class="txt"><span class="pct">0%</span><span class="countdown"></span></span>');
-    	$("#upMaterial").next(".uploadify-queue").remove();
-    },
-    'onUploadStart' : function (file) {
-    	$("#upMaterial").before($progress);
-        //$uploadBtn.uploadify("settings", "formData");
-    },
-    'onUploadSuccess' : function (file, data, Response) {
-        if (Response) {
-        	$progress.find(".countdown").empty();
-            var objvalue = eval("(" + data + ")");
-            jQuery("#attId").val(objvalue.attId);
-        }
-    },
-    'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
-    	pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
-    	byteUped = bytesUploaded;
-    	if(flag){
-    		interval = setInterval(uploadSpeed,100);
-    		flag = false;
-    	}
-    	if(bytesUploaded == bytesTotal){
-    		clearInterval(interval);
-    	}
-    	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
-    	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
-    }
-  });
-	function uploadSpeed(){
-		countdown = byteUped - countdown;
-	}
-	
-	function secTransform(s){
-		if( typeof s == "number"){
-			s = Math.ceil(s);
-			var t = "";
-			if(s>3600){
-				t= Math.ceil(s/3600) + "小时" + Math.ceil(s%3600/60) + "分钟" + s%3600%60 + "秒";
-			} else if(s>60){
-				t= Math.ceil(s/60) + "分钟" + s%60 + "秒";
-			} else {
-				t= s + "秒";
-			}
-			return "，剩余时间：" + t;
-		}else{
-			return null;
-		}		
-	}
-});
-
+var editor = KindEditor.create('textarea[id="richText"]', {
+								resizeType : 1,
+								cssData : 'body {font-size:14px;}',
+								allowPreviewEmoticons : false,
+								allowImageUpload : true,
+								uploadJson : $('#ctx').val()+'/common/file/KEditor_uploadImg',
+								items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+									'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+									'insertunorderedlist', '|', 'undo', 'redo','link','image'],
+								afterBlur: function(){this.sync();}
+							});
 </script>
 <script type="text/javascript">
 $(function(){
@@ -577,6 +353,7 @@ function saveMaterial(){
         fdType:$("#fdType").val(),
         attId:$("#attId").val(),
         isDownload:$("#isDownload").val(),
+        richText:$("#richText").val(),
         kingUser: null
     };
     if(data.permission === "encrypt"){
