@@ -28,39 +28,39 @@
 <link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css" />
  -->
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
-<link href="${ctx}/resources/css/settings.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="${ctx}/resources/css/DTotal.css" />
 <script src="${ctx}/resources/js/jquery.js" type="text/javascript"></script>
 <script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
 <sitemesh:head />
 </head>
 <body>
   <%@ include file="/WEB-INF/layouts/header.jsp"%>
-  <div class="fixed-left">
-	<div class="container">
-		<div class="col-left">
+  <section class="container">
+	<section class="clearfix mt20">
+     <section class="col-left pull-left">
     	<ul class="nav nav-list sidenav">
-        	<li class="nav-header">
-            <div class="tit-icon_bg"><i class="icon-gear"></i><i class="icon-sj"></i></div>
-                              系统管理
-            </li>
+    		<li class="nav-header first"><span>系统管理</span></li>
             <tags:shirourl url="${ctx}/admin/user/list" active="user" text="用户管理" iconName="icon-user"  para="${active}"></tags:shirourl>
             <tags:shirourl url="${ctx}/admin/role/list" active="role" text="角色管理" iconName="icon-user"  para="${active}"></tags:shirourl>
     	</ul>
-    	</div>
-    </div>
-  </div>
-  <div class="container">
-	<div class="col-right">    	
-    	<div class="section">
-	        <div class="page-header">
-	        	<div class="tit-icon_bg"><i class="icon-pencil icon-white"></i><i class="icon-sj"></i></div>
-	        	<h5><j:if test="${active=='user'}">用户管理</j:if><j:if test="${active=='role'}">角色管理</j:if></h5>
-	            <a href="${ctx}/course/courseIndex" class="replyMybk" title="个人首页" ><i class="icon-home icon-white"></i></a>
+    </section>
+    	 
+		<section class="w790 pull-right" id="rightCont">
+	        <div class="page-header bder2">
+                <span class="muted">我正在看：</span>
+                 <j:if test="${active=='user'}">用户管理</j:if>
+                 <j:if test="${active=='role'}">角色管理</j:if>
+                <div class="backHome">
+                    <a href="${ctx}/admin/user/list"><span class="muted">返回</span>系统管理<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
+                </div>
 	        </div>
+	        <div class="page-body" id="pageBody">
   <sitemesh:body />
-         </div>
-    </div>
-  </div>
+  			</div>
+         </section>
+	</section>
+
+</section>
   <%@ include file="/WEB-INF/layouts/footer.jsp"%>
 </body>
 </html>
