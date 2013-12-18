@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.bam.BamCourse;
@@ -20,9 +21,11 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
+import cn.me.xdf.model.organization.RoleEnum;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.Score;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.UserRoleService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.message.MessageReplyService;
 import cn.me.xdf.service.message.MessageService;
@@ -55,6 +58,9 @@ public class MessageAjaxController {
 	
 	@Autowired
 	private BamCourseService bamCourseService;
+	
+	@Autowired
+	private UserRoleService userRoleService;
 	
 	/**
 	 * 支持或反对评论
@@ -135,6 +141,24 @@ public class MessageAjaxController {
 		message.setFdType(fdType);
 		message.setIsAnonymous(isAnonymous);
 		message.setFdUser((SysOrgPerson)accountService.load(userId));
+		if(fdType.equals(Constant.MESSAGE_TYPE_REVIEW)||fdType.equals(Constant.MESSAGE_TYPE_REPLY)){
+			Finder finder = Finder
+					.create("");
+			finder.append("from Message m where (m.fdType='01' or m.fdType='04') and m.fdModelName=:fdModelName and m.fdModelId=:fdModelId order by m.fdFloorNo desc");
+			finder.setParam("fdModelName", fdModelName);
+			finder.setParam("fdModelId", fdModelId);
+			Pagination pagination = messageService.getPage(finder, 1,1);
+			int no=0;
+			if(pagination.getList().size()==0){
+				no=1;
+			}else{
+				Message m = (Message) pagination.getList().get(0);
+				no = m.getFdFloorNo()+1;
+			}
+			message.setFdFloorNo(no);
+		}
+		
+
 		return messageService.save(message);
 	}
 	
@@ -266,13 +290,18 @@ public class MessageAjaxController {
 			map.put("supportCount", messageService.getSupportCount(message.getFdId()));
 			map.put("opposeCount", messageService.getOpposeCount(message.getFdId()));
 			map.put("replyCount", messageService.getReplyCount(message.getFdId()));
-			int no = pagination.getTotalCount()-i-(pageNo-1)*pageSize;
-			map.put("no", no);
+			//int no = pagination.getTotalCount()-i-(pageNo-1)*pageSize;
+			map.put("no", message.getFdFloorNo());
 			Score score = scoreService.findByModelIdAndUserId(modelName, modelId, message.getFdUser().getFdId());
 			map.put("isShowScore", message.getFdType().equals("04")?false:true);
 			map.put("score", score==null?0:score.getFdScore());
 			map.put("canSport", messageReplyService.isSupportMessage(ShiroUtils.getUser().getId(), message.getFdId())==null?true:false);
 			map.put("canOppose", messageReplyService.isOpposeMessage(ShiroUtils.getUser().getId(), message.getFdId())==null?true:false);
+			if(message.getFdUser().getFdId().equals(ShiroUtils.getUser().getId()) || !userRoleService.isEmptyPerson(ShiroUtils.getUser().getId(), RoleEnum.admin)){
+				map.put("canDelete", true);
+			}else{
+				map.put("canDelete", false);
+			}
 			map.put("userId", message.getFdUser().getFdId());
 			list.add(map);
 		}
@@ -313,6 +342,17 @@ public class MessageAjaxController {
 		map.put("endLine", endLine);
 		map.put("totalPage", totalPage);
 		return JsonUtils.writeObjectToJson(map);
+	}
+	
+	/**
+	 * 根据课程Id查找分页信息
+	 * 
+	 */
+	@RequestMapping(value = "removeMessage")
+	@ResponseBody
+	private String removeMessage(String messageId) {
+		messageService.deleteMessage(messageId);
+		return "";
 	}
 
 }
