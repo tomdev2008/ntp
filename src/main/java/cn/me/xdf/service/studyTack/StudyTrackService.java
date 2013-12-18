@@ -329,40 +329,42 @@ public class StudyTrackService {
 		List<VStudyTrack> studyTrackList = new ArrayList<VStudyTrack>();
 		for (String string : ids) {
 			BamCourse bamCourse = bamCourseService.get(BamCourse.class, string);
-			SysOrgPerson person = (SysOrgPerson)accountService.load(bamCourse.getPreTeachId());
-			CourseInfo courseInfo = courseService.load(bamCourse.getCourseId());
-			VStudyTrack vStudyTrack = new VStudyTrack();
-			vStudyTrack.setUserName(person.getRealName());
-			vStudyTrack.setUserDep(person.getDeptName());
-			vStudyTrack.setUserTel(person.getFdWorkPhone());
-			vStudyTrack.setUserEmai(person.getFdEmail());
-			vStudyTrack.setCourseName(courseInfo.getFdTitle());
-			if(StringUtil.isEmpty(bamCourse.getGuideTeachId())){
-				vStudyTrack.setGuideTeachName("没有导师");
-			}else{
-				vStudyTrack.setGuideTeachName(((SysOrgPerson)accountService.load(bamCourse.getGuideTeachId())).getRealName());
-			}
-			Map passMap = passInfoByBamId(bamCourse.getFdId());
-			String currLecture="";
-			if(passMap.size()==0){
-				currLecture="尚未开始学习";
-			}else{
-				if(passMap.get("coursePass")!=null&&passMap.get("coursePass").equals("true")){
-					currLecture = "学习通过";
+			if(bamCourse!=null){
+				SysOrgPerson person = (SysOrgPerson)accountService.load(bamCourse.getPreTeachId());
+				CourseInfo courseInfo = courseService.load(bamCourse.getCourseId());
+				VStudyTrack vStudyTrack = new VStudyTrack();
+				vStudyTrack.setUserName(person.getRealName());
+				vStudyTrack.setUserDep(person.getDeptName());
+				vStudyTrack.setUserTel(person.getFdWorkPhone());
+				vStudyTrack.setUserEmai(person.getFdEmail());
+				vStudyTrack.setCourseName(courseInfo.getFdTitle());
+				if(StringUtil.isEmpty(bamCourse.getGuideTeachId())){
+					vStudyTrack.setGuideTeachName("没有导师");
 				}else{
-					CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");
-					MaterialInfo materialInfo = (MaterialInfo) passMap.get("materialInfoNow");
-					currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
+					vStudyTrack.setGuideTeachName(((SysOrgPerson)accountService.load(bamCourse.getGuideTeachId())).getRealName());
 				}
+				Map passMap = passInfoByBamId(bamCourse.getFdId());
+				String currLecture="";
+				if(passMap.size()==0){
+					currLecture="尚未开始学习";
+				}else{
+					if(passMap.get("coursePass")!=null&&passMap.get("coursePass").equals("true")){
+						currLecture = "学习通过";
+					}else{
+						CourseCatalog catalog = (CourseCatalog)passMap.get("courseCatalogNow");
+						MaterialInfo materialInfo = (MaterialInfo) passMap.get("materialInfoNow");
+						currLecture = catalog.getFdName()+"  ,  "+materialInfo.getFdName();
+					}
+				}
+				vStudyTrack.setLinkNow(currLecture);
+				Map map2 = getMessageInfoByBamId(bamCourse.getFdId());
+				if(map2.size()==0){
+					vStudyTrack.setStudyInofNow("没有学习记录");
+				}else{
+					vStudyTrack.setStudyInofNow((String)map2.get("cot"));
+				}
+				studyTrackList.add(vStudyTrack);
 			}
-			vStudyTrack.setLinkNow(currLecture);
-			Map map2 = getMessageInfoByBamId(bamCourse.getFdId());
-			if(map2.size()==0){
-				vStudyTrack.setStudyInofNow("没有学习记录");
-			}else{
-				vStudyTrack.setStudyInofNow((String)map2.get("cot"));
-			}
-			studyTrackList.add(vStudyTrack);
 		}
 		return studyTrackList;
 	}
