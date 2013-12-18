@@ -516,7 +516,10 @@
                             <a href="#" class="btnPraise{{?!item.canSport}} active{{?}}"><i class="icon-thumbs-up"></i><span class="num">{{=item.supportCount}}</span></a>
                             <a href="#" class="btnWeak{{?!item.canOppose}} active{{?}}"><i class="icon-thumbs-down"></i><span class="num">{{=item.opposeCount}}</span></a>
                             <a href="#" class="btnComment"><i class="icon-dialog"></i><span class="num">{{=item.replyCount}}</span></a>
-                        </div>
+                        	{{?item.canDelete}}
+								<a href="javascript:void(0)" class="btndeleteM" >删除</a>
+							{{?}}
+						</div>
                     </div>
                 </div>
             </div>
@@ -1095,6 +1098,19 @@
                                     });
 
                                 }
+                            }else if($this.hasClass("btndeleteM")){
+                            	$.fn.jalert("您确定删除该评论吗？",function(){
+                        			$.ajax({
+                        	    		  url: "${ctx}/ajax/message/removeMessage",
+                        	    		  async:false,
+                        	    		  data:{
+                        	    			  messageId :itemId,
+                        	    		  },
+                        	    		  success: function(result){
+                        	    			  resetComment(1,10);
+                        	    		  }
+                        			});
+                        		});
                             }
                             
                         }

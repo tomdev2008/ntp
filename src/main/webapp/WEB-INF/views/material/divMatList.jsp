@@ -94,12 +94,7 @@
 		<ul class="nav list" id="materialList">
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
 				<li data-id="${bean.FDID}"><a href="${ctx}/material/materialFoward?fdId=${bean.FDID}&fdType=${bean.FDTYPE}"> 
-				<c:if test="${bean.AUTHFLAG=='1'}">
 				 <input type="checkbox" name="ids" value="${bean.FDID}"/> 
-				</c:if>
-				<c:if test="${bean.AUTHFLAG!='1'}">
-				 <input type="checkbox" name="ids" value="${bean.FDID}" disabled/> 
-				</c:if>
 				    <span class="title">${bean.FDNAME}</span> 
 				    <c:if test="${bean.ISPUBLISH=='Y'}">
 				      <span class="label label-info">公开</span>
@@ -340,7 +335,7 @@ function initStu(){
 	});
 	
 }
-initStu();
+//initStu();
 </script>
 <script type="text/javascript">	
 	$('[data-toggle="tooltip"]').tooltip();

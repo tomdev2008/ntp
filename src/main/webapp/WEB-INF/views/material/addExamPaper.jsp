@@ -756,7 +756,6 @@ $(function(){
             if (Response) {
             	$progress.find(".countdown").empty();
                 var objvalue = eval("(" + data + ")");
-                jQuery("#attName").html(objvalue.fileName+"<i class=\"icon-paperClip\"></i>");
                 $("#listAttachment").append(itemExamDetailFn({
                	 	flag: "add" ,
                	 	id: objvalue.attId,

@@ -353,5 +353,26 @@ public class MessageService extends BaseService implements InitializingBean{
         }
         return stringWriter.toString();
     }
+    
+    public void deleteMessage(String messageId){
+    	Message message = get(messageId);
+    	if(message!=null){
+    		//删除MessageReply
+        	List<MessageReply> list = messageReplyService.findByProperty("message.fdId", messageId);
+        	for (MessageReply message2 : list) {
+        		messageReplyService.delete(message2.getFdId());
+			}
+        	delete(messageId);
+    	}
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	
 }
