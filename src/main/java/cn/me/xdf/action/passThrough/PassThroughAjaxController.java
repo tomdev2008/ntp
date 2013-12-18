@@ -199,7 +199,7 @@ public class PassThroughAjaxController {
 			pageNo = 1;
 		}
 		List result = new ArrayList();
-		Finder finder = Finder.create(" select preTeachId  from ixdf_ntp_bam_score b where b.courseId = :courseId order by dbms_random.value ");
+		Finder finder = Finder.create(" select preTeachId  from ixdf_ntp_bam_score b where b.courseId = :courseId order by startDate desc  ");//随机排序用 dbms_random.value
 		finder.setParam("courseId", courseId);
 		Pagination page = bamCourseService.getPageBySql(finder, pageNo, 15);
 		if(page.getTotalCount()>0){
