@@ -1296,8 +1296,13 @@
                resetComment(1,10);
                return false;
             }
-
-            
+            $("#textComment").bind("keydown",function(){
+            	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+            	if (keyCode == 13) {
+            		submitFormComment($("#formMakeComments"));
+            		return false;
+            	}
+            });            
 
             /**************************  如下代码把 videoplayer.swf 嵌入到 id 为 flashcontent 的div中  *********************/
             /* var flashvars =
@@ -1547,6 +1552,7 @@
           		}); 
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
             });
+            
         }
        
 
