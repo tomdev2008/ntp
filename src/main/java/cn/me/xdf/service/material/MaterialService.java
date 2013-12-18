@@ -255,7 +255,7 @@ public class MaterialService extends BaseService {
 			finder.append(" left join ixdf_ntp_att_main att on info.FDID = att.fdModelId and att.fdmodelname = '"+MaterialInfo.class.getName()+"' ");
 		    //可编辑的
 			finder.append(" left join (select ma.fdmaterialid from IXDF_NTP_MATERIAL_AUTH ma");
-			finder.append(" where ma.isediter=1 and ma.fduserid='"+ShiroUtils.getUser().getId()+"') temp");
+			finder.append(" where ma.isediter='Y' and ma.fduserid='"+ShiroUtils.getUser().getId()+"') temp");
 			finder.append(" on info.FDID = temp.fdmaterialid");
 			//找出创建者
 			finder.append(" left join (select person.fdid,person.fd_name from Sys_Org_Element person ) sysperson on sysperson.fdid = info.fdcreatorid");
