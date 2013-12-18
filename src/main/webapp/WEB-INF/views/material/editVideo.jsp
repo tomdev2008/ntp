@@ -58,7 +58,7 @@
                </div>
 	        </div>
             <div class="page-body editingBody">
-                <form action="#" id="formEditDTotal" class="form-horizontal" method="post">
+                <form action="#" id="formEditDTotal" class="form-horizontal" onkeyup="pressEnter();" method="post">
                     <section class="section">
                         <div class="control-group">
                             <label class="control-label" for="videoName" id="typeTxt"></label>
@@ -290,6 +290,12 @@
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
+function pressEnter(){
+	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+	if (keyCode == 13) {
+		return false;
+	}
+}
 function confirmDel(){
 	$.fn.jalert("您确认要删除该素材吗？",deleteMaterial);
 }
