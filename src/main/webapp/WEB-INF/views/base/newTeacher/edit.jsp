@@ -216,17 +216,16 @@ function CountStrByte(){
         		<label for="name" class="control-label">姓名<span class="text-error">*</span></label>
         		<div class="controls">
         		<input type="hidden"  name="notifyEntity.fdEmail" value="${person.fdEmail}" >
-        		 <j:if test="${person.fdIsEmp=='1'}">
-        		  <input id="inputrealname" type="text" class="span4"
-                	  name="fdName"  value="${person.realName}" readOnly>
-        		</j:if>
-        	   <j:if test="${person.fdIsEmp=='0'}">
-        		  <input id="inputrealname" type="text" class="span4"
-                	  name="fdName"  value="${person.realName}"
+        		<j:ifelse test="${person.fdIsEmp=='1'}">
+        		   <j:then>
+        		    <input id="inputrealname" type="text" class="span4" name="fdName"  value="${person.realName}" readOnly>
+        		   </j:then>
+        		   <j:else>
+        		   <input id="inputrealname" type="text" class="span4" name="fdName"  value="${person.realName}"
                 	  onblur="checkName();" onclick="clearCss(this);" placeholder="请填写您的真实姓名">
                    <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写真实姓名</span>
-        		</j:if>
-                	
+                   </j:else>
+        		</j:ifelse>
                </div>
         	</div>
             <div class="control-group">
@@ -239,26 +238,27 @@ function CountStrByte(){
              <div class="control-group">
         		<label for="org" class="control-label">机构/部门<span class="text-error">*</span></label>
         		<div class="controls">
-        		 <j:if test="${person.fdIsEmp=='1'}">
+        		 <j:ifelse test="${person.fdIsEmp=='1'}">
+        		   <j:then>
         		    <select name="org" disabled="disabled">
                       <option value="">${sysParOrg}</option>
                 	</select>
                     <select  disabled="disabled">
                 	    <option value='${person.deptName}'>${person.deptName}</option>
                 	</select> 
-                 </j:if>
-        		 <j:if test="${person.fdIsEmp=='0'}">
-                    <select name="org" id="org" onchange="changedepart(this)">
-                      <option value="0">请输入您的机构</option>
-                       <c:forEach items="${elements }" var="e">
-							<option value="${e.fdId }" <j:if test="${e.fdId== sysParOrgId}"> selected="selected" </j:if>>${e.fdName}</option>
-					   </c:forEach>
+                	</j:then>
+                	<j:else>
+                	 <select name="org" id="org" onchange="changedepart(this)">
+                        <c:forEach items="${elements }" var="e">
+							<option value="${e.fdId }" <j:if test="${e.fdId eq sysParOrgId}"> selected="selected" </j:if>>${e.fdName}</option>
+					   </c:forEach> 
                 	</select>
                     <select  id="department" onchange="checkdepart()">
                        <option value='${person.deptId}'>${person.deptName}</option>
                 	</select>  
                      <span class="help-inline"><b class="icon-disc-bg warning">!</b>请认真选择机构/部门</span>
-                 </j:if>
+                	</j:else>
+                 </j:ifelse>
                 </div>
         	</div>
             <div class="control-group">
