@@ -169,57 +169,10 @@
                     我共完成 {{=it.sums}} 个<span class="text-info">备课环节</span>，下一节：<span class="text-info">{{=it.nextCatalog}}</span>
                 </div>
 </script>
-    <script src="${ctx}/resources/js/doT.min.js"></script>
-</head>
-<body>
-<section class="container">
-	<section class="mt20 section" id="userDiv">
 
-	</section>
-
-    <section class="mt20 clearfix" id="scheduleSec" >
-        <div class="pull-left section">
-            <div class="course-progress" id="scheduleDiv">
-
-            </div>
-        </div>
-        <div class="pull-right section">
-            <div class="box-nextBtn">
-                <a class="icon-circle-lg-bg" href="${ctx}/passThrough/getCourseHome/${courseId}"><i class="icon-chevron-right"></i></a>
-            </div>
-        </div>
-    </section>
-
-    <section class="mt20 clearfix">
-        <section class="pull-left w760" id="feelingDiv">
-            <div class="section box-pd20">
-                <form id="formAddMood" action="##">
-                	<c:if test="${isMe=='true'}">
-                    <textarea name="field-mood" required id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
-                    <div class="clearfix">
-                        <button type="submit" class="btn btn-primary pull-right">写备课心情</button>
-                    </div>
-                    </c:if>
-                </form>
-                    <dl class="list-mood" id="listMood">
-                    </dl>
-            </div>
-        </section>
-        <section class="pull-right w225">
-            <div class="section statistical">
-                <div class="hd">
-                    <h5>活跃指数</h5>
-                </div>
-                <div class="bd" id="activeDiv">
-                    
-                </div>
-            </div>
-<!--             <div class="section mt20 list-face">
-                <div class="hd">
-                    <h5>最近访客</h5>
-                </div>
-                <div class="bd">
-                    <ul class="thumbnails">
+<script id="friendsTemplate" type="text/x-dot-template">
+<h5>最近访客</h5>
+<ul class="thumbnails">
                         <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
                             <h6>韩梅梅</h6>
                         </li>
@@ -266,62 +219,65 @@
                             <h6>韩梅梅</h6>
                         </li>
                     </ul>
-                    <div class="page-group clearfix">
+                    <!-- <div class="page-group clearfix">
                         <a href="#" class="btn-prev">上一页</a>
                         <a href="#" class="btn-next">下一页</a>
+                    </div> -->
+
+</script>
+    <script src="${ctx}/resources/js/doT.min.js"></script>
+</head>
+<body>
+<section class="container">
+	<section class="mt20 section" id="userDiv">
+
+	</section>
+
+    <section class="mt20 clearfix" id="scheduleSec" >
+        <div class="pull-left section">
+            <div class="course-progress" id="scheduleDiv">
+
+            </div>
+        </div>
+        <div class="pull-right section">
+            <div class="box-nextBtn">
+                <a class="icon-circle-lg-bg" href="${ctx}/passThrough/getCourseHome/${courseId}"><i class="icon-chevron-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt20 clearfix">
+        <section class="pull-left w760" id="feelingDiv">
+            <div class="section box-pd20">
+                <form id="formAddMood" action="##">
+                	<c:if test="${isMe=='true'}">
+                    <textarea name="field-mood" required id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
+                    <div class="clearfix">
+                        <button type="submit" class="btn btn-primary pull-right">写备课心情</button>
                     </div>
-                </div>
-            </div> -->
-<!--             <div class="section newClass mt20">
+                    </c:if>
+                </form>
+                    <dl class="list-mood" id="listMood">
+                    </dl>
+            </div>
+        </section>
+        <section class="pull-right w225">
+            <div class="section statistical">
                 <div class="hd">
-                    <h5>我的课程</h5>
-                    <a href="#" class="ab_r">全部</a>
+                    <h5>活跃指数</h5>
+                </div>
+                <div class="bd" id="activeDiv">
+                    
+                </div>
+            </div>
+             <div class="section mt20 list-face">
+                <div class="hd" id="friends">
+                    
                 </div>
                 <div class="bd">
-                    <div class="list-class">
-                        <a href="#">
-                            <img src="images/temp-newClass.jpg" alt="">
-                            <span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>集团雅思基础口语新教师</h6>
-                                    <span class="text-warning">集团国外考试推广管理中心</span>
-                                </span>
-                        </a>
-                        <a href="#">
-                            <img src="images/temp-newClass.jpg" alt="">
-                            <span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>集团雅思基础口语新教师</h6>
-                                    <span class="text-warning">集团国外考试推广管理中心</span>
-                                </span>
-                        </a>
-                        <a href="#">
-                            <img src="images/temp-newClass.jpg" alt="">
-                            <span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>集团雅思基础口语新教师</h6>
-                                    <span class="text-warning">集团国外考试推广管理中心</span>
-                                </span>
-                        </a>
-                        <a href="#">
-                            <img src="images/temp-newClass.jpg" alt="">
-                            <span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>集团雅思基础口语新教师</h6>
-                                    <span class="text-warning">集团国外考试推广管理中心</span>
-                                </span>
-                        </a>
-                        <a href="#">
-                            <img src="images/temp-newClass.jpg" alt="">
-                            <span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>集团雅思基础口语新教师</h6>
-                                    <span class="text-warning">集团国外考试推广管理中心</span>
-                                </span>
-                        </a>
-                    </div>
+                    
                 </div>
-            </div> -->
+            </div> 
              <!-- 发现课程之最新课程列表 -->
                 <c:import url="/WEB-INF/views/passThrough/new_course_list.jsp"></c:import>
         </section>
@@ -340,11 +296,13 @@
     var userFn = doT.template(document.getElementById("userTemplate").text);
     var activeFn = doT.template(document.getElementById("activeTemplate").text);
     var scheduleFn = doT.template(document.getElementById("scheduleTemplate").text);
+    var friendsFn = doT.template(document.getElementById("friendsTemplate").text);
     
     initUser();
     initActive();
     initSchedule();
     initmoodData();
+    initFriends();
     $("#listMood").delegate("dd .btn-ctrl>a","click",function(e){
         e.preventDefault();
         var $this = $(this);
@@ -567,6 +525,12 @@
 	  }
     	
   	}
+  
+  //初始化最近访客
+  function initFriends(){
+	  var data={};
+	  $("#friends").html(friendsFn(data));
+  }
 
 </script>
 </body>
