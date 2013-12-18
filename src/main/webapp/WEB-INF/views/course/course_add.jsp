@@ -724,6 +724,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 		</div>
 	</footer> --%>
 <!--底部 E-->
+<input type="hidden" id="isperfect">
 </section>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
@@ -849,6 +850,7 @@ $.Placeholder.init();
 		if(!$("#formBasicInfo").valid()){
 			return;
 		}
+		$("#isperfect").val("true");
 		$.post('${ctx}/ajax/course/saveBaseInfo',{
 			 courseId : $("#courseId").val(),
 			 courseTitle: $("#courseTitle").val(),
@@ -909,6 +911,12 @@ function successSelectArea(imgSrc){
 	
 	//课程发布
 	function releaseCourse(){
+		 //发布前验证课程的基本信息是否已完善(防止出现未命名情况);
+	    if($("#isperfect").val()=='false'){
+	    	$.fn.jalert2("请完善课程基本信息!");
+	    	urlRouter("basicInfo");
+	    	return ;
+	    }
 		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
 	}
 	

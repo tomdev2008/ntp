@@ -250,6 +250,12 @@ public class CourseCatalogAjaxController {
 		 Map map = new HashMap();
 		 map.put("id", courseCatalog.getFdId());
 		 map.put("courseid", course.getFdId());
+		 if(StringUtil.isNotEmpty(course.getFdTitle())){
+			 map.put("baseInfo", "true");
+		 }else{
+			 map.put("baseInfo", "false");
+		 }
+		 
 		 return JsonUtils.writeObjectToJson(map);
 	}
 	

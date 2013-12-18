@@ -1047,6 +1047,7 @@
 										handle: '.sortable-bar',
 										forcePlaceholderSize: true
 									});
+									$("#isperfect").val(result.baseInfo);
 									var numAll = $form.find(".index").text();	
 									updataProgressCourses(numAll);
 							  },
