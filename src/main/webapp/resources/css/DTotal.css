@@ -19,12 +19,15 @@
 .sidenav .nav-header span{display: block;margin: 0 -15px;border-top:solid #e5e5e5 1px;}
 .sidenav .nav-header i{vertical-align:middle;margin-right:10px;}
 .sidenav .nav-header a,.sidenav .nav-header span{padding:18px 20px;line-height:24px;height:24px;font-size:14px;color:#999;}
+.sidenav .nav-header .caret{border-top: solid #afafaf 5px;border-left: solid transparent 5px;border-right: solid transparent 5px;border-bottom:none;margin-left: 10px;margin-top: 9px;}
+.sidenav .nav-header a .caret{border-left: solid #afafaf 5px;border-top: solid transparent 5px;border-bottom: solid transparent 5px;border-right: none;margin-top: 7px;}
 .sidenav .first a,.sidenav .first span{border-top: none;}
 .sidenav li > a{padding:18px 30px;line-height:24px;border-top:solid #e5e5e5 1px;color:#000;}
 .sidenav li > a:hover{background-color:#f7f7f7;}
 .sidenav > .active > a,.sidenav > .active > a:hover{background-color:#4391bb;color:#fff;border-color: #22699e;}
 .sidenav [class^="icon-"], .sidenav [class*=" icon-"]{margin-right:10px;}
 .sidenav > .active > a > i{-ms-background-position-x: right;background-position-x: right;}
+
 
 /*right content*/
 .lt-ie9 .input-block-level{min-height: 20px;}
