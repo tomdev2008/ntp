@@ -772,9 +772,12 @@
           	                  $("#cordPage").removeClass("hide");
           	                });
                   	//window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.firstCId+"&fdMtype="+pageData.firstCType;
-                 }); 
+        		    $("#courseOverBtn").bind("click",function(){
+            			loadOverCard();
+            		}); 
+        		 }); 
         		 $("#lastC").click(function (e){
-        			loadRightCont(pageData.firstCId,pageData.firstCType);
+        			loadRightCont(pageData.listCId,pageData.listCType);
         			loadLeftData(bamId);
         			$("#sidenav>li>a").popover({
           	            trigger: "hover"
@@ -790,7 +793,10 @@
           	                  $("#cordPage").removeClass("hide");
           	                });
                    	//window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.listCId+"&fdMtype="+pageData.listCType;
-                 }); 
+        			$("#courseOverBtn").bind("click",function(){
+            			loadOverCard();
+            		}); 
+        		 }); 
         		 $("#cordPage").addClass("hide");
         	 }
         }
