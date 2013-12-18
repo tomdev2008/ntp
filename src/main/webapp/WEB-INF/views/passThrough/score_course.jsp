@@ -47,7 +47,7 @@ $("#addMessage").bind("click",function(){
 			  fdContent:mess,
 		  },
 		  success: function(result){
-			$.fn.jalert2("评论发布成功");
+			$.fn.jalert("评论发布成功");
 			$("#courseMessage").val("");
 			initCommentLines("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
 			initCommentPageInfo("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
@@ -102,7 +102,7 @@ function scoreing(){
 			  fdScore:$("#myScore").html(),
 		  },
 		  success: function(result){
-			  $.fn.jalert2("评分成功");
+			  $.fn.jalert("评分成功");
 			  //$("#ratingDo  i").unbind();
 			  var score = ($("#myScore").html());
 			  $("#ratingDo  i").each(function(index){	

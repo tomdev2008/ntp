@@ -763,7 +763,7 @@ $.Placeholder.init();
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadDetailInfoPage("详细信息");
 	  				}else{
-	  					$.fn.jalert2("请先设置基本信息");
+	  					$.fn.jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -771,7 +771,7 @@ $.Placeholder.init();
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadPromotionPage("课程推广");
 	  				}else{
-	  					$.fn.jalert2("请先设置基本信息");
+	  					$.fn.jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -779,7 +779,7 @@ $.Placeholder.init();
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadAccessRightPage("权限设置");
 	  				}else{
-	  					$.fn.jalert2("请先设置基本信息");
+	  					$.fn.jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -787,7 +787,7 @@ $.Placeholder.init();
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadKinguserPage("授权管理");
 	  				}else{
-	  					$.fn.jalert2("请先设置基本信息");
+	  					$.fn.jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -795,7 +795,7 @@ $.Placeholder.init();
 					if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 						rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
 	  				}else{
-	  					$.fn.jalert2("请先设置基本信息");
+	  					$.fn.jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;

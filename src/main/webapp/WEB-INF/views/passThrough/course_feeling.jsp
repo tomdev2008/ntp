@@ -370,7 +370,7 @@
                            $num.text(parseInt($num.text())+1);
                            $this.addClass("active").attr("data-original-title",tips);
                   	}else{
-                  		$.fn.jalert2("不能支持和反对自己的评论");
+                  		$.fn.jalert("不能支持和反对自己的评论");
                   	}
                 } else if($this.hasClass("praise")){
                 	var pushok1=false;
@@ -396,7 +396,7 @@
                         $num.text(parseInt($num.text())+1);
                         $this.addClass("active").attr("data-original-title",tips);
                		}else{
-               			$.fn.jalert2("不能支持和反对自己的评论");
+               			$.fn.jalert("不能支持和反对自己的评论");
                		}
                 }
             }

@@ -558,7 +558,7 @@ $("#exportExamPaper").click(function(e){
 					return;
 				}
 				if (data.permission === "encrypt" && data.kingUser.length == 0) {
-					$.fn.jalert2("请输入用户");
+					$.fn.jalert("请输入用户");
 				}
 				$
 						.ajax({

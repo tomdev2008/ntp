@@ -1035,7 +1035,7 @@
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		$.fn.jalert2("不能支持和反对自己的评论");
+                            		$.fn.jalert("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnWeak")){//踩
                             	var pushok;
@@ -1058,11 +1058,11 @@
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		$.fn.jalert2("不能支持和反对自己的评论");
+                            		$.fn.jalert("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnComment")){//评论
                                 if($("#formReply").length){
-                                	$.fn.jalert2("请先保存其它回复");
+                                	$.fn.jalert("请先保存其它回复");
                                 } else {
                                     var $mediaBody = $this.closest(".media-body");
                                     var toName =  $mediaBody.find(".media-heading>.name").text();
@@ -1273,7 +1273,7 @@
                     	fdContent: $("#textComment").val(),
               	  	},
           		});
-               $.fn.jalert2("评论发表成功");  
+               $.fn.jalert("评论发表成功");  
                $("#textComment").val("");
                resetComment(1,10);
                return false;
@@ -1458,7 +1458,7 @@
 		         			}
 		         		}); 
 	                }else{
-	                	$.fn.jalert2("您已经赞过该资源!");
+	                	$.fn.jalert("您已经赞过该资源!");
 	                }
             });
 
@@ -1484,14 +1484,14 @@
                   		}); 
                      	 
                        } else {
-                     	  $.fn.jalert2("您好！该视频没有对应附件");
+                     	  $.fn.jalert("您好！该视频没有对应附件");
                        } 
                 }
             });
 
             $("#btnDoPass").on("click",function(e){
             	if($(this).attr("converStatus")==""){
-            		$.fn.jalert2("该状态不学习!");
+            		$.fn.jalert("该状态不学习!");
             		return ;
             	}
                 $("#listMedia>li.active").addClass("pass");
