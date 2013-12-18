@@ -22,17 +22,10 @@ public class LogOnlineService extends BaseService{
 		return LogOnline.class;
 	}
 	
-	public LogOnline logoutToSaveOrUpdate(SysOrgPerson person,Date date,String ip,Boolean isOnline){
-		LogOnline logOnline = findUniqueByProperty("person.fdId", person.getFdId());
-		logOnline.setIsOnline(isOnline);
-		logOnline.setIp(ip);
-		update(logOnline);
-		if(isOnline){
-			logOnline.setLoginNum(logOnline.getLoginNum()+1);
-		}else{
-			logOnline.setLoginNum(logOnline.getLoginNum());
-		}
-		return logOnline;
+	public LogOnline logoutToSaveOrUpdate(String personId,Date date,String ip,Boolean isOnline){
+		String sql = "update ixdf_ntp_logonline set isonline=?,ip=? where fdpersonid=?";
+		executeSql(sql,isOnline,ip,personId);
+		return null;
 	}
 	
 	public LogOnline loginToSaveOrUpdate(SysOrgPerson person,Date date,String ip,Boolean isOnline){
