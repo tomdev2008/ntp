@@ -1,6 +1,8 @@
 package cn.me.xdf.action.ajax;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.organization.SysOrgDepart;
 import cn.me.xdf.model.organization.SysOrgElement;
@@ -142,17 +145,18 @@ public class RegisterAjaxController {
 	 */
 	@RequestMapping(value = "checkOldPwd")
 	@ResponseBody
-	public boolean checkOldPwd(HttpServletRequest request) {
-		
+	public String checkOldPwd(HttpServletRequest request) {
+		Map<String,String> map = new HashMap<String,String>();
 		String oldPwd = request.getParameter("str");
 		String fdId = request.getParameter("fdId");
-		SysOrgPersonTemp fdPerson = registerService.findUniqueByProperty(SysOrgPersonTemp.class,"fdId",fdId);
-        String userPwd = fdPerson.getFdPassword();
-        if(oldPwd.equals(userPwd)){
-        	return true;
+		SysOrgPerson person = accountService.load(fdId);
+        String userPwd = person.getPassword();
+        if(userPwd.equals(MD5Util.getMD5String(oldPwd))){
+        	map.put("flag", "1");//代表是正确
         } else {
-        	return false;
+        	map.put("flag", "0");//代表是不正确
         }
+        return JsonUtils.writeObjectToJson(map);
 	}
 	
 

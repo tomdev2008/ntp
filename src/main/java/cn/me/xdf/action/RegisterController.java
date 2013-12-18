@@ -27,6 +27,7 @@ import cn.me.xdf.service.RegisterService;
 import cn.me.xdf.service.SysOrgDepartService;
 import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.utils.MD5Util;
 import cn.me.xdf.utils.ShiroUtils;
 
 @Controller
@@ -71,16 +72,7 @@ public class RegisterController {
         model.addAttribute("active", "photo");
         String uid = ShiroUtils.getUser().getId();
         SysOrgPerson person = accountService.load(uid);
-        SysOrgPersonTemp personTemp = registerService
-                .findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-                        person.getFdIdentityCard());
-        if (personTemp != null) {
-            model.addAttribute("fdId", personTemp.getFdId());
-        }
-        model.addAttribute("fdIsEmp", person.getFdIsEmp());
-        model.addAttribute("fdIdentityCard", person.getFdIdentityCard());
         model.addAttribute("fdIcoUrl", person.getPoto());
-        model.addAttribute("fdUserName", person.getLoginName());
         return "/base/newTeacher/editIco";
     }
 
@@ -98,21 +90,19 @@ public class RegisterController {
             return "redirect:/login";
         }
         String uid = ShiroUtils.getUser().getId();
-        SysOrgPersonTemp personTemp = registerService
-                .findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-                        sysOrgPersonTemp.getFdIdentityCard());
-        String fdUserName = request.getParameter("fdUserName");
+        SysOrgPerson person = accountService.get(uid);
         String attMainId = request.getParameter("attId");
         if (StringUtil.isNotBlank(attMainId)) {
             AttMain attMain = attMainService.get(attMainId);
-            if (personTemp != null) {
-                attMain.setFdModelId(personTemp.getFdId());
-                attMain.setFdModelName(SysOrgPersonTemp.class.getName());
-                attMain.setFdKey("Person");
-                attMainService.update(attMain);
-                registerService.updateTeacherPic(sysOrgPersonTemp, uid);
-            } else {
-                registerService.updatePerToDBIXDF(fdUserName, attMain.getFdFilePath(), uid);
+            attMain.setFdModelId(person.getFdId());
+            attMain.setFdModelName(SysOrgPerson.class.getName());
+            attMain.setFdKey("Person");
+            attMainService.update(attMain);
+            if(person.getFdIsEmp().equals("1")){
+            	registerService.updatePerToDBIXDF(person.getLoginName(), attMain.getFdFilePath(), uid);
+            }else{
+            	person.setFdPhotoUrl("common/file/image/"+attMainId);
+            	accountService.save(person);
             }
         }
         return "redirect:/register/updateTeacher";
@@ -125,13 +115,16 @@ public class RegisterController {
      * @return
      */
     @RequestMapping(value = "changePwd")
-    public String changePwd(Model model) {
+    public String changePwd(Model model,HttpServletRequest request) {
         if (ShiroUtils.getUser() == null) {
             return "redirect:/login";
         }
+        String uid = request.getParameter("id");
+        if(StringUtil.isBlank(uid)){
+        	uid = ShiroUtils.getUser().getId();
+        }
         model.addAttribute("active", "pwd");
-        String uid = ShiroUtils.getUser().getId();
-        SysOrgPerson person = accountService.load(uid);
+        SysOrgPerson person = accountService.get(uid);
         model.addAttribute("person", person);
         return "/base/newTeacher/changePwd";
     }
@@ -148,11 +141,10 @@ public class RegisterController {
         if (ShiroUtils.getUser() == null) {
             return "redirect:/login";
         }
-        String newPwd = sysOrgPerson.getPassword();
         String fdId = sysOrgPerson.getFdId();
-        SysOrgPerson person = accountService.load(fdId);
-        //person.setPassword(Ma);
-        
+        SysOrgPerson person = accountService.get(fdId);
+        person.setPassword(MD5Util.getMD5String(sysOrgPerson.getPassword()));
+        accountService.save(person);
         return "redirect:/register/changePwd";
     }
 
@@ -172,13 +164,15 @@ public class RegisterController {
         }
         model.addAttribute("active", "user");
         SysOrgPerson person = accountService.get(uid);
-        person.setDeptId(person.getDepatId());
-        person.setDeptName(person.getDeptName());
         model.addAttribute("person", person);
         model.addAttribute("fdIcoUrl", person.getPoto());
-        if (person.getHbmParent() != null && person.getHbmParent().getHbmParentOrg() != null) {
-            model.addAttribute("sysParOrg", person.getHbmParent().getHbmParentOrg().getFdName());
-            model.addAttribute("sysParOrgId", person.getHbmParent().getHbmParentOrg().getFdId());
+        if (person.getHbmParent() != null) {
+        	person.setDeptId(person.getHbmParent().getFdId());
+            person.setDeptName(person.getHbmParent().getFdName());
+            if(person.getHbmParent().getHbmParentOrg() != null){
+            	model.addAttribute("sysParOrg", person.getHbmParent().getHbmParentOrg().getFdName());
+                model.addAttribute("sysParOrgId", person.getHbmParent().getHbmParentOrg().getFdId());	
+            }
         }
         List<SysOrgDepart> elements = SysOrgDepartService.findTypeis1();
         model.addAttribute("elements", elements);
@@ -209,6 +203,10 @@ public class RegisterController {
         	person.setFdName(sysOrgPerson.getFdName());
         }
         accountService.save(person);
+        String adminFlag = request.getParameter("adminFlag");
+        if(StringUtil.isNotBlank(adminFlag)){
+          return "redirect:/admin/user/updateUserInfo/"+person.getFdId();
+        }
         return "redirect:/register/updateTeacher";
     }
 

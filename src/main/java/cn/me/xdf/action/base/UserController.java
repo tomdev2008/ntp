@@ -1,8 +1,5 @@
 package cn.me.xdf.action.base;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
@@ -14,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.page.Pagination;
@@ -23,6 +19,7 @@ import cn.me.xdf.model.organization.SysOrgPersonTemp;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.RegisterService;
 import cn.me.xdf.service.SysOrgPersonService;
+import cn.me.xdf.utils.MD5Util;
 
 /**
  * 用户管理
@@ -65,6 +62,7 @@ public class UserController {
 	public String updateUserInfo(Model model,HttpServletRequest request,
 			@PathVariable("id") String id) {
 		model.addAttribute("active", "user");
+		model.addAttribute("admin", "admin");
 		return "forward:/register/updateTeacher?id="+id;
 	}
 	
@@ -76,11 +74,7 @@ public class UserController {
 		if(StringUtil.isBlank(id)){
 			return "redirect:/register/changePwd";
 		}
-		SysOrgPerson person = sysOrgPersonService.load(id);
-		SysOrgPersonTemp personTemp = registerService
-                .findUniqueByProperty(SysOrgPersonTemp.class, "fdIdentityCard",
-                        person.getFdIdentityCard());
-		request.setAttribute("fdTmpId", personTemp!=null?personTemp.getFdId():id);
+		SysOrgPerson person = sysOrgPersonService.get(id);
 		request.setAttribute("fdEmail", person.getFdEmail());
 		return "/admin/user/rePassword";
 	}
@@ -88,9 +82,10 @@ public class UserController {
 	@RequestMapping(value = "savePassword")
 	public String savePassword(HttpServletRequest request) {
 		String fdId = request.getParameter("fdId");
-		String fdTmpId = request.getParameter("fdTmpId");
 		String fdPassword = request.getParameter("fdPassword");
-		registerService.updateTeacherPwd(fdTmpId, fdPassword, fdId);
+		SysOrgPerson person = accountService.get(fdId);
+        person.setPassword(MD5Util.getMD5String(fdPassword));
+        accountService.save(person);
 		return "redirect:/admin/user/list";
 	}
 }

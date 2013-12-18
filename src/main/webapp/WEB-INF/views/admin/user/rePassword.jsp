@@ -45,7 +45,6 @@ function checkSubmit(){
        <div class="page-body"> 
           <form id="subForm" onsubmit="return checkSubmit();" action="${ctx}/admin/user/savePassword" method="post" class="reg_form form-horizontal">
            <input type="hidden" id="fdId" name="fdId" value="${fdId}"/>
-           <input type="hidden" id="fdTmpId" name="fdTmpId" value="${fdTmpId}"/>
         	<p class="reg_form-intro">请确认您要修改的新密码。</p>
         	<div class="control-group" style="height: 40px;">
         		<label for="user" class="control-label">临时账号</label>

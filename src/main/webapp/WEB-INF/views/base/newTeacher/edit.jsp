@@ -195,7 +195,7 @@ function CountStrByte(){
        <div class="page-body"> 
           <form method="post" id="inputForm" onsubmit="return checkSubmit();" action="${ctx}/register/updateOtherData" class="reg_form form-horizontal">
           <input type="hidden" name="fdId" value="${person.fdId}"/>
-         <%--  <input type="hidden" id="depName" name="deptName" value="${person.deptName}" />--%>
+          <input type="hidden"  name="adminFlag" value="${admin}" />
           <input type="hidden" id="deptId" name="deptId" value="${person.deptId}" /> 
           <input type="hidden" id="sysParOrgId" value="${sysParOrgId}" />
         	<p class="reg_form-intro">以下信息将显示在您的
@@ -255,7 +255,7 @@ function CountStrByte(){
 					   </c:forEach>
                 	</select>
                     <select  id="department" onchange="checkdepart()">
-                       <option value='${person.deptName}'>${person.deptName}</option>
+                       <option value='${person.deptId}'>${person.deptName}</option>
                 	</select>  
                      <span class="help-inline"><b class="icon-disc-bg warning">!</b>请认真选择机构/部门</span>
                  </j:if>

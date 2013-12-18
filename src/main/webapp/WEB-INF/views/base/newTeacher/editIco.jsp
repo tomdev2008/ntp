@@ -51,12 +51,8 @@
 
        <div class="page-body"> 
          <p class="reg_form-intro">请确认您要修改的图像。</p>
-          <form method="post" id="inputForm" action="${ctx}/register/updateTeacher" class="reg_form form-horizontal">
-          <input type="hidden" name="fdId" value="${fdId}"/>
-          <input type="hidden" name="fdUserName" value="${fdUserName}"/>
+          <form method="post" id="inputForm" action="${ctx}/register/updateTeacherPoto" class="reg_form form-horizontal">
           <input type="hidden" id="fdIcoUrl" name="fdIcoUrl" value="${fdIcoUrl}" />
-          <input type="hidden" id="fdIdentityCard" name="fdIdentityCard" value="${fdIdentityCard}">
-           
         	<div>
         		<div>
         		   <label for="face" class="control-label">头像</label>

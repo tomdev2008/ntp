@@ -9,25 +9,29 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>新东方在线教师备课平台</title>
-<link rel="stylesheet" href="${ctx}/resources/css/global.css" />
+<link rel="stylesheet" href="${ctx}/resources/css/global.css" type="text/css"/>
 <link href="${ctx}/resources/css/settings.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 </head>
 <body>
 <script type="text/javascript">
 $.Placeholder.init();
+</script>
+<script type="text/javascript">
 function checkOldPwd(){
 	var oldPwd=$("#oldPwd").val();
-	$.ajax({
+	 $.ajax({
 		type : "post",
-		dataType : "json",
+		cache :false,
+		async: false,
+		dataType : 'json',
 		url : "${ctx}/ajax/register/checkOldPwd",
 		data : {
 			"str" : oldPwd,
 			"fdId": $("#fdId").val(),
 		},
 		success : function(data) {
-			if (data) {
+			var flag = data.flag;
+			if (flag=='1') {
 				checkFlag.oldPwd=true;
 			} else {
 				checkFlag.oldPwd=false;
@@ -35,9 +39,9 @@ function checkOldPwd(){
 				var child1 = node.parentNode;
 				var child2 = child1.parentNode;
 			    child2.className = "control-group warning";
-			}
+			} 
 		}
-	});
+	}); 
 }
 //检查新密码格式
 function checkNewPwd(){
@@ -97,27 +101,29 @@ function checkSubmit(){
 </script>
        
        <div class="page-body"> 
-          <form id="subForm" onsubmit="return checkSubmit();" action="${ctx}/register/updateTeacherPwd" method="post" class="reg_form form-horizontal">
-           <c:if test="${fdIsEmp=='0'}">
-           <input type="hidden" id="fdId" name="fdId" value="${fdId}"/>
+          <form id="subForm" onsubmit="return checkSubmit();" 
+                   action="${ctx}/register/updateTeacherPwd" method="post" 
+                                        class="reg_form form-horizontal">
+            <c:if test="${person.fdIsEmp=='0'}">
+           <input type="hidden" id="fdId" name="fdId" value="${person.fdId}"/>
         	<p class="reg_form-intro">请确认您要修改的新密码。</p>
         	<div class="control-group" style="height: 40px;">
         		<label for="user" class="control-label">临时账号</label>
         		<div class="controls">
-                	<span class="inp-placeholder">${fdEmail}</span>
+                	<span class="inp-placeholder">${person.fdEmail}</span>
                 </div>
         	</div>    
              <div class="control-group" style="height: 40px;">
         		<label for="oldPwd" class="control-label">原密码 <span class="text-error">*</span></label>
         		<div class="controls">
-                	<input id="oldPwd" type="password" onclick="clearCss(this);" onblur="checkOldPwd();"class="span4" value="" placeholder="请填写您的原密码" />
+                	<input id="oldPwd" type="password" onclick="clearCss(this);" onblur="checkOldPwd();"class="span4" placeholder="请填写您的原密码" />
                     <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写原密码</span>
                 </div>
         	</div>
             <div class="control-group" style="height: 40px;">
         		<label for="newPwd" class="control-label">新密码<span class="text-error">*</span></label>
         		<div class="controls">
-                	 <input id="newPwd" type="password" name="fdPassword"  onclick="clearCss(this);" onblur="checkNewPwd();"  class="span4" placeholder="请填写您的新密码">
+                	 <input id="newPwd" type="password" name="password"  onclick="clearCss(this);" onblur="checkNewPwd();"  class="span4" placeholder="请填写您的新密码">
                     <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写新密码</span>
                 </div>
         	</div>     
@@ -134,12 +140,12 @@ function checkSubmit(){
                 </div>
             </div>
              </c:if>
-        <c:if test="${fdIsEmp=='1'}">
+        <c:if test="${person.fdIsEmp=='1'}">
             <p class="reg_form-intro">请确认您要修改的新密码。</p>
         	<div class="control-group" >
         		<label for="user" class="control-label">集团账号</label>
         		<div class="controls">
-                	<span class="inp-placeholder">${fdEmail}</span>
+                	<span class="inp-placeholder">${person.fdEmail}</span>
                 </div>
         	</div>    
             <div class="control-group">
