@@ -173,56 +173,19 @@
 <script id="friendsTemplate" type="text/x-dot-template">
 <h5>最近访客</h5>
 <ul class="thumbnails">
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                    </ul>
-                    <!-- <div class="page-group clearfix">
-                        <a href="#" class="btn-prev">上一页</a>
-                        <a href="#" class="btn-next">下一页</a>
-                    </div> -->
+ {{~it.list :item}}
+	<li user-id="{{=item.userId}}">
+		<a href="${ctx}/course/courseIndex?userId={{=item.userId}}" class="thumbnail">
+			<img src="{{?item.img.indexOf('http')>-1}}{{=item.img}}{{??}}${ctx}/{{=item.img}}{{?}}" class="thumbnail" alt="头像" />
+		</a>
+		<h6>{{=item.userName}}</h6>
+	</li>
+ {{~}}
+</ul>
+<div class="page-group clearfix">
+	<a href="javascript:void (0)" class="btn-prev" id="gotoFriendsO">上一页</a>
+	<a href="javascript:void (0)" class="btn-next" id="gotoFriendsN">下一页</a>
+</div>
 
 </script>
     <script src="${ctx}/resources/js/doT.min.js"></script>
@@ -302,7 +265,7 @@
     initActive();
     initSchedule();
     initmoodData();
-    initFriends();
+    initFriends(1);
     $("#listMood").delegate("dd .btn-ctrl>a","click",function(e){
         e.preventDefault();
         var $this = $(this);
@@ -527,9 +490,47 @@
   	}
   
   //初始化最近访客
-  function initFriends(){
-	  var data={};
-	  $("#friends").html(friendsFn(data));
+  function initFriends(pageNo){
+	$.ajax({
+		url : "${ctx}/ajax/passThrough/getVisitorsInfo",
+		async : false,
+		dataType : 'json',
+		type: "post",
+		data:{
+			userId:"${userId}",
+			courseId:"${courseId}",
+			pageNo:pageNo
+		},
+		success : function(result) {
+			$("#friends").html(friendsFn(result));
+			$("#gotoFriendsO").unbind();
+			$("#gotoFriendsN").unbind();
+			if(result.pageOver==-1){
+				//alert("0");
+				$("#gotoFriendsO").bind("click",function(){
+					$.fn.jalert("没有上一页");
+				});
+			}else{
+				//alert("1:"+result.pageOver);
+				$("#gotoFriendsO").bind("click",function(){
+					initFriends(result.pageOver);
+				});
+			}
+			if(result.pageNext==-1){
+				//alert("2");
+				$("#gotoFriendsN").bind("click",function(){
+					$.fn.jalert("没有下一页");
+				});
+			}else{
+				//alert("3:"+result.pageNext);
+				$("#gotoFriendsN").bind("click",function(){
+					initFriends(result.pageNext);
+				});
+			}
+			
+		}
+	}); 
+		  
   }
 
 </script>

@@ -3,10 +3,8 @@ package cn.me.xdf.action.passThrough;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,7 +22,6 @@ import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
-import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.common.utils.array.ArrayUtils;
 import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.model.bam.BamCourse;
@@ -33,6 +30,7 @@ import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseContent;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.course.Visitor;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
@@ -45,6 +43,7 @@ import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.course.VisitorService;
 import cn.me.xdf.service.log.LogLoginService;
 import cn.me.xdf.service.log.LogOnlineService;
 import cn.me.xdf.service.material.ExamQuestionService;
@@ -96,6 +95,9 @@ public class PassThroughAjaxController {
 	
 	@Autowired
 	private MessageReplyService messageReplyService;
+	
+	@Autowired
+	private VisitorService visitorService;
 	
 	
 	/**
@@ -766,4 +768,56 @@ public class PassThroughAjaxController {
 			map.put("nextCatalog", nextCatalog);
 			return JsonUtils.writeObjectToJson(map);
 		}
+		
+		
+		/**
+		 * 备课心情页面，进度条
+		 * @param request
+		 */
+		@RequestMapping(value = "getVisitorsInfo")
+		@ResponseBody
+		public String getVisitorsInfo(HttpServletRequest request) {
+			String userId = request.getParameter("userId");
+			String courseId= request.getParameter("courseId");
+			String pageNo= request.getParameter("pageNo");
+			BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseId);
+			Finder finder = Finder.create("");
+			finder.append("from Visitor v where v.bamCourse.fdId=:bamId order by v.fdTime desc");
+			finder.setParam("bamId", bamCourse.getFdId());
+			Pagination pagination = visitorService.getPage(finder, new Integer(pageNo), 15);
+			List<Visitor> visitors = (List<Visitor>) pagination.getList();
+			Map returnMap = new HashMap();
+			List<Map> list = new ArrayList<Map>();
+			for (int i = 0; i < visitors.size(); i++) {
+				Visitor visitor =  visitors.get(i);
+				Map map = new HashMap();
+				map.put("userName", visitor.getFdUser().getFdName());
+				map.put("userId", visitor.getFdUser().getFdId());
+				map.put("img", visitor.getFdUser().getPoto());
+				list.add(map);
+			}
+			returnMap.put("list", list);
+			returnMap.put("pageOver", (new Integer(pageNo)==1)?-1:(new Integer(pageNo)-1));
+			returnMap.put("pageNext", (new Integer(pageNo)>=pagination.getTotalPage())?-1:new Integer(pageNo)+1);
+			return JsonUtils.writeObjectToJson(returnMap);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }
