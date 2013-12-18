@@ -71,6 +71,7 @@ public class DocInterfaceModel {
         this.attName = FileNameUtil.getName(filePath);
         this.attId = attMain.getFileNetId();
         this.fdFileName = attMain.getFdFileName();
+        this.isConvert = isConvert;
     }
 
     public Part[] getCCToAddModel() throws Exception {
