@@ -78,8 +78,8 @@ public class DocInterfaceModel {
         String signText = (method + appId + appKey + timeStrap + title + modelName + docId + author + sysCode + isConvert).toLowerCase();
         this.sign = AESX3.md5(signText); // 签名
         File file = new File(filePath);
-        ByteArrayPartSource byteArrayPartSource = new ByteArrayPartSource(file.getName(), ByteFileObjectUtils.getBytesFromFile(file));
-        FilePart2 fp = new FilePart2("file", byteArrayPartSource);
+        //ByteArrayPartSource byteArrayPartSource = new ByteArrayPartSource(file.getName(), ByteFileObjectUtils.getBytesFromFile(file));
+        FilePart2 fp = new FilePart2("file", file);
         StringPart2 username = new StringPart2("username",
                 this.userName, "utf-8");
         StringPart2 password = new StringPart2("password", AES.encode(
