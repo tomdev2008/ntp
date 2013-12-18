@@ -2,6 +2,7 @@ package cn.me.xdf.action.passThrough;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.course.Visitor;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.ScoreStatistics;
@@ -40,6 +42,7 @@ import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.course.VisitorService;
 import cn.me.xdf.service.log.LogLoginService;
 import cn.me.xdf.service.log.LogOnlineService;
 import cn.me.xdf.service.message.MessageService;
@@ -82,6 +85,12 @@ public class PassThroughController {
 	
 	@Autowired
 	private CourseCatalogService courseCatalogService;
+	
+	@Autowired
+	private AccountService accountService;
+	
+	@Autowired
+	private VisitorService visitorService;
 	
 	
 	/**
@@ -274,6 +283,7 @@ public class PassThroughController {
 		if(bamCourse==null){
 			return "/course/course_index";
 		}else{
+			visitorService.saveVisitor(ShiroUtils.getUser().getId(),bamCourse.getFdId());
 			return "/passThrough/course_feeling";
 		}
 		
@@ -289,6 +299,7 @@ public class PassThroughController {
 		request.setAttribute("userId", bamCourse.getPreTeachId());
 		request.setAttribute("courseId", bamCourse.getCourseId());
 		request.setAttribute("isMe", bamCourse.getPreTeachId().equals(ShiroUtils.getUser().getId()));
+		visitorService.saveVisitor(ShiroUtils.getUser().getId(),bamId);
 		return "/passThrough/course_feeling";
 	}
 	
