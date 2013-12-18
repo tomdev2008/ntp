@@ -1004,21 +1004,7 @@
   		  			  },
   		  			  dataType:'json',
   		  			  success: function(result){
-  		  				  var ave;
-  		  				  if((result[0].fdAverage+"").length==1){
-  		  					ave= result[0].fdAverage+".0";
-  		  				  }else{
-  		  					ave= result[0].fdAverage+""; 
-  		  				  }
-  		  				$("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
-  		                    if((i+1) <= result[0].fdAverage){
-  		                        $(this).addClass("active");
-  		                    } else {
-  		                        $(this).removeClass("active");
-  		                    }
-  		                }).end().children("b.text-warning").text(ave);
-  		  				var scoreInfoHtml = doT.template(document.getElementById("scoreInfo").text);
-  		  				$("#pullrightInfo").html(scoreInfoHtml(result[0]));
+  		  				resetScoreInfo();
   		  			  },
   	  				});
             })  /*评论列表中按钮事件*/
@@ -1121,6 +1107,7 @@
             });
             
             function resetScoreInfo(){
+            	var s=0;
             	$.ajax({
           		  url: "${ctx}/ajax/score/canPushScoreToMaterial",
           		  async:false,
@@ -1138,8 +1125,9 @@
   		                    }
   		                });
           			  $("#ratingDoScore").text(score+".0");
+          			  s=score;
           		  }
-      		});
+      			});
             	$.ajax({
             		  url: "${ctx}/ajax/score/getScoreStatisticsByfdModelId",
             		  async:false,
@@ -1166,6 +1154,24 @@
     		  				$("#pullrightInfo").html(scoreInfoHtml(result[0]));
             		  }
         		});
+            	$("#ratingDo  i").each(function(index){
+    				$(this).bind("mouseover",function(){
+    					$(this).addClass("active").prevAll().addClass("active");
+    					$(this).nextAll().removeClass("active");
+    					$("#ratingDoScore").html((index+1)+".0");
+    				});
+    				$(this).bind("mouseout",function(){
+    					$("#ratingDo").find(".icon-star").each(function(i){
+		                    if(i < s){
+		                        $(this).addClass("active");
+		                    } else {
+		                        $(this).removeClass("active");
+		                    }
+		            });
+    					$("#ratingDoScore").html(s+".0");
+    				});
+    		  });
+            	
             }
 
             function resetComment(pageNo,pageSize){
