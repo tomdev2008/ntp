@@ -37,7 +37,7 @@ public abstract class AbsExportExcel {
 	 * @param response
 	 */
 	public static void exportExcel(List<?> list, String tempFileName,
-			HttpServletResponse response) {
+			HttpServletResponse response,String expFileName) {
 		ServletOutputStream outStream = null;
 		java.io.BufferedOutputStream bos = null;
 		try {
@@ -45,8 +45,9 @@ public abstract class AbsExportExcel {
 			bos = new java.io.BufferedOutputStream(outStream);
 			response.setContentType("application/x-download");
 			tempFileName = URLEncoder.encode(tempFileName, "utf-8");
+			expFileName = URLEncoder.encode(expFileName, "utf-8");
 			response.setHeader("Content-Disposition", "attachment;"
-					+ "filename=" + tempFileName);
+					+ "filename=" + expFileName);
 			HashMap<String, List<?>> map = new HashMap<String, List<?>>();
 			map.put("resultList", list);
 			XLSTransformer transformer = new XLSTransformer();
