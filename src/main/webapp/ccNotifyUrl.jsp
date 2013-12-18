@@ -18,14 +18,14 @@
 <%
     Logger logger = LoggerFactory.getLogger(this.getClass());
     String status = request.getParameter("status");
-    System.out.println("status=="+status);
+   // System.out.println("status=="+status);
     if (!"OK".equals(status)) {
         return;
     }
     try {
         String videoid = request.getParameter("videoid");
         AttMainService attMainService = (AttMainService) SpringUtils.getBean(request, "attMainService");
-        System.out.println("status1=="+status);
+       // System.out.println("status1=="+status);
         attMainService.updateConvertThrough(videoid);
     } catch (Exception e) {
         logger.error("更新视频转换标志位错误", e);

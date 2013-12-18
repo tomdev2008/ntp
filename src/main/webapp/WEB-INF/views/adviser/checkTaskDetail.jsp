@@ -325,7 +325,7 @@
       		dataType : 'json',
       		success : function(result) {
       			if(result.attIds==null||result.attIds==''){
-      				 $.fn.jalert2("您好!该作业包没有数据可下载！");
+      				 $.fn.jalert("您好!该作业包没有数据可下载！");
       				   return;
       			}else{
       				$.fn.jalert("您确定下载本作业包作业附件吗？",function(){

@@ -191,4 +191,10 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
         map.put("defaultMedia", defaultMedia);
         return map;
     }
+
+	@Override
+	public Object reCalculateMaterial(String catalogId, String materialId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

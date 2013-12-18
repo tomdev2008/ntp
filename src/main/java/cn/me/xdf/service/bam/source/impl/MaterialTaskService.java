@@ -18,9 +18,11 @@ import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
+import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.material.Task;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.process.AnswerRecord;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.model.process.TaskRecord;
 import cn.me.xdf.service.AccountService;
@@ -212,6 +214,36 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 		}
 		map.put("listExamPaper", list);
 		return map;
+	}
+
+	@Override
+	public Object reCalculateMaterial(String catalogId, String materialId) {
+		MaterialInfo materialInfo = materialService.get(materialId); 
+		if(!materialInfo.getIsAvailable()){
+			return null;
+		}
+		
+		SourceNote sourceNote = sourceNodeService.getSourceNote(materialId, catalogId, ShiroUtils.getUser().getId());
+		if(sourceNote==null){
+			return null;
+		}
+		//素材中的作业
+		List<Task> taskList = materialInfo.getTasks();
+		//学习记录中的最近一次作业记录
+		Set<TaskRecord> taskRecordList = sourceNote.getTaskRecords();
+		double score = 0;
+		for(Task task:taskList){
+			for (TaskRecord taskRecord : taskRecordList) {
+				if(taskRecord.getFdTaskId().equals(task.getFdId())){
+					score += taskRecord.getFdScore();	
+					
+				}
+			}
+		}
+		if(score>=materialInfo.getFdScore()){
+			return true;
+		}
+		return false;
 	}
 	
 }

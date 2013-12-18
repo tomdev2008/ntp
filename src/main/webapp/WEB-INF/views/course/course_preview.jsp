@@ -117,7 +117,7 @@
                     			<dt>
                                 	<span class="icon-disc-lg-bg disc-bd">${bean.fdNo}</span>
                                     <b class="caret"></b>
-                                    <div class="span5"><span class="tit">业务学习</span></div>
+                                    <div class="span5"><span class="tit">${bean.fdName}</span></div>
                                     <div class="span2">建议时长</div>
                                 </dt>
                                 <j:iter items="${catalog}" var="lecture" status="stauts">

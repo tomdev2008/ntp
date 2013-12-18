@@ -169,6 +169,25 @@
                     我共完成 {{=it.sums}} 个<span class="text-info">备课环节</span>，下一节：<span class="text-info">{{=it.nextCatalog}}</span>
                 </div>
 </script>
+
+<script id="friendsTemplate" type="text/x-dot-template">
+<h5>最近访客</h5>
+<ul class="thumbnails">
+ {{~it.list :item}}
+	<li user-id="{{=item.userId}}">
+		<a href="${ctx}/course/courseIndex?userId={{=item.userId}}" class="thumbnail">
+			<img src="{{?item.img.indexOf('http')>-1}}{{=item.img}}{{??}}${ctx}/{{=item.img}}{{?}}" class="thumbnail" alt="头像" />
+		</a>
+		<h6>{{=item.userName}}</h6>
+	</li>
+ {{~}}
+</ul>
+<div class="page-group clearfix">
+	<a href="javascript:void (0)" class="btn-prev" id="gotoFriendsO">上一页</a>
+	<a href="javascript:void (0)" class="btn-next" id="gotoFriendsN">下一页</a>
+</div>
+
+</script>
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 <body>
@@ -214,114 +233,14 @@
                     
                 </div>
             </div>
-<!--             <div class="section mt20 list-face">
-                <div class="hd">
-                    <h5>最近访客</h5>
+             <div class="section mt20 list-face">
+                <div class="hd" id="friends">
+                    
                 </div>
                 <div class="bd">
-                    <ul class="thumbnails">
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                        <li><a href="#" class="thumbnail"><img src="images/temp-face36.jpg" alt=""></a>
-                            <h6>韩梅梅</h6>
-                        </li>
-                    </ul>
-                    <div class="page-group clearfix">
-                        <a href="#" class="btn-prev">上一页</a>
-                        <a href="#" class="btn-next">下一页</a>
-                    </div>
+                    
                 </div>
-            </div> -->
-<!--             <div class="section newClass mt20">
-                <div class="hd">
-                    <h5>我的课程</h5>
-                    <a href="#" class="ab_r">全部</a>
-                </div>
-                <div class="bd">
-                    <div class="list-class">
-                        <a href="#">
-                            <img src="images/temp-newClass.jpg" alt="">
-                            <span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>集团雅思基础口语新教师</h6>
-                                    <span class="text-warning">集团国外考试推广管理中心</span>
-                                </span>
-                        </a>
-                        <a href="#">
-                            <img src="images/temp-newClass.jpg" alt="">
-                            <span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>集团雅思基础口语新教师</h6>
-                                    <span class="text-warning">集团国外考试推广管理中心</span>
-                                </span>
-                        </a>
-                        <a href="#">
-                            <img src="images/temp-newClass.jpg" alt="">
-                            <span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>集团雅思基础口语新教师</h6>
-                                    <span class="text-warning">集团国外考试推广管理中心</span>
-                                </span>
-                        </a>
-                        <a href="#">
-                            <img src="images/temp-newClass.jpg" alt="">
-                            <span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>集团雅思基础口语新教师</h6>
-                                    <span class="text-warning">集团国外考试推广管理中心</span>
-                                </span>
-                        </a>
-                        <a href="#">
-                            <img src="images/temp-newClass.jpg" alt="">
-                            <span class="mask"></span>
-                    			<span class="caption">
-                                	<h6>集团雅思基础口语新教师</h6>
-                                    <span class="text-warning">集团国外考试推广管理中心</span>
-                                </span>
-                        </a>
-                    </div>
-                </div>
-            </div> -->
+            </div> 
              <!-- 发现课程之最新课程列表 -->
                 <c:import url="/WEB-INF/views/passThrough/new_course_list.jsp"></c:import>
         </section>
@@ -340,11 +259,13 @@
     var userFn = doT.template(document.getElementById("userTemplate").text);
     var activeFn = doT.template(document.getElementById("activeTemplate").text);
     var scheduleFn = doT.template(document.getElementById("scheduleTemplate").text);
+    var friendsFn = doT.template(document.getElementById("friendsTemplate").text);
     
     initUser();
     initActive();
     initSchedule();
     initmoodData();
+    initFriends(1);
     $("#listMood").delegate("dd .btn-ctrl>a","click",function(e){
         e.preventDefault();
         var $this = $(this);
@@ -412,7 +333,7 @@
                            $num.text(parseInt($num.text())+1);
                            $this.addClass("active").attr("data-original-title",tips);
                   	}else{
-                  		$.fn.jalert2("不能支持和反对自己的评论");
+                  		$.fn.jalert("不能支持和反对自己的评论");
                   	}
                 } else if($this.hasClass("praise")){
                 	var pushok1=false;
@@ -438,7 +359,7 @@
                         $num.text(parseInt($num.text())+1);
                         $this.addClass("active").attr("data-original-title",tips);
                		}else{
-               			$.fn.jalert2("不能支持和反对自己的评论");
+               			$.fn.jalert("不能支持和反对自己的评论");
                		}
                 }
             }
@@ -567,6 +488,50 @@
 	  }
     	
   	}
+  
+  //初始化最近访客
+  function initFriends(pageNo){
+	$.ajax({
+		url : "${ctx}/ajax/passThrough/getVisitorsInfo",
+		async : false,
+		dataType : 'json',
+		type: "post",
+		data:{
+			userId:"${userId}",
+			courseId:"${courseId}",
+			pageNo:pageNo
+		},
+		success : function(result) {
+			$("#friends").html(friendsFn(result));
+			$("#gotoFriendsO").unbind();
+			$("#gotoFriendsN").unbind();
+			if(result.pageOver==-1){
+				//alert("0");
+				$("#gotoFriendsO").bind("click",function(){
+					$.fn.jalert("没有上一页");
+				});
+			}else{
+				//alert("1:"+result.pageOver);
+				$("#gotoFriendsO").bind("click",function(){
+					initFriends(result.pageOver);
+				});
+			}
+			if(result.pageNext==-1){
+				//alert("2");
+				$("#gotoFriendsN").bind("click",function(){
+					$.fn.jalert("没有下一页");
+				});
+			}else{
+				//alert("3:"+result.pageNext);
+				$("#gotoFriendsN").bind("click",function(){
+					initFriends(result.pageNext);
+				});
+			}
+			
+		}
+	}); 
+		  
+  }
 
 </script>
 </body>

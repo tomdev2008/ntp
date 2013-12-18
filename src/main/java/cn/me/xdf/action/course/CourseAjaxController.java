@@ -913,7 +913,7 @@ public class CourseAjaxController {
 				map.put("name", courseInfo.getFdTitle());
 				map.put("issuer", courseInfo.getFdAuthor()); 
 				ScoreStatistics scoreStatistics = scoreStatisticsService.findScoreStatisticsByModelNameAndModelId(CourseInfo.class.getName(), courseInfo.getFdId());
-				map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
+				map.put("score", scoreStatistics==null?0.0:scoreStatistics.getFdAverage());
 				map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
 				if(userId.equals(ShiroUtils.getUser().getId())){
 					map.put("isme", true);

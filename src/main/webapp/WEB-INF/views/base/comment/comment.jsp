@@ -28,7 +28,13 @@
                                             <i class="icon-star{{?i <= it.score}} active{{?}}"></i>
                                         {{ } }}
                                     </span>
-                            <b class="text-warning">{{=it.score}}</b>
+                            <b class="text-warning">
+							{{?(it.score+"").length==1}}
+								{{=it.score}}.0
+							{{??}}
+								{{=it.score}}
+							{{?}}
+							</b>
                         </div>
                  {{?}}
               </div>
@@ -127,7 +133,7 @@ function initCommentLines(modelName,modelId,pageNo){
 	$(".btnComment").bind("click",function(){
 		var $this = $(this);
 		 if($("#formReply").length){
-         	$.fn.jalert2("请先保存其它回复");
+         	$.fn.jalert("请先保存其它回复");
          } else {
              var $mediaBody = $this.closest(".media-body");
              var itemId = $this.closest(".media").attr("dataId");
@@ -184,7 +190,7 @@ function initCommentLines(modelName,modelId,pageNo){
         		$num.text(parseInt($num.text()) + 1);
         		$this.addClass("active");
         	}else{
-        		$.fn.jalert2("不能支持和反对自己的评论");
+        		$.fn.jalert("不能支持和反对自己的评论");
         	}
         } 
 	});
@@ -212,7 +218,7 @@ function initCommentLines(modelName,modelId,pageNo){
     		$num.text(parseInt($num.text()) + 1);
     		$this.addClass("active");
     	}else{
-    		$.fn.jalert2("不能支持和反对自己的评论");
+    		$.fn.jalert("不能支持和反对自己的评论");
     	}
 	});
 }

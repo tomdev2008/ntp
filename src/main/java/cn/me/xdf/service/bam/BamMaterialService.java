@@ -64,4 +64,8 @@ public class BamMaterialService extends SimpleService {
     public Object findMaterialDetailInfo(String sourceType,BamCourse bamCourse, CourseCatalog catalog, String fdid){
     	return sourceMap.get(MaterialEnum.valueOf("m_"+sourceType).getBean()).findMaterialDetailInfo(bamCourse, catalog,fdid);
     }
+    
+    public Object reCalculateMaterial(String sourceType,String catalogId,String materialId){
+    	return sourceMap.get(MaterialEnum.valueOf("m_"+sourceType).getBean()).reCalculateMaterial(catalogId,materialId);
+    }
 }

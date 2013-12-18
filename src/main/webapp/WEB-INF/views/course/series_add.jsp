@@ -21,7 +21,7 @@
     	<div class="page-body">
 	    	<div class="section" id="progress_courses">    
 	            	<div class="progress progress-course">
-	            		<div class="bar" style="width:20%;"></div>
+	            		<div class="bar" style="width:0%;"></div>
 	            	</div>
 	                您设置本系列的 <span class="num_comp">{{=it.courseCount}}</span> 个阶段内容，共计 <span class="num_all">{{?it.chapter}}{{=it.chapter.length}}{{??}}0{{?}}</span> 阶段。
 	        </div>
@@ -319,7 +319,7 @@ $.Placeholder.init();
 	  				if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 	  					rightCont.loadBasicInfoPage("系列信息");
 	  				}else{
-	  					$.fn.jalert2("请先设置系列阶段信息");
+	  					$.fn.jalert("请先设置系列阶段信息");
 	  					urlRouter("sectionsDirectory");
 	  				}
 	  				break;
@@ -327,7 +327,7 @@ $.Placeholder.init();
 	  				if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 	  					rightCont.loadPromotionPage("系列推广");
 	  				}else{
-	  					$.fn.jalert2("请先设置系列信息");
+	  					$.fn.jalert("请先设置系列信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -356,6 +356,7 @@ $.Placeholder.init();
 		if(!$("#formBasicInfo").valid()){
 			return;
 		}
+		$("#isperfect").val("true");
 		$.post('${ctx}/ajax/series/saveSeriesBaseInfo',{
 			 seriesId:$("#seriesId").val(),
 			 seriesTitle: $("#seriesTitle").val(),
@@ -380,6 +381,12 @@ $.Placeholder.init();
     }
   //系列发布
 	function releaseCourse(){
+		  //发布前验证系列的基本信息是否已完善(防止出现未命名情况);
+	    if($("#isperfect").val()=='false'){
+	    	$.fn.jalert2("请完善系列信息!");
+	    	urlRouter("basicInfo");
+	    	return ;
+	    }
 		$.post('${ctx}/ajax/series/releaseSeries',{
 			 seriesId:$("#seriesId").val()
 			})

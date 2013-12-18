@@ -203,7 +203,7 @@ function confirmDelecourse(){
 		delekey+=$(this).val()+",";
 	}); 	
 	if(delekey==""){
-		$.fn.jalert2("当前没有选择要删除的数据!");
+		$.fn.jalert("当前没有选择要删除的数据!");
 		return;
 	}
 	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
@@ -236,7 +236,7 @@ function deleteCourse(){
 		delekey+=$(this).val()+",";
 	}); 	
 	/* if(delekey==""){
-		$.fn.jalert2("当前没有选择要删除的数据!");
+		$.fn.jalert("当前没有选择要删除的数据!");
 		return;
 	} */
 	// return;
@@ -307,7 +307,7 @@ function confirmDelseries(){
 		delekey+=$(this).val()+",";
 	}); 	
 	if(delekey==""){
-		$.fn.jalert2("当前没有选择要删除的数据!");
+		$.fn.jalert("当前没有选择要删除的数据!");
 		return;
 	}
 	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有

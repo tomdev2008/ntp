@@ -107,7 +107,7 @@
                         });
                     });
                     if(listArr.length<1){
-                    	//$.fn.jalert2("请选择课程信息后保存!");//添加课程为空错误提示;
+                    	//$.fn.jalert("请选择课程信息后保存!");//添加课程为空错误提示;
                     	$("#showError").html("<font size='2' color='red'>请选择阶段的课程信息!</font>");
                     	return;
                     }
@@ -375,6 +375,7 @@
 										handle: '.sortable-bar',
 										forcePlaceholderSize: true
 									});
+									$("#isperfect").val(result.baseInfo);
 									updataProgressCourses($sections.children(".chapter").length);
 							  },
 						});

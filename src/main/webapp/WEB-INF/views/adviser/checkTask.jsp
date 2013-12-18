@@ -270,7 +270,7 @@ function exportData(){
 		});
 		return;
 	} else{
-		 $.fn.jalert2("您好!您没有选择要导出的数据！");
+		 $.fn.jalert("您好!您没有选择要导出的数据！");
 		  return;
 	}
 }
@@ -295,7 +295,7 @@ function batchDownload(){
       		dataType : 'json',
       		success : function(result) {
       			if(result.attIds==null||result.attIds==''){
-      				 $.fn.jalert2("您好!当前页没有数据可下载！");
+      				 $.fn.jalert("您好!当前页没有数据可下载！");
       				   return;
       			}else{
       				$.fn.jalert("您确定下载本页作业附件吗？",function(){
@@ -311,14 +311,14 @@ function batchDownload(){
 			return;
 		}); */
 	} else{
-		 $.fn.jalert2("您好!您没有选择要下载的数据！");
+		 $.fn.jalert("您好!您没有选择要下载的数据！");
 		  return;
 	}
 }
 //下载
 function downloadAtt(attIds,zipname){
 	if(attIds==null||attIds==''){
-		 $.fn.jalert2("您好!该作业包没有数据可下载！");
+		 $.fn.jalert("您好!该作业包没有数据可下载！");
 		   return;
 	}
     window.location.href="${ctx}/common/file/downloadZipsByArrayIds/"+attIds+"/"+zipname;

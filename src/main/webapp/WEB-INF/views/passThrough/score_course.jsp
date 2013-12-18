@@ -23,7 +23,7 @@
               	<span class="rating-all">
              		<i class="icon-star" ></i><i class="icon-star" ></i><i class="icon-star" ></i><i class="icon-star" ></i><i class="icon-star" ></i>
                   </span>
-                  <span class="text-warning" id="myScore">0</span>
+                  <span class="text-warning" id="myScore">0.0</span>
               </div>
 	</div>
           <div class="bd comment-form box-pd15">
@@ -47,7 +47,8 @@ $("#addMessage").bind("click",function(){
 			  fdContent:mess,
 		  },
 		  success: function(result){
-			  //$.fn.jalert2("评论发布成功");
+			$.fn.jalert("评论发布成功");
+			$("#courseMessage").val("");
 			initCommentLines("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
 			initCommentPageInfo("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
 		  }
@@ -68,7 +69,7 @@ $.ajax({
 				$(this).bind("mouseover",function(){
 					$(this).addClass("active").prevAll().addClass("active");
 					$(this).nextAll().removeClass("active");
-					$("#myScore").html((index+1));
+					$("#myScore").html((index+1)+".0");
 				});
 				$(this).bind("click",function(){
 					scoreing();
@@ -101,7 +102,7 @@ function scoreing(){
 			  fdScore:$("#myScore").html(),
 		  },
 		  success: function(result){
-			  $.fn.jalert2("评分成功");
+			  $.fn.jalert("评分成功");
 			  //$("#ratingDo  i").unbind();
 			  var score = ($("#myScore").html());
 			  $("#ratingDo  i").each(function(index){	
@@ -123,7 +124,7 @@ function setMyScore(score){
 		}else{
 			$(this).removeClass("active");
 		}
-		$("#myScore").html(score);
+		$("#myScore").html(score+".0");
 	}); 
 }
 //重置课程情分信息

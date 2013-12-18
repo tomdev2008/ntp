@@ -130,7 +130,7 @@ public class StudyTrackService {
 		finder.append(" where bamc.COURSEID in ");
 		finder.append(" (select course.FDID from IXDF_NTP_COURSE course where course.FDCREATORID='"+ShiroUtils.getUser().getId()+"') ");
 		finder.append(" or ");
-		finder.append(" bamc.COURSEID in (select courseAuth.FDCOURSEID from IXDF_NTP_COURSE_AUTH courseAuth where courseAuth.ISAUTHSTUDY=1 and courseAuth.FDUSERID='"+ShiroUtils.getUser().getId()+"')");
+		finder.append(" bamc.COURSEID in (select courseAuth.FDCOURSEID from IXDF_NTP_COURSE_AUTH courseAuth where courseAuth.ISAUTHSTUDY='Y' and courseAuth.FDUSERID='"+ShiroUtils.getUser().getId()+"')");
 		finder.append(" )  b ");
 		finder.append("  left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_ELEMENT o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_ELEMENT o2 on b.PRETEACHID = o2.fdid");
 		finder.append("    where o2.fd_name like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
@@ -218,7 +218,7 @@ public class StudyTrackService {
 		finder.append(" where (bamc.COURSEID in ");
 		finder.append(" (select course.fdId from IXDF_NTP_COURSE course where course.FDCREATORID='"+ShiroUtils.getUser().getId()+"'))");
 		finder.append("  or ");
-		finder.append(" (bamc.COURSEID in (select courseAuth.FDCOURSEID from IXDF_NTP_COURSE_AUTH courseAuth where courseAuth.Isediter=1 and courseAuth.Fduserid='"+ShiroUtils.getUser().getId()+"'))"); 
+		finder.append(" (bamc.COURSEID in (select courseAuth.FDCOURSEID from IXDF_NTP_COURSE_AUTH courseAuth where courseAuth.Isediter='Y' and courseAuth.Fduserid='"+ShiroUtils.getUser().getId()+"'))"); 
 		finder.append("  )  b ");
 		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_ELEMENT o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_ELEMENT o2 on b.PRETEACHID = o2.fdid");
 		finder.append("    where o2.fd_name like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");

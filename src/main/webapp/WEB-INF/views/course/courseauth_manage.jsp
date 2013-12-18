@@ -177,8 +177,8 @@
                             <div class="btn-group">
                                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">操作 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                   <!--  <li><a href="#rightCont">导出列表</a></li>
-                                    <li><a href="#rightCont">打包下载</a></li> -->
+                                     <li><a href="#rightCont">导出列表</a></li>
+                                   <!-- <li><a href="#rightCont">打包下载</a></li> -->
                                     <li><a href="#rightCont" onclick="confirmDel();">批量删除</a></li>
                                 </ul>
                             </div>
@@ -549,7 +549,7 @@ function confirmDel(){
 		delekey+=$(this).attr("id")+",";
 	}); 	
 	if(delekey==""){
-		$.fn.jalert2("当前没有选择要删除的数据!");
+		$.fn.jalert("当前没有选择要删除的数据!");
 		return;
 	}
 	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
@@ -602,7 +602,7 @@ function confirmDel(){
 	    $("#currentpage").val(nowpage);
         $("a[name='delecpa']").bind("click",function(e){
         	var checkCpaId=$(this).attr("data-fdid");
-        	$.fn.jalert("您确认要删除所选数据？",function(){
+        	$.fn.jalert("确认移除授权（不删除学习记录）？",function(){
         		 $.ajax({
         		      	type: "post",
         		      	url: "${ctx}/ajax/course/deleteCouseParticAuthById",

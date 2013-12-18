@@ -1,9 +1,10 @@
 package cn.me.xdf.common.web;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader; 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -19,5 +20,10 @@ public class SpringUtils {
     public static Object getBean(HttpServletRequest request, String name) {
         WebApplicationContext wb = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
         return wb.getBean(name);
+    }
+    
+    public static Object getBean(String id) {
+    	ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+        return context.getBean(id);
     }
 }

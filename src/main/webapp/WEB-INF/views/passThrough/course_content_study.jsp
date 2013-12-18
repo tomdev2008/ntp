@@ -495,7 +495,13 @@
                                             <i class="icon-star{{?i <= item.score}} active{{?}}"></i>
                                         {{ } }}
                                     </span>
-                            <b class="text-warning">{{=item.score}}</b>
+                            <b class="text-warning">
+{{?(item.score+"").length==1}}
+{{=item.score}}.0
+{{??}}
+{{=item.score}}
+{{?}}
+							</b>
                         </div>
                     {{?}}
                 </div>
@@ -766,9 +772,12 @@
           	                  $("#cordPage").removeClass("hide");
           	                });
                   	//window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.firstCId+"&fdMtype="+pageData.firstCType;
-                 }); 
+        		    $("#courseOverBtn").bind("click",function(){
+            			loadOverCard();
+            		}); 
+        		 }); 
         		 $("#lastC").click(function (e){
-        			loadRightCont(pageData.firstCId,pageData.firstCType);
+        			loadRightCont(pageData.listCId,pageData.listCType);
         			loadLeftData(bamId);
         			$("#sidenav>li>a").popover({
           	            trigger: "hover"
@@ -784,7 +793,10 @@
           	                  $("#cordPage").removeClass("hide");
           	                });
                    	//window.location.href = "${ctx}/passThrough/getStudyContent?courseId="+courseId+"&catalogId="+pageData.listCId+"&fdMtype="+pageData.listCType;
-                 }); 
+        			$("#courseOverBtn").bind("click",function(){
+            			loadOverCard();
+            		}); 
+        		 }); 
         		 $("#cordPage").addClass("hide");
         	 }
         }
@@ -982,7 +994,7 @@
                         index = $this.index();
                     $this.addClass("active").prevAll().addClass("active");
                     $this.nextAll().removeClass("active");
-                    $this.parent().nextAll(".point").text(index+1);  
+                    $this.parent().nextAll(".point").text((index+1)+".0");  
                     $.ajax({
   		  			  url: "${ctx}/ajax/score/pushMaterialToCourse",
   		  			  async:false,
@@ -992,21 +1004,7 @@
   		  			  },
   		  			  dataType:'json',
   		  			  success: function(result){
-  		  				  var ave;
-  		  				  if((result[0].fdAverage+"").length==1){
-  		  					ave= result[0].fdAverage+".0";
-  		  				  }else{
-  		  					ave= result[0].fdAverage+""; 
-  		  				  }
-  		  				$("#ratingTotal").find(".rating-all>.icon-star").each(function(i){
-  		                    if((i+1) <= result[0].fdAverage){
-  		                        $(this).addClass("active");
-  		                    } else {
-  		                        $(this).removeClass("active");
-  		                    }
-  		                }).end().children("b.text-warning").text(ave);
-  		  				var scoreInfoHtml = doT.template(document.getElementById("scoreInfo").text);
-  		  				$("#pullrightInfo").html(scoreInfoHtml(result[0]));
+  		  				resetScoreInfo();
   		  			  },
   	  				});
             })  /*评论列表中按钮事件*/
@@ -1037,7 +1035,7 @@
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		$.fn.jalert2("不能支持和反对自己的评论");
+                            		$.fn.jalert("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnWeak")){//踩
                             	var pushok;
@@ -1060,11 +1058,11 @@
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		$.fn.jalert2("不能支持和反对自己的评论");
+                            		$.fn.jalert("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnComment")){//评论
                                 if($("#formReply").length){
-                                	$.fn.jalert2("请先保存其它回复");
+                                	$.fn.jalert("请先保存其它回复");
                                 } else {
                                     var $mediaBody = $this.closest(".media-body");
                                     var toName =  $mediaBody.find(".media-heading>.name").text();
@@ -1109,6 +1107,7 @@
             });
             
             function resetScoreInfo(){
+            	var s=0;
             	$.ajax({
           		  url: "${ctx}/ajax/score/canPushScoreToMaterial",
           		  async:false,
@@ -1125,9 +1124,10 @@
   		                        $(this).removeClass("active");
   		                    }
   		                });
-          			  $("#ratingDoScore").text(score);
+          			  $("#ratingDoScore").text(score+".0");
+          			  s=score;
           		  }
-      		});
+      			});
             	$.ajax({
             		  url: "${ctx}/ajax/score/getScoreStatisticsByfdModelId",
             		  async:false,
@@ -1154,6 +1154,24 @@
     		  				$("#pullrightInfo").html(scoreInfoHtml(result[0]));
             		  }
         		});
+            	$("#ratingDo  i").each(function(index){
+    				$(this).bind("mouseover",function(){
+    					$(this).addClass("active").prevAll().addClass("active");
+    					$(this).nextAll().removeClass("active");
+    					$("#ratingDoScore").html((index+1)+".0");
+    				});
+    				$(this).bind("mouseout",function(){
+    					$("#ratingDo").find(".icon-star").each(function(i){
+		                    if(i < s){
+		                        $(this).addClass("active");
+		                    } else {
+		                        $(this).removeClass("active");
+		                    }
+		            });
+    					$("#ratingDoScore").html(s+".0");
+    				});
+    		  });
+            	
             }
 
             function resetComment(pageNo,pageSize){
@@ -1255,10 +1273,10 @@
                     	fdContent: $("#textComment").val(),
               	  	},
           		});
+               $.fn.jalert("评论发表成功");  
+               $("#textComment").val("");
                resetComment(1,10);
-                //刷新评论列表信息
-                /* resetComment(1,10); */
-              return false;
+               return false;
             }
 
             
@@ -1440,7 +1458,7 @@
 		         			}
 		         		}); 
 	                }else{
-	                	$.fn.jalert2("您已经赞过该资源!");
+	                	$.fn.jalert("您已经赞过该资源!");
 	                }
             });
 
@@ -1466,14 +1484,14 @@
                   		}); 
                      	 
                        } else {
-                     	  $.fn.jalert2("您好！该视频没有对应附件");
+                     	  $.fn.jalert("您好！该视频没有对应附件");
                        } 
                 }
             });
 
             $("#btnDoPass").on("click",function(e){
             	if($(this).attr("converStatus")==""){
-            		$.fn.jalert2("该状态不学习!");
+            		$.fn.jalert("该状态不学习!");
             		return ;
             	}
                 $("#listMedia>li.active").addClass("pass");
@@ -1588,7 +1606,7 @@
                             e.preventDefault();
                             var $this = $(this);
                             var id = $this.attr("href");
-                            $window.scrollTop($(id).offset().top - $("#pageHeader").height() - 60);
+                            $("html,body").animate({scrollTop: $(id).offset().top - $("#pageHeader").height() - 60},"fast","swing");
                         })
                                 .tooltip({
                                     placement: "bottom"
@@ -1636,7 +1654,7 @@
                         } else{
                             sTop = pos.top - 60 - $pageHead.height() - $pageHead.children(".hd").height() -$("#headToolsBar").height();
                         }
-                        $window.scrollTop(sTop);
+                        $("html,body").animate({scrollTop: sTop},pos.top-sTop,"swing");
                         
                         var $progress ,flag = true,pct,interval,countdown = 0,byteUped = 0;
                         $("button[name='answerAtt']").each(function(){
