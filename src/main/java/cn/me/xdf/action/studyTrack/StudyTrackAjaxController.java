@@ -126,7 +126,7 @@ public class StudyTrackAjaxController {
 			Map map2 = studyTrackService.getMessageInfoByBamId((String)bamCourse.get("BAMID"));
 			if(map2.size()==0){
 				map.put("passMsg","没有学习记录");
-				map.put("passTime", "");
+				map.put("passTime", "0000-00-00 00:00:00");
 			}else{
 				map.put("passMsg",map2.get("cot"));
 				map.put("passTime", DateUtil.convertDateToString((Date)map2.get("time")));
