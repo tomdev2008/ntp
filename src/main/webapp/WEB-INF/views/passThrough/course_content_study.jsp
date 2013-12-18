@@ -1065,9 +1065,12 @@
                             		$.fn.jalert("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnComment")){//评论
-                                if($("#formReply").length){
-                                	$.fn.jalert("请先保存其它回复");
-                                } else {
+                                //if($("#formReply").length){
+                                	//$.fn.jalert("请先保存其它回复");
+                                //} else {
+                                	 $("#formReply .btn-cancel").closest(".form-reply").remove();
+             						 $this.removeClass("active");
+             						 
                                     var $mediaBody = $this.closest(".media-body");
                                     var toName =  $mediaBody.find(".media-heading>.name").text();
                                     var toMail =  $mediaBody.find(".media-heading>.mail").text();
@@ -1099,7 +1102,7 @@
                                         $this.removeClass("active");
                                     });
 
-                                }
+                                //}
                             }else if($this.hasClass("btndeleteM")){
                             	$.fn.jalert("您确定删除该评论吗？",function(){
                         			$.ajax({

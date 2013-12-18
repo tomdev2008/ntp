@@ -137,9 +137,12 @@ function initCommentLines(modelName,modelId,pageNo){
 	});
 	$(".btnComment").bind("click",function(){
 		var $this = $(this);
-		 if($("#formReply").length){
-         	$.fn.jalert("请先保存其它回复");
-         } else {
+		 //if($("#formReply").length){
+         	//$.fn.jalert("请先保存其它回复");
+         //} else {
+        	 $("#formReply .btn-cancel").closest(".form-reply").remove();
+             $this.removeClass("active");
+             
              var $mediaBody = $this.closest(".media-body");
              var itemId = $this.closest(".media").attr("dataId");
              var toName =  $mediaBody.find(".media-heading>.name").text();
@@ -169,7 +172,7 @@ function initCommentLines(modelName,modelId,pageNo){
                  $this.removeClass("active");
              });
 
-         }
+         //}
 	});
 	$(".btnPraise").bind("click",function(){
 		 var $this = $(this);
