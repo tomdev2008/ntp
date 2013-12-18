@@ -589,10 +589,7 @@ $("#exportExamPaper").click(function(e){
 				}
 			});
 
-			$("#addUser")
-					.autocomplete(
-							"${ctx}/ajax/user/findByName",
-							{
+			$("#addUser").autocomplete("${ctx}/ajax/user/findByName",{
 								formatMatch : function(item) {
 									return item.name + item.mail + item.org
 											+ item.department;
@@ -622,6 +619,7 @@ $("#exportExamPaper").click(function(e){
 									}
 									return rows;
 								},
+								dataType : 'json',
 								matchContains : true,
 								max : 10,
 								scroll : false,
