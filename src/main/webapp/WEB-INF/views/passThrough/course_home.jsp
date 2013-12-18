@@ -39,7 +39,7 @@
               </c:if>
             </c:if>
         	
-            <a href="#" class="pull-left">
+            <a  class="pull-left">
             <c:if test="${courseAtt==''}">
             	<img src="${ctx}/resources/images/default-cover.png" alt="" class="media-object">
             </c:if>
