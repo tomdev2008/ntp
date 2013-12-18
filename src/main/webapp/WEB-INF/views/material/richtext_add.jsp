@@ -136,7 +136,6 @@
                                 </table>
                                 <div class="pr">
                                     <input type="text" id="addUser" class="autoComplete input-block-level" placeholder="请输入人名、邮箱、机构或者部门查找用户">
-                                    <i class="icon-search"></i>
                                 </div>
                             </div>
                           </c:if>
@@ -152,7 +151,6 @@
                                 </table>
                                 <div class="pr">
                                     <input type="text" id="addUser" class="autoComplete input-block-level" placeholder="请输入人名、邮箱、机构或者部门查找用户">
-                                    <i class="icon-search"></i>
                                 </div>
                             </div>
                           </c:if>
@@ -312,7 +310,7 @@ $(function(){
 		matchContains:true ,
 		max: 10,
 		scroll: false,
-		width:688
+		width:748
     }).result(function(e,item){
 		var flag = true;
 		$("#addUser").next(".help-block").remove();

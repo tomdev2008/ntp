@@ -53,17 +53,17 @@
                </div>
 	        </div>
             <div class="page-body editingBody">
-                <form action="#" id="formEditDTotal" class="form-horizontal" method="post">
+            <form action="#" id="formEditDTotal" class="form-horizontal" method="post">
                     <section class="section">
                         <div class="control-group">
                             <label class="control-label" for="videoName" id="typeTxt">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
                             <div class="controls">
                                 <input value="${materialInfo.fdName}" 
-                                    id="videoName" required class="span6" name="videoName" type="text">
+                                    id="videoName" required class="span6" readonly name="videoName" type="text">
                                 <span class="date">
                                 <fmt:formatDate value="${materialInfo.fdCreateTime}" pattern="yyyy/MM/dd hh:mm aa"/>
                                 </span>
-                                <input type="hidden" id="fdId" value="${materialInfo.fdId}">
+                                <input type="hidden" id="fdId" value="${materialInfo.fdId}" readonly>
                             </div>
                         </div>
                         <div class="control-group">
@@ -71,22 +71,19 @@
                             <div class="controls">
                               <textarea placeholder="非必填项" rows="4"
                                         class="input-block-level" id="videoIntro"
-                                        name="fdDescription">${materialInfo.fdDescription}</textarea>
+                                        name="fdDescription" readonly>${materialInfo.fdDescription}</textarea>
                             </div>
                         </div>
                     </section>
                     <section class="section mt20">
-                    <textarea id="richText" name="richText" 
-                        style="width:100%;height:400px;visibility:hidden;">
                         ${materialInfo.richContent}
-                    </textarea>
                     </section>
                     <section class="section mt20">
                         <div class="control-group">
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
                              <input value="${materialInfo.fdAuthor}" id="author" class="input-block-level"
-                                       name="fdAuthor" type="text"> 
+                                       name="fdAuthor" type="text" readonly> 
                             </div>
                         </div>
                         <div class="control-group">
@@ -94,11 +91,11 @@
                             <div class="controls">
                              <textarea placeholder="非必填项" rows="4"
                                        class="input-block-level" id="authorIntro"
-                                       name="fdAuthorDescription" >${materialInfo.fdAuthorDescription}</textarea>
+                                       name="fdAuthorDescription" readonly >${materialInfo.fdAuthorDescription}</textarea>
                             </div>
                         </div>
                     </section>
-                </form>
+                    </form>
             </div>
 	    </section>
 	</section>
@@ -111,137 +108,10 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
-<script charset="utf-8" src="${ctx}/resources/kindeditor/kindeditor-all-min.js"></script>
-<script charset="utf-8" src="${ctx}/resources/kindeditor/lang/zh_CN.js"></script>
-
-<script type="text/javascript">
-var editor = KindEditor.create('textarea[id="richText"]', {
-								resizeType : 1,
-								cssData : 'body {font-size:14px;}',
-								allowPreviewEmoticons : false,
-								allowImageUpload : true,
-								uploadJson : $('#ctx').val()+'/common/file/KEditor_uploadImg',
-								items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-									'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-									'insertunorderedlist', '|', 'undo', 'redo','link','image'],
-								afterBlur: function(){this.sync();}
-							});
-</script>
 <script type="text/javascript">
 $(function(){
     $.Placeholder.init();
-    //授权管理 用户列表 模板函数
-    var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
-    //初始化创建者
-   if("${param.fdId}"!=null&&"${param.fdId}"!=""){
-    	var creator="";
-    	var url="";
-	   $.ajax({
-		 cache:false,
-		 url: "${ctx}/ajax/material/getCreater?materialId=${materialInfo.fdId}",
-		 async:false,
-		 dataType : 'json',
-		 success: function(result){
-		    creator = result.name+"（"+result.email+"），"+result.dept;
-				  url=result.url;
-		 }
-	   });
-	 //初始化权限列表
-	   $.ajax({
-			  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
-			  async:false,
-			  cache:false,
-			  dataType : 'json',
-			  success: function(result){
-				  var photo;
-					if(url.indexOf("http")>-1){
-						photo=url;
-					}else{
-						photo="${ctx}/"+url;
-					}
-				  var html = "<tr data-fdid='creator' draggable='true'> "+
-				  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
-				  "<img src='"+photo+"' alt=''>"+creator+" </div> </td>"+
-				  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
-				  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
-				  "</td> </tr>";
-				  for(var i in result.user){
-					  html += listUserKinguserFn(result.user[i]);
-				  }
-				  $("#list_user").html(html); 
-			  }
-		  });
-    } 
     
-    
-    
-    
-    $("#list_user").sortable({
-        handle: '.state-dragable'
-    })
-            .find("a.icon-remove-blue").bind("click",function(e){
-                e.preventDefault();
-                $(this).closest("tr").remove();
-            });
-    var allUserData ;
-
-    $("#addUser").autocomplete("${ctx}/ajax/user/findByName",{
-        formatMatch: function(item) {
-            return item.name + item.mail + item.org + item.department;
-        },
-        formatItem: function(item) {
-        	var photo;
-			if(item.imgUrl.indexOf("http")>-1){
-				photo=item.imgUrl;
-			}else{
-				photo="${ctx}/"+item.imgUrl;
-			}		
-            return '<img src="'
-                    + (photo) + '" alt="">'
-                    + item.name + '（' + item.mail + '），'
-                    + item.org + '  ' + item.department;
-        },
-        parse : function(data) {
-        	var rows = [];
-			for ( var i = 0; i < data.length; i++) {
-				rows[rows.length] = {
-					data : data[i],
-					value : data[i].name,
-					result : data[i].name
-				//显示在输入文本框里的内容 ,
-				};
-			}
-			return rows;
-		},
-		dataType : 'json',
-		matchContains:true ,
-		max: 10,
-		scroll: false,
-		width:688
-    }).result(function(e,item){
-		var flag = true;
-		$("#addUser").next(".help-block").remove();
-		$("#list_user>tr").each(function(){
-			if($(this).attr("data-fdid")==item.id){
-				$("#addUser").after('<span class="help-block">不能添加重复的用户！</span>');;
-				$("#addUser").val("");
-				flag = false;
-			}
-		});
-		if(flag){
-			$(this).val(item.name);
-			$("#list_user").append(listUserKinguserFn(item))
-			.sortable({
-				handle: '.state-dragable',
-				forcePlaceholderSize: true
-			})
-			.find("a.icon-remove-blue").bind("click",function(e){
-				e.preventDefault();
-				$(this).closest("tr").remove();
-			});
-			$("#addUser").val("");
-		}
-	});
 });
 
 

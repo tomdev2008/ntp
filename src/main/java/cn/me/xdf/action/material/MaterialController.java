@@ -103,6 +103,9 @@ public class MaterialController {
     	//作业包
     	if(fdType.equals(Constant.MATERIAL_TYPE_JOBPACKAGE)){
     		return "/material/viewExamPaper";
+    	}//富文本
+    	if(fdType.equals(Constant.MATERIAL_TYPE_RICHTEXT)){
+    		return "/material/richtext_view";
     	}else{
     		//其它素材种类
     		return "/material/viewVideo";

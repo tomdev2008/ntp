@@ -38,7 +38,7 @@
                  <c:if test="${param.fdType=='05'}">幻灯片</c:if> 
                  <c:if test="${param.fdType=='08'}">测试</c:if> 
                  <c:if test="${param.fdType=='10'}">作业包</c:if> 
-                 <c:if test="${param.fdType=='07'}">在线编辑</c:if> 
+                 <c:if test="${param.fdType=='07'}">在线创作</c:if> 
                 </c:if> 
               
                 <div class="backHome">
