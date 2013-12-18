@@ -59,7 +59,8 @@
 <script id="formReplyCommentTemplate" type="x-dot-template">
         <div class="form-reply">
             <form id="formReply">
-                    <textarea class="input-block-level" required id="replyComm" name="replyComm" rows="3" >回复（{{=it.name}}）：</textarea>
+					<input type="hidden" id="replyCommHide" value="回复（{{=it.name}}）："/>
+                    <textarea class="input-block-level" required id="replyComm" name="replyComm" rows="3" ></textarea>
                 <div class="form-action">
                      <div class="btn-group">
                         <button class="btn btn-primary" type="submit">回复</button>
@@ -152,7 +153,7 @@ function initCommentLines(modelName,modelId,pageNo){
                  		  async:false,
                  		  data:{
                  			materialId :"${param.modelId}",
-                 			fdContent :$("#replyComm").val(),
+                 			fdContent :($("#replyCommHide").val()+$("#replyComm").val()),
                  			messageId :itemId,
                  		  },
                  		  success: function(result){
@@ -162,6 +163,7 @@ function initCommentLines(modelName,modelId,pageNo){
              		});
                  }
              });
+             $("#replyComm").focus();
              $("#formReply .btn-cancel").click(function(e){
                  $(this).closest(".form-reply").remove();
                  $this.removeClass("active");
