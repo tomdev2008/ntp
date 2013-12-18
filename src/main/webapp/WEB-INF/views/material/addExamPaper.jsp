@@ -778,7 +778,6 @@ $(function(){
         	
         	$progress.width(pct);
         	$pct.text(pct);
-        	console.log(countdown);
         	countdown>0 && $countdown.text(secTransform((bytesTotal-bytesUploaded)/countdown*10));
         }
       });
