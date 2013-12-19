@@ -54,22 +54,7 @@
 							<div class="pages pull-right">
 								<div class="span2">
 									第<span> 
-									 <c:if test="${page.totalPage==1}">
-									   1 - ${page.totalCount}
-									 </c:if>  
-									 <c:if test="${page.totalPage>1}">
-									   <c:if test="${page.pageNo==1}">
-									    1-10
-									   </c:if>
-									   <c:if test="${page.pageNo!=1}">
-									    <c:if test="${page.pageNo<page.totalPage}">
-									     ${page.pageNo*10-10+1} - ${page.pageNo*10}
-									    </c:if>
-										<c:if test="${page.pageNo==page.totalPage}">
-									     ${page.pageNo*10-10+1} - ${page.totalCount}
-									   </c:if>
-									  </c:if>
-									</c:if>
+									${page.startNum} - ${page.endNum}
 								   </span> 
 									 / <span>${page.totalCount}</span> 条 
 								</div>
