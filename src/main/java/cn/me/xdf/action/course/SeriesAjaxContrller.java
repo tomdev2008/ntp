@@ -67,47 +67,48 @@ public class SeriesAjaxContrller {
 	/**
 	 * 保存阶段信息 author hanhl
 	 */
-	@RequestMapping(value="saveSeries")
+	@RequestMapping(value = "saveSeries")
 	@ResponseBody
-	public String  saveSeries(HttpServletRequest request){
-		String seriesId=request.getParameter("seriesId");
+	public String saveSeries(HttpServletRequest request) {
+		String seriesId = request.getParameter("seriesId");
 		String fdName = request.getParameter("title");
 		int fdNo = Integer.parseInt(request.getParameter("fdno"));
-		SysOrgPerson creator=accountService.findById(ShiroUtils.getUser().getId());
-		SeriesInfo series=new SeriesInfo();
+		SysOrgPerson creator = accountService.findById(ShiroUtils.getUser()
+				.getId());
+		SeriesInfo series = new SeriesInfo();
 		series.setFdName(fdName);
 		series.setVersion(0);
 		series.setFdCreateTime(new Date());
 		series.setCreator(creator);
 		series.setFdSeriesNo(fdNo);
-		//没有系列id说明是新增系列  否则就是新增阶段
-		 Map<String, String> map=new HashMap<String, String>();
-		if(StringUtil.isNotEmpty(seriesId)){
-			SeriesInfo seriessup=seriesInfoService.get(seriesId);
+		// 没有系列id说明是新增系列 否则就是新增阶段
+		Map<String, String> map = new HashMap<String, String>();
+		if (StringUtil.isNotEmpty(seriesId)) {
+			SeriesInfo seriessup = seriesInfoService.get(seriesId);
 			series.setHbmParent(seriessup);
 			seriesInfoService.save(series);
 			map.put("seriesId", seriesId);
 			map.put("id", series.getFdId());
-			if(StringUtil.isNotEmpty(seriessup.getFdName())){
+			if (StringUtil.isNotEmpty(seriessup.getFdName())) {
 				map.put("baseInfo", "true");
-			}else{
+			} else {
 				map.put("baseInfo", "false");
 			}
-		}else{
-			SeriesInfo seriessup=new SeriesInfo();//先创建系列
-			seriessup.setIsPublish(false);//初始化为非发布状态
+		} else {
+			SeriesInfo seriessup = new SeriesInfo();// 先创建系列
+			seriessup.setIsPublish(false);// 初始化为非发布状态
 			seriessup.setVersion(0);
 			seriessup.setFdCreateTime(new Date());
 			seriessup.setCreator(creator);
-			seriessup.setIsAvailable(true);//有效的
+			seriessup.setIsAvailable(true);// 有效的
 			seriesInfoService.save(seriessup);
 			series.setHbmParent(seriessup);
-			seriesInfoService.save(series);//再保存阶段
+			seriesInfoService.save(series);// 再保存阶段
 			map.put("id", series.getFdId());
 			map.put("seriesId", seriessup.getFdId());
 			map.put("baseInfo", "false");
 		}
-		
+
 		return JsonUtils.writeObjectToJson(map);
 	}
 
@@ -498,20 +499,44 @@ public class SeriesAjaxContrller {
 		if (seriesInfo != null) {
 			if (seriesInfo.getIsPublish()) {
 				// 如果是已发布的系列,则置为无效
-				seriesInfoService.deleteSeries(seriesId);
+				if (ShiroUtils.isAdmin()) {// admin则全部置为无效
+					seriesInfoService.deleteSeries(seriesId);
+				} else {// 其他用户只能置自己创建的系列为无效;
+					if (seriesInfo.getCreator().getFdId()
+							.equals(ShiroUtils.getUser().getId())) {
+						seriesInfoService.deleteSeries(seriesId);
+					}
+				}
 			} else {
 				// 草稿状态,直接删除系列(首先到系列课程中删除,然后删除系列自己)
 				// seriesInfoService.delete(seriesId);
-				List<SeriesInfo> phaseslist = seriesInfoService
-						.getSeriesById(seriesId);// 查找系列下的阶段
-				if (phaseslist != null) {
-					for (SeriesInfo phases : phaseslist) {// 查找阶段下的课程并删除
-						seriesCoursesService.deleteBySeriesId(phases.getFdId());
-						seriesInfoService.delete(phases.getFdId());
+				if (ShiroUtils.isAdmin()) {
+					List<SeriesInfo> phaseslist = seriesInfoService
+							.getSeriesById(seriesId);// 查找系列下的阶段
+					if (phaseslist != null) {
+						for (SeriesInfo phases : phaseslist) {// 查找阶段下的课程并删除
+							seriesCoursesService.deleteBySeriesId(phases
+									.getFdId());
+							seriesInfoService.delete(phases.getFdId());
+						}
+					}
+					seriesInfoService.delete(seriesId);
+				} else {
+					if (seriesInfo.getCreator().getFdId()
+							.equals(ShiroUtils.getUser().getId())) {
+						List<SeriesInfo> phaseslist = seriesInfoService
+								.getSeriesById(seriesId);// 查找系列下的阶段
+						if (phaseslist != null) {
+							for (SeriesInfo phases : phaseslist) {// 查找阶段下的课程并删除
+								seriesCoursesService.deleteBySeriesId(phases
+										.getFdId());
+								seriesInfoService.delete(phases.getFdId());
+							}
+						}
+						seriesInfoService.delete(seriesId);
+
 					}
 				}
-				seriesInfoService.delete(seriesId);
-
 			}
 		}
 	}
@@ -698,8 +723,9 @@ public class SeriesAjaxContrller {
 		Map returnMap = new HashMap();
 		int pageNo = new Integer(request.getParameter("pageNo"));
 		Finder finder = Finder
-				.create(" from SeriesInfo s where s.isPublish = :isPublish");
+				.create(" from SeriesInfo s where s.isPublish = :isPublish and s.isAvailable=:isAvailable");
 		finder.setParam("isPublish", true);
+		finder.setParam("isAvailable", true);
 		Pagination pagination = seriesCoursesService.getPage(finder, pageNo, 3);
 		if (pagination.getTotalPage() >= pageNo) {
 			if (pagination.getList().size() == 3) {
