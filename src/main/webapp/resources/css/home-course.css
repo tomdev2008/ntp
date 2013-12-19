@@ -33,7 +33,7 @@
 
 .thumbnails{margin-bottom: 0;}
 .thumbnails>li{width: 320px;}
-.thumbnails>li .moreCourse{border: solid #3c81a8 2px;background: #abcbdd url("../images/moreCourse.png") no-repeat center 30%;padding-top: 225px;min-height: 77px;font-size: 16px;color: #ffffff;text-align: center;}
+.thumbnails>li .moreCourse{border: solid #3c81a8 2px;background: #ffffff url("../images/moreCourse.png") no-repeat center 30%;padding-top: 225px;min-height: 77px;font-size: 16px;color: #7a7a7a;text-align: center;}
 #list-series .moreCourse{height: 118px;padding-top: 300px;background-position: center 40%;}
 .thumbnail>img{height: 140px;width: 100%;}
 .thumbnail .hd2{padding: 18px 0;text-align: center;border-bottom: solid #ededed 1px;}
