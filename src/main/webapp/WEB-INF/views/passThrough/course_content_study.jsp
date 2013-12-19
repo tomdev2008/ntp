@@ -325,8 +325,13 @@
             <div class="section mt20">
                 <div class="mediaWrap bdbt2">
                     <div class="mediaObject">
-									<iframe width="100%" height="510" id="iframeVideo" src="" frameBorder="0" scrolling="no"></iframe>
-                    </div>
+                        {{?param.txt != null && it.txt!="" }}
+                           {{=param.txt}}
+                         {{?}}
+                       {{?param.txt == null || it.txt=="" }}
+						<iframe width="100%" height="510" id="iframeVideo" src="" frameBorder="0" scrolling="no"></iframe>
+                       {{?}}
+                   </div>
                 </div>
                 <div class="mediaToolbarWrap">
                     <div class="mediaToolbar" id="mediaToolbar" data-fdid="{{=param.id}}">
@@ -341,7 +346,7 @@
                 </div>
                 <div class="hd" id="materialinfo">
                     <div class="tit-icon_bg"><i class="icon-video-intro"></i></div>
-                    <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}信息</h5>
+                    <h5>{{?it.type == 'video'}}视频{{??it.type == 'txt'}}富文本{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}信息</h5>
                     <div class="pos-right" id="ratingTotal">
                         <span>综合评分</span>
                             <span class="rating-all" >
@@ -356,7 +361,7 @@
                     <div class="pull-left video-info">
                         <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}名称  <span class="name" id="mediaName">{{=param.name}}</span></h5>
                         <p class="mediaIntro" id="mediaIntro">
-                            {{=param.intro}}
+                            {{=param.intro || ""}}
                         </p>
                     </div>
                     <div class="pull-right" id="pullrightInfo">
@@ -823,7 +828,6 @@
 				  },
 			});
 		 }
-		 
 		function loadRightCont(fdid,type){
         	catalogId=fdid;
 		    fdMtype=type;
@@ -842,7 +846,7 @@
 		  				if(result.type == "exam" || result.type == "task"){
 		  					$("#mainContent").html(rightContentFn(result));
 		  					afterLoadExamOrTaskPage(result);
-		  	            } else if(result.type == "video" || result.type == "doc"||result.type == "ppt"){
+		  	            } else if(result.type == "video" || result.type == "txt" || result.type == "doc"||result.type == "ppt"){
 		  	            	mdata=result.defaultMedia;
 		  	            	 
 		  	                // alert($("#iframeVideo"));
