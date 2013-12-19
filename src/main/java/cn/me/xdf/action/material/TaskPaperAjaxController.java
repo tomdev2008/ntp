@@ -115,19 +115,18 @@ public class TaskPaperAjaxController {
 			task.setTaskPackage(info);
 			taskService.save(task);
 		}
+		
 		List<AttMain> attMains = new ArrayList<AttMain>();
 		String attString = request.getParameter("listAttachment");
+		//删除之前的选项
+		List<AttMain> oldAttMains = attMainService.findByCriteria(AttMain.class,
+		                Value.eq("fdModelId", task.getFdId()),
+		                Value.eq("fdModelName", Task.class.getName()));
+		for (AttMain attMain : oldAttMains) {
+			attMainService.delete(AttMain.class,attMain.getFdId());
+		}
 		// 更新选项附件
 		if (StringUtil.isNotBlank(attString)) {
-			//删除之前的选项
-			List<AttMain> oldAttMains = attMainService.findByCriteria(AttMain.class,
-			                Value.eq("fdModelId", task.getFdId()),
-			                Value.eq("fdModelName", Task.class.getName()));
-			for (AttMain attMain : oldAttMains) {
-				attMain.setFdModelId("");
-				attMain.setFdModelName("");
-				attMainService.save(attMain);
-			}
 			List<Map> att = JsonUtils.readObjectByJson(attString, List.class);
 			for (Map map : att) {
 				AttMain e = attMainService.get(map.get("id").toString());
@@ -136,7 +135,7 @@ public class TaskPaperAjaxController {
 				e.setFdKey("taskAtt");
 				e.setFdOrder(map.get("index").toString());
 				attMains.add(e);
-				attMainService.update(e);
+				attMainService.save(e);
 			}
 		}
 		resultMap.put("materialId", info.getFdId());
