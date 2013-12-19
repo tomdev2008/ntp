@@ -340,9 +340,10 @@ value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
 		   <div class="section" >              	
 					<label>上传图片（支持JPG\JPEG、PNG、BMP格式的图片，建议小于2M）</label>
 					<div class="control-upload">
-						     <button id="upMovie" class="btn btn-primary btn-large" type="button" >
+                         <span class="progress"> <div class="bar" style="width:0;"></div> </span>
+					     <span class="txt"><span class="pct">0%</span>，剩余时间：<span class="countdown">00:00:00</span></span>
+						     <button id="upMovie" class="btn btn-primary btn-large" type="button" >上传</button>
 
-上传</button>
 							<input type="hidden"  name="attId" id="attIdID">
 					</div>		
 	       </div>		  
@@ -600,12 +601,11 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
 					<label>{{=it.uploadIntro || ''}}</label>
 					<div class="control-upload">
 
-							<input type="hidden"  name="attId" id="attId">
-						     <button id="upMaterial" class="btn btn-primary btn-large" type="button" 
-
->上传</button>
-
-
+						<input type="hidden"  name="attId" id="attId">
+                        <span class="progress"> <div class="bar" style="width:0;"></div> </span>
+					    <span class="txt"><span class="pct">0%</span>，剩余时间：<span class="countdown">00:00:00</span></span>
+                      
+                        <button id="upMaterial" class="btn btn-primary btn-large" type="button">上传</button>
 					</div>
 	        </div>
 			{{?}}
