@@ -163,6 +163,8 @@ href="#audio"><i class="icon-audio-lg"></i><h5>音频</h5></a>
 				<a class="btn-type{{?param.type != 'none' && param.type != 'img'}} disabled{{?}}" 
 href="#img"><i class="icon-img-lg"></i><h5>图片</h5></a>
 
+                <a class="btn-type{{?param.type != 'none' && param.type != 'txt'}} disabled{{?}}" 
+href="#txt"><i class="icon-calendar-lg"></i><h5>富文本</h5></a>
 
 <!-- 
 				<a class="btn-type{{?param.type != 'none' && param.type != 'calendar'}} disabled{{?}}" 
@@ -596,7 +598,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
                     {{~}}
                 </ul>
             </div>
-			{{?it.type != 'exam' && it.type != 'task'}}
+			{{?it.type != 'exam' && it.type != 'task' && it.type != 'txt'}}
 		    <div class="section" >
 					<label>{{=it.uploadIntro || ''}}</label>
 					<div class="control-upload">
@@ -823,6 +825,11 @@ $.Placeholder.init();
                 case "img":
                     if(opt) {
                         rightCont.loadVideoPage(opt,"03");
+                        break;
+                    }
+                case "txt":
+                    if(opt) {
+                        rightCont.loadVideoPage(opt,"07");
                         break;
                     }
                 case "exam":

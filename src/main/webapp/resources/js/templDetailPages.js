@@ -106,6 +106,12 @@
             	data_uploadIntro = "上传图片（支持JPG、PNG、BMP格式的图片，建议小于10G）：成功上传的图片将会显示在上面的图片列表中。";
             	uptype='*.jpg;*.png;';
 	            break;
+            case "07":
+            	data_type = "txt";
+            	data_typeTxt = "富文本";
+            	data_uploadIntro = "";
+            	uptype='';
+	            break;
             case "08":
             	data_type = "exam";
             	data_typeTxt = "测试";
@@ -317,6 +323,7 @@
                 $listMedia = $("#listMedia"),
                 addFlag = false,
                 mediaData ;
+            
             /*
 			 * $("#addMedia").autocomplete("url.jsp",{ dataType: "json", parse:
 			 * function(data) { return $.map(data, function(row) { return {

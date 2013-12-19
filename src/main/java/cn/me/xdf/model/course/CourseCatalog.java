@@ -267,6 +267,9 @@ public class CourseCatalog extends IdEntity {
         if (Constant.MATERIAL_TYPE_JOBPACKAGE.equals(materialType)) {
             return "task";
         }
+        if (Constant.MATERIAL_TYPE_RICHTEXT.equals(materialType)) {
+            return "txt";
+        }
         if (Constant.MATERIAL_TYPE_SCHEDULE.equals(materialType)) {
             return "calendar";
         }
