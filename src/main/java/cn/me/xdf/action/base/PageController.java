@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/admin/page")
 public class PageController {
 
-	@RequestMapping(value="getPageList")
+	@RequestMapping(value="list")
 	public String getPageList(HttpServletRequest request){
 		return "/admin/page/list";
 	}
