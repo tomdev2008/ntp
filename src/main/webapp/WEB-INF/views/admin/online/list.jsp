@@ -71,9 +71,10 @@
               <th width="10px">#</th>
               <th width="10%">用户</th>
               <th width="30%">部门</th>
-              <th width="20%">登录次数</th>
-              <th width="20%">在线天数</th>
+              <th width="10%">登录次数</th>
+              <th width="10%">在线天数</th>
               <th width="20%">登录时间</th>
+              <th width="10%">操作</th>
             </tr>
           </thead>
           <tbody>
@@ -88,6 +89,7 @@
                 <td>${bean.loginNum}</td>
                 <td>${bean.loginDay}</td>
                 <td>${bean.time}</td>
+                <td><a href="${ctx}/admin/online/view?onlineId=${bean.fdLogId}">查看</a></td>
               </tr>
             </j:iter>
           </tbody> 

@@ -63,4 +63,20 @@ public class OnlineContorller {
 		model.addAttribute("list", returnList);
 		return "/admin/online/list";
 	}
+	
+	@RequestMapping(value = "view", method = RequestMethod.GET)
+	public String view(Model model, String onlineId, HttpServletRequest request) {
+		model.addAttribute("active", "online");
+		Map map = new HashMap();
+		LogOnline logOnline = logOnlineService.get(onlineId);
+		map.put("fdOnlineId", logOnline.getFdId());
+		map.put("fdUserName", logOnline.getPerson().getFdName());
+		map.put("fdUserDep", logOnline.getPerson().getHbmParent()==null?"":logOnline.getPerson().getHbmParent().getFdName());
+		map.put("loginTime", DateUtil.convertDateToString(logOnline.getLoginTime(), "yyyy-MM-dd HH:mm:ss"));
+		map.put("ip", logOnline.getIp());
+		map.put("loginNum", logOnline.getLoginNum());
+		map.put("loginDay", logOnline.getLoginDay());
+		model.addAttribute("map", map);
+		return "/admin/online/view";
+	}
 }
