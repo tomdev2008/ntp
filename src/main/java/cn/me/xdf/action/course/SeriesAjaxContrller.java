@@ -723,8 +723,9 @@ public class SeriesAjaxContrller {
 		Map returnMap = new HashMap();
 		int pageNo = new Integer(request.getParameter("pageNo"));
 		Finder finder = Finder
-				.create(" from SeriesInfo s where s.isPublish = :isPublish");
+				.create(" from SeriesInfo s where s.isPublish = :isPublish and s.isAvailable=:isAvailable");
 		finder.setParam("isPublish", true);
+		finder.setParam("isAvailable", true);
 		Pagination pagination = seriesCoursesService.getPage(finder, pageNo, 3);
 		if (pagination.getTotalPage() >= pageNo) {
 			if (pagination.getList().size() == 3) {
