@@ -19,7 +19,7 @@
 					</ul>
 				</div>
 				<form class="toolbar-search" onkeydown="pressEnter();">
-					<input type="text" id="serach" class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
+					<input type="text" id="serach" value='' class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
 					<i class="icon-search" onclick="pageNavClick('${param.fdType}','1','FDCREATETIME');"></i>
 				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>
@@ -293,7 +293,8 @@ function downloadMater(){
 function exportData(){
    var fdType=$("#fdType").val();
    if(document.getElementById("selectAll").checked){
-	  var keyword=$("#search").val();
+	  var keyword=$("#serach").val();
+	  alert(keyword);
 	  var order = $("#fdOrder").val();
 	  $.fn.jalert("您确定要导出全部数据吗？",function(){
 		window.location.href="${ctx}/common/exp/getExportMaterialList?fdType="+fdType+"&fdName="+keyword+"&order="+order;

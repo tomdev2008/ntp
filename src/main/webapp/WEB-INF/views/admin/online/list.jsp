@@ -9,7 +9,7 @@
 <html lang="zh_CN">
 <head>
 <script type="text/javascript">
-	$(function() {
+	/* $(function() {
 		$('#filterSelect').change(function() {
 			var fv = $(this).children('option:selected').val();
 			document.filterForm.method = "get";
@@ -18,7 +18,7 @@
 			document.filterForm.submit();
 			return; 
 		});
-	});
+	}); */
 
 /* 	function delSel() {
 		if (!confirm('您确定要批量删除吗？')) {
@@ -53,29 +53,28 @@
     <div class="page-body"> 
     <j:autoform>
       <form class="form-inline" name="filterForm">
-        <p class="page-intro">在本模块中，您可以查看或删除日志信息</p>
-        <div class="btn-group">
+        <p class="page-intro">在本模块中，您可以查看在线用户信息</p>
+       <!--  <div class="btn-group">
           <a id="delAll" onclick="delSel()" class="btn btn-primary">批量删除</a>
         </div>
-        <span style="margin: 0 2px 0 10px">查看</span> <select name="fdType" id="filterSelect">
+        <span style="margin: 0 2px 0 10px">查看</span> 
+        <select name="fdType" id="filterSelect">
           <option value="LogLogin">登录日志</option>
           <option value="LogLogout">登出日志</option>
           <option value="LogApp">操作日志</option>
-        </select>
+        </select> -->
         <p/>
         <table class="table table-striped">
           <thead>
             <tr>
               <th><input type="checkbox" name="select" id="selectAll" /></th>
               <th width="10px">#</th>
-              <th width="10%">操作人</th>
-              <th width="30%">部门</th>
-              <th width="10%">日志类型</th>
-              <th width="30%">操作时间</th>
-              <th width="10%">操作</th>
+              <th width="20%">用户</th>
+              <th width="60%">部门</th>
+              <th width="20%">登录时间</th>
             </tr>
           </thead>
-          <tbody>
+<%--           <tbody>
             <j:iter items="${list}" var="bean" status="vstatus">
               <tr>
                 <td style="width: 10px;"><label> <input type="checkbox" name="ids" class="check"
@@ -89,9 +88,9 @@
                 <td><a href="#" onclick="">删除</a></td>
               </tr>
             </j:iter>
-          </tbody> 
+          </tbody>  --%>
         </table>
-        <tags:pagination page="${page}" searchParams="fdType=${fdType}" paginationSize="10" />
+        <%-- <tags:pagination page="${page}" searchParams="fdType=${fdType}" paginationSize="10" /> --%>
       </form>
     </j:autoform>
   </div>

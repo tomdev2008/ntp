@@ -127,9 +127,16 @@
                         <div class="control-group" id="videoText">
                             <label class="control-label" for="videoUrl">播放地址</label>
                             <div class="controls">
-                             <input value="${materialInfo.fdLink}" 
-                                  placeholder="请认真填写该章节的 建议学习时长"
-                                id="videoUrl" class="input-block-level" name="fdLink" type="text">
+							<j:ifelse test="${materialInfo.fdLink != null && materialInfo.fdLink != '' }">
+								<j:then>
+									<input value="${materialInfo.fdLink}" placeholder="请认真填写该章节的 建议学习时长"
+                                       id="videoUrl" class="input-block-level" name="fdLink" type="text">
+								</j:then>
+								<j:else>
+									<input value="${main.fileUrl}" placeholder="请认真填写该章节的 建议学习时长"
+                                       id="videoUrl" class="input-block-level" name="fdLink" type="text">
+								</j:else>
+							</j:ifelse>
                             </div>
                         </div>
                         <div class="control-group">
@@ -163,10 +170,28 @@
                     <section class="section mt20">
                         <label id="uploadIntro"></label>
                         <div class="control-upload">
-                        	
-						    <button id="upMaterial"class="btn btn-primary btn-large" type="button" >上传</button>
-						  <input type="hidden"  name="attId" id="attId" value="">
-                        </div>
+                          <span class="progress"> 
+                             <div class="bar" style="width:0;"></div> 
+                          </span>
+				    	  <span class="txt">
+				    	      <span class="pct">0%</span>，剩余时间：<span class="countdown">00:00:00</span>
+				    	  </span>
+                     
+						  <button id="upMaterial"class="btn btn-primary btn-large" type="button" >上传</button>
+						</div>
+						
+						<ul class="unstyled list-attachment" id="listAttachment">
+						  <c:if test="${main != null}">
+							<li data-fdid="${main.fdId}">
+								<a class="name"	href="#" target="_blank">${main.fdFileName}</a>
+								<input type="hidden"  name="attId" id="attId" value="">
+								<div class="item-ctrl">
+									<a class="icon-remove-blue" href="#"></a>
+								</div>
+							</li>
+							</c:if>
+						 </ul>
+						
                     </section>
                     
                     <section class="section mt20">
@@ -361,9 +386,16 @@ $(function(){
     	uptype='*.ppt;*.pptx;';
         break;
   }
-	var $progress ,
-	flag = true,
-	pct,interval,countdown = 0,byteUped = 0;
+	$("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){
+		e.preventDefault();
+		$(this).closest("li").remove();
+	});
+	
+	var $txt = $("#upMaterial").prev(".txt"), 
+    $progress = $txt.prev(".progress").children(".bar"),
+    $pct = $txt.children(".pct"),
+    $countdown = $txt.children(".countdown"),
+	flag = true,pct,interval,countdown = 0,byteUped = 0;
 
 	$("#upMaterial").uploadify({
     'height' : 40,
@@ -377,19 +409,23 @@ $(function(){
     'auto' : true,
     'fileTypeExts' : uptype,
     'onInit' : function(){
-    	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
-		<span class="txt"><span class="pct">0%</span><span class="countdown"></span></span>');
     	$("#upMaterial").next(".uploadify-queue").remove();
     },
-    'onUploadStart' : function (file) {
-    	$("#upMaterial").before($progress);
-        //$uploadBtn.uploadify("settings", "formData");
-    },
+    'onUploadStart' : function (file) {},
     'onUploadSuccess' : function (file, data, Response) {
         if (Response) {
-        	$progress.find(".countdown").empty();
+        	$countdown.text("00:00:00");
+        	$progress.width("0");
+        	$pct.text("0%");
             var objvalue = eval("(" + data + ")");
-            jQuery("#attId").val(objvalue.attId);
+		    var html="<li data-fdid='"+objvalue.attId+"'><a class='name' href='#' target='_blank'>"+file.name+" "
+		          +"<input type='hidden'  name='attId' id='attId' value='"+objvalue.attId+"'><div class='item-ctrl'> "
+		          +"<a class='icon-remove-blue' href='#'></a> </div></li>";
+            $("#listAttachment").html(html);
+            $("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){
+				e.preventDefault();
+				$(this).closest("li").remove();
+			});
         }
     },
     'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
@@ -402,29 +438,33 @@ $(function(){
     	if(bytesUploaded == bytesTotal){
     		clearInterval(interval);
     	}
-    	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
-    	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
+    	
+    	$progress.width(pct);
+    	$pct.text(pct);
+    	countdown>0 && $countdown.text(secTransform((bytesTotal-bytesUploaded)/countdown*10));
     }
   });
 	function uploadSpeed(){
 		countdown = byteUped - countdown;
 	}
-	
 	function secTransform(s){
 		if( typeof s == "number"){
 			s = Math.ceil(s);
 			var t = "";
 			if(s>3600){
-				t= Math.ceil(s/3600) + "小时" + Math.ceil(s%3600/60) + "分钟" + s%3600%60 + "秒";
+				t= completeZero(Math.ceil(s/3600)) + ":" + completeZero(Math.ceil(s%3600/60)) + ":" + completeZero(s%3600%60) ;
 			} else if(s>60){
-				t= Math.ceil(s/60) + "分钟" + s%60 + "秒";
+				t= "00:" + completeZero(Math.ceil(s/60)) + ":" + completeZero(s%60) ;
 			} else {
-				t= s + "秒";
+				t= "00:00:" + completeZero(s);
 			}
-			return "，剩余时间：" + t;
+			return t;
 		}else{
 			return null;
 		}		
+	}
+	function completeZero(n){
+		return n<10 ? "0"+n : n;
 	}
 });
 
