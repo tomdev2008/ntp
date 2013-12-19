@@ -116,4 +116,48 @@ public class LogContorller {
 		model.addAttribute("fdType", fdType);
 		return "/admin/log/list";
 	}
+	
+	@RequestMapping(value = "view", method = RequestMethod.GET)
+	public String view(Model model, String logId,String logType, HttpServletRequest request) {
+		model.addAttribute("active", "log");
+		model.addAttribute("fdType", logType);
+		Map map = new HashMap();
+		if(logType.equals("LogLogin")){
+			LogLogin logLogin = logLoginService.get(logId);
+			map.put("fdLogId", logLogin.getFdId());
+			map.put("fdUserName", logLogin.getPerson().getFdName());
+			map.put("fdUserDep", logLogin.getPerson().getHbmParent()==null?"":logLogin.getPerson().getHbmParent().getFdName());
+			map.put("time", DateUtil.convertDateToString(logLogin.getTime(), "yyyy-MM-dd HH:mm:ss"));
+			map.put("logType", "登录日志");
+			map.put("ip", logLogin.getIp());
+
+		}else if(logType.equals("LogLogout")){
+			LogLogout logLogout = logLogoutService.get(logId);
+			map.put("fdLogId", logLogout.getFdId());
+			map.put("fdUserName", logLogout.getPerson().getFdName());
+			map.put("fdUserDep", logLogout.getPerson().getHbmParent()==null?"":logLogout.getPerson().getHbmParent().getFdName());
+			map.put("time", DateUtil.convertDateToString(logLogout.getTime(), "yyyy-MM-dd HH:mm:ss"));
+			map.put("logType", "登出日志");
+			map.put("ip", logLogout.getIp());
+		}else if(logType.equals("LogApp")){
+			LogApp logApp = logAppService.get(logId);
+			map.put("fdLogId", logApp.getFdId());
+			SysOrgPerson orgPerson = accountService.load(logApp.getPersonId());
+			map.put("fdUserName", orgPerson.getFdName());
+			map.put("fdUserDep", orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getFdName());
+			map.put("time", DateUtil.convertDateToString(logApp.getTime(), "yyyy-MM-dd HH:mm:ss"));
+			if(logApp.getMethod().equals(Constant.DB_UPDATE)){
+				map.put("logType", "操作日志（修改）");
+			}else if(logApp.getMethod().equals(Constant.DB_DELETE)){
+				map.put("logType", "操作日志（删除）");
+			}else{
+				map.put("logType", "操作日志（插入）");
+			}
+			map.put("content", logApp.getContent().trim());
+			map.put("modelId", logApp.getModelId());
+			map.put("modelName", logApp.getModelName());
+		}
+		model.addAttribute("map", map);
+		return "/admin/log/view";
+	}
 }

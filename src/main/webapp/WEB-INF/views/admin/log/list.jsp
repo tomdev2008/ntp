@@ -86,7 +86,10 @@
                 <td>${bean.fdUserDep}</td>
                 <td>${bean.logType}</td>
                 <td>${bean.time}</td>
-                <td><a href="#" onclick="">删除</a></td>
+                <td>
+                <a href="${ctx}/admin/log/view?logId=${bean.fdLogId}&logType=${fdType}">查看</a>
+                <a href="#" onclick="">删除</a>
+                </td>
               </tr>
             </j:iter>
           </tbody> 
