@@ -288,6 +288,7 @@ public class MaterialAjaxController {
 		String kingUser = request.getParameter("kingUser");
 		String attId = request.getParameter("attId");
 		String richText = request.getParameter("richText");//富文本内容
+		String isDownload = request.getParameter("isDownload");
 		MaterialInfo info;
 		if (StringUtil.isBlank(fdId)) {
 			info = new MaterialInfo();
@@ -304,7 +305,7 @@ public class MaterialAjaxController {
 			saveAtt(attId, info.getFdId());
 		}
 		info.setIsPublish(permission.equals("open")?true:false);
-		info.setIsDownload(true);
+		info.setIsDownload(isDownload.equals("yes")?true:false);
 		info.setFdAuthor(request.getParameter("author"));
 		info.setFdAuthorDescription(request.getParameter("authorIntro"));
 		info.setFdLink(request.getParameter("videoUrl"));
