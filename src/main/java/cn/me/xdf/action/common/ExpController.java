@@ -11,6 +11,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -324,6 +325,26 @@ public class ExpController {
 		String fdType = request.getParameter("fdType");
 		String fdName = request.getParameter("fdName");
 		String order = request.getParameter("order");
+		return null;
+	}
+	
+	/**
+	 * 用户xls（导出）
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/getExpuser")
+    public String getExpuser(HttpServletRequest request,HttpServletResponse response){
+		String[] ids = request.getParameterValues("ids");
+		String param = request.getParameter("fdKey");
+		String fdType = request.getParameter("fdType");
+		String selectAll = request.getParameter("selectAll");
+		if(StringUtils.isBlank(selectAll) && org.apache.commons.lang3.ArrayUtils.isNotEmpty(ids)){//导出ids
+			
+		}else if(StringUtils.isNotBlank(selectAll)){//导出全部
+			
+		}
 		return null;
 	}
      
