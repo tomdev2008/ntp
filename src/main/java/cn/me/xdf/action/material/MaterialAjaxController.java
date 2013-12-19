@@ -299,8 +299,8 @@ public class MaterialAjaxController {
 		}else{
 			info = materialService.load(fdId);
 		}
+		attMainService.deleteAttMainByModelId(info.getFdId());
 		if (StringUtil.isNotBlank(attId)) {
-			attMainService.deleteAttMainByModelId(info.getFdId());
 			saveAtt(attId, info.getFdId());
 		}
 		info.setIsPublish(permission.equals("open")?true:false);
