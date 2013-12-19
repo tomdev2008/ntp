@@ -988,6 +988,13 @@
                     top: 10
                 }
             });
+            $(window).on("scroll",function(){
+                if($("#pageHeader").hasClass("affix-top")){
+                    $("#pageBody").css("margin-top",0);
+                } else {
+                    $("#pageBody").css("margin-top",$("#pageHeader").height());
+                }
+            });
         }
         /*视频、文档等媒体页加载头部后执行方法*/
         function afterLoadMediaPage(data){
@@ -1682,11 +1689,7 @@
                         var pos = $this.parent("li").offset();
                         var sTop = 0;
                         var $pageHead = $("#pageHeader");
-                        if($pageHead.hasClass("affix")){
                             sTop = pos.top - 60 - $pageHead.height();
-                        } else{
-                            sTop = pos.top - 60 - $pageHead.height() - $pageHead.children(".hd").height() -$("#headToolsBar").height();
-                        }
                         $("html,body").animate({scrollTop: sTop},pos.top-sTop,"swing");
                         
                         var flag = true,pct,interval,countdown = 0,byteUped = 0;

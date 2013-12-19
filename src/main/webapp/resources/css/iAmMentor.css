@@ -51,8 +51,7 @@
 .box-control .hd .btn-toolbar .btn-link{border: none;margin-right: 0;position: absolute;right: 0;top:1px;}
 .box-control .hd .toolbar-search {display: inline-block;*display: inline;position: relative;margin-bottom:0; margin-left: 5px;}
 .box-control .hd .toolbar-search .icon-search{position: absolute;right: 10px;top: 5px;*top:10px;}
-.box-control .hd .toolbar-search .search{
-    width: 180px;padding: 4px 10px;border: solid #e5e5e5 1px;margin-bottom: 0;}
+.box-control .hd .toolbar-search .search{width: 160px;padding: 4px 30px 4px 10px;border: solid #e5e5e5 1px;margin-bottom: 0;}
 .box-control .hd .btn-toolbar .showState{font-size: 14px;line-height: 20px;padding: 5px 15px;margin-right:20px;vertical-align: middle;}
 .box-control .bd{overflow: hidden}
 .box-control .bd .btn-toolbar{margin:10px;position: relative;}
@@ -135,7 +134,7 @@
 #navTask {margin-top: 10px;}
 #navTask .num{display: inline-block;margin: 0 9px 16px 0;width: 18px;height: 18px;line-height:18px;font-family:Arial; color:#ffffff;text-align:center; border: solid #acacac 1px;background-color: #cdcdcd;}
 #navTask .num.active{border-color: #4491bb;background-color: #99bbd7;position: relative;}
-#navTask .num i{position: absolute;right: -6px;top: -6px;}
+#navTask .num i{position: absolute;right: -6px;top: -6px;}.box-control .hd .toolbar-search .search
 
 .dashed-t1{border-top: dashed #cdcdcd 1px;}
 .taskAnswer{background-color: #f5f9fb;}
