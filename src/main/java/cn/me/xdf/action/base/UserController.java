@@ -39,22 +39,28 @@ public class UserController {
 	private AccountService accountService;
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public String list(Model model, String pageNo, HttpServletRequest request) {
+	public String list(Model model, HttpServletRequest request) {
 		model.addAttribute("active", "user");
+		String pageNo = request.getParameter("pageNo");
+		String fdType = request.getParameter("fdType");
 		if (StringUtils.isBlank(pageNo)) {
 			pageNo = String.valueOf(1);
 		}
 		Finder finder = Finder.create(" from SysOrgPerson p where p.loginName <> 'admin' ");
 		String param = request.getParameter("fdKey");
 		if (StringUtils.isNotBlank(param)) {
-			finder.append(" and lower(p.loginName) like :param  or lower(p.fdName) like :param or lower(p.hbmParent.fdName) like :param  ").setParam("param",
+			finder.append(" and (lower(p.loginName) like :param  or lower(p.fdName) like :param or lower(p.hbmParent.fdName) like :param ) ").setParam("param",
 					"%"+param+"%");
+		}
+		if(StringUtils.isNotBlank(fdType)){
+			finder.append(" and p.fdIsEmp = :isEmp ").setParam("isEmp", fdType);
 		}
 		Pagination page = sysOrgPersonService.getPage(finder,
 				Integer.parseInt(pageNo));
 
 		model.addAttribute("page", page);
 		model.addAttribute("fdKey", param);
+		model.addAttribute("fdType", fdType);
 		return "/admin/user/list";
 	}
 	

@@ -60,9 +60,7 @@
                     <a href="${ctx}/admin/user/list"><span class="muted">返回</span>系统管理<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
                 </div>
 	        </div>
-	        <div class="page-body" id="pageBody">
   <sitemesh:body />
-  			</div>
          </section>
 	</section>
 
