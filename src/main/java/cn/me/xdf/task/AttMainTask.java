@@ -45,22 +45,14 @@ public class AttMainTask {
         taskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                if ("04".equals(attMain.getFdFileType()) || "05".equals(attMain.getFdFileType())) {
-                    log.info("开始执行文档上传接口");
-                    String fileNetId = AttMainPlugin.addDoc(attMain, "1");
-
-                    attMain.setFileNetId(fileNetId);
-                    attMain.setFlag(getFlagByFileNetId(fileNetId));
-                    log.info("fileNameId======" + fileNetId);
-                    attMainService.update(attMain);
-                } else if ("01".equals(attMain.getFdFileType())) {
+                if ("01".equals(attMain.getFdFileType())) {
                     log.info("开始执行视频上传接口");
                     SysAppConfig sysAppConfig = sysAppConfigService.findByKeyAndParam("cn.me.xdf.model.base.AttMain", "CALL_BACK_URL");
                     String callback_url = "NTP";
                     if (sysAppConfig != null) {
                         callback_url = sysAppConfig.getFdValue();
                     }
-                    String playCode = AttMainPlugin.addDocNtp(attMain,callback_url);
+                    String playCode = AttMainPlugin.addDocNtp(attMain, callback_url);
                     String fileNetId = AttMainPlugin.addDoc(attMain, "0");
                     if (StringUtils.isNotBlank(playCode)) {
                         if ("-1".equals(playCode)) {
@@ -77,6 +69,18 @@ public class AttMainTask {
                             attMainService.update(attMain);
                         }
                     }
+                } else {
+                    log.info("开始执行文档上传接口");
+                    String isConvert = "0";
+                    if ("04".equals(attMain.getFdFileType()) || "05".equals(attMain.getFdFileType())) {
+                        isConvert = "1";
+                    }
+                    String fileNetId = AttMainPlugin.addDoc(attMain, isConvert);
+
+                    attMain.setFileNetId(fileNetId);
+                    attMain.setFlag(getFlagByFileNetId(fileNetId));
+                    log.info("fileNameId======" + fileNetId);
+                    attMainService.update(attMain);
                 }
             }
         });
