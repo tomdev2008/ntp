@@ -49,12 +49,15 @@ public class LogContorller {
 	private LogAppService logAppService;
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public String list(Model model, String pageNo, HttpServletRequest request) {
+	public String list(Model model, String pageNo,String key, HttpServletRequest request) {
 		model.addAttribute("active", "log");
 		if (StringUtils.isBlank(pageNo)) {
 			pageNo = String.valueOf(1);
 		}
-		
+		if (StringUtils.isBlank(key)) {
+			key = "";
+		}
+		model.addAttribute("fdKey", key);
 		String fdType = request.getParameter("fdType");
 		if (StringUtils.isEmpty(fdType)) {
 			fdType="LogLogin";
@@ -63,7 +66,7 @@ public class LogContorller {
 		Pagination page=null;
 		List<Map> returnList = new ArrayList<Map>();
 		if(fdType.equals("LogLogin")){
-			finder.append("from LogLogin l");
+			finder.append("from LogLogin l where l.person.fdName like '%"+key+"%' ");
 			finder.append("order by l.time desc");
 			page= logLoginService.getPage(finder,Integer.parseInt(pageNo));
 			List<LogLogin> list = (List<LogLogin>) page.getList();
@@ -77,7 +80,7 @@ public class LogContorller {
 				returnList.add(map);
 			}
 		}else if(fdType.equals("LogLogout")){
-			finder.append("from LogLogout l");
+			finder.append("from LogLogout l where l.person.fdName like '%"+key+"%' ");
 			finder.append("order by l.time desc");
 			page= logLogoutService.getPage(finder,Integer.parseInt(pageNo));
 			List<LogLogout> list = (List<LogLogout>) page.getList();
@@ -91,7 +94,7 @@ public class LogContorller {
 				returnList.add(map);
 			}
 		}else if(fdType.equals("LogApp")){
-			finder.append("from LogApp l");
+			finder.append("select l from LogApp l , SysOrgElement o where l.personId=o.fdId and o.fdName like '%"+key+"%'  ");
 			finder.append("order by l.time desc");
 			page= logAppService.getPage(finder,Integer.parseInt(pageNo));
 			List<LogApp> list = (List<LogApp>) page.getList();
@@ -174,5 +177,43 @@ public class LogContorller {
 		}
 		return "redirect:/admin/log/list?fdType="+fdType;
 	}
+	
+	@RequestMapping(value = "deleteAll")
+	public String deleteAll(HttpServletRequest request) {
+		String fdType = request.getParameter("fdType");
+		String [] ids =request.getParameterValues("ids");
+		String key = request.getParameter("key");
+		String isAll = request.getParameter("selectCheckbox");
+		if(isAll!=null&&isAll.equals("all")){
+			if(fdType.equals("LogLogin")){
+				Finder finder = Finder.create("delete from IXDF_NTP_LOGLOGIN la where la.fdId in( select l.fdId from IXDF_NTP_LOGLOGIN l , SYS_ORG_ELEMENT o where l.fdpersonid=o.fdId and o.fd_name like '%"+key+"%' )  ");
+				logLoginService.executeSql(finder.getOrigHql());
+			}else if(fdType.equals("LogLogout")){
+				Finder finder = Finder.create("delete from IXDF_NTP_LOGLOGOUT la where  la.fdId in( select l.fdId from IXDF_NTP_LOGLOGOUT l , SYS_ORG_ELEMENT o where l.fdpersonid=o.fdId and o.fd_name like '%"+key+"%' )  ");
+				logLoginService.executeSql(finder.getOrigHql());
+			}else if(fdType.equals("LogApp")){
+				Finder finder = Finder.create("delete from IXDF_NTP_LOGAPP la where la.fdId in( select l.fdId from IXDF_NTP_LOGAPP l , SYS_ORG_ELEMENT o where l.personId=o.fdId and o.fd_name like '%"+key+"%' ) ");
+				logLoginService.executeSql(finder.getOrigHql());
+			}
+		}else{
+			if(fdType.equals("LogLogin")){
+				for (int i = 0; i < ids.length; i++) {
+					logLoginService.delete(ids[i]);
+				}
+			}else if(fdType.equals("LogLogout")){
+				for (int i = 0; i < ids.length; i++) {
+					logLogoutService.delete(ids[i]);
+				}
+			}else if(fdType.equals("LogApp")){
+				for (int i = 0; i < ids.length; i++) {
+					logAppService.delete(ids[i]);
+				}
+			}
+		}
+		
+		return "redirect:/admin/log/list?fdType="+fdType;
+	}
+	
+	
 	
 }
