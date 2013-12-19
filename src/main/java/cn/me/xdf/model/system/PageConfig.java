@@ -15,7 +15,7 @@ import cn.me.xdf.model.base.IdEntity;
 @SuppressWarnings("serial")
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Table(name = "SYS_APP_CONFIG")
+@Table(name = "SYS_PAGE_CONFIG")
 public class PageConfig extends IdEntity{
 	
 	/**

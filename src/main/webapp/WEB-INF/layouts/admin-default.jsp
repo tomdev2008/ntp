@@ -42,6 +42,7 @@
     		<li class="nav-header first"><span>系统管理</span></li>
             <tags:shirourl url="${ctx}/admin/user/list" active="user" text="用户管理" iconName="icon-user"  para="${active}"></tags:shirourl>
             <tags:shirourl url="${ctx}/admin/role/list" active="role" text="角色管理" iconName="icon-user"  para="${active}"></tags:shirourl>
+            <tags:shirourl url="${ctx}/admin/log/list" active="log" text="日志管理" iconName="icon-user"  para="${active}"></tags:shirourl>
     	</ul>
     </section>
     	 
@@ -50,6 +51,7 @@
                 <span class="muted">我正在看：</span>
                  <j:if test="${active=='user'}">用户管理</j:if>
                  <j:if test="${active=='role'}">角色管理</j:if>
+                 <j:if test="${active=='log'}">日志管理</j:if>
                 <div class="backHome">
                     <a href="${ctx}/admin/user/list"><span class="muted">返回</span>系统管理<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
                 </div>
