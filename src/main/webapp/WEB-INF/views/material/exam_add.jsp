@@ -86,9 +86,10 @@
             <section class="section mt20">
                 <label>辅助材料（上传辅助材料，建议小于2G）</label>
                 <div class="control-upload">
-							
                    <div class="upload-fileName" id="attName"></div>
                    <div class="pr">
+                     <span class="progress"> <div class="bar" style="width:0;"></div> </span>
+					 <span class="txt"><span class="pct">0%</span>，剩余时间：<span class="countdown">00:00:00</span></span>
                      <button id="upMaterial" class="btn btn-primary btn-large" type="button" >上传</button>                   
                    </div>
                    <input type="hidden"  name="attId" id="attId">
@@ -344,7 +345,6 @@
 				</div>
 			</section>
 		</section>
-
 	</section>
 
 	<script type="text/javascript"
@@ -940,7 +940,10 @@ $("#exportExamPaper").click(function(e){
 							});
 				}
 				
-				var $progress ,
+				var $txt = $("#upMaterial").prev(".txt"), 
+		        $progress = $txt.prev(".progress").children(".bar"),
+		        $pct = $txt.children(".pct"),
+		        $countdown = $txt.children(".countdown"),
 		    	flag = true,
 		    	pct,interval,countdown = 0,byteUped = 0;
 
@@ -956,19 +959,15 @@ $("#exportExamPaper").click(function(e){
 		        'auto' : true,
 		        'fileTypeExts' : '*.*',
 		        'onInit' : function(){
-		        	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
-		    		<span class="txt"><span class="pct">0%</span><span class="countdown"></span></span>');
 		        	$("#upMaterial").next(".uploadify-queue").remove();
 		        },
-		        'onUploadStart' : function (file) {
-		        	$("#upMaterial").before($progress);
-		            //$uploadBtn.uploadify("settings", "formData");
-		        },
+		        'onUploadStart' : function (file) {},
 		        'onUploadSuccess' : function (file, data, Response) {
 		            if (Response) {
-		            	$progress.find(".countdown").empty();
+		            	$countdown.text("00:00:00");
+		            	$progress.width("0");
+		            	$pct.text("0%");
 		                var objvalue = eval("(" + data + ")");
-		                jQuery("#attName").html(objvalue.fileName+"<i class=\"icon-paperClip\"></i>");
 		                $("#listAttachment").append(itemExamDetailFn({
 		               	 	flag: "add" ,
 		               	 	id: objvalue.attId,
@@ -988,10 +987,11 @@ $("#exportExamPaper").click(function(e){
 		        	}
 		        	if(bytesUploaded == bytesTotal){
 		        		clearInterval(interval);
-		        		
 		        	}
-		        	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
-		        	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
+		        	
+		        	$progress.width(pct);
+		        	$pct.text(pct);
+		        	countdown>0 && $countdown.text(secTransform((bytesTotal-bytesUploaded)/countdown*10));
 		        }
 		      });
 		    	function uploadSpeed(){
@@ -1002,16 +1002,19 @@ $("#exportExamPaper").click(function(e){
 		    			s = Math.ceil(s);
 		    			var t = "";
 		    			if(s>3600){
-		    				t= Math.ceil(s/3600) + "小时" + Math.ceil(s%3600/60) + "分钟" + s%3600%60 + "秒";
+		    				t= completeZero(Math.ceil(s/3600)) + ":" + completeZero(Math.ceil(s%3600/60)) + ":" + completeZero(s%3600%60) ;
 		    			} else if(s>60){
-		    				t= Math.ceil(s/60) + "分钟" + s%60 + "秒";
+		    				t= "00:" + completeZero(Math.ceil(s/60)) + ":" + completeZero(s%60) ;
 		    			} else {
-		    				t= s + "秒";
+		    				t= "00:00:" + completeZero(s);
 		    			}
-		    			return "，剩余时间：" + t;
+		    			return t;
 		    		}else{
 		    			return null;
 		    		}		
+		    	}
+		    	function completeZero(n){
+		    		return n<10 ? "0"+n : n;
 		    	}
 				
 				
