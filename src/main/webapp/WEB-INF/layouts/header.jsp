@@ -100,5 +100,5 @@ function getUnreadNotifyCount(){
     }
  }); 
 }
-getUnreadNotifyCount();
+///getUnreadNotifyCount();
 </script>

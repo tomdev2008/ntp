@@ -846,7 +846,13 @@
 		  				if(result.type == "exam" || result.type == "task"){
 		  					$("#mainContent").html(rightContentFn(result));
 		  					afterLoadExamOrTaskPage(result);
-		  	            } else if(result.type == "video" || result.type == "txt" || result.type == "doc"||result.type == "ppt"){
+		  	            }else if(result.type == "txt"){
+		  	            	$("#mainContent").html(rightMaterialContentFn(result));
+		  	                afterLoadMediaPage(result);
+		  	          		$("#btnPraise").attr("converStatus","true");
+		  	          	    $("#btnDoPass").attr("converStatus","true");
+		  	          		$("#btnDownload").addClass("hide");
+		  	            } else if(result.type == "video" || result.type == "doc"||result.type == "ppt"){
 		  	            	mdata=result.defaultMedia;
 		  	            	 
 		  	                // alert($("#iframeVideo"));
@@ -854,36 +860,34 @@
 		  	            	$("#mainContent").html(rightMaterialContentFn(result));
 		  	                afterLoadMediaPage(result);
 		  	                loadvideoOrDoc(mdata);
-		  	                
 			  	            //调用方法时 如果素材为空  则隐藏素材下的 下载赞等信息 、 素材信息、  评分信息 、评分的列表信息 这几个信息分别代表一个div
 			  	  			//这块只针对视频和文档
-			  	  			     
-                			  	 if(mdata.code==""||mdata.code.type=="none"){
-			  	  					$("#btnDownload").attr("title","当前没有可下载素材");
-			  	  					$("#mediaComment").addClass("hide");
-			  	  				    $("#mediaToolbar").addClass("hide");
-			  	  				}
+               			  	 if(mdata.code==""||mdata.code.type=="none"){
+		  	  					$("#btnDownload").attr("title","当前没有可下载素材");
+		  	  					$("#mediaComment").addClass("hide");
+		  	  				    $("#mediaToolbar").addClass("hide");
+		  	  				}
 			  	                //素材转换中
-			  	                if(mdata.code!=""&&mdata.code.type!='none'){
-			  	                	//不能点赞  可以下载 不能学习通过 没有评论; 
-			  	                	 if(mdata.code.type=="video"&&mdata.code.playCode==null){
-					  	              		$("#btnPraise").attr("converStatus","");
-					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-					  	              	    $("#mediaComment").addClass("hide");
-					  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
-					  	              		$("#btnPraise").attr("converStatus","");
-					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-					  	                    $("#mediaComment").addClass("hide");
-							  	         }else{
-						  	        	 	$("#btnPraise").attr("converStatus","true");
-						  	        	 	$("#btnPraise").attr("data-original-title","赞");
-						  	        	 	$("#mediaComment").removeClass("hide");
-							  	         }
-			  	                }else{
-			  	                	$("#btnPraise").attr("converStatus","");
-			  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-			  	              		$("#mediaComment").addClass("hide");
-			  	                }
+		  	                if(mdata.code!=""&&mdata.code.type!='none'){
+		  	                	//不能点赞  可以下载 不能学习通过 没有评论; 
+		  	                	 if(mdata.code.type=="video"&&mdata.code.playCode==null){
+				  	              		$("#btnPraise").attr("converStatus","");
+				  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+				  	              	    $("#mediaComment").addClass("hide");
+				  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+				  	              		$("#btnPraise").attr("converStatus","");
+				  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+				  	                    $("#mediaComment").addClass("hide");
+						  	         }else{
+					  	        	 	$("#btnPraise").attr("converStatus","true");
+					  	        	 	$("#btnPraise").attr("data-original-title","赞");
+					  	        	 	$("#mediaComment").removeClass("hide");
+						  	         }
+		  	                }else{
+		  	                	$("#btnPraise").attr("converStatus","");
+		  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+		  	              		$("#mediaComment").addClass("hide");
+		  	                }
 			  	                //学习通过控制
 			  	              if(mdata.code==""||mdata.code.type=="none"){
 				  	            	$("#btnDoPass").attr("converStatus","");
@@ -1371,10 +1375,30 @@
 		  			  dataType:'json',
 		  			  success: function(data){
 		  	                   mdata=data.defaultMedia;
-		  	                // alert(JSON.stringify(mdata))
-		  	                   //重新定位播放视频
-		  	                  loadvideoOrDoc(mdata);
-		  	            	  //是否允许赞
+		  	                 //alert(JSON.stringify(mdata))
+		  	            	  
+		  	            	  if(data.type!='txt'){
+		  	            		//重新定位播放视频
+			  	                  loadvideoOrDoc(mdata);
+			  	            	  //判断素材状态  空 转换中都不允许点赞
+				  	              if(mdata.code==""||mdata.code.type=="none"){
+				  	            	$("#btnPraise").attr("converStatus","");
+			  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+			  	                  }else{
+			  	                	    if(mdata.code.type=="video"&&mdata.code.playCode==null){
+					  	              		$("#btnPraise").attr("converStatus","");
+					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+					  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+						  	              		$("#btnPraise").attr("converStatus","");
+						  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+							  	         }else{
+							  	        	 	$("#btnPraise").attr("converStatus","true");
+							  	        	 	$("#btnPraise").attr("data-original-title","赞");
+							  	         }
+			  	                				
+			  	                  }
+		  	            	  }
+		  	            	//是否允许赞
 			  	              if(mdata.mePraised){
 			  	              	$("#btnPraise").removeClass("active").children(".num").text(mdata.praiseCount);
 			  	                $("#btnPraise").attr("data-original-title","赞");
@@ -1382,40 +1406,28 @@
 			  	              	 $("#btnPraise").addClass("active").children(".num").text(mdata.praiseCount);
 			  	              	$("#btnPraise").attr("data-original-title","已赞");
 			  	              }
-		  	            	  //判断素材状态  空 转换中都不允许点赞
-			  	              if(mdata.code==""||mdata.code.type=="none"){
-			  	            	$("#btnPraise").attr("converStatus","");
-		  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-		  	                  }else{
-		  	                	    if(mdata.code.type=="video"&&mdata.code.playCode==null){
-				  	              		$("#btnPraise").attr("converStatus","");
-				  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-				  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
-					  	              		$("#btnPraise").attr("converStatus","");
-					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-						  	         }else{
-						  	        	 	$("#btnPraise").attr("converStatus","true");
-						  	        	 	$("#btnPraise").attr("data-original-title","赞");
-						  	         }
-		  	                				
-		  	                  }
 			  	  			  //通过素材转换状态判断是否可以点赞
 			  	            	 
 			  	              $("#btnDownload").addClass(mdata.canDownload ? "active" : "disabled").attr("data-original-title",mdata.canDownload ? '点击下载' : '无权下载')
 			  	                      .children(".num").text(mdata.downloadCount);
 			  	              $("#btnDoPass").attr("disabled",mdata.isPass ? true : false);
-			  	          		//判断素材状态  空 转换中都不允许学习
-			  	              if(mdata.code==""||mdata.code.type=="none"){
-			  	            	$("#btnDoPass").attr("converStatus","");
-		  	                  }else{
-		  	                	if(mdata.code.type=="video"&&mdata.code.playCode==null){
-		  	              			$("#btnDoPass").attr("converStatus","");
-			  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
-			  	            		$("#btnDoPass").attr("converStatus","");
-			  	            	 }else{
-			  	            		 $("#btnDoPass").attr("converStatus","true");
-			  	            	 }
-		  	                  }
+			  	              if(data.type!="txt"){
+				  	          		//判断素材状态  空 转换中都不允许学习
+				  	              if(mdata.code==""||mdata.code.type=="none"){
+				  	            	$("#btnDoPass").attr("converStatus","");
+			  	                  }else{
+			  	                	if(mdata.code.type=="video"&&mdata.code.playCode==null){
+			  	              			$("#btnDoPass").attr("converStatus","");
+				  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+				  	            		$("#btnDoPass").attr("converStatus","");
+				  	            	 }else{
+				  	            		 $("#btnDoPass").attr("converStatus","true");
+				  	            	 }
+			  	                  }
+			  	              }else{
+			  	            	 $("#btnDoPass").attr("converStatus","true");
+			  	            	$("#btnDownload").addClass("hide");
+			  	              }
 			  	              $mediaToolbar.find(".playCount>.num").text(mdata.readCount);
 			  	              $("#mediaToolbar").attr("data-fdid",mdata.id);
 			  	              $("#btnDownload").attr("data-fdid",mdata.url);
@@ -1447,7 +1459,8 @@
 			  	              $("#ratingOne").find(".progress-gray>.bar")
 			  	                      .width(mdata.rating.one/mdata.rating.total*100 + "%").end().children(".fs9").text(mdata.rating.one);
 			  	              $("#mediaComment").after(mediaCommentFn(mdata)).remove();
-			  	              //$("#mediaComment").show();  
+			  	              //$("#mediaComment").show(); 
+			  	              if(data.type!='txt'){
 			  	              if(mdata.code==""||mdata.code.type=='none'){
 			  	            		$("#mediaComment").addClass("hide");
 			  	            		 $("#mediaToolbar").addClass("hide");
@@ -1461,6 +1474,7 @@
 			  	                		$("#mediaToolbar").removeClass("hide");
 			  	                	}
 				  	            }
+			  	              }
 			  	              //$("#listComment").html(listCommentFn(mdata.mediaComment.listComment));
 
 			  	              /*评分表单*/

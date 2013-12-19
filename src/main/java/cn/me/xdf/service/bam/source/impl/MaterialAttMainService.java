@@ -141,6 +141,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                     defaultMedia.put("id", minfo.getFdId());//素材id
                     defaultMedia.put("name", minfo.getFdName());//素材名称
                     defaultMedia.put("intro", minfo.getFdDescription());//素材描述
+                    defaultMedia.put("txt", minfo.getRichContent());//富文本内容
                     if (attMain != null) {
                         defaultMedia.put("url", attMain.getFdId());//附件id
                     }
@@ -159,6 +160,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                     defaultMedia.put("id", minfo.getFdId());//素材id
                     defaultMedia.put("name", minfo.getFdName());//素材名称
                     defaultMedia.put("intro", minfo.getFdDescription());//素材描述
+                    defaultMedia.put("txt", minfo.getRichContent());//富文本内容
                     if (attMain != null) {
                         defaultMedia.put("url", attMain.getFdId());//附件id
                     }
