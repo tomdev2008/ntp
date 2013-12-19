@@ -13,6 +13,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -35,10 +36,10 @@ public class AttMainPlugin {
         return vid;
     }
 
-    public static InputStream getDocByAttId(AttMain attMain) {
+    public static ByteArrayOutputStream getDocByAttId(AttMain attMain) {
         try {
             DocInterfaceModel model = new DocInterfaceModel(attMain,
-                    DocInterfaceModel.addDoc, "");
+                    DocInterfaceModel.getDocByAttId, "");
             HttpClient client = new HttpClient();
             client.getParams().setParameter(
                     HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
@@ -51,7 +52,16 @@ public class AttMainPlugin {
             filePost.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
             int status = client.executeMethod(filePost);
             if (status == HttpStatus.SC_OK) {
-                return filePost.getResponseBodyAsStream();
+                log.info("获取附件成功");
+                InputStream inputStream = filePost.getResponseBodyAsStream();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = inputStream.read(buffer)) > -1 ) {
+                    baos.write(buffer, 0, len);
+                }
+                baos.flush();
+                return baos;
             } else {
                 log.error("连接失败");
                 return null;

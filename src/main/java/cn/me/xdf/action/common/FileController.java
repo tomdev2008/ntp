@@ -3,12 +3,7 @@ package cn.me.xdf.action.common;
 import cn.me.xdf.service.plugin.AttMainPlugin;
 import gui.ava.html.image.generator.HtmlImageGenerator;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -133,9 +128,11 @@ public class FileController {
         DownloadHelper dh = new DownloadHelper();
         dh.setRequest(request);
         AttMain attMain = attMainService.get(AttMain.class, id);
+        log.info("开始下载附件1--");
         if (attMain != null) {
-            InputStream inputStream = AttMainPlugin.getDocByAttId(attMain);
-            dh.setInputStream(inputStream);
+            log.info("开始下载附件-2-");
+            ByteArrayOutputStream bos = AttMainPlugin.getDocByAttId(attMain);
+            dh.setInputStream(bos);
             dh.setFileName(attMain.getFdFileName());
         }
         return dh;

@@ -67,30 +67,32 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th><input type="checkbox" name="select" id="selectAll" /></th>
+              <!-- <th><input type="checkbox" name="select" id="selectAll" /></th> -->
               <th width="10px">#</th>
-              <th width="20%">用户</th>
-              <th width="60%">部门</th>
+              <th width="10%">用户</th>
+              <th width="30%">部门</th>
+              <th width="20%">登录次数</th>
+              <th width="20%">在线天数</th>
               <th width="20%">登录时间</th>
             </tr>
           </thead>
-<%--           <tbody>
+          <tbody>
             <j:iter items="${list}" var="bean" status="vstatus">
               <tr>
-                <td style="width: 10px;"><label> <input type="checkbox" name="ids" class="check"
+                <%-- <td style="width: 10px;"><label> <input type="checkbox" name="ids" class="check"
                     value="${bean.fdId}" />
-                </label></td>
+                </label></td> --%>
                 <td>${vstatus.index+1}</td>
                 <td>${bean.fdUserName}</td>
                 <td>${bean.fdUserDep}</td>
-                <td>${bean.logType}</td>
+                <td>${bean.loginNum}</td>
+                <td>${bean.loginDay}</td>
                 <td>${bean.time}</td>
-                <td><a href="#" onclick="">删除</a></td>
               </tr>
             </j:iter>
-          </tbody>  --%>
+          </tbody> 
         </table>
-        <%-- <tags:pagination page="${page}" searchParams="fdType=${fdType}" paginationSize="10" /> --%>
+        <tags:pagination page="${page}"  paginationSize="10" />
       </form>
     </j:autoform>
   </div>

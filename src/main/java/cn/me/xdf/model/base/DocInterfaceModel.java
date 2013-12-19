@@ -12,6 +12,8 @@ import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Date;
@@ -24,6 +26,8 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class DocInterfaceModel {
+
+    private static final Logger log = LoggerFactory.getLogger(DocInterfaceModel.class);
 
     //    public static final String url = "http://192.168.25.225:9080/ixdf/doc/docServlet";//testurl
     public static final String url = "http://me.xdf.cn/iportal/doc/docServlet";
@@ -121,7 +125,7 @@ public class DocInterfaceModel {
 
     public NameValuePair[] getDocByAttIdModel() throws Exception {
 
-        String signText = (method + appId + appKey + timeStrap + attId + appKey + attName + sysCode).toLowerCase();
+        String signText = (method + appId + appKey + timeStrap + attId + attName + sysCode).toLowerCase();
         this.sign = AESX3.md5(signText); // 签名
 
         NameValuePair attIdPart = new NameValuePair("attId",
@@ -141,7 +145,7 @@ public class DocInterfaceModel {
                 this.method);
         NameValuePair attNamePart = new NameValuePair("attName",
                 this.attName);
-
+         log.info("atttName==="+attName);
         NameValuePair sysCode = new NameValuePair("sysCode",
                 this.sysCode);
         NameValuePair sign = new NameValuePair("sign", this.sign);
