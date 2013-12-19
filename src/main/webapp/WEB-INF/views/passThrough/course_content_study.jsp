@@ -152,7 +152,7 @@
     <script id="examPaperDetailTemplate" type="x-dot-template">
         <div class="accordion-inner">
                 <div class="hd">
-                <h2>{{=it.examPaperStatus}}<span class="icon-state-bg
+                <h2><span class="icon-state-bg
 						{{?it.examPaperStatus == 'fail'}} error">未通过
                         {{??it.examPaperStatus == 'pass'}} success">通过
                         {{??it.examPaperStatus == 'finish'}} info">答完
