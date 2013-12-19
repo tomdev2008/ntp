@@ -240,6 +240,9 @@
                                 <div class="control-upload">
                                     <div class="upload-fileName" id="attName"></div>
                    					<div class="pr">
+                                    <span class="progress"> <div class="bar" style="width:0;"></div> </span>
+									<span class="txt"><span class="pct">0%</span>，剩余时间：<span class="countdown">00:00:00</span></span>
+                     
 						             <button name="answerAtt" id="{{=task.id}}" class="btn btn-primary btn-large" type="button" >上传</button>
                                     </div>
 								</div>
@@ -1686,10 +1689,13 @@
                         }
                         $("html,body").animate({scrollTop: sTop},pos.top-sTop,"swing");
                         
-                        var $progress ,flag = true,pct,interval,countdown = 0,byteUped = 0;
+                        var flag = true,pct,interval,countdown = 0,byteUped = 0;
                         $("button[name='answerAtt']").each(function(){
                         	var fileid = $(this).attr('id');
-                        	
+                        	var $txt = $('#'+fileid).prev(".txt"),
+                        	$progress = $txt.prev(".progress").children(".bar"),
+                            $pct = $txt.children(".pct"),
+                            $countdown = $txt.children(".countdown");
                         	$('#'+fileid).uploadify({
                         		'height' : 40,
                                 'width' : 68,
@@ -1703,18 +1709,15 @@
                                 'fileTypeExts' : '*.*',
                                 'fileSizeLimit':2097152,// 限制文件大小为2G
                                 'onInit' : function(){
-                                	$progress = $('<span class=\"progress\"><div class=\"bar\" style=\"width:0%;\"></div> </span><span class=\"txt\"><span class=\"pct\">0%</span><span class=\"countdown\"></span></span>');
-                                	$('#'+fileid).next(".uploadify-queue").remove();
+                                	$("#upMaterial").next(".uploadify-queue").remove();
                                 },
-                                'onUploadStart' : function (file) {
-                                	$('#'+fileid).before($progress);
-                                    //$uploadBtn.uploadify("settings", "formData");
-                                },
-                                'onUploadSuccess' : function (file, datas, Response) {
+                                'onUploadStart' : function (file) {},
+                                'onUploadSuccess' : function (file, data, Response) {
                                     if (Response) {
-                                    	$progress.find(".countdown").empty();
-                                        var objvalue = eval("(" + datas + ")");
-                                        jQuery("#attName").html(objvalue.fileName+"<i class=\"icon-paperClip\"></i>");
+                                    	$countdown.text("00:00:00");
+                                    	$progress.width("0");
+                                    	$pct.text("0%");
+                                        var objvalue = eval("(" + data + ")");
                                         var html = "<li id='attach"+objvalue.attId+"'><input type='hidden' value='"+objvalue.attId+"' name='attach_"+fileid+"' id='answerAttId_"+fileid+"'><a><i class='icon-paperClip'></i>"
                                         +objvalue.fileName+"</a><a href='#' class='icon-remove-blue'></a></li>";
                                         $("#listTaskAttachment_"+fileid).append(html);
@@ -1729,10 +1732,11 @@
                                 	}
                                 	if(bytesUploaded == bytesTotal){
                                 		clearInterval(interval);
-                                		
                                 	}
-                                	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
-                                	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
+                                	
+                                	$progress.width(pct);
+                                	$pct.text(pct);
+                                	countdown>0 && $countdown.text(secTransform((bytesTotal-bytesUploaded)/countdown*10));
                                 }
                             });
         						
@@ -1745,16 +1749,19 @@
                     			s = Math.ceil(s);
                     			var t = "";
                     			if(s>3600){
-                    				t= Math.ceil(s/3600) + "小时" + Math.ceil(s%3600/60) + "分钟" + s%3600%60 + "秒";
+                    				t= completeZero(Math.ceil(s/3600)) + ":" + completeZero(Math.ceil(s%3600/60)) + ":" + completeZero(s%3600%60) ;
                     			} else if(s>60){
-                    				t= Math.ceil(s/60) + "分钟" + s%60 + "秒";
+                    				t= "00:" + completeZero(Math.ceil(s/60)) + ":" + completeZero(s%60) ;
                     			} else {
-                    				t= s + "秒";
+                    				t= "00:00:" + completeZero(s);
                     			}
-                    			return "，剩余时间：" + t;
+                    			return t;
                     		}else{
                     			return null;
                     		}		
+                    	}
+                    	function completeZero(n){
+                    		return n<10 ? "0"+n : n;
                     	}
                     	
                         $("#formExam").validate({
