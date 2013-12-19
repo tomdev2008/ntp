@@ -13,6 +13,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,34 @@ public class AttMainPlugin {
         String vid = CCUploader.upload(attMain.getFdFilePath(), attMain.getFdFileName(), "NTP", null, callbackUrl);
         log.info("vid====" + vid);
         return vid;
+    }
+
+    public static InputStream getDocByAttId(AttMain attMain) {
+        try {
+            DocInterfaceModel model = new DocInterfaceModel(attMain,
+                    DocInterfaceModel.addDoc, "");
+            HttpClient client = new HttpClient();
+            client.getParams().setParameter(
+                    HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
+            PostMethod filePost = new PostMethod(DocInterfaceModel.url);
+            filePost.getParams().setParameter(
+                    HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
+
+            filePost.addParameters(model.getDocByAttIdModel());
+
+            filePost.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
+            int status = client.executeMethod(filePost);
+            if (status == HttpStatus.SC_OK) {
+                return filePost.getResponseBodyAsStream();
+            } else {
+                log.error("连接失败");
+                return null;
+            }
+        } catch (Exception e) {
+            log.error("addDoc:" + e.getCause());
+            //throw new RuntimeException("出现异常addDoc:" + e.getCause());
+            return null;
+        }
     }
 
     /**

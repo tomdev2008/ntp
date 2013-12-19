@@ -1,5 +1,6 @@
 package cn.me.xdf.action.common;
 
+import cn.me.xdf.service.plugin.AttMainPlugin;
 import gui.ava.html.image.generator.HtmlImageGenerator;
 
 import java.io.File;
@@ -133,23 +134,8 @@ public class FileController {
         dh.setRequest(request);
         AttMain attMain = attMainService.get(AttMain.class, id);
         if (attMain != null) {
-
-            String osName = System.getProperty("os.name");
-            String filePath = attMain.getFdFilePath();
-            if (StringUtils.isBlank(filePath)) {
-                return dh;
-            }
-            if (osName.contains("Windows")) {
-                filePath = filePath.replace("/", "\\\\");
-            }
-            String webPath = filePath;
-            File file = new File(webPath);
-            if (!file.exists()) {
-                webPath = request.getSession().getServletContext()
-                        .getRealPath("/")
-                        + System.getProperty("file.separator") + filePath;
-            }
-            dh.setFile(new File(webPath));
+            InputStream inputStream = AttMainPlugin.getDocByAttId(attMain);
+            dh.setInputStream(inputStream);
             dh.setFileName(attMain.getFdFileName());
         }
         return dh;

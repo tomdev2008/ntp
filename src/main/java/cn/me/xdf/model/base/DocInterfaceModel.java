@@ -31,6 +31,7 @@ public class DocInterfaceModel {
     public static final String addDoc = "addDoc";
     public static final String getSwfPath = "getSwfPath";
     public static final String getPlayCode = "getPlayCode";
+    public static final String getDocByAttId = "getDocByAttId";
 
 
     private static final String pwdKey = "apidocumentsevel";
@@ -74,6 +75,7 @@ public class DocInterfaceModel {
         this.isConvert = isConvert;
     }
 
+
     public Part[] getCCToAddModel() throws Exception {
 
         String signText = (method + appId + appKey + timeStrap + title + modelName + docId + author + sysCode + isConvert).toLowerCase();
@@ -113,6 +115,39 @@ public class DocInterfaceModel {
                 this.isConvert, "utf-8");
         Part[] parts = {username, password, method, appId, appKey, timestrap,
                 modelName, docId, author, sign, sysCode, title, fp, isConver};
+        return parts;
+    }
+
+
+    public NameValuePair[] getDocByAttIdModel() throws Exception {
+
+        String signText = (method + appId + appKey + timeStrap + attId + appKey + attName + sysCode).toLowerCase();
+        this.sign = AESX3.md5(signText); // 签名
+
+        NameValuePair attIdPart = new NameValuePair("attId",
+                this.attId);
+        NameValuePair username = new NameValuePair("username",
+                this.userName);
+        NameValuePair password = new NameValuePair("password", AES.encode(
+                this.passWord, pwdKey));
+        NameValuePair appId = new NameValuePair("appId",
+                this.appId);
+        NameValuePair appKey = new NameValuePair("appKey",
+                this.appKey);
+
+        NameValuePair timestrap = new NameValuePair("timestamp",
+                this.timeStrap);
+        NameValuePair method = new NameValuePair("method",
+                this.method);
+        NameValuePair attNamePart = new NameValuePair("attName",
+                this.attName);
+
+        NameValuePair sysCode = new NameValuePair("sysCode",
+                this.sysCode);
+        NameValuePair sign = new NameValuePair("sign", this.sign);
+
+        NameValuePair[] parts = {attIdPart, username, password, appId, appKey, timestrap,
+                method, attNamePart, sysCode, sign};
         return parts;
     }
 
