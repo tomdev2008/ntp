@@ -132,6 +132,18 @@
 				return;
 	    }
 	}
+	
+	function exportData(){
+		var str=$("input[name='ids']:checked").length;
+	    if(str==0){
+	    	$.fn.jalert("请选择用户");
+	    }else{
+	    		document.filterForm.method = "post";
+				document.filterForm.action = '${ctx}/common/exp/getExpuser';
+				document.filterForm.submit();
+				return;
+	    }
+	}
 </script>
 </head>
 <body>

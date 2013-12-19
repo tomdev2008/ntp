@@ -34,6 +34,7 @@ import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.material.Task;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.adviser.AdviserService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
@@ -51,6 +52,7 @@ import cn.me.xdf.view.model.VStudyTrack;
 import cn.me.xdf.view.model.VTask;
 import cn.me.xdf.view.model.VTaskPaperAuth;
 import cn.me.xdf.view.model.VTaskPaperData;
+import cn.me.xdf.view.model.VUserData;
 
 
 /**
@@ -85,6 +87,9 @@ public class ExpController {
     
     @Autowired
     private MaterialService materialService;
+    
+    @Autowired
+    private SysOrgPersonService sysOrgPersonService;
     
     public SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
     
@@ -341,9 +346,29 @@ public class ExpController {
 		String fdType = request.getParameter("fdType");
 		String selectAll = request.getParameter("selectAll");
 		if(StringUtils.isBlank(selectAll) && org.apache.commons.lang3.ArrayUtils.isNotEmpty(ids)){//导出ids
-			
+			List<VUserData> vUserDatas = sysOrgPersonService.getVUserDatas(ids);
+			AbsExportExcel.exportExcel(vUserDatas, "user.xls", response, "用户导出表.xls");
 		}else if(StringUtils.isNotBlank(selectAll)){//导出全部
-			
+			Pagination page = sysOrgPersonService.getVUserDatasPage(fdType, 1, 20000, param);
+			if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
+				List<VUserData> vUserDatas = sysOrgPersonService.findVUserDatasByPageList(page.getList());
+				AbsExportExcel.exportExcel(vUserDatas, "user.xls", response, "用户导出表.xls");
+			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
+				String [] attMainIds= new String[page.getTotalPage()];
+				for(int i=1;i<=page.getTotalPage();i++){
+					Pagination pageZip = sysOrgPersonService.getVUserDatasPage(fdType, i, 20000, param);
+					AttMain attMain = AbsExportExcel.exportExcels(sysOrgPersonService.findVUserDatasByPageList(pageZip.getList()), "user.xls");
+					attMainService.save(attMain);
+					attMainIds[i-1] = attMain.getFdId();
+				}
+				try {
+					downloadZipsByArrayIds(attMainIds, "user.xls", request, response);
+				} catch (UnsupportedEncodingException e) {
+					  log.error("export excleZip error!", e);
+				}
+				//删除下载后的无用附件
+				attMainService.deleteAttMainByIds(attMainIds);
+			}
 		}
 		return null;
 	}

@@ -1,15 +1,18 @@
 package cn.me.xdf.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
-import cn.me.xdf.model.organization.SysOrgDepart;
+import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.view.model.VUserData;
 
 @Service
 @Transactional(readOnly = true)
@@ -56,5 +59,74 @@ public class SysOrgPersonService extends BaseService{
 		return map;
 	}
 	
+	public List<VUserData> getVUserDatas(String [] ids){
+		List<VUserData> datas = new ArrayList<VUserData>();
+		for(String id:ids){
+			SysOrgPerson person = get(id);
+			VUserData vUserData = new VUserData();
+			vUserData.setBirthday(person.getFdBirthDay());
+			vUserData.setBlood(person.getFdBloodType());
+			vUserData.setDept(person.getHbmParent()==null?"":person.getHbmParent().getFdName());
+			vUserData.setEmail(person.getFdEmail());
+			vUserData.setIdcard(person.getFdIdentityCard());
+			vUserData.setIntroduction(person.getSelfIntroduction());
+			vUserData.setName(person.getFdName());
+			try {
+				vUserData.setOrg(person.getHbmParent().getHbmParent().getFdName());
+			} catch (Exception e) {
+				vUserData.setOrg("");
+			}
+			vUserData.setSex(person.getFdSex());
+			vUserData.setTel(person.getFdWorkPhone());
+			datas.add(vUserData);
+		}
+		return datas;
+	}
+	
+	
+	public Pagination getVUserDatasPage(String fdType,  int pageNo, int pageSize, String param){
+		Finder finder = Finder.create(" select p.fdId id from sys_org_person p ");
+		finder.append(" where 1 = 1 ");
+		if(StringUtils.isNotBlank(fdType)){
+			finder.append(" and p.fdIsEmp = :isEmp ").setParam("isEmp", fdType);
+		}
+		if (StringUtils.isNotBlank(param)) {
+			finder.append(" and (lower(p.FD_LOGIN_NAME) like '%"+param+"%' or p.fdid in (select e.fdid ");
+			finder.append(" from sys_org_element e ");
+			finder.append(" where e.fd_name like ");
+			finder.append(" '%"+param+"%') or p.fdid in (select tem.fdid ");
+			finder.append(" from sys_org_element tem ");
+			finder.append(" where tem.fd_parentid in ");
+			finder.append(" (select e1.fdid ");
+			finder.append("  from sys_org_element e1 ");
+			finder.append("  where e1.fd_name like '%"+param+"%'))) ");
+		}
+		return getPageBySql(finder, pageNo, pageSize);
+	}
+	
+	public List<VUserData> findVUserDatasByPageList(List list){
+		List<Map> orgPersons = (List<Map>) list;
+		List<VUserData> datas = new ArrayList<VUserData>();
+		for (int i = 0; i < orgPersons.size(); i++) {
+			SysOrgPerson person = get((String)orgPersons.get(i).get("ID"));
+			VUserData vUserData = new VUserData();
+			vUserData.setBirthday(person.getFdBirthDay());
+			vUserData.setBlood(person.getFdBloodType());
+			vUserData.setDept(person.getHbmParent()==null?"":person.getHbmParent().getFdName());
+			vUserData.setEmail(person.getFdEmail());
+			vUserData.setIdcard(person.getFdIdentityCard());
+			vUserData.setIntroduction(person.getSelfIntroduction());
+			vUserData.setName(person.getFdName());
+			try {
+				vUserData.setOrg(person.getHbmParent().getHbmParent().getFdName());
+			} catch (Exception e) {
+				vUserData.setOrg("");
+			}
+			vUserData.setSex(person.getFdSex());
+			vUserData.setTel(person.getFdWorkPhone());
+			datas.add(vUserData);
+		}
+		return datas;
+	}
 
 }
