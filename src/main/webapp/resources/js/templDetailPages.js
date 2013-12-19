@@ -80,7 +80,7 @@
           		data_type = "video";
           		data_typeTxt = "视频";
           		data_uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在上面的视频列表中。";
-          		uptype='*.mp4;*.avi;*.wmv;';
+          		uptype='.wmv;.wm;.asf;.asx;.rm;.rmvb;.ra;.ram;.3gp;.mp4;.mp4v;.m4v;.mkv;.avi;.flv;.f4v;';
           		break;
             case "02":
             	data_type = "audio";
@@ -92,7 +92,7 @@
             	data_type = "doc";
             	data_typeTxt = "文档";
             	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的文档将会显示在上面的文档列表中。";
-            	uptype='*.doc;*.xls;';
+            	uptype='*.doc;*.docx;*.xls;*.xlsx;';
 	            break;
             case "05":
             	data_type = "ppt";
