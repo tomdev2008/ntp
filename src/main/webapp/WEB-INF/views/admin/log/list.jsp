@@ -9,49 +9,13 @@
 <html lang="zh_CN">
 <head>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.jalert.js"></script>
-<script type="text/javascript">
-	$(function() {
-		$('#filterSelect').change(function() {
-			var fv = $(this).children('option:selected').val();
-			document.filterForm.method = "get";
-			document.filterForm.action = '${ctx}/admin/log/list?fdType="'
-					+ fv + '"';
-			document.filterForm.submit();
-			return; 
-		});
-	});
-
-/* 	function delSel() {
-		if (!confirm('您确定要批量删除吗？')) {
-			return false;
-		}
-		var chk_value = [];
-		$('input[name="ids"]:checked').each(function() {
-			chk_value.push($(this).val());
-		});
-		if (chk_value.length == 0) {
-			alert('请选择需要批量删除的内容。');
-			return false;
-		}
-		document.filterForm.method = "post";
-		document.filterForm.action = '${ctx}/admin/role/delAll';
-		document.filterForm.submit();
-		return;
-	}
- */
-	function delById(fdId,fdType){
-		$.fn.jalert("您确定要删除该日志？",function(){
-			document.filterForm.method = "post";
-			document.filterForm.action = '${ctx}/admin/log/delete?fdId='+fdId+'&fdType='+fdType;
-			document.filterForm.submit();
-		});
-	}
-</script>
 </head>
 <body>
     <div class="page-body"> 
     <j:autoform>
       <form class="form-inline" name="filterForm">
+       </form>
+       <form class="form-inline" name="filterForm1">
        </form>
         <p class="page-intro">在本模块中，您可以查看或删除日志信息</p>
         <div class="btn-group">
@@ -98,5 +62,25 @@
      
     </j:autoform>
   </div>
+  <script type="text/javascript">
+	$(function() {
+		$('#filterSelect').change(function() {
+			var fv = $(this).children('option:selected').val();
+			window.location.href=('${ctx}/admin/log/list?fdType='+fv);
+			/* document.filterForm1.method = "post";
+			document.filterForm1.action = '${ctx}/admin/log/list?fdType='+fv;
+			alert(document.filterForm1.action);
+			document.filterForm1.submit(); */
+			return; 
+		});
+	});
+	function delById(fdId,fdType){
+		$.fn.jalert("您确定要删除该日志？",function(){
+			document.filterForm.method = "post";
+			document.filterForm.action = '${ctx}/admin/log/delete?fdId='+fdId+'&fdType='+fdType;
+			document.filterForm.submit();
+		});
+	}
+</script>
 </body>
 </html>
