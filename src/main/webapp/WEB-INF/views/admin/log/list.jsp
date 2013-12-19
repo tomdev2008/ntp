@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html lang="zh_CN">
 <head>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.jalert.js"></script>
 <script type="text/javascript">
 	$(function() {
 		$('#filterSelect').change(function() {
@@ -37,22 +38,21 @@
 		document.filterForm.submit();
 		return;
 	}
-
-	function delById(fdId) {
-		if (!confirm('您确定要删除该用户？')) {
-			return false;
-		}
-		document.filterForm.method = "post";
-		document.filterForm.action = '${ctx}/admin/role/delete/' + fdId;
-		document.filterForm.submit();
-		return;
-	} */
+ */
+	function delById(fdId,fdType){
+		$.fn.jalert("您确定要删除该日志？",function(){
+			document.filterForm.method = "post";
+			document.filterForm.action = '${ctx}/admin/log/delete?fdId='+fdId+'&fdType='+fdType;
+			document.filterForm.submit();
+		});
+	}
 </script>
 </head>
 <body>
     <div class="page-body"> 
     <j:autoform>
       <form class="form-inline" name="filterForm">
+       </form>
         <p class="page-intro">在本模块中，您可以查看或删除日志信息</p>
         <div class="btn-group">
           <a id="delAll" onclick="delSel()" class="btn btn-primary">批量删除</a>
@@ -88,14 +88,14 @@
                 <td>${bean.time}</td>
                 <td>
                 <a href="${ctx}/admin/log/view?logId=${bean.fdLogId}&logType=${fdType}">查看</a>
-                <a href="#" onclick="">删除</a>
+                <a href="javascript:void(0)" onclick="delById('${bean.fdLogId}','${fdType}')">删除</a>
                 </td>
               </tr>
             </j:iter>
           </tbody> 
         </table>
         <tags:pagination page="${page}" searchParams="fdType=${fdType}" paginationSize="10" />
-      </form>
+     
     </j:autoform>
   </div>
 </body>

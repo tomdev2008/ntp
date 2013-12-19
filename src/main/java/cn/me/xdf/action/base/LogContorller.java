@@ -11,8 +11,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cn.me.xdf.common.hibernate4.Finder;
 import cn.me.xdf.common.page.Pagination;
@@ -160,4 +162,17 @@ public class LogContorller {
 		model.addAttribute("map", map);
 		return "/admin/log/view";
 	}
+	
+	@RequestMapping(value = "delete")
+	public String deleteById(String fdType,String fdId, HttpServletRequest request) {
+		if(fdType.equals("LogLogin")){
+			logLoginService.delete(fdId);
+		}else if(fdType.equals("LogLogout")){
+			logLogoutService.delete(fdId);
+		}else if(fdType.equals("LogApp")){
+			logAppService.delete(fdId);
+		}
+		return "redirect:/admin/log/list?fdType="+fdType;
+	}
+	
 }

@@ -14,9 +14,19 @@
 <link href="${ctx}/resources/css/DTotal.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
 <body>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.jalert.js"></script>
 <script type="text/javascript">
 $("#rightCont .bder2").addClass("hide");
+function delById(fdId,fdType){
+	$.fn.jalert("您确定要删除该日志？",function(){
+		document.filterForm.method = "post";
+		document.filterForm.action = '${ctx}/admin/log/delete?fdId='+fdId+'&fdType='+fdType;
+		document.filterForm.submit();
+	});
+}
 </script>
+<form name="filterForm">
+</form>
 <div class="page-body editingBody">
 <div class="page-header">
                 
@@ -48,7 +58,7 @@ $("#rightCont .bder2").addClass("hide");
                 </c:if>
                 </h4>
                 <div class="btn-group">
-                    <button class="btn btn-white btn-large " type="button" onclick="">删除</button>
+                    <button class="btn btn-white btn-large " type="button" onclick="delById('${map.fdLogId}','${fdType}')">删除</button>
                </div>
 	        </div>
                 <form action="#"  class="form-horizontal" method="post" novalidate="novalidate">
