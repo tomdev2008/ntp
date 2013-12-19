@@ -1,5 +1,6 @@
 package cn.me.xdf.action.common;
 
+import cn.me.xdf.common.utils.InputStreamZipper;
 import cn.me.xdf.service.plugin.AttMainPlugin;
 import gui.ava.html.image.generator.HtmlImageGenerator;
 
@@ -61,7 +62,7 @@ public class FileController {
 
     @Autowired
     private MaterialService materialService;
-    
+
     @Autowired
     private AdviserService adviserService;
 
@@ -89,7 +90,7 @@ public class FileController {
         fileModel.setAttId(attMain.getFdId());
         return fileModel;
     }
-    
+
     /**
      * 富文本编辑器上传图片
      */
@@ -106,12 +107,12 @@ public class FileController {
         attMain = attMainService.saveOnInit(attMain);
         Map map = new HashMap();
         map.put("error", 0);
-		map.put("url", request.getContextPath() + "/common/file/image/"+attMain.getFdId());
-		try {  
-            response.getWriter().println(JsonUtils.writeObjectToJson(map));  
-        } catch (IOException e) {  
-            log.error(e.getMessage());  
-        }  
+        map.put("url", request.getContextPath() + "/common/file/image/" + attMain.getFdId());
+        try {
+            response.getWriter().println(JsonUtils.writeObjectToJson(map));
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
         return null;
     }
 
@@ -128,16 +129,14 @@ public class FileController {
         DownloadHelper dh = new DownloadHelper();
         dh.setRequest(request);
         AttMain attMain = attMainService.get(AttMain.class, id);
-        log.info("开始下载附件1--");
         if (attMain != null) {
-            log.info("开始下载附件-2-");
             ByteArrayOutputStream bos = AttMainPlugin.getDocByAttId(attMain);
             dh.setInputStream(bos);
             dh.setFileName(attMain.getFdFileName());
         }
         return dh;
     }
-    
+
     /**
      * 文件下载（打包）
      *
@@ -198,39 +197,39 @@ public class FileController {
         downloadAttMain(attMains, agent, zipname, response);
         return null;
     }
-    
+
     /**
      * 指导老师批量下载作业附件
      */
     @RequestMapping("/allDownloadTaskZip/{fdType}/{zipname}")
     public String allDownloadTaskZip(@PathVariable("fdType") String fdType, @PathVariable("zipname") String zipname,
-                                   HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+                                     HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         DownloadHelper dh = new DownloadHelper();
         dh.setRequest(request);
         List<AttMain> attMainList = new ArrayList<AttMain>();
         String keyword = request.getParameter("keyword");
-        Pagination page  = adviserService.findAdivserCouserList(fdType, 1, SimplePage.DEF_COUNT, keyword, "FDCREATETIME");
-        if(page.getTotalCount()>0){
-           List list = page.getList();
-		   for(int i=0;i<list.size();i++){
-			   Map pageMap = (Map) list.get(i);
-			   List<AttMain> attMains = adviserService.findNotesAtts((String)pageMap.get("FDID"));
-			   for (AttMain attMain : attMains) {
-	            	attMainList.add(attMain);
-				}
-		   }
-         }
-        for(int index=2;index<=page.getTotalPage();index++){
-        	 Pagination pagetemp  = adviserService.findAdivserCouserList(fdType, index, SimplePage.DEF_COUNT, keyword, "FDCREATETIME");
-        	 if(pagetemp.getTotalCount()>0){
-               List list = pagetemp.getList();
-      		   for(int i=0;i<list.size();i++){
-      			   Map pageMap = (Map) list.get(i);
-      			   List<AttMain> attMains = adviserService.findNotesAtts((String)pageMap.get("FDID"));
-      			   for (AttMain attMain : attMains) {
-      	            	attMainList.add(attMain);
-      				}
-      		   }
+        Pagination page = adviserService.findAdivserCouserList(fdType, 1, SimplePage.DEF_COUNT, keyword, "FDCREATETIME");
+        if (page.getTotalCount() > 0) {
+            List list = page.getList();
+            for (int i = 0; i < list.size(); i++) {
+                Map pageMap = (Map) list.get(i);
+                List<AttMain> attMains = adviserService.findNotesAtts((String) pageMap.get("FDID"));
+                for (AttMain attMain : attMains) {
+                    attMainList.add(attMain);
+                }
+            }
+        }
+        for (int index = 2; index <= page.getTotalPage(); index++) {
+            Pagination pagetemp = adviserService.findAdivserCouserList(fdType, index, SimplePage.DEF_COUNT, keyword, "FDCREATETIME");
+            if (pagetemp.getTotalCount() > 0) {
+                List list = pagetemp.getList();
+                for (int i = 0; i < list.size(); i++) {
+                    Map pageMap = (Map) list.get(i);
+                    List<AttMain> attMains = adviserService.findNotesAtts((String) pageMap.get("FDID"));
+                    for (AttMain attMain : attMains) {
+                        attMainList.add(attMain);
+                    }
+                }
             }
         }
         String agent = request.getHeader("USER-AGENT");
@@ -241,7 +240,7 @@ public class FileController {
     /**
      * 按文件modelId进行批量Download(打包) yuhz
      *
-     * @param ids
+     * @param
      * @param zipname
      * @param request
      * @param response
@@ -266,8 +265,7 @@ public class FileController {
         downloadAttMain(attMainList, agent, zipname, response);
         return null;
     }
-    
-    
+
 
     /**
      * 根据素材类型进行附件全部下载 yuhz
@@ -287,33 +285,33 @@ public class FileController {
         dh.setRequest(request);
         List<AttMain> attMainList = new ArrayList<AttMain>();
         Pagination page = materialService.findMaterialByKey(fdType, key, 1, SimplePage.DEF_COUNT);
-        if(page.getTotalCount()>0){
-           List list = page.getList();
-  		   for(int i=0;i<list.size();i++){
-  			   Map pageMap = (Map) list.get(i);
-  			   List<AttMain> attMains = attMainService.getAttsByModelId((String)pageMap.get("FDID"));
-  			   if (attMains != null && attMains.size() > 0) {
-  			   for (AttMain attMain : attMains) {
-  	            	attMainList.add(attMain);
-  				}
-  			  }
-  		   }
+        if (page.getTotalCount() > 0) {
+            List list = page.getList();
+            for (int i = 0; i < list.size(); i++) {
+                Map pageMap = (Map) list.get(i);
+                List<AttMain> attMains = attMainService.getAttsByModelId((String) pageMap.get("FDID"));
+                if (attMains != null && attMains.size() > 0) {
+                    for (AttMain attMain : attMains) {
+                        attMainList.add(attMain);
+                    }
+                }
+            }
         }
-        for(int index=2;index<=page.getTotalPage();index++){
-       	 Pagination pagetemp  = materialService.findMaterialByKey(fdType, key,index, SimplePage.DEF_COUNT);
-       	 if(pagetemp.getTotalCount()>0){
-              List list = pagetemp.getList();
-     		   for(int i=0;i<list.size();i++){
-     			  Map pageMap = (Map) list.get(i);
-     			   List<AttMain> attMains = attMainService.getAttsByModelId((String)pageMap.get("FDID"));
-     			   if (attMains != null && attMains.size() > 0) {
-     			    for (AttMain attMain : attMains) {
-     	            	attMainList.add(attMain);
-     				}
-     			  }
-     		   }
-           }
-       }
+        for (int index = 2; index <= page.getTotalPage(); index++) {
+            Pagination pagetemp = materialService.findMaterialByKey(fdType, key, index, SimplePage.DEF_COUNT);
+            if (pagetemp.getTotalCount() > 0) {
+                List list = pagetemp.getList();
+                for (int i = 0; i < list.size(); i++) {
+                    Map pageMap = (Map) list.get(i);
+                    List<AttMain> attMains = attMainService.getAttsByModelId((String) pageMap.get("FDID"));
+                    if (attMains != null && attMains.size() > 0) {
+                        for (AttMain attMain : attMains) {
+                            attMainList.add(attMain);
+                        }
+                    }
+                }
+            }
+        }
         String agent = request.getHeader("USER-AGENT");
         downloadAttMain(attMainList, agent, zipname, response);
         return null;
@@ -322,6 +320,7 @@ public class FileController {
 
     private void downloadAttMain(List<AttMain> attMains, String agent, String zipname, HttpServletResponse response) throws UnsupportedEncodingException {
         if (attMains != null && !attMains.isEmpty()) {
+
             String temp = "";
             // 设置文件头，文件名称或编码格式
             if (null != agent && -1 != agent.indexOf("MSIE")) {// IE
@@ -330,17 +329,20 @@ public class FileController {
                 temp = new String(zipname.getBytes("UTF-8"), "ISO8859-1");
             }
 
-            List<Zipper.FileEntry> fileEntrys = new ArrayList<Zipper.FileEntry>();
+            List<InputStreamZipper.InputStreamEntry> fileEntrys = new ArrayList<InputStreamZipper.InputStreamEntry>();
             response.setContentType("application/x-download;charset=UTF-8");
             response.addHeader("Content-disposition", "filename=" + temp + ".zip");
 
             for (AttMain attMain : attMains) {
-                File file = new File(attMain.getFdFilePath());
-                fileEntrys.add(new Zipper.FileEntry(attMain.getFdFileName(), "", file));
+                //File file = new File(attMain.getFdFilePath());
+                log.info("开始读取Filenet数据:" + attMain.getFdFileName());
+                ByteArrayOutputStream bos = AttMainPlugin.getDocByAttId(attMain);
+                InputStream stream = new ByteArrayInputStream(bos.toByteArray());
+                fileEntrys.add(new InputStreamZipper.InputStreamEntry(attMain.getFdFileName(), "", stream, attMain.getFdFileName()));
             }
             try {
                 // 模板一般都在windows下编辑，所以默认编码为GBK
-                Zipper.zip(response.getOutputStream(), fileEntrys, "GBK");
+                InputStreamZipper.zip(response.getOutputStream(), fileEntrys, "GBK");
             } catch (IOException e) {
                 log.error("export db error!", e);
             }
@@ -413,7 +415,7 @@ public class FileController {
     /**
      * html转图片，并且下载
      *
-     * @param id (对应AttMain的主键)
+     * @param (对应AttMain的主键)
      * @return
      */
     @RequestMapping("/downloadImg")
