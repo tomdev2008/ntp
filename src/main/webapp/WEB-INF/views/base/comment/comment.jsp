@@ -5,7 +5,6 @@
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <link href="${ctx}/resources/theme/default/css/comment.css" rel="stylesheet" type="text/css">
-<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <!-- 评论条目模板 -->
 <script id="commentLineTemplate" type="text/x-dot-template">
