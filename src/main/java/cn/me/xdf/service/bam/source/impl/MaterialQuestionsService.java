@@ -83,10 +83,20 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 		if(anwers!=null){
 			for (String an : anwers) {
 				String[] anwerSS= an.split(":");
+				String anwerSS1="";
+				String anwerSS2="";
+				if(anwerSS.length==2){
+					anwerSS1=anwerSS[0];
+					anwerSS2=anwerSS[1];
+				}
+				if(anwerSS.length==1){
+					anwerSS1=anwerSS[0];
+					anwerSS2="";
+				}
 				if(!anwer.containsKey(anwerSS[0])){
-					anwer.put(anwerSS[0], anwerSS[1]);
+					anwer.put(anwerSS1, anwerSS2);
 				}else{
-					anwer.put(anwerSS[0], anwer.get(anwerSS[0])+"#"+anwerSS[1]);
+					anwer.put(anwerSS1, anwer.get(anwerSS1)+"#"+anwerSS2);
 				};
 			}
 		}
