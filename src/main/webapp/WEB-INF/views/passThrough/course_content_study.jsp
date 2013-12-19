@@ -152,7 +152,8 @@
     <script id="examPaperDetailTemplate" type="x-dot-template">
         <div class="accordion-inner">
                 <div class="hd">
-                <h2><span class="icon-state-bg{{?it.examPaperStatus == 'fail'}} error">未通过
+                <h2>{{=it.examPaperStatus}}<span class="icon-state-bg
+						{{?it.examPaperStatus == 'fail'}} error">未通过
                         {{??it.examPaperStatus == 'pass'}} success">通过
                         {{??it.examPaperStatus == 'finish'}} info">答完
                         {{??it.examPaperStatus == 'unfinish'}}">待答{{?}}</span> {{?it.type=='exam'}}试卷{{??it.type=='task'}}作业包{{?}}{{=it.num}} {{=it.name}} 共计 <span class="total">{{=it.examCount}}</span>{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=it.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=it.examPaperTime}}分钟。</h2>
@@ -203,8 +204,9 @@
                             	{{~exam.listExamAnswer :ans:index}}
                             	{{?index1 == ans.index}}
                                 	<label class="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" >
-                                    	<input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?ans.isChecked}}checked{{?}} value="{{=exam.id}}:{{=ans.id}}" name="examAnswer" />
-                                    	{{=ans.name}}
+                                    	<input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?ans.isChecked}}checked{{?}} exam-id="{{=exam.id}}" value="{{=ans.id}}" name="examAnswer_completion{{=exam.id}}{{=indexno+1}}" putId="examAnswer_s" />
+                                    	<input type="hidden" value="" name="examAnswer"/>
+										{{=ans.name}}
                                 	</label>
                             	{{?}}
                             	{{~}}
@@ -1771,6 +1773,14 @@
                             submitHandler: function(form){
 	                            $("input[putId='examAnswer_completion']").each(function(){
 	                            	$(this).nextAll("input:first").val($(this).attr("exam-id")+":"+$(this).attr("value"));
+	                           	});
+	                            $("input[putId='examAnswer_s']").each(function(){
+	                            	if($(this).is(":checked")){
+	                            		$(this).nextAll("input:first").val($(this).attr("exam-id")+":"+$(this).attr("value"));
+	                            	}else{
+	                            		$(this).nextAll("input:first").attr("name","err");
+	                            	}
+	                            	
 	                           	});
 	                            form.submit();
                             }

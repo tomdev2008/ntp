@@ -311,6 +311,21 @@ public class ExpController {
 		}
     	return null;
     }
+	
+	/**
+	 * 导出日志xls（导出）
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/getExpLog")
+    public String getExpLog(HttpServletRequest request,HttpServletResponse response){
+		String isAll = request.getParameter("isAll");
+		String fdType = request.getParameter("fdType");
+		String fdName = request.getParameter("fdName");
+		String order = request.getParameter("order");
+		return null;
+	}
      
 	@RequestMapping(value = "/getExportMaterialList")
     public String getExportMaterialList(HttpServletRequest request,HttpServletResponse response){
