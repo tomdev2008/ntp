@@ -182,13 +182,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
         defaultMedia.put("readCount", info.getFdPlays() == null ? 0 : info.getFdPlays());//播放次数
         defaultMedia.put("mePraised", materialDiscussInfoService.isCanLaud(materialInfoId));//当前用户是否赞过
         defaultMedia.put("praiseCount", info.getFdLauds() == null ? 0 : info.getFdLauds());//赞的次数
-        if(!"".equals(defaultMedia.get("code"))){
-	        Map mark=(Map) defaultMedia.get("code");
-	        ///////更改播放详情 只有在视频正常的情况才更改播放;
-	        if(mark!=null&&mark.get("type")!="none"&&mark.get("playCode")!=null){
-	        	materialDiscussInfoService.updateMaterialDiscussInfo(Constant.MATERIALDISCUSSINFO_TYPE_PLAY, info.getFdId());
-	        }
-        }
+    	materialDiscussInfoService.updateMaterialDiscussInfo(Constant.MATERIALDISCUSSINFO_TYPE_PLAY, info.getFdId());
         map.put("listMedia", listMedia);
         map.put("defaultMedia", defaultMedia);
         return map;
