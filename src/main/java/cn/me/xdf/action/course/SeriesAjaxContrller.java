@@ -499,12 +499,18 @@ public class SeriesAjaxContrller {
 		if (seriesInfo != null) {
 			if (seriesInfo.getIsPublish()) {
 				// 如果是已发布的系列,则置为无效
-				seriesInfoService.deleteSeries(seriesId);
+				if (ShiroUtils.isAdmin()) {// admin则全部置为无效
+					seriesInfoService.deleteSeries(seriesId);
+				} else {// 其他用户只能置自己创建的系列为无效;
+					if (seriesInfo.getCreator().getFdId()
+							.equals(ShiroUtils.getUser().getId())) {
+						seriesInfoService.deleteSeries(seriesId);
+					}
+				}
 			} else {
 				// 草稿状态,直接删除系列(首先到系列课程中删除,然后删除系列自己)
 				// seriesInfoService.delete(seriesId);
-				if (seriesInfo.getCreator().getFdId()
-						.equals(ShiroUtils.getUser().getId())) {
+				if (ShiroUtils.isAdmin()) {
 					List<SeriesInfo> phaseslist = seriesInfoService
 							.getSeriesById(seriesId);// 查找系列下的阶段
 					if (phaseslist != null) {
@@ -515,6 +521,21 @@ public class SeriesAjaxContrller {
 						}
 					}
 					seriesInfoService.delete(seriesId);
+				} else {
+					if (seriesInfo.getCreator().getFdId()
+							.equals(ShiroUtils.getUser().getId())) {
+						List<SeriesInfo> phaseslist = seriesInfoService
+								.getSeriesById(seriesId);// 查找系列下的阶段
+						if (phaseslist != null) {
+							for (SeriesInfo phases : phaseslist) {// 查找阶段下的课程并删除
+								seriesCoursesService.deleteBySeriesId(phases
+										.getFdId());
+								seriesInfoService.delete(phases.getFdId());
+							}
+						}
+						seriesInfoService.delete(seriesId);
+
+					}
 				}
 			}
 		}
