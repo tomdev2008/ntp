@@ -4,6 +4,8 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -20,6 +22,8 @@ import org.springframework.util.FileCopyUtils;
  */
 public class DownloadHttpMessageConverter extends
         AbstractHttpMessageConverter<DownloadHelper> {
+
+    private static final Logger log = LoggerFactory.getLogger(DownloadHttpMessageConverter.class);
 
     @Override
     protected DownloadHelper readInternal(Class<? extends DownloadHelper> arg0,
@@ -49,14 +53,16 @@ public class DownloadHttpMessageConverter extends
             HttpMessageNotWritableException {
         overrideHeader(outputMessage.getHeaders(), downFile.getHeaders());
         File f = downFile.getFile();
-        InputStream inputStream = downFile.getInputStream();
+        ByteArrayOutputStream inputStream = downFile.getInputStream();
         if (f != null) {
             FileCopyUtils.copy(new FileInputStream(f), outputMessage.getBody());
             if (downFile.isClearFile()) {
                 f.delete();
             }
         } else if (inputStream != null) {
-            FileCopyUtils.copy(inputStream, outputMessage.getBody());
+            log.info("开始拷贝附件-------------");
+            InputStream stream = new ByteArrayInputStream(inputStream.toByteArray());
+            FileCopyUtils.copy(stream, outputMessage.getBody());
         } else {
             if (downFile.getCharset() == null) {
                 // Charset.forName("UTF-8")

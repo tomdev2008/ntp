@@ -1,9 +1,6 @@
 package cn.me.xdf.common.download;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +24,7 @@ public class DownloadHelper {
 
     private File file;
 
-    private InputStream inputStream;
+    private ByteArrayOutputStream inputStream;
 
     private String content;
 
@@ -119,21 +116,16 @@ public class DownloadHelper {
         }
     }
 
-    public InputStream getInputStream() {
+    public ByteArrayOutputStream  getInputStream() {
         return inputStream;
     }
 
-    public void setInputStream(InputStream inputStream) {
+    public void setInputStream(ByteArrayOutputStream inputStream) {
         if (inputStream != null) {
-            try {
-                setContentLength((long) inputStream.available());
-                if (forOpen) {
-                    setCharset(null);
-                }
-                this.inputStream = inputStream;
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (forOpen) {
+                setCharset(null);
             }
+            this.inputStream = inputStream;
         }
     }
 
