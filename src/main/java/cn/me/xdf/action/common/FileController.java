@@ -415,7 +415,7 @@ public class FileController {
     /**
      * html转图片，并且下载
      *
-     * @param (对应AttMain的主键)
+     * @param
      * @return
      */
     @RequestMapping("/downloadImg")
