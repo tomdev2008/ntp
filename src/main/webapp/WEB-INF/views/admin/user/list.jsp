@@ -9,6 +9,8 @@
 <!DOCTYPE html>
 <html lang="zh_CN">
 <head>
+<script src="${ctx}/resources/js/jquery.jalert.js"
+		type="text/javascript"></script>
 <script type="text/javascript">
 	$(function(){
 		showSearch();
@@ -99,11 +101,36 @@
 	}
 	
 	//根据用户ID修改用户登录密码
-	function resetPasswordById(fdId) {
-		document.filterForm.method = "post";
-		document.filterForm.action = '${ctx}/admin/user/resetPassword/' + fdId;
-		document.filterForm.submit();
-		return;
+	function resetPassword() {
+		var str=$("input[name='ids']:checked").length;
+	    if(str>1){
+	    	$.fn.jalert("只能选择一个用户进行重置密码");
+	    }
+	    if(str==0){
+	    	$.fn.jalert("请选择用户");
+	    }
+	    if(str==1){
+	    	if($("input[name='ids']:checked").nextAll().hasClass('label-info')){
+	    		document.filterForm.method = "post";
+				document.filterForm.action = '${ctx}/admin/user/resetPassword/' + $("input[name='ids']:checked").val();
+				document.filterForm.submit();
+				return;
+	    	}else{
+	    		$.fn.jalert("只能重置临时账号的密码");
+	    	}
+	    }
+	}
+	
+	function batchDelete(){
+		var str=$("input[name='ids']:checked").length;
+	    if(str==0){
+	    	$.fn.jalert("请选择用户");
+	    }else{
+	    		document.filterForm.method = "post";
+				document.filterForm.action = '${ctx}/admin/user/deleteUser';
+				document.filterForm.submit();
+				return;
+	    }
 	}
 </script>
 </head>
@@ -158,9 +185,9 @@
 				   </c:if>
 				</div>
 				<label class="checkbox inline" for="selectCurrPage">
-				   <input type="checkbox" id="selectCurrPage" name="selectCheckbox" onclick="checkcurrpage();"/>选中本页</label>
+				   <input type="checkbox" id="selectCurrPage" name="selectCurrPage" onclick="checkcurrpage();"/>选中本页</label>
 				<label class="checkbox inline" for="selectAll">
-				   <input type="checkbox" id="selectAll" name="selectCheckbox"  onclick="selectAlls();"/>选中全部</label>
+				   <input type="checkbox" id="selectAll" name="selectAll"  onclick="selectAlls();"/>选中全部</label>
 				<div class="pages pull-right">
 					<div class="span2">
 						 第<span> 
@@ -205,6 +232,9 @@
 					    <span class="dt">${bean.hbmParent.fdName}</span>
 					    <j:if test="${bean.fdIsEmp=='0'}">
 					    	<span class="label label-info">临时账号</span> 
+					    </j:if>
+					    <j:if test="${bean.fdAvailable=='00'}">
+					    	<span class="label label-info">已删除</span> 
 					    </j:if>
 					</a>
 				</li>
