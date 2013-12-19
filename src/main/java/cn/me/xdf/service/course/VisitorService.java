@@ -57,17 +57,20 @@ public class VisitorService extends BaseService{
 	public void saveVisitor(String personId,String bamId){
 		SysOrgPerson orgPerson = accountService.load(personId);
 		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
-		Visitor visitor = getVisitorByBamIdAndPersonId(bamId, personId);
-		if(visitor==null){
-			visitor=new Visitor();
-			visitor.setFdUser(orgPerson);
-			visitor.setBamCourse(bamCourse);
-			visitor.setFdTime(new Date());
-			save(visitor);
-		}else{
-			visitor.setFdTime(new Date());
-			update(visitor);
+		if(!personId.equals(bamCourse.getPreTeachId())){
+			Visitor visitor = getVisitorByBamIdAndPersonId(bamId, personId);
+			if(visitor==null){
+				visitor=new Visitor();
+				visitor.setFdUser(orgPerson);
+				visitor.setBamCourse(bamCourse);
+				visitor.setFdTime(new Date());
+				save(visitor);
+			}else{
+				visitor.setFdTime(new Date());
+				update(visitor);
+			}
 		}
+		
 		
 	}
 	
