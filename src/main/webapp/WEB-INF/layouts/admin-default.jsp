@@ -44,6 +44,7 @@
             <tags:shirourl url="${ctx}/admin/role/list" active="role" text="角色管理" iconName="icon-user"  para="${active}"></tags:shirourl>
             <tags:shirourl url="${ctx}/admin/log/list" active="log" text="日志管理" iconName="icon-user"  para="${active}"></tags:shirourl>
             <tags:shirourl url="${ctx}/admin/online/list" active="online" text="在线用户" iconName="icon-user"  para="${active}"></tags:shirourl>
+             <tags:shirourl url="${ctx}/admin/page/list" active="page" text="页面配置" iconName="icon-user"  para="${active}"></tags:shirourl>
     	</ul>
     </section>
     	 
@@ -54,6 +55,7 @@
                  <j:if test="${active=='role'}">角色管理</j:if>
                  <j:if test="${active=='log'}">日志管理</j:if>
                  <j:if test="${active=='online'}">在线用户</j:if>
+                 <j:if test="${active=='page'}">页面配置</j:if>
                 <div class="backHome">
                     <a href="${ctx}/admin/user/list"><span class="muted">返回</span>系统管理<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
                 </div>
