@@ -411,7 +411,7 @@
             <ul class="mediaList nav nav-pills" id="listMedia">
                 {{~it.listMedia :media:index}}
                 <li class="{{?it.defaultMedia.id == media.id}}active{{?}} {{?media.isPass}}pass{{?}}">
-                    <a href="{{=media.url}}" data-fdid="{{=media.id}}" title="{{=media.name}}" {{?media.url==undefined}}disabled{{?}}>
+                    <a href="{{=media.url}}" data-fdid="{{=media.id}}" title="{{=media.name}}">
                         <i class="icon-circle-success"></i>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}{{=index+1}}
                     </a>
                 </li>
@@ -1786,10 +1786,15 @@
 	           	   }else if(data.code.type=='video'&&data.code.playCode!=null){//视频
 	           		   $("#iframeVideo").removeClass("hide").attr("src",'${ctx}/video.jsp?code=' + data.code.playCode).next().remove();
 	           	   }else{
-	            		$("#iframeVideo").attr("src","").addClass("hide").after("<div class='media-placeholder'>正在转换中......</div>");	
+	           		   if(!$("#iframeVideo").siblings().hasClass("media-placeholder")){
+	           			$("#iframeVideo").attr("src","").addClass("hide").after("<div class='media-placeholder'>正在转换中......</div>"); 
+	           		   }
+	            			
 	               }
               }else{
-           			$("#iframeVideo").attr("src","").addClass("hide").after("<div class='media-placeholder'>素材不存在......</div>");
+            	    if(!$("#iframeVideo").siblings().hasClass("media-placeholder")){
+           				 $("#iframeVideo").attr("src","").addClass("hide").after("<div class='media-placeholder'>素材不存在......</div>");
+            	    }
               } 
         }
 
