@@ -11,16 +11,16 @@
 <script type="text/javascript">
 	$(function() {
 		$('#filterSelect').change(function() {
-							var fv = $(this).children('option:selected').val();
-							document.filterForm.method = "get";
-							document.filterForm.action = '${ctx}/admin/role/list?fdType="'
-									+ fv + '"';
-							document.filterForm.submit();
-							return;
-						});
+			var fv = $(this).children('option:selected').val();
+			document.filterForm.method = "get";
+			document.filterForm.action = '${ctx}/admin/log/list?fdType="'
+					+ fv + '"';
+			document.filterForm.submit();
+			return; 
+		});
 	});
 
-	function delSel() {
+/* 	function delSel() {
 		if (!confirm('您确定要批量删除吗？')) {
 			return false;
 		}
@@ -46,27 +46,21 @@
 		document.filterForm.action = '${ctx}/admin/role/delete/' + fdId;
 		document.filterForm.submit();
 		return;
-	}
+	} */
 </script>
 </head>
 <body>
     <div class="page-body"> 
     <j:autoform>
       <form class="form-inline" name="filterForm">
-        <p class="page-intro">在本模块中，您可以配置平台的所有用户角色信息。</p>
+        <p class="page-intro">在本模块中，您可以查看或删除日志信息</p>
         <div class="btn-group">
-          <a href="${ctx}/admin/role/add" class="btn btn-primary">添加</a>
           <a id="delAll" onclick="delSel()" class="btn btn-primary">批量删除</a>
         </div>
         <span style="margin: 0 2px 0 10px">查看</span> <select name="fdType" id="filterSelect">
-          <option value="">全部角色</option>
-          <option value="admin">系统管理员</option>
-          <option value="group">主管</option>
-          <!--  
-          <option value="campus">学校主管</option>
-          -->
-          <option value="guidance">导师</option>
-          <option value="trainee">教师</option>
+          <option value="LogLogin">登录日志</option>
+          <option value="LogLogout">登出日志</option>
+          <option value="LogApp">操作日志</option>
         </select>
         <p/>
         <table class="table table-striped">
@@ -74,31 +68,30 @@
             <tr>
               <th><input type="checkbox" name="select" id="selectAll" /></th>
               <th width="10px">#</th>
-              <th width="10%">姓名</th>
-              <th>角色</th>
-               <th width="40%">部门</th>
-              <th width="15%">操作</th>
+              <th width="10%">操作人</th>
+              <th width="30%">部门</th>
+              <th width="10%">日志类型</th>
+              <th width="30%">操作时间</th>
+              <th width="10%">操作</th>
             </tr>
           </thead>
           <tbody>
-            <j:iter items="${page.list}" var="bean" status="vstatus">
+            <j:iter items="${list}" var="bean" status="vstatus">
               <tr>
                 <td style="width: 10px;"><label> <input type="checkbox" name="ids" class="check"
                     value="${bean.fdId}" />
                 </label></td>
-                <td>${vstatus.index + 1}</td>
-                <td>${bean.sysOrgPerson.realName}</td>
-                <td>${bean.roleEnum.value}</td>
-                <td>${bean.sysOrgPerson.hbmParent.fdName}</td>
-                <td><j:if test="${bean.fdId!='13b0cc641357059ccbf0b484a8da92dc'}">
-                    <a href="${ctx}/admin/role/edit/${bean.fdId}">修改</a>&nbsp;
-				    <a href="#" onclick="delById('${bean.fdId}')">删除</a>
-                  </j:if></td>
+                <td>${vstatus.index+1}</td>
+                <td>${bean.fdUserName}</td>
+                <td>${bean.fdUserDep}</td>
+                <td>${bean.logType}</td>
+                <td>${bean.time}</td>
+                <td><a href="#" onclick="">删除</a></td>
               </tr>
             </j:iter>
-          </tbody>
+          </tbody> 
         </table>
-        <tags:pagination page="${page}" searchParams="fdType=${fdType }" paginationSize="5" />
+        <tags:pagination page="${page}" searchParams="fdType=${fdType}" paginationSize="10" />
       </form>
     </j:autoform>
   </div>
