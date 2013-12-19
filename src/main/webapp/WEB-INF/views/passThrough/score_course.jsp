@@ -97,6 +97,7 @@ $.ajax({
 
 //课程打分
 function scoreing(){
+	 var s = parseInt($("#myScore").html());
 	 $.ajax({
 		  url: "${ctx}/ajax/score/pushScoreToCourse",
 		  async:false,
@@ -104,7 +105,7 @@ function scoreing(){
 		  dataType : 'json',
 		  data:{
 			  fdModelId:"${param.courseId}",
-			  fdScore:$("#myScore").html(),
+			  fdScore:s,
 		  },
 		  success: function(result){
 			  $.fn.jalert("评分成功");
@@ -129,7 +130,13 @@ function setMyScore(score){
 		}else{
 			$(this).removeClass("active");
 		}
-		$("#myScore").html(score+".0");
+		var so=n+"";
+		if(so.length==1){
+			$("#myScore").html(score+".0");
+		}else{
+			$("#myScore").html(score);
+		}
+		
 	}); 
 }
 //重置课程情分信息
