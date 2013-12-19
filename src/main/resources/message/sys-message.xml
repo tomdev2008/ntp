@@ -14,4 +14,6 @@
     </message>
     <message name="task"><![CDATA[您学习的节${lectureName}中的${materialName}作业${ispass}。]]>
     </message>
+    <message name="txt"><![CDATA[您学习的节${lectureName}中的${materialName}富文本${ispass}。]]>
+    </message>
 </sys-message>

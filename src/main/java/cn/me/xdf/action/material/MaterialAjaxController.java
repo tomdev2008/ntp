@@ -304,8 +304,8 @@ public class MaterialAjaxController {
 		if (StringUtil.isNotBlank(attId)) {
 			saveAtt(attId, info.getFdId());
 		}
-		info.setIsPublish(permission.equals("open")?true:false);
-		info.setIsDownload(isDownload.equals("yes")?true:false);
+		info.setIsPublish("open".equals(permission)?true:false);
+		info.setIsDownload("yes".equals(isDownload)?true:false);
 		info.setFdAuthor(request.getParameter("author"));
 		info.setFdAuthorDescription(request.getParameter("authorIntro"));
 		info.setFdLink(request.getParameter("videoUrl"));
