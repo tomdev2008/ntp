@@ -135,8 +135,10 @@
 				  },
 			});
         	
-        	var $progress ,flag = true,pct,interval,countdown = 0,byteUped = 0;
-        	
+        	 var $txt = $("#upMaterial").prev(".txt"), 
+             $progress = $txt.prev(".progress").children(".bar"),$pct = $txt.children(".pct"),
+             $countdown = $txt.children(".countdown"),flag = true,
+         	  pct,interval,countdown = 0,byteUped = 0;
                 jQuery("#upMaterial").uploadify({
                 	'height' : 40,
                     'width' : 68,
@@ -149,39 +151,35 @@
                     'auto' : true,
                     'fileTypeExts' : uptype,
                     'onInit' : function(){
-                    	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
-                		<span class="txt"><span class="pct">0%</span><span class="countdown"></span></span>');
                     	$("#upMaterial").next(".uploadify-queue").remove();
                     },
-                    'onUploadStart' : function (file) {
-                    	$("#upMaterial").before($progress);
-                        //$uploadBtn.uploadify("settings", "formData");
-                    },
+                    'onUploadStart' : function (file) {},
                     'onUploadSuccess' : function (file, data, Response) {
                         if (Response) {
-                        	$progress.find(".countdown").empty();
+                        	$countdown.text("00:00:00");
+                        	$progress.width("0");
+                        	$pct.text("0%");
                             var objvalue = eval("(" + data + ")");
                             jQuery("#attId").val(objvalue.attId);
                             jQuery("#upMaterial").val(objvalue.attId);
                             //上传成功后把该素材放到节的素材列表中
-                            
                         }
                         $.ajax({
-          				  url: $("#ctx").val()+"/ajax/material/saveMaterial",
-          				  async:false,
-          				  data:{
-          					  type : type,
-          					  fileName : file.name,
-          					  attId : objvalue.attId
-          				  },
-          				  dataType : 'json',
-          				  success: function(rsult){
-          					  rsult.typeTxt = data_typeTxt;
-          					  rsult.index = $listMedia.children("li").length + 1;
-                              $listMedia.append(mediaListFn(rsult)).sortable();
-                              $("#mediaCount").text($listMedia.children("li").length);
-          				  }
-                        });
+            				  url: $("#ctx").val()+"/ajax/material/saveMaterial",
+            				  async:false,
+            				  data:{
+            					  type : type,
+            					  fileName : file.name,
+            					  attId : objvalue.attId
+            				  },
+            				  dataType : 'json',
+            				  success: function(rsult){
+            					  rsult.typeTxt = data_typeTxt;
+            					  rsult.index = $listMedia.children("li").length + 1;
+                                $listMedia.append(mediaListFn(rsult)).sortable();
+                                $("#mediaCount").text($listMedia.children("li").length);
+            				  }
+                          });
                     },
                     'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
                     	pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
@@ -192,10 +190,11 @@
                     	}
                     	if(bytesUploaded == bytesTotal){
                     		clearInterval(interval);
-                    		
                     	}
-                    	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
-                    	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
+                    	
+                    	$progress.width(pct);
+                    	$pct.text(pct);
+                    	countdown>0 && $countdown.text(secTransform((bytesTotal-bytesUploaded)/countdown*10));
                     }
                 });
                 function uploadSpeed(){
@@ -206,16 +205,19 @@
             			s = Math.ceil(s);
             			var t = "";
             			if(s>3600){
-            				t= Math.ceil(s/3600) + "小时" + Math.ceil(s%3600/60) + "分钟" + s%3600%60 + "秒";
+            				t= completeZero(Math.ceil(s/3600)) + ":" + completeZero(Math.ceil(s%3600/60)) + ":" + completeZero(s%3600%60) ;
             			} else if(s>60){
-            				t= Math.ceil(s/60) + "分钟" + s%60 + "秒";
+            				t= "00:" + completeZero(Math.ceil(s/60)) + ":" + completeZero(s%60) ;
             			} else {
-            				t= s + "秒";
+            				t= "00:00:" + completeZero(s);
             			}
-            			return "，剩余时间：" + t;
+            			return t;
             		}else{
             			return null;
             		}		
+            	}
+            	function completeZero(n){
+            		return n<10 ? "0"+n : n;
             	}
 
         	/*
@@ -671,7 +673,12 @@
 				$("#courseSkin").val($(this).next("h5").text());
 			});		
 			/* 课程推广 封页图片上传 */
-			var $progress ,flag = true,pct,interval,countdown = 0,byteUped = 0;
+			var $txt = $("#upMovie").prev(".txt"), 
+	        $progress = $txt.prev(".progress").children(".bar"),
+	        $pct = $txt.children(".pct"),
+	        $countdown = $txt.children(".countdown"),
+	    	flag = true,
+	    	pct,interval,countdown = 0,byteUped = 0;
 
 			jQuery("#upMovie").uploadify({
 				        'height' : 40,
@@ -686,22 +693,16 @@
 	                    'fileTypeExts' : '*.jpg;*.png;',
 	                    'fileSizeLimit':2048,// 限制文件大小为2m
 	                    'onInit' : function(){
-	                    	$progress = $('<span class="progress"><div class="bar" style="width:0%;"></div> </span>\
-	                		<span class="txt"><span class="pct">0%</span><span class="countdown"></span></span>');
-	                    	$("#upMovie").next(".uploadify-queue").remove();
+	                    	$("#upMaterial").next(".uploadify-queue").remove();
 	                    },
-	                    'onUploadStart' : function (file) {
-	                    	$("#upMovie").before($progress);
-	                        //$uploadBtn.uploadify("settings", "formData");
-	                    },
+	                    'onUploadStart' : function (file) {},
 	                    'onUploadSuccess' : function (file, data, Response) {
 	                        if (Response) {
-	                        	$progress.find(".countdown").empty();
-	                        	var objvalue = eval("(" + data + ")");
+	                        	$countdown.text("00:00:00");
+	                        	$progress.width("0");
+	                        	$pct.text("0%");
+	                            var objvalue = eval("(" + data + ")");
 	                            jQuery("#attIdID").val(objvalue.attId);
-	                            /*if (jQuery("#imgshow")) {
-                       			jQuery("#imgshow").attr('src',  $('#ctx').val()+'/common/file/image/' + objvalue.attId);
-                   			   }*/
                                 $("#imgshow").hide();
                                 $(".cutimg-box").show();
                                 var preImg = $('#ctx').val()+'/common/file/image/' + objvalue.attId;
@@ -719,31 +720,35 @@
 	                    	}
 	                    	if(bytesUploaded == bytesTotal){
 	                    		clearInterval(interval);
-	                    		
 	                    	}
-	                    	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
-	                    	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
+	                    	
+	                    	$progress.width(pct);
+	                    	$pct.text(pct);
+	                    	countdown>0 && $countdown.text(secTransform((bytesTotal-bytesUploaded)/countdown*10));
 	                    }
 	         });
-	                function uploadSpeed(){
-	            		countdown = byteUped - countdown;
-	            	}
-	            	function secTransform(s){
-	            		if( typeof s == "number"){
-	            			s = Math.ceil(s);
-	            			var t = "";
-	            			if(s>3600){
-	            				t= Math.ceil(s/3600) + "小时" + Math.ceil(s%3600/60) + "分钟" + s%3600%60 + "秒";
-	            			} else if(s>60){
-	            				t= Math.ceil(s/60) + "分钟" + s%60 + "秒";
-	            			} else {
-	            				t= s + "秒";
-	            			}
-	            			return "，剩余时间：" + t;
-	            		}else{
-	            			return null;
-	            		}		
-	            	}
+			function uploadSpeed(){
+	    		countdown = byteUped - countdown;
+	    	}
+	    	function secTransform(s){
+	    		if( typeof s == "number"){
+	    			s = Math.ceil(s);
+	    			var t = "";
+	    			if(s>3600){
+	    				t= completeZero(Math.ceil(s/3600)) + ":" + completeZero(Math.ceil(s%3600/60)) + ":" + completeZero(s%3600%60) ;
+	    			} else if(s>60){
+	    				t= "00:" + completeZero(Math.ceil(s/60)) + ":" + completeZero(s%60) ;
+	    			} else {
+	    				t= "00:00:" + completeZero(s);
+	    			}
+	    			return t;
+	    		}else{
+	    			return null;
+	    		}		
+	    	}
+	    	function completeZero(n){
+	    		return n<10 ? "0"+n : n;
+	    	}
 
 		}
 		
