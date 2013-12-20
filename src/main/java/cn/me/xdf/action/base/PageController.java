@@ -9,7 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.system.PageConfig;
+import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.system.SysPageConfigService;
 
 @Controller
@@ -18,7 +21,9 @@ public class PageController {
 	
 	@Autowired
 	private SysPageConfigService pageConfigService;
-	
+
+	@Autowired
+	private AttMainService attMainService;
 	
 	@RequestMapping(value="list")
 	public String getPageList(Model model,HttpServletRequest request){
@@ -49,6 +54,14 @@ public class PageController {
 		page.setFdContent(fdContent);
 		page.setFdOrder(fdOrder);
 		pageConfigService.save(page);
+		//如果是学校联盟就要保存学校的图片
+		if("02".equals(fdType)){
+			String attId=request.getParameter("attId");
+			AttMain att = attMainService.get(attId);
+			att.setFdModelId(page.getFdId());
+			att.setFdModelName(PageConfig.class.getName());
+			attMainService.save(att);
+		}
 		return "/admin/page/list";
 	}
 }
