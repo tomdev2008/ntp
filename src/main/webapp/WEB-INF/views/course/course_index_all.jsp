@@ -31,7 +31,13 @@
                         </div>
                     {{?}}
                     <div class="bd2">
-                        <h3>{{=item.name}}</h3>
+                        <h3>
+						{{?item.name.length>17}}
+							{{=item.name.substring(0,17)}}...
+						{{??}}
+							{{=item.name}}
+						{{?}}
+						</h3>
                         <p>{{=item.issuer}}</p>
 						{{?it.type == "single"}}
                         <p class="rating">
