@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link rel="stylesheet" href="${ctx}/resources/css/DTotal.css" />
 <script src="${ctx}/resources/js/jquery.js" type="text/javascript"></script>
-<script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
+
 <sitemesh:head />
 </head>
 <body>
@@ -70,5 +70,6 @@
 
 </section>
   <%@ include file="/WEB-INF/layouts/footer.jsp"%>
+  <script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
 </body>
 </html>

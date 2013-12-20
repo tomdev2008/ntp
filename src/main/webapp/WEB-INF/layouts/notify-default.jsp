@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="${ctx}/resources/css/global.css?id=12" />
 <link rel="stylesheet" href="${ctx}/resources/css/admin-default.css?id=12" />
 <script src="${ctx}/resources/js/lib/jquery/jquery.min.js" type="text/javascript"></script>
-<script src="${ctx}/resources/js/lib/bootstrap/bootstrap.min.js" type="text/javascript"></script>
+
 <sitemesh:head />
 </head>
 <body>
@@ -62,5 +62,6 @@
   </div>
 
   <%@ include file="/WEB-INF/layouts/footer.jsp"%>
+  <script src="${ctx}/resources/js/lib/bootstrap/bootstrap.min.js" type="text/javascript"></script>
 </body>
 </html>

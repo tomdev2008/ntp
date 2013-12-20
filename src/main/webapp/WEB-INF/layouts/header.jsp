@@ -16,9 +16,10 @@ request.setAttribute("path", path[path.length-1]);
 	<div class="navbar-inner">
     	<div class="container pr">
 			<a href="#" class="logo"></a>
-	        <ul class="nav">
+	        <ul class="nav" id="topNav">
+	        	<li class="itemBg"></li>
 	          <% if(user!=null){ %>
-	        	<li><a href="${ctx}/course/courseIndexAll">全部课程</a></li>
+	        	<li class="specific"><a href="${ctx}/course/courseIndexAll">全部课程</a></li>
 	          <%} %>
 	          <shiro:hasRole name="admin">
 	          <li><a href="${ctx}/admin/user/list">系统管理</a></li>
@@ -30,11 +31,16 @@ request.setAttribute("path", path[path.length-1]);
 	          <li><a href="${ctx}/studyTrack/getStudyTrackDirector">我是主管</a></li>
 	          </shiro:hasRole>
 	          <% if(user!=null){ %>
-	          <li><a href="${ctx}/course/courseIndex">个人首页</a></li>
+	          <li class="active"><a href="${ctx}/course/courseIndex">个人首页</a></li>
 	           <%} %>
 	        </ul>
 			<shiro:authenticated>
             <ul class="nav pull-right">
+            	<li>
+                    <a class="btn-publish" href="#">
+                        <i class="icon-book-pencil"></i>
+                    </a>
+                </li>
               <li class="dropdown">
               	<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                 	<span class="top-face" id="notify" >
@@ -51,7 +57,7 @@ request.setAttribute("path", path[path.length-1]);
                     <li><a href="${ctx}/logout"><i class="icon-off"></i>退出平台</a></li>
                 </ul>
               </li>
-              <li><a href="${ctx}/logout" class="btn-off"></a></li>
+              <li><a href="${ctx}/logout" class="btn-off"><span class="divider">|</span>退出</a></li>
             </ul>
             </shiro:authenticated>
              <shiro:notAuthenticated>            

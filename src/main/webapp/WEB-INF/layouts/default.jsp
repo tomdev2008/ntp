@@ -29,13 +29,14 @@
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
  -->
 <script src="${ctx}/resources/js/jquery.js" type="text/javascript"></script>
-<script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
+
 <sitemesh:head />
 </head>
 <body>
   <%@ include file="/WEB-INF/layouts/header.jsp"%>
   <sitemesh:body />
   <%@ include file="/WEB-INF/layouts/footer.jsp"%>
+  <script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
 </body>
 </html>

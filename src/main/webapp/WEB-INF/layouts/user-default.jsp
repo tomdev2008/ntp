@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link href="${ctx}/resources/css/settings.css" rel="stylesheet" type="text/css">
 <script src="${ctx}/resources/js/jquery.js" type="text/javascript"></script>
-<script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
+
 <sitemesh:head />
 </head>
 <body>
@@ -63,5 +63,6 @@
     </div>
   </div>
   <%@ include file="/WEB-INF/layouts/footer.jsp"%>
+  <script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
 </body>
 </html>
