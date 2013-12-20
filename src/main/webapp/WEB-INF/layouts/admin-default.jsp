@@ -25,7 +25,7 @@
 <title>新东方教师在线备课平台</title>
 <link rel="shortcut icon" href="${ctx}/resources/img/favicon.ico" />
 <!--[if lt IE 9]>
-	<script src="js/html5.js"></script>
+	<script src="${ctx}/resources/js/html5.js"></script>
 <![endif]-->
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link rel="stylesheet" href="${ctx}/resources/css/DTotal.css" />
