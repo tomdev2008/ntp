@@ -907,10 +907,15 @@ $.Placeholder.init();
 		if($(':radio[name="encryptType"]:checked').val()=="authorized"){
 			 $("#coursePwd").val("");
 		}
+		var groupIds = "";
+		$("#list_group tr").each(function(i){
+			groupIds=groupIds+":"+$(this).attr("data-fdid");
+		 });
 		$.post('${ctx}/ajax/course/updateIsPublish',{
 			courseId : $("#courseId").val(),
 			isPublish: $("#permission").val(),
 			fdPassword:  $("#coursePwd").val(),
+			groupIds: groupIds,
 			})
 		.success(function(){
 			//提交成功跳转到详细信息

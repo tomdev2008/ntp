@@ -417,6 +417,28 @@ public class CourseAjaxController {
 			courseInfo.setFdPassword(fdPassword);
 		}
 		courseService.save(courseInfo);
+		List<CourseGroupAuth> delCourseGroupAuth = courseGroupAuthService.findByProperty("course.fdId", courseId);
+		for (CourseGroupAuth courseGroupAuth : delCourseGroupAuth) {
+			courseGroupAuthService.delete(courseGroupAuth.getFdId());
+		}
+		String groupIds = request.getParameter("groupIds");
+		String [] ids = groupIds.split(":");
+		for (String string : ids) {
+			if(!string.equals("all")&&StringUtil.isNotEmpty(string)){
+				CourseGroupAuth courseGroupAuth = new CourseGroupAuth();
+				courseGroupAuth.setCourse(courseInfo);
+				SysOrgGroup sysOrgGroup = sysOrgGroupService.get(string);
+				courseGroupAuth.setGroup(sysOrgGroup);
+				courseGroupAuthService.save(courseGroupAuth);
+			}
+			
+		}
+		if((!isPublish.equals("open"))&&StringUtil.isEmpty(fdPassword)){
+			List<CourseGroupAuth> delCourseGroupAuth1 = courseGroupAuthService.findByProperty("course.fdId", courseId);
+			for (CourseGroupAuth courseGroupAuth : delCourseGroupAuth1) {
+				courseGroupAuthService.delete(courseGroupAuth.getFdId());
+			}
+		}
 	}
 
 	/**
@@ -467,7 +489,7 @@ public class CourseAjaxController {
 		List<Map> list = new ArrayList<Map>();
 		for (CourseGroupAuth courseGroupAuth : groupAuths) {
 			Map m = new HashMap();
-			m.put("id", courseGroupAuth.getFdId());
+			m.put("id", courseGroupAuth.getGroup().getFdId());
 			m.put("gName", courseGroupAuth.getGroup().getFdName());
 			list.add(m);
 		}
