@@ -357,7 +357,7 @@ $(function(){
   		$("#typeTxt").html("视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
   		data_uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
   		$("#uploadIntro").html(data_uploadIntro);
-  		uptype='*.mp4;*.avi;*.wmv;';
+  		uptype='*.wmv;*.wm;*.asf;*.asx;*.rm;*.rmvb;*.ra;*.ram;*.mpg;*.mpeg;*.mpe;*.vob;*.dat;*.mov;*.3gp;*.mp4;*.mp4v;*.m4v;*.mkv;*.avi;*.flv;*.f4v;*.mts;';
   		break;
     case "02":
     	$("#materialIntro").html("音频简介");
@@ -374,7 +374,7 @@ $(function(){
     	$("#videoText").html("");
     	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的文档将会显示在下面的文档列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
-    	uptype='*.doc;*.docx;*.xls;*.xlsx;';
+    	uptype='*.doc;*.docx;*.xls;*.xlsx;*.pdf;';
         break;
     case "05":
     	$("#materialIntro").html("幻灯片简介");
@@ -383,7 +383,7 @@ $(function(){
     	$("#videoText").html("");
     	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的幻灯片将会显示在下面的幻灯片列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
-    	uptype='*.ppt;*.pptx;';
+    	uptype='*.ppt;*.pptx;*.pps;*.ppsx;';
         break;
   }
 	$("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){

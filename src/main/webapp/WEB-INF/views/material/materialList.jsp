@@ -230,7 +230,6 @@ function prepareDelete(delekey){
 			if(res.length==0){
 				$('input[name="ids"]').each(function(){
 					$(this).attr("checked",false);
-					$(this).attr("disabled",true);
 				});
 				
 			}else{
@@ -241,7 +240,6 @@ function prepareDelete(delekey){
 						$(this).attr("disabled",false);
 				    }else{
 						$(this).attr("checked",false);
-						$(this).attr("disabled",true);
 					}
 						
 				});

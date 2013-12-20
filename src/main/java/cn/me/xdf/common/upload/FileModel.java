@@ -29,11 +29,11 @@ public class FileModel {
 	/**
 	 * 文档
 	 */
-	public static final String DOC = ".doc.xls.docx.xlsx";
+	public static final String DOC = ".doc.xls.docx.xlsx.pdf";
 	/**
 	 * 幻灯片
 	 */
-	public static final String PPT = ".ppt.pptx";
+	public static final String PPT = ".ppt.pptx.pps.ppsx";
 	
 	/**
      * 附件ID，对应AttMain的主键
