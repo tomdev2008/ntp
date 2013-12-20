@@ -63,6 +63,7 @@
                     .one('click', function() { cache.modal.modal("hide"); allSel.show(); });
 
         if (typeof ps.content == 'string') {
+            ps.content = ps.tip ? ('<div class="mt20 mb40">' + ps.content + '</div>') : ps.content;
             cache.body.html(ps.content);
         }
         if (typeof ps.content == 'function') {

@@ -6,7 +6,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display
 
 body {background:#efefef;padding-top:60px;overflow-y:scroll;*overflow-y:auto;}
 .pr{position:relative;}
-.mt20{margin-top: 20px !important;}
+.mt20{margin-top: 20px !important;}.mb40{margin-bottom: 40px;}
 .fixed-left{position:fixed;top:60px;left:0;right:0;z-index: 1;}
 .col-left{width:187px;}
 .col-right{width:780px;padding:0 0 0 8px;margin-left:212px;position: relative;z-index: 2;}
@@ -107,6 +107,7 @@ input.error:focus,textarea.error:focus{border-color:#953b39;-webkit-box-shadow:i
 .navbar-fixed-top .pull-right.nav>li>a.dropdown-toggle{padding:7px 7px 6px 11px;white-space:nowrap;height:45px;}
 .navbar-fixed-top .nav>li>.dropdown-menu:before,.navbar .nav>li>.dropdown-menu:after{border:none;}
 .navbar-fixed-top .nav>li>.dropdown-menu{left:0;right:auto;margin-top:2px;min-width:205px;padding:0;border-color:#f7f7f7;border-bottom:solid #dcdcdc 2px;}
+.navbar-fixed-top .nav li.spesific a{background-color: }
 .navbar-fixed-top .dropdown-toggle .top-face{position:relative;display:inline-block;vertical-align:top;margin-right:9px;}
 .navbar-fixed-top .dropdown-toggle .top-face,.navbar-fixed-top .dropdown-toggle .top-face img{width:45px;height:45px;}
 .navbar-fixed-top .dropdown-toggle .top-face > i{position:absolute;top:-10px;right:-10px;}
