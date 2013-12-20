@@ -320,19 +320,13 @@ $.Placeholder.init();
 			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass("active");
 			switch(param){			
 	  			case "basicInfo":
-	  				if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 	  					rightCont.loadBasicInfoPage("系列信息");
-	  				}else{
-	  					jalert("请先设置系列阶段信息");
-	  					urlRouter("sectionsDirectory");
-	  				}
 	  				break;
 	  			case "promotion":
 	  				if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 	  					rightCont.loadPromotionPage("系列推广");
 	  				}else{
-	  					jalert("请先设置系列信息");
-	  					urlRouter("basicInfo");
+	  					jalert_tips("请先设置系列信息");
 	  				}
 	  				break;
 				case "deleteSeries":
@@ -360,7 +354,6 @@ $.Placeholder.init();
 		if(!$("#formBasicInfo").valid()){
 			return;
 		}
-		$("#isperfect").val("true");
 		$.post('${ctx}/ajax/series/saveSeriesBaseInfo',{
 			 seriesId:$("#seriesId").val(),
 			 seriesTitle: $("#seriesTitle").val(),
@@ -368,8 +361,10 @@ $.Placeholder.init();
 			 seriesAuthor: $("#seriesAuthor").val(),
 			 authorDesc: $("#authorDesc").val()
 			 //isavailable:$("#sectionIsava").val()
-			})
-		.success(function(){
+			},function(data){
+				$("#seriesId").val(data.seriesId);
+			},"json")
+		    .success(function(){
 			//提交成功系列推广
        	    urlRouter("promotion");
 		});

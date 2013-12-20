@@ -89,11 +89,6 @@ public class SeriesAjaxContrller {
 			seriesInfoService.save(series);
 			map.put("seriesId", seriesId);
 			map.put("id", series.getFdId());
-			if (StringUtil.isNotEmpty(seriessup.getFdName())) {
-				map.put("baseInfo", "true");
-			} else {
-				map.put("baseInfo", "false");
-			}
 		} else {
 			SeriesInfo seriessup = new SeriesInfo();// 先创建系列
 			seriessup.setIsPublish(false);// 初始化为非发布状态
@@ -101,12 +96,12 @@ public class SeriesAjaxContrller {
 			seriessup.setFdCreateTime(new Date());
 			seriessup.setCreator(creator);
 			seriessup.setIsAvailable(true);// 有效的
+			seriessup.setFdName("未命名");
 			seriesInfoService.save(seriessup);
 			series.setHbmParent(seriessup);
 			seriesInfoService.save(series);// 再保存阶段
 			map.put("id", series.getFdId());
 			map.put("seriesId", seriessup.getFdId());
-			map.put("baseInfo", "false");
 		}
 
 		return JsonUtils.writeObjectToJson(map);
@@ -138,20 +133,33 @@ public class SeriesAjaxContrller {
 	 */
 	@RequestMapping(value = "saveSeriesBaseInfo")
 	@ResponseBody
-	public void saveSeriesBaseInfo(HttpServletRequest request) {
+	public String saveSeriesBaseInfo(HttpServletRequest request) {
 		String seriesId = request.getParameter("seriesId");
 		String seriesTitle = request.getParameter("seriesTitle");
 		String seriesDesc = request.getParameter("seriesDesc");
 		String seriesAuthor = request.getParameter("seriesAuthor");
 		String authorDesc = request.getParameter("authorDesc");
 		// String isavailable=request.getParameter("isavailable");
-		SeriesInfo series = seriesInfoService.get(seriesId);
-		series.setFdName(seriesTitle);
-		series.setFdDescription(seriesDesc);
-		series.setFdAuthor(seriesAuthor);
-		series.setFdAuthorDescription(authorDesc);
-		series.setIsAvailable(true);
-		seriesInfoService.save(series);
+		SeriesInfo series=new SeriesInfo();
+		if(StringUtil.isNotEmpty(seriesId)){
+			series = seriesInfoService.get(seriesId);
+			series.setFdName(seriesTitle);
+			series.setFdDescription(seriesDesc);
+			series.setFdAuthor(seriesAuthor);
+			series.setFdAuthorDescription(authorDesc);
+			series.setIsAvailable(true);
+			seriesInfoService.save(series);
+		}else{
+			series.setFdName(seriesTitle);
+			series.setFdDescription(seriesDesc);
+			series.setFdAuthor(seriesAuthor);
+			series.setFdAuthorDescription(authorDesc);
+			seriesInfoService.save(series);
+			seriesId=series.getFdId();
+		}
+		Map map = new HashMap();
+		map.put("courseid", seriesId);
+		return JsonUtils.writeObjectToJson(map);
 	}
 
 	/**

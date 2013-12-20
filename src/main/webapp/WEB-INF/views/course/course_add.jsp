@@ -736,7 +736,6 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 		</div>
 	</footer> --%>
 <!--底部 E-->
-<input type="hidden" id="isperfect">
 </section>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
@@ -765,9 +764,7 @@ $.Placeholder.init();
 	function urlRouter(href,opt){
 		setTimeout(function(){
 			var param = href ? href : location.href.split("#").pop();			
-			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass
-
-("active");
+			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass("active");
 			switch(param){			
 	  			case "basicInfo":
 	  				rightCont.loadBasicInfoPage("基本信息");
@@ -776,40 +773,36 @@ $.Placeholder.init();
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadDetailInfoPage("详细信息");
 	  				}else{
-	  					jalert("请先设置基本信息");
-	  					urlRouter("basicInfo");
+	  					jalert_tips("请先设置基本信息");
 	  				}
 	  				break;
 	  			case "promotion":
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadPromotionPage("课程推广");
 	  				}else{
-	  					jalert("请先设置基本信息");
-	  					urlRouter("basicInfo");
+	  					jalert_tips("请先设置基本信息");
+	  					
 	  				}
 	  				break;
 	  			case "accessRight":
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadAccessRightPage("权限设置");
 	  				}else{
-	  					jalert("请先设置基本信息");
-	  					urlRouter("basicInfo");
+	  					jalert_tips("请先设置基本信息");
 	  				}
 	  				break;
 	  			case "kinguser":
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadKinguserPage("授权管理");
 	  				}else{
-	  					$.fn.jalert("请先设置基本信息");
-	  					urlRouter("basicInfo");
+	  					jalert_tips("请先设置基本信息");
 	  				}
 	  				break;
 				case "deleteCourse":
 					if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 						rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
 	  				}else{
-	  					jalert("请先设置基本信息");
-	  					urlRouter("basicInfo");
+	  					jalert_tips("请先设置基本信息");
 	  				}
 	  				break;
                 case "video":
@@ -867,7 +860,6 @@ $.Placeholder.init();
 		if(!$("#formBasicInfo").valid()){
 			return;
 		}
-		$("#isperfect").val("true");
 		$.post('${ctx}/ajax/course/saveBaseInfo',{
 			 courseId : $("#courseId").val(),
 			 courseTitle: $("#courseTitle").val(),
@@ -929,11 +921,6 @@ function successSelectArea(imgSrc){
 	//课程发布
 	function releaseCourse(){
 		 //发布前验证课程的基本信息是否已完善(防止出现未命名情况);
-	    if($("#isperfect").val()=='false'){
-	    	jalert2("请完善课程基本信息!");
-	    	urlRouter("basicInfo");
-	    	return ;
-	    }
 		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
 	}
 	
