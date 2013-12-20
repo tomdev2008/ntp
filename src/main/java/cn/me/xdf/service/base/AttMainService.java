@@ -1,5 +1,6 @@
 package cn.me.xdf.service.base;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -69,6 +70,12 @@ public class AttMainService extends SimpleService {
         delete(AttMain.class, id);
         return FileUtil.delete(file);
     }
+
+    @Transactional(readOnly = false)
+    public void delete(Class<AttMain> clazz, String id) {
+        getBaseDao().deleteById(clazz, id);
+    }
+
 
     @Transactional(readOnly = false)
     public void deleteAttMainByModelId(String modelId) {

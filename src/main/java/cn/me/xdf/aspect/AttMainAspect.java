@@ -29,6 +29,8 @@ public class AttMainAspect {
     @Autowired
     private AttMainTask attMainTask;
 
+    @Autowired
+    private AttMainService attMainService;
 
 
     /**
@@ -49,10 +51,26 @@ public class AttMainAspect {
             throw new RuntimeException("不支持的格式类型");
         }
         AttMain attMain = (AttMain) result;
-        attMainTask.run(attMain);
+        attMainTask.executeInterfaceSave(attMain);
         return joinPoint.getTarget();
     }
 
+
+    @AfterReturning(value = "execution(* cn.me.xdf.service.base.AttMainService.deleteAttMain(..))", returning = "result")
+    public Object afterDeleteAttMain(JoinPoint joinPoint, Object result) {
+
+        log.info("开始启动资源过滤------------afterSaveAttMain----------");
+        if (result == null) {
+            return null;
+        }
+        if (!(result instanceof String)) {
+            throw new RuntimeException("不支持的格式类型");
+        }
+        String fdId = (String) result;
+        AttMain attMain = attMainService.get(fdId);
+        attMainTask.executeInterfaceDelete(attMain);
+        return joinPoint.getTarget();
+    }
 
 
 }

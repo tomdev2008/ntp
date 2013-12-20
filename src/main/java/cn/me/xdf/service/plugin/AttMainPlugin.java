@@ -36,6 +36,32 @@ public class AttMainPlugin {
         return vid;
     }
 
+    public static void deleteDoc(AttMain attMain) {
+        try {
+            DocInterfaceModel model = new DocInterfaceModel(attMain,
+                    DocInterfaceModel.deleteDocByAttId, "");
+            HttpClient client = new HttpClient();
+            client.getParams().setParameter(
+                    HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
+            PostMethod filePost = new PostMethod(DocInterfaceModel.url);
+            filePost.getParams().setParameter(
+                    HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
+
+            filePost.addParameters(model.deleteDocByAttIdModel());
+
+            filePost.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
+            int status = client.executeMethod(filePost);
+            if (status == HttpStatus.SC_OK) {
+                log.info("获取附件成功：" + filePost.getResponseBodyAsString());
+            } else {
+                log.error("连接失败");
+            }
+        } catch (Exception e) {
+            log.error("addDoc:" + e.getCause());
+            //throw new RuntimeException("出现异常addDoc:" + e.getCause());
+        }
+    }
+
     public static ByteArrayOutputStream getDocByAttId(AttMain attMain) {
         try {
             DocInterfaceModel model = new DocInterfaceModel(attMain,
@@ -57,7 +83,7 @@ public class AttMainPlugin {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 byte[] buffer = new byte[1024];
                 int len;
-                while ((len = inputStream.read(buffer)) > -1 ) {
+                while ((len = inputStream.read(buffer)) > -1) {
                     baos.write(buffer, 0, len);
                 }
                 baos.flush();

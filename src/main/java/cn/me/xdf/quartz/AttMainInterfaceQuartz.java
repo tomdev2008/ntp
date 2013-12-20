@@ -34,7 +34,7 @@ public class AttMainInterfaceQuartz implements Serializable {
             return;
         for (AttMain attMain : attMainList) {
             if (attMain.getFlag() == -1) {
-                attMainTask.run(attMain);
+                attMainTask.executeInterfaceSave(attMain);
             } else if (StringUtils.isBlank(attMain.getFileUrl())) {
                 attMain.setFileUrl(attMain.getFileUrl());
                 attMainService.update(attMain);

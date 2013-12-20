@@ -41,7 +41,16 @@ public class AttMainTask {
 
     }
 
-    public void run(final AttMain attMain) {
+    public void executeInterfaceDelete(final AttMain attMain){
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                AttMainPlugin.deleteDoc(attMain);
+            }
+        });
+    }
+
+    public void executeInterfaceSave(final AttMain attMain) {
         taskExecutor.execute(new Runnable() {
             @Override
             public void run() {

@@ -123,7 +123,7 @@ public class TaskPaperAjaxController {
 		                Value.eq("fdModelId", task.getFdId()),
 		                Value.eq("fdModelName", Task.class.getName()));
 		for (AttMain attMain : oldAttMains) {
-			attMainService.delete(AttMain.class,attMain.getFdId());
+			attMainService.deleteAttMain(attMain.getFdId());
 		}
 		// 更新选项附件
 		if (StringUtil.isNotBlank(attString)) {
