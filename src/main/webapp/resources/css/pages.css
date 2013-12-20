@@ -12,7 +12,8 @@
 .pages .btn-group .dropdown-menu,.pages .btn-group .dropdown-menu li a{-webkit-background-clip:padding-box;-moz-background-clip:padding;background-clip:padding-box;}
 .pages .btn-group .dropdown-menu{min-width: 95px;border:none;background-color: #4391bb;margin-bottom: 10px;*margin-bottom:0;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
 .pages .btn-group .dropdown-menu:before,.pages .btn-group .dropdown-menu:after{content: "";line-height: 0;border-top: solid #4391bb 6px;border-left: solid transparent 6px;border-right: solid transparent 6px;position: absolute;top: 100%;margin-left: -6px;left: 50%;}
-.pages .btn-group .dropdown-menu li a{text-align: center;border:none;color: #ffffff}
+.pages .btn-group .dropdown-menu li a{text-align: center;border:none;color: #ffffff;cursor: pointer;}
 .pages .btn-group .dropdown-menu li a:hover{background-color: #37779a;}
 .pages .btn-group .dropdown-menu li:first-child a{border-radius: 4px 4px 0 0;}
-.pages .btn-group .dropdown-menu li:last-child a{border-radius:  0 0 4px 4px;}
+.pages .btn-group .dropdown-menu li:last-child a{border-radius:  4px;}
+.pages .btn-group .dropdown-menu li + li:last-child a{border-radius:  0 0 4px 4px;}
