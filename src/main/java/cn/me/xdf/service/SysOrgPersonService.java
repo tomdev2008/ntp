@@ -89,7 +89,7 @@ public class SysOrgPersonService extends BaseService{
 		Finder finder = Finder.create(" select p.fdId id from sys_org_person p ");
 		finder.append(" where 1 = 1 ");
 		if(StringUtils.isNotBlank(fdType)){
-			finder.append(" and p.fdIsEmp = :isEmp ").setParam("isEmp", fdType);
+			finder.append(" and p.fd_is_emp = :isEmp ").setParam("isEmp", fdType);
 		}
 		if (StringUtils.isNotBlank(param)) {
 			finder.append(" and (lower(p.FD_LOGIN_NAME) like '%"+param+"%' or p.fdid in (select e.fdid ");
