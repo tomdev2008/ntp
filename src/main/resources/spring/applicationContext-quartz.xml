@@ -30,7 +30,7 @@
             <ref bean="notifyTodoDetail" />
         </property>
         <property name="cronExpression">
-            <value>0 0/1 1-23 * * ?</value>
+            <value>0 0/4 1-23 * * ?</value>
         </property>
     </bean>
 
