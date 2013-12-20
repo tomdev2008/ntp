@@ -392,7 +392,6 @@ $(function(){
     //初始化权限列表
     var creator="";
 	var url="";
-    if("${param.fdId}"!=null&&"${param.fdId}"!=""){
 	   $.ajax({
 		 type:"post",
 		 url: "${ctx}/ajax/material/getCreater?materialId="+$("#materialId").val(),
@@ -403,7 +402,6 @@ $(function(){
 				  url=result.url;
 		 }
 	   });
-    }
     $.ajax({
     	type:"post",
     	cache:false,

@@ -209,7 +209,6 @@ $(function(){
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //初始化创建者
-   if("${param.fdId}"!=null&&"${param.fdId}"!=""){
     	var creator="";
     	var url="";
 	   $.ajax({
@@ -247,7 +246,6 @@ $(function(){
 				  $("#list_user").html(html); 
 			  }
 		  });
-    } 
     
     $("#formEditDTotal").validate({
         submitHandler:saveMaterial

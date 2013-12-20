@@ -475,9 +475,8 @@ $(function(){
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //初始化创建者
-   if("${param.fdId}"!=null&&"${param.fdId}"!=""){
-    	var creator="";
-    	var url="";
+    var creator="";
+    var url="";
 	   $.ajax({
 		 cache:false,
 		 url: "${ctx}/ajax/material/getCreater?materialId=${materialInfo.fdId}",
@@ -489,31 +488,31 @@ $(function(){
 		 }
 	   });
 	 //初始化权限列表
-	   $.ajax({
-			  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
-			  async:false,
-			  cache:false,
-			  dataType : 'json',
-			  success: function(result){
-				  var photo;
-					if(url.indexOf("http")>-1){
-						photo=url;
-					}else{
-						photo="${ctx}/"+url;
-					}
-				  var html = "<tr data-fdid='creator' draggable='true'> "+
-				  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
-				  "<img src='"+photo+"' alt=''>"+creator+" </div> </td>"+
-				  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
-				  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
-				  "</td> </tr>";
-				  for(var i in result.user){
-					  html += listUserKinguserFn(result.user[i]);
-				  }
-				  $("#list_user").html(html); 
+   $.ajax({
+		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
+		  async:false,
+		  cache:false,
+		  dataType : 'json',
+		  success: function(result){
+			  var photo;
+				if(url.indexOf("http")>-1){
+					photo=url;
+				}else{
+					photo="${ctx}/"+url;
+				}
+			  var html = "<tr data-fdid='creator' draggable='true'> "+
+			  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
+			  "<img src='"+photo+"' alt=''>"+creator+" </div> </td>"+
+			  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
+			  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
+			  "</td> </tr>";
+			  for(var i in result.user){
+				  html += listUserKinguserFn(result.user[i]);
 			  }
-		  });
-    } 
+			  $("#list_user").html(html); 
+		  }
+	  });
+    
     
     $("#formEditDTotal").validate({
         submitHandler:saveMaterial

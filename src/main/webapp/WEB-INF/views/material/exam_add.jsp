@@ -415,51 +415,51 @@ $("#exportExamPaper").click(function(e){
 				//初始化试题列表
 				initExamQuestions();
 				//初始化权限列表
-				var creater = "";
-				var url = "";
-				$
-						.ajax({
-							url : "${ctx}/ajax/material/getCreater?materialId=${param.fdId}",
-							async : false,
-							type: "post",
-							dataType : 'json',
-							success : function(result) {
-								creater = result.name + "（" + result.email
-										+ "），" + result.dept;
-								url = result.url;
-							}
-						});
-				var listUserKinguserFn = doT.template(document
-						.getElementById("listUserKinguserTemplate").text);
-				$
-						.ajax({
-							url : "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${param.fdId}",
-							async : false,
-							dataType : 'json',
-							type: "post",
-							success : function(result) {
-								var photo;
-								if(url.indexOf("http")>-1){
-									photo=url;
-								}else{
-									photo="${ctx}/"+url;
-								}
-								var html = "<tr data-fdid='creater' draggable='true'> "
-										+ " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "
-										+ "<img src='"+photo+"' alt=''>"
-										+ creater
-										+ " </div> </td>"
-										+ " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"
-										+ "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"
-										+ "</td> </tr>";
-								for ( var i in result.user) {
-									html += listUserKinguserFn(result.user[i]);
-								}
-								$("#list_user").html(html);
-
-							}
-						});
 			}
+			var creater = "";
+			var url = "";
+			$
+					.ajax({
+						url : "${ctx}/ajax/material/getCreater?materialId=${param.fdId}",
+						async : false,
+						type: "post",
+						dataType : 'json',
+						success : function(result) {
+							creater = result.name + "（" + result.email
+									+ "），" + result.dept;
+							url = result.url;
+						}
+					});
+			var listUserKinguserFn = doT.template(document
+					.getElementById("listUserKinguserTemplate").text);
+			$
+					.ajax({
+						url : "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${param.fdId}",
+						async : false,
+						dataType : 'json',
+						type: "post",
+						success : function(result) {
+							var photo;
+							if(url.indexOf("http")>-1){
+								photo=url;
+							}else{
+								photo="${ctx}/"+url;
+							}
+							var html = "<tr data-fdid='creater' draggable='true'> "
+									+ " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "
+									+ "<img src='"+photo+"' alt=''>"
+									+ creater
+									+ " </div> </td>"
+									+ " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"
+									+ "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"
+									+ "</td> </tr>";
+							for ( var i in result.user) {
+								html += listUserKinguserFn(result.user[i]);
+							}
+							$("#list_user").html(html);
+
+						}
+					});
 
 			//试题详情编辑页面 模板函数
 			var examDetailFn = doT
