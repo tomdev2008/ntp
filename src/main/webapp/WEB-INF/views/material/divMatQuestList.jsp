@@ -28,7 +28,7 @@
 						<a id="containkey"href="#">全部条目</a>
 					</span>
 				</span>
-				 <a class="btn btn-link"  href="#rightCont">清空搜索结果</a>
+				 <a class="btn btn-link"  href="#rightCont" onclick="clearserach();">清空搜索结果</a>
 			</div>
 		</div>
 		<div class="bd">
