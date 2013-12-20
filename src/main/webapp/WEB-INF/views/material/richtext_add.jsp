@@ -90,7 +90,7 @@
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
                              <c:if test="${materialInfo==null||materialInfo==''}">
-                               <input value="${loginName}" id="author" required class="input-block-level"
+                               <input value="${person.fdName}" id="author" required class="input-block-level"
                                        name="fdAuthor" type="text">
                              </c:if>
                              <c:if test="${materialInfo!=null&&materialInfo!=''}">
@@ -102,9 +102,16 @@
                         <div class="control-group">
                             <label class="control-label" for="authorIntro">作者简介</label>
                             <div class="controls">
+                             <c:if test="${materialInfo==null||materialInfo==''}">
+                               <textarea placeholder="非必填项" rows="4"
+                                       class="input-block-level" id="authorIntro"
+                                       name="fdAuthorDescription" >${person.selfIntroduction}</textarea>
+                             </c:if>
+                             <c:if test="${materialInfo!=null&&materialInfo!=''}">
                              <textarea placeholder="非必填项" rows="4"
                                        class="input-block-level" id="authorIntro"
                                        name="fdAuthorDescription" >${materialInfo.fdAuthorDescription}</textarea>
+                             </c:if>
                             </div>
                         </div>
                     </section>

@@ -236,7 +236,7 @@
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
                                 <input id="author" required class="input-block-level"
-                                       name="author" type="text" value="${loginName}">
+                                       name="author" type="text" value="${person.fdName}">
                             </div>
                         </div>
                         <div class="control-group">
@@ -244,7 +244,7 @@
                             <div class="controls">
                             <textarea placeholder="非必填项" rows="4"
                                       class="input-block-level" id="authorIntro"
-                                      name="authorIntro"></textarea>
+                                      name="authorIntro">${person.selfIntroduction}</textarea>
                             </div>
                         </div>
                     </section>

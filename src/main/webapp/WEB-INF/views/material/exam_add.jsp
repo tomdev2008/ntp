@@ -292,7 +292,7 @@
 							<div class="control-group">
 								<label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
 								<div class="controls">
-									<input value="${loginName}" id="author" required class="input-block-level"
+									<input value="${person.fdName}" id="author" required class="input-block-level"
 										name="author" type="text" >
 								</div>
 							</div>
@@ -300,7 +300,7 @@
 								<label class="control-label" for="authorIntro">作者简介</label>
 								<div class="controls">
 									<textarea placeholder="非必填项" rows="4" class="input-block-level"
-										id="authorIntro" name="authorIntro"></textarea>
+										id="authorIntro" name="authorIntro">${person.selfIntroduction}</textarea>
 								</div>
 							</div>
 						</section>

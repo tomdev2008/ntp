@@ -17,7 +17,9 @@ import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.material.MaterialAuth;
 import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.ScoreStatistics;
+import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.material.MaterialAuthService;
 import cn.me.xdf.service.material.MaterialService;
@@ -44,6 +46,9 @@ public class MaterialController {
 	
 	@Autowired
 	private AttMainService attMainService;
+	
+	@Autowired
+	private AccountService accountService;
 	
 	
 	/**
@@ -91,7 +96,8 @@ public class MaterialController {
 	@RequestMapping(value="materialAddFoward")
 	public String materialAddFoward(HttpServletRequest request,Model model){
 		String fdType = request.getParameter("fdType");
-		model.addAttribute("loginName",ShiroUtils.getUser().getName());
+		SysOrgPerson person = accountService.get(ShiroUtils.getUser().getId());
+		model.addAttribute("person",person);
 		return fowardEdit(fdType);
 	}
 	//返回的是view页面
@@ -154,30 +160,5 @@ public class MaterialController {
 		return "/material/materialList";
 	}
 
-	/**
-	 * 跳转至测试添加页面
-	 * @param model
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="addExam")
-	public String addExam(Model model,HttpServletRequest request){
-//		String materIalId = request.getParameter("materIalId");
-//		model.addAttribute("materIalId", materIalId);
-		return "/material/exam_add";
-	}
-	
-	/**
-	 * 跳转至测试添加页面
-	 * @param model
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="viewExam")
-	public String viewExam(Model model,HttpServletRequest request){
-//		String materIalId = request.getParameter("materIalId");
-//		model.addAttribute("materIalId", materIalId);
-		return "/material/exam_view";
-	}
 	
 }
