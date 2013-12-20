@@ -46,6 +46,9 @@ public class AttMainTask {
             @Override
             public void run() {
                 AttMainPlugin.deleteDoc(attMain);
+                if ("01".equals(attMain.getFdFileType())) {
+                    AttMainPlugin.DeleteDocToCC(attMain);
+                }
             }
         });
     }
@@ -61,7 +64,8 @@ public class AttMainTask {
                     if (sysAppConfig != null) {
                         callback_url = sysAppConfig.getFdValue();
                     }
-                    String playCode = AttMainPlugin.addDocNtp(attMain, callback_url);
+                    //
+                    String playCode = AttMainPlugin.addDocToCC(attMain, callback_url);
                     String fileNetId = AttMainPlugin.addDoc(attMain, "0");
                     if (StringUtils.isNotBlank(playCode)) {
                         if ("-1".equals(playCode)) {
@@ -73,7 +77,7 @@ public class AttMainTask {
                                     + "&siteid=8B90641B41283EDC&autoStart=true&playerid=628A174866D77DB5&playertype=1";
                             attMain.setFileNetId(fileNetId);
                             attMain.setPlayCode(playCode);
-                            attMain.setFlag(1);
+                            attMain.setFlag(-1);
                             attMain.setFileUrl(playUrl);
                             attMainService.update(attMain);
                         }

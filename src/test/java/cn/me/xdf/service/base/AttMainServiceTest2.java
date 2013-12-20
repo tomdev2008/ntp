@@ -16,17 +16,22 @@ import java.util.List;
  * Time: 下午3:26
  * To change this template use File | Settings | File Templates.
  */
-public class AttMainServiceTest2 extends BaseTest{
+public class AttMainServiceTest2 extends BaseTest {
 
     @Autowired
     private AttMainService attMainService;
 
     @Test
-    public void testFindAttMain(){
-        List<AttMain> attMainList = attMainService.findByCriteria(AttMain.class, Value.isNull("fileUrl"), Value.in("fdFileType", new String[]{"01", "04", "05"}));
+    public void testFindAttMain() {
+        //where fdfiletype='01' and flag=-1 and playcode is not null
+        List<AttMain> attMainList = attMainService.findByCriteria(AttMain.class,Value.eq("flag", -1),
+                Value.eq("fdFileType", "01"),Value.isNotNull("playCode"));
         if (CollectionUtils.isEmpty(attMainList))
             return;
         for (AttMain attMain : attMainList) {
+            if (attMain.getPlayCode() == null) {
+                continue;
+            }
             String fileUrl = attMain.getFileUrl();
             System.out.println(fileUrl);
             attMain.setFileUrl(fileUrl);

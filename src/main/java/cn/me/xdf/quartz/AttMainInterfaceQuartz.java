@@ -1,15 +1,24 @@
 package cn.me.xdf.quartz;
 
+import cn.me.xdf.api.bokecc.config.Config;
+import cn.me.xdf.api.bokecc.util.APIServiceFunction;
+import cn.me.xdf.api.bokecc.util.DemoUtil;
 import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.task.AttMainTask;
 import org.apache.commons.lang3.StringUtils;
+import org.dom4j.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +29,8 @@ import java.util.List;
  */
 public class AttMainInterfaceQuartz implements Serializable {
 
+    private static final Logger log = LoggerFactory.getLogger(AttMainInterfaceQuartz.class);
+
     @Autowired
     private AttMainService attMainService;
 
@@ -29,16 +40,46 @@ public class AttMainInterfaceQuartz implements Serializable {
 
 
     public void executeTodo() {
-        List<AttMain> attMainList = attMainService.findByCriteria(AttMain.class, Value.or(Value.isNull("fileUrl"), Value.ne("flag", 1)), Value.in("fdFileType", new String[]{"01", "04", "05"}));
+        log.info("开始执行定时任务--attMain");
+        List<AttMain> attMainList = attMainService.findByCriteria(AttMain.class,Value.eq("flag", -1),
+                Value.eq("fdFileType", "01"),Value.isNotNull("playCode"));
         if (CollectionUtils.isEmpty(attMainList))
             return;
+
         for (AttMain attMain : attMainList) {
-            if (attMain.getFlag() == -1) {
-                attMainTask.executeInterfaceSave(attMain);
-            } else if (StringUtils.isBlank(attMain.getFileUrl())) {
-                attMain.setFileUrl(attMain.getFileUrl());
+            log.info("----");
+            covertVideoToFlag(attMain);
+        }
+    }
+
+    private void covertVideoToFlag(AttMain attMain) {
+        log.info("----="+attMain.getFdFileName());
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("userid", Config.userid);
+        try {
+            paramsMap.put("videoid", attMain.getPlayCode());
+            paramsMap.put("userid", Config.userid);
+            String title = attMain.getFdFileName();
+            String tag = "NTP";
+            String description = attMain.getFdFileName();
+            paramsMap.put("title", new String(title.getBytes("ISO-8859-1"), "UTF-8"));
+            paramsMap.put("tag", new String(tag.getBytes("ISO-8859-1"), "UTF-8"));
+            paramsMap.put("description", new String(description.getBytes("ISO-8859-1"), "UTF-8"));
+            paramsMap.put("categoryid", "0FB948A49BFC3E78");
+
+            long time = System.currentTimeMillis();
+            String salt = Config.key;
+            String requestURL = APIServiceFunction.createHashedQueryString(paramsMap, time, salt);
+            String responsestr = APIServiceFunction.HttpRetrieve(Config.api_updateVideo + "?" + requestURL);
+            Document doc = DemoUtil.build(responsestr);
+            String videoId = doc.getRootElement().elementText("id");
+            if (videoId != null) {
+                attMain.setFlag(1);
+                log.info("----="+attMain.getFdFileName()+",1111");
                 attMainService.update(attMain);
             }
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 }

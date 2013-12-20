@@ -1,5 +1,8 @@
 package cn.me.xdf.service.plugin;
 
+import cn.me.xdf.api.bokecc.config.Config;
+import cn.me.xdf.api.bokecc.util.APIServiceFunction;
+import cn.me.xdf.api.bokecc.util.DemoUtil;
 import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.DocInterfaceModel;
@@ -10,11 +13,16 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.dom4j.Document;
+import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +36,30 @@ public class AttMainPlugin {
             .getLogger(AttMainPlugin.class);
 
 
-    public static String addDocNtp(AttMain attMain, String callbackUrl) {
-        CCUploader.uid = "B47D5D75B8086E19";
-        CCUploader.apiKey = "JIXP3eHWGZ5YVFzLM19QZiP5x7iknbE3";
+    public static String addDocToCC(AttMain attMain, String callbackUrl) {
+       CCUploader.uid = Config.userid;
+        CCUploader.apiKey = Config.key;
         String vid = CCUploader.upload(attMain.getFdFilePath(), attMain.getFdFileName(), "NTP", null, callbackUrl);
-        log.info("vid====" + vid);
+
         return vid;
+
+    }
+
+
+    public static String DeleteDocToCC(AttMain attMain) {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        String videoId = attMain.getPlayCode();
+        paramsMap.put("videoid", videoId);
+        paramsMap.put("userid", Config.userid);
+        long time = System.currentTimeMillis();
+        String salt = Config.key;
+        String requestURL = APIServiceFunction.createHashedQueryString(
+                paramsMap, time, salt);
+        //get方式
+        String responsestr = APIServiceFunction
+                .HttpRetrieve(Config.api_deleteVideo + "?" + requestURL);
+        Document doc = DemoUtil.build(responsestr);
+        return doc.getRootElement().getText();
     }
 
     public static void deleteDoc(AttMain attMain) {
