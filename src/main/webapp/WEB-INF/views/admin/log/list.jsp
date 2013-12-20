@@ -93,12 +93,23 @@
 			});
 	    }
 	}
+	
+	function expList(){
+		var str=$("input[name='ids']:checked").length;
+	    if(str==0){
+	    	$.fn.jalert("请选择用户");
+	    }else{
+	    		document.filterForm.method = "post";
+				document.filterForm.action = '${ctx}/common/exp/getExpLog?fdType=${fdType}';
+				document.filterForm.submit();
+				return;
+	    }
+	}
 </script>
 </head>
 <body>
 	<j:autoform>
     <form class="form-inline" name="filterForm">
-    <input type="hidden" id="fdType" name="fdType">
     <div class="page-body" id="pageBody">
 	<section class="section box-control">
 		<div class="hd">
@@ -108,7 +119,7 @@
 						操作 <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-					    <li><a href="javascript:void(0)" onclick="">导出列表</a></li>
+					    <li><a href="javascript:void(0)" onclick="expList()">导出列表</a></li>
 						<li><a href="javascript:void(0)" onclick="deleteLog()">批量删除</a></li>
 					</ul>
 				</div>

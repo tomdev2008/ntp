@@ -27,6 +27,8 @@ import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.common.utils.excel.AbsExportExcel;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
+import cn.me.xdf.model.log.LogLogin;
+import cn.me.xdf.model.log.LogLogout;
 import cn.me.xdf.model.material.ExamOpinion;
 import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.material.MaterialAuth;
@@ -39,6 +41,9 @@ import cn.me.xdf.service.adviser.AdviserService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.log.LogAppService;
+import cn.me.xdf.service.log.LogLoginService;
+import cn.me.xdf.service.log.LogLogoutService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.service.studyTack.StudyTrackService;
 import cn.me.xdf.utils.DateUtil;
@@ -47,6 +52,7 @@ import cn.me.xdf.view.model.VCheckTaskData;
 import cn.me.xdf.view.model.VExamOpinion;
 import cn.me.xdf.view.model.VExamPaperData;
 import cn.me.xdf.view.model.VExamQuestion;
+import cn.me.xdf.view.model.VLogData;
 import cn.me.xdf.view.model.VMaterialData;
 import cn.me.xdf.view.model.VStudyTrack;
 import cn.me.xdf.view.model.VTask;
@@ -90,6 +96,15 @@ public class ExpController {
     
     @Autowired
     private SysOrgPersonService sysOrgPersonService;
+    
+    @Autowired
+    private LogLoginService logLoginService;
+    
+    @Autowired
+    private LogLogoutService logLogoutService;
+    
+    @Autowired
+    private LogAppService logAppService;
     
     public SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
     
@@ -244,7 +259,7 @@ public class ExpController {
 		String orderType = request.getParameter("order");
 		String key = request.getParameter("key");
 		String isAll = request.getParameter("isAll");
-		Pagination page = studyTrackService.getStudyTrack(selectType, ShiroUtils.getUser().getId(), 1, 20000, orderType, key);
+		Pagination page = studyTrackService.getStudyTrack(selectType, ShiroUtils.getUser().getId(), 1, 5000, orderType, key);
 		if("noPage".equals(isAll)){//根据bamId进行导出
 			String [] modeiIds = request.getParameter("modelIds").split(",");
 			List<VStudyTrack> list = studyTrackService.buildStudyTrackList(modeiIds);
@@ -261,7 +276,7 @@ public class ExpController {
 			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
 				String [] attMainIds= new String[page.getTotalPage()];
 				for(int i=1;i<=page.getTotalPage();i++){
-					Pagination pageZip =studyTrackService.getStudyTrack(selectType, ShiroUtils.getUser().getId(), i, 20000, orderType, key);
+					Pagination pageZip =studyTrackService.getStudyTrack(selectType, ShiroUtils.getUser().getId(), i, 5000, orderType, key);
 					AttMain attMain = AbsExportExcel.exportExcels(studyTrackService.buildStudyTrackList(pageZip.getList()), "studyTrack.xls");
 					attMainService.save(attMain);
 					attMainIds[i-1] = attMain.getFdId();
@@ -294,14 +309,14 @@ public class ExpController {
 			List<VCheckTaskData> adviserList = adviserService.findCheckDataList(modelIds, fdType);
 			AbsExportExcel.exportExcel(adviserList, fdType+"Data.xls", response,fdType+"Data.xls");
 		} else {
-			Pagination page = adviserService.findAdivserCouserList(fdType, 1, 20000, fdName, order);
+			Pagination page = adviserService.findAdivserCouserList(fdType, 1, 5000, fdName, order);
 			if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
 				List<VCheckTaskData> adviserList = adviserService.findCheckDataByPageList(page.getList());
 				AbsExportExcel.exportExcel(adviserList, fdType+"Data.xls", response,fdType+"Data.xls");
 			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
 				String [] attMainIds= new String[page.getTotalPage()];
 				for(int i=1;i<=page.getTotalPage();i++){
-					Pagination pageZip = adviserService.findAdivserCouserList(fdType, 1, 20000, fdName, order);
+					Pagination pageZip = adviserService.findAdivserCouserList(fdType, 1, 5000, fdName, order);
 					AttMain attMain = AbsExportExcel.exportExcels(adviserService.findCheckDataByPageList(pageZip.getList()), fdType+"Data.xls");
 					attMainService.save(attMain);
 					attMainIds[i-1] = attMain.getFdId();
@@ -326,10 +341,66 @@ public class ExpController {
 	 */
 	@RequestMapping(value = "/getExpLog")
     public String getExpLog(HttpServletRequest request,HttpServletResponse response){
-		String isAll = request.getParameter("isAll");
 		String fdType = request.getParameter("fdType");
-		String fdName = request.getParameter("fdName");
-		String order = request.getParameter("order");
+		String [] ids =request.getParameterValues("ids");
+		String fdKey = request.getParameter("fdKey");
+		String isAll = request.getParameter("selectCheckbox");
+		if(isAll!=null&&isAll.equals("all")){//导出全部
+			Pagination page = null;
+			if(fdType.equals("LogLogin")){
+				page = logLoginService.findVLogDataPagination(fdKey, 1, 5000);
+			}else if(fdType.equals("LogLogout")){
+				page = logLogoutService.findVLogDataPagination(fdKey, 1, 5000);
+			}else if(fdType.equals("LogApp")){
+				page = logAppService.findVLogDataPagination(fdKey, 1, 5000);
+			}
+			if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
+				List<VLogData> logDatas = null;
+				if(fdType.equals("LogLogin")){
+					logDatas = logLoginService.findVLogDataByPagination(page);
+				}else if(fdType.equals("LogLogout")){
+					logDatas = logLogoutService.findVLogDataByPagination(page);
+				}else if(fdType.equals("LogApp")){
+					logDatas = logAppService.findVLogDataByPagination(page);
+				}
+				AbsExportExcel.exportExcel(logDatas, "log.xls", response,"日志导出表.xls");
+			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
+				String [] attMainIds= new String[page.getTotalPage()];
+				for(int i=1;i<=page.getTotalPage();i++){
+					List<VLogData> logDatas = null;
+					if(fdType.equals("LogLogin")){
+						page = logLoginService.findVLogDataPagination(fdKey, i, 5000);
+						logDatas = logLoginService.findVLogDataByPagination(page);
+					}else if(fdType.equals("LogLogout")){
+						page = logLogoutService.findVLogDataPagination(fdKey, i, 5000);
+						logDatas = logLogoutService.findVLogDataByPagination(page);
+					}else if(fdType.equals("LogApp")){
+						page = logAppService.findVLogDataPagination(fdKey, i, 5000);
+						logDatas = logAppService.findVLogDataByPagination(page);
+					}
+					AttMain attMain = AbsExportExcel.exportExcels(logDatas, "log.xls");
+					attMainService.save(attMain);
+					attMainIds[i-1] = attMain.getFdId();
+				}
+				try {
+					downloadZipsByArrayIds(attMainIds, "日志导出表.xls", request, response);
+				} catch (UnsupportedEncodingException e) {
+					  log.error("export excleZip error!", e);
+				}
+				//删除下载后的无用附件
+				attMainService.deleteAttMainByIds(attMainIds);
+			}
+		}else{//导出ids
+			List<VLogData> logDatas=null;
+			if(fdType.equals("LogLogin")){
+				logDatas = logLoginService.findVLogData(ids);
+			}else if(fdType.equals("LogLogout")){
+				logDatas = logLogoutService.findVLogData(ids);
+			}else if(fdType.equals("LogApp")){
+				logDatas = logAppService.findVLogData(ids);
+			}
+			AbsExportExcel.exportExcel(logDatas, "log.xls", response,"日志导出表.xls");
+		}
 		return null;
 	}
 	
@@ -349,14 +420,14 @@ public class ExpController {
 			List<VUserData> vUserDatas = sysOrgPersonService.getVUserDatas(ids);
 			AbsExportExcel.exportExcel(vUserDatas, "user.xls", response, "用户导出表.xls");
 		}else if(StringUtils.isNotBlank(selectAll)){//导出全部
-			Pagination page = sysOrgPersonService.getVUserDatasPage(fdType, 1, 20000, param);
+			Pagination page = sysOrgPersonService.getVUserDatasPage(fdType, 1, 5000, param);
 			if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
 				List<VUserData> vUserDatas = sysOrgPersonService.findVUserDatasByPageList(page.getList());
 				AbsExportExcel.exportExcel(vUserDatas, "user.xls", response, "用户导出表.xls");
 			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
 				String [] attMainIds= new String[page.getTotalPage()];
 				for(int i=1;i<=page.getTotalPage();i++){
-					Pagination pageZip = sysOrgPersonService.getVUserDatasPage(fdType, i, 20000, param);
+					Pagination pageZip = sysOrgPersonService.getVUserDatasPage(fdType, i, 5000, param);
 					AttMain attMain = AbsExportExcel.exportExcels(sysOrgPersonService.findVUserDatasByPageList(pageZip.getList()), "user.xls");
 					attMainService.save(attMain);
 					attMainIds[i-1] = attMain.getFdId();
@@ -384,14 +455,14 @@ public class ExpController {
 			List<VMaterialData> materialList = materialService.findExportMaterialList(modelIds, fdType);
 			AbsExportExcel.exportExcel(materialList, "materialData.xls", response,"materialData.xls");
 		}else{
-			Pagination page = materialService.findMaterialList(fdType, 1, 20000, fdName, order);
+			Pagination page = materialService.findMaterialList(fdType, 1, 5000, fdName, order);
 			if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
 				List<VMaterialData> materialList = materialService.findExportMaterialByPageList(page.getList());
 				AbsExportExcel.exportExcel(materialList, "materialData.xls", response,"materialData.xls");
 			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
 				String [] attMainIds= new String[page.getTotalPage()];
 				for(int i=1;i<=page.getTotalPage();i++){
-					Pagination pageZip = materialService.findMaterialList(fdType, 1, 20000, fdName, order);
+					Pagination pageZip = materialService.findMaterialList(fdType, 1, 5000, fdName, order);
 					AttMain attMain = AbsExportExcel.exportExcels(
 							materialService.findExportMaterialByPageList(pageZip.getList()), "materialData.xls");
 					attMainService.save(attMain);
