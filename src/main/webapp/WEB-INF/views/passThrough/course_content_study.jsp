@@ -1118,6 +1118,13 @@
                                         }
                                     });
                                     $("#replyComm").focus();
+                                    $("#replyComm").bind("keydown",function(){
+                                    	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+                                   		if (keyCode == 13) {
+                                   			$("#formReply").submit();
+                                   			return false;
+                                   		}
+                                     });
                                     $("#formReply .btn-cancel").click(function(e){
                                         $(this).closest(".form-reply").remove();
                                         $this.removeClass("active");
