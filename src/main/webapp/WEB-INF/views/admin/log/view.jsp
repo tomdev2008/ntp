@@ -18,7 +18,7 @@
 <script type="text/javascript">
 $("#rightCont .bder2").addClass("hide");
 function delById(fdId,fdType){
-	$.fn.jalert("您确定要删除该日志？",function(){
+	jalert("您确定要删除该日志？",function(){
 		document.filterForm.method = "post";
 		document.filterForm.action = '${ctx}/admin/log/delete?fdId='+fdId+'&fdType='+fdType;
 		document.filterForm.submit();

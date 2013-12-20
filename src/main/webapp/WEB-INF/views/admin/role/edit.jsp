@@ -81,7 +81,7 @@ function pressEnter(){
 	}
 }
 function confirmDel(){
-	$.fn.jalert("您确认要删除该角色吗？",deleteRole);
+	jalert("您确认要删除该角色吗？",deleteRole);
 }
 function deleteRole(){
 	window.location.href="${ctx}/admin/role/delete/${bean.fdId}";

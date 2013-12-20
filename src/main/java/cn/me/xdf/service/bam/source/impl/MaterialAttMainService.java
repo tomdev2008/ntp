@@ -102,6 +102,7 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                 listm.put("name", minfo.getFdName());//素材名称
                 listm.put("intro", minfo.getFdDescription());//素材描述
                 listm.put("isPass", minfo.getThrough());//素材描述
+                listm.put("txt", minfo.getRichContent());//富文本内容
                 if (attMain != null) {
                     listm.put("url", attMain.getFdId());//附件id
                 }

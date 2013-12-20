@@ -199,7 +199,7 @@ function downloadMater(){
 			}
 		}); 
   } else {
-	  $.fn.jalert("您好！该视频没有对应附件");
+	  jalert("您好！该视频没有对应附件");
   } 
 }
 </script>

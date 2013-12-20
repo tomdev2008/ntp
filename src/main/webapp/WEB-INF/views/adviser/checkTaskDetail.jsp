@@ -325,10 +325,10 @@
       		dataType : 'json',
       		success : function(result) {
       			if(result.attIds==null||result.attIds==''){
-      				 $.fn.jalert("您好!该作业包没有数据可下载！");
+      				 jalert("您好!该作业包没有数据可下载！");
       				   return;
       			}else{
-      				$.fn.jalert("您确定下载本作业包作业附件吗？",function(){
+      				jalert("您确定下载本作业包作业附件吗？",function(){
         				window.location.href= window.location.href="${ctx}/common/file/downloadZipsByArrayIds/"+result.attIds+"/作业";
         				return;
         			});

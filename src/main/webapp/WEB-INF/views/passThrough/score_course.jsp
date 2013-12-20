@@ -52,7 +52,7 @@ function addMessagemethod(){
 			  fdContent:mess,
 		  },
 		  success: function(result){
-			//$.fn.jalert("评论发布成功");
+			//jalert("评论发布成功");
 			var sTop = $("#commentDiv").offset().top - 60;
 			$("html,body").animate({scrollTop: sTop},sTop*1,"swing");
 			$("#courseMessage").val("");
@@ -111,7 +111,7 @@ function scoreing(){
 		  },
 		  success: function(result){
 			  $("#goTop").trigger("click");
-			  //$.fn.jalert("评分成功");
+			  //jalert("评分成功");
 			  //$("#ratingDo  i").unbind();
 			  var score = ($("#myScore").html());
 			  $("#ratingDo  i").each(function(index){	

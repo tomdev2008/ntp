@@ -236,7 +236,7 @@
                             <label class="control-label" for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                             <div class="controls">
                                 <input id="author" required class="input-block-level"
-                                       name="author" type="text" value="${loginName}">
+                                       name="author" type="text" value="${person.fdName}">
                             </div>
                         </div>
                         <div class="control-group">
@@ -244,7 +244,7 @@
                             <div class="controls">
                             <textarea placeholder="非必填项" rows="4"
                                       class="input-block-level" id="authorIntro"
-                                      name="authorIntro"></textarea>
+                                      name="authorIntro">${person.selfIntroduction}</textarea>
                             </div>
                         </div>
                     </section>
@@ -364,7 +364,7 @@ $(function(){
      });
 });
 function deleteMaterial(){
-	$.fn.jalert("您确认要删除该作业包吗？",confirmDeletePaper);
+	jalert("您确认要删除该作业包吗？",confirmDeletePaper);
 }
 function confirmDeletePaper(){
 	$.ajax({
@@ -376,7 +376,7 @@ function confirmDeletePaper(){
 	}); 
 }
 function deleteTask(){
-	$.fn.jalert("您确认要删除该作业吗？",confirmDeleteTask);
+	jalert("您确认要删除该作业吗？",confirmDeleteTask);
 }
 function confirmDeleteTask(){
 	$.ajax({

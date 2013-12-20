@@ -107,7 +107,7 @@
                         });
                     });
                     if(listArr.length<1){
-                    	//$.fn.jalert("请选择课程信息后保存!");//添加课程为空错误提示;
+                    	//jalert("请选择课程信息后保存!");//添加课程为空错误提示;
                     	$("#showError").html("<font size='2' color='red'>请选择阶段的课程信息!</font>");
                     	return;
                     }
@@ -492,7 +492,7 @@
 			
 			$("#deleteSeriesCourse").click(function(){confirmDel();});
 			function confirmDel(){
-				$.fn.jalert("您确认要删除当前系列课程？",deleteseriesInfo);
+				jalert("您确认要删除当前系列课程？",deleteseriesInfo);
 			}
 			// 调用ajax删除当前课程
 			function deleteseriesInfo(){
