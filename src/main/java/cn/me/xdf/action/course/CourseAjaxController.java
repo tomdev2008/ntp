@@ -28,6 +28,7 @@ import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseCategory;
+import cn.me.xdf.model.course.CourseGroupAuth;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.course.CourseTag;
@@ -45,6 +46,7 @@ import cn.me.xdf.service.course.CourseAuthService;
 import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseCategoryService;
 import cn.me.xdf.service.course.CourseContentService;
+import cn.me.xdf.service.course.CourseGroupAuthService;
 import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.course.CourseTagService;
@@ -115,6 +117,9 @@ public class CourseAjaxController {
 	
 	@Autowired
 	private SysOrgGroupService sysOrgGroupService;
+	
+	@Autowired
+	private CourseGroupAuthService courseGroupAuthService;
 	
 	/**
 	 * 获取当前课程的基本信息
@@ -457,6 +462,16 @@ public class CourseAjaxController {
 				StringUtil.isBlank(courseInfo.getFdPassword()) ? "authorized"
 						: "passwordProtect");
 		map.put("coursePwd", courseInfo.getFdPassword());
+		
+		List<CourseGroupAuth> groupAuths = courseGroupAuthService.findByProperty("course.fdId", courseId);
+		List<Map> list = new ArrayList<Map>();
+		for (CourseGroupAuth courseGroupAuth : groupAuths) {
+			Map m = new HashMap();
+			m.put("id", courseGroupAuth.getFdId());
+			m.put("gName", courseGroupAuth.getGroup().getFdName());
+			list.add(m);
+		}
+		map.put("list", list);
 		return JsonUtils.writeObjectToJson(map);
 	}
 
@@ -1073,6 +1088,12 @@ public class CourseAjaxController {
 		String key = request.getParameter("q");
 		List<SysOrgGroup> groups = sysOrgGroupService.findGroupTop10ByKey(key);
 		List<Map> returnList = new ArrayList<Map>();
+/*		if("全体教职员工".contains(key)){
+			Map mAlll = new HashMap();
+			mAlll.put("groupId", "all");
+			mAlll.put("groupName", "全体教职员工");
+			returnList.add(mAlll);
+		}*/
 		for (SysOrgGroup sysOrgGroup : groups) {
 			Map map = new HashMap();
 			map.put("groupName", sysOrgGroup.getFdName());

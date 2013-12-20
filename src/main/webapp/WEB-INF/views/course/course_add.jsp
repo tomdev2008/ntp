@@ -397,14 +397,33 @@ it.encryptType !='passwordProtect'}}disabled{{?}} placeholder="请填写课程�
 					</div>					
 	       </div>
 
-<div class="page-body kinguser-content">  
+<div class="page-body kinguser-content" id="courseGroupDiv">  
 <div class="section">
 <table class="table table-bordered">
 	<thead>
 		<tr><th>授权群组</th><th>删除</th></tr>
 	</thead>
 	<tbody id="list_group">
-		
+		{{~ it.list:item:index}}
+		<tr draggable="true" data-fdid="{{=item.id}}">
+			<td class="tdTit">
+				</div>{{=item.gName}}</div> 
+			</td>
+			<td>
+				<a href="#" class="icon-remove-blue"></a>
+			</td>
+		</tr>
+		{{~}}
+		{{?it.list.length==0}}
+		<tr draggable="true" data-fdid="all">
+			<td class="tdTit">
+				</div>全体教职员工</div> 
+			</td>
+			<td>
+				<a href="#" class="icon-remove-blue"></a>
+			</td>
+		</tr>
+		{{?}}
 	</tbody>
 </table>
 <input type="text" id="addGroup" class="autoComplete ac_input" autocomplete="off"> 
