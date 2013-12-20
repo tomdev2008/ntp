@@ -969,7 +969,7 @@ public class CourseAjaxController {
 		returnMap.put("sex", orgPerson.getFdSex());
 		returnMap.put("org", orgPerson.getHbmParent()==null?"不详":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
 		returnMap.put("dep", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
-		returnMap.put("tel", orgPerson.getFdWorkPhone()==null?"不详":orgPerson.getFdWorkPhone());
+		returnMap.put("tel", orgPerson.getFdMobileNo()==null?"不详":orgPerson.getFdMobileNo());
 		returnMap.put("qq", orgPerson.getFdQq()==null?"不详":orgPerson.getFdQq());
 		
 		returnMap.put("bool", orgPerson.getFdBloodType());
