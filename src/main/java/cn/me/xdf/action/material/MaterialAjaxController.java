@@ -428,11 +428,13 @@ public class MaterialAjaxController {
 	public String getCreater(HttpServletRequest request) {
 		// 获取课程ID
 		String MaterialId = request.getParameter("materialId");
-		MaterialInfo info = materialService.get(MaterialId);
-		if(info==null){
-			return null;
+		SysOrgPerson person;
+		if(StringUtil.isEmpty(MaterialId)){
+			person= accountService.load(ShiroUtils.getUser().getId());
+		}else{
+			MaterialInfo info = materialService.get(MaterialId);
+			person = info.getCreator();
 		}
-		SysOrgPerson person = info.getCreator();
 		Map map = new HashMap();
 		map.put("fdId", person.getFdId());
 		map.put("name", person.getRealName());
@@ -440,6 +442,7 @@ public class MaterialAjaxController {
 		map.put("dept", person.getDeptName());
 		map.put("url", person.getPoto());
 		return JsonUtils.writeObjectToJson(map);
+		
 	}
 	
 	/**
