@@ -393,7 +393,9 @@ $(function(){
 	$("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){
 		e.preventDefault();
 		$(this).closest("li").remove();
-		$("#videoUrl").val("");//清空视频链接
+		if($("#videoUrl").val()!=null && $("#videoUrl").val()!=""){
+			  $("#videoUrl").val("");//清空视频链接
+		}
 	});
 	
 	var $txt = $("#upMaterial").prev(".txt"), 

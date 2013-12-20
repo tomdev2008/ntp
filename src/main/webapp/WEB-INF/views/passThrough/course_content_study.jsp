@@ -326,7 +326,9 @@
                 <div class="mediaWrap bdbt2">
                     <div class="mediaObject">
                         {{?param.txt != null && it.txt!="" }}
+                           <div id="richTxt">
                            {{=param.txt}}
+                          </div>
                          {{?}}
                        {{?param.txt == null || it.txt=="" }}
 						<iframe width="100%" height="510" id="iframeVideo" src="" frameBorder="0" scrolling="no"></iframe>
@@ -1383,7 +1385,9 @@
 		  			  success: function(data){
 		  	                   mdata=data.defaultMedia;
 		  	                 //alert(JSON.stringify(mdata))
-		  	            	  
+		  	                 if(data.type == 'txt'){
+		  	            		  $("#richTxt").html(mdata.txt);
+		  	            	  }
 		  	            	  if(data.type!='txt'){
 		  	            		//重新定位播放视频
 			  	                  loadvideoOrDoc(mdata);
