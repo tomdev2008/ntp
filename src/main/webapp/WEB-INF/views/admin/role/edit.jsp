@@ -1,1 +1,139 @@
-<%@page pageEncoding="UTF-8"%><%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%><j:set name="ctx" value="${pageContext.request.contextPath}" /><!DOCTYPE html><html lang="zh_CN"><head><link rel="stylesheet" href="${ctx}/resources/css/jquery.autocomplete.css" /><script type="text/javascript" src="${ctx }/resources/js/jquery.autocomplete.pack.js"></script><script type="text/javascript" src="${ctx }/resources/js/jquery.jalert.js"></script><script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script><style type="text/css">#adduser {  background-color: #FFF;  padding: 10px 20px;}#adduser .u_list>tbody>tr a {  cursor: pointer;  text-decoration: none}#inpUser {  width: 400px;}</style><script type="text/javascript">	jQuery(document).ready(function() {		jQuery("#inputForm").validate();		return;	});</script><script type="text/javascript">	$().ready(function() {		var name = "";		var id = "";		$("#inpUser").autocomplete("${ctx}/ajax/user/findByName", {			matchContains : true,			max : 100,			width : 410,			dataType : 'json',			// 加入对返回的json对象进行解析的函数，函数返回一个数组			parse : function(data) {				var rows = [];				for ( var i = 0; i < data.length; i++) {					rows[rows.length] = {						data : data[i],						value : data[i].name,						result : data[i].name						// 显示在输入文本框里的内容 ,					};				}				return rows;			},			formatItem : function(item) {				var photo;    			if(item.imgUrl.indexOf("http")>-1){    				photo=item.imgUrl;    			}else{    				photo="${ctx}/"+item.imgUrl;    			}                return '<img src="'                        + (photo) + '" alt="">'                        + item.name + '&nbsp;&nbsp;&nbsp;&nbsp;'                        + item.org + '&nbsp;&nbsp;' + item.department;			}		}).result(function(event, item) {			name = item.name;			id = item.id;		});		$("#u_list tbody a").click(function() {			$(this).closest("tr").remove();		});		$("#addUser").click(function() {			var repeat = false;			$("#u_list tbody tr input").each(function() {				var id1 = $(this).val();				if (id == id1)					repeat = true;			});			if (repeat) {				$.fn.jalert("请不要重复添加用户角色信息！");			} else {				$("#u_list tbody").append('<tr><td>' +					name + '<input type="hidden" name="personId" value="' +					id + '" /></td><td><a class="text-error">移除</a></td></tr>').find("a").click(function() {					$(this).closest("tr").remove();				});			}		});	});</script></head><body>  <div class="page-body">   <form class="form-horizontal" method="post" id="inputForm" action="${ctx}/admin/role/save" name="form">    <input type="hidden" name="fdId" value="${bean.sysOrgPerson.fdId}" />    <section id="set-exam">      <div>        <p class="page-intro">在本模块中，您可以配置平台的所有用户角色信息。</p>        <br />        <table class="table table-striped">          <tr>            <th width="20%">角色</th>            <td><select id="roleType" name="fdType" class="required">                <option value="">选择角色</option>                <option value="admin" <j:if test="${bean.roleEnum.key eq 'admin'}"> selected="selected"</j:if>>系统管理员</option>                <option value="group" <j:if test="${bean.roleEnum.key eq 'group'}"> selected="selected"</j:if>>主管</option>            </select></td>          </tr>          <tr>            <th>人员</th>            <td>              <table class="table " id="u_list">                <tbody>                  <tr>                    <td>${bean.sysOrgPerson.realName}<input type="hidden" name="personId"                      value="${bean.sysOrgPerson.fdId}" /></td>                    <td><a class="text-error">移除</a></td>                  </tr>                </tbody>              </table>            </td>          </tr>          <tr>            <th>选择</th>            <td colspan="2"><input id="inpUser" type="text" class="span3" />              <button id="addUser" type="button" class="btn">添加</button></td>          </tr>          <tr>            <td colspan="4"><button class="btn btn-primary" type="submit" value="提交" id="saveBtn">确定</button></td>          </tr>        </table>      </div>    </section>  </form>  </div></body></html>
+<%@page import="cn.me.xdf.model.base.AttMain"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
+<j:set name="ctx" value="${pageContext.request.contextPath}" />
+<!DOCTYPE HTML>
+<html class="">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>新东方在线教师备课平台</title>
+<link rel="stylesheet" href="${ctx}/resources/css/global.css" />
+<link href="${ctx}/resources/css/DTotal.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
+<!--[if lt IE 9]>
+<script src="${ctx}/resources/js/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+	        <div class="page-header">
+                <a href="${ctx}/admin/role/list" class="backParent">
+                <span id="back">返回角色列表</span>
+               </a>
+                <h4>角色设置</h4>
+                <div class="btn-group">
+                    <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
+                    <c:if test="${bean.fdId!='' && bean.fdId!=null}">
+                    <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
+                    </c:if>
+               </div>
+	        </div>
+            <div class="page-body editingBody">
+                <form action="#" id="formEditDTotal" class="form-horizontal" onkeyup="pressEnter();" method="post">
+                    <input type="hidden" id="roleName" name="roleName" >
+                    <section class="section">
+                        <label>角色类型</label>
+                        <ul class="nav nav-pills">
+                        	<c:if test="${bean.roleEnum=='admin'}">
+                        		<li class="active"><a data-toggle="tab" href="#admin">管理员</a></li>
+                        		<li><a data-toggle="tab" href="#group">主管</a></li>
+                        	</c:if>
+                            <c:if test="${bean.roleEnum=='group'}">
+                        		<li><a data-toggle="tab" href="#admin">管理员</a></li>
+                        		<li class="active"><a data-toggle="tab" href="#group">主管</a></li>
+                        	</c:if>
+                        </ul>
+                        <div class="tab-content">
+                             <div class="tab-pane active" id="encrypt">
+                                <table class="table table-bordered">
+                                    <tbody id="list_user">
+                                    <tr data-fdid="${bean.sysOrgPerson.fdId}">
+								        <td class="tdTit">
+								          <div class="pr">
+								          	<tags:image href='${bean.sysOrgPerson.poto}' clas='' ></tags:image>
+								          	${bean.sysOrgPerson.fdName}（${bean.sysOrgPerson.fdEmail}），${bean.sysOrgPerson.hbmParent.fdName}
+								          <div>
+								         </td>
+								    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                    <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
+                </form>
+            </div>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.sortable.js"></script>
+<script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
+<script type="text/javascript">
+function pressEnter(){
+	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+	if (keyCode == 13) {
+		return false;
+	}
+}
+function confirmDel(){
+	$.fn.jalert("您确认要删除该角色吗？",deleteRole);
+}
+function deleteRole(){
+	window.location.href="${ctx}/admin/role/delete/${bean.fdId}";
+}
+
+</script>
+
+<script type="text/javascript">
+$(function(){
+	$("#rightCont .bder2").addClass("hide");
+	
+    $("#formEditDTotal").validate({
+        submitHandler:saveMaterial
+    });
+    
+    $('#formEditDTotal a[data-toggle="tab"]').on('shown', function (e) {
+        var href = 	e.target.href.split("#").pop();
+        $("#roleName").val(href);
+    });
+    
+});
+function saveMaterial(){
+	if(!$("#formEditDTotal").valid()){
+		return;
+	}
+    var data = {
+        fdId: "${bean.fdId}",
+        roleName:$("#roleName").val(),
+        kingUser: null
+    };
+  //push人员授权数据
+    data.kingUser = [];
+    $("#list_user>tr").each(function(){
+        data.kingUser.push({
+            id: $(this).attr("data-fdid")
+        });
+    });
+    data.kingUser = JSON.stringify(data.kingUser);
+    $.ajax({
+    	  type:"post",
+    	  url:"${ctx}/admin/role/saveRoles",
+		  async:false,
+		  data:data,
+		  dataType:'json',
+		  success: function(rsult){
+			  window.location.href="${ctx}/admin/role/list";
+		  }
+	});
+}
+function saveMater(){
+	$("#formEditDTotal").trigger("submit");
+}
+</script>
+</body>
+</html>
