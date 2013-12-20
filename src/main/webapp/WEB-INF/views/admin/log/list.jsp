@@ -16,11 +16,11 @@
 	});
 	
 	function showSearch(){
-		var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+		/* var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
 		if (keyCode == 13) {
 			goSearch();
 			return false;
-		}else{
+		}else{ */
 			$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
 			var serach = $("#fdKey").val();
 			if(serach==''){
@@ -32,7 +32,7 @@
 				serach= serach+"...";
 				$("#containkey").html(serach);
 			}
-		}
+		/* } */
 	}
 	
 	function clearserach(){
@@ -44,7 +44,7 @@
 	
 	function pageNavClick(pageNo,fdType){
 		var key = $('#fdKey').val();
-		window.location.href=('${ctx}/admin/log/list?key='+key+'&pageNo='+pageNo+'&fdType='+fdType);
+		window.location.href=('${ctx}/admin/log/list?fdKey='+key+'&pageNo='+pageNo+'&fdType='+fdType);
 	}
 	
 	//选中当前页
@@ -77,7 +77,7 @@
 	}
 	
 	function goSearch() {
-		window.location.href = '${ctx}/admin/log/list?key='+$("#fdKey").val()+'&fdType=${fdType}';
+		window.location.href = '${ctx}/admin/log/list?fdKey='+$("#fdKey").val()+'&fdType=${fdType}';
 		return;
 	}
 	
@@ -88,7 +88,7 @@
 	    }else{
 	    	jalert("您确定要删除该日志？",function(){
 				document.filterForm.method = "post";
-				document.filterForm.action = '${ctx}/admin/log/deleteAll?fdType=${fdType}&key='+$("#fdKey").val();
+				document.filterForm.action = '${ctx}/admin/log/deleteAll?fdType=${fdType}&fdKey='+$("#fdKey").val();
 				document.filterForm.submit();
 			});
 	    }
@@ -110,6 +110,7 @@
 <body>
 	<j:autoform>
     <form class="form-inline" name="filterForm">
+    <input type="hidden" id="fdType" name="fdType" value="${fdType}">
     <div class="page-body" id="pageBody">
 	<section class="section box-control">
 		<div class="hd">

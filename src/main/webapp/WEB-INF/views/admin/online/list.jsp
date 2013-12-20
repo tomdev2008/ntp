@@ -17,11 +17,11 @@
 	});
 	
 	function showSearch(){
-		var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+		/* var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
 		if (keyCode == 13) {
 			goSearch();
 			return false;
-		}else{
+		}else{ */
 			$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
 			var serach = $("#fdKey").val();
 			if(serach==''){
@@ -33,7 +33,7 @@
 				serach= serach+"...";
 				$("#containkey").html(serach);
 			}
-		}
+		/* } */
 	}
 	
 	function clearserach(){
@@ -44,10 +44,10 @@
 	
 	function pageNavClick(pageNo){
 		var fv = $('#fdKey').val();
-		window.location.href="${ctx}/admin/online/list?pageNo="+pageNo+"&key="+ fv;
+		window.location.href="${ctx}/admin/online/list?pageNo="+pageNo+"&fdKey="+ fv;
 	}
 	function goSearch() {
-		window.location.href = "${ctx}/admin/online/list?key="+ $('#fdKey').val();
+		window.location.href = "${ctx}/admin/online/list?fdKey="+ $('#fdKey').val();
 		return;
 	}
 	

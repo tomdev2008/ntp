@@ -37,6 +37,9 @@
 		// 授权管理 用户列表 模板函数
 		var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
 		
+		// 授权管理 群组列表 模板
+		var listGroupFn = doT.template(document.getElementById("listCourseGroupTemplate").text);
+		
 		// 删除课程 模板函数
 		var deleteCourseFn = doT.template(document.getElementById("deleteCourseTemplate").text, undefined, def);
 
@@ -568,7 +571,7 @@
 					  data:{data:JSON.stringify(data)},
 					  dataType:'json',
 					  success: function(rsult){
-						  //jalert("修改成功");
+						  //$.fn.jalert("修改成功");
 					  },
 				});
 			});
@@ -617,12 +620,64 @@
 					$("#coursePwd").removeAttr("disabled");
 				} else {
 					$("#coursePwd").attr("disabled",true);
-				}						
+				}
 			});	
 			$('#formAccessRight a[data-toggle="tab"]').bind('click', function (e) {
 				var href = 	e.target.href.split("#").pop();		
 				$("#permission").val(href);
 				$("#encrypt").find("input").not($("#passwordProtect").is(":checked") ? null : $("#coursePwd")).attr("disabled", href != "encrypt");								
+			});
+			
+			$("#addGroup").autocomplete($("#ctx").val()+"/ajax/course/getGroupTop10",{
+				formatMatch: function(item) { 
+					return item.groupName; 
+				},
+				formatItem: function(item) { 
+					$("#addGroup").next(".help-block").remove();
+					return item.groupName; 
+				},
+				parse : function(data) {
+					$("#addGroup").next(".help-block").remove();
+					var rows = [];
+					for ( var i = 0; i < data.length; i++) {
+						rows[rows.length] = {
+							data : data[i],
+							value : data[i].groupName,
+							result : data[i].groupName
+						// 显示在输入文本框里的内容 ,
+						};
+					}
+					return rows;
+				},
+			
+				dataType : 'json',
+				matchContains:true ,
+				max: 10,
+				scroll: false,
+				width:688
+			}).result(function(e,item){
+				var flag = true;
+				$("#addGroup").next(".help-block").remove();
+				$("#list_group>tr").each(function(){
+					if($(this).attr("data-fdid")==item.groupId){
+						$("#addGroup").after('<span class="help-block">不能添加重复的群组！</span>');
+						$("#addGroup").val("");
+						flag = false;
+					}
+				});
+				if(flag){
+					$(this).val(item.groupName);
+					$("#list_group").append(listGroupFn(item))
+					.sortable({
+						handle: '.state-dragable',
+						forcePlaceholderSize: true
+					})
+					.find("a.icon-remove-blue").bind("click",function(e){
+						e.preventDefault();
+						$(this).closest("tr").remove();
+					});
+					$("#addGroup").val("");
+				}
 			});
 		}
 		

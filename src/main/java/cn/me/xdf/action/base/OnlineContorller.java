@@ -35,19 +35,19 @@ public class OnlineContorller {
 	private LogOnlineService logOnlineService;
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public String list(Model model, String pageNo,String key, HttpServletRequest request) {
+	public String list(Model model, String pageNo,String fdKey, HttpServletRequest request) {
 		model.addAttribute("active", "online");
 		if (StringUtils.isBlank(pageNo)) {
 			pageNo = String.valueOf(1);
 		}
-		if (StringUtils.isBlank(key)) {
-			key = "";
+		if (StringUtils.isBlank(fdKey)) {
+			fdKey = "";
 		}
-		model.addAttribute("fdKey", key);
+		model.addAttribute("fdKey", fdKey);
 		Pagination page=null;
 		List<Map> returnList = new ArrayList<Map>();
 		Finder finder = Finder.create("");
-		finder.append("from LogOnline l where l.isOnline=:isOnline and (l.person.fdName like '%"+key+"%' or l.person.fdEmail like '%"+key+"%' or l.person.hbmParent.fdName like '%"+key+"%')");
+		finder.append("from LogOnline l where l.isOnline=:isOnline and (l.person.fdName like '%"+fdKey+"%' or l.person.fdEmail like '%"+fdKey+"%' or l.person.hbmParent.fdName like '%"+fdKey+"%')");
 		finder.append("order by l.loginTime desc");
 		finder.setParam("isOnline", true);
 		page= logOnlineService.getPage(finder,Integer.parseInt(pageNo));

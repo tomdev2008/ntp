@@ -32,9 +32,11 @@ import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.course.CourseTag;
 import cn.me.xdf.model.course.TagInfo;
+import cn.me.xdf.model.organization.SysOrgGroup;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.SysOrgGroupService;
 import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.UserRoleService;
 import cn.me.xdf.service.bam.BamCourseService;
@@ -110,6 +112,10 @@ public class CourseAjaxController {
 	
 	@Autowired
 	private UserRoleService userRoleService;
+	
+	@Autowired
+	private SysOrgGroupService sysOrgGroupService;
+	
 	/**
 	 * 获取当前课程的基本信息
 	 * 
@@ -969,7 +975,7 @@ public class CourseAjaxController {
 		returnMap.put("sex", orgPerson.getFdSex());
 		returnMap.put("org", orgPerson.getHbmParent()==null?"不详":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
 		returnMap.put("dep", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
-		returnMap.put("tel", orgPerson.getFdMobileNo()==null?"不详":orgPerson.getFdMobileNo());
+		returnMap.put("tel", orgPerson.getFdWorkPhone()==null?"不详":orgPerson.getFdWorkPhone());
 		returnMap.put("qq", orgPerson.getFdQq()==null?"不详":orgPerson.getFdQq());
 		
 		returnMap.put("bool", orgPerson.getFdBloodType());
@@ -1040,6 +1046,7 @@ public class CourseAjaxController {
 		
 		return JsonUtils.writeObjectToJson(returnMap);
 	}
+	
 	@RequestMapping(value="getCoursesTop5ByScore")
 	@ResponseBody
 	public String getCoursesTop5ByScore(HttpServletRequest request){
@@ -1059,4 +1066,23 @@ public class CourseAjaxController {
 		returnMap.put("list", list2);
 		return JsonUtils.writeObjectToJson(returnMap);
 	}
+	
+	@RequestMapping(value="getGroupTop10")
+	@ResponseBody
+	public String getGroupTop10(HttpServletRequest request){
+		String key = request.getParameter("q");
+		List<SysOrgGroup> groups = sysOrgGroupService.findGroupTop10ByKey(key);
+		List<Map> returnList = new ArrayList<Map>();
+		for (SysOrgGroup sysOrgGroup : groups) {
+			Map map = new HashMap();
+			map.put("groupName", sysOrgGroup.getFdName());
+			map.put("groupId", sysOrgGroup.getFdId());
+			returnList.add(map);
+		}
+		return JsonUtils.writeObjectToJson(returnList);
+	}
+	
+	
+	
+	
 }

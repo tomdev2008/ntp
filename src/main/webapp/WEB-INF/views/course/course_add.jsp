@@ -362,7 +362,7 @@ value="{{=it.permission || 'open'}}" />
 							<li{{?it.permission == 'open' || it.permission == ''}} 
 
 class="active"{{?}}><a data-toggle="tab" href="#open">公开</a></li>
-							<li{{?it.permission == 'encrypt'}} class="active"{{?}}><a data-
+							<li{{?it.permission == 'encrypt'}} class="active"{{?}} id="passLi"><a data-
 
 toggle="tab" href="#encrypt">加密</a></li>
 					</ul>
@@ -395,7 +395,23 @@ it.encryptType !='passwordProtect'}}disabled{{?}} placeholder="请填写课程�
 /></label>
 						</div>
 					</div>					
-	       </div>		 
+	       </div>
+
+<div class="page-body kinguser-content">  
+<div class="section">
+<table class="table table-bordered">
+	<thead>
+		<tr><th>授权群组</th><th>删除</th></tr>
+	</thead>
+	<tbody id="list_group">
+		
+	</tbody>
+</table>
+<input type="text" id="addGroup" class="autoComplete ac_input" autocomplete="off"> 
+</div>
+</div>
+
+		 
            <button class="btn btn-block btn-submit btn-inverse" type="button" onClick="saveIsPublish()">保存</button>
        </form>	  
 	 </div> 	
@@ -495,6 +511,20 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 	<td><input type="checkbox" checked class="editingCourse" /></td>
 	<td><a href="#" class="icon-remove-blue"></a></td>
 </tr>
+</script>
+
+<!-- 授权管理 群组列表 模板 -->
+<script id="listCourseGroupTemplate" type="text/x-dot-template">
+
+<tr draggable="true" data-fdid="{{=it.groupId}}">
+			<td class="tdTit">
+				</div>{{=it.groupName}}</div> 
+			</td>
+			<td>
+				<a href="#" class="icon-remove-blue"></a>
+			</td>
+</tr>
+
 </script>
 
 <!-- 删除课程 模板 -->
@@ -770,7 +800,7 @@ $.Placeholder.init();
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadKinguserPage("授权管理");
 	  				}else{
-	  					jalert("请先设置基本信息");
+	  					$.fn.jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
