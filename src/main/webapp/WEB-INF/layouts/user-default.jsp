@@ -24,9 +24,9 @@
 <meta content="telephone=no" name="format-detection" />
 <title>新东方教师在线备课平台</title>
 <link rel="shortcut icon" href="${ctx}/resources/img/favicon.ico" />
-<!-- 
-<link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css" />
- -->
+<!--[if lt IE 9]>
+	<script src="js/html5.js"></script>
+<![endif]-->
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link href="${ctx}/resources/css/settings.css" rel="stylesheet" type="text/css">
 <script src="${ctx}/resources/js/jquery.js" type="text/javascript"></script>
