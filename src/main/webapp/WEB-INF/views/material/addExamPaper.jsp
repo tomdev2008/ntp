@@ -299,6 +299,16 @@
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
+	  $(this).keypress( function(e) {  //屏蔽回车事件 由于目前回车会提交两次表单原因找不到 暂时如此处理
+	    var key = window.event ? e.keyCode : e.which;  
+	    if(key.toString() == "13"){  
+	    	return false;
+	    }  
+	   });
+	});
+</script>
+<script type="text/javascript">
+$(function(){
     $.Placeholder.init();
     $('.itemScore[data-toggle="tooltip"]').tooltip({
         trigger: "focus"
