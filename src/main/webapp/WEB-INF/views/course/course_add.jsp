@@ -763,6 +763,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.autocomplete.pack.js"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script src="${ctx}/resources/js/templDetailPages.js"></script>
+<script src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
 
 <script type="text/javascript">	
 $.Placeholder.init();
