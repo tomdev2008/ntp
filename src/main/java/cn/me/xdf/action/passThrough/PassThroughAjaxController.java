@@ -368,7 +368,7 @@ public class PassThroughAjaxController {
 		List<CourseContent> courseContents = bamCourse.getCourseContents();
         if (courseContents != null){
         	for (CourseContent content : courseContents) {
-	            if (content.getMaterial().getFdId().equals(materialId)) {
+	            if (content.getMaterial().getFdId().equals(materialId)&&content.getCatalog().getFdId().equals(catalogId)) {
 	            	materialInfo = content.getMaterial();
 	            	break;
 	            }
@@ -380,7 +380,7 @@ public class PassThroughAjaxController {
 		map.put("fullScore", materialService.getTotalSorce(materialId).get("totalscore"));
 		map.put("examPaperTime", materialInfo.getFdStudyTime());
 		map.put("examPaperIntro", materialInfo.getFdDescription());
-		map.put("examPaperStatus", sourceNodeService.getStatus(bamCourse.getMaterialInfoById(materialId), catalogId, ShiroUtils.getUser().getId()));
+		map.put("examPaperStatus", sourceNodeService.getStatus(materialInfo, catalogId, ShiroUtils.getUser().getId()));
 		
 		map.put("listExam", listExam);
 		return JsonUtils.writeObjectToJson(map);
