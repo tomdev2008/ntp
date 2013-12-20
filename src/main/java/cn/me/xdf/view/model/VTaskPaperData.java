@@ -2,8 +2,6 @@ package cn.me.xdf.view.model;
 
 import java.util.List;
 
-import cn.me.xdf.model.material.Task;
-
 public class VTaskPaperData {
 	/**
 	 * 作业包名称

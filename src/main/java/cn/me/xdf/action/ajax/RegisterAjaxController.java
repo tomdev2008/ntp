@@ -19,7 +19,6 @@ import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.organization.SysOrgDepart;
 import cn.me.xdf.model.organization.SysOrgElement;
 import cn.me.xdf.model.organization.SysOrgPerson;
-import cn.me.xdf.model.organization.SysOrgPersonTemp;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.RegisterService;
 import cn.me.xdf.service.SysOrgDepartService;

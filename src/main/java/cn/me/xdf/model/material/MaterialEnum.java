@@ -69,6 +69,21 @@ public enum MaterialEnum {
         public String getView() {
             return "ppt";
         }
+    }, m_07 {
+        @Override
+        public String getValue() {
+            return "07";
+        }
+
+        @Override
+        public String getBean() {
+            return "materialAttmainService";
+        }
+
+        @Override
+        public String getView() {
+            return "txt";
+        }
     }, m_08 {
         @Override
         public String getValue() {

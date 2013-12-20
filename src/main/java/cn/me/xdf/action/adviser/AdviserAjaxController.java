@@ -183,8 +183,9 @@ public class AdviserAjaxController {
 					attMap.put("name", attMain.getFdFileName());
 					attMap.put("fileUrl", attMain.getFdFilePath());
 					String name = FilenameUtils.getExtension(attMain.getFdFileName()).toLowerCase(Locale.ENGLISH);
-					if(name.endsWith("mp4")||name.endsWith("avi")||name.endsWith("wmv")||name.endsWith("rmvb")
-							||name.endsWith("doc")||name.endsWith("xls")||name.endsWith("docx")||name.endsWith("xlsx")||name.endsWith("ppt")){
+				    String VIDEO = ".wmv.wm.asf.asx.rm.rmvb.ra.ram.mpg.mpeg.mpe.vob.dat.mov" +
+				   		".3gp.mp4.mp4v.m4v.mkv.avi.flv.f4v.mts.doc.xls.docx.xlsx.pdf.ppt.pptx.pps.ppsx";
+					if(VIDEO.contains(name)){
 						attMap.put("type", "onlinePlay");
 						attMap.put("mtype", attMain.getFdFileType());//增加类型
 						attMap.put("fileNetId", attMain.getFileNetId());
@@ -231,7 +232,7 @@ public class AdviserAjaxController {
 		Map user = new HashMap();//封装人员信息
 		user.put("name", person.getRealName());
 		user.put("imgUrl", person.getPoto());
-		user.put("org", person.getHbmParent()==null?"":person.getHbmParent());
+		user.put("org", person.getHbmParent()==null?"":person.getHbmParent().getHbmParentOrg().getFdName());
 		user.put("department", person.getDeptName());
 		user.put("phone", person.getFdMobileNo());
 		user.put("mail", person.getFdEmail());
@@ -365,7 +366,7 @@ public class AdviserAjaxController {
 				Map user = new HashMap();//封装人员信息
 				user.put("name", person.getRealName());
 				user.put("imgUrl", person.getPoto());
-				user.put("org", person.getHbmParent()==null?"":person.getHbmParent());
+				user.put("org", person.getHbmParent()==null?"":person.getHbmParent().getHbmParentOrg().getFdName());
 				user.put("department", person.getDeptName());
 				user.put("phone", person.getFdMobileNo());
 				user.put("mail", person.getFdEmail());

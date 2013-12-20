@@ -39,7 +39,7 @@
 													{{?}}
 												{{}}}
                                              </span>
-                                        <b class="text-warning">{{=course.average}}</b>
+                                        <b class="text-warning">{{?(course.average+"").length==1}} {{=course.average}}.0 {{??}} {{=course.average}} {{?}}</b>
                                     </div>
                                 	</div>
                                 	<div class="span2"><span class="text-warning">{{=course.countStudy}} </span>位老师在学习</div>
@@ -51,7 +51,7 @@
 								{{?}}
                                     <div class="media">
                                         <div class="pull-left">
-                                              <img src="{{?course.coverImg!=""}}
+                                              <img class="media-object" src="{{?course.coverImg!=""}}
 														${ctx}/common/file/image/{{=course.coverImg}}
 														{{??}}
 														${ctx}/resources/images/zht-main-img.jpg

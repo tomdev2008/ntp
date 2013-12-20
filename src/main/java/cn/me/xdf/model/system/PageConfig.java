@@ -1,11 +1,19 @@
 package cn.me.xdf.model.system;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import cn.me.xdf.model.base.AttMain;
+import cn.me.xdf.model.base.IAttMain;
 import cn.me.xdf.model.base.IdEntity;
 /**
  * 首页平台寄语与学校联盟的配置
@@ -16,7 +24,8 @@ import cn.me.xdf.model.base.IdEntity;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "SYS_PAGE_CONFIG")
-public class PageConfig extends IdEntity{
+@Inheritance(strategy = InheritanceType.JOINED)
+public class PageConfig extends IdEntity implements IAttMain{
 	
 	/**
 	 * 排序号
@@ -37,7 +46,11 @@ public class PageConfig extends IdEntity{
 	 * 机构或人员的ID
 	 */
 	private String fdElementId;
-
+    /**
+     * 机构图片
+     */
+	private AttMain attMain;
+	
 	public Integer getFdOrder() {
 		return fdOrder;
 	}
@@ -68,6 +81,15 @@ public class PageConfig extends IdEntity{
 
 	public void setFdElementId(String fdElementId) {
 		this.fdElementId = fdElementId;
+	}
+	@JsonIgnore
+	@Transient
+	public AttMain getAttMain() {
+		return attMain;
+	}
+
+	public void setAttMain(AttMain attMain) {
+		this.attMain = attMain;
 	}
 	
 }

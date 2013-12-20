@@ -35,16 +35,19 @@ public class OnlineContorller {
 	private LogOnlineService logOnlineService;
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public String list(Model model, String pageNo, HttpServletRequest request) {
+	public String list(Model model, String pageNo,String key, HttpServletRequest request) {
 		model.addAttribute("active", "online");
 		if (StringUtils.isBlank(pageNo)) {
 			pageNo = String.valueOf(1);
 		}
-		
+		if (StringUtils.isBlank(key)) {
+			key = "";
+		}
+		model.addAttribute("fdKey", key);
 		Pagination page=null;
 		List<Map> returnList = new ArrayList<Map>();
 		Finder finder = Finder.create("");
-		finder.append("from LogOnline l where l.isOnline=:isOnline");
+		finder.append("from LogOnline l where l.isOnline=:isOnline and (l.person.fdName like '%"+key+"%' or l.person.fdEmail like '%"+key+"%' or l.person.hbmParent.fdName like '%"+key+"%')");
 		finder.append("order by l.loginTime desc");
 		finder.setParam("isOnline", true);
 		page= logOnlineService.getPage(finder,Integer.parseInt(pageNo));
@@ -53,6 +56,7 @@ public class OnlineContorller {
 			Map map = new HashMap();
 			map.put("fdLogId", list.get(i).getFdId());
 			map.put("fdUserName", list.get(i).getPerson().getFdName());
+			map.put("fdEmail", list.get(i).getPerson().getFdEmail());
 			map.put("fdUserDep", list.get(i).getPerson().getHbmParent()==null?"":list.get(i).getPerson().getHbmParent().getFdName());
 			map.put("time", DateUtil.convertDateToString(list.get(i).getLoginTime(), "yyyy-MM-dd HH:mm:ss"));
 			map.put("loginNum", list.get(i).getLoginNum());
@@ -62,5 +66,21 @@ public class OnlineContorller {
 		model.addAttribute("page", page);
 		model.addAttribute("list", returnList);
 		return "/admin/online/list";
+	}
+	
+	@RequestMapping(value = "view", method = RequestMethod.GET)
+	public String view(Model model, String onlineId, HttpServletRequest request) {
+		model.addAttribute("active", "online");
+		Map map = new HashMap();
+		LogOnline logOnline = logOnlineService.get(onlineId);
+		map.put("fdOnlineId", logOnline.getFdId());
+		map.put("fdUserName", logOnline.getPerson().getFdName());
+		map.put("fdUserDep", logOnline.getPerson().getHbmParent()==null?"":logOnline.getPerson().getHbmParent().getFdName());
+		map.put("loginTime", DateUtil.convertDateToString(logOnline.getLoginTime(), "yyyy-MM-dd HH:mm:ss"));
+		map.put("ip", logOnline.getIp());
+		map.put("loginNum", logOnline.getLoginNum());
+		map.put("loginDay", logOnline.getLoginDay());
+		model.addAttribute("map", map);
+		return "/admin/online/view";
 	}
 }

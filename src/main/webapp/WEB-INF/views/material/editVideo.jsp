@@ -58,7 +58,7 @@
                </div>
 	        </div>
             <div class="page-body editingBody">
-                <form action="#" id="formEditDTotal" class="form-horizontal" onkeyup="pressEnter();" method="post">
+                <form action="#" id="formEditDTotal" class="form-horizontal" method="post">
                     <section class="section">
                         <div class="control-group">
                             <label class="control-label" for="videoName" id="typeTxt"></label>
@@ -315,12 +315,16 @@
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
-function pressEnter(){
-	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
-	if (keyCode == 13) {
-		return false;
-	}
-}
+$(function(){
+	  $(this).keypress( function(e) {  //屏蔽回车事件 由于目前回车会提交两次表单原因找不到 暂时如此处理
+	    var key = window.event ? e.keyCode : e.which;  
+	    if(key.toString() == "13"){  
+	    	return false;
+	    }  
+	   });
+	});
+</script>
+<script type="text/javascript">
 function confirmDel(){
 	$.fn.jalert("您确认要删除该素材吗？",deleteMaterial);
 }
@@ -357,7 +361,7 @@ $(function(){
   		$("#typeTxt").html("视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
   		data_uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在下面的视频列表中。";
   		$("#uploadIntro").html(data_uploadIntro);
-  		uptype='*.mp4;*.avi;*.wmv;';
+  		uptype='*.wmv;*.wm;*.asf;*.asx;*.rm;*.rmvb;*.ra;*.ram;*.mpg;*.mpeg;*.mpe;*.vob;*.dat;*.mov;*.3gp;*.mp4;*.mp4v;*.m4v;*.mkv;*.avi;*.flv;*.f4v;*.mts;';
   		break;
     case "02":
     	$("#materialIntro").html("音频简介");
@@ -374,7 +378,7 @@ $(function(){
     	$("#videoText").html("");
     	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的文档将会显示在下面的文档列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
-    	uptype='*.doc;*.docx;*.xls;*.xlsx;';
+    	uptype='*.doc;*.docx;*.xls;*.xlsx;*.pdf;';
         break;
     case "05":
     	$("#materialIntro").html("幻灯片简介");
@@ -383,12 +387,13 @@ $(function(){
     	$("#videoText").html("");
     	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的幻灯片将会显示在下面的幻灯片列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
-    	uptype='*.ppt;*.pptx;';
+    	uptype='*.ppt;*.pptx;*.pps;*.ppsx;';
         break;
   }
 	$("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){
 		e.preventDefault();
 		$(this).closest("li").remove();
+		$("#videoUrl").val("");//清空视频链接
 	});
 	
 	var $txt = $("#upMaterial").prev(".txt"), 
@@ -419,13 +424,16 @@ $(function(){
         	$pct.text("0%");
             var objvalue = eval("(" + data + ")");
 		    var html="<li data-fdid='"+objvalue.attId+"'><a class='name' href='#' target='_blank'>"+file.name+" "
-		          +"<input type='hidden'  name='attId' id='attId' value='"+objvalue.attId+"'><div class='item-ctrl'> "
+		          +"</a><input type='hidden'  name='attId' id='attId' value='"+objvalue.attId+"'><div class='item-ctrl'> "
 		          +"<a class='icon-remove-blue' href='#'></a> </div></li>";
             $("#listAttachment").html(html);
             $("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){
 				e.preventDefault();
 				$(this).closest("li").remove();
 			});
+            if($("#videoUrl").val()!=null && $("#videoUrl").val()!=""){
+            	$("#videoUrl").val("");//清空视频链接
+            }
         }
     },
     'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
@@ -475,9 +483,8 @@ $(function(){
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //初始化创建者
-   if("${param.fdId}"!=null&&"${param.fdId}"!=""){
-    	var creator="";
-    	var url="";
+    var creator="";
+    var url="";
 	   $.ajax({
 		 cache:false,
 		 url: "${ctx}/ajax/material/getCreater?materialId=${materialInfo.fdId}",
@@ -489,31 +496,31 @@ $(function(){
 		 }
 	   });
 	 //初始化权限列表
-	   $.ajax({
-			  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
-			  async:false,
-			  cache:false,
-			  dataType : 'json',
-			  success: function(result){
-				  var photo;
-					if(url.indexOf("http")>-1){
-						photo=url;
-					}else{
-						photo="${ctx}/"+url;
-					}
-				  var html = "<tr data-fdid='creator' draggable='true'> "+
-				  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
-				  "<img src='"+photo+"' alt=''>"+creator+" </div> </td>"+
-				  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
-				  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
-				  "</td> </tr>";
-				  for(var i in result.user){
-					  html += listUserKinguserFn(result.user[i]);
-				  }
-				  $("#list_user").html(html); 
+   $.ajax({
+		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
+		  async:false,
+		  cache:false,
+		  dataType : 'json',
+		  success: function(result){
+			  var photo;
+				if(url.indexOf("http")>-1){
+					photo=url;
+				}else{
+					photo="${ctx}/"+url;
+				}
+			  var html = "<tr data-fdid='creator' draggable='true'> "+
+			  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
+			  "<img src='"+photo+"' alt=''>"+creator+" </div> </td>"+
+			  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
+			  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
+			  "</td> </tr>";
+			  for(var i in result.user){
+				  html += listUserKinguserFn(result.user[i]);
 			  }
-		  });
-    } 
+			  $("#list_user").html(html); 
+		  }
+	  });
+    
     
     $("#formEditDTotal").validate({
         submitHandler:saveMaterial

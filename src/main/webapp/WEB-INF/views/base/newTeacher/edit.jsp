@@ -53,7 +53,7 @@ function clearCss(node){
 //效验部门为空
 function checkdepart() {
 	var node = document.getElementById("department");
-    var val = document.getElementById("department").value;
+    var val = document.getElementById("deptId").value;
     if(val == "0" || val==''){
     	checkFlag.depart = false;
     	var child1 = node.parentNode;
@@ -145,12 +145,14 @@ var checkFlag = {
 	"depart" :false,
 	"selfIntr" : false
 };
-//提交时总验证
-function checkSubmit(){
-	var depart = document.getElementById("department");
+function selectDept(){
+ 	var depart = document.getElementById("department");
 	var index = depart.selectedIndex;
 	var departid = depart.options[index].value;
 	document.getElementById("deptId").value = departid;
+}
+//提交时总验证
+function checkSubmit(){
 	 if(!checkFlag.tel ){
 		  checkTel();
 	  }
@@ -243,7 +245,7 @@ function CountStrByte(){
         		    <select name="org" disabled="disabled">
                       <option value="">${sysParOrg}</option>
                 	</select>
-                    <select  disabled="disabled">
+                    <select id="department" disabled="disabled">
                 	    <option value='${person.deptName}'>${person.deptName}</option>
                 	</select> 
                 	</j:then>
@@ -253,7 +255,7 @@ function CountStrByte(){
 							<option value="${e.fdId }" <j:if test="${e.fdId eq sysParOrgId}"> selected="selected" </j:if>>${e.fdName}</option>
 					   </c:forEach> 
                 	</select>
-                    <select  id="department" onchange="checkdepart()">
+                    <select  id="department" onchange="selectDept();">
                        <option value='${person.deptId}'>${person.deptName}</option>
                 	</select>  
                      <span class="help-inline"><b class="icon-disc-bg warning">!</b>请认真选择机构/部门</span>

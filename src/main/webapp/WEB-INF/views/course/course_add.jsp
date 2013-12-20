@@ -141,34 +141,16 @@
 			<a href="#" class="icon-remove-sign"></a>
 			</div>
 			<div class="bd">
-
-				<a class="btn-type{{?param.type != 'none' && param.type != 'video'}} disabled{{?}}" 
-href="#video"><i class="icon-video-lg"></i><h5>视频</h5></a>
-
-				<a class="btn-type{{?param.type != 'none' && param.type != 'doc'}} disabled{{?}}" 
-href="#doc"><i class="icon-doc-lg"></i><h5>文档</h5></a>
-
-				<a class="btn-type{{?param.type != 'none' && param.type != 'ppt'}} disabled{{?}}" 
-href="#ppt"><i class="icon-ppt-lg"></i><h5>幻灯片</h5></a>
-
-				<a class="btn-type{{?param.type != 'none' && param.type != 'exam'}} disabled{{?}}" 
-href="#exam"><i class="icon-exam-lg"></i><h5>测试</h5></a>
-
-				<a class="btn-type{{?param.type != 'none' && param.type != 'task'}} disabled{{?}}" 
-href="#task"><i class="icon-task-lg"></i><h5>作业</h5></a>
-
-				<a class="btn-type{{?param.type != 'none' && param.type != 'audio'}} disabled{{?}}" 
-href="#audio"><i class="icon-audio-lg"></i><h5>音频</h5></a>
-
-				<a class="btn-type{{?param.type != 'none' && param.type != 'img'}} disabled{{?}}" 
-href="#img"><i class="icon-img-lg"></i><h5>图片</h5></a>
-
-
-<!-- 
-				<a class="btn-type{{?param.type != 'none' && param.type != 'calendar'}} disabled{{?}}" 
-href="#calendar"><i class="icon-calendar-lg"></i><h5>日程安排</h5></a>
--->
-			</div>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'video'}} disabled{{?}}" href="#video"><i class="icon-video-lg"></i><h5>视频</h5></a>
+				<a class="btn-type{{?param.type == 'none' || param.type != 'audio'}} disabled{{?}}" href="#audio"><i class="icon-audio-lg"></i><h5>音频</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'doc'}} disabled{{?}}" href="#doc"><i class="icon-doc-lg"></i><h5>文档</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'ppt'}} disabled{{?}}" href="#ppt"><i class="icon-ppt-lg"></i><h5>幻灯片</h5></a>
+				<a class="btn-type{{?param.type == 'none' || param.type != 'img'}} disabled{{?}}" href="#img"><i class="icon-img-lg"></i><h5>图片</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'exam'}} disabled{{?}}" href="#exam"><i class="icon-exam-lg"></i><h5>测试</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'task'}} disabled{{?}}" href="#task"><i class="icon-task-lg"></i><h5>作业</h5></a>
+				<a class="btn-type{{?param.type != 'none' && param.type != 'txt'}} disabled{{?}}" href="#txt"><i class="icon-txt-lg"></i><h5>在线创作</h5></a>
+				<a class="btn-type{{?param.type == 'none' || param.type != 'calendar'}} disabled{{?}}" href="#calendar"><i class="icon-calendar-lg"></i><h5>日程安排</h5></a>
+            </div>
 		</div>
 	#}}
 </script>
@@ -596,7 +578,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
                     {{~}}
                 </ul>
             </div>
-			{{?it.type != 'exam' && it.type != 'task'}}
+			{{?it.type != 'exam' && it.type != 'task' && it.type != 'txt'}}
 		    <div class="section" >
 					<label>{{=it.uploadIntro || ''}}</label>
 					<div class="control-upload">
@@ -823,6 +805,11 @@ $.Placeholder.init();
                 case "img":
                     if(opt) {
                         rightCont.loadVideoPage(opt,"03");
+                        break;
+                    }
+                case "txt":
+                    if(opt) {
+                        rightCont.loadVideoPage(opt,"07");
                         break;
                     }
                 case "exam":

@@ -299,6 +299,16 @@
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function(){
+	  $(this).keypress( function(e) {  //屏蔽回车事件 由于目前回车会提交两次表单原因找不到 暂时如此处理
+	    var key = window.event ? e.keyCode : e.which;  
+	    if(key.toString() == "13"){  
+	    	return false;
+	    }  
+	   });
+	});
+</script>
+<script type="text/javascript">
+$(function(){
     $.Placeholder.init();
     $('.itemScore[data-toggle="tooltip"]').tooltip({
         trigger: "focus"
@@ -392,7 +402,6 @@ $(function(){
     //初始化权限列表
     var creator="";
 	var url="";
-    if("${param.fdId}"!=null&&"${param.fdId}"!=""){
 	   $.ajax({
 		 type:"post",
 		 url: "${ctx}/ajax/material/getCreater?materialId="+$("#materialId").val(),
@@ -403,7 +412,6 @@ $(function(){
 				  url=result.url;
 		 }
 	   });
-    }
     $.ajax({
     	type:"post",
     	cache:false,

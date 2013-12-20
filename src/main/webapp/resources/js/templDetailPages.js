@@ -80,7 +80,7 @@
           		data_type = "video";
           		data_typeTxt = "视频";
           		data_uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在上面的视频列表中。";
-          		uptype='*.mp4;*.avi;*.wmv;';
+          		uptype='*.wmv;*.wm;*.asf;*.asx;*.rm;*.rmvb;*.ra;*.ram;*.mpg;*.mpeg;*.mpe;*.vob;*.dat;*.mov;*.3gp;*.mp4;*.mp4v;*.m4v;*.mkv;*.avi;*.flv;*.f4v;*.mts;';
           		break;
             case "02":
             	data_type = "audio";
@@ -92,19 +92,25 @@
             	data_type = "doc";
             	data_typeTxt = "文档";
             	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的文档将会显示在上面的文档列表中。";
-            	uptype='*.doc;*.xls;';
+            	uptype='*.doc;*.docx;*.xls;*.xlsx;*.pdf;';
 	            break;
             case "05":
             	data_type = "ppt";
             	data_typeTxt = "幻灯片";
             	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的视频将会显示在上面的幻灯片列表中。";
-            	uptype='*.ppt;';
+            	uptype='*.ppt;*.pptx;*.pps;*.ppsx;';
 	            break;
             case "03":
             	data_type = "img";
             	data_typeTxt = "图片";
             	data_uploadIntro = "上传图片（支持JPG、PNG、BMP格式的图片，建议小于10G）：成功上传的图片将会显示在上面的图片列表中。";
             	uptype='*.jpg;*.png;';
+	            break;
+            case "07":
+            	data_type = "txt";
+            	data_typeTxt = "富文本";
+            	data_uploadIntro = "";
+            	uptype='';
 	            break;
             case "08":
             	data_type = "exam";
@@ -317,6 +323,7 @@
                 $listMedia = $("#listMedia"),
                 addFlag = false,
                 mediaData ;
+            
             /*
 			 * $("#addMedia").autocomplete("url.jsp",{ dataType: "json", parse:
 			 * function(data) { return $.map(data, function(row) { return {

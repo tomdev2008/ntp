@@ -9,6 +9,10 @@
 <link href="${ctx}/resources/css/global.css" rel="stylesheet" type="text/css">
 <link href="${ctx}/resources/css/template_detail.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/css/jquery.autocomplete.css">
+<style type="text/css"><!--此处样式解决阶段为白色的问题-->
+.chapter{margin-left:25px;margin-right:0px;}
+.chapter .sortable-bar{background-color:#FFF;color:#000;border-bottom:solid #e5e5e5 1px;}
+</style>
 <!-- 模板详情_右侧内容区标题 模板 -->
 <script id="contHeaderTemplate" type="text/x-dot-template">
  	<div class="page-header">        	

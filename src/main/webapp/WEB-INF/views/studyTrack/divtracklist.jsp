@@ -94,10 +94,10 @@
                         <li><a href="javascript:void(0)" id="expStudyTrackA">导出列表</a></li>
                     </ul>
                 </div>
-                <form class="toolbar-search">
+                <div class="toolbar-search">
                     <input type="text" id="serach" class="search" onkeydown="showSearch();" onkeyup="showSearch();">
                     <i class="icon-search" id="selectButton"></i>
-                </form>
+                </div>
             <span class="showState">
                 <span class="muted">当前显示：</span>         
             		 <span id="markshow" ><a id="containkey" href="#">全部条目</a></span>   
@@ -253,14 +253,20 @@ function refreshTrackList(type,pageNo,pageSize,order){
 }
 
 function showSearch(){
-	var fdTitle = document.getElementById("serach").value;
-	$("#markshow").html('含“<a id="containkey" href="#"></a>”的条目');
-	if(fdTitle==''){
-		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
-	}else if(fdTitle.length>2){
-		$("#containkey").html(fdTitle.substr(0,6)+"...");
+	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+	if (keyCode == 13) {
+		refreshTrackList("",1,10,"time",$("#serach").val());
+		return false;
 	}else{
-		$("#containkey").html(fdTitle);
+		var fdTitle = document.getElementById("serach").value;
+		$("#markshow").html('含“<a id="containkey" href="#"></a>”的条目');
+		if(fdTitle==''){
+			$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
+		}else if(fdTitle.length>2){
+			$("#containkey").html(fdTitle.substr(0,6)+"...");
+		}else{
+			$("#containkey").html(fdTitle);
+		}
 	}
 }
 

@@ -7,7 +7,9 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html lang="zh_CN">
-<head></head>
+<head>
+
+</head>
 <body>
 <script type="text/javascript">
 $.Placeholder.init();

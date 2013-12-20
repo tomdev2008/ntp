@@ -152,7 +152,8 @@
     <script id="examPaperDetailTemplate" type="x-dot-template">
         <div class="accordion-inner">
                 <div class="hd">
-                <h2><span class="icon-state-bg{{?it.examPaperStatus == 'fail'}} error">未通过
+                <h2><span class="icon-state-bg
+						{{?it.examPaperStatus == 'fail'}} error">未通过
                         {{??it.examPaperStatus == 'pass'}} success">通过
                         {{??it.examPaperStatus == 'finish'}} info">答完
                         {{??it.examPaperStatus == 'unfinish'}}">待答{{?}}</span> {{?it.type=='exam'}}试卷{{??it.type=='task'}}作业包{{?}}{{=it.num}} {{=it.name}} 共计 <span class="total">{{=it.examCount}}</span>{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=it.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=it.examPaperTime}}分钟。</h2>
@@ -194,7 +195,7 @@
                                 {{~exam.listExamAnswer :ans:indexno}}
                                 <label class="input">
                                     <b class="icon-circle-bg blue">{{=indexno+1}}</b>
-                                    <input type="text" required class="input-xxlarge" value="{{=ans}}" exam-id="{{=exam.id}}" name="examAnswer_completion{{=exam.id}}{{=indexno+1}}" putId="examAnswer_completion"/>
+                                    <input type="text" class="input-xxlarge" value="{{=ans}}" exam-id="{{=exam.id}}" name="examAnswer_completion{{=exam.id}}{{=indexno+1}}" putId="examAnswer_completion"/>
 									<input type="hidden" value=""  name="examAnswer"/>
                                 </label>
                                 {{~}}
@@ -203,8 +204,9 @@
                             	{{~exam.listExamAnswer :ans:index}}
                             	{{?index1 == ans.index}}
                                 	<label class="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" >
-                                    	<input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?ans.isChecked}}checked{{?}} value="{{=exam.id}}:{{=ans.id}}" name="examAnswer" />
-                                    	{{=ans.name}}
+                                    	<input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?ans.isChecked}}checked{{?}} exam-id="{{=exam.id}}" value="{{=ans.id}}" name="examAnswer_completion{{=exam.id}}{{=indexno+1}}" putId="examAnswer_s" />
+                                    	<input type="hidden" value="" name="examAnswer"/>
+										{{=ans.name}}
                                 	</label>
                             	{{?}}
                             	{{~}}
@@ -240,6 +242,9 @@
                                 <div class="control-upload">
                                     <div class="upload-fileName" id="attName"></div>
                    					<div class="pr">
+                                    <span class="progress"> <div class="bar" style="width:0;"></div> </span>
+									<span class="txt"><span class="pct">0%</span>，剩余时间：<span class="countdown">00:00:00</span></span>
+                     
 						             <button name="answerAtt" id="{{=task.id}}" class="btn btn-primary btn-large" type="button" >上传</button>
                                     </div>
 								</div>
@@ -320,8 +325,13 @@
             <div class="section mt20">
                 <div class="mediaWrap bdbt2">
                     <div class="mediaObject">
-									<iframe width="100%" height="510" id="iframeVideo" src="" frameBorder="0" scrolling="no"></iframe>
-                    </div>
+                        {{?param.txt != null && it.txt!="" }}
+                           {{=param.txt}}
+                         {{?}}
+                       {{?param.txt == null || it.txt=="" }}
+						<iframe width="100%" height="510" id="iframeVideo" src="" frameBorder="0" scrolling="no"></iframe>
+                       {{?}}
+                   </div>
                 </div>
                 <div class="mediaToolbarWrap">
                     <div class="mediaToolbar" id="mediaToolbar" data-fdid="{{=param.id}}">
@@ -336,7 +346,7 @@
                 </div>
                 <div class="hd" id="materialinfo">
                     <div class="tit-icon_bg"><i class="icon-video-intro"></i></div>
-                    <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}信息</h5>
+                    <h5>{{?it.type == 'video'}}视频{{??it.type == 'txt'}}富文本{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}信息</h5>
                     <div class="pos-right" id="ratingTotal">
                         <span>综合评分</span>
                             <span class="rating-all" >
@@ -351,7 +361,7 @@
                     <div class="pull-left video-info">
                         <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}名称  <span class="name" id="mediaName">{{=param.name}}</span></h5>
                         <p class="mediaIntro" id="mediaIntro">
-                            {{=param.intro}}
+                            {{=param.intro || ""}}
                         </p>
                     </div>
                     <div class="pull-right" id="pullrightInfo">
@@ -818,7 +828,6 @@
 				  },
 			});
 		 }
-		 
 		function loadRightCont(fdid,type){
         	catalogId=fdid;
 		    fdMtype=type;
@@ -837,6 +846,12 @@
 		  				if(result.type == "exam" || result.type == "task"){
 		  					$("#mainContent").html(rightContentFn(result));
 		  					afterLoadExamOrTaskPage(result);
+		  	            }else if(result.type == "txt"){
+		  	            	$("#mainContent").html(rightMaterialContentFn(result));
+		  	                afterLoadMediaPage(result);
+		  	          		$("#btnPraise").attr("converStatus","true");
+		  	          	    $("#btnDoPass").attr("converStatus","true");
+		  	          		$("#btnDownload").addClass("hide");
 		  	            } else if(result.type == "video" || result.type == "doc"||result.type == "ppt"){
 		  	            	mdata=result.defaultMedia;
 		  	            	 
@@ -845,36 +860,34 @@
 		  	            	$("#mainContent").html(rightMaterialContentFn(result));
 		  	                afterLoadMediaPage(result);
 		  	                loadvideoOrDoc(mdata);
-		  	                
 			  	            //调用方法时 如果素材为空  则隐藏素材下的 下载赞等信息 、 素材信息、  评分信息 、评分的列表信息 这几个信息分别代表一个div
 			  	  			//这块只针对视频和文档
-			  	  			     
-                			  	 if(mdata.code==""||mdata.code.type=="none"){
-			  	  					$("#btnDownload").attr("title","当前没有可下载素材");
-			  	  					$("#mediaComment").addClass("hide");
-			  	  				    $("#mediaToolbar").addClass("hide");
-			  	  				}
+               			  	 if(mdata.code==""||mdata.code.type=="none"){
+		  	  					$("#btnDownload").attr("title","当前没有可下载素材");
+		  	  					$("#mediaComment").addClass("hide");
+		  	  				    $("#mediaToolbar").addClass("hide");
+		  	  				}
 			  	                //素材转换中
-			  	                if(mdata.code!=""&&mdata.code.type!='none'){
-			  	                	//不能点赞  可以下载 不能学习通过 没有评论; 
-			  	                	 if(mdata.code.type=="video"&&mdata.code.playCode==null){
-					  	              		$("#btnPraise").attr("converStatus","");
-					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-					  	              	    $("#mediaComment").addClass("hide");
-					  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
-					  	              		$("#btnPraise").attr("converStatus","");
-					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-					  	                    $("#mediaComment").addClass("hide");
-							  	         }else{
-						  	        	 	$("#btnPraise").attr("converStatus","true");
-						  	        	 	$("#btnPraise").attr("data-original-title","赞");
-						  	        	 	$("#mediaComment").removeClass("hide");
-							  	         }
-			  	                }else{
-			  	                	$("#btnPraise").attr("converStatus","");
-			  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-			  	              		$("#mediaComment").addClass("hide");
-			  	                }
+		  	                if(mdata.code!=""&&mdata.code.type!='none'){
+		  	                	//不能点赞  可以下载 不能学习通过 没有评论; 
+		  	                	 if(mdata.code.type=="video"&&mdata.code.playCode==null){
+				  	              		$("#btnPraise").attr("converStatus","");
+				  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+				  	              	    $("#mediaComment").addClass("hide");
+				  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+				  	              		$("#btnPraise").attr("converStatus","");
+				  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+				  	                    $("#mediaComment").addClass("hide");
+						  	         }else{
+					  	        	 	$("#btnPraise").attr("converStatus","true");
+					  	        	 	$("#btnPraise").attr("data-original-title","赞");
+					  	        	 	$("#mediaComment").removeClass("hide");
+						  	         }
+		  	                }else{
+		  	                	$("#btnPraise").attr("converStatus","");
+		  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+		  	              		$("#mediaComment").addClass("hide");
+		  	                }
 			  	                //学习通过控制
 			  	              if(mdata.code==""||mdata.code.type=="none"){
 				  	            	$("#btnDoPass").attr("converStatus","");
@@ -983,6 +996,13 @@
             $("#pageHeader").affix({
                 offset: {
                     top: 10
+                }
+            });
+            $(window).on("scroll",function(){
+                if($("#pageHeader").hasClass("affix-top")){
+                    $("#pageBody").css("margin-top",0);
+                } else {
+                    $("#pageBody").css("margin-top",$("#pageHeader").height());
                 }
             });
         }
@@ -1098,6 +1118,13 @@
                                         }
                                     });
                                     $("#replyComm").focus();
+                                    $("#replyComm").bind("keydown",function(){
+                                    	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+                                   		if (keyCode == 13) {
+                                   			$("#formReply").submit();
+                                   			return false;
+                                   		}
+                                     });
                                     $("#formReply .btn-cancel").click(function(e){
                                         $(this).closest(".form-reply").remove();
                                         $this.removeClass("active");
@@ -1355,10 +1382,30 @@
 		  			  dataType:'json',
 		  			  success: function(data){
 		  	                   mdata=data.defaultMedia;
-		  	                // alert(JSON.stringify(mdata))
-		  	                   //重新定位播放视频
-		  	                  loadvideoOrDoc(mdata);
-		  	            	  //是否允许赞
+		  	                 //alert(JSON.stringify(mdata))
+		  	            	  
+		  	            	  if(data.type!='txt'){
+		  	            		//重新定位播放视频
+			  	                  loadvideoOrDoc(mdata);
+			  	            	  //判断素材状态  空 转换中都不允许点赞
+				  	              if(mdata.code==""||mdata.code.type=="none"){
+				  	            	$("#btnPraise").attr("converStatus","");
+			  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+			  	                  }else{
+			  	                	    if(mdata.code.type=="video"&&mdata.code.playCode==null){
+					  	              		$("#btnPraise").attr("converStatus","");
+					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+					  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+						  	              		$("#btnPraise").attr("converStatus","");
+						  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
+							  	         }else{
+							  	        	 	$("#btnPraise").attr("converStatus","true");
+							  	        	 	$("#btnPraise").attr("data-original-title","赞");
+							  	         }
+			  	                				
+			  	                  }
+		  	            	  }
+		  	            	//是否允许赞
 			  	              if(mdata.mePraised){
 			  	              	$("#btnPraise").removeClass("active").children(".num").text(mdata.praiseCount);
 			  	                $("#btnPraise").attr("data-original-title","赞");
@@ -1366,40 +1413,28 @@
 			  	              	 $("#btnPraise").addClass("active").children(".num").text(mdata.praiseCount);
 			  	              	$("#btnPraise").attr("data-original-title","已赞");
 			  	              }
-		  	            	  //判断素材状态  空 转换中都不允许点赞
-			  	              if(mdata.code==""||mdata.code.type=="none"){
-			  	            	$("#btnPraise").attr("converStatus","");
-		  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-		  	                  }else{
-		  	                	    if(mdata.code.type=="video"&&mdata.code.playCode==null){
-				  	              		$("#btnPraise").attr("converStatus","");
-				  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-				  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
-					  	              		$("#btnPraise").attr("converStatus","");
-					  	              		$("#btnPraise").attr("data-original-title","当前状态不允许赞");
-						  	         }else{
-						  	        	 	$("#btnPraise").attr("converStatus","true");
-						  	        	 	$("#btnPraise").attr("data-original-title","赞");
-						  	         }
-		  	                				
-		  	                  }
 			  	  			  //通过素材转换状态判断是否可以点赞
 			  	            	 
 			  	              $("#btnDownload").addClass(mdata.canDownload ? "active" : "disabled").attr("data-original-title",mdata.canDownload ? '点击下载' : '无权下载')
 			  	                      .children(".num").text(mdata.downloadCount);
 			  	              $("#btnDoPass").attr("disabled",mdata.isPass ? true : false);
-			  	          		//判断素材状态  空 转换中都不允许学习
-			  	              if(mdata.code==""||mdata.code.type=="none"){
-			  	            	$("#btnDoPass").attr("converStatus","");
-		  	                  }else{
-		  	                	if(mdata.code.type=="video"&&mdata.code.playCode==null){
-		  	              			$("#btnDoPass").attr("converStatus","");
-			  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
-			  	            		$("#btnDoPass").attr("converStatus","");
-			  	            	 }else{
-			  	            		 $("#btnDoPass").attr("converStatus","true");
-			  	            	 }
-		  	                  }
+			  	              if(data.type!="txt"){
+				  	          		//判断素材状态  空 转换中都不允许学习
+				  	              if(mdata.code==""||mdata.code.type=="none"){
+				  	            	$("#btnDoPass").attr("converStatus","");
+			  	                  }else{
+			  	                	if(mdata.code.type=="video"&&mdata.code.playCode==null){
+			  	              			$("#btnDoPass").attr("converStatus","");
+				  	            	 }else if(mdata.code.type=="doc"&&mdata.code.fileNetId==null){
+				  	            		$("#btnDoPass").attr("converStatus","");
+				  	            	 }else{
+				  	            		 $("#btnDoPass").attr("converStatus","true");
+				  	            	 }
+			  	                  }
+			  	              }else{
+			  	            	 $("#btnDoPass").attr("converStatus","true");
+			  	            	$("#btnDownload").addClass("hide");
+			  	              }
 			  	              $mediaToolbar.find(".playCount>.num").text(mdata.readCount);
 			  	              $("#mediaToolbar").attr("data-fdid",mdata.id);
 			  	              $("#btnDownload").attr("data-fdid",mdata.url);
@@ -1431,7 +1466,8 @@
 			  	              $("#ratingOne").find(".progress-gray>.bar")
 			  	                      .width(mdata.rating.one/mdata.rating.total*100 + "%").end().children(".fs9").text(mdata.rating.one);
 			  	              $("#mediaComment").after(mediaCommentFn(mdata)).remove();
-			  	              //$("#mediaComment").show();  
+			  	              //$("#mediaComment").show(); 
+			  	              if(data.type!='txt'){
 			  	              if(mdata.code==""||mdata.code.type=='none'){
 			  	            		$("#mediaComment").addClass("hide");
 			  	            		 $("#mediaToolbar").addClass("hide");
@@ -1445,6 +1481,7 @@
 			  	                		$("#mediaToolbar").removeClass("hide");
 			  	                	}
 				  	            }
+			  	              }
 			  	              //$("#listComment").html(listCommentFn(mdata.mediaComment.listComment));
 
 			  	              /*评分表单*/
@@ -1679,17 +1716,16 @@
                         var pos = $this.parent("li").offset();
                         var sTop = 0;
                         var $pageHead = $("#pageHeader");
-                        if($pageHead.hasClass("affix")){
                             sTop = pos.top - 60 - $pageHead.height();
-                        } else{
-                            sTop = pos.top - 60 - $pageHead.height() - $pageHead.children(".hd").height() -$("#headToolsBar").height();
-                        }
                         $("html,body").animate({scrollTop: sTop},pos.top-sTop,"swing");
                         
-                        var $progress ,flag = true,pct,interval,countdown = 0,byteUped = 0;
+                        var flag = true,pct,interval,countdown = 0,byteUped = 0;
                         $("button[name='answerAtt']").each(function(){
                         	var fileid = $(this).attr('id');
-                        	
+                        	var $txt = $('#'+fileid).prev(".txt"),
+                        	$progress = $txt.prev(".progress").children(".bar"),
+                            $pct = $txt.children(".pct"),
+                            $countdown = $txt.children(".countdown");
                         	$('#'+fileid).uploadify({
                         		'height' : 40,
                                 'width' : 68,
@@ -1703,18 +1739,15 @@
                                 'fileTypeExts' : '*.*',
                                 'fileSizeLimit':2097152,// 限制文件大小为2G
                                 'onInit' : function(){
-                                	$progress = $('<span class=\"progress\"><div class=\"bar\" style=\"width:0%;\"></div> </span><span class=\"txt\"><span class=\"pct\">0%</span><span class=\"countdown\"></span></span>');
-                                	$('#'+fileid).next(".uploadify-queue").remove();
+                                	$("#upMaterial").next(".uploadify-queue").remove();
                                 },
-                                'onUploadStart' : function (file) {
-                                	$('#'+fileid).before($progress);
-                                    //$uploadBtn.uploadify("settings", "formData");
-                                },
-                                'onUploadSuccess' : function (file, datas, Response) {
+                                'onUploadStart' : function (file) {},
+                                'onUploadSuccess' : function (file, data, Response) {
                                     if (Response) {
-                                    	$progress.find(".countdown").empty();
-                                        var objvalue = eval("(" + datas + ")");
-                                        jQuery("#attName").html(objvalue.fileName+"<i class=\"icon-paperClip\"></i>");
+                                    	$countdown.text("00:00:00");
+                                    	$progress.width("0");
+                                    	$pct.text("0%");
+                                        var objvalue = eval("(" + data + ")");
                                         var html = "<li id='attach"+objvalue.attId+"'><input type='hidden' value='"+objvalue.attId+"' name='attach_"+fileid+"' id='answerAttId_"+fileid+"'><a><i class='icon-paperClip'></i>"
                                         +objvalue.fileName+"</a><a href='#' class='icon-remove-blue'></a></li>";
                                         $("#listTaskAttachment_"+fileid).append(html);
@@ -1729,10 +1762,11 @@
                                 	}
                                 	if(bytesUploaded == bytesTotal){
                                 		clearInterval(interval);
-                                		
                                 	}
-                                	$progress.find(".bar").width(pct).end().find(".pct").text(pct);
-                                	countdown>0 && $progress.find(".countdown").text(secTransform((bytesTotal-bytesUploaded)/countdown));
+                                	
+                                	$progress.width(pct);
+                                	$pct.text(pct);
+                                	countdown>0 && $countdown.text(secTransform((bytesTotal-bytesUploaded)/countdown*10));
                                 }
                             });
         						
@@ -1745,22 +1779,33 @@
                     			s = Math.ceil(s);
                     			var t = "";
                     			if(s>3600){
-                    				t= Math.ceil(s/3600) + "小时" + Math.ceil(s%3600/60) + "分钟" + s%3600%60 + "秒";
+                    				t= completeZero(Math.ceil(s/3600)) + ":" + completeZero(Math.ceil(s%3600/60)) + ":" + completeZero(s%3600%60) ;
                     			} else if(s>60){
-                    				t= Math.ceil(s/60) + "分钟" + s%60 + "秒";
+                    				t= "00:" + completeZero(Math.ceil(s/60)) + ":" + completeZero(s%60) ;
                     			} else {
-                    				t= s + "秒";
+                    				t= "00:00:" + completeZero(s);
                     			}
-                    			return "，剩余时间：" + t;
+                    			return t;
                     		}else{
                     			return null;
                     		}		
+                    	}
+                    	function completeZero(n){
+                    		return n<10 ? "0"+n : n;
                     	}
                     	
                         $("#formExam").validate({
                             submitHandler: function(form){
 	                            $("input[putId='examAnswer_completion']").each(function(){
 	                            	$(this).nextAll("input:first").val($(this).attr("exam-id")+":"+$(this).attr("value"));
+	                           	});
+	                            $("input[putId='examAnswer_s']").each(function(){
+	                            	if($(this).is(":checked")){
+	                            		$(this).nextAll("input:first").val($(this).attr("exam-id")+":"+$(this).attr("value"));
+	                            	}else{
+	                            		$(this).nextAll("input:first").attr("name","err");
+	                            	}
+	                            	
 	                           	});
 	                            form.submit();
                             }

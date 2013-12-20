@@ -1,19 +1,23 @@
 package cn.me.xdf.service.log;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.log.LogLogin;
 import cn.me.xdf.model.log.LogOnline;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.BaseService;
 import cn.me.xdf.utils.DateUtil;
 import cn.me.xdf.utils.ShiroUtils;
+import cn.me.xdf.view.model.VLogData;
 
 
 @Service
@@ -74,6 +78,65 @@ public class LogLoginService extends BaseService{
 //		return new Integer(list.get(0).toString());
 //	}
 
+	/**
+	 * 获取导出数据
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	public List<VLogData> findVLogData(String [] ids){
+		List<VLogData> vLogDatas = new ArrayList<VLogData>();
+		for (int i = 0; i < ids.length; i++) {
+			VLogData logData = new VLogData();
+			LogLogin logLogin = get(ids[i]);
+			logData.setContent("");
+			logData.setLogType("登录");
+			logData.setModelId("");
+			logData.setModelName("");
+			logData.setTime(DateUtil.convertDateToString(logLogin.getTime(), "yyyy-MM-dd HH:mm:ss") );
+			logData.setUserDept(logLogin.getPerson().getHbmParent()==null?"":logLogin.getPerson().getHbmParent().getFdName());
+			logData.setUserName(logLogin.getPerson().getFdName());
+			vLogDatas.add(logData);
+		}
+		return vLogDatas;
+	}
+	
+	/**
+	 * 获取导出数据Pagination
+	 * @param key
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	public Pagination findVLogDataPagination(String key, int  pageNo, int pageSize){
+		Finder finder = Finder.create("select la.fdId id from IXDF_NTP_LOGLOGIN la where la.fdId in( select l.fdId from IXDF_NTP_LOGLOGIN l , SYS_ORG_ELEMENT o where l.fdpersonid=o.fdId and o.fd_name like '%"+key+"%' )  ");
+		return getPageBySql(finder, pageNo, pageSize);
+	}
+	
+
+	/**
+	 * 获取导出数据
+	 * 
+	 * @param pagination
+	 * @return
+	 */
+	public List<VLogData> findVLogDataByPagination(Pagination pagination){
+		List<Map> maps = (List<Map>) pagination.getList();
+		List<VLogData> vLogDatas = new ArrayList<VLogData>();
+		for (int i = 0; i < maps.size(); i++) {
+			VLogData logData = new VLogData();
+			LogLogin logLogin = get((String)maps.get(i).get("ID"));
+			logData.setContent("");
+			logData.setLogType("登录");
+			logData.setModelId("");
+			logData.setModelName("");
+			logData.setTime(DateUtil.convertDateToString(logLogin.getTime(), "yyyy-MM-dd HH:mm:ss") );
+			logData.setUserDept(logLogin.getPerson().getHbmParent()==null?"":logLogin.getPerson().getHbmParent().getFdName());
+			logData.setUserName(logLogin.getPerson().getFdName());
+			vLogDatas.add(logData);
+		}
+		return vLogDatas;
+	}
 
 }
 	

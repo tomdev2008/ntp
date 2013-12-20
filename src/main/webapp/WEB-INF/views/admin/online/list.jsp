@@ -1,6 +1,7 @@
 <%@page import="org.apache.commons.lang3.ArrayUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
@@ -8,93 +9,195 @@
 <!DOCTYPE html>
 <html lang="zh_CN">
 <head>
+<script src="${ctx}/resources/js/jquery.jalert.js"
+		type="text/javascript"></script>
 <script type="text/javascript">
-	/* $(function() {
-		$('#filterSelect').change(function() {
-			var fv = $(this).children('option:selected').val();
-			document.filterForm.method = "get";
-			document.filterForm.action = '${ctx}/admin/log/list?fdType="'
-					+ fv + '"';
-			document.filterForm.submit();
-			return; 
-		});
-	}); */
-
-/* 	function delSel() {
-		if (!confirm('您确定要批量删除吗？')) {
+ 	$(function(){
+		showSearch();
+	});
+	
+	function showSearch(){
+		var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+		if (keyCode == 13) {
+			goSearch();
 			return false;
+		}else{
+			$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
+			var serach = $("#fdKey").val();
+			if(serach==''){
+				$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
+			}else{
+				if(serach.length>2){
+					serach = ($("#fdKey").val()).substr(0,2);
+				}
+				serach= serach+"...";
+				$("#containkey").html(serach);
+			}
 		}
-		var chk_value = [];
-		$('input[name="ids"]:checked').each(function() {
-			chk_value.push($(this).val());
-		});
-		if (chk_value.length == 0) {
-			alert('请选择需要批量删除的内容。');
-			return false;
-		}
-		document.filterForm.method = "post";
-		document.filterForm.action = '${ctx}/admin/role/delAll';
-		document.filterForm.submit();
+	}
+	
+	function clearserach(){
+		$("#fdKey").val("");
+		$("#containkey").html('<a id="containkey"href="#">全部条目</a>');
+		pageNavClick(1);
+	}
+	
+	function pageNavClick(pageNo){
+		var fv = $('#fdKey').val();
+		window.location.href="${ctx}/admin/online/list?pageNo="+pageNo+"&key="+ fv;
+	}
+	function goSearch() {
+		window.location.href = "${ctx}/admin/online/list?key="+ $('#fdKey').val();
 		return;
 	}
-
-	function delById(fdId) {
-		if (!confirm('您确定要删除该用户？')) {
-			return false;
-		}
-		document.filterForm.method = "post";
-		document.filterForm.action = '${ctx}/admin/role/delete/' + fdId;
-		document.filterForm.submit();
-		return;
-	} */
+	
 </script>
 </head>
 <body>
-    <div class="page-body"> 
-    <j:autoform>
-      <form class="form-inline" name="filterForm">
-        <p class="page-intro">在本模块中，您可以查看在线用户信息</p>
-       <!--  <div class="btn-group">
-          <a id="delAll" onclick="delSel()" class="btn btn-primary">批量删除</a>
-        </div>
-        <span style="margin: 0 2px 0 10px">查看</span> 
-        <select name="fdType" id="filterSelect">
-          <option value="LogLogin">登录日志</option>
-          <option value="LogLogout">登出日志</option>
-          <option value="LogApp">操作日志</option>
-        </select> -->
-        <p/>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <!-- <th><input type="checkbox" name="select" id="selectAll" /></th> -->
-              <th width="10px">#</th>
-              <th width="10%">用户</th>
-              <th width="30%">部门</th>
-              <th width="20%">登录次数</th>
-              <th width="20%">在线天数</th>
-              <th width="20%">登录时间</th>
-            </tr>
-          </thead>
-          <tbody>
-            <j:iter items="${list}" var="bean" status="vstatus">
-              <tr>
-                <%-- <td style="width: 10px;"><label> <input type="checkbox" name="ids" class="check"
-                    value="${bean.fdId}" />
-                </label></td> --%>
-                <td>${vstatus.index+1}</td>
-                <td>${bean.fdUserName}</td>
-                <td>${bean.fdUserDep}</td>
-                <td>${bean.loginNum}</td>
-                <td>${bean.loginDay}</td>
-                <td>${bean.time}</td>
-              </tr>
-            </j:iter>
-          </tbody> 
-        </table>
-        <tags:pagination page="${page}"  paginationSize="10" />
+	<j:autoform>
+    <form class="form-inline" name="filterForm">
+    <div class="page-body" id="pageBody">
+	<section class="section box-control">
+		<div class="hd">
+			<div class="btn-toolbar">
+				<div class="btn-group">
+				</div>
+				<input type="text" id="fdKey" name="fdKey" value='${fdKey}' class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
+				<i class="icon-search" onclick="goSearch();"></i>
+				<span class="showState"> <span class="muted">当前显示：</span>
+					<span id="markshow">
+							 	<a id="containkey"href="#">全部条目</a>
+					</span>
+				</span> <a class="btn btn-link" href="#rightCont"  onclick="clearserach();">清空搜索结果</a>
+			</div>
+		</div>
+		<div class="bd">
+			<%-- <div class="btn-toolbar">
+				<div class="btn-group btns-radio" data-toggle="buttons-radio">
+				   <c:if test="${param.fdType==''|| param.fdType==null}">
+					<button class="btn btn-large active" type="button" onclick="getAll();">全部</button>
+				   </c:if>
+				   <c:if test="${param.fdType!=''&& param.fdType!=null}">
+					<button class="btn btn-large" type="button" onclick="getAll();">全部</button>
+				   </c:if>
+				   <c:if test="${param.fdType=='0'}">
+					<button class="btn btn-large active" type="button" onclick="getTemp();">临时账号</button>
+				   </c:if>
+				   <c:if test="${param.fdType!='0'}">
+					<button class="btn btn-large" type="button" onclick="getTemp();">临时账号</button>
+				   </c:if>
+			      <c:if test="${param.fdType=='1'}">
+					<button class="btn btn-large active" type="button" onclick="getUser();">正式账号</button>
+				   </c:if>
+				   <c:if test="${param.fdType!='1'}">
+					<button class="btn btn-large" type="button" onclick="getUser();">正式账号</button>
+				   </c:if>
+				</div>
+				<label class="checkbox inline" for="selectCurrPage">
+				   <input type="checkbox" id="selectCurrPage" name="selectCurrPage" onclick="checkcurrpage();"/>选中本页</label>
+				<label class="checkbox inline" for="selectAll">
+				   <input type="checkbox" id="selectAll" name="selectAll"  onclick="selectAlls();"/>选中全部</label>
+				<div class="pages pull-right">
+					<div class="span2">
+						 第<span> 
+						 ${page.startNum} - ${page.endNum}
+					   </span> 
+						 / <span>${page.totalCount}</span> 条 
+					</div>
+					<div class="btn-group">
+
+					<c:if test="${page.pageNo <= 1}">
+						<button class="btn btn-primary btn-ctrl" type="button" disabled>
+							<i class="icon-chevron-left icon-white"></i>
+						</button>
+					</c:if>
+					<c:if test="${page.pageNo > 1}">
+							<button class="btn btn-primary btn-ctrl" type="button" onclick="pageNavClick('${page.prePage}')">
+								<i class="icon-chevron-left icon-white"></i>
+							</button>
+					</c:if>
+					<c:if test="${page.pageNo >= page.totalPage}">
+						<button class="btn btn-primary btn-ctrl" type="button" disabled>
+							<i class="icon-chevron-right icon-white"></i>
+						</button>
+					</c:if>
+					<c:if test="${page.pageNo < page.totalPage}">
+							<button class="btn btn-primary btn-ctrl" type="button" onclick="pageNavClick('${page.nextPage}')">
+								<i class="icon-chevron-right icon-white"></i>
+							</button>
+					</c:if>
+				</div>
+				</div>
+			</div> --%>
+		</div>
+	</section>
+	<section class="section listWrap">
+		<ul class="nav list" id="materialList">
+			 <j:iter items="${list}" var="bean" status="vstatus">
+				<li data-id="${bean.fdLogId}">
+					<a href="${ctx}/admin/online/view?onlineId=${bean.fdLogId}"> 
+					    <span class="title">${bean.fdUserName}(${bean.fdEmail})${bean.fdUserDep}</span>
+					    <span class="dt">${bean.time}</span>
+					    <span class="label label-info">在线</span> 
+					</a>
+				</li>
+			</j:iter>
+		</ul>
+	</section>
+    <div class="pages">
+	  <div class="btn-group dropup">
+		<c:if test="${page.firstPage==true}">
+			<button class="btn btn-primary btn-ctrl" type="button" disabled>
+				<i class="icon-chevron-left icon-white"></i>
+			</button>
+		</c:if>
+		<c:if test="${page.firstPage==false}">
+			<a onclick="pageNavClick('${page.prePage}')">
+				<button class="btn btn-primary btn-ctrl" type="button">
+					<i class="icon-chevron-left icon-white"></i>
+				</button>
+			</a>
+		</c:if>
+          <c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
+             <c:choose>
+                <c:when test="${page.pageNo == i}">
+                    <button class="btn btn-primary btn-num active" type="button" >${i}</button>
+                </c:when>
+                <c:otherwise>
+                <a onclick="pageNavClick('${i}')">
+                    <button class="btn btn-primary btn-num" type="button">${i}</button>
+                 </a>
+                </c:otherwise>
+             </c:choose>
+           </c:forEach>
+			<button class="btn btn-primary btn-num  dropdown-toggle"
+				data-toggle="dropdown" type="button">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu pull-right">
+			  
+			 <c:forEach var="i" begin="${page.startOperate}" end="${page.endOperate}"> 
+                  <li><a onclick="pageNavClick('${i}')">
+                     ${i*10-10+1} - ${i*10} 
+				  </a></li>
+			 </c:forEach> 
+			</ul>
+		<c:if test="${page.lastPage==true}">
+			<button class="btn btn-primary btn-ctrl" type="button" disabled>
+				<i class="icon-chevron-right icon-white"></i>
+			</button>
+		</c:if>
+		<c:if test="${page.lastPage!=true}">
+			<a onclick="pageNavClick('${page.nextPage}')">
+				<button class="btn btn-primary btn-ctrl" type="button">
+					<i class="icon-chevron-right icon-white"></i>
+				</button>
+			</a>
+		</c:if>
+	  </div>
+	</div>
+</div>
       </form>
     </j:autoform>
-  </div>
 </body>
 </html>

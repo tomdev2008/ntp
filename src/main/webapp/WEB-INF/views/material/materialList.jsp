@@ -72,8 +72,8 @@ function showSearch(){
 	if(serach==''){
 		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
 	}else{
-		if(serach.length>2){
-			serach = ($("#serach").val()).substr(0,2);
+		if(serach.length>4){
+			serach = ($("#serach").val()).substr(0,4);
 		}
 		serach= serach+"...";
 		$("#containkey").html(serach);
@@ -230,7 +230,6 @@ function prepareDelete(delekey){
 			if(res.length==0){
 				$('input[name="ids"]').each(function(){
 					$(this).attr("checked",false);
-					$(this).attr("disabled",true);
 				});
 				
 			}else{
@@ -241,7 +240,6 @@ function prepareDelete(delekey){
 						$(this).attr("disabled",false);
 				    }else{
 						$(this).attr("checked",false);
-						$(this).attr("disabled",true);
 					}
 						
 				});

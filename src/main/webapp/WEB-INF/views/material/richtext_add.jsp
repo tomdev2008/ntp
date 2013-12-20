@@ -174,6 +174,14 @@
 <script charset="utf-8" src="${ctx}/resources/kindeditor/kindeditor-all-min.js"></script>
 <script charset="utf-8" src="${ctx}/resources/kindeditor/lang/zh_CN.js"></script>
 <script type="text/javascript">
+$(function(){
+  $(this).keypress( function(e) {  //屏蔽回车事件 由于目前回车会提交两次表单原因找不到 暂时如此处理
+    var key = window.event ? e.keyCode : e.which;  
+    if(key.toString() == "13"){  
+    	return false;
+    }  
+   });
+});
 function confirmDel(){
 	$.fn.jalert("您确认要删除该素材吗？",deleteMaterial);
 }
@@ -209,7 +217,6 @@ $(function(){
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //初始化创建者
-   if("${param.fdId}"!=null&&"${param.fdId}"!=""){
     	var creator="";
     	var url="";
 	   $.ajax({
@@ -247,7 +254,6 @@ $(function(){
 				  $("#list_user").html(html); 
 			  }
 		  });
-    } 
     
     $("#formEditDTotal").validate({
         submitHandler:saveMaterial

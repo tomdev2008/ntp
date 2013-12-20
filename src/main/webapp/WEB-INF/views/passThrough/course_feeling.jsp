@@ -131,7 +131,7 @@
             </div>
             <div class="pull-right box1">
                 <div class="mainCourse">
-                    <img src="{{?it.courseImg!=""}}${ctx}/common/file/image/{{=it.courseImg}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
+                    <img class="cover" src="{{?it.courseImg!=""}}${ctx}/common/file/image/{{=it.courseImg}}{{??}}${ctx}/resources/images/temp-newClass.jpg{{?}}" alt="">
                     <a href="${ctx}/passThrough/getCourseHome/${courseId}" class="courseLink">
                         <h1>{{=it.courseName}}</h1>
                         <p class="sub">{{=it.courseAuther}}</p>

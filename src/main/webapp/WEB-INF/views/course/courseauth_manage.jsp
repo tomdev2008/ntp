@@ -88,7 +88,7 @@
 <script id="pageheardTemplate" type="text/x-dot-template">
 	<div class="pages pull-right">
 	<div class="span2">
- 	   第<span > {{=it.currentPage*10-9}} -{{?it.currentPage*10>it.totalCount}}{{=it.totalCount}}{{??}}{{=it.currentPage*10}}{{?}}</span> / <span >{{=it.totalCount}}</span> 条
+ 	   第<span >{{?it.totalCount>0}}{{=it.currentPage*10-9}}{{??}}0{{?}}-{{?it.currentPage*10>it.totalCount}}{{=it.totalCount}}{{??}}{{=it.currentPage*10}}{{?}}</span> / <span >{{=it.totalCount}}</span> 条
 	</div>
 	<div class="btn-group">
     <button class="btn btn-primary btn-ctrl" type="button" {{?it.currentPage <= 1}} disabled {{?}} onclick='pageNavClick({{=it.currentPage-1}})'><i class="icon-chevron-left icon-white"></i></button>

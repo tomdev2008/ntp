@@ -51,7 +51,7 @@
 								{{?}}
                                     <div class="media">
                                         <div class="pull-left">
-                                              <img src="{{?course.coverImg!=""}}
+                                              <img class="media-object" src="{{?course.coverImg!=""}}
 														${ctx}/common/file/image/{{=course.coverImg}}
 														{{??}}
 														${ctx}/resources/images/zht-main-img.jpg

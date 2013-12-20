@@ -11,7 +11,8 @@ body {background:#a8d4e9 url(../images/login_bg.png) repeat-x 45px bottom;
 .login_wrap{}
 .login_tit{width:556px;height:74px;background: url(../images/login_title.png) no-repeat 0 0;margin:0 auto;}
 .login_form{background-color:#c2e1f0;margin:35px auto 25px;width:380px;padding:34px;}
-.login_form .inp{border:none;padding:13px 6px 13px 47px;min-height:20px;box-sizing:content-box;width:327px;background-image:url(../images/ico-login.png);background-repeat:no-repeat;}
+.login_form .inp{border:none;padding:13px 6px 13px 47px;*width:327px;min-height: 46px;background-image:url(../images/ico-login.png);background-repeat:no-repeat;}
+.lt-ie9 .login_form .inp{min-height:20px;}
 .inp-mail{background-position:12px -1px;}
 .inp-password{background-position:12px -49px;}
 .login_btns .btn{line-height:38px;padding:0;font-size:16px;}
