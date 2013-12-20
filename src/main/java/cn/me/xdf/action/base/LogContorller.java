@@ -66,13 +66,14 @@ public class LogContorller {
 		Pagination page=null;
 		List<Map> returnList = new ArrayList<Map>();
 		if(fdType.equals("LogLogin")){
-			finder.append("from LogLogin l where l.person.fdName like '%"+key+"%' ");
+			finder.append("from LogLogin l where (l.person.fdName like '%"+key+"%' or l.person.fdEmail like '%"+key+"%'  or l.person.hbmParent.fdName like '%"+key+"%')) ");
 			finder.append("order by l.time desc");
 			page= logLoginService.getPage(finder,Integer.parseInt(pageNo));
 			List<LogLogin> list = (List<LogLogin>) page.getList();
 			for (int i = 0; i < list.size(); i++) {
 				Map map = new HashMap();
 				map.put("fdLogId", list.get(i).getFdId());
+				map.put("fdEmail", list.get(i).getPerson().getFdEmail());
 				map.put("fdUserName", list.get(i).getPerson().getFdName());
 				map.put("fdUserDep", list.get(i).getPerson().getHbmParent()==null?"":list.get(i).getPerson().getHbmParent().getFdName());
 				map.put("time", DateUtil.convertDateToString(list.get(i).getTime(), "yyyy-MM-dd HH:mm:ss"));
@@ -80,7 +81,7 @@ public class LogContorller {
 				returnList.add(map);
 			}
 		}else if(fdType.equals("LogLogout")){
-			finder.append("from LogLogout l where l.person.fdName like '%"+key+"%' ");
+			finder.append("from LogLogout l where (l.person.fdName like '%"+key+"%' or l.person.fdEmail like '%"+key+"%'  or l.person.hbmParent.fdName like '%"+key+"%') )");
 			finder.append("order by l.time desc");
 			page= logLogoutService.getPage(finder,Integer.parseInt(pageNo));
 			List<LogLogout> list = (List<LogLogout>) page.getList();
@@ -88,13 +89,14 @@ public class LogContorller {
 				Map map = new HashMap();
 				map.put("fdLogId", list.get(i).getFdId());
 				map.put("fdUserName", list.get(i).getPerson().getFdName());
+				map.put("fdEmail", list.get(i).getPerson().getFdEmail());
 				map.put("fdUserDep", list.get(i).getPerson().getHbmParent()==null?"":list.get(i).getPerson().getHbmParent().getFdName());
 				map.put("time", DateUtil.convertDateToString(list.get(i).getTime(), "yyyy-MM-dd HH:mm:ss"));
 				map.put("logType", "登出");
 				returnList.add(map);
 			}
 		}else if(fdType.equals("LogApp")){
-			finder.append("select l from LogApp l , SysOrgElement o where l.personId=o.fdId and o.fdName like '%"+key+"%'  ");
+			finder.append("select l from LogApp l , SysOrgPerson o  where l.personId=o.fdId and (o.fdName like '%"+key+"%' or o.fdEmail like '%"+key+"%' or o.hbmParent.fdName like '%"+key+"%' )  ");
 			finder.append("order by l.time desc");
 			page= logAppService.getPage(finder,Integer.parseInt(pageNo));
 			List<LogApp> list = (List<LogApp>) page.getList();
@@ -103,6 +105,7 @@ public class LogContorller {
 				map.put("fdLogId", list.get(i).getFdId());
 				SysOrgPerson orgPerson = accountService.load(list.get(i).getPersonId());
 				map.put("fdUserName", orgPerson.getFdName());
+				map.put("fdEmail", orgPerson.getFdEmail());
 				map.put("fdUserDep", orgPerson.getHbmParent()==null?"":orgPerson.getHbmParent().getFdName());
 				map.put("time", DateUtil.convertDateToString(list.get(i).getTime(), "yyyy-MM-dd HH:mm:ss"));
 				if(list.get(i).getMethod().equals(Constant.DB_UPDATE)){

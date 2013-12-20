@@ -84,7 +84,7 @@
 	function deleteLog(){
 		var str=$("input[name='ids']:checked").length;
 	    if(str==0){
-	    	$.fn.jalert("请选择用户");
+	    	$.fn.jalert("请选择日志");
 	    }else{
 	    	$.fn.jalert("您确定要删除该日志？",function(){
 				document.filterForm.method = "post";
@@ -184,7 +184,7 @@
 				<li data-id="${bean.fdLogId}">
 					<a href="${ctx}/admin/log/view?logId=${bean.fdLogId}&logType=${fdType}"> 
 					 <input type="checkbox" name="ids" value="${bean.fdLogId}"/>
-					    <span class="title">${bean.fdUserName}(${bean.fdUserDep})</span>
+					    <span class="title">${bean.fdUserName}(${bean.fdEmail})${bean.fdUserDep}</span>
 					    <span class="dt">${bean.time}</span>
 					    	<span class="label label-info">${bean.logType}</span> 
 					</a>
