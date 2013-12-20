@@ -84,9 +84,9 @@
 	function deleteLog(){
 		var str=$("input[name='ids']:checked").length;
 	    if(str==0){
-	    	$.fn.jalert("请选择日志");
+	    	jalert("请选择日志");
 	    }else{
-	    	$.fn.jalert("您确定要删除该日志？",function(){
+	    	jalert("您确定要删除该日志？",function(){
 				document.filterForm.method = "post";
 				document.filterForm.action = '${ctx}/admin/log/deleteAll?fdType=${fdType}&key='+$("#fdKey").val();
 				document.filterForm.submit();
@@ -97,7 +97,7 @@
 	function expList(){
 		var str=$("input[name='ids']:checked").length;
 	    if(str==0){
-	    	$.fn.jalert("请选择用户");
+	    	jalert("请选择用户");
 	    }else{
 	    		document.filterForm.method = "post";
 				document.filterForm.action = '${ctx}/common/exp/getExpLog?fdType=${fdType}';

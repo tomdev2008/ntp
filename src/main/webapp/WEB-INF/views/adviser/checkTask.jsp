@@ -256,7 +256,7 @@ function exportData(){
 	 var fdType=$("#fdType").val();
 	if(document.getElementById("selectAll").checked){
 		 var keyword=$("#search").val();
-		 $.fn.jalert("您确定要导出全部数据吗？",function(){
+		 jalert("您确定要导出全部数据吗？",function(){
 			  window.location.href="${ctx}/common/exp/getExportAdviserTask?fdType="+fdType+"&fdName="+keyword;
 		 }); 
 		 return;
@@ -265,12 +265,12 @@ function exportData(){
 		$("#listTeacher li").each(function() {
 			chk_value.push($(this).attr("data-fdid"));
 		});
-		$.fn.jalert("您确定导出本页数据吗？",function(){
+		jalert("您确定导出本页数据吗？",function(){
 			window.location.href="${ctx}/common/exp/getExportAdviserTask?modelIds="+chk_value+"&fdType="+fdType+"&isAll=noPage";
 		});
 		return;
 	} else{
-		 $.fn.jalert("您好!您没有选择要导出的数据！");
+		 jalert("您好!您没有选择要导出的数据！");
 		  return;
 	}
 }
@@ -280,7 +280,7 @@ function batchDownload(){
 		 var order=$("#fdOrder").val();
 		 var keyword=$("#search").val();
 		 var fdType=$("#fdType").val();
-		 $.fn.jalert("您确定下载全部数据吗？",function(){
+		 jalert("您确定下载全部数据吗？",function(){
 			  window.location.href="${ctx}/common/file/allDownloadTaskZip/"+fdType+"/作业?keyword="+keyword+"&order="+order;
 			  return;
 		 }); 
@@ -295,10 +295,10 @@ function batchDownload(){
       		dataType : 'json',
       		success : function(result) {
       			if(result.attIds==null||result.attIds==''){
-      				 $.fn.jalert("您好!当前页没有数据可下载！");
+      				 jalert("您好!当前页没有数据可下载！");
       				   return;
       			}else{
-      				$.fn.jalert("您确定下载本页作业附件吗？",function(){
+      				jalert("您确定下载本页作业附件吗？",function(){
         				window.location.href= window.location.href="${ctx}/common/file/downloadZipsByArrayIds/"+result.attIds+"/作业";
         				return;
         			});
@@ -306,19 +306,19 @@ function batchDownload(){
       		}
 	     }); 
 		
-		/* $.fn.jalert("您确定下载本页数据吗？",function(){
+		/* jalert("您确定下载本页数据吗？",function(){
 			window.open("${ctx}/common/file/batchDownloadTaskZip/"+chk_value+"/作业", _self);
 			return;
 		}); */
 	} else{
-		 $.fn.jalert("您好!您没有选择要下载的数据！");
+		 jalert("您好!您没有选择要下载的数据！");
 		  return;
 	}
 }
 //下载
 function downloadAtt(attIds,zipname){
 	if(attIds==null||attIds==''){
-		 $.fn.jalert("您好!该作业包没有数据可下载！");
+		 jalert("您好!该作业包没有数据可下载！");
 		   return;
 	}
     window.location.href="${ctx}/common/file/downloadZipsByArrayIds/"+attIds+"/"+zipname;

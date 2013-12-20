@@ -1060,7 +1060,7 @@
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		$.fn.jalert("不能支持和反对自己的评论");
+                            		jalert("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnWeak")){//踩
                             	var pushok;
@@ -1083,11 +1083,11 @@
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		$.fn.jalert("不能支持和反对自己的评论");
+                            		jalert("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnComment")){//评论
                                 //if($("#formReply").length){
-                                	//$.fn.jalert("请先保存其它回复");
+                                	//jalert("请先保存其它回复");
                                 //} else {
                                 	 $("#formReply .btn-cancel").closest(".form-reply").remove();
              						 $this.removeClass("active");
@@ -1132,7 +1132,7 @@
 
                                 //}
                             }else if($this.hasClass("btndeleteM")){
-                            	$.fn.jalert("您确定删除该评论吗？",function(){
+                            	jalert("您确定删除该评论吗？",function(){
                         			$.ajax({
                         	    		  url: "${ctx}/ajax/message/removeMessage",
                         	    		  async:false,
@@ -1322,7 +1322,7 @@
                     	fdContent: $("#textComment").val(),
               	  	},
           		});
-               $.fn.jalert("评论发表成功");  
+               jalert("评论发表成功");  
                $("#textComment").val("");
                resetComment(1,10);
                return false;
@@ -1524,7 +1524,7 @@
 		         			}
 		         		}); 
 	                }else{
-	                	$.fn.jalert("您已经赞过该资源!");
+	                	jalert("您已经赞过该资源!");
 	                }
             });
 
@@ -1550,14 +1550,14 @@
                   		}); 
                      	 
                        } else {
-                     	  $.fn.jalert("您好！该视频没有对应附件");
+                     	  jalert("您好！该视频没有对应附件");
                        } 
                 }
             });
 
             $("#btnDoPass").on("click",function(e){
             	if($(this).attr("converStatus")==""){
-            		$.fn.jalert("该状态不学习!");
+            		jalert("该状态不学习!");
             		return ;
             	}
                 $("#listMedia>li.active").addClass("pass");
@@ -1610,7 +1610,7 @@
                 if($(this).parent().siblings().find(".collapse").hasClass("in")){
                 	 var $this2 = $(this);
                  	$this2.attr("data-toggle","");
-                 	$.fn.jalert("确定要关闭未保存的表单？",function(){
+                 	jalert("确定要关闭未保存的表单？",function(){
                  		$this2.parent().siblings().find(".collapse").each(function(i){
                  			if($(this).hasClass("in")){
                  				$(this).collapse("hide");
@@ -1692,7 +1692,7 @@
                         $this.find("[data-toggle='collapse']").click(function(e){
                         	var $this2 = $(this);
                         	$this2.attr("data-toggle","");
-                        	$.fn.jalert("确定要关闭未保存的表单？",function(){
+                        	jalert("确定要关闭未保存的表单？",function(){
                         		$this2.attr("data-toggle","collapse");
                         		$this.collapse("hide");
                         	});

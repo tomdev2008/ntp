@@ -104,10 +104,10 @@
 	function resetPassword() {
 		var str=$("input[name='ids']:checked").length;
 	    if(str>1){
-	    	$.fn.jalert("只能选择一个用户进行重置密码");
+	    	jalert("只能选择一个用户进行重置密码");
 	    }
 	    if(str==0){
-	    	$.fn.jalert("请选择用户");
+	    	jalert("请选择用户");
 	    }
 	    if(str==1){
 	    	if($("input[name='ids']:checked").nextAll().hasClass('label-info')){
@@ -116,7 +116,7 @@
 				document.filterForm.submit();
 				return;
 	    	}else{
-	    		$.fn.jalert("只能重置临时账号的密码");
+	    		jalert("只能重置临时账号的密码");
 	    	}
 	    }
 	}
@@ -124,7 +124,7 @@
 	function batchDelete(){
 		var str=$("input[name='ids']:checked").length;
 	    if(str==0){
-	    	$.fn.jalert("请选择用户");
+	    	jalert("请选择用户");
 	    }else{
 	    		document.filterForm.method = "post";
 				document.filterForm.action = '${ctx}/admin/user/deleteUser';
@@ -136,7 +136,7 @@
 	function exportData(){
 		var str=$("input[name='ids']:checked").length;
 	    if(str==0){
-	    	$.fn.jalert("请选择用户");
+	    	jalert("请选择用户");
 	    }else{
 	    		document.filterForm.method = "post";
 				document.filterForm.action = '${ctx}/common/exp/getExpuser';

@@ -4,15 +4,19 @@
 (function($) {
 	// 弹出对话框,回调函数 可选
     //option: string or {}
-    $.fn.jalert = function(option,call) {
+    $.fn.jalert = function(option) {
         var ps = $.extend({
             buttonText: { ok: '确定', cancel: '关闭' },
             title: '提示',
-            content: typeof option == "string" ? option : ""
+            tip: false,
+            tipTime: 1.5,
+            content: typeof option == "string" ? option : "",
+            callback: function(){}
         },option || {});
         var allSel = $('select').hide();
-
         var cache, cacheKey = 'jay_modal';
+
+        if (window[cacheKey] == undefined) {
             $('<div class="modal hide fade" id="jmodal-main" >\
 	            		<div class="modal-header" >\
 	    					<strong />\
@@ -23,28 +27,35 @@
 		            		<button class="btn btn-large btn-link"  />\
                         </div>\
                 </div>').appendTo('body');
-
-        if (window[cacheKey] == undefined) {
             cache = {
                 modal: $('#jmodal-main'),
                 body: $('#jmodal-container-content')
             };
             cache.title = cache.body.prev().children();
-            cache.buttons = cache.body.next().children();
+            cache.footer = cache.body.next();
+            cache.buttons = cache.footer.children();
+            cache.modal.modal({
+                keyboard: true,
+                backdrop: true,
+                show: false
+            });
             window[cacheKey] = cache;
         }
         cache = window[cacheKey];
-
+        ps.tip  ? cache.footer.addClass("hide") : cache.footer.removeClass("hide");
         cache.modal.modal("show");
+        ps.tip && setTimeout(function(){
+            cache.modal.modal("hide");
+        },ps.tipTime*1000);
         cache.title.html(ps.title);
         //OK BUTTON
-        cache.buttons.eq(0)
+        !ps.tip && cache.buttons.eq(0)
             .text(ps.buttonText.ok)
                 .unbind('click')
                     .click(function(e) {
                         allSel.show();
-                        cache.modal.modal("hide");
-                        typeof call == "function" && call();
+                        cache.modal.modal("hide")
+                            .one("hidden",ps.callback);
                     })
         //CANCEL BUTTON
             .next()
@@ -52,7 +63,7 @@
                     .one('click', function() { cache.modal.modal("hide"); allSel.show(); });
 
         if (typeof ps.content == 'string') {
-            $('#jmodal-container-content').html(ps.content);
+            cache.body.html(ps.content);
         }
         if (typeof ps.content == 'function') {
             ps.content(cache.body);

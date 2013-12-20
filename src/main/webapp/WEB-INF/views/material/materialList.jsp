@@ -169,16 +169,16 @@ function batchDelete() {
 		delekey+=$(this).val()+",";
 	});
 	if(delekey==""){
-		$.fn.jalert("当前没有选择要删除的数据!");
+		jalert("当前没有选择要删除的数据!");
 		return;
 	}
 	//是否全部选中
 	if($("#allFlag").val()=='true'){
 		if($("#isAdmin").val()=='true'){
-			$.fn.jalert("是否删除所有素材？",deleteAllMaterial);
+			jalert("是否删除所有素材？",deleteAllMaterial);
 		}else{
 			prepareDelete(delekey);
-			$.fn.jalert("是否删除所有素材？",deleteAllMaterial);
+			jalert("是否删除所有素材？",deleteAllMaterial);
 		}
 	}else{
 		if($("#isAdmin").val()=='true'){
@@ -195,10 +195,10 @@ function deleteMater(){
 		delekeyAuth+=$(this).val()+",";
 	});
 	if(delekeyAuth==""){
-		$.fn.jalert("当前没有选择要删除的数据!");
+		jalert("当前没有选择要删除的数据!");
 		return;
 	}
-	$.fn.jalert("是否删除所选素材？",ajaxDelete);
+	jalert("是否删除所选素材？",ajaxDelete);
 }
 function ajaxDelete(){
 	var delekeyAuth="";

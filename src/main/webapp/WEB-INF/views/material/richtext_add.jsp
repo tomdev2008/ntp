@@ -183,7 +183,7 @@ $(function(){
    });
 });
 function confirmDel(){
-	$.fn.jalert("您确认要删除该素材吗？",deleteMaterial);
+	jalert("您确认要删除该素材吗？",deleteMaterial);
 }
 function deleteMaterial(){
 	 $.ajax({

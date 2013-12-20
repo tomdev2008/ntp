@@ -323,7 +323,7 @@ $.Placeholder.init();
 	  				if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 	  					rightCont.loadBasicInfoPage("系列信息");
 	  				}else{
-	  					$.fn.jalert("请先设置系列阶段信息");
+	  					jalert("请先设置系列阶段信息");
 	  					urlRouter("sectionsDirectory");
 	  				}
 	  				break;
@@ -331,7 +331,7 @@ $.Placeholder.init();
 	  				if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 	  					rightCont.loadPromotionPage("系列推广");
 	  				}else{
-	  					$.fn.jalert("请先设置系列信息");
+	  					jalert("请先设置系列信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -387,7 +387,7 @@ $.Placeholder.init();
 	function releaseCourse(){
 		  //发布前验证系列的基本信息是否已完善(防止出现未命名情况);
 	    if($("#isperfect").val()=='false'){
-	    	$.fn.jalert2("请完善系列信息!");
+	    	jalert2("请完善系列信息!");
 	    	urlRouter("basicInfo");
 	    	return ;
 	    }

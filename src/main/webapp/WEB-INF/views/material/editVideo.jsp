@@ -326,7 +326,7 @@ $(function(){
 </script>
 <script type="text/javascript">
 function confirmDel(){
-	$.fn.jalert("您确认要删除该素材吗？",deleteMaterial);
+	jalert("您确认要删除该素材吗？",deleteMaterial);
 }
 function deleteMaterial(){
 	 $.ajax({
@@ -346,7 +346,7 @@ function downloadMater(){
   if(attId!=null&&attId!=""){
 	  window.location.href="${ctx}/common/file/download/"+attId;
   } else {
-	  $.fn.jalert("您好！该视频没有对应附件");
+	  jalert("您好！该视频没有对应附件");
   } 
 }
 </script>

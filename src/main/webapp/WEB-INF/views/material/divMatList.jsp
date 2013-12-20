@@ -277,11 +277,11 @@ function downloadMater(){
 			chk_value.push($(this).val());
 	});
 	if (chk_value.length == 0) {
-		  $.fn.jalert("请选择要下载的数据!");
+		  jalert("请选择要下载的数据!");
 		  return;
 	}
 	if($("#allFlag").val()=='true'){
-		$.fn.jalert("您确定全部下载吗？",function(){
+		jalert("您确定全部下载吗？",function(){
 			  window.location.href="${ctx}/common/file/allDownloadZip/${param.fdType}/xdf_"+fdType+"素材_"+CurrentDate+"?key="+key;
 			  return;
 		});
@@ -295,7 +295,7 @@ function exportData(){
    if(document.getElementById("selectAll").checked){
 	  var keyword=$("#serach").val();
 	  var order = $("#fdOrder").val();
-	  $.fn.jalert("您确定要导出全部数据吗？",function(){
+	  jalert("您确定要导出全部数据吗？",function(){
 		window.location.href="${ctx}/common/exp/getExportMaterialList?fdType="+fdType+"&fdName="+keyword+"&order="+order;
 	  });
 	  return;
@@ -305,10 +305,10 @@ function exportData(){
 		chk_value.push($(this).val());
    });
    if (chk_value.length == 0) {
-		$.fn.jalert("请选择要导出的数据!");
+		jalert("请选择要导出的数据!");
 		return;
    }
-   $.fn.jalert("您确定导出所选数据吗？",function(){
+   jalert("您确定导出所选数据吗？",function(){
 		window.location.href="${ctx}/common/exp/getExportMaterialList?modelIds="+chk_value+"&fdType="+fdType+"&isAll=noPage";
 		return;
    }); 

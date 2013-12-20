@@ -364,7 +364,7 @@ $(function(){
      });
 });
 function deleteMaterial(){
-	$.fn.jalert("您确认要删除该作业包吗？",confirmDeletePaper);
+	jalert("您确认要删除该作业包吗？",confirmDeletePaper);
 }
 function confirmDeletePaper(){
 	$.ajax({
@@ -376,7 +376,7 @@ function confirmDeletePaper(){
 	}); 
 }
 function deleteTask(){
-	$.fn.jalert("您确认要删除该作业吗？",confirmDeleteTask);
+	jalert("您确认要删除该作业吗？",confirmDeleteTask);
 }
 function confirmDeleteTask(){
 	$.ajax({

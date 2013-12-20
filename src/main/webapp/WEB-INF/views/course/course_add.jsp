@@ -746,7 +746,7 @@ $.Placeholder.init();
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadDetailInfoPage("详细信息");
 	  				}else{
-	  					$.fn.jalert("请先设置基本信息");
+	  					jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -754,7 +754,7 @@ $.Placeholder.init();
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadPromotionPage("课程推广");
 	  				}else{
-	  					$.fn.jalert("请先设置基本信息");
+	  					jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -762,7 +762,7 @@ $.Placeholder.init();
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadAccessRightPage("权限设置");
 	  				}else{
-	  					$.fn.jalert("请先设置基本信息");
+	  					jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -770,7 +770,7 @@ $.Placeholder.init();
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadKinguserPage("授权管理");
 	  				}else{
-	  					$.fn.jalert("请先设置基本信息");
+	  					jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -778,7 +778,7 @@ $.Placeholder.init();
 					if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 						rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
 	  				}else{
-	  					$.fn.jalert("请先设置基本信息");
+	  					jalert("请先设置基本信息");
 	  					urlRouter("basicInfo");
 	  				}
 	  				break;
@@ -900,7 +900,7 @@ function successSelectArea(imgSrc){
 	function releaseCourse(){
 		 //发布前验证课程的基本信息是否已完善(防止出现未命名情况);
 	    if($("#isperfect").val()=='false'){
-	    	$.fn.jalert2("请完善课程基本信息!");
+	    	jalert2("请完善课程基本信息!");
 	    	urlRouter("basicInfo");
 	    	return ;
 	    }

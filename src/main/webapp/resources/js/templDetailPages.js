@@ -404,7 +404,7 @@
 			
 			$("#deleteCourse").click(function(){confirmDel();});
 			function confirmDel(){
-				$.fn.jalert("您确认要删除当前课程？",deleteCourse)
+				jalert("您确认要删除当前课程？",deleteCourse)
 			}
 			// 调用ajax删除当前课程
 			function deleteCourse(){
@@ -568,7 +568,7 @@
 					  data:{data:JSON.stringify(data)},
 					  dataType:'json',
 					  success: function(rsult){
-						  //$.fn.jalert("修改成功");
+						  //jalert("修改成功");
 					  },
 				});
 			});

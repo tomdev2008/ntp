@@ -117,10 +117,10 @@ $.Placeholder.init();
 				}else if(msg=="redirect:/register/list"){
 					window.location.href="${ctx}/register/list";
 				}else if(msg=="redirect:/register/listerr"){
-					window.parent.$.fn.jalert("注册失败！");
+					window.parent.jalert("注册失败！");
 					window.location.href="${ctx}/register/list";
 				}else{
-					$.fn.jalert("注册失败！");
+					jalert("注册失败！");
 				}
 			}
 		});

@@ -549,15 +549,15 @@ function confirmDel(){
 		delekey+=$(this).attr("id")+",";
 	}); 	
 	if(delekey==""){
-		$.fn.jalert("当前没有选择要删除的数据!");
+		jalert("当前没有选择要删除的数据!");
 		return;
 	}
 	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
-		$.fn.jalert("您确认要删除所有数据？",deleteAllCourseParticAuth);
+		jalert("您确认要删除所有数据？",deleteAllCourseParticAuth);
 	}else if($('input[name="selectCheckbox"]:checked').val()==0){
-		$.fn.jalert("您确认要删除本页数据？",deleteCourseParticAuth);
+		jalert("您确认要删除本页数据？",deleteCourseParticAuth);
 	}else{
-		$.fn.jalert("您确认要删除所选数据？",deleteCourseParticAuth);
+		jalert("您确认要删除所选数据？",deleteCourseParticAuth);
 		
 	}
 }
@@ -602,7 +602,7 @@ function confirmDel(){
 	    $("#currentpage").val(nowpage);
         $("a[name='delecpa']").bind("click",function(e){
         	var checkCpaId=$(this).attr("data-fdid");
-        	$.fn.jalert("确认移除授权（不删除学习记录）？",function(){
+        	jalert("确认移除授权（不删除学习记录）？",function(){
         		 $.ajax({
         		      	type: "post",
         		      	url: "${ctx}/ajax/course/deleteCouseParticAuthById",

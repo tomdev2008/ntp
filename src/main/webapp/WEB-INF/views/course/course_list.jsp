@@ -203,29 +203,29 @@ function confirmDelecourse(){
 		delekey+=$(this).val()+",";
 	}); 	
 	if(delekey==""){
-		$.fn.jalert("当前没有选择要删除的数据!");
+		jalert("当前没有选择要删除的数据!");
 		return;
 	}
 	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
 		if($("#isAdmin").val()=='true'){
-			$.fn.jalert("您确认要删除所有数据？",deleteAllCourse);
+			jalert("您确认要删除所有数据？",deleteAllCourse);
 		}else{
 			fiterDelete(delekey,1);
-			$.fn.jalert("您确认要删除所有数据？",deleteAllCourse);
+			jalert("您确认要删除所有数据？",deleteAllCourse);
 		}
 	}else if($('input[name="selectCheckbox"]:checked').val()==0){
 		if($("#isAdmin").val()=='true'){
-			$.fn.jalert("您确认要删除本页数据？",deleteCourse);
+			jalert("您确认要删除本页数据？",deleteCourse);
 		}else{
 			fiterDelete(delekey,0);
-			$.fn.jalert("您确认要删除本页数据？",deleteCourse);
+			jalert("您确认要删除本页数据？",deleteCourse);
 		}
 	}else{
 		if($("#isAdmin").val()=='true'){
-			$.fn.jalert("您确认要删除所选数据？",deleteCourse);
+			jalert("您确认要删除所选数据？",deleteCourse);
 		}else{
 			fiterDelete(delekey,0);
-			$.fn.jalert("您确认要删除所选数据？",deleteCourse);
+			jalert("您确认要删除所选数据？",deleteCourse);
 		}
 	}
 }
@@ -236,7 +236,7 @@ function deleteCourse(){
 		delekey+=$(this).val()+",";
 	}); 	
 	/* if(delekey==""){
-		$.fn.jalert("当前没有选择要删除的数据!");
+		jalert("当前没有选择要删除的数据!");
 		return;
 	} */
 	// return;
@@ -307,15 +307,15 @@ function confirmDelseries(){
 		delekey+=$(this).val()+",";
 	}); 	
 	if(delekey==""){
-		$.fn.jalert("当前没有选择要删除的数据!");
+		jalert("当前没有选择要删除的数据!");
 		return;
 	}
 	if($('input[name="selectCheckbox"]:checked').val()==1){//删除所有
-		$.fn.jalert("您确认要删除系列以及系列下课程信息？",deleteAllSeries);
+		jalert("您确认要删除系列以及系列下课程信息？",deleteAllSeries);
 	}else if($('input[name="selectCheckbox"]:checked').val()==0){
-		$.fn.jalert("您确认要删除本页系列信息？",deleteSeries);
+		jalert("您确认要删除本页系列信息？",deleteSeries);
 	}else{
-		$.fn.jalert("您确认要删除所选系列信息？",deleteSeries);
+		jalert("您确认要删除所选系列信息？",deleteSeries);
 	}
 }
 function deleteSeries(){

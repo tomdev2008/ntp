@@ -566,7 +566,7 @@ $(function(){
 					return;
 				}
 				if (data.permission === "encrypt" && data.kingUser.length == 0) {
-					$.fn.jalert("请输入用户");
+					jalert("请输入用户");
 				}
 				$
 						.ajax({

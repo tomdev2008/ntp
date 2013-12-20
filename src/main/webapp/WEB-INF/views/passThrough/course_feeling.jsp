@@ -333,7 +333,7 @@
                            $num.text(parseInt($num.text())+1);
                            $this.addClass("active").attr("data-original-title",tips);
                   	}else{
-                  		$.fn.jalert("不能支持和反对自己的评论");
+                  		jalert("不能支持和反对自己的评论");
                   	}
                 } else if($this.hasClass("praise")){
                 	var pushok1=false;
@@ -359,7 +359,7 @@
                         $num.text(parseInt($num.text())+1);
                         $this.addClass("active").attr("data-original-title",tips);
                		}else{
-               			$.fn.jalert("不能支持和反对自己的评论");
+               			jalert("不能支持和反对自己的评论");
                		}
                 }
             }
@@ -508,7 +508,7 @@
 			if(result.pageOver==-1){
 				//alert("0");
 				$("#gotoFriendsO").bind("click",function(){
-					$.fn.jalert("没有上一页");
+					jalert("没有上一页");
 				});
 			}else{
 				//alert("1:"+result.pageOver);
@@ -519,7 +519,7 @@
 			if(result.pageNext==-1){
 				//alert("2");
 				$("#gotoFriendsN").bind("click",function(){
-					$.fn.jalert("没有下一页");
+					jalert("没有下一页");
 				});
 			}else{
 				//alert("3:"+result.pageNext);
