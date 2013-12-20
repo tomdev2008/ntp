@@ -280,7 +280,7 @@ function fiterDelete(delekey,deleType){//课程删除过滤
 			if(data.length==0){
 				$('input[name="ids"]').each(function(){
 					$(this).attr("checked",false);
-					$(this).attr("disabled",true);
+					$(this).attr("disabled",false);
 				});
 				
 			}else{
@@ -291,7 +291,7 @@ function fiterDelete(delekey,deleType){//课程删除过滤
 						$(this).attr("disabled",false);
 				    }else{
 						$(this).attr("checked",false);
-						$(this).attr("disabled",true);
+						$(this).attr("disabled",false);
 					}
 						
 				});
