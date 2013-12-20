@@ -389,6 +389,7 @@ $(function(){
 	$("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){
 		e.preventDefault();
 		$(this).closest("li").remove();
+		$("#videoUrl").val("");//清空视频链接
 	});
 	
 	var $txt = $("#upMaterial").prev(".txt"), 
@@ -419,13 +420,14 @@ $(function(){
         	$pct.text("0%");
             var objvalue = eval("(" + data + ")");
 		    var html="<li data-fdid='"+objvalue.attId+"'><a class='name' href='#' target='_blank'>"+file.name+" "
-		          +"<input type='hidden'  name='attId' id='attId' value='"+objvalue.attId+"'><div class='item-ctrl'> "
+		          +"</a><input type='hidden'  name='attId' id='attId' value='"+objvalue.attId+"'><div class='item-ctrl'> "
 		          +"<a class='icon-remove-blue' href='#'></a> </div></li>";
             $("#listAttachment").html(html);
             $("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){
 				e.preventDefault();
 				$(this).closest("li").remove();
 			});
+            $("#videoUrl").val("");//清空视频链接
         }
     },
     'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
