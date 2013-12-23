@@ -135,6 +135,7 @@ public class AttMainPlugin {
     public static String addDoc(AttMain attMain, String isConvert) {
 
         try {
+            log.info("附件开始传输到Filenet里");
             DocInterfaceModel model = new DocInterfaceModel(attMain,
                     DocInterfaceModel.addDoc, isConvert);
             HttpClient client = new HttpClient();
@@ -149,6 +150,7 @@ public class AttMainPlugin {
             filePost.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
             filePost.setRequestEntity(mre);
             int status = client.executeMethod(filePost);
+            log.info("status==="+status);
             if (status == HttpStatus.SC_OK) {
                 String json = filePost.getResponseBodyAsString();
                 log.info(json);
