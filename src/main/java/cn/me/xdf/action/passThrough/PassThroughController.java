@@ -171,8 +171,8 @@ public class PassThroughController {
 		CourseInfo course = courseService.get(courseId);
 		if(!course.getIsPublish()){
 			if(course.getFdPassword()!=null){//密码课
-				if((StringUtil.isBlank(fdPassword)||(StringUtil.isNotBlank(fdPassword)&&!fdPassword.equals(course.getFdPassword())))&&courseParticipateAuthService
-						.findAuthByCourseIdAndUserId(courseId,ShiroUtils.getUser().getId())){
+				if(!(StringUtil.isNotBlank(fdPassword)&&fdPassword.equals(course.getFdPassword())&&courseParticipateAuthService
+						.findAuthByCourseIdAndUserId(courseId,ShiroUtils.getUser().getId()))){
 					return "redirect:/passThrough/getCourseHome/"+courseId;
 				}
 			}else{//授权课

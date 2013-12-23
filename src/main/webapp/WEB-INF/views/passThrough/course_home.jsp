@@ -363,14 +363,19 @@ $("#verifyPwd").bind("click",function(){
 		    	});
 		    	$("#studyBegin").attr("disabled",false);
 		    	$("#studyBegin").bind("click");
+		    	$("#studyBegin").bind("click",function(){
+		    		$("#studyBeginForm").trigger("submit");
+		    	});	
 			}
 		}
 	}); 
 	
 });
-$("#studyBegin").bind("click",function(){
-	$("#studyBeginForm").trigger("submit");
-});
+if(!$("#studyBegin").attr("disabled")=="disabled"){
+	$("#studyBegin").bind("click",function(){
+		$("#studyBeginForm").trigger("submit");
+	});	
+}
 </script>
 </body>
 </html>
