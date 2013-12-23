@@ -343,7 +343,7 @@ function deleteMaterial(){
 			"materialId":$("#fdId").val()
 		},
 		success:function(){
-			window.location.href="${ctx}/material/findList?fdType="+$("#fdType").val();
+			window.location.href="${ctx}/material/findList?order=FDCREATETIME&fdType="+$("#fdType").val();
 		}
 	}); 
 }
