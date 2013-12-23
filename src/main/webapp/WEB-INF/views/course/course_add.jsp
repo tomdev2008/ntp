@@ -142,14 +142,14 @@
 			</div>
 			<div class="bd">
 				<a class="btn-type{{?param.type != 'none' && param.type != 'video'}} disabled{{?}}" href="#video"><i class="icon-video-lg"></i><h5>视频</h5></a>
-				<a class="btn-type{{?param.type == 'none' || param.type != 'audio'}} disabled{{?}}" href="#audio"><i class="icon-audio-lg"></i><h5>音频</h5></a>
 				<a class="btn-type{{?param.type != 'none' && param.type != 'doc'}} disabled{{?}}" href="#doc"><i class="icon-doc-lg"></i><h5>文档</h5></a>
 				<a class="btn-type{{?param.type != 'none' && param.type != 'ppt'}} disabled{{?}}" href="#ppt"><i class="icon-ppt-lg"></i><h5>幻灯片</h5></a>
-				<a class="btn-type{{?param.type == 'none' || param.type != 'img'}} disabled{{?}}" href="#img"><i class="icon-img-lg"></i><h5>图片</h5></a>
 				<a class="btn-type{{?param.type != 'none' && param.type != 'exam'}} disabled{{?}}" href="#exam"><i class="icon-exam-lg"></i><h5>测试</h5></a>
 				<a class="btn-type{{?param.type != 'none' && param.type != 'task'}} disabled{{?}}" href="#task"><i class="icon-task-lg"></i><h5>作业</h5></a>
 				<a class="btn-type{{?param.type != 'none' && param.type != 'txt'}} disabled{{?}}" href="#txt"><i class="icon-txt-lg"></i><h5>在线创作</h5></a>
-				<a class="btn-type{{?param.type == 'none' || param.type != 'calendar'}} disabled{{?}}" href="#calendar"><i class="icon-calendar-lg"></i><h5>日程安排</h5></a>
+				<a class="btn-type{{?param.type == 'none' && param.type != 'audio'}} disabled{{?}}" href="#audio"><i class="icon-audio-lg"></i><h5>音频</h5></a>
+				<a class="btn-type{{?param.type == 'none' && param.type != 'img'}} disabled{{?}}" href="#img"><i class="icon-img-lg"></i><h5>图片</h5></a>
+				<a class="btn-type{{?param.type == 'none' && param.type != 'calendar'}} disabled{{?}}" href="#calendar"><i class="icon-calendar-lg"></i><h5>日程安排</h5></a>
             </div>
 		</div>
 	#}}
@@ -641,7 +641,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
 	        </div>
 			{{?}}
             <div class="section" >
-                <label>或者从 <a id="gotoMaterial" href="#">课程素材库</a> 中选择{{=it.typeTxt}}</label>
+                <label>在下面搜索框中输入{{=it.typeTxt}}名称，在<a id="gotoMaterial" href="#">课程素材库</a>(这是个链接) 中进行查找并添加到本节中</label>
                 <div class="autoCompleteWrap">
 					<input id="addMedia" type="text" />
 					<!--
@@ -698,7 +698,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 	        <div class="page-title section" id="page-title">
 	        	<input type='hidden' id='courseId' value='${course.fdId}' />
 	        	<h5>
-	        	我正在看：<a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" class="backParent">我的课程
+	        	<a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" class="backParent">返回我的课程列表
 
 </a>
 	        	&nbsp;&nbsp;&nbsp; ${course.fdTitle}</h5>
