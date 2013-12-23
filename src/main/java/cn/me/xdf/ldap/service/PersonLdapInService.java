@@ -12,6 +12,8 @@ import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.utils.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.ldap.control.PagedResult;
@@ -38,6 +40,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class PersonLdapInService extends LdapInService {
 
+    private static final Logger log = LoggerFactory.getLogger(PersonLdapInService.class);
+
     @Autowired
     private LdapLogService ldapLogService;
 
@@ -46,6 +50,7 @@ public class PersonLdapInService extends LdapInService {
 
 
     public void initData(List<Map<String, Object>> values) {
+        log.info("开始初始化人员表");
         updateOrg(values);
     }
 
@@ -80,11 +85,15 @@ public class PersonLdapInService extends LdapInService {
                 }
             }
             if (CollectionUtils.isEmpty(lists)) {
+                log.info("开始初始化人员表-Insert");
                 updateByNamedQuery("saveElement", map);
                 updateByNamedQuery("person.saveElement", map);
                 insertSize++;
             } else {
+                log.info("开始初始化人员表-Update");
+                map.put("FDID",lists.get(0).get("FDID"));
                 updateByNamedQuery("person.updateElement", map);
+                updateByNamedQuery("updateElement", map);
                 updateSize++;
             }
         }
