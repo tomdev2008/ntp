@@ -11,7 +11,7 @@
             tip: false,
             tipTime: 1.5,
             content: typeof option == "string" ? option : "",
-            callback: function(){}
+            callback: function(){return true;}
         },option || {});
         var allSel = $('select').hide();
         var cache, cacheKey = 'jay_modal';
@@ -51,11 +51,11 @@
         //OK BUTTON
         !ps.tip && cache.buttons.eq(0)
             .text(ps.buttonText.ok)
-                .unbind('click')
-                    .click(function(e) {
+                    .one("click",function(e) {
                         allSel.show();
-                        cache.modal.modal("hide")
-                            .one("hidden",ps.callback);
+                        cache.modal.one("hidden",function(){
+                            ps.callback.apply(this,cache.modal);
+                        }).modal("hide");
                     })
         //CANCEL BUTTON
             .next()
