@@ -111,7 +111,7 @@
 	            break;
             case "07":
             	data_type = "txt";
-            	data_typeTxt = "富文本";
+            	data_typeTxt = "在线创作";
             	data_uploadIntro = "";
             	uptype='';
 	            break;
