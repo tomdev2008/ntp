@@ -23,7 +23,7 @@ import cn.me.xdf.model.base.AttMain;
  * @author xiaobin
  * 
  */
-public abstract class AbsExportExcel {
+public abstract class AbsExportExcel implements Runnable{
 
 	public static final String TEMPLATE_EXCEL = "excel";
 

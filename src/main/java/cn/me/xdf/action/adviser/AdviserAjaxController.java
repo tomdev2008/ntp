@@ -234,7 +234,7 @@ public class AdviserAjaxController {
 		user.put("imgUrl", person.getPoto());
 		user.put("org", person.getHbmParent()==null?"":person.getHbmParent().getHbmParentOrg().getFdName());
 		user.put("department", person.getDeptName());
-		user.put("phone", person.getFdMobileNo());
+		user.put("phone", person.getFdWorkPhone());
 		user.put("mail", person.getFdEmail());
 		user.put("link", person.getFdId());
 		introData.put("user", user);////封装人员信息
@@ -368,7 +368,7 @@ public class AdviserAjaxController {
 				user.put("imgUrl", person.getPoto());
 				user.put("org", person.getHbmParent()==null?"":person.getHbmParent().getHbmParentOrg().getFdName());
 				user.put("department", person.getDeptName());
-				user.put("phone", person.getFdMobileNo());
+				user.put("phone", person.getFdWorkPhone());
 				user.put("mail", person.getFdEmail());
 				user.put("link", person.getFdId());//人员id
 				map.put("user", user);////封装人员信息
