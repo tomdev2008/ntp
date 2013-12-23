@@ -17,8 +17,9 @@ request.setAttribute("path", path[path.length-1]);
     	<div class="container pr">
 			<a href="#" class="logo"></a>
 	        <ul class="nav" id="topNav">
-	        	<li class="itemBg"></li>
+	        	
 	          <% if(user!=null){ %>
+	            <li class="itemBg"></li>
 	        	<li class="specific"><a href="${ctx}/course/courseIndexAll">全部课程</a></li>
 	          <%} %>
 	          <shiro:hasRole name="admin">
