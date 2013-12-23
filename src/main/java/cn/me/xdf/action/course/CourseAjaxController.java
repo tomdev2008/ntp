@@ -916,22 +916,33 @@ public class CourseAjaxController {
 		String type = request.getParameter("type");
 		int pageNo = new Integer(request.getParameter("pageNo"));
 		Finder finder = Finder.create("");
-		finder.append("select course.fdId id from ixdf_ntp_course course left join IXDF_NTP_COURSE_PARTICI_AUTH cpa on (course.fdId = cpa.fdcourseid and cpa.fduserid = :userId) " );
-		finder.setParam("userId", userId);
-		if(type.equals("all")){
-			finder.append(" where (course.isPublish = 'Y' or ");
-			finder.append(" (course.fdPassword is not null or course.fdPassword != '') or ");
-			finder.append(" (cpa.fduserid = :user)) ");
-			finder.append(" and course.fdStatus = '01' ");
-			finder.append(" and course.isAvailable = 'Y' " );
-			finder.setParam("user", userId);
-		}else{
-			finder.append(" where (course.isPublish = 'Y' or ");
-			finder.append(" (course.fdPassword is not null or course.fdPassword != '') or ");
-			finder.append(" (cpa.fduserid = :user)) ");
-			finder.append(" and course.fdStatus = '01' ");
-			finder.append(" and course.isAvailable = 'Y' and course.fdcategoryid=:type " );
-			finder.setParam("user", userId);
+		finder.append("select course.fdId id ");
+		finder.append("  from ixdf_ntp_course course ");
+		finder.append("  left join IXDF_NTP_COURSE_PARTICI_AUTH cpa ");
+		finder.append("    on (course.fdId = cpa.fdcourseid and cpa.fduserid ='"+userId+"') ");
+		finder.append(" where ( ");
+		finder.append("       ((course.isPublish = 'Y' or (course.fdPassword is not null or course.fdPassword != '')) and ");
+		finder.append("         (course.fdId in  ");
+		finder.append("                      (select ga.fdCourseId from IXDF_NTP_COURSE_GROUP_AUTH ga  ");
+		finder.append("                      where ga.fdgroupid in  ");
+		finder.append("                           （select ga.fdgroupid from sys_org_group_element soge ,sys_org_element soe1org,sys_org_element soe2dep,sys_org_element soe3per ");
+		finder.append("                            where ga.fdgroupid = soge.fd_groupid and (soe1org.fdid = soe2dep.fd_parentid and soe2dep.fdid = soe3per.fd_parentid and soe3per.fdid='"+userId+"' ) and ( soge.fd_elementid = soe1org.fdid or  soge.fd_elementid = soe3per.fdid or  soge.fd_elementid = soe2dep.fdid ) ");
+		finder.append("                            ） ");
+		finder.append("                       ) ");
+		finder.append("          )  ");
+		finder.append("          or ");
+		finder.append("          ( ");
+		finder.append("          course.fdId not in( select ga2.fdCourseId from IXDF_NTP_COURSE_GROUP_AUTH ga2 ) ");
+		finder.append("         ) ");
+		finder.append("       ) ");
+		finder.append("       or (cpa.fduserid = '"+userId+"') ");
+		finder.append("       ) ");
+		finder.append("   and course.fdStatus = '01' ");
+		finder.append("   and course.isAvailable = 'Y' ");
+		finder.append("    and course.ispublish = 'Y' ");
+		
+		if(!type.equals("all")){
+			finder.append(" and course.fdcategoryid=:type " );
 			finder.setParam("type", type);
 		}		
 		Pagination pag=	courseService.getPageBySql(finder, pageNo, 3);
