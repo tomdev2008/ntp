@@ -78,9 +78,9 @@ public class InsertPersonDb extends BaseTest {
     private List<Map<String, Object>> builderMap() throws SQLException {
 
         List<Map<String, Object>> lists = new ArrayList<Map<String, Object>>();
-        //String sql = "SELECT A.*,B.FD_NO AS PARENTID FROM SYS_ORG_PERSON A,SYS_ORG_ELEMENT B WHERE a.depatid = B.FDID";
+        String sql = "SELECT A.*,B.FD_NO AS PARENTID FROM SYS_ORG_PERSON A,SYS_ORG_ELEMENT B WHERE a.depatid = B.FDID";
 
-        String sql = "SELECT A.*,'' AS PARENTID FROM SYS_ORG_PERSON A WHERE a.fd_login_name='admin'";
+        //String sql = "SELECT A.*,'' AS PARENTID FROM SYS_ORG_PERSON A WHERE a.fd_login_name='admin'";
 
         Connection conn = DbUtils.getConnection();
 
