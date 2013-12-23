@@ -307,7 +307,7 @@ function batchDownload(){
       				   return;
       			}else{
       				jalert("您确定下载本页作业附件吗？",function(){
-        				window.location.href= window.location.href="${ctx}/common/file/downloadZipsByArrayIds/"+result.attIds+"/作业";
+        				window.location.href="${ctx}/common/file/downloadZipsByArrayIds/"+result.attIds+"/作业";
         				return;
         			});
       			}

@@ -256,12 +256,14 @@
                             $(this).find(".title>.index").text(i+1);
                         }).length);
                     }else if($(this).hasClass("icon-pencil2")){// 编辑项
-                        var $tit = $(this).prev(".title");
-                        $(this).parent("li").hide().after(editMediaTitleFn({
-                            typeTxt: data.typeTxt,
-                            index: $tit.children(".index").text(),
-                            name: $tit.children(".name").text()
-                        }));
+                    	var fdId = $(this).parent("li").attr("data-fdid");
+                    	window.open($('#ctx').val()+"/material/materialFoward?fdId="+fdId+"&fdType="+type);
+//                        var $tit = $(this).prev(".title");
+//                        $(this).parent("li").hide().after(editMediaTitleFn({
+//                            typeTxt: data.typeTxt,
+//                            index: $tit.children(".index").text(),
+//                            name: $tit.children(".name").text()
+//                        }));
                     }
                 })
                 // 绑定保存,取消标题按钮事件
