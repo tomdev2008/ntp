@@ -123,7 +123,11 @@ public class PassThroughAjaxController {
 				}
 			}
 		} else {
-			map.put("flag", "1");//有权学习
+			if(courseParticipateAuthService.findAuthByCourseIdAndUserId(courseId,ShiroUtils.getUser().getId())){
+				map.put("flag", "1");//有权学习
+			}else{
+				map.put("flag", "0");
+			}
 		}
 		
 		return JsonUtils.writeObjectToJson(map);
@@ -136,10 +140,15 @@ public class PassThroughAjaxController {
 		String userPwd = request.getParameter("userPwd");
 		Map<String,String> map = new HashMap<String,String>();
 		CourseInfo course = courseService.get(courseId);
-		if(StringUtil.isNotBlank(userPwd)&&userPwd.equals(course.getFdPassword())){
+		boolean canS = courseParticipateAuthService.findAuthByCourseIdAndUserId(courseId,ShiroUtils.getUser().getId());
+		if(StringUtil.isNotBlank(userPwd)&&userPwd.equals(course.getFdPassword())&&canS){
 			map.put("flag", "1");
 		}else{
-			map.put("flag", "0");
+			if(userPwd.equals(course.getFdPassword())){
+				map.put("flag", "00");
+			}else{
+				map.put("flag", "01");
+			}
 		}
 		return JsonUtils.writeObjectToJson(map);
 	}
