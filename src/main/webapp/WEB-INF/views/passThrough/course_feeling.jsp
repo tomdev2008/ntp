@@ -251,6 +251,7 @@
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 
 <script type="text/javascript">	
+$(function(){
 	var moodFn = doT.template(document.getElementById("moodTemplate").text,undefined,{
         moodComment: document.getElementById("moodCommentTemplate").text
     });
@@ -532,6 +533,8 @@
 	}); 
 		  
   }
+});
+	
 
 </script>
 </body>

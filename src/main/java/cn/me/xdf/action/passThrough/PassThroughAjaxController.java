@@ -813,20 +813,4 @@ public class PassThroughAjaxController {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 }
