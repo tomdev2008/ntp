@@ -154,6 +154,13 @@ public class CourseAjaxController {
 				map.put("courseTit", course.getFdTitle());
 				map.put("subTit", course.getFdSubTitle());
 				map.put("sectionOrder", course.getIsOrder());
+				if(course.getFdPrice()!=null){
+					String fdPrice = new java.text.DecimalFormat("0.00").format(course.getFdPrice());
+					map.put("fdPrice", fdPrice);
+				}else{
+					map.put("fdPrice", "");
+				}
+				
 				if (course.getFdCategory() != null) {
 					map.put("courseType", course.getFdCategory().getFdId());
 				}
@@ -193,6 +200,8 @@ public class CourseAjaxController {
 		String keyword = request.getParameter("keyword");
 		// 获取课程分类ID
 		String courseType = request.getParameter("courseType");
+		//定价信息
+		String fdPrice = request.getParameter("fdPrice");
 		//获取当前用户信息
 		SysOrgPerson sysOrgPerson=accountService.load(ShiroUtils.getUser().getId());
 		//创建时间
@@ -206,6 +215,7 @@ public class CourseAjaxController {
 				course = new CourseInfo();
 				course.setFdTitle(courseTitle);
 				course.setFdSubTitle(subTitle);
+				course.setFdPrice(Double.parseDouble(fdPrice));
 				// 新建课程时总节数设置为0
 				course.setFdTotalPart(0);
 				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
@@ -231,6 +241,7 @@ public class CourseAjaxController {
 							.get(courseType);
 					course.setFdCategory(category);
 				}
+				course.setFdPrice(Double.parseDouble(fdPrice));
 				course = courseService.save(course);
 			}
 		} else {
