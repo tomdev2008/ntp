@@ -2,6 +2,7 @@
 <%@page import="cn.me.xdf.service.ShiroDbRealm.ShiroUser"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <%
@@ -19,7 +20,7 @@ request.setAttribute("path", path[path.length-1]);
 	        <ul class="nav" id="topNav">
 	        	
 	          <% if(user!=null){ %>
-	            <li class="itemBg"></li>
+	            <li class="itemBg hide"></li>
 	        	<li class="specific"><a href="${ctx}/course/courseIndexAll">全部课程</a></li>
 	          <%} %>
 	          <shiro:hasRole name="admin">
@@ -32,13 +33,13 @@ request.setAttribute("path", path[path.length-1]);
 	          <li><a href="${ctx}/studyTrack/getStudyTrackDirector">我是主管</a></li>
 	          </shiro:hasRole>
 	          <% if(user!=null){ %>
-	          <li class="active"><a href="${ctx}/course/courseIndex">个人首页</a></li>
+	          <li><a href="${ctx}/course/courseIndex">个人首页</a></li>
 	           <%} %>
 	        </ul>
 			<shiro:authenticated>
             <ul class="nav pull-right">
             	<li>
-                    <a class="btn-publish" href="#">
+                    <a class="btn-publish" href="${ctx}/course/add">
                         <i class="icon-book-pencil"></i>
                     </a>
                 </li>
