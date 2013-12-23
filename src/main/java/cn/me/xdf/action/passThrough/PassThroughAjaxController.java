@@ -368,7 +368,7 @@ public class PassThroughAjaxController {
 		List<CourseContent> courseContents = bamCourse.getCourseContents();
         if (courseContents != null){
         	for (CourseContent content : courseContents) {
-	            if (content.getMaterial().getFdId().equals(materialId)) {
+	            if (content.getMaterial().getFdId().equals(materialId)&&content.getCatalog().getFdId().equals(catalogId)) {
 	            	materialInfo = content.getMaterial();
 	            	break;
 	            }

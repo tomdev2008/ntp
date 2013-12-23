@@ -300,9 +300,16 @@ public class MaterialAjaxController {
 		}else{
 			info = materialService.load(fdId);
 		}
-		attMainService.deleteAttMainByModelId(info.getFdId());
-		if (StringUtil.isNotBlank(attId)) {
-			saveAtt(attId, info.getFdId());
+		AttMain main = attMainService.getByModelId(info.getFdId());
+		if(StringUtil.isNotBlank(attId)){
+			if(main==null){
+				saveAtt(attId, info.getFdId());
+			}else{
+				if(!main.getFdId().equals(attId)){
+				  attMainService.deleteAttMainByModelId(info.getFdId());
+				  saveAtt(attId, info.getFdId());
+				}
+		    }
 		}
 		info.setIsPublish("open".equals(permission)?true:false);
 		info.setIsDownload("yes".equals(isDownload)?true:false);

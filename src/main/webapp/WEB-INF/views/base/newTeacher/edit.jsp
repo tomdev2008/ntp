@@ -95,7 +95,9 @@ function changedepart(n) {
 function checkTel() {
 	var tel = $('#tel').val();
 	var node = document.getElementById("tel");
-	var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+	//var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+	//var reg = /^(\d{3}-\d{8}|\d{4}-\d{7})$/;
+	var myreg = /^(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/;
 	if (tel == null || tel == "") {
 		checkFlag.tel = false;
 		var child1 = node.parentNode;
@@ -267,7 +269,7 @@ function CountStrByte(){
         		<label for="tel" class="control-label">电话<span class="text-error">*</span></label>
         		<div class="controls">
                 	<input id="tel" type="text" class="span4" 
-                	  name="fdMobileNo" value="${person.fdMobileNo}"
+                	  name="fdWorkPhone" value="${person.fdWorkPhone}"
                 	  onblur="checkTel();" onclick="clearCss(this);" placeholder="请填写您的常用联系方式，如手机/座机等 ">
                     <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写通讯方式</span>
                 </div>

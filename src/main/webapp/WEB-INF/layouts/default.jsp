@@ -24,18 +24,18 @@
 <meta content="telephone=no" name="format-detection" />
 <title>新东方教师在线备课平台</title>
 <link rel="shortcut icon" href="${ctx}/resources/img/favicon.ico" />
-<!-- 
-<link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css" />
-<link rel="stylesheet" href="${ctx}/resources/css/global.css" />
- -->
+<!--[if lt IE 9]>
+	<script src="${ctx}/resources/js/html5.js"></script>
+<![endif]-->
 <script src="${ctx}/resources/js/jquery.js" type="text/javascript"></script>
-<script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
+
 <sitemesh:head />
 </head>
 <body>
   <%@ include file="/WEB-INF/layouts/header.jsp"%>
   <sitemesh:body />
   <%@ include file="/WEB-INF/layouts/footer.jsp"%>
+  <script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
 </body>
 </html>

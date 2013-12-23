@@ -184,7 +184,7 @@
 						  <c:if test="${main != null}">
 							<li data-fdid="${main.fdId}">
 								<a class="name"	href="#" target="_blank">${main.fdFileName}</a>
-								<input type="hidden"  name="attId" id="attId" value="">
+								<input type="hidden"  name="attId" id="attId" value="${main.fdId}">
 								<div class="item-ctrl">
 									<a class="icon-remove-blue" href="#"></a>
 								</div>
@@ -380,9 +380,9 @@ $(function(){
         break;
     case "04":
     	$("#materialIntro").html("文档简介");
+    	$("#videoText").html("");
     	$("#back").html("返回文档列表");
     	$("#typeTxt").html("文&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;档");
-    	$("#videoText").html("");
     	data_uploadIntro = "上传文档（支持DOC、EXCEL格式的文档，建议小于10G）：成功上传的文档将会显示在下面的文档列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
     	uptype='*.doc;*.docx;*.xls;*.xlsx;*.pdf;';
@@ -391,10 +391,10 @@ $(function(){
     	$("#materialIntro").html("幻灯片简介");
     	$("#back").html("返回幻灯片列表");
     	$("#typeTxt").html("幻&nbsp;&nbsp;灯&nbsp;&nbsp;片");
-    	$("#videoText").html("");
     	data_uploadIntro = "上传幻灯片（建议小于10G）：成功上传的幻灯片将会显示在下面的幻灯片列表中。";
     	$("#uploadIntro").html(data_uploadIntro);
     	uptype='*.ppt;*.pptx;*.pps;*.ppsx;';
+    	$("#videoText").html("");
         break;
   }
 	$("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){

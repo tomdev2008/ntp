@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jodd.io.FileNameUtil;
 import jodd.util.StringUtil;
 
 import cn.me.xdf.model.bam.BamCourse;
@@ -103,7 +104,8 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                 listm.put("intro", minfo.getFdDescription());//素材描述
                 listm.put("isPass", minfo.getThrough());//素材描述
                 listm.put("txt", minfo.getRichContent());//富文本内容
-                if (attMain != null) {
+                String fdLink = minfo.getFdLink();
+            	if (attMain != null) {
                     listm.put("url", attMain.getFdId());//附件id
                 }
                 listMedia.add(listm);
@@ -114,12 +116,15 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                     defaultMedia.put("intro", minfo.getFdDescription());//素材描述
                     //////////////富文本 素材的 富文本
                     defaultMedia.put("txt", minfo.getRichContent());//富文本内容
-                    if (attMain != null) {
-                        defaultMedia.put("url", attMain.getFdId());//附件id
-                    }
-                    List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(minfo.getFdId(), MaterialInfo.class.getName());
-                    if(attMains!=null){
-                    	defaultMedia.put("code", attMains.size() == 0 ? "" : attMains.get(0).getCode());
+                    if(StringUtil.isNotBlank(fdLink)){
+                    	String fd[] = fdLink.split("\\?vid=");
+                        String link = fd[1].split("&")[0];
+                        defaultMedia.put("code", getFdLinkMap(link));//播放地址
+                    }else {
+                    	if (attMain != null) {
+                            defaultMedia.put("url", attMain.getFdId());//附件id
+                            defaultMedia.put("code",  attMain.getCode());
+                        }
                     }
                     defaultMedia.put("isPass", minfo.getThrough());
                     ///////////////////////////////////
@@ -143,12 +148,15 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                     defaultMedia.put("name", minfo.getFdName());//素材名称
                     defaultMedia.put("intro", minfo.getFdDescription());//素材描述
                     defaultMedia.put("txt", minfo.getRichContent());//富文本内容
-                    if (attMain != null) {
-                        defaultMedia.put("url", attMain.getFdId());//附件id
-                    }
-                    List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(minfo.getFdId(), MaterialInfo.class.getName());
-                    if(attMains!=null){
-                    	defaultMedia.put("code", attMains.size() == 0 ? "" : attMains.get(0).getCode());
+                    if(StringUtil.isNotBlank(fdLink)){
+                    	String fd[] = fdLink.split("\\?vid=");
+                        String link = fd[1].split("&")[0];
+                        defaultMedia.put("code", getFdLinkMap(link));//播放地址
+                    }else {
+                       if (attMain != null) {
+                           defaultMedia.put("url", attMain.getFdId());//附件id
+                           defaultMedia.put("code",  attMain.getCode());
+                       }
                     }
                     defaultMedia.put("isPass", minfo.getThrough());
                     Map memap = new HashMap();
@@ -162,12 +170,15 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                     defaultMedia.put("name", minfo.getFdName());//素材名称
                     defaultMedia.put("intro", minfo.getFdDescription());//素材描述
                     defaultMedia.put("txt", minfo.getRichContent());//富文本内容
-                    if (attMain != null) {
-                        defaultMedia.put("url", attMain.getFdId());//附件id
-                    }
-                    List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(minfo.getFdId(), MaterialInfo.class.getName());
-                    if(attMains!=null){
-                    	defaultMedia.put("code", attMains.size() == 0 ? "" : attMains.get(0).getCode());
+                    if(StringUtil.isNotBlank(fdLink)){
+                    	String fd[] = fdLink.split("\\?vid=");
+                        String link = fd[1].split("&")[0];
+                        defaultMedia.put("code", getFdLinkMap(link));//播放地址
+                    }else {
+                       if (attMain != null) {
+                    	   defaultMedia.put("code", attMain.getCode());
+                           defaultMedia.put("url", attMain.getFdId());//附件id
+                       }
                     }
                     defaultMedia.put("isPass", minfo.getThrough());
                     Map memap = new HashMap();
@@ -188,6 +199,14 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
     	materialDiscussInfoService.updateMaterialDiscussInfo(Constant.MATERIALDISCUSSINFO_TYPE_PLAY, info.getFdId());
         map.put("listMedia", listMedia);
         map.put("defaultMedia", defaultMedia);
+        return map;
+    }
+    
+    private Map<String, String> getFdLinkMap(String playCode) {
+        Map<String, String> map = new HashMap<String, String>();
+        // 文档、幻灯片
+        map.put("type", "video");
+        map.put("playCode", playCode);
         return map;
     }
 

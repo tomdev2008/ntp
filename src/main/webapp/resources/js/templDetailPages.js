@@ -621,11 +621,25 @@
 				} else {
 					$("#coursePwd").attr("disabled",true);
 				}
+				if($("#authorized").attr("CHECKED")=="checked"){
+					$("#courseGroupDiv").addClass("hide");
+				}else{
+					$("#courseGroupDiv").removeClass("hide");
+				}
 			});	
 			$('#formAccessRight a[data-toggle="tab"]').bind('click', function (e) {
 				var href = 	e.target.href.split("#").pop();		
 				$("#permission").val(href);
 				$("#encrypt").find("input").not($("#passwordProtect").is(":checked") ? null : $("#coursePwd")).attr("disabled", href != "encrypt");								
+				if($(this).attr("href")=="#open"){
+					$("#courseGroupDiv").removeClass("hide");
+				}else{
+					if($("#authorized").attr("CHECKED")=="checked"){
+						$("#courseGroupDiv").addClass("hide");
+					}else{
+						$("#courseGroupDiv").removeClass("hide");
+					}
+				}
 			});
 			
 			$("#addGroup").autocomplete($("#ctx").val()+"/ajax/course/getGroupTop10",{
@@ -675,8 +689,30 @@
 					.find("a.icon-remove-blue").bind("click",function(e){
 						e.preventDefault();
 						$(this).closest("tr").remove();
+						if($("#list_group tr").length==0){
+							var d = {};
+							d.groupName="全体教职员工";
+							d.groupId="all";
+							$("#list_group").append(listGroupFn(d));
+						}
 					});
+					$("#list_group [data-fdid='all']").remove();
 					$("#addGroup").val("");
+				}
+			});
+			if($("#passLi").hasClass("active")&&$("#authorized").attr("CHECKED")=="checked"){
+				$("#courseGroupDiv").addClass("hide");
+			}else{
+				$("#courseGroupDiv").removeClass("hide");
+			}
+			$("#list_group").find("a.icon-remove-blue").bind("click",function(e){
+				e.preventDefault();
+				$(this).closest("tr").remove();
+				if($("#list_group tr").length==0){
+					var d = {};
+					d.groupName="全体教职员工";
+					d.groupId="all";
+					$("#list_group").append(listGroupFn(d));
 				}
 			});
 		}
@@ -1117,7 +1153,6 @@
 										handle: '.sortable-bar',
 										forcePlaceholderSize: true
 									});
-									$("#isperfect").val(result.baseInfo);
 									var numAll = $form.find(".index").text();	
 									updataProgressCourses(numAll);
 							  },

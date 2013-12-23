@@ -24,13 +24,13 @@
 <meta content="telephone=no" name="format-detection" />
 <title>新东方教师在线备课平台</title>
 <link rel="shortcut icon" href="${ctx}/resources/img/favicon.ico" />
-<!-- 
-<link rel="stylesheet" href="${ctx}/resources/css/bootstrap.min.css" />
- -->
+<!--[if lt IE 9]>
+	<script src="${ctx}/resources/js/html5.js"></script>
+<![endif]-->
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link rel="stylesheet" href="${ctx}/resources/css/DTotal.css" />
 <script src="${ctx}/resources/js/jquery.js" type="text/javascript"></script>
-<script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
+
 <sitemesh:head />
 </head>
 <body>
@@ -45,7 +45,8 @@
             <tags:shirourl url="${ctx}/admin/group/list" active="group" text="群组管理" iconName="icon-user"  para="${active}"></tags:shirourl>
             <tags:shirourl url="${ctx}/admin/log/list" active="log" text="日志管理" iconName="icon-user"  para="${active}"></tags:shirourl>
             <tags:shirourl url="${ctx}/admin/online/list" active="online" text="在线用户" iconName="icon-user"  para="${active}"></tags:shirourl>
-             <tags:shirourl url="${ctx}/admin/page/list" active="page" text="页面配置" iconName="icon-user"  para="${active}"></tags:shirourl>
+            <tags:shirourl url="${ctx}/admin/page/list" active="page" text="页面配置" iconName="icon-user"  para="${active}"></tags:shirourl>
+            <tags:shirourl url="${ctx}/admin/category/list" active="category" text="字典配置" iconName="icon-user"  para="${active}"></tags:shirourl>
     	</ul>
     </section>
     	 
@@ -58,6 +59,7 @@
                  <j:if test="${active=='log'}">日志管理</j:if>
                  <j:if test="${active=='online'}">在线用户</j:if>
                  <j:if test="${active=='page'}">页面配置</j:if>
+                 <j:if test="${active=='category'}">字典配置</j:if>
                 <div class="backHome">
                     <a href="${ctx}/admin/user/list"><span class="muted">返回</span>系统管理<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
                 </div>
@@ -68,5 +70,6 @@
 
 </section>
   <%@ include file="/WEB-INF/layouts/footer.jsp"%>
+  <script src="${ctx}/resources/js/bootstrap.min.js" type="text/javascript"></script>
 </body>
 </html>

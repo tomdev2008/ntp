@@ -1,5 +1,7 @@
 package cn.me.xdf.action.base;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.StringUtil;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.system.PageConfig;
@@ -28,7 +31,7 @@ public class PageController {
 	@RequestMapping(value="list")
 	public String getPageList(Model model,HttpServletRequest request){
 		model.addAttribute("active", "page");
-		model.addAttribute("ptype", "school");
+		model.addAttribute("ptype", "02");
 		return "/admin/page/list";
 	}
 	

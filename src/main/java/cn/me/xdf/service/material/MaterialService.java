@@ -346,15 +346,20 @@ public class MaterialService extends BaseService {
 	public List<Map> getMaterialsTop10Bykey(String key, String type) {
 
 		Finder finder = Finder
-				.create("select info.FDID as id , info.FDNAME as name from IXDF_NTP_MATERIAL info left join IXDF_NTP_MATERIAL_AUTH auth ");
-		finder.append(" on info.FDID=auth.FDMATERIALID ");
+				.create("select info.FDID as id , info.FDNAME as name from IXDF_NTP_MATERIAL info ");
+		if(!ShiroUtils.isAdmin()){
+			finder.append("left join IXDF_NTP_MATERIAL_AUTH auth ");
+			finder.append(" on info.FDID=auth.FDMATERIALID ");
+		}
 		finder.append(" where info.FDTYPE=:fdType and info.ISAVAILABLE='Y' and lower(info.FDNAME) like :key ");
-		finder.append(" and ( (auth.FDUSERID='" + ShiroUtils.getUser().getId()
-				+ "' and auth.ISREADER='Y' ) ");
-		finder.append("  or info.ISPUBLISH='Y' or info.FDCREATORID = :user) ");
-		finder.setParam("fdType", type);
-		finder.setParam("key", "%" + key + "%");
-		finder.setParam("user", ShiroUtils.getUser().getId());
+		if(!ShiroUtils.isAdmin()){
+			finder.append(" and ( (auth.FDUSERID='" + ShiroUtils.getUser().getId()
+					+ "' and auth.ISREADER='Y' ) ");
+			finder.append("  or info.ISPUBLISH='Y' or info.FDCREATORID = :user) ");
+			finder.setParam("user", ShiroUtils.getUser().getId());
+		}
+			finder.setParam("key", "%" + key + "%");
+			finder.setParam("fdType", type);
 		List<Map> list = (List<Map>) (getPageBySql(finder, 1, 10).getList());
 		if (list == null) {
 			return null;

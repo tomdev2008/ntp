@@ -891,7 +891,7 @@
 		  	              		$("#mediaComment").addClass("hide");
 		  	                }
 			  	                //学习通过控制
-			  	              if(mdata.code==""||mdata.code.type=="none"){
+			  	 /*              if(mdata.code==""||mdata.code.type=="none"){
 				  	            	$("#btnDoPass").attr("converStatus","");
 			  	                  }else{
 			  	                	if(mdata.code.type=="video"&&mdata.code.playCode==null){
@@ -901,7 +901,7 @@
 				  	            	 }else{
 				  	            		 $("#btnDoPass").attr("converStatus","true");
 				  	            	 }
-			  	                  }
+			  	                  } */
 			  	                
 			  	  			}
 		  	            }
@@ -1424,7 +1424,7 @@
 			  	              $("#btnDoPass").attr("disabled",mdata.isPass ? true : false);
 			  	              if(data.type!="txt"){
 				  	          		//判断素材状态  空 转换中都不允许学习
-				  	              if(mdata.code==""||mdata.code.type=="none"){
+				  	            /*   if(mdata.code==""||mdata.code.type=="none"){
 				  	            	$("#btnDoPass").attr("converStatus","");
 			  	                  }else{
 			  	                	if(mdata.code.type=="video"&&mdata.code.playCode==null){
@@ -1434,7 +1434,7 @@
 				  	            	 }else{
 				  	            		 $("#btnDoPass").attr("converStatus","true");
 				  	            	 }
-			  	                  }
+			  	                  } */
 			  	              }else{
 			  	            	 $("#btnDoPass").attr("converStatus","true");
 			  	            	$("#btnDownload").addClass("hide");

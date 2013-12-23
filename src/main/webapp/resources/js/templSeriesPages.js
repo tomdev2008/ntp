@@ -375,7 +375,6 @@
 										handle: '.sortable-bar',
 										forcePlaceholderSize: true
 									});
-									$("#isperfect").val(result.baseInfo);
 									updataProgressCourses($sections.children(".chapter").length);
 							  },
 						});

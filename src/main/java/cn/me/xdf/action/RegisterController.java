@@ -194,7 +194,7 @@ public class RegisterController {
         person.setFdBirthDay(sysOrgPerson.getFdBirthDay());
         person.setFdBloodType(sysOrgPerson.getFdBloodType());
         person.setFdSex(sysOrgPerson.getFdSex());
-        person.setFdMobileNo(sysOrgPerson.getFdMobileNo());
+        person.setFdWorkPhone(sysOrgPerson.getFdWorkPhone());
         person.setSelfIntroduction(sysOrgPerson.getSelfIntroduction());
         if(person.getFdIsEmp().equals("0")){
         	SysOrgElement sysOrgElement = SysOrgDepartService.getSysOrgElementById(sysOrgPerson.getDeptId());
