@@ -734,9 +734,9 @@ public class SeriesAjaxContrller {
 				.create(" from SeriesInfo s where s.isPublish = :isPublish and s.isAvailable=:isAvailable");
 		finder.setParam("isPublish", true);
 		finder.setParam("isAvailable", true);
-		Pagination pagination = seriesCoursesService.getPage(finder, pageNo, 3);
+		Pagination pagination = seriesCoursesService.getPage(finder, pageNo, 30);
 		if (pagination.getTotalPage() >= pageNo) {
-			if (pagination.getList().size() == 3) {
+			if (pagination.getList().size() == 30) {
 				returnMap.put("hasMore", true);
 			} else {
 				returnMap.put("hasMore", false);

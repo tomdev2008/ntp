@@ -956,10 +956,10 @@ public class CourseAjaxController {
 			finder.append(" and course.fdcategoryid=:type " );
 			finder.setParam("type", type);
 		}		
-		Pagination pag=	courseService.getPageBySql(finder, pageNo, 3);
+		Pagination pag=	courseService.getPageBySql(finder, pageNo, 30);
 		List<Map> courseInfos =  (List<Map>) pag.getList();
 		if(pag.getTotalPage()>=pageNo){
-			if(pag.getList().size()==3){
+			if(pag.getList().size()==30){
 				returnMap.put("hasMore", true);
 			}else{
 				returnMap.put("hasMore", false);
@@ -1070,10 +1070,10 @@ public class CourseAjaxController {
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 			finder.setParam("type", type);
 		}		
-		Pagination pag=	courseService.getPageBySql(finder, pageNo, 3);
+		Pagination pag=	courseService.getPageBySql(finder, pageNo, 30);
 		List<Map> courseInfos =  (List<Map>) pag.getList();
 		if(pag.getTotalPage()>=pageNo){
-			if(pag.getList().size()==3){
+			if(pag.getList().size()==30){
 				returnMap.put("hasMore", true);
 			}else{
 				returnMap.put("hasMore", false);
