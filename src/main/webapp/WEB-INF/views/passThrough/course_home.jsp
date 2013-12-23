@@ -371,7 +371,7 @@ $("#verifyPwd").bind("click",function(){
 	}); 
 	
 });
-if(!$("#studyBegin").attr("disabled")=="disabled"){
+if($("#studyBegin").attr("disabled")!="disabled"){
 	$("#studyBegin").bind("click",function(){
 		$("#studyBeginForm").trigger("submit");
 	});	
