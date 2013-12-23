@@ -39,10 +39,20 @@
 			<input type="hidden" id="coursekey" name="coursekey">
 			<input type="hidden" id="allFlag" >
 			<input type="hidden"  id="cousetype" value="${param.fdType}">
-            <input type="hidden" id="cachorder"/>
+            <input type="hidden" id="cachorder" value="${param.order}"/>
 	    </section>
 	</section>
 </section>
+<script type="text/javascript">
+//导出列表   
+function exportData(){
+	var fdTitle = $("#serach").val();
+	var order = $("#cachorder").val();
+	jalert("您确定要导出全部数据吗？",function(){
+		  window.location.href="${ctx}/common/exp/getExpAllCourseAuth?order="+order+"&fdTitle="+fdTitle;
+	}); 
+}
+</script>
 <script type="text/javascript">	
 function pressEnter(){//回车事件
 	if(event.keyCode==13){

@@ -1,7 +1,9 @@
 package cn.me.xdf.service.course;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +20,14 @@ import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseAuth;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.course.CourseParticipateAuth;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.organization.User;
 import cn.me.xdf.service.BaseService;
 import cn.me.xdf.utils.ShiroUtils;
+import cn.me.xdf.view.model.VCourseAuth;
+import cn.me.xdf.view.model.VCourseAuthList;
+import cn.me.xdf.view.model.VPersonAuth;
 /**
  * 
  * 课程service
@@ -43,6 +49,66 @@ public class CourseService  extends BaseService{
 	@Override
 	public  Class<CourseInfo> getEntityClass() {
 		return CourseInfo.class;
+	}
+	
+	public List<VCourseAuthList> findAllCourseInfoAuth(List list){
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
+		List<VCourseAuthList> authLsit = new ArrayList<VCourseAuthList>();
+		for (Object obj : list) {
+			VCourseAuthList auth = new VCourseAuthList();
+			Map map = (Map) obj;
+			CourseInfo info = this.get((String)map.get("FDID"));
+			auth.setFdTitle(info.getFdTitle());
+			List<CourseParticipateAuth> participateAuth = 
+					courseParticipateAuthService.findByProperty("course.fdId", info.getFdId());
+			List<VPersonAuth> teacher = new ArrayList<VPersonAuth>();
+			for (CourseParticipateAuth pAuth : participateAuth) {
+				VPersonAuth teacherAuth = new VPersonAuth();
+				teacherAuth.setFdName(pAuth.getFdUser().getFdName());
+				teacherAuth.setFdDept(pAuth.getFdUser().getDeptName());
+				teacherAuth.setFdCreateTime(sdf.format(pAuth.getFdCreateTime()));
+				
+				if(pAuth.getFdTeacher()!=null){
+					teacherAuth.setAdviserName(pAuth.getFdTeacher().getFdName());
+					teacherAuth.setAdviserDept(pAuth.getFdTeacher().getDeptName());
+				}else{
+					teacherAuth.setAdviserName("无导师");
+					teacherAuth.setAdviserDept("");
+				}
+				teacher.add(teacherAuth);
+			}
+			auth.setPersonAuth(teacher);
+			authLsit.add(auth);
+		}
+		return authLsit;
+	}
+	/**
+	 * 封装导出授权列表的list
+	 * @param pagination
+	 * @return
+	 */
+	public List<VCourseAuth> findCourseInfoAuth(List list){
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
+		List<VCourseAuth> authLsit = new ArrayList<VCourseAuth>();
+		VCourseAuth auth = new VCourseAuth();
+		for(int i=0;i<list.size();i++){
+			Object [] obj=(Object[]) list.get(i);
+			CourseParticipateAuth cpa =(CourseParticipateAuth)obj[0] ;
+			SysOrgPerson teacher = cpa.getFdUser();
+		    auth.setTeacherDept(teacher.getDeptName());
+		    auth.setTeacherName(teacher.getFdName());
+		    SysOrgPerson adviser = cpa.getFdTeacher();
+		    if(adviser!=null){
+				auth.setAdviserName(adviser.getFdName());
+				auth.setAdviserDept(adviser.getDeptName());	
+		    }else{
+		    	auth.setAdviserName("无导师");
+				auth.setAdviserDept("");	
+		    }
+			auth.setFdCreateTime(sdf.format(cpa.getFdCreateTime()));
+			authLsit.add(auth);
+		}
+		return authLsit;
 	}
 	
 	/**
