@@ -87,8 +87,9 @@ public class CategoryContorller {
 			courseCategoryService.delete(ids);
 		}else if(StringUtils.isNotBlank(selectAll)){
 			StringBuffer sql = new StringBuffer(" delete ixdf_ntp_course_category c  ");
+			sql.append(" where c.fdId not in (select distinct fdCategoryId from ixdf_ntp_course ) ");
 			if (StringUtils.isNotBlank(param)) {
-				sql.append(" where c.fdName like '%"+param+"%'");
+				sql.append(" and c.fdName like '%"+param+"%'");
 			}
 			
 			courseCategoryService.executeSql(sql.toString());
@@ -100,7 +101,9 @@ public class CategoryContorller {
 	@RequestMapping(value = "delete/{id}")
 	public String deleteById(RedirectAttributes redirectAttributes,
 			@PathVariable("id") String id) {
-		courseCategoryService.delete(id);
+		if(!courseCategoryService.isUsedByCourse(id)){
+			courseCategoryService.delete(id);
+		}
 		return "redirect:/admin/category/list";
 	}
 }

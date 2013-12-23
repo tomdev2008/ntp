@@ -1,5 +1,6 @@
 package cn.me.xdf.service.course;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -36,5 +37,28 @@ public class CourseCategoryService extends BaseService{
 		Finder finder = Finder
 				.create("from CourseCategory category ");		
 		return  super.find(finder);
+	}
+	
+	/**
+	 * 是否被课程使用
+	 * @param fdId 分类ID
+	 * @return boolean
+	 */
+	public boolean isUsedByCourse(String fdId){
+		//根据类别ID查找是否有课程引用
+		Finder finder = Finder
+						.create("from CourseInfo c where c.fdCategory.fdId =:fdId ").setParam("fdId", fdId);	
+		return super.hasValue(finder);
+	}
+	
+	@Override
+	public void delete(Serializable[] ids) {
+		if (ids == null)
+			return;
+		for (Serializable id : ids) {
+			if(!isUsedByCourse(id.toString())){
+				delete(getEntityClass(), id);
+			}
+		}
 	}
 }
