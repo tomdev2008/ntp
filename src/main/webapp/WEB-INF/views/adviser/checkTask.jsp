@@ -101,7 +101,9 @@
 <section class="container">	
 		<div class="clearfix mt20">
 	        <div class="pull-left w760">
-	        
+	           <div class="page-header">
+                    <span class="muted">我正在看：</span> <span id="nowSee">未批改的作业</span>
+                </div>
                 <div class="page-body">
 
                     <section class="section box-control">
@@ -221,8 +223,14 @@ var pageendFn= doT.template(document.getElementById("pageEndTemplate").text);
         $("#navTabs>li>a").on("click",function(e){
             e.preventDefault();
             $(this).parent().addClass("active").siblings().removeClass("active");
-            initlistTeacher($(this).attr("href").slice(1));
-            loadList($(this).attr("href").slice(1));
+            var type = $(this).attr("href").slice(1);
+            initlistTeacher(type);
+            loadList(type);
+            if(type=="checked"){
+            	$("#nowSee").html("已批改的作业");
+            }else{
+            	$("#nowSee").html("未批改的作业");
+            }
         });
         
         function initlistTeacher(fdType){
