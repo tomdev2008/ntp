@@ -1497,7 +1497,14 @@
 		  	            
 		  			  }
                 }); 
-
+                 $("#textComment").bind("keydown",function(){
+                 	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+                 	if (keyCode == 13) {
+                 		submitFormComment($("#formMakeComments"));
+                 		return false;
+                 	}
+                 }); 
+                        
             });
 
             $mediaToolbar.find(".btn-group>.btn").tooltip();
