@@ -90,11 +90,11 @@ public class PersonLdapInService extends LdapInService {
                 updateByNamedQuery("person.saveElement", map);
                 insertSize++;
             } else {
-                log.info("开始初始化人员表-Update");
-                map.put("FDID",lists.get(0).get("FDID"));
-                updateByNamedQuery("person.updateElement", map);
-                updateByNamedQuery("updateElement", map);
-                updateSize++;
+               // log.info("开始初始化人员表-Update");
+               // map.put("FDID",lists.get(0).get("FDID"));
+               // updateByNamedQuery("person.updateElement", map);
+               // updateByNamedQuery("updateElement", map);
+               // updateSize++;
             }
         }
 
