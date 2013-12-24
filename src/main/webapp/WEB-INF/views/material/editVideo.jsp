@@ -52,8 +52,8 @@
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
                     <c:if test="${materialInfo.fdId!=null}">
-                    <button class="btn btn-large btn-primary" type="button" onclick="downloadMater();">下载</button>
-                    <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
+                     <button class="btn btn-large btn-primary" type="button" onclick="downloadMater();">下载</button>
+                     <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
                     </c:if> 
                </div>
 	        </div>
@@ -199,12 +199,12 @@
                         	
                         <c:if test="${materialInfo.fdLink==null||materialInfo.fdLink==''}">
 								<c:choose>
-									<c:when test="${main.flag==1&&main.fdFileType=='01'}">
+									<c:when test="${main.fileUrl!=null&&main.fileUrl!=''&&main.fdFileType=='01'}">
 										<script type="text/javascript"
 											src="${main.fileUrl}&width=750&height=510"></script>
 									</c:when>
 									<c:when
-										test="${main.flag==1&&(main.fdFileType=='04'||main.fdFileType=='05')}">
+										test="${main.fileUrl!=null&&main.fileUrl!=''&&(main.fdFileType=='04'||main.fdFileType=='05')}">
 										<iframe width="100%" height="510" id="iframe_ppt"
 											src="${main.fileUrl}" frameBorder="0" scrolling="no"></iframe>
 									</c:when>
@@ -351,10 +351,12 @@ function deleteMaterial(){
 //下载素材
 function downloadMater(){
   var attId = $("#fdattId").val();
-  if(attId!=null&&attId!=""){
+  var main = '${main.fileNetId}';
+  alert(main);
+  if(attId!=null&&attId!="" && main!=null&&main!=""){
 	  window.location.href="${ctx}/common/file/download/"+attId;
   } else {
-	  jalert("您好！该视频没有对应附件");
+	  jalert("您好！该素材没有对应附件");
   } 
 }
 </script>
@@ -593,13 +595,13 @@ $(function(){
 		matchContains:true ,
 		max: 10,
 		scroll: false,
-		width:688
+		width:748
     }).result(function(e,item){
 		var flag = true;
 		$("#addUser").next(".help-block").remove();
 		$("#list_user>tr").each(function(){
 			if($(this).attr("data-fdid")==item.id){
-				$("#addUser").after('<span class="help-block">不能添加重复的用户！</span>');;
+				$("#addUser").after('<label class="error" for="addKey">不能添加重复的关键词!');
 				$("#addUser").val("");
 				flag = false;
 			}

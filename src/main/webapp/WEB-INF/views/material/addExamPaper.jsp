@@ -580,13 +580,13 @@ $(function(){
 		matchContains:true ,
 		max: 10,
 		scroll: false,
-		width:688
+		width:748
     }).result(function(e,item){
 		var flag = true;
 		$("#addUser").next(".help-block").remove();
 		$("#list_user>tr").each(function(){
 			if($(this).attr("data-fdid")==item.id){
-				$("#addUser").after('<span class="help-block">不能添加重复的用户！</span>');;
+				$("#addUser").after('<label class="error" for="addKey">不能添加重复的关键词!');;
 				$("#addUser").val("");
 				flag = false;
 			}
