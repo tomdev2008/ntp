@@ -8,7 +8,7 @@
 					     <div class="hd">
 						<div class="btn-toolbar">
 							
-							<a class="btn" style="padding-left: 60px;padding-right: 60px;" href="#">导出列表</a>
+							<a class="btn" style="padding-left: 60px;padding-right: 60px;" onclick="exportData();">导出列表</a>
 							<form class="toolbar-search" onkeydown="pressEnter();">
 								<input type="text" id="serach" class="search" placeholder="搜索课程"
 								   onblur="" onkeydown="showSearch();" onkeyup="showSearch();" > 
@@ -96,7 +96,7 @@
 				
 				    <span class="title">
 					<c:if test="${bean.FDTITLE!=null && bean.FDTITLE!=''}">
-						${bean.FDTITLE}
+						<tags:title size="35" value="${bean.FDTITLE}"></tags:title>
 					</c:if>
 					<c:if test="${bean.FDTITLE==null || bean.FDTITLE==''}">
 						未命名

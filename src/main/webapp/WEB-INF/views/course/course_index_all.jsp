@@ -38,7 +38,15 @@
 							{{=item.name}}
 						{{?}}
 						</h3>
-                        <p>{{=item.issuer}}</p>
+                        <p>{{?item.issuer==null}}
+							不详
+						{{??}}
+							{{?item.issuer.length>17}}
+								{{=item.issuer.substring(0,17)}}...
+							{{??}}
+								{{=item.issuer}} 
+							{{?}}
+						{{?}}</p>
 						{{?it.type == "single"}}
                         <p class="rating">
                                     <span class="rating-view">

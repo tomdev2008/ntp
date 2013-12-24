@@ -95,7 +95,7 @@
                                      </span>
                                       <b class="text-warning">
                                        <c:if test="${score.fdAverage==null}">
-                                          0
+                                          0.0
                                        </c:if>
                                        <c:if test="${score.fdAverage!=null}">
                                           ${score.fdAverage}

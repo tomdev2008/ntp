@@ -45,7 +45,7 @@
 	        </div>
             <div class="page-body editingBody">
                 <form action="#" id="formEditDTotal" class="form-horizontal" onkeyup="pressEnter();" method="post">
-                    <input type="hidden" id="roleName" name="roleName" >
+                    <input type="hidden" id="roleName" name="roleName" value='group'>
                     <section class="section">
                         <label>角色类型</label>
                         <ul class="nav nav-pills">

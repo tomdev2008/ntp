@@ -55,6 +55,10 @@ public class CourseInfo extends IdEntity implements IAttMain{
 	private String fdSubTitle;
 	
 	/**
+	 * 课程定价
+	 */
+	private Double fdPrice;
+	/**
 	 * 课程分类
 	 */
 	private CourseCategory fdCategory;
@@ -147,7 +151,7 @@ public class CourseInfo extends IdEntity implements IAttMain{
 	public String getFdTitle() {
 		return fdTitle;
 	}
-
+	
 	public void setFdTitle(String fdTitle) {
 		this.fdTitle = fdTitle;
 	}
@@ -314,6 +318,14 @@ public class CourseInfo extends IdEntity implements IAttMain{
 
 	public void setFdStatus(String fdStatus) {
 		this.fdStatus = fdStatus;
+	}
+
+	public Double getFdPrice() {
+		return fdPrice;
+	}
+
+	public void setFdPrice(Double fdPrice) {
+		this.fdPrice = fdPrice;
 	}
 	
 }

@@ -21,8 +21,10 @@ import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
+import cn.me.xdf.model.organization.RoleEnum;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.UserRoleService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
 import cn.me.xdf.service.course.CourseService;
@@ -43,6 +45,10 @@ import cn.me.xdf.utils.ShiroUtils;
 @RequestMapping(value = "/ajax/studyTrack")
 @Scope("request")
 public class StudyTrackAjaxController {
+	
+	
+	@Autowired
+	private UserRoleService userRoleService;
 	
 	@Autowired
 	private StudyTrackService studyTrackService;
@@ -100,6 +106,7 @@ public class StudyTrackAjaxController {
 			user.put("mail", person.getFdEmail());
 			user.put("link", "#");
 			map.put("user", user);
+			map.put("canDel", !userRoleService.isEmptyPerson(ShiroUtils.getUser().getId(),RoleEnum.admin));
 			map.put("courseName", ((CourseInfo)courseService.get((String)bamCourse.get("COURSEID"))).getFdTitle());
 			String guideTeachName;
 			if(StringUtil.isEmpty((String)bamCourse.get("GUIID"))){
@@ -199,4 +206,17 @@ public class StudyTrackAjaxController {
 		return JsonUtils.writeObjectToJson(map);
 	}
 
+	
+	/**
+	 * 删除备课信息
+	 * @param request
+	 */
+	@RequestMapping(value = "deleBam")
+	@ResponseBody
+	public String deleBam(HttpServletRequest request) {
+		String bamId=request.getParameter("bamId");
+		String userId=request.getParameter("userId");
+		studyTrackService.deleteBam(bamId);
+		return "";
+	}
 }

@@ -11,6 +11,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jodd.util.StringUtil;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,14 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.me.xdf.common.download.DownloadHelper;
 import cn.me.xdf.common.page.Pagination;
+import cn.me.xdf.common.page.SimplePage;
 import cn.me.xdf.common.utils.Zipper;
 import cn.me.xdf.common.utils.array.ArrayUtils;
 import cn.me.xdf.common.utils.array.SortType;
 import cn.me.xdf.common.utils.excel.AbsExportExcel;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
-import cn.me.xdf.model.log.LogLogin;
-import cn.me.xdf.model.log.LogLogout;
+import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.ExamOpinion;
 import cn.me.xdf.model.material.ExamQuestion;
 import cn.me.xdf.model.material.MaterialAuth;
@@ -40,6 +42,7 @@ import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.adviser.AdviserService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.log.LogAppService;
 import cn.me.xdf.service.log.LogLoginService;
@@ -106,11 +109,15 @@ public class ExpController {
     @Autowired
     private LogAppService logAppService;
     
+    @Autowired
+	private CourseParticipateAuthService courseParticipateAuthService;
+    
     public SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
     
     @RequestMapping(value = "/getExpExamPaper/{id}")
     public String getExpExamPaper(@PathVariable("id") String id,
     		HttpServletRequest request,HttpServletResponse response){
+    	Date date = new Date();
     	MaterialInfo info = materialService.get(id);
     	List<VExamPaperData> examPaperList = new ArrayList<VExamPaperData>();	
     	VExamPaperData data = new VExamPaperData();
@@ -174,9 +181,9 @@ public class ExpController {
     	}
     	examPaperList.add(data);
     	if(info.getIsPublish()){
-    		exportExcel(examPaperList, "examPaperDetail.xls", response,"examPaperDetail.xls");
+    		exportExcel(examPaperList, "examPaperDetail.xls", response,"素材测试-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
     	}else{
-    		exportExcel(examPaperList, "examPaperEncrypt.xls", response,"examPaperDetail.xls");
+    		exportExcel(examPaperList, "examPaperEncrypt.xls", response,"素材测试-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
     	}
     	
     	return null;
@@ -191,6 +198,7 @@ public class ExpController {
     public String getExpTaskPaper(@PathVariable("id") String id,
     		HttpServletRequest request,HttpServletResponse response){
     	MaterialInfo info = materialService.get(id);
+    	Date date = new Date();
     	List<VTaskPaperData> studyTrackList = new ArrayList<VTaskPaperData>();	
     	VTaskPaperData data = new VTaskPaperData();
     	data.setFdAuthor(info.getFdAuthor());//作者
@@ -240,13 +248,88 @@ public class ExpController {
     	}
     	studyTrackList.add(data);
     	if(info.getIsPublish()){
-    		exportExcel(studyTrackList, "taskPaperDetail.xls", response,"taskPaperEncrypt.xls");
+    		exportExcel(studyTrackList, "taskPaperDetail.xls", response,"素材作业包-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
     	}else{
-    		exportExcel(studyTrackList, "taskPaperEncrypt.xls", response,"taskPaperEncrypt.xls");
+    		exportExcel(studyTrackList, "taskPaperEncrypt.xls", response,"素材作业包-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
     	}
     	return null;
     }
-	
+    @RequestMapping(value = "/getExpAllCourseAuth")
+	public String getExpAllCourseAuth(HttpServletRequest request,HttpServletResponse response){
+    	Date date = new Date();
+    	String fdTitle = request.getParameter("fdTitle");
+    	String order = request.getParameter("order");
+    	Pagination page = courseService.findCourseInfosByName(fdTitle,
+    			Integer.toString(1000), order, Constant.COUSER_AUTH_MANAGE);
+    	if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
+			List list = courseService.findAllCourseInfoAuth(page.getList());
+			exportExcel(list, "courseAllAuth.xls", response,"全部课程授权统计报表-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
+		}else if(page.getTotalPage()>1){
+			String [] attMainIds= new String[page.getTotalPage()];
+			for(int i=1;i<=page.getTotalPage();i++){
+				Pagination pageZip = courseService.findCourseInfosByName(fdTitle,
+		    			Integer.toString(500), order, Constant.COUSER_AUTH_MANAGE);
+				AttMain attMain = AbsExportExcel.exportExcels(courseService.findAllCourseInfoAuth(pageZip.getList()), "courseAllAuth.xls");
+				attMainService.save(attMain);
+				attMainIds[i-1] = attMain.getFdId();
+			}
+			try {
+				downloadZipsByArrayIds(attMainIds, "courseAllAuth.xls", request, response);
+			} catch (UnsupportedEncodingException e) {
+				  log.error("export excleZip error!", e);
+			}
+			//删除下载后的无用附件
+			attMainService.deleteAttMainByIds(attMainIds);
+		}
+    	return null;
+    }
+    /**
+     * 导出授权列表
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getExpCourseAuth")
+	public String getExpCourseAuth(HttpServletRequest request,HttpServletResponse response){
+    	Date date = new Date();
+    	String currentPage = request.getParameter("currentPage");
+    	String order = request.getParameter("order");
+    	String courseId = request.getParameter("courseId");
+    	String isAll = request.getParameter("isAll");
+    	CourseInfo info = courseService.get(courseId);
+    	List list = new ArrayList();
+    	if(StringUtil.isBlank(isAll)){
+    		Pagination page = courseParticipateAuthService
+        			.findSingleCourseAuthList(courseId, order, Integer.parseInt(currentPage),SimplePage.DEF_COUNT, null);
+    		list = courseService.findCourseInfoAuth(page.getList());
+    		exportExcel(list, "courseAuth.xls", response,"课程授权统计报表-"+info.getFdTitle()+"-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
+    	}else{
+    		Pagination page = courseParticipateAuthService
+        			.findSingleCourseAuthList(courseId, order, 5000,SimplePage.DEF_COUNT, null);
+    		if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
+    			list = courseService.findCourseInfoAuth(page.getList());
+    			exportExcel(list, "courseAuth.xls",response, "课程授权统计报表-"+info.getFdTitle()+"-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
+    		}else if(page.getTotalPage()>1){
+    			String [] attMainIds= new String[page.getTotalPage()];
+				for(int i=1;i<=page.getTotalPage();i++){
+					Pagination pageZip = courseParticipateAuthService
+		        			.findSingleCourseAuthList(courseId, order, 5000,SimplePage.DEF_COUNT, null);
+					AttMain attMain = AbsExportExcel.exportExcels(courseService.findCourseInfoAuth(pageZip.getList()), "courseAuth.xls");
+					attMainService.save(attMain);
+					attMainIds[i-1] = attMain.getFdId();
+				}
+				try {
+					downloadZipsByArrayIds(attMainIds, "courseAuth.xls", request, response);
+				} catch (UnsupportedEncodingException e) {
+					  log.error("export excleZip error!", e);
+				}
+				//删除下载后的无用附件
+				attMainService.deleteAttMainByIds(attMainIds);
+    		}
+    	}
+    	
+    	return null;
+	}
     /**
 	 * 导出学习跟踪excel方法
 	 * 
@@ -304,20 +387,26 @@ public class ExpController {
 		String fdType = request.getParameter("fdType");
 		String fdName = request.getParameter("fdName");
 		String order = request.getParameter("order");
+		String name = "";
+		if(fdType.equals("checked")){
+			name = "已批改";
+		}else{
+			name = "未批改";
+		}
 		if("noPage".equals(isAll)){
 			String [] modelIds = request.getParameter("modelIds").split(",");
 			List<VCheckTaskData> adviserList = adviserService.findCheckDataList(modelIds, fdType);
-			AbsExportExcel.exportExcel(adviserList, fdType+"Data.xls", response,fdType+"Data.xls");
+			AbsExportExcel.exportExcel(adviserList, fdType+"Data.xls", response,"我审批的作业统计表-"+name+".xls");
 		} else {
 			Pagination page = adviserService.findAdivserCouserList(fdType, 1, 5000, fdName, order);
 			if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
 				List<VCheckTaskData> adviserList = adviserService.findCheckDataByPageList(page.getList());
-				AbsExportExcel.exportExcel(adviserList, fdType+"Data.xls", response,fdType+"Data.xls");
+				AbsExportExcel.exportExcel(adviserList, fdType+"Data.xls", response,"我审批的作业统计表-"+name+".xls");
 			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
 				String [] attMainIds= new String[page.getTotalPage()];
 				for(int i=1;i<=page.getTotalPage();i++){
 					Pagination pageZip = adviserService.findAdivserCouserList(fdType, 1, 5000, fdName, order);
-					AttMain attMain = AbsExportExcel.exportExcels(adviserService.findCheckDataByPageList(pageZip.getList()), fdType+"Data.xls");
+					AttMain attMain = AbsExportExcel.exportExcels(adviserService.findCheckDataByPageList(pageZip.getList()), "我审批的作业统计表-"+name+".xls");
 					attMainService.save(attMain);
 					attMainIds[i-1] = attMain.getFdId();
 				}
@@ -450,21 +539,22 @@ public class ExpController {
 		String fdType = request.getParameter("fdType");
 		String fdName = request.getParameter("fdName");
 		String order = request.getParameter("order");
+		Date date = new Date();
 		if("noPage".equals(isAll)){
 			String [] modelIds = request.getParameter("modelIds").split(",");
 			List<VMaterialData> materialList = materialService.findExportMaterialList(modelIds, fdType);
-			AbsExportExcel.exportExcel(materialList, "materialData.xls", response,"materialData.xls");
+			AbsExportExcel.exportExcel(materialList, "materialData.xls", response,"课程素材库-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
 		}else{
 			Pagination page = materialService.findMaterialList(fdType, 1, 5000, fdName, order);
 			if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
 				List<VMaterialData> materialList = materialService.findExportMaterialByPageList(page.getList());
-				AbsExportExcel.exportExcel(materialList, "materialData.xls", response,"materialData.xls");
+				AbsExportExcel.exportExcel(materialList, "materialData.xls", response,"课程素材库-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
 			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
 				String [] attMainIds= new String[page.getTotalPage()];
 				for(int i=1;i<=page.getTotalPage();i++){
 					Pagination pageZip = materialService.findMaterialList(fdType, 1, 5000, fdName, order);
 					AttMain attMain = AbsExportExcel.exportExcels(
-							materialService.findExportMaterialByPageList(pageZip.getList()), "materialData.xls");
+							materialService.findExportMaterialByPageList(pageZip.getList()), "课程素材库-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
 					attMainService.save(attMain);
 					attMainIds[i-1] = attMain.getFdId();
 				}

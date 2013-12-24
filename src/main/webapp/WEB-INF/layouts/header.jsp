@@ -38,11 +38,13 @@ request.setAttribute("path", path[path.length-1]);
 	        </ul>
 			<shiro:authenticated>
             <ul class="nav pull-right">
+            	<shiro:hasRole name="group">
             	<li>
                     <a class="btn-publish" href="${ctx}/course/add">
                         <i class="icon-book-pencil"></i>
                     </a>
                 </li>
+                </shiro:hasRole>
               <li class="dropdown">
               	<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                 	<span class="top-face" id="notify" >

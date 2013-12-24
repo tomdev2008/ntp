@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jodd.util.StringUtil;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.me.xdf.common.hibernate4.Finder;
+import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.common.utils.array.ArrayUtils;
 import cn.me.xdf.common.utils.array.SortType;
@@ -19,15 +21,23 @@ import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
+import cn.me.xdf.model.course.Visitor;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
+import cn.me.xdf.model.message.MessageReply;
 import cn.me.xdf.model.organization.SysOrgPerson;
+import cn.me.xdf.model.process.AnswerRecord;
 import cn.me.xdf.model.process.SourceNote;
+import cn.me.xdf.model.process.TaskRecord;
 import cn.me.xdf.service.AccountService;
+import cn.me.xdf.service.SimpleService;
 import cn.me.xdf.service.bam.BamCourseService;
+import cn.me.xdf.service.bam.process.AnswerRecordService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
-import cn.me.xdf.service.base.AttMainService;
+import cn.me.xdf.service.bam.process.TaskRecordService;
 import cn.me.xdf.service.course.CourseService;
+import cn.me.xdf.service.course.VisitorService;
+import cn.me.xdf.service.message.MessageReplyService;
 import cn.me.xdf.service.message.MessageService;
 import cn.me.xdf.utils.ShiroUtils;
 import cn.me.xdf.view.model.VStudyTrack;
@@ -41,7 +51,7 @@ import cn.me.xdf.view.model.VStudyTrack;
  */
 @Service
 @Transactional(readOnly = true)
-public class StudyTrackService {
+public class StudyTrackService extends SimpleService  {
 	
 	@Autowired
 	private BamCourseService bamCourseService;
@@ -53,12 +63,22 @@ public class StudyTrackService {
 	private MessageService messageService;
 	
 	@Autowired
+	private MessageReplyService messageReplyService;
+	
+	@Autowired
 	private CourseService courseService;
 	
 	@Autowired
 	private SourceNodeService sourceNodeService;
 
+	@Autowired
+	private VisitorService visitorService;
 	
+	@Autowired
+	private TaskRecordService taskRecordService;
+	
+	@Autowired
+	private AnswerRecordService answerRecordService;
 	/**
 	 * 得到学习跟踪分页列表
 	 * 
@@ -417,4 +437,47 @@ public class StudyTrackService {
 		}
 		return studyTrackList;
 	}
+	
+	public void deleteBam(String bamId){
+		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
+		
+		//删除消息回复 
+		List<Message> messages = messageService.findByCriteria(Message.class, Value.eq("fdModelName", BamCourse.class.getName()),Value.eq("fdModelId",bamCourse.getFdId()));
+		for (Message message : messages) {
+			List<MessageReply> messageReplies = messageReplyService.findByProperty("message.fdId", message.getFdId());
+			for (MessageReply messageReply2 : messageReplies) {
+				messageReplyService.delete(messageReply2.getFdId());
+			}
+			//删除消息
+			messageService.delete(message.getFdId());
+		}
+		List<SourceNote> list = sourceNodeService.findByCriteria(SourceNote.class, Value.eq("fdCourseId", bamCourse.getCourseId()),Value.eq("fdUserId",bamCourse.getPreTeachId()));
+		//删除SourceNote两个子表
+		for (SourceNote sourceNote : list) {
+//			Set<AnswerRecord> answerRecords = sourceNote.getAnswerRecords();
+//			for (AnswerRecord answerRecord : answerRecords) {
+//				answerRecordService.deleteEntity(answerRecord);
+//			}
+//			Set<TaskRecord> taskRecords = sourceNote.getTaskRecords();
+//			for (TaskRecord taskRecord : taskRecords) {
+//				taskRecordService.deleteEntity(taskRecord);
+//			}
+			sourceNote.setAnswerRecords(null);
+			sourceNote.setTaskRecords(null);
+			sourceNodeService.save(sourceNote);
+		}
+		//删除SourceNote
+		for (SourceNote sourceNote : list) {
+			sourceNodeService.deleteEntity(sourceNote);
+		}
+		//删除最近访客
+		List<Visitor> visitors = visitorService.findByProperty("bamCourse.fdId", bamCourse.getFdId());
+		for (Visitor visitor : visitors) {
+			visitorService.delete(visitor.getFdId());
+		}
+		//删除bam
+		bamCourseService.delete(BamCourse.class, bamCourse.getFdId());
+		
+	}
+	
 }

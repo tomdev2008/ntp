@@ -15,6 +15,9 @@
                     </a>
                     <a href="#" class="send msg" ><i class="icon-msg"></i>发私信</a>
                     <a href="mailto:{{=item.user.mail}}" class="send" ><i class="icon-envelope"></i>发邮件</a>
+					{{?item.canDel}}
+					<a href="javascript:void(0)" class="send removeA" bamId="{{=item.id}}" userId="{{=item.user.userId}}" ><i class="icon-envelope"></i>删&nbsp;&nbsp;&nbsp;除</a>
+					{{?}}
                 </div>
                 <div class="media-body">
                     <div class="media-heading">
@@ -130,6 +133,7 @@
     <div class="pages" id="pagebottom">
     </div>
 </div>
+<script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script type="text/javascript">
 refreshTrackList("",1,10,"time");
 $("#resetSelect").bind("click",function(){
@@ -250,6 +254,29 @@ function refreshTrackList(type,pageNo,pageSize,order){
 	        }
 	    }
 	});	
+	
+	$(".removeA").each(function(i){
+		var $this = $(this);
+		$this.bind("click",function(){
+			jalert("确定删除该学习记录吗？",function(){
+				$.ajax({
+					url : "${ctx}/ajax/studyTrack/deleBam",
+					async : false,
+					dataType : 'json',
+					type: "post",
+					data:{
+						bamId:$this.attr("bamId"),
+						userId:$this.attr("userId"),
+					},
+					success : function(result) {
+						refreshTrackList('',1,10,$(this).attr("date-orderType"),$("#serach").val());
+					}
+				});
+			});
+			
+		});
+		
+	});
 }
 
 function showSearch(){

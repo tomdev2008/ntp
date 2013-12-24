@@ -339,10 +339,12 @@ $("#verifyPwd").bind("click",function(){
 		dataType : 'json',
 		success:function(data){
 			var flag = data.flag;
-			if(flag=="0"){
-				if($("#formPassword").find(".error").length==0){
-					$("#verifyPwd").after('<span class="error">输入密码错误！</span>');	
-				}
+			if(flag=="01"){
+				$("#verifyPwd").next(".error").remove();
+				$("#verifyPwd").after('<span class="error">输入密码错误！</span>');	
+			}else if(flag=="00"){
+				$("#verifyPwd").next(".error").remove();
+				$("#verifyPwd").after('<span class="error">您没有权限学习该课程！</span>');	
 			}else{
 				$("#fdPassword").val(inputPassword);
 				$("#formPassword").children().remove();
@@ -361,14 +363,19 @@ $("#verifyPwd").bind("click",function(){
 		    	});
 		    	$("#studyBegin").attr("disabled",false);
 		    	$("#studyBegin").bind("click");
+		    	$("#studyBegin").bind("click",function(){
+		    		$("#studyBeginForm").trigger("submit");
+		    	});	
 			}
 		}
 	}); 
 	
 });
-$("#studyBegin").bind("click",function(){
-	$("#studyBeginForm").trigger("submit");
-});
+if($("#studyBegin").attr("disabled")!="disabled"){
+	$("#studyBegin").bind("click",function(){
+		$("#studyBeginForm").trigger("submit");
+	});	
+}
 </script>
 </body>
 </html>

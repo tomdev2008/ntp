@@ -115,6 +115,7 @@
 			<li><a href="javascript:void(0)" onclick="pageNavClick({{=j}})">{{=j*10-10+1}}-{{=j*10}}</a></li>
 		{{}}}
 		</ul>
+     <input id="currentPage" value="{{=it.currentPage}}" type="hidden">
 	 <button class="btn btn-primary btn-ctrl" type="button" {{?it.currentPage == it.totalPage}} disabled {{?}} onclick='pageNavClick({{=it.currentPage+1}})'><i class="icon-chevron-right icon-white"></i></button>
 </div>
 </script>
@@ -177,7 +178,7 @@
                             <div class="btn-group">
                                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">操作 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                     <li><a href="#rightCont">导出列表</a></li>
+                                     <li><a href="#rightCont" onclick="exportData();">导出列表</a></li>
                                    <!-- <li><a href="#rightCont">打包下载</a></li> -->
                                     <li><a href="#rightCont" onclick="confirmDel();">批量删除</a></li>
                                 </ul>
@@ -239,9 +240,31 @@
 			<input type="hidden"  id="cousetype" value="${param.fdType}">
             <input type="hidden" id="cachorder"/>
             <input type="hidden" id="currentpage">
-            <input type="hidden" id="orderBy"/>
+            <input type="hidden" id="orderBy" value="${param.order}"/>
             <input type="hidden" id="isOftask"/>
 </section>
+<script type="text/javascript">
+//导出列表   
+function exportData(){
+	var courseId="${param.courseId}";//课程id
+	var order = $("#orderBy").val();
+	if(document.getElementById("selectAll").checked){
+		 jalert("您确定要导出全部数据吗？",function(){
+			  window.location.href="${ctx}/common/exp/getExpCourseAuth?isAll=all&courseId="+courseId+"&order="+order;
+		 }); 
+		 return;
+	} else if(document.getElementById("selectCurrPage").checked){
+		var current = $("#currentPage").val();
+		jalert("您确定导出本页数据吗？",function(){
+			window.location.href="${ctx}/common/exp/getExpCourseAuth?currentPage="+current+"&courseId="+courseId+"&order="+order;
+		});
+		return;
+	} else{
+		 jalert("您好!您没有选择要导出的数据！");
+		  return;
+	}
+}
+</script>
 <script type="text/javascript">	
 /**********************initpage*********************************************/
     $.Placeholder.init();
@@ -459,8 +482,8 @@ function showSearch(){
 	$("#markshow").html('含“<a id="containkey"href="#"></a>”的条目');
 	if(search==''){
 		$("#markshow").html('<a id="containkey" href="#">全部条目</a>');
-	}else if(search.length>2){
-		$("#containkey").html(search.substr(0,2)+"...");
+	}else if(search.length>10){
+		$("#containkey").html(search.substr(0,10)+"...");
 		}else{
 			$("#containkey").html(search);
 		}

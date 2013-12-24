@@ -98,7 +98,7 @@ input.error:focus,textarea.error:focus{border-color:#f39800;}
 .navbar-fixed-top .nav>li>.dropdown-menu{left:0;right:auto;margin-top:2px;min-width:205px;padding:0;border-color:#f7f7f7;border-bottom:solid #dcdcdc 2px;}
 #topNav>li{position: relative;z-index: 1;}
 #topNav>li.active>a,#topNav>li.active>a:hover{background-color: transparent;}
-#topNav .specific a,#topNav .specific a:hover{background-color:#f39800;padding-bottom:21px;opacity: .9; }
+#topNav .specific a,#topNav .specific a:hover{background-color:#f39800;padding-bottom:21px;}
 #topNav .itemBg{background-color: #397da1;width: 104px;height: 58px;left:0;top:0;position: absolute;z-index: 0;}
 .navbar-fixed-top .dropdown-toggle .top-face{position:relative;display:inline-block;vertical-align:top;margin-right:9px;}
 .navbar-fixed-top .dropdown-toggle .top-face,.navbar-fixed-top .dropdown-toggle .top-face img{width:45px;height:45px;}

@@ -185,7 +185,7 @@ public class LogContorller {
 	public String deleteAll(HttpServletRequest request) {
 		String fdType = request.getParameter("fdType");
 		String [] ids =request.getParameterValues("ids");
-		String key = request.getParameter("key");
+		String key = request.getParameter("key")==null?"":request.getParameter("key");
 		String isAll = request.getParameter("selectCheckbox");
 		if(isAll!=null&&isAll.equals("all")){
 			if(fdType.equals("LogLogin")){

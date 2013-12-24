@@ -154,6 +154,13 @@ public class CourseAjaxController {
 				map.put("courseTit", course.getFdTitle());
 				map.put("subTit", course.getFdSubTitle());
 				map.put("sectionOrder", course.getIsOrder());
+				if(course.getFdPrice()!=null){
+					String fdPrice = new java.text.DecimalFormat("0.00").format(course.getFdPrice());
+					map.put("fdPrice", fdPrice);
+				}else{
+					map.put("fdPrice", "");
+				}
+				
 				if (course.getFdCategory() != null) {
 					map.put("courseType", course.getFdCategory().getFdId());
 				}
@@ -193,6 +200,8 @@ public class CourseAjaxController {
 		String keyword = request.getParameter("keyword");
 		// 获取课程分类ID
 		String courseType = request.getParameter("courseType");
+		//定价信息
+		String fdPrice = request.getParameter("fdPrice");
 		//获取当前用户信息
 		SysOrgPerson sysOrgPerson=accountService.load(ShiroUtils.getUser().getId());
 		//创建时间
@@ -206,6 +215,7 @@ public class CourseAjaxController {
 				course = new CourseInfo();
 				course.setFdTitle(courseTitle);
 				course.setFdSubTitle(subTitle);
+				course.setFdPrice(Double.parseDouble(fdPrice));
 				// 新建课程时总节数设置为0
 				course.setFdTotalPart(0);
 				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
@@ -231,6 +241,7 @@ public class CourseAjaxController {
 							.get(courseType);
 					course.setFdCategory(category);
 				}
+				course.setFdPrice(Double.parseDouble(fdPrice));
 				course = courseService.save(course);
 			}
 		} else {
@@ -916,28 +927,39 @@ public class CourseAjaxController {
 		String type = request.getParameter("type");
 		int pageNo = new Integer(request.getParameter("pageNo"));
 		Finder finder = Finder.create("");
-		finder.append("select course.fdId id from ixdf_ntp_course course left join IXDF_NTP_COURSE_PARTICI_AUTH cpa on (course.fdId = cpa.fdcourseid and cpa.fduserid = :userId) " );
-		finder.setParam("userId", userId);
-		if(type.equals("all")){
-			finder.append(" where (course.isPublish = 'Y' or ");
-			finder.append(" (course.fdPassword is not null or course.fdPassword != '') or ");
-			finder.append(" (cpa.fduserid = :user)) ");
-			finder.append(" and course.fdStatus = '01' ");
-			finder.append(" and course.isAvailable = 'Y' " );
-			finder.setParam("user", userId);
-		}else{
-			finder.append(" where (course.isPublish = 'Y' or ");
-			finder.append(" (course.fdPassword is not null or course.fdPassword != '') or ");
-			finder.append(" (cpa.fduserid = :user)) ");
-			finder.append(" and course.fdStatus = '01' ");
-			finder.append(" and course.isAvailable = 'Y' and course.fdcategoryid=:type " );
-			finder.setParam("user", userId);
+		finder.append("select course.fdId id ");
+		finder.append("  from ixdf_ntp_course course ");
+		finder.append("  left join IXDF_NTP_COURSE_PARTICI_AUTH cpa ");
+		finder.append("    on (course.fdId = cpa.fdcourseid and cpa.fduserid ='"+userId+"') ");
+		finder.append(" where ( ");
+		finder.append("       ((course.isPublish = 'Y' or (course.fdPassword is not null or course.fdPassword != '')) and ");
+		finder.append("         (course.fdId in  ");
+		finder.append("                      (select ga.fdCourseId from IXDF_NTP_COURSE_GROUP_AUTH ga  ");
+		finder.append("                      where ga.fdgroupid in  ");
+		finder.append("                           （select ga.fdgroupid from sys_org_group_element soge ,sys_org_element soe1org,sys_org_element soe2dep,sys_org_element soe3per ");
+		finder.append("                            where ga.fdgroupid = soge.fd_groupid and (soe1org.fdid = soe2dep.fd_parentid and soe2dep.fdid = soe3per.fd_parentid and soe3per.fdid='"+userId+"' ) and ( soge.fd_elementid = soe1org.fdid or  soge.fd_elementid = soe3per.fdid or  soge.fd_elementid = soe2dep.fdid ) ");
+		finder.append("                            ） ");
+		finder.append("                       ) ");
+		finder.append("          )  ");
+		finder.append("          or ");
+		finder.append("          ( ");
+		finder.append("          course.fdId not in( select ga2.fdCourseId from IXDF_NTP_COURSE_GROUP_AUTH ga2 ) ");
+		finder.append("         ) ");
+		finder.append("       ) ");
+		finder.append("       or (cpa.fduserid = '"+userId+"') ");
+		finder.append("       ) ");
+		finder.append("   and course.fdStatus = '01' ");
+		finder.append("   and course.isAvailable = 'Y' ");
+		finder.append("   ");
+		
+		if(!type.equals("all")){
+			finder.append(" and course.fdcategoryid=:type " );
 			finder.setParam("type", type);
 		}		
-		Pagination pag=	courseService.getPageBySql(finder, pageNo, 3);
+		Pagination pag=	courseService.getPageBySql(finder, pageNo, 30);
 		List<Map> courseInfos =  (List<Map>) pag.getList();
 		if(pag.getTotalPage()>=pageNo){
-			if(pag.getList().size()==3){
+			if(pag.getList().size()==30){
 				returnMap.put("hasMore", true);
 			}else{
 				returnMap.put("hasMore", false);
@@ -1048,10 +1070,10 @@ public class CourseAjaxController {
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 			finder.setParam("type", type);
 		}		
-		Pagination pag=	courseService.getPageBySql(finder, pageNo, 3);
+		Pagination pag=	courseService.getPageBySql(finder, pageNo, 30);
 		List<Map> courseInfos =  (List<Map>) pag.getList();
 		if(pag.getTotalPage()>=pageNo){
-			if(pag.getList().size()==3){
+			if(pag.getList().size()==30){
 				returnMap.put("hasMore", true);
 			}else{
 				returnMap.put("hasMore", false);

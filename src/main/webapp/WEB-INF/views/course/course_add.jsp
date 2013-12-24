@@ -165,12 +165,13 @@
 	            	<fieldset>
                     	<label for="courseTitle">标题</label>
                         <input type="text" id="courseTitle" name="courseTitle" required minlength="6" class="input-block-
-
 level" value="{{=it.courseTit || ''}}"  />
                         <label for="subTitle">副标题</label>
                         <textarea name="subTitle" id="subTitle" required minlength="12" class="input-block-level" rows="3">
-
 {{=it.subTit || ''}}</textarea>
+<label for="fdPrice">课程定价</label>
+<input name="fdPrice" id="fdPrice" value="{{=it.fdPrice}}" class="number" decimal="true" type="text">
+
                         <label for="sectionOrder">章节顺序</label>
                         <input name="sectionOrder" id="sectionOrder" value="{{=it.sectionOrder||true}}" type="hidden">
                         <label for="sectionOrder"></label>
@@ -740,21 +741,6 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 	   
 	    </div>
 	</div>
-
-<!--底部 S-->
-<%-- 	<footer>
-		<div class="navbar clearfix">
-			<div class="nav">
-				<li><a href="http://www.xdf.cn/" target="_blank">新东方网</a></li>
-				<li><a href="http://me.xdf.cn/" target="_blank">知识管理平台</a></li>
-				<li><a href="${ctx }/login">登录</a></li>
-				<li><a href="${ctx }/self_register">注册</a></li>
-				<li class="last"><a href="mailto:yangyifeng@xdf.cn">帮助</a></li>
-			</div>
-            <p style="font-size:13px">&copy; 2013 新东方教育科技集团&nbsp;知识管理中心</p>
-		</div>
-	</footer> --%>
-<!--底部 E-->
 </section>
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
@@ -887,6 +873,7 @@ $.Placeholder.init();
 			 keyword: $("#keyword").val(),
 			 courseType: $("#courseType").val(),
 			 sectionOrder: $("#sectionOrder").val(),
+			 fdPrice:$("#fdPrice").val(),
 			},
 			function(data){
 				$("#courseId").val(data.courseid);
@@ -968,7 +955,11 @@ function successSelectArea(imgSrc){
        	    urlRouter("accessRight");
 		});
     }
-
+ // 验证值小数位数不能超过两位  
+    jQuery.validator.addMethod("decimal", function (value, element) {  
+        var decimal = /^-?\d+(\.\d{1,2})?$/;  
+        return this.optional(element) || (decimal.test(value));  
+    }, $.validator.format("小数位数不能超过两位!"));
 </script>
 </body>
 </html>
