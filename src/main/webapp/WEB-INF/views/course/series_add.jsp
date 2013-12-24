@@ -366,7 +366,8 @@ $.Placeholder.init();
 			},"json")
 		    .success(function(){
 			//提交成功系列推广
-       	    urlRouter("promotion");
+			jalert_tips("保存成功");
+       	   // urlRouter("promotion");
 		});
 	}
 	//系列封页图片保存
@@ -376,16 +377,17 @@ $.Placeholder.init();
 			attId: $("#attIdID").val(),
 			})
 		.success(function(){
+			jalert_tips("保存成功");
 		});
     }
   //系列发布
 	function releaseCourse(){
 		  //发布前验证系列的基本信息是否已完善(防止出现未命名情况);
-	    if($("#isperfect").val()=='false'){
-	    	jalert2("请完善系列信息!");
-	    	urlRouter("basicInfo");
-	    	return ;
-	    }
+	  //  if($("#isperfect").val()=='false'){
+	  //  	jalert2("请完善系列信息!");
+	  //  	urlRouter("basicInfo");
+	  //  	return ;
+	  //  }
 		$.post('${ctx}/ajax/series/releaseSeries',{
 			 seriesId:$("#seriesId").val()
 			})
