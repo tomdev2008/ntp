@@ -105,7 +105,7 @@
 				 <input type="checkbox" name="ids" value="${bean.FDID}"/> 
 				    <span class="title">
 					<c:if test="${bean.FDTITLE!=null && bean.FDTITLE!=''}">
-						${bean.FDTITLE}
+						<tags:title size="35" value="${bean.FDTITLE}"></tags:title>
 					</c:if>
 					<c:if test="${bean.FDTITLE==null || bean.FDTITLE==''}">
 						未命名

@@ -95,7 +95,10 @@
 			 <j:iter items="${page.list}" var="bean" status="vstatus">
 				<li data-id="${bean.FDID}"><a href="${ctx}/material/materialFoward?fdId=${bean.FDID}&fdType=${bean.FDTYPE}"> 
 				 <input type="checkbox" name="ids" value="${bean.FDID}"/> 
-				    <span class="title">${bean.FDNAME}</span> 
+				    <span class="title">
+				      <tags:title size="35" value="${bean.FDNAME}"></tags:title>
+				     </span> 
+				    
 				    <c:if test="${bean.ISPUBLISH=='Y'}">
 				      <span class="label label-info">公开</span>
 				    </c:if>
