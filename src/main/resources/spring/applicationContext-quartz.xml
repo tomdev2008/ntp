@@ -10,12 +10,13 @@
         <property name="startupDelay" value="120" />
         <property name="triggers">
             <list>
-                <ref local="notifyTodoTrigger" />
+                <ref local="attMainInterfaceTrigger" />
+                <ref local="attMainClearTodoTrigger"/>
             </list>
         </property>
     </bean>
 
-    <bean id="notifyTodoDetail"
+    <bean id="attMainInterfaceTodoDetail"
           class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject">
             <bean class="cn.me.xdf.quartz.AttMainInterfaceQuartz"></bean>
@@ -25,12 +26,32 @@
         </property>
     </bean>
 
-    <bean id="notifyTodoTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <bean id="attMainInterfaceTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail">
-            <ref bean="notifyTodoDetail" />
+            <ref bean="attMainInterfaceTodoDetail" />
         </property>
         <property name="cronExpression">
             <value>0 0/4 1-23 * * ?</value>
+        </property>
+    </bean>
+
+
+    <bean id="attMainClearTodoDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <bean class="cn.me.xdf.quartz.AttMainClearQuartz"></bean>
+        </property>
+        <property name="targetMethod">
+            <value>executeTodo</value>
+        </property>
+    </bean>
+
+    <bean id="attMainClearTodoTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="attMainClearTodoDetail" />
+        </property>
+        <property name="cronExpression">
+            <value>0 15 1 * * ?</value>
         </property>
     </bean>
 
