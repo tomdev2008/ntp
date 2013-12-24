@@ -63,10 +63,12 @@ public class AttMainAspect {
         if (result == null) {
             return null;
         }
-        if (!(result instanceof String)) {
+        Object[] args = joinPoint.getArgs();
+        Object arg = args[0];
+        if (!(arg instanceof String)) {
             throw new RuntimeException("不支持的格式类型");
         }
-        String fdId = (String) result;
+        String fdId = (String) arg;
         AttMain attMain = attMainService.get(fdId);
         attMainTask.executeInterfaceDelete(attMain);
         return joinPoint.getTarget();
