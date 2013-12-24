@@ -214,7 +214,7 @@
             <div class="section box-pd20">
                 <form id="formAddMood" action="##">
                 	<c:if test="${isMe=='true'}">
-                    <textarea name="field-mood" required id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
+                    <textarea name="field-mood" required maxlength="200" id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
                     <div class="clearfix">
                         <button type="submit" class="btn btn-primary pull-right">写备课心情</button>
                     </div>
