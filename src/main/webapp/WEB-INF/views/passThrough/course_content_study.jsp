@@ -446,7 +446,7 @@
                         <span class="point" id="ratingDoScore"></span>
                     </div>
                 <form action="javascript:void(0)" id="formMakeComments" data-fdid="{{=it.mediaComment.id}}" >
-                    <textarea  id="textComment" name="textComment" required class="input-block-level" placeholder="有什么想吐槽的吗？随便写两句文评吧~ : )" ></textarea>
+                    <textarea  id="textComment" name="textComment" required maxlength="200" class="input-block-level" placeholder="有什么想吐槽的吗？随便写两句文评吧~ : )" ></textarea>
                     <div class="comm-rating">
                         <label for="isAnonymity" class="checkbox span1">
                             <input id="isAnonymity" name="isAnonymity" type="checkbox">匿名发表
@@ -544,7 +544,7 @@
         <div class="form-reply">
             <form id="formReply">
 					<input type="hidden" id="replyCommHide" value="回复 （{{=it.name}}）："/>
-                    <textarea class="input-block-level" required id="replyComm" name="replyComm" rows="3" ></textarea>
+                    <textarea class="input-block-level" required maxlength="200" id="replyComm" name="replyComm" rows="3" ></textarea>
                 <div class="form-action">
                      <div class="btn-group">
                         <button class="btn btn-primary" type="submit">回复</button>

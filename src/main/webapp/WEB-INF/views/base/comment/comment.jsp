@@ -59,7 +59,7 @@
         <div class="form-reply">
             <form id="formReply">
 					<input type="hidden" id="replyCommHide" value="回复（{{=it.name}}）："/>
-                    <textarea class="input-block-level" required id="replyComm" name="replyComm" rows="3" ></textarea>
+                    <textarea class="input-block-level" required maxlength="200" id="replyComm" name="replyComm" rows="3" ></textarea>
                 <div class="form-action">
                      <div class="btn-group">
                         <button class="btn btn-primary" type="submit">回复</button>
