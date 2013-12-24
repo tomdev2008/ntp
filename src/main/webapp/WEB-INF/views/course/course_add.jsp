@@ -887,7 +887,8 @@ $.Placeholder.init();
 			},"json")
 		.success(function(){
 			//提交成功跳转到详细信息
-       	    urlRouter("detailInfo");
+       	    //urlRouter("detailInfo");
+			jalert_tips("保存成功");
 		});
 	}
 	
@@ -913,8 +914,8 @@ $.Placeholder.init();
 			})
 		.success(function(){
 			//提交成功跳转到详细信息
-       	    urlRouter("kinguser");
-			
+       	   // urlRouter("kinguser");
+			jalert_tips("保存成功");
 		});
 	}
 	//清空密码input
@@ -959,7 +960,8 @@ function successSelectArea(imgSrc){
 				//注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
 			     $('#upMovie').uploadify('destroy'); 
 			}
-       	    urlRouter("accessRight");
+       	   // urlRouter("accessRight");
+			jalert_tips("保存成功");
 		});
     }
  // 验证值小数位数不能超过两位  

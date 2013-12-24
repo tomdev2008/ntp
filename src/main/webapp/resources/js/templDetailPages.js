@@ -906,7 +906,8 @@
 				.success(function(){
 					KindEditor.remove('textarea[name="courseAbstract"]');
 					//提交成功跳转到详细信息
-		       	    urlRouter("promotion");
+					jalert_tips("保存成功");
+		       	   // urlRouter("promotion");
 				});
 			}
 			
