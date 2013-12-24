@@ -50,7 +50,7 @@
        	    <div class="media-body">
        	    
         		<div class="media-heading">
-        		  <h2>${course.fdTitle}</h2>
+        		  <h2><tags:title size="20" value="${course.fdTitle}"></tags:title></h2>
         		</div>
         		<p>${course.fdAuthor}</p>
               	<div class="rating-view" id="courseScore">
@@ -97,7 +97,7 @@
 	        <div class="pull-left w760">
 	        	<div class="section">
 	       	  		<div class="hd">
-		        		<h2>作者  ${course.fdAuthor}</h2>
+		        		<h2>作者  <tags:title size="35" value="${course.fdAuthor}"></tags:title></h2>
                         <div class="ab_r">
                         	<span class="pub_time"><i class="icon-time"></i><tags:datetime value="${course.fdCreateTime}" pattern="yyyy-MM-dd hh:mm aa"/></span>
                         </div>
@@ -106,24 +106,52 @@
                     	<div class="box-txt">
                             <dl>
                                 <dt>课程摘要</dt>
-                                <dd>${course.fdSummary} 
+                                <dd><j:ifelse test="${course.fdSummary!=null}">
+										<j:then>
+											${course.fdSummary} 
+										</j:then>
+										<j:else>
+											课程作者很懒，什么都没写，请自行脑补~:)
+										</j:else>
+									  </j:ifelse> 
                                 </dd>
                                 <dt>学习目标</dt>
                                 <dd>
                                     <ol>
-                                    <tags:stringli value="${course.fdLearnAim}" sign="#"/>
+                                     <j:ifelse test="${course.fdLearnAim!=null}">
+										<j:then>
+											<tags:stringli value="${course.fdLearnAim}" sign="#"/>
+										</j:then>
+										<j:else>
+											课程作者很懒，什么都没写，请自行脑补~:)
+										</j:else>
+									  </j:ifelse>
                                     </ol>
                                 </dd>
                                 <dt>建议群体</dt>
                                 <dd>
                                     <ol>
-                                    <tags:stringli value="${course.fdProposalsGroup}" sign="#"/>
+                                    <j:ifelse test="${course.fdProposalsGroup!=null}">
+										<j:then>
+											<tags:stringli value="${course.fdProposalsGroup}" sign="#"/>
+										</j:then>
+										<j:else>
+											课程作者很懒，什么都没写，请自行脑补~:)
+										</j:else>
+									  </j:ifelse>
                                     </ol>
                                 </dd>
                                 <dt>课程要求</dt>
                                 <dd class="last">
                                     <ol>
-                                    <tags:stringli value="${course.fdDemand}" sign="#"/>
+                                    <j:ifelse test="${course.fdDemand!=null}">
+										<j:then>
+											<tags:stringli value="${course.fdDemand}" sign="#"/>
+										</j:then>
+										<j:else>
+											课程作者很懒，什么都没写，请自行脑补~:)
+										</j:else>
+									  </j:ifelse>
                                     </ol>
                                 </dd>
                             </dl>
@@ -134,8 +162,8 @@
                 	<div class="box-pd20">
                     	<div class="larning-sections">
                     		<c:set var="isorder" value="true"/>
+                    		<c:set var="i" value="1"/>
                     		<j:iter items="${catalog}" var="bean" status="vstatus">
-                    	    <c:set var="i" value="1"/>
                     		<c:if test="${bean.fdType==0}">
                     		<dl>
                     			<dt>
@@ -149,7 +177,7 @@
                                 	<c:if test="${lecture.fdType==1 && lecture.hbmParent!=null && lecture.hbmParent.fdId==bean.fdId}">
 		                    			<dd>
 		                                	<div class="span5">
-		                                    	<span class="tit">${bean.fdNo}.${i}&nbsp;${lecture.fdName}</span>
+		                                    	<span class="tit">${i}&nbsp;${lecture.fdName}</span>
 		                                        	<c:if test="${lecture.through==null}">
 		                                        	  <c:if test="${course.isOrder==false}">
 		                                        	  	<button name="doButton" data-fdid="${lecture.fdId}" data-fdMtype="${lecture.fdMaterialType}" class="btn  btn-primary" data-show="true">
@@ -182,7 +210,7 @@
 		                                        	  </button>		
 		                                        	</c:if>
 		                                    </div>
-		                                    <div class="span2">${lecture.fdStudyTime}</div>
+		                                    <div class="span2"><tags:title size="4" value="${lecture.fdStudyTime}"></tags:title></div>
 		                                    <div class="span1">
 		                                    	<i class="icon-circle-progress">
 		                                        	<c:if test="${lecture.through==true}">
