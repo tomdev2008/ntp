@@ -312,6 +312,7 @@ $.Placeholder.init();
 		}
 		urlRouter();		
 	});
+});
 	
 	//根据URL中‘#’后参数判断加载栏目
 	function urlRouter(href,opt){
@@ -412,7 +413,7 @@ $.Placeholder.init();
 	    //imgshow
 	    $("#imgshow").show();
 	}
-});
+
 </script>
 </body>
 </html>
