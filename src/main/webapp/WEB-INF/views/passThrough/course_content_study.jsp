@@ -1032,6 +1032,7 @@
   		  			  dataType:'json',
   		  			  success: function(result){
   		  				resetScoreInfo();
+  		  				jalert_tips("评分成功");  		  				
   		  			  },
   	  				});
             })  /*评论列表中按钮事件*/
@@ -1062,7 +1063,7 @@
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		jalert("不能支持和反对自己的评论");
+                            		jalert_tips("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnWeak")){//踩
                             	var pushok;
@@ -1085,7 +1086,7 @@
                             		$num.text(parseInt($num.text()) + 1);
                             		$this.addClass("active");
                             	}else{
-                            		jalert("不能支持和反对自己的评论");
+                            		jalert_tips("不能支持和反对自己的评论");
                             	}
                             } else if($this.hasClass("btnComment")){//评论
                                 //if($("#formReply").length){
@@ -1324,7 +1325,7 @@
                     	fdContent: $("#textComment").val(),
               	  	},
           		});
-               jalert("评论发表成功");  
+               jalert_tips("评论发表成功");  
                $("#textComment").val("");
                resetComment(1,10);
                return false;
