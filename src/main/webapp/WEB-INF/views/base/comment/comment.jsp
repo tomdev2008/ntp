@@ -205,7 +205,7 @@ function initCommentLines(modelName,modelId,pageNo){
         		$num.text(parseInt($num.text()) + 1);
         		$this.addClass("active");
         	}else{
-        		jalert("不能支持和反对自己的评论");
+        		jalert_tips("不能支持和反对自己的评论");
         	}
         } 
 	});
@@ -233,7 +233,7 @@ function initCommentLines(modelName,modelId,pageNo){
     		$num.text(parseInt($num.text()) + 1);
     		$this.addClass("active");
     	}else{
-    		jalert("不能支持和反对自己的评论");
+    		jalert_tips("不能支持和反对自己的评论");
     	}
 	});
 	$(".btndeleteM").bind("click",function(){

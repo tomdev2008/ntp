@@ -167,7 +167,7 @@
                         <input type="text" id="courseTitle" name="courseTitle" required minlength="6" class="input-block-
 level" value="{{=it.courseTit || ''}}"  />
                         <label for="subTitle">副标题</label>
-                        <textarea name="subTitle" id="subTitle" required minlength="12" class="input-block-level" rows="3">
+                        <textarea name="subTitle" id="subTitle"  minlength="12" class="input-block-level" rows="3">
 {{=it.subTit || ''}}</textarea>
 <label for="fdPrice">课程定价</label>
 <input name="fdPrice" id="fdPrice" value="{{=it.fdPrice}}" class="number" decimal="true" type="text">

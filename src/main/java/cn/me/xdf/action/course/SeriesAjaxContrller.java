@@ -140,6 +140,8 @@ public class SeriesAjaxContrller {
 		String seriesAuthor = request.getParameter("seriesAuthor");
 		String authorDesc = request.getParameter("authorDesc");
 		// String isavailable=request.getParameter("isavailable");
+		SysOrgPerson creator = accountService.findById(ShiroUtils.getUser()
+				.getId());
 		SeriesInfo series=new SeriesInfo();
 		if(StringUtil.isNotEmpty(seriesId)){
 			series = seriesInfoService.get(seriesId);
@@ -147,18 +149,22 @@ public class SeriesAjaxContrller {
 			series.setFdDescription(seriesDesc);
 			series.setFdAuthor(seriesAuthor);
 			series.setFdAuthorDescription(authorDesc);
+			series.setCreator(creator);
+			series.setFdCreateTime(new Date());
 			series.setIsAvailable(true);
 			seriesInfoService.save(series);
 		}else{
 			series.setFdName(seriesTitle);
 			series.setFdDescription(seriesDesc);
+			series.setCreator(creator);
+			series.setFdCreateTime(new Date());
 			series.setFdAuthor(seriesAuthor);
 			series.setFdAuthorDescription(authorDesc);
 			seriesInfoService.save(series);
 			seriesId=series.getFdId();
 		}
 		Map map = new HashMap();
-		map.put("courseid", seriesId);
+		map.put("seriesId", seriesId);
 		return JsonUtils.writeObjectToJson(map);
 	}
 
