@@ -64,7 +64,8 @@
                         </div>
                         <div class="control-group">
                             <label class="control-label" >建议时间 <small>(单位分钟)</small></label>
-                            <div class="controls">
+                            <input id="mainTimeLine" readonly="true" class="input-block-level" type="text">
+                            <!-- <div class="controls">
                                 <input name="examPaperTime" id="examPaperTime" value="30" type="hidden"/>
                                     <div id="mainTimeLine" class="timeLine">
                                         <div class="num">0</div>
@@ -77,7 +78,7 @@
                                         <a title="105分钟" href="#"><span class="num">105</span></a>
                                         <a title="120分钟" href="#"><span class="num">120</span></a>
                                     </div>
-                            </div>
+                            </div> -->
                         </div>
 
                     </section>
@@ -148,7 +149,8 @@ $.ajax({
 		  $("#authorIntro").val(result.fdAuthorDescription);
 		  $("#createTime").html(result.createTime);
 		  var n = result.time/15;
-		  $("#mainTimeLine a :lt("+n+")").attr("class","active");
+		  $("#mainTimeLine").val(n);
+		  /* $("#mainTimeLine a :lt("+n+")").attr("class","active"); */
 	  }
 });
 //初始化试题列表
