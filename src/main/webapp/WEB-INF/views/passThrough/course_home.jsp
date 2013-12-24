@@ -52,9 +52,10 @@
         		<div class="media-heading">
         		  <h2><tags:title size="20" value="${course.fdTitle}"></tags:title></h2>
         		</div>
-        		<p>${course.fdAuthor}</p>
+        		<p><tags:title size="32" value="${course.fdSubTitle}"></tags:title></p>
               	<div class="rating-view" id="courseScore">
                 		<span class="rating-all">
+                		<c:if test="${courseScore!=null}">
                 		  <c:forEach var="i" begin="1" end="5">
                 		  	<c:if test="${courseScore >= i}">
                 		  	<i class="icon-star active"></i>
@@ -63,6 +64,12 @@
                 		  	<i class="icon-star"></i>
                 		  	</c:if>
                 		  </c:forEach>
+                		</c:if>
+                		<c:if test="${courseScore==null}">
+                		 <c:forEach var="i" begin="1" end="5">
+                		  	<i class="icon-star"></i>
+                		  </c:forEach>
+                		</c:if>
                          </span>
                          <b class="text-warning">${courseScore}</b>
                  </div>

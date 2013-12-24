@@ -52,7 +52,7 @@
         		<div class="media-heading">
         		  <h2><tags:title size="20" value="${course.fdTitle}"></tags:title></h2>
         		</div>
-        		<p>${course.fdAuthor}</p>
+        		<p>${course.fdSubTitle}</p>
               	<div class="rating-view" id="courseScore">
                 		<span class="rating-all">
                 		  <c:forEach var="i" begin="1" end="5">
