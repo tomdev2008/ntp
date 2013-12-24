@@ -79,11 +79,7 @@
                 <span>上一节</span>
                 </a>
                 <h1>{{=it.courseName}}   节{{=it.num}} {{=it.lectureName}}
-                <span class="labelPass{{?it.status != "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
-                <b class="caret"></b>
-                <span class="iconWrap"><i class="icon-right"></i></span>
-                <span class="tit">学习通过</span>
-                </span>
+                <button class="btn btn-success{{?it.status == "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}><i class="icon-right"></i>学习通过</button>
                 </h1>
 				{{?it.isLast}}
 				<a class="btn btn-back" id="nextOver" > <i class="icon-disc-lg-bg"><i class="icon-medal"></i></i> </a>
@@ -910,7 +906,7 @@
 	
 			//
             //可选章节按钮
-            $("#btnOptionalLecture").css("cursor","pointer")
+            $("#btnOptionalLecture")
                     .click(function(e){
                         //$(this).removeClass("disabled");
                         //$("#nextLecture").removeClass("disabled");
