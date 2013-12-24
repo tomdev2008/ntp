@@ -1,8 +1,7 @@
 @charset "utf-8";
 @import "pages.css";
 .section{background-color:#FFF; border-bottom:solid #dcdcdc 2px;}
-
-/*left nav*/
+/*side nav*/
 .sidenav{background-color:#FFF;border-bottom:solid #dcdcdc 2px;}
 .sidenav .nav-header {padding: 0;margin: 0;}
 .sidenav li + .nav-header{margin-top: 0;}
@@ -17,7 +16,6 @@
 .sidenav > .active > a,.sidenav > .active > a:hover{background-color:#4391bb;color:#fff;border-color: #22699e;}
 .sidenav [class^="icon-"], .sidenav [class*=" icon-"]{margin-right:10px;}
 .sidenav > .active > a > i{-ms-background-position-x: right;background-position-x: right;}
-
 
 /*right content*/
 .lt-ie9 .input-block-level{min-height: 20px;}
@@ -36,6 +34,7 @@
 .box-control .btn-toolbar > label{display: inline-block;margin: 0;vertical-align: middle;}
 .box-control .btn-toolbar > label.muted{padding: 10px;}
 .box-control .hd .btn-toolbar .btn{margin-right: 5px;border: solid #e5e5e5 1px;background-color: #FFFFFF;}
+.box-control .hd .btn-toolbar .btn-primary{background-color: #4391bb;border-color: #4391bb;}
 .box-control .hd .btn-toolbar .btn-link{border: none;margin-right: 0;position: absolute;right: 0;top:1px;}
 .box-control .hd .toolbar-search {display: inline-block;*display: inline;position: relative;margin-bottom:0; margin-left: 5px;}
 .box-control .hd .toolbar-search .icon-search{position: absolute;right: 10px;top: 5px;*top:10px;}
