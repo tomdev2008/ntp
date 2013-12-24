@@ -215,7 +215,9 @@ public class CourseAjaxController {
 				course = new CourseInfo();
 				course.setFdTitle(courseTitle);
 				course.setFdSubTitle(subTitle);
-				course.setFdPrice(Double.parseDouble(fdPrice));
+				if(StringUtil.isNotBlank(fdPrice)){
+					course.setFdPrice(Double.parseDouble(fdPrice));
+				}
 				// 新建课程时总节数设置为0
 				course.setFdTotalPart(0);
 				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
@@ -241,7 +243,10 @@ public class CourseAjaxController {
 							.get(courseType);
 					course.setFdCategory(category);
 				}
-				course.setFdPrice(Double.parseDouble(fdPrice));
+				if(StringUtil.isNotBlank(fdPrice)){
+					course.setFdPrice(Double.parseDouble(fdPrice));
+				}
+				
 				course = courseService.save(course);
 			}
 		} else {
