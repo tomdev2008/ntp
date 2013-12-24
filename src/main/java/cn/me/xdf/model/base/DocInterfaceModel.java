@@ -31,6 +31,9 @@ public class DocInterfaceModel {
 
     //    public static final String url = "http://192.168.25.225:9080/ixdf/doc/docServlet";//testurl
     public static final String url = "http://me.xdf.cn/iportal/doc/docServlet";
+    
+    
+    public static final String user_poto_upload_url = "http://otp.xdf.cn/cxf_upload/UploadServlet";
 
     public static final String addDoc = "addDoc";
     public static final String getDocByAttId = "getDocByAttId";
