@@ -616,7 +616,13 @@ xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</t
                             {{?(index+1) == item2.index}}
                             <li data-fdid="{{=item.id}}"><span class="title">{{=it.typeTxt}} <span class="index">
 
-{{=item2.index}}</span>：<span class="name">{{=item.title}}</span></span>
+{{=item2.index}}</span>：<span class="name">
+						{{?item.title.length>38}}
+							{{=item.title.substring(0,38)}}...
+						{{??}}
+							{{=item.title}}
+						{{?}}
+</span></span>
                                 <a class="icon-pencil2 btn-ctrls" href="#"></a>
                                 <a class="icon-remove btn-ctrls" href="#"></a>
                                 <div class="state-dragable"><span class="icon-bar"></span><span class="icon-
@@ -700,9 +706,10 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 	        	<input type='hidden' id='courseId' value='${course.fdId}' />
 	        	<h5>
 	        	<a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" class="backParent">返回我的课程列表
-
 </a>
-	        	&nbsp;&nbsp;&nbsp; ${course.fdTitle}</h5>
+	        	&nbsp;&nbsp;&nbsp;
+	        	 <tags:title size="33" value="${course.fdTitle}"></tags:title>
+	        	 </h5>
 	            <div class="btn-group">
 		            <button class="btn btn-primary btn-large" disabled type="button" onclick="previewCourse()">预览
 

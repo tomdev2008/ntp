@@ -337,7 +337,11 @@
             $("#addMedia").autocomplete($("#ctx").val()+"/ajax/material/getMaterialBykey",{
                 formatItem: function(item) {
                 	$("#addMedia").next(".help-block").remove();
-                    return item.name;
+                	var fdName = item.name;
+                	if(fdName.length>42){
+                		fdName = fdName.substr(0,42)+"...";
+                	}
+                    return fdName;
                 },
                 extraParams : {
 					type : type
