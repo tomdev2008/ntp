@@ -102,7 +102,7 @@
 						{{??}}
 							{{=it.lectureName}}
 						{{?}}
-                <button class="btn btn-success{{?it.status == "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
+                <button class="btn btn-success{{?!it.isOptional || it.status == "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
                <i class="icon-right"></i>
                   <span class="tit">
 						{{?it.isOptional}}跳到此节{{??}}学习通过{{?}}
@@ -636,7 +636,7 @@
                 <span>第一节</span>
                 </a>
                 <h1>{{=it.courseName}}
-                <span class="labelPass{{?it.status != "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
+                <span class="labelPass{{?!it.isOptional || it.status == "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
                 </span>
                 </h1>
 				<a class="btn" href="#" id="lastC" >
