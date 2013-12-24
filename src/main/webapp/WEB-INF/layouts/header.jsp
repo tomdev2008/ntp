@@ -4,38 +4,40 @@
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
 <%
 ShiroUser user = ShiroUtils.getUser();
 if(user!=null){
 	request.setAttribute("userBean", user);
 }
-String[] path = request.getRequestURI().split("/");
+String paths = request.getRequestURI();
+String[] path = paths.split("/");
 request.setAttribute("path", path[path.length-1]);
 %>
  <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
     	<div class="container pr">
-			<a href="#" class="logo"></a>
+			<a href="${ctx}" class="logo"></a>
 	        <ul class="nav" id="topNav">
-	        	
 	          <% if(user!=null){ %>
-	            <li class="itemBg hide"></li>
+	          		<li class="itemBg"></li>	
 	        	<li class="specific"><a href="${ctx}/course/courseIndexAll">全部课程</a></li>
 	          <%} %>
 	          <shiro:hasRole name="admin">
-	          <li><a href="${ctx}/admin/user/list">系统管理</a></li>
+	         	<tags:navigation paths="<%=paths%>" checkString="/admin" showString="系统管理" url="${ctx}/admin/user/list"></tags:navigation>
 	          </shiro:hasRole>
+	          
 	          <shiro:hasRole name="guidance">
-	          <li><a href="${ctx}/studyTrack/getStudyTrackTutor">我是导师</a></li>
+	          	<tags:navigation paths="<%=paths%>" checkString="/studyTrack/getStudyTrackTutor:/adviser" showString="我是导师" url="${ctx}/studyTrack/getStudyTrackTutor"></tags:navigation>
 	          </shiro:hasRole>
 	          <shiro:hasRole name="group">
-	          <li><a href="${ctx}/studyTrack/getStudyTrackDirector">我是主管</a></li>
+	         	<tags:navigation paths="<%=paths%>" checkString="/studyTrack/getStudyTrackDirector:/material/find:/material/materialFoward:/course/find:/course/add:/series/find:/series/add:/course/get" showString="我是主管" url="${ctx}/studyTrack/getStudyTrackDirector"></tags:navigation>
 	          </shiro:hasRole>
 	          <% if(user!=null){ %>
-	          <li><a href="${ctx}/course/courseIndex">个人首页</a></li>
+	         	 <tags:navigation paths="<%=paths%>" checkString="/course/courseIndex:/passThrough:/successPage" showString="个人首页" url="${ctx}/course/courseIndex"></tags:navigation>
 	           <%} %>
-	        </ul>
+</ul>
 			<shiro:authenticated>
             <ul class="nav pull-right">
             	<shiro:hasRole name="group">
