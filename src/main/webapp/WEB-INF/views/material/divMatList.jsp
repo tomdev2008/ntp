@@ -96,7 +96,7 @@
 				<li data-id="${bean.FDID}"><a href="${ctx}/material/materialFoward?fdId=${bean.FDID}&fdType=${bean.FDTYPE}"> 
 				 <input type="checkbox" name="ids" value="${bean.FDID}"/> 
 				    <span class="title">
-				      <tags:title size="35" value="${bean.FDNAME}"></tags:title>
+				      <tags:title size="33" value="${bean.FDNAME}"></tags:title>
 				     </span> 
 				    
 				    <c:if test="${bean.ISPUBLISH=='Y'}">
