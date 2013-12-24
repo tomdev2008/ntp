@@ -1436,7 +1436,7 @@
 				  	            	 }
 			  	                  } */
 			  	              }else{
-			  	            	 $("#btnDoPass").attr("converStatus","true");
+			  	            	// $("#btnDoPass").attr("converStatus","true");
 			  	            	$("#btnDownload").addClass("hide");
 			  	              }
 			  	              $mediaToolbar.find(".playCount>.num").text(mdata.readCount);
@@ -1521,7 +1521,7 @@
                 //$.post("url",{id: $mediaToolbar.attr("data-fdid")})
 	            	if($this.attr("converStatus")==""){
 	            		return;
-	            	}
+	            	} 
 	                if($this.attr("praisedstatus")=='true'){
 		                $.ajax({
 		         			type: "post",
@@ -1567,10 +1567,10 @@
             });
 
             $("#btnDoPass").on("click",function(e){
-            	if($(this).attr("converStatus")==""){
+            	/* if($(this).attr("converStatus")==""){
             		jalert("该状态不学习!");
             		return ;
-            	}
+            	} */
                 $("#listMedia>li.active").addClass("pass");
                 $(this).attr("disabled", true);
                 $.ajax({
