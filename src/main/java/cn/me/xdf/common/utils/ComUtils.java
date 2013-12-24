@@ -69,7 +69,7 @@ public class ComUtils {
 		_url.append(_enKey.toLowerCase());
 		_url.append(_type);
 		_url.append(".jpg");
-		_url.append("?id="+(int)(Math.random()*100));
+		_url.append("?cache=no&id="+(int)(Math.random()*100));
 		return _url.toString();
 	}
 
