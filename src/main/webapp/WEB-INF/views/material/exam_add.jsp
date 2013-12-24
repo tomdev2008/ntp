@@ -189,7 +189,7 @@
 		            <a href="#">{{=it.subject}}</a>
 		        </div>
 		    </td>
-		    <td><input id="sore_{{=it.id}}" type="text" digits="true" max="100" min="0" onblur="initScore()"  style="width:30px" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为整数且不能大于20分" class="itemScore input-mini digits">分
+		    <td><input id="sore_{{=it.id}}" type="text" digits="true" max="100" min="0" onblur="initScore()"  style="width:30px" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为整数且不能大于100分" class="itemScore input-mini digits">分
 			<label for="sore_{{=it.id}}" class="error" ></label>
 			</td>
 		    <td><a href="#" class="icon-remove-blue"></a></td>

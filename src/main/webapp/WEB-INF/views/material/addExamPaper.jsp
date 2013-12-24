@@ -72,8 +72,9 @@
                 <div class="control-group">
                     <label class="control-label" >作业总分 <small>(单位分)</small></label>
                     <div class="controls">
-                        <input name="examScore" id="examScore" value="{{=it.examScore || ''}}" type="hidden"/>
-                            {{#def.timeLine:it.timeLine}}
+						<input id="examScore" digits="true" min="0" value="{{=it.examScore || ''}}" max="100" class="input-block-level" name="examScore" type="text">
+                       <!-- <input name="" id="examScore" value="{{=it.examScore || ''}}" type="hidden"/>
+                           {{#def.timeLine:it.timeLine}}-->
                     </div>
                 </div>
             </section>
@@ -102,7 +103,7 @@
 
     <!-- 时间轴 模板 -->
     <script id="timeLineTemplate" type="text/x-dot-template">
-        {{?!it.timeLine}}
+       <!-- {{?!it.timeLine}}
             {{#def.timeLine:it}}
         {{?}}
         {{##def.timeLine:param:
@@ -114,7 +115,7 @@
             {{ } }}
             </div>
            <label id="examScoreErr" class="error" style="display: none;"></label>
-        #}}
+        #}} -->
     </script>
 
     <!-- 作业详情 列表项 模板 -->
@@ -151,7 +152,7 @@
 		            <a href="#">{{=it.subject}}</a>
 		        </div>
 		    </td>
-		    <td><input id="score_{{=it.id}}" type="text" digits="true" max="20" onblur="initScore()" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为整数且不能大于20分" class="itemScore input-mini">分
+		    <td><input id="score_{{=it.id}}" type="text" digits="true" max="100" min="0" onblur="initScore()" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为整数且不能大于100分" class="itemScore input-mini">分
 		    <label for="score_{{=it.id}}" class="error" ></label></td>
 			<td><a href="#" class="icon-remove-blue"></a></td>
 		</tr>
@@ -202,7 +203,8 @@
                         <div class="control-group">
                             <label class="control-label" >建议时间 <small>(单位天)</small></label>
                             <div class="controls">
-                                <input name="examPaperTime" id="examPaperTime"  type="hidden"/>
+                            <input id="examPaperTime"  digits="true" min="0" max="30" class="input-block-level" value="{{=it.curPos}}" type="text">
+                                <!-- <input name="examPaperTime" id="examPaperTime"  type="hidden"/> -->
                             </div>
                             <label id="examPaperTimeErr" class="error" style="display: none;"></label>
                         </div>
@@ -356,12 +358,13 @@ $(function(){
 	        span: 1, //每格的进制
 	        unit: "天"
 	    }));
-	 $(".timeLine>a").tooltip().click(function(e){
+	 $("#examPaperTime").val(curTime);
+	/*  $(".timeLine>a").tooltip().click(function(e){
          e.preventDefault();
          $(this).prevAll("a").add(this).addClass("active");
          $(this).nextAll("a").removeClass("active");
          $("#examPaperTime").val( $(this).children(".num").text());
-     });
+     }); */
 });
 function deleteMaterial(){
 	jalert("您确认要删除该作业包吗？",confirmDeletePaper);
