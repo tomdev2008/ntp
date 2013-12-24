@@ -32,10 +32,14 @@
                     {{?}}
                     <div class="bd2">
                         <h3>
-						{{?item.name.length>17}}
-							{{=item.name.substring(0,17)}}...
+						{{?item.name==null}}
+							不详
 						{{??}}
-							{{=item.name}}
+							{{?item.name.length>17}}
+								{{=item.name.substring(0,17)}}...
+							{{??}}
+								{{=item.name}}
+							{{?}}
 						{{?}}
 						</h3>
                         <p>{{?item.issuer==null}}
