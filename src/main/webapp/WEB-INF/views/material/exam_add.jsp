@@ -428,6 +428,7 @@ $(function(){
 				//初始化权限列表
 			}
 			var creater = "";
+			var createrId="";
 			var url = "";
 			$
 					.ajax({
@@ -439,6 +440,7 @@ $(function(){
 							creater = result.name + "（" + result.email
 									+ "），" + result.dept;
 							url = result.url;
+							createrId = result.fdId;
 						}
 					});
 			var listUserKinguserFn = doT.template(document
@@ -456,7 +458,7 @@ $(function(){
 							}else{
 								photo="${ctx}/"+url;
 							}
-							var html = "<tr data-fdid='creater' draggable='true'> "
+							var html = "<tr data-fdid='"+createrId+"' draggable='true'> "
 									+ " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "
 									+ "<img src='"+photo+"' alt=''>"
 									+ creater
@@ -647,7 +649,7 @@ $(function(){
 															"data-fdid") == item.id) {
 														$("#addUser")
 																.after(
-																		'<span class="help-block">不能添加重复的用户！</span>');
+																		'<label class="error">不能添加重复的用户！</label>');
 														;
 														$("#addUser").val("");
 														flag = false;

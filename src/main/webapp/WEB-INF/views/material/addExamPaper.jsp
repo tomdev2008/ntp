@@ -404,6 +404,7 @@ $(function(){
     //初始化授权人员列表
     //初始化权限列表
     var creator="";
+    var creatorId="";
 	var url="";
 	   $.ajax({
 		 type:"post",
@@ -413,6 +414,7 @@ $(function(){
 		 success: function(result){
 		    creator = result.name+"（"+result.email+"），"+result.dept;
 				  url=result.url;
+				  creatorId=result.fdId;
 		 }
 	   });
     $.ajax({
@@ -428,7 +430,7 @@ $(function(){
 			}else{
 				photo="${ctx}/"+url;
 			}
-			var html = "<tr data-fdid='creator' draggable='true'> "+
+			var html = "<tr data-fdid='"+creatorId+"' draggable='true'> "+
 			  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
 			  "<img src='"+photo+"' alt=''>"+creator+" </div> </td>"+
 			  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
