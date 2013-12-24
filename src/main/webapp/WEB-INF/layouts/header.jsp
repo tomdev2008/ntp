@@ -42,7 +42,7 @@ request.setAttribute("path", path[path.length-1]);
             <ul class="nav pull-right">
             	<shiro:hasRole name="group">
             	<li>
-                    <a class="btn-publish" href="${ctx}/course/add">
+                    <a class="btn-publish" title="发布课程" href="${ctx}/course/add">
                         <i class="icon-book-pencil"></i>
                     </a>
                 </li>

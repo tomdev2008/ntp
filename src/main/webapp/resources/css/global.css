@@ -125,7 +125,7 @@ input.error:focus,textarea.error:focus{border-color:#953b39;-webkit-box-shadow:i
 .navbar-fixed-top .dropdown-menu li > a > .icon-disc-bg{margin-left:40px;}
 .navbar-fixed-top .nav li a.btn-off{font-size: 13px;padding: 19px 10px;width: 42px;}
 .navbar-fixed-top .nav li a.btn-off .divider{margin-right: 8px;font-size: 10px;vertical-align: top;color: #ffffff}
-.navbar-fixed-top .nav li a.btn-publish{margin: 7px 2px 6px;padding:3px 2px 0 0;text-align:right;height: 42px;width: 43px;background-color: #397da1;
+.navbar-fixed-top .nav li a.btn-publish{margin: 7px 2px 6px;padding:3px 2px 0 0;text-align:right;height: 42px;width: 43px;background-color: #f39800;
     -webkit-box-shadow: inset 2px 2px 1px rgba(0, 0, 0, .15);
     -moz-box-shadow: inset 2px 2px 1px rgba(0, 0, 0, .15);
     box-shadow: inset 2px 2px 1px rgba(0, 0, 0, .15);border-radius: 3px;}
