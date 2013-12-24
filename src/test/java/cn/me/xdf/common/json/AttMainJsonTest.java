@@ -15,13 +15,10 @@ import java.util.Map;
 public class AttMainJsonTest extends JunitBaseTest {
 
     public void testJsonToObject() {
-        String json = "{\"Status\":1,\"ResponseData\":[{\"filenetId\":\"{BB2BD57A-9BFA-40DF-911F-77F029AC785F}\"}],\"Error\":null}\n";
+        String json = "{\"state\":1,\"errorMsg\":\"sss\"} ";
         Map<String, Object> map = JsonUtils.readObjectByJson(json, Map.class);
-        System.out.println(map.get("ResponseData").getClass());
-        List<Map<String, String>> lists = (List<Map<String, String>>) map.get("ResponseData");
-        for (Map<String, String> m : lists) {
-            System.out.println(m.get("filenetId"));
-        }
+        System.out.println(map.get("state"));
+
 
     }
 

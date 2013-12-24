@@ -66,7 +66,7 @@ public class PersonLdapInService extends LdapInService {
                 "cn=users", "(&(objectClass=xdf-person)(modifyTimeStamp>=" + date + "))",
                 new PersonContextMapper());
         String msg = updateOrg(list);
-        ldapLogService.saveLog(msg);
+        //ldapLogService.saveLog(msg);
         return msg;
     }
 
@@ -86,11 +86,11 @@ public class PersonLdapInService extends LdapInService {
             }
             if (CollectionUtils.isEmpty(lists)) {
                 log.info("开始初始化人员表-Insert");
-                updateByNamedQuery("saveElement", map);
-                updateByNamedQuery("person.saveElement", map);
-                insertSize++;
+                //updateByNamedQuery("saveElement", map);
+                //updateByNamedQuery("person.saveElement", map);
+                //insertSize++;
             } else {
-               // log.info("开始初始化人员表-Update");
+               log.info("开始初始化人员表-Update");
                // map.put("FDID",lists.get(0).get("FDID"));
                // updateByNamedQuery("person.updateElement", map);
                // updateByNamedQuery("updateElement", map);

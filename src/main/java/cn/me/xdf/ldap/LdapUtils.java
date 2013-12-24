@@ -40,6 +40,9 @@ public class LdapUtils {
 
     private static Map<String, String> map = new HashMap<String, String>();
 
+    /**
+     * 初始化机构编码
+     */
     static {
 
         map.put("105", "105");
