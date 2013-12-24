@@ -27,7 +27,7 @@ public class TagInfoService extends BaseService {
 	public List<TagInfo> findTagInfosByKey(String key){
 		Finder finder = Finder
 				.create("from TagInfo tagInfo ");
-		finder.append("where lower(tagInfo.fdName) like :key");
+		finder.append("where lower(tagInfo.fdName) = key");
 		finder.setParam("key", '%' + key + '%');
 		return (List<TagInfo>) getPage(finder, 1,10).getList();
 	}
