@@ -769,10 +769,15 @@ public class SeriesAjaxContrller {
 				map.put("learnerNum", count);
 				map.put("name", seriesInfo.getFdName());
 				map.put("issuer", seriesInfo.getFdAuthor());
-				map.put("intro",
-						seriesInfo.getFdDescription().length() >= 35 ? seriesInfo
-								.getFdDescription().subSequence(0, 35) + "..."
-								: seriesInfo.getFdDescription());
+				if(seriesInfo.getFdDescription()==null){
+					map.put("intro","不详");
+				}else{
+					map.put("intro",
+							seriesInfo.getFdDescription().length() >= 35 ? seriesInfo
+									.getFdDescription().subSequence(0, 35) + "..."
+									: seriesInfo.getFdDescription());
+				}
+				
 				map.put("isLearning", false);
 				map.put("dataId", seriesInfo.getFdId());
 				lists.add(map);
