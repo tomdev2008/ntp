@@ -242,6 +242,7 @@
 
 <input type="hidden" id="fdType" value="${param.fdType}">
 <script type="text/javascript">
+$(function(){
 $.Placeholder.init();
 //下载素材
 function downloadMater(){
@@ -338,9 +339,8 @@ function initStu(){
 	});
 	
 }
+$('[data-toggle="tooltip"]').tooltip();
+});
 //initStu();
-</script>
-<script type="text/javascript">	
-	$('[data-toggle="tooltip"]').tooltip();
 </script>
 

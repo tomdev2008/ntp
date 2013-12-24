@@ -303,6 +303,7 @@
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script src="${ctx}/resources/js/templSeriesPages.js"></script>
 <script type="text/javascript">	
+$(function(){
 $.Placeholder.init();
 	//点击左侧菜单事件
 	$("#sideNav>li>a").bind("click",function(e){	
@@ -411,6 +412,7 @@ $.Placeholder.init();
 	    //imgshow
 	    $("#imgshow").show();
 	}
+});
 </script>
 </body>
 </html>
