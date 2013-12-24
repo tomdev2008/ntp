@@ -4,7 +4,7 @@
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
-<div class="section navTeacher" data-spy="affix" data-offset-top="384">
+<div class="section navTeacher" data-spy="affix" data-offset-top="20">
 	<div class="hd">
 	<c:if test="${param.type=='tutor'}">
 		<h5>我是导师</h5>

@@ -19,7 +19,7 @@
 <body>
 <section class="container">	
 		<div class="clearfix mt20">
-	        <div class="pull-left w760">
+	        <div class="pull-right w760">
                 <div class="page-header">
                     <span class="muted">我正在看：</span><span id="selectMessage">我组织的备课</span>
                     <div class="pos-r">
@@ -39,11 +39,11 @@
 			</c:import>
 
 			</div>
-			<div class="pull-right w225">
+			<div class="pull-left w225">
 
-			<!-- 用户页面 -->
+			<%-- <!-- 用户页面 -->
 			<c:import url="/WEB-INF/views/studyTrack/divuserimg.jsp">
-			</c:import>
+			</c:import> --%>
 			
 			<!-- 图片列表页面 -->
 			<c:import url="/WEB-INF/views/studyTrack/divimglist.jsp">
