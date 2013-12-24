@@ -3,6 +3,7 @@ package cn.me.xdf.service.base;
 import java.io.Serializable;
 import java.util.List;
 
+import cn.me.xdf.common.utils.MyBeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,11 +65,14 @@ public class AttMainService extends SimpleService {
 
 
     @Transactional(readOnly = false)
-    public boolean deleteAttMain(String id) {
+    public AttMain deleteAttMain(String id) {
         AttMain attMain = get(id);
+        AttMain attMainCopy = new AttMain();
+        MyBeanUtils.copyProperties(attMain,attMainCopy);
         String file = attMain.getFdFilePath();
         delete(AttMain.class, id);
-        return FileUtil.delete(file);
+        FileUtil.delete(file);
+        return attMainCopy;
     }
 
     @Transactional(readOnly = false)
