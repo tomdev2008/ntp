@@ -34,7 +34,13 @@
                         {{?chapter.index == i}}
                             <li class="nav-hd">
                                 <span class="dt">章<b class="icon-circle-white-large">{{=chapter.num}}</b></span>
-                                <span class="name">{{=chapter.name}}</span>
+                                <span class="name">
+                                {{?chapter.name.length>7}}
+							        {{=chapter.name.substring(0,7)}}...
+						         {{??}}
+							        {{=chapter.name}}
+						          {{?}}
+                                </span>
                             </li>
                         {{?}}
                     {{~}}
@@ -47,7 +53,13 @@
                                         {{?lecture.status != 'untreated'}}<i class="icon-progress{{?lecture.status == 'doing'}} half{{?}}"></i>{{?}}
                                     </b></span>
                                     <span class="name"><i class="icon-{{=lecture.type}}"></i>
-                                    {{=lecture.name || ''}}</span>
+									{{?lecture.name.length>6}}
+							        	{{=lecture.name.substring(0,6)}}...
+						            {{??}}
+							            {{=lecture.name || ''}}
+						            {{?}}
+ 
+                                 </span>
                                 </a>
                             </li>
                         {{?}}
@@ -78,12 +90,24 @@
                 <i class="icon-chevron-lg-left"></i>
                 <span>上一节</span>
                 </a>
-                <h1>{{=it.courseName}}   节{{=it.num}} {{=it.lectureName}}
-                <span class="labelPass{{?it.status != "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
-                <b class="caret"></b>
-                <span class="iconWrap"><i class="icon-right"></i></span>
-                <span class="tit">学习通过</span>
-                </span>
+                <h1>
+                        {{?it.courseName.length>14}}
+							{{=it.courseName.substring(0,14)}}...
+						{{??}}
+							{{=it.courseName}}
+						{{?}}
+                                                           节{{=it.num}} 
+						{{?it.lectureName.length>14}}
+							{{=it.lectureName.substring(0,14)}}...
+						{{??}}
+							{{=it.lectureName}}
+						{{?}}
+                <button class="btn btn-success{{?it.status == "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
+               <i class="icon-right"></i>
+                  <span class="tit">
+						{{?it.isOptional}}跳到此节{{??}}学习通过{{?}}
+                 </span>
+               </button>
                 </h1>
 				{{?it.isLast}}
 				<a class="btn btn-back" id="nextOver" > <i class="icon-disc-lg-bg"><i class="icon-medal"></i></i> </a>
@@ -107,7 +131,7 @@
                 <div class="line">
                     <div class="line">
                         <span class="label-intro" >学习任务</span>
-                        <small>建议您认真完成所有{{?it.type=='exam'}}题目后提交试卷{{??it.type=='video'}}视频后提交{{??it.type=='task'}}作业后提交作业包{{??it.type=='doc'}}文档后提交{{??it.type=='ppt'}}幻灯片后提交{{?}}： </small></div>
+                        <small>建议您认真完成所有{{?it.type=='exam'}}题目后提交试卷{{??it.type=='video'}}视频后提交{{??it.type=='task'}}作业后提交作业包{{??it.type=='doc'}}文档后提交{{??it.type=='ppt'}}幻灯片后提交{{??it.type=='txt'}}在线创作后提交{{?}}： </small></div>
                 </div>
             </li>
             <li>
@@ -118,7 +142,7 @@
             <li>
                 <div class="line">
                     <div class="line">
-                        本{{?it.type=='exam'}}测试{{??it.type=='video'}}视频{{??it.type=='task'}}作业包{{??it.type=='doc'}}文档{{??it.type=='ppt'}}幻灯片{{?}}环节为
+                        本{{?it.type=='exam'}}测试{{??it.type=='video'}}视频{{??it.type=='txt'}}在线创作{{??it.type=='task'}}作业包{{??it.type=='doc'}}文档{{??it.type=='ppt'}}幻灯片{{?}}环节为
                         <b class="text-warning">{{?it.isOptional}}选{{??}}必{{?}}修</b> 环节，
                         您必须通过全部{{?it.type=='exam'}}试卷{{??it.type=='video'}}视频{{??it.type=='task'}}作业包{{??it.type=='doc'}}文档{{??it.type=='ppt'}}幻灯片{{?}}，
                         才可以进入下一关继续学习。</div>
@@ -910,7 +934,7 @@
 	
 			//
             //可选章节按钮
-            $("#btnOptionalLecture").css("cursor","pointer")
+            $("#btnOptionalLecture")
                     .click(function(e){
                         //$(this).removeClass("disabled");
                         //$("#nextLecture").removeClass("disabled");
@@ -1446,7 +1470,7 @@
 			  	              $("#btnDownload").attr("canDownload",mdata.canDownload);
 			  	              $("#btnPraise").attr("praisedstatus",mdata.mePraised);
 			  	              $("#mediaName").text($this.attr("title"));
-			  	              $("#mediaIntro").text(mdata.intro);
+			  	              $("#mediaIntro").text(mdata.intro==null?"":mdata.intro);
 			  	              var ave;
 			  	  				  if((mdata.rating.average+"").length==1){
 			  	  					ave= mdata.rating.average+".0";

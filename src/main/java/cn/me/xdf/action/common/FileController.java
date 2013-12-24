@@ -352,7 +352,7 @@ public class FileController {
     @RequestMapping("/delete/{id}")
     @ResponseBody
     public String delete(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) {
-        return BooleanUtils.toString(attMainService.deleteAttMain(id), "true", "false");
+        return BooleanUtils.toString(attMainService.deleteAttMain(id) != null, "true", "false");
     }
 
     /**
