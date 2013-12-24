@@ -451,7 +451,7 @@ it.encryptType !='passwordProtect'}}disabled{{?}} placeholder="请填写课程�
 							</tr>
 						</thead>
 						<tbody id="list_user">
-									<tr data-fdid="creater">
+									<tr data-fdid="{{=it.createrid}}" data-creater="creater">
 										<td class="tdTit">
                                           <div class="pr">
 											<div class="state-dragable"><span 
@@ -478,7 +478,7 @@ onclick="return false" class="editingCourse" /></td>
 							{{~it.user :user:index}}
 								{{~it.user :user:index2}}
 									{{?index == user.index}}
-									<tr data-fdid="{{=user.id}}">
+									<tr data-fdid="{{=user.id}}" data-creater="uncreater">
 										<td class="tdTit">
                                           <div class="pr">
 											<div class="state-dragable"><span 
@@ -516,7 +516,7 @@ blue"></a></td>
 
 <!-- 授权管理 用户列表 模板 -->
 <script id="listUserKinguserTemplate" type="text/x-dot-template">
-<tr data-fdid="{{=it.id}}">
+<tr data-fdid="{{=it.id}}" data-creater="uncreater">
 	<td class="tdTit">
         <div class="pr">
 		<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-

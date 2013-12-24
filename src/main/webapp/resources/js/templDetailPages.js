@@ -560,7 +560,7 @@
 			$("#submitUser").click(function(){
 				var data = [];
 				$("#list_user>tr").each(function(){
-					if($(this).attr("data-fdid")!="creater"){ 
+					if($(this).attr("data-creater")=="uncreater"){ 
 						data.push({
 							id: $(this).attr("data-fdid"),
 							index: $(this).index(),
@@ -569,7 +569,6 @@
 						});
 					}
 				});
-				// console.log(JSON.stringify(data));
 				// alert(JSON.stringify(data));
 				$.ajax({
 					  url: $('#ctx').val()+"/ajax/course/updateCourseAuth?courseId="+$('#courseId').val(),
