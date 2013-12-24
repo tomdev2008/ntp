@@ -992,14 +992,18 @@
 							if($(this).prevAll(":text").val()){
 								var tit = $(this).prevAll(":text").val();
 								var _val = $("#keyword").val();
-								if(_val.indexOf(tit)<0){
-									$addBtn.before(tagKeywordFn({keyword: tit})).prev().bind("click",delKeyword);
-									$("#keyword").val(_val + "," + tit);
-									$(this).parent().remove();
-								}else{
-									$(this).next().after('<span class="help-block">不能添加重复的关键词！</span>');
-									$("#addKey").val("");
-								}								
+								var strs= new Array(); //定义一数组
+								strs=_val.split(","); //字符分割 
+								for (i=0;i<strs.length ;i++ ) {
+									var temp = strs[i];
+									if(temp == tit){
+										$(this).next().after('<label class="error" for="addKey">不能添加重复的关键词！</label>');
+									    return;
+									}
+								}
+								$addBtn.before(tagKeywordFn({keyword: tit})).prev().bind("click",delKeyword);
+								$("#keyword").val(_val + "," + tit);
+								$(this).parent().remove();
 							} else {
 								$(this).parent().addClass("warning");
 							}					
