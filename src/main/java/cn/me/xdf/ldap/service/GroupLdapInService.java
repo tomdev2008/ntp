@@ -41,7 +41,7 @@ public class GroupLdapInService extends LdapInService {
     @Override
     public void initData() {
         List<SysOrgGroup> list = ldapTemplate.search(
-                "ou=群组", "(&(objectClass=xdf-group))",
+                "ou=家庭教育中心员工,ou=群组", "(&(objectClass=xdf-group))",
                 new GroupContextMapper());
         String msg = updateGroup(list);
         ldapLogService.saveLog(msg);
@@ -51,7 +51,7 @@ public class GroupLdapInService extends LdapInService {
     public String executeUpdateData(int day) {
         String date = DateUtil.convertDateToString(DateUtils.addDays(new Date(), 0 - day), "yyyyMMddHHmmss.ssssss");
         List<SysOrgGroup> list = ldapTemplate.search(
-                "cn=users", "(&(objectClass=xdf-group)(modifyTimeStamp>=" + date + "))",
+                "ou=群组", "(&(objectClass=xdf-group)(modifyTimeStamp>=" + date + "))",
                 new GroupContextMapper());
         String msg = updateGroup(list);
         ldapLogService.saveLog(msg);
@@ -73,15 +73,14 @@ public class GroupLdapInService extends LdapInService {
                 insertSize++;
             }
 
-
             String[] members = group.getPersonMemeber();
             if (members != null) {
                 for (String s : members) {
                     String base = s.replaceAll(",dc=xdf,dc=cn", "");
-                    if (base.indexOf('=', ',') <= 1) {
+                    log.info(base);
+                    if (base.indexOf(',') - base.indexOf('=') <= 1) {
                         continue;
                     }
-                    log.info(base);
                     List<String> personFdNos = ldapTemplate.search(base, "(&(objectClass=xdf-person))", new PersonContextMapper());
                     for (String personFdNo : personFdNos) {
                         List<SysOrgElement> personElements = findByCriteria(SysOrgElement.class, Value.eq("fdNo", personFdNo));

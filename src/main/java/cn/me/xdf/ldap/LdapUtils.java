@@ -1,8 +1,10 @@
 package cn.me.xdf.ldap;
 
 import cn.me.xdf.model.organization.SysOrgConstant;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.ldap.core.DirContextAdapter;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,13 +17,22 @@ import java.util.Map;
  */
 public class LdapUtils {
 
+    public static String getDn(DirContextAdapter context) {
+        Enumeration<String> dns = context.getDn().getAll();
+        StringBuilder sb = new StringBuilder();
+        while (dns.hasMoreElements()) {
+            sb.append(dns.nextElement()).append(",");
+        }
+        return StringUtils.removeEnd(sb.toString(), ",");
+    }
+
 
     public static void setStringAttribute(DirContextAdapter context, Map<String, Object> map, String key, String name) {
         String v = context.getStringAttribute(name);
         if (v != null)
             map.put(key, v);
         else
-            map.put(key,"");
+            map.put(key, "");
     }
 
     /**

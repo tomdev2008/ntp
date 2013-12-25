@@ -63,7 +63,7 @@ public class SysOrgElement extends IdEntity implements SysOrgConstant{
     private Date createTime;
 
 
-    @Column(name = "FD_NAME")
+    @Column(name = "FD_NAME",length = 500)
     public String getFdName() {
         return fdName;
     }
@@ -150,6 +150,7 @@ public class SysOrgElement extends IdEntity implements SysOrgConstant{
         isAvailable = available;
     }
 
+    @Column(length = 2000)
     public String getLdapDN() {
         return ldapDN;
     }

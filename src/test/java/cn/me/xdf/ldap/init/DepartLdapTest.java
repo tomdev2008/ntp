@@ -21,6 +21,6 @@ public class DepartLdapTest extends BaseTest {
 
     @Test
     public void testInit() {
-        departLdapInService.initData();
+        departLdapInService.executeUpdateData(5);
     }
 }

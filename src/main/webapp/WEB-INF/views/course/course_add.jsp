@@ -565,9 +565,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 <!-- 视频,文档。。。页 模板 -->
 <script id="mediaPageTemplate" type="text/x-dot-template">
     <div class="page-header">
-		<a href="#sectionsDirectory">
          <button class="btn btn-link" onclick="backDirectory();" type="button" style="position:absolute;left:10px;top:20px">返回章节目录</button>
-       </a>
     <h4>第{{=it.lectureIndex}}节 {{=it.pageTitle || ''}}</h4>
 		<button class="btn btn-primary btn-large" onclick="saveDirectory();" type="button" style="position:absolute;right:20px;top:15px">保存</button>
     </div>
@@ -662,7 +660,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
             <div class="section" >
                 <label>在下面搜索框中输入{{=it.typeTxt}}名称，在<a id="gotoMaterial" href="#">课程素材库</a>(这是个链接) 中进行查找并添加到本节中</label>
                 <div class="autoCompleteWrap">
-					<input id="addMedia" type="text" />
+					<input id="addMedia" type="text"/>
 					<!--
 					<button class="btn btn-primary btn-large" type="button" >选择</button>
 					-->
@@ -675,9 +673,14 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
 
 <!-- 视频,文档。。。列表项 模板 -->
 <script id="mediaListTemplate" type="text/x-dot-template">
-    <li data-fdid="{{=it.id}}"><span class="title">{{=it.typeTxt}} <span class="index">{{=it.index}}</span>：<span 
-
-class="name">{{=it.name}}</span></span>
+    <li data-fdid="{{=it.id}}"><span class="title">{{=it.typeTxt}}
+        <span class="index">{{=it.index}}</span>：<span class="name">
+                         {{?it.name.length>38}}
+							{{=it.name.substring(0,38)}}...
+						{{??}}
+							{{=it.name}}
+						{{?}}
+        </span></span>
         <a class="icon-pencil2 btn-ctrls" href="#"></a>
         <a class="icon-remove btn-ctrls" href="#"></a>
         <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-
@@ -739,21 +742,21 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 	                <i class="icon-content"></i>
 	                课程内容
 	            </li>
-	            <li class="active"><a href="#basicInfo">基本信息</a></li>  
-	            <li><a href="#sectionsDirectory">章节目录</a></li> 
+	            <li class="active"><a href="#" data-target='basicInfo'>基本信息</a></li>  
+	            <li><a href="#" data-target='sectionsDirectory'>章节目录</a></li> 
 	             <li class="nav-header">
 	                <i class="icon-info"></i>
 	                课程信息
 	            </li>
-	            <li><a href="#detailInfo">详细信息</a></li>
-	            <li><a href="#promotion">课程推广</a></li>  
+	            <li><a href="#" data-target='detailInfo'>详细信息</a></li>
+	            <li><a href="#" data-target='promotion'>课程推广</a></li>  
 	             <li class="nav-header">
 	                <i class="icon-setting"></i>
 	                课程设置
 	            </li>
-	            <li><a href="#accessRight">访问权限</a></li>   
-	            <li><a href="#kinguser">授权管理</a></li>
-	            <li><a href="#deleteCourse">删除课程</a></li>       
+	            <li><a href="#" data-target='accessRight'>访问权限</a></li>   
+	            <li><a href="#" data-target='kinguser'>授权管理</a></li>
+	            <li><a href="#" data-target='deleteCourse'>删除课程</a></li>       
 	    </ul>
 	  </div>
 		<div class="w790 pull-right" id="rightCont">    
@@ -790,9 +793,15 @@ $.Placeholder.init();
 		     $('#upMaterial').uploadify('destroy'); 
 		}
 		KindEditor.remove('textarea[name="courseAbstract"]');
-		urlRouter();		
+		urlRouter($(this).attr('data-target'));		
 	});
 	function backDirectory(){//返回章节目录
+		if ($('#upMovie').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+		     $('#upMovie').uploadify('destroy'); 
+		}
+		if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+		     $('#upMaterial').uploadify('destroy'); 
+		}
 		urlRouter("sectionsDirectory");
 	}
 	function saveDirectory(){//触发一个提交事件
@@ -803,7 +812,7 @@ $.Placeholder.init();
 	function urlRouter(href,opt){
 		setTimeout(function(){
 			var param = href ? href : location.href.split("#").pop();	
-			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass("active");
+			$("#sideNav>li>a[data-target='" + param + "' ]").parent().addClass("active").siblings().removeClass("active");
 			switch(param){			
 	  			case "basicInfo":
 	  				rightCont.loadBasicInfoPage("基本信息");
@@ -816,8 +825,7 @@ $.Placeholder.init();
 	  					rightCont.loadDetailInfoPage("详细信息");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					$("#sideNav>li>a").removeClass("active");
-	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
 	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
@@ -826,8 +834,7 @@ $.Placeholder.init();
 	  					rightCont.loadPromotionPage("课程推广");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					$("#sideNav>li>a").removeClass("active");
-	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
 	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
@@ -836,8 +843,7 @@ $.Placeholder.init();
 	  					rightCont.loadAccessRightPage("权限设置");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					$("#sideNav>li>a").removeClass("active");
-	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
 	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
@@ -846,8 +852,7 @@ $.Placeholder.init();
 	  					rightCont.loadKinguserPage("授权管理");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					$("#sideNav>li>a").removeClass("active");
-	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
 	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
@@ -856,8 +861,7 @@ $.Placeholder.init();
 						rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					$("#sideNav>li>a").removeClass("active");
-	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
 	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
@@ -911,7 +915,41 @@ $.Placeholder.init();
 	}
 	urlRouter();
 	
-
+	//课程发布
+	function releaseCourse(){
+		saveCourseSigleInfo();
+		 //发布前验证课程的基本信息是否已完善(防止出现未命名情况);
+		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
+	}
+	
+	//课程预览
+	function previewCourse(){
+		saveCourseSigleInfo();
+		window.open("${ctx}/course/previewCourse?courseId="+$("#courseId").val(),'_blank');
+	}
+	function saveCourseSigleInfo(){
+		if($("#formBasicInfo").length>0){
+			saveBaseInfo();//基本信息
+		}
+		if($("#formMedia").length>0){
+			$("#formMedia").trigger("submit");
+		}
+		if($("#formDetailInfo").length>0){
+			if(!$("#formDetailInfo").valid()){
+				return;
+			}
+			saveDetailInfo();//保存详情
+		}
+		if($("#formPromotion").length>0){
+			saveCoursePic();//课程推广
+		}
+		if($("#formAccessRight").length>0){
+			saveIsPublish();//访问权限
+		}
+		if($("#submitUser").length>0){
+			$("#submitUser").trigger("click");
+		}
+	}
 	//ajax保存课程基本信息
 	function saveBaseInfo(){
 		if(!$("#formBasicInfo").valid()){
@@ -981,17 +1019,6 @@ function successSelectArea(imgSrc){
     //imgshow
     $("#imgshow").show();
 }
-	
-	//课程发布
-	function releaseCourse(){
-		 //发布前验证课程的基本信息是否已完善(防止出现未命名情况);
-		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
-	}
-	
-	//课程预览
-	function previewCourse(){
-		window.open("${ctx}/course/previewCourse?courseId="+$("#courseId").val(),'_blank');
-	}
 	
 	//课程封页图片保存
     function saveCoursePic(){

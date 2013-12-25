@@ -73,7 +73,7 @@
 
     <!--评论心情表单模板-->
     <script id="formCommentTemplate" type="x-dot-template">
-        <div class="formBox">
+        <div class="formBox" id="formBox">
                 <form action="#">
                     <textarea class="input-block-level" name="comment" rows="2" required maxlength="200" ></textarea>
                     <div class="formActions">
@@ -273,6 +273,8 @@ $(function(){
         if(!$this.hasClass("active")){
             var tips = "";
             if($this.hasClass("comment")){
+            	$("#formBox").remove();
+                $this.removeClass("active");
                 tips = "点击评论";
                 var $form = $(formCommentFn());
                 var dataRetuen={};
@@ -400,7 +402,7 @@ $(function(){
             $("#field-mood").val("");
             jalert_tips("发表心情成功");
         }
-    })
+    });
 
     function formatDate(d){
         return ((d.getMonth()+1)<10 ? "0"+(d.getMonth()+1) : d.getMonth()+1) + " " + (d.getDate()<10 ? "0"+ d.getDate() : d.getDate()) + " "

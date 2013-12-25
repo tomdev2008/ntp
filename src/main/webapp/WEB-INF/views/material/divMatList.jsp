@@ -14,7 +14,9 @@
 					</a>
 					<ul class="dropdown-menu">
 					    <li><a href="#rightCont" onclick="exportData();">导出列表</a></li>
+					<c:if test="${param.fdType!='07'}">
 						<li><a href="#rightCont" onclick="downloadMater();">打包下载</a></li>
+					</c:if>
 						<li><a href="#rightCont" onclick="batchDelete();">批量删除</a></li>
 					</ul>
 				</div>

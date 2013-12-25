@@ -12,7 +12,28 @@
             <list>
                 <ref local="attMainInterfaceTrigger" />
                 <ref local="attMainClearTodoTrigger"/>
+                <ref local="organInTrigger"/>
             </list>
+        </property>
+    </bean>
+
+
+    <bean id="organInTodoDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <bean class="cn.me.xdf.quartz.OrganInLdapQuartz"></bean>
+        </property>
+        <property name="targetMethod">
+            <value>executeTodo</value>
+        </property>
+    </bean>
+
+    <bean id="organInTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="organInTodoDetail" />
+        </property>
+        <property name="cronExpression">
+            <value>0 15 3 * * ?</value>
         </property>
     </bean>
 
