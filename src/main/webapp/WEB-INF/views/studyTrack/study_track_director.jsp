@@ -13,8 +13,8 @@
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
 <![endif]-->
-
 <script src="${ctx}/resources/js/doT.min.js" type="text/javascript"></script>
+<c:import url="/WEB-INF/views/studyTrack/divtrackListTmp.jsp"></c:import>
 </head>
 <body>
 <section class="container">	
