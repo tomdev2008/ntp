@@ -739,21 +739,21 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 	                <i class="icon-content"></i>
 	                课程内容
 	            </li>
-	            <li class="active"><a href="#basicInfo">基本信息</a></li>  
-	            <li><a href="#sectionsDirectory">章节目录</a></li> 
+	            <li class="active"><a href="#" data-target='basicInfo'>基本信息</a></li>  
+	            <li><a href="#" data-target='sectionsDirectory'>章节目录</a></li> 
 	             <li class="nav-header">
 	                <i class="icon-info"></i>
 	                课程信息
 	            </li>
-	            <li><a href="#detailInfo">详细信息</a></li>
-	            <li><a href="#promotion">课程推广</a></li>  
+	            <li><a href="#" data-target='detailInfo'>详细信息</a></li>
+	            <li><a href="#" data-target='promotion'>课程推广</a></li>  
 	             <li class="nav-header">
 	                <i class="icon-setting"></i>
 	                课程设置
 	            </li>
-	            <li><a href="#accessRight">访问权限</a></li>   
-	            <li><a href="#kinguser">授权管理</a></li>
-	            <li><a href="#deleteCourse">删除课程</a></li>       
+	            <li><a href="#" data-target='accessRight'>访问权限</a></li>   
+	            <li><a href="#" data-target='kinguser'>授权管理</a></li>
+	            <li><a href="#" data-target='deleteCourse'>删除课程</a></li>       
 	    </ul>
 	  </div>
 		<div class="w790 pull-right" id="rightCont">    
@@ -790,7 +790,7 @@ $.Placeholder.init();
 		     $('#upMaterial').uploadify('destroy'); 
 		}
 		KindEditor.remove('textarea[name="courseAbstract"]');
-		urlRouter();		
+		urlRouter($(this).attr('data-target'));		
 	});
 	function backDirectory(){//返回章节目录
 		urlRouter("sectionsDirectory");
@@ -803,7 +803,7 @@ $.Placeholder.init();
 	function urlRouter(href,opt){
 		setTimeout(function(){
 			var param = href ? href : location.href.split("#").pop();	
-			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass("active");
+			$("#sideNav>li>a[data-target='" + param + "' ]").parent().addClass("active").siblings().removeClass("active");
 			switch(param){			
 	  			case "basicInfo":
 	  				rightCont.loadBasicInfoPage("基本信息");
@@ -911,7 +911,41 @@ $.Placeholder.init();
 	}
 	urlRouter();
 	
-
+	//课程发布
+	function releaseCourse(){
+		saveCourseSigleInfo();
+		 //发布前验证课程的基本信息是否已完善(防止出现未命名情况);
+		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
+	}
+	
+	//课程预览
+	function previewCourse(){
+		saveCourseSigleInfo();
+		window.open("${ctx}/course/previewCourse?courseId="+$("#courseId").val(),'_blank');
+	}
+	function saveCourseSigleInfo(){
+		if($("#formBasicInfo").length>0){
+			saveBaseInfo();//基本信息
+		}
+		if($("#formMedia").length>0){
+			$("#formMedia").trigger("submit");
+		}
+		if($("#formDetailInfo").length>0){
+			if(!$("#formDetailInfo").valid()){
+				return;
+			}
+			saveDetailInfo();//保存详情
+		}
+		if($("#formPromotion").length>0){
+			saveCoursePic();//课程推广
+		}
+		if($("#formAccessRight").length>0){
+			saveIsPublish();//访问权限
+		}
+		if($("#submitUser").length>0){
+			$("#submitUser").trigger("click");
+		}
+	}
 	//ajax保存课程基本信息
 	function saveBaseInfo(){
 		if(!$("#formBasicInfo").valid()){
@@ -981,17 +1015,6 @@ function successSelectArea(imgSrc){
     //imgshow
     $("#imgshow").show();
 }
-	
-	//课程发布
-	function releaseCourse(){
-		 //发布前验证课程的基本信息是否已完善(防止出现未命名情况);
-		window.location.href="${ctx}/course/releaseCourse?courseId="+$("#courseId").val();
-	}
-	
-	//课程预览
-	function previewCourse(){
-		window.open("${ctx}/course/previewCourse?courseId="+$("#courseId").val(),'_blank');
-	}
 	
 	//课程封页图片保存
     function saveCoursePic(){

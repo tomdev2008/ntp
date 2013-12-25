@@ -891,24 +891,6 @@
 				  },
 			});
 			
-			//调用ajax保存课程模板的详细信息
-			function saveDetailInfo(){
-				$.post($('#ctx').val()+'/ajax/course/saveDetailInfo',{
-					 courseId : $("#courseId").val(),
-					 courseAbstract: $("#courseAbstract").val(),
-					 learnObjectives:  $("#learnObjectives").val(),
-					 suggestedGroup: $("#suggestedGroup").val(),
-					 courseRequirements: $("#courseRequirements").val(),
-					 courseAuthor: $("#courseAuthor").val(),
-					 authorDescrip: $("#authorDescrip").val()
-					})
-				.success(function(){
-					KindEditor.remove('textarea[name="courseAbstract"]');
-					//提交成功跳转到详细信息
-					jalert_tips("保存成功");
-		       	   // urlRouter("promotion");
-				});
-			}
 			
 			/*
 			 * data = {//ajax 成功后删除 action: "#",//form表单action courseAbstract:
@@ -1339,6 +1321,23 @@
 		}
 		
 	}());
-	
+	//调用ajax保存课程模板的详细信息
+	function saveDetailInfo(){
+		$.post($('#ctx').val()+'/ajax/course/saveDetailInfo',{
+			 courseId : $("#courseId").val(),
+			 courseAbstract: $("#courseAbstract").val(),
+			 learnObjectives:  $("#learnObjectives").val(),
+			 suggestedGroup: $("#suggestedGroup").val(),
+			 courseRequirements: $("#courseRequirements").val(),
+			 courseAuthor: $("#courseAuthor").val(),
+			 authorDescrip: $("#authorDescrip").val()
+			})
+		.success(function(){
+			//KindEditor.remove('textarea[name="courseAbstract"]');
+			//提交成功跳转到详细信息
+			jalert_tips("保存成功");
+       	   // urlRouter("promotion");
+		});
+	}	
 	
 	
