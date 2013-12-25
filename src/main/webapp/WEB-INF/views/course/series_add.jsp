@@ -89,8 +89,8 @@
 				第<span class="index">{{=param.index}}</span>阶段
 				<span class="name">{{=param.title || ''}}</span>
 			</span>
-			<a class="icon-pencil2 icon-white btn-ctrls" href="#"></a>
-			<a class="icon-remove icon-white btn-ctrls" href="#"></a>
+			<a class="icon-pencil2  btn-ctrls" href="#"></a>
+			<a class="icon-remove btn-ctrls" href="#"></a>
 			<a href="#course" class="btn-edit">编辑内容</a>
 			<div class="state-dragable">
 				<span class="icon-bar"></span>
