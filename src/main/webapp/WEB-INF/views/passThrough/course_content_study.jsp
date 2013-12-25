@@ -1783,7 +1783,7 @@
                                 'uploader' : '${ctx}/common/file/o_upload',
                                 'auto' : true,
                                 'fileTypeExts' : '*.*',
-                                'fileSizeLimit':2097152,// 限制文件大小为2G
+                                'fileSizeLimit':20971520,// 限制文件大小为2G
                                 'onInit' : function(){
                                 	$("#upMaterial").next(".uploadify-queue").remove();
                                 },
