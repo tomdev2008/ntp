@@ -692,6 +692,8 @@ $(function(){
 				var materialName = $("#examPaperName").val();
 				var materialintro1 = $("#examPaperIntro").val();
 				var materialScore = $("#examPaperTime").val();
+				var author = $("#author").val();
+				var authorIntro = $("#authorIntro").val();
 				if (materialName == "" || materialName == null) {
 					$("#examPaperNameErr").html("请先设置试卷名称");
 					$("#examPaperNameErr").css("display", "block");
@@ -939,6 +941,8 @@ $(function(){
 					data.materialName=materialName;
 					data.materialintro=materialintro1;
 					data.materialScore=materialScore;
+					data.author=author;
+					data.authorIntro=authorIntro;
 					$.ajax({
 								url : "${ctx}/ajax/examquestion/saveOrUpdateExamQuestion?questionId="
 										+ fdid

@@ -232,6 +232,7 @@ public class CourseAjaxController {
 				}
 				course.setCreator(sysOrgPerson);
 				course.setFdAuthor(ShiroUtils.getUser().getName());
+				course.setFdAuthorDescription(sysOrgPerson.getSelfIntroduction());
 				course.setFdCreateTime(createdate);
 				course = courseService.save(course);
 			} else {
@@ -266,6 +267,7 @@ public class CourseAjaxController {
 			}
 			course.setCreator(sysOrgPerson);
 			course.setFdAuthor(ShiroUtils.getUser().getName());
+			course.setFdAuthorDescription(sysOrgPerson.getSelfIntroduction());
 			course.setFdCreateTime(createdate);
 			course = courseService.save(course);
 			courseId = course.getFdId();

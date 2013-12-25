@@ -16,7 +16,7 @@
 <!-- 模板详情_右侧内容区标题 模板 -->
 <script id="contHeaderTemplate" type="text/x-dot-template">
  	<div class="page-header">        	
-		<h4>{{=it.pageTitle || ''}}</h4>           
+		<h4>{{=it.pageTitle || ''}}</h4>   
 	</div>
 </script>
 <!-- 模板详情_系列目录 模板 -->
@@ -89,8 +89,8 @@
 				第<span class="index">{{=param.index}}</span>阶段
 				<span class="name">{{=param.title || ''}}</span>
 			</span>
-			<a class="icon-pencil2 icon-white btn-ctrls" href="#"></a>
-			<a class="icon-remove icon-white btn-ctrls" href="#"></a>
+			<a class="icon-pencil2  btn-ctrls" href="#"></a>
+			<a class="icon-remove btn-ctrls" href="#"></a>
 			<a href="#course" class="btn-edit">编辑内容</a>
 			<div class="state-dragable">
 				<span class="icon-bar"></span>
@@ -114,7 +114,7 @@
                     	<label for="seriesTitle">系列名称</label>
                         <input type="text" id="seriesTitle" name="seriesTitle" required minlength="6" class="input-block-level" value="{{=it.seriesTitle || ''}}"  />
                         <label for="seriesDesc">系列描述</label>
-                        <textarea name="seriesDesc" id="seriesDesc" required  minlength="12" class="input-block-level" rows="3">{{=it.fdDescription || ''}}</textarea>   
+                        <textarea name="seriesDesc" id="seriesDesc"  minlength="12" class="input-block-level" rows="3">{{=it.fdDescription || ''}}</textarea>   
 						<label for="seriesAuthor">作者</label>
                         <input type="text" name="seriesAuthor" required  minlength="3" id="seriesAuthor"  class="input-block-level" value="{{=it.seriesAuthor || ''}}"/>   
 						<label for="authorDesc">作者简介</label>
@@ -186,7 +186,11 @@
 <!-- 系列课程 模板 -->
 <script id="mediaPageTemplate" type="text/x-dot-template">
     <div class="page-header">
+<button class="btn btn-link" onclick="backDirectory();" type="button" style="position:absolute;left:10px;top:20px">返回阶段目录</button>
+
         <h4>第{{=it.lectureIndex}}阶段 {{=it.pageTitle || ''}}</h4>
+<button class="btn btn-primary btn-large" onclick="saveDirectory();" type="button" style="position:absolute;right:20px;top:15px">保存</button>
+
     </div>
     <div class="page-body mediaPage-content">
         <form id="formMedia" method="post" class="form-horizontal" action="{{=it.action || '##'}}">
@@ -263,7 +267,7 @@
 	        <div class="page-title section" id="page-title">
 	        	<input type='hidden' id='seriesId' value='${series.fdId}' />
 	        	<h5>
-	        	我正在看：<a href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime" class="backParent">我的系列课程</a>
+	        	<a href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime" class="backParent">返回我的系列课程</a>
 	        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	        	${series.fdName}
 	        	</h5>
@@ -280,14 +284,14 @@
 	                <i class="icon-content"></i>
 	                系列内容
 	            </li>
-	            <li class="active"><a href="#sectionsDirectory">阶段目录</a></li>
+	            <li class="active"><a href="#" data-target='basicInfo'>系列信息</a></li> 
+	            <li ><a href="#" data-target='sectionsDirectory'>阶段目录</a></li>
 	             <li class="nav-header">
 	                <i class="icon-setting"></i>
 	                系列设置
 	            </li>
-	            <li ><a href="#basicInfo">系列信息</a></li> 
-	            <li><a href="#promotion">系列推广</a></li>  
-	            <li><a href="#deleteSeries">系列删除</a></li>       
+	            <li><a href="#" data-target='promotion'>系列推广</a></li>  
+	            <li><a href="#" data-target='deleteSeries'>系列删除</a></li>       
 	    </ul>
 	  </div>
 		<div class="w790 pull-right" id="rightCont">    
@@ -311,28 +315,46 @@ $("#sideNav>li>a").bind("click",function(e){
 	if ($('#upMovie').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
 	     $('#upMovie').uploadify('destroy'); 
 	}
-	urlRouter();		
+	urlRouter($(this).attr('data-target'));		
 });
+function backDirectory(){//返回阶段目录
+	if ($('#upMovie').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+	     $('#upMovie').uploadify('destroy'); 
+	}
+	urlRouter("sectionsDirectory");
+}
+function saveDirectory(){//触发一个提交事件
+	$("#formMedia").trigger("submit");
+}
 	//根据URL中‘#’后参数判断加载栏目
 	function urlRouter(href,opt){
 		setTimeout(function(){
 			
 			var param = href ? href : location.href.split("#").pop();			
-			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass("active");
+			$("#sideNav>li>a[data-target='" + param + "' ]").parent().addClass("active").siblings().removeClass("active");
 			switch(param){			
 	  			case "basicInfo":
 	  					rightCont.loadBasicInfoPage("系列信息");
 	  				break;
+	  			case "sectionsDirectory":
+					rightCont.loadSectionDirectoryPage("章节目录");
+  				    break;
 	  			case "promotion":
 	  				if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 	  					rightCont.loadPromotionPage("系列推广");
 	  				}else{
 	  					jalert_tips("请先设置系列信息");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
 				case "deleteSeries":
 					if($('#seriesId').val()!=null &&  $('#seriesId').val()!=''){
 						rightCont.loadDeleteCoursePage("删除系列",$("#seriesId").val());
+	  				}else{
+	  					jalert_tips("请先设置系列信息");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
 				case "course":
@@ -340,9 +362,9 @@ $("#sideNav>li>a").bind("click",function(e){
                         rightCont.loadVideoPage(opt);
                         break;
                     }
-	  			case "sectionsDirectory":
 	  			default:
-	  				rightCont.loadSectionDirectoryPage("系列目录");			
+	  				rightCont.loadSectionDirectoryPage("章节目录");
+	  				rightCont.loadBasicInfoPage("系列信息");
 	  		}
 		},10);
 		
@@ -400,8 +422,19 @@ $("#sideNav>li>a").bind("click",function(e){
 	
 	//系列预览
 	function previewCourse(){
-		//window.location.href="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime";
+		saveCourseSigleInfo();
 		window.open("${ctx}/series/previewSeries?seriesId="+$("#seriesId").val(),'_blank');
+	}
+	function saveCourseSigleInfo(){
+		if($("#formBasicInfo").length>0){
+			saveBaseInfo();//基本信息
+		}
+		if($("#formMedia").length>0){
+			$("#formMedia").trigger("submit");
+		}
+		if($("#formPromotion").length>0){
+			saveSeriesPic();//课程推广
+		}
 	}
 	//图片剪切成功
 	function successSelectArea(imgSrc){
