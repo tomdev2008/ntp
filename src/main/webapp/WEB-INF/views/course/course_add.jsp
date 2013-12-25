@@ -20,8 +20,8 @@
 
 <!-- 模板详情_右侧内容区标题 模板 -->
 <script id="contHeaderTemplate" type="text/x-dot-template">
- 	<div class="page-header">        	
-		<h4>{{=it.pageTitle || ''}}</h4>           
+ 	<div class="page-header">  
+		<h4>{{=it.pageTitle || ''}}</h4>  
 	</div>
 </script>
 
@@ -60,8 +60,8 @@
 					{{ } }}
 	      	</ul>
 	        <div class="section-add">
+                <button id="addChapter" class="btn btn-block" type="button">添加章</button>
 	        	<button id="addLecture" class="btn btn-block btn-lecture-add" type="button">添加节</button>
-	            <button id="addChapter" class="btn btn-block" type="button">添加章</button>
 	        </div>
 	      </div>
       </div> 
@@ -565,13 +565,20 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 <!-- 视频,文档。。。页 模板 -->
 <script id="mediaPageTemplate" type="text/x-dot-template">
     <div class="page-header">
-        <h4>第{{=it.lectureIndex}}节 {{=it.pageTitle || ''}}</h4>
+		<a href="#sectionsDirectory">
+         <button class="btn btn-link" onclick="backDirectory();" type="button" style="position:absolute;left:10px;top:20px">返回章节目录</button>
+       </a>
+    <h4>第{{=it.lectureIndex}}节 {{=it.pageTitle || ''}}</h4>
+		<button class="btn btn-primary btn-large" onclick="saveDirectory();" type="button" style="position:absolute;right:20px;top:15px">保存</button>
     </div>
     <div class="page-body mediaPage-content">
         <form id="formMedia" method="post" class="form-horizontal" action="{{=it.action || '##'}}">
 	    	<div class="section" >
 				<div class="control-group">
+ 
+
                     <label class="control-label" >章节设置</label>
+
                     <div class="controls">
                         <input name="isElective" id="isElective" value="{{=it.isElective || '1'}}" type="hidden">
                         <div class="btn-group btns-radio" data-toggle="buttons-radio">
@@ -613,7 +620,13 @@ xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</t
                     {{~it.mediaList :item:index}}
                         {{~it.mediaList :item2:index2}}
                             {{?(index+1) == item2.index}}
-                            <li data-fdid="{{=item.id}}"><span class="title">{{=it.typeTxt}} <span class="index">
+                            <li data-fdid="{{=item.id}}"><span class="title">
+                             {{?it.typeTxt.length>32}}
+							    {{=it.typeTxt.substring(0,32)}}...
+						     {{??}}
+							    {{=it.typeTxt}}
+						     {{?}}
+                           <span class="index">
 
 {{=item2.index}}</span>：<span class="name">
 						{{?item.title.length>38}}
@@ -779,6 +792,12 @@ $.Placeholder.init();
 		KindEditor.remove('textarea[name="courseAbstract"]');
 		urlRouter();		
 	});
+	function backDirectory(){//返回章节目录
+		urlRouter("sectionsDirectory");
+	}
+	function saveDirectory(){//触发一个提交事件
+		$("#formMedia").trigger("submit");
+	}
 	
 	//根据URL中‘#’后参数判断加载栏目
 	function urlRouter(href,opt){
@@ -789,11 +808,17 @@ $.Placeholder.init();
 	  			case "basicInfo":
 	  				rightCont.loadBasicInfoPage("基本信息");
 	  				break;
+	  			case "sectionsDirectory":
+						rightCont.loadSectionDirectoryPage("章节目录");
+	  				break;
 	  			case "detailInfo":
 	  				if($('#courseId').val()!=null &&  $('#courseId').val()!=''){
 	  					rightCont.loadDetailInfoPage("详细信息");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
+	  					$("#sideNav>li>a").removeClass("active");
+	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
 	  			case "promotion":
@@ -801,7 +826,9 @@ $.Placeholder.init();
 	  					rightCont.loadPromotionPage("课程推广");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					
+	  					$("#sideNav>li>a").removeClass("active");
+	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
 	  			case "accessRight":
@@ -809,6 +836,9 @@ $.Placeholder.init();
 	  					rightCont.loadAccessRightPage("权限设置");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
+	  					$("#sideNav>li>a").removeClass("active");
+	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
 	  			case "kinguser":
@@ -816,6 +846,9 @@ $.Placeholder.init();
 	  					rightCont.loadKinguserPage("授权管理");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
+	  					$("#sideNav>li>a").removeClass("active");
+	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
 				case "deleteCourse":
@@ -823,6 +856,9 @@ $.Placeholder.init();
 						rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
+	  					$("#sideNav>li>a").removeClass("active");
+	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
                 case "video":
@@ -865,11 +901,8 @@ $.Placeholder.init();
                         rightCont.loadVideoPage(opt,"10");
                        
                     }
-	  			case "sectionsDirectory":
-	  				rightCont.loadSectionDirectoryPage("章节目录");
-	  				break;
 	  			default:
-	  				//rightCont.loadSectionDirectoryPage("章节目录");
+	  				rightCont.loadSectionDirectoryPage("章节目录");
 	  			    rightCont.loadBasicInfoPage("基本信息");
 	  		}
 		},10);
@@ -877,6 +910,7 @@ $.Placeholder.init();
 		
 	}
 	urlRouter();
+	
 
 	//ajax保存课程基本信息
 	function saveBaseInfo(){

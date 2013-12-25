@@ -1063,6 +1063,7 @@
 			 * ============================================ ajax 加载章节数据
 			 * ================================================
 			 */
+			
 			$.ajax({
 				  url: $('#ctx').val()+"/ajax/catalog/getCatalogJsonByCourseId?courseId="+$('#courseId').val(),
 				  async:false,
