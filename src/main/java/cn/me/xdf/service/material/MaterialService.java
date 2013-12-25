@@ -187,7 +187,7 @@ public class MaterialService extends BaseService {
 	 * @param materialId
 	 */
 	@Transactional(readOnly = false)
-	public void saveMaterAuth(String kingUser, String materialId) {
+	public void saveMaterAuth(String kingUser, String materialId,String creatorId) {
 		if (StringUtil.isNotBlank(kingUser)) {
 			List<Map> list = JsonUtils.readObjectByJson(kingUser, List.class);
 			MaterialInfo info = this.get(materialId);
@@ -198,7 +198,7 @@ public class MaterialService extends BaseService {
 			}
 			for (Map map : list) {
 				String personid =map.get("id").toString();
-				if(personid.equals("creator")){
+				if(personid.equals(creatorId)){
 					continue;
 				}
 				MaterialAuth auth = new MaterialAuth();

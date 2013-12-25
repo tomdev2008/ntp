@@ -321,7 +321,7 @@ public class MaterialAjaxController {
 		info.setRichContent(richText);
 		materialService.save(info);
 		if (!permission.equals("open")) {
-			materialService.saveMaterAuth(kingUser, info.getFdId());
+			materialService.saveMaterAuth(kingUser, info.getFdId(),info.getCreator().getFdId());
 		}
 	}
 

@@ -641,7 +641,7 @@ $(function(){
 					.result(
 							function(e, item) {
 								var flag = true;
-								$("#addUser").next(".help-block").remove();
+								$("#addUser").next(".error").remove();
 								$("#list_user>tr")
 										.each(
 												function() {

@@ -585,7 +585,7 @@ $(function(){
 		width:748
     }).result(function(e,item){
 		var flag = true;
-		$("#addUser").next(".help-block").remove();
+		$("#addUser").next(".error").remove();
 		$("#list_user>tr").each(function(){
 			if($(this).attr("data-fdid")==item.id){
 				$("#addUser").after('<label class="error" for="addKey">不能添加重复的关键词!');;
