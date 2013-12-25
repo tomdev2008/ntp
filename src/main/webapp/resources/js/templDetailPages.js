@@ -975,7 +975,7 @@
 								var _val = $("#keyword").val();
 								var strs= new Array(); //定义一数组
 								strs=_val.split(","); //字符分割 
-								for (i=0;i<strs.length ;i++ ) {
+								for (var i=0;i<strs.length ;i++ ) {
 									var temp = strs[i];
 									if(temp == tit){
 										$(this).next().after('<label class="error" for="addKey">不能添加重复的关键词！</label>');
