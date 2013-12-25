@@ -47,13 +47,11 @@ public class AttMainInterfaceQuartz implements Serializable {
             return;
 
         for (AttMain attMain : attMainList) {
-            log.info("----");
             covertVideoToFlag(attMain);
         }
     }
 
     private void covertVideoToFlag(AttMain attMain) {
-        log.info("----="+attMain.getFdFileName());
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("userid", Config.userid);
         try {
