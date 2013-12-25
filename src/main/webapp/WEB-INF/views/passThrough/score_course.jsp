@@ -61,10 +61,10 @@ function addMessagemethod(){
 		  },
 		  success: function(result){
 			//jalert("评论发布成功");
-			var sTop = $("#commentDiv").offset().top - 60;
 			$("#courseMessage").val("");
 			initCommentLines("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
 			initCommentPageInfo("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
+			var sTop = $("#commentDiv").offset().top - 60;
 			$("html,body").animate({scrollTop: sTop},sTop*1,"swing");
 		  }
 	});
