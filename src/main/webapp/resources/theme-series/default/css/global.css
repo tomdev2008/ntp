@@ -112,17 +112,6 @@ footer .navbar .nav li.last a{border-right:none;}
 .rating-view .text-warning{vertical-align:middle}
 .rating-view .rating-all{margin-right:6px;font-size: 0;height: 20px;display: inline-block;vertical-align:middle}
 
-/*上传控件样式*/
-.control-upload{font-size: 0;margin-top: 10px;padding-top:5px;min-height:35px;position:relative}
-.control-upload .progress{width:450px;height:24px;padding:2px;border:solid #d0e3ee 1px;background-color:#FFF;display:inline-block;margin-bottom:0;vertical-align:middle;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
-.control-upload .progress .bar{background-image:-moz-linear-gradient(top,#499dcb,#3d82a9);
-    background-image:-webkit-gradient(linear,0 0,0 100%,from(#499dcb),to(#3d82a9));
-    background-image:-webkit-linear-gradient(top,#499dcb,#3d82a9);background-image:-o-linear-gradient(top,#499dcb,#3d82a9);background-image:linear-gradient(to bottom,#499dcb,#3d82a9);background-repeat:repeat-x;
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff499dcb',endColorstr='#ff3d82a9',GradientType=0)}
-.control-upload .txt{margin:0 10px;color:#888;font-size: 14px;vertical-align: middle;}
-.control-upload .upload-fileName{font-size: 14px;margin-bottom: 5px;color: #999999;}
-.control-upload .uploadify{position:absolute;right:10px;top:0;}
-.control-upload .pr .uploadify{top:-5px;}
 
 /*回到顶部*/
 .goTopWrap {position: fixed;z-index:1000;bottom: 70px;right: 60px;}
