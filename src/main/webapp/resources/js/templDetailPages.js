@@ -536,7 +536,7 @@
 				$("#addUser").next(".help-block").remove();
 				$("#list_user>tr").each(function(){
 					if($(this).attr("data-fdid")==item.id){
-						$("#addUser").after('<span class="help-block">不能添加重复的用户！</span>');;
+						$("#addUser").after('<label class="error help-block">不能添加重复的用户!</label>');;
 						$("#addUser").val("");
 						flag = false;
 					}
@@ -679,7 +679,7 @@
 				$("#addGroup").next(".help-block").remove();
 				$("#list_group>tr").each(function(){
 					if($(this).attr("data-fdid")==item.groupId){
-						$("#addGroup").after('<span class="help-block">不能添加重复的群组！</span>');
+						$("#addGroup").after('<label class="error help-block">不能添加重复的群组!</label>');
 						$("#addGroup").val("");
 						flag = false;
 					}
