@@ -28,7 +28,7 @@
 		    	 <%@ include file="/WEB-INF/views/group/menu.jsp" %>
 			  </section>
 				<section class="w790 pull-right" id="rightCont">
-			        <div class="page-header bder2">
+			        <div class="page-header bder2" data-spy="affix" data-offset-top="20">
 		                <span class="muted">我的课程</span> 
 		                <div class="backHome">
 		                    <a href="${ctx}/studyTrack/getStudyTrackDirector"><span class="muted">返回</span>主管<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>

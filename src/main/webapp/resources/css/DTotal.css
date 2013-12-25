@@ -21,6 +21,7 @@
 .lt-ie9 .input-block-level{min-height: 20px;}
 .bder2{border-bottom:solid #dcdcdc 2px;}
 .page-header{position:relative;overflow:hidden;background-color:#FFF;margin:0;padding:18px 20px;line-height:24px;height:24px;}
+.page-header.affix{position: fixed;top: 60px;width: 750px;z-index: 3;}
 .page-header .backHome{position: absolute;right: 14px;top: 14px;}
 .page-header .backHome a{color: #000000;display: block;
     line-height: 34px;}
