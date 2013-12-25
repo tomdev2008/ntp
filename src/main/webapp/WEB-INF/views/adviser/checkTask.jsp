@@ -101,7 +101,7 @@
 <section class="container">	
 		<div class="clearfix mt20">
 	        <div class="pull-right w760">
-	           <div class="page-header">
+	           <div class="page-header" data-spy="affix" data-offset-top="20">
                     <span class="muted">我正在看：</span> <span id="nowSee">未批改的作业</span>
                 </div>
                 <div class="page-body">

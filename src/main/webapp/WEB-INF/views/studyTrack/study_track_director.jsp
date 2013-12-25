@@ -13,18 +13,18 @@
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
 <![endif]-->
-
 <script src="${ctx}/resources/js/doT.min.js" type="text/javascript"></script>
+<c:import url="/WEB-INF/views/studyTrack/divtrackListTmp.jsp"></c:import>
 </head>
 <body>
 <section class="container">	
 		<div class="clearfix mt20">
 	        <div class="pull-right w760">
-                <div class="page-header">
+                <div class="page-header" data-spy="affix" data-offset-top="20">
                     <span class="muted">我正在看：</span><span id="selectMessage">我组织的备课</span>
                     <div class="pos-r">
                         <a class="btn btn-link dropdown-toggle" href="#" data-toggle="dropdown">修改筛选条件</a>
-                        <ul class="dropdown-menu" id="selectUl">
+                        <ul class="dropdown-menu pull-right" id="selectUl">
                             <li><a href="javascript:void(0)" data-type="myOrganized">我组织的备课</a></li>
                             <li><a href="javascript:void(0)" data-type="myDepart" >我所在部门的备课</a></li>
                             <li><a href="javascript:void(0)" data-type="myOrg" >我所在机构的备课</a></li>
