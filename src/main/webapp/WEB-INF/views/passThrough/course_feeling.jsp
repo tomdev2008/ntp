@@ -212,7 +212,7 @@
     <section class="mt20 clearfix">
         <section class="pull-left w760" id="feelingDiv">
             <div class="section box-pd20">
-                <form id="formAddMood" action="##">
+                <form id="formAddMood" method="post">
                 	<c:if test="${isMe=='true'}">
                     <textarea name="field-mood" required maxlength="200" id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
                     <div class="clearfix">
@@ -398,6 +398,7 @@ $(function(){
         		}
         	});
             $("#field-mood").val("");
+            jalert_tips("发表心情成功");
         }
     })
 
