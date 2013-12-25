@@ -75,7 +75,7 @@
     <script id="formCommentTemplate" type="x-dot-template">
         <div class="formBox">
                 <form action="#">
-                    <textarea class="input-block-level" name="comment" rows="2" required></textarea>
+                    <textarea class="input-block-level" name="comment" rows="2" required maxlength="200" ></textarea>
                     <div class="formActions">
                         <button class="btn btn-primary" type="submit">评论</button>
                         <button class="btn btn-cancel" type="button">取消</button>
