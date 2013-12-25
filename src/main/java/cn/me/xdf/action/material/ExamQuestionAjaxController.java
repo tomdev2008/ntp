@@ -61,6 +61,8 @@ public class ExamQuestionAjaxController {
 		String materialintro = request.getParameter("materialintro");
 		String materialScore = request.getParameter("materialScore");
 		String materIalId = request.getParameter("materIalId");
+		String authorIntro = request.getParameter("authorIntro");
+		String author = request.getParameter("author");
 		MaterialInfo exam;
 		if(StringUtil.isBlank(materIalId)){
 			exam = new MaterialInfo();
@@ -73,12 +75,16 @@ public class ExamQuestionAjaxController {
 			exam.setIsDownload(true);
 			exam.setIsAvailable(true);
 			exam.setFdDescription(materialintro);
+			exam.setFdAuthor(author);
+			exam.setFdAuthorDescription(authorIntro);
 			exam.setFdStudyTime(StringUtil.isAllBlank(materialScore)?0:Integer.parseInt(materialScore));
 			//保存测试
 			materialService.save(exam);
 		}else{
 			exam = materialService.get(materIalId);
 			exam.setFdDescription(materialintro);
+			exam.setFdAuthor(author);
+			exam.setFdAuthorDescription(authorIntro);
 			exam.setFdStudyTime(StringUtil.isAllBlank(materialScore)?0:Integer.parseInt(materialScore));
 		}
 		String questionId = request.getParameter("questionId");
