@@ -78,6 +78,9 @@ public class GroupLdapInService extends LdapInService {
             if (members != null) {
                 for (String s : members) {
                     String base = s.replaceAll(",dc=xdf,dc=cn", "");
+                    if (base.indexOf('=', ',') <= 1) {
+                        continue;
+                    }
                     log.info(base);
                     List<String> personFdNos = ldapTemplate.search(base, "(&(objectClass=xdf-person))", new PersonContextMapper());
                     for (String personFdNo : personFdNos) {
@@ -89,7 +92,7 @@ public class GroupLdapInService extends LdapInService {
                 }
             }
 
-          /*  String[] ibmMembers = group.getOrgMember();
+            String[] ibmMembers = group.getOrgMember();
             if (ibmMembers != null) {
                 for (String s : ibmMembers) {
                     String base = s.substring(3, s.indexOf(','));
@@ -100,13 +103,11 @@ public class GroupLdapInService extends LdapInService {
                 }
             }
 
-            save(group);*/
+            save(group);
         }
 
         return "群组：本次新增" + insertSize + ",更新:" + updateSize;
     }
-
-
 
 
     private static class PersonContextMapper implements ContextMapper {
