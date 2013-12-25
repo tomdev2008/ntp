@@ -182,7 +182,7 @@
 						
 						<ul class="unstyled list-attachment" id="listAttachment">
 						  <c:if test="${main != null}">
-							<li data-fdid="${main.fdId}" style="background-color:#eff4f7">
+							<li data-fdid="${main.fdId}" >
 								<a class="name" style="padding-left:20px;"><i class="icon-paperClip"></i>
 								&nbsp;${main.fdFileName}</a>
 								<input type="hidden"  name="attId" id="attId" value="${main.fdId}">
@@ -435,7 +435,7 @@ $(function(){
         	$progress.width("0");
         	$pct.text("0%");
             var objvalue = eval("(" + data + ")");
-		    var html="<li data-fdid='"+objvalue.attId+"' style='background-color:#eff4f7' '><a class='name' style='padding-left:20px;'><i class='icon-paperClip'></i>&nbsp;"+file.name+" "
+		    var html="<li data-fdid='"+objvalue.attId+"' '><a class='name' style='padding-left:20px;'><i class='icon-paperClip'></i>&nbsp;"+file.name+" "
 		          +"</a><input type='hidden'  name='attId' id='attId' value='"+objvalue.attId+"'><div class='item-ctrl'> "
 		          +"<a class='icon-remove-blue' href='#'></a> </div></li>";
             $("#listAttachment").html(html);

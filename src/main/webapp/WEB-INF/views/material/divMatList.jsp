@@ -244,6 +244,8 @@
 <script type="text/javascript">
 $(function(){
 $.Placeholder.init();
+$('[data-toggle="tooltip"]').tooltip();
+});
 //下载素材
 function downloadMater(){
 	 var key = $("#serach").val();
@@ -339,8 +341,8 @@ function initStu(){
 	});
 	
 }
-$('[data-toggle="tooltip"]').tooltip();
-});
+
+
 //initStu();
 </script>
 
