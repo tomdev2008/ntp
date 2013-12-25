@@ -7,7 +7,7 @@
 
     <bean name="quartzScheduler"
           class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="startupDelay" value="120" />
+        <property name="startupDelay" value="1200" />
         <property name="triggers">
             <list>
                 <ref local="attMainInterfaceTrigger" />
