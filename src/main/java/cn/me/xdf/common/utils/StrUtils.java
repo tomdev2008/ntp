@@ -246,6 +246,19 @@ public class StrUtils {
 		return m.replaceAll("");
 	}
 
+
+    /**
+     * 处理null值为空字符串，传入参数如果为null，则返回空串，否则原
+     * 样返回
+     * @param inStr
+     * @return
+     */
+    public static final String nullToStr(String inStr) {
+        if (inStr == null || "null".equalsIgnoreCase(inStr))
+            inStr = "";
+        return inStr;
+    }
+
 	static class CacheUtils {
 
 		private static Map<String, Object> _cache = new ConcurrentHashMap<String, Object>();

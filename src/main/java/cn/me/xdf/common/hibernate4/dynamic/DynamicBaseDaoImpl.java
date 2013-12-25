@@ -221,7 +221,12 @@ public abstract class DynamicBaseDaoImpl extends HibernateSimpleDao implements
      * @return 更新记录数.
      */
     protected int batchExecuteSQL(final String sql, final Map<String, ?> values) {
-        //System.out.println("sql=="+sql);
+       /* String sql1 = sql;
+        for (String dataKey : values.keySet()) {
+            System.out.println(dataKey+"="+ values.get(dataKey));
+            sql1 = sql1.replaceAll(":" + dataKey, "'" + values.get(dataKey).toString() + "'");
+        }
+        System.out.println("sql==" + sql1);*/
         //System.out.println("FD_PARENTID="+values.get("FD_PARENTID")+",FD_NO="+values.get("FD_NO"));
         return createSQLQuery(sql, null, values).executeUpdate();
     }

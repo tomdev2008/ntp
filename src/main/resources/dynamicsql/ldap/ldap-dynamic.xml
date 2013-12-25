@@ -23,7 +23,7 @@
         <![CDATA[
 		UPDATE SYS_ORG_ELEMENT SET AVAILABLE=:AVAILABLE,CREATETIME=:CREATETIME,
 		FD_NAME=:FD_NAME, FD_ORG_TYPE=:FD_ORG_TYPE,LDAPDN=:LDAPDN
-		WHERE FD_NO=:FD_NO
+		WHERE FDID=:FDID
 		]]>
     </sql-query>
 
@@ -31,7 +31,7 @@
     <sql-query name="updateElementParent">
         <![CDATA[
 		UPDATE SYS_ORG_ELEMENT SET FD_PARENTID=:FD_PARENTID
-		WHERE FD_NO=:FD_NO
+		WHERE FDID=:FDID
 		]]>
     </sql-query>
 </dynamic-hibernate-statement>

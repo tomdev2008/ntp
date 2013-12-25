@@ -67,6 +67,7 @@ public class DepartLdapInService extends LdapInService {
                 insertSize++;
             } else {
                 fdIds.put(map.get("FD_NO").toString(), lists.get(0).get("FDID").toString());
+                map.put("FDID",lists.get(0).get("FDID").toString());
                 updateByNamedQuery("updateElement", map);
                 updateSize++;
             }
@@ -93,7 +94,7 @@ public class DepartLdapInService extends LdapInService {
             map.put("FD_NAME", context.getStringAttribute("displayName"));
             map.put("FD_NO", context.getStringAttribute("departmentNumber"));
             map.put("FD_ORG_TYPE", LdapUtils.getOrgType(context.getStringAttribute("departmentNumber")));
-            map.put("LDAPDN", context.getStringAttribute("dn"));
+            map.put("LDAPDN", context.getDn());
             if ("0".equals(context.getStringAttribute("parentId"))) {
                 map.put("FD_PARENTID", null);
             } else {

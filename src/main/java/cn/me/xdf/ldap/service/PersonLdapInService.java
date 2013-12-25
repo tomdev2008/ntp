@@ -66,7 +66,7 @@ public class PersonLdapInService extends LdapInService {
                 "cn=users", "(&(objectClass=xdf-person)(modifyTimeStamp>=" + date + "))",
                 new PersonContextMapper());
         String msg = updateOrg(list);
-        //ldapLogService.saveLog(msg);
+        ldapLogService.saveLog(msg);
         return msg;
     }
 
@@ -85,16 +85,16 @@ public class PersonLdapInService extends LdapInService {
                 }
             }
             if (CollectionUtils.isEmpty(lists)) {
-                log.info("开始初始化人员表-Insert");
-                //updateByNamedQuery("saveElement", map);
-                //updateByNamedQuery("person.saveElement", map);
-                //insertSize++;
+                log.info("开始初始化人员表-Insert:" + map.get("FD_NO"));
+                updateByNamedQuery("saveElement", map);
+                updateByNamedQuery("person.saveElement", map);
+                insertSize++;
             } else {
-               log.info("开始初始化人员表-Update");
-               // map.put("FDID",lists.get(0).get("FDID"));
-               // updateByNamedQuery("person.updateElement", map);
-               // updateByNamedQuery("updateElement", map);
-               // updateSize++;
+                log.info("开始初始化人员表-Update" + map.get("FD_NO"));
+                map.put("FDID", lists.get(0).get("FDID"));
+                updateByNamedQuery("person.updateElement", map);
+                updateByNamedQuery("updateElement", map);
+                updateSize++;
             }
         }
 
@@ -109,13 +109,16 @@ public class PersonLdapInService extends LdapInService {
             Map<String, Object> map = new ConcurrentHashMap<String, Object>();
             //FD_ID,AVAILABLE,CREATETIME,FD_NAME,FD_NO,FD_ORG_TYPE,LDAPDN,FD_PARENTID
             map.put("FDID", Identities.generateID());
+
             map.put("AVAILABLE", "1".equals(context.getStringAttribute("displayed")));
             map.put("CREATETIME", new Date());
+
+            map.put("LDAPDN",context.getDn());
+            LdapUtils.setStringAttribute(context, map, "FD_LOGIN_NAME", "cn");
             LdapUtils.setStringAttribute(context, map, "FD_NAME", "name_attribute");
             LdapUtils.setStringAttribute(context, map, "FD_NO", "employeeNumber");
-            LdapUtils.setStringAttribute(context, map, "LDAPDN", "dn");
             LdapUtils.setStringAttribute(context, map, "PARENTID", "parentId");
-            LdapUtils.setStringAttribute(context, map, "EMAIL", "mail");
+            LdapUtils.setStringAttribute(context, map, "FD_EMAIL", "mail");
             LdapUtils.setStringAttribute(context, map, "FDMOBILENO", "mobile");
             LdapUtils.setStringAttribute(context, map, "FD_WORK_PHONE", "telephonenumber");
             LdapUtils.setStringAttribute(context, map, "FD_IDENTITY_CARD", "uid");

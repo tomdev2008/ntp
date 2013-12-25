@@ -65,4 +65,18 @@ public class ArrayUtils {
 		return targetList;
 	}
 
+
+    /**
+     * 判断list是否为null或empty
+     *
+     * @param list
+     * @return
+     */
+    public static boolean isEmpty(List list) {
+        if (list == null)
+            return true;
+        return list.isEmpty();
+    }
+
+
 }
