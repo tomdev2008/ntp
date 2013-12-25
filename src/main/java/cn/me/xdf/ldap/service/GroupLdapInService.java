@@ -6,6 +6,8 @@ import cn.me.xdf.model.organization.SysOrgElement;
 import cn.me.xdf.model.organization.SysOrgGroup;
 import cn.me.xdf.utils.DateUtil;
 import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.DirContextAdapter;
@@ -26,6 +28,8 @@ import java.util.Map;
 @Service
 public class GroupLdapInService extends LdapInService {
 
+
+    private static final Logger log = LoggerFactory.getLogger(GroupLdapInService.class);
 
     @Autowired
     private LdapTemplate ldapTemplate;
@@ -74,6 +78,7 @@ public class GroupLdapInService extends LdapInService {
             if (members != null) {
                 for (String s : members) {
                     String base = s.replaceAll(",dc=xdf,dc=cn", "");
+                    log.info(base);
                     List<String> personFdNos = ldapTemplate.search(base, "(&(objectClass=xdf-person))", new PersonContextMapper());
                     for (String personFdNo : personFdNos) {
                         List<SysOrgElement> personElements = findByCriteria(SysOrgElement.class, Value.eq("fdNo", personFdNo));
@@ -84,7 +89,7 @@ public class GroupLdapInService extends LdapInService {
                 }
             }
 
-            String[] ibmMembers = group.getOrgMember();
+          /*  String[] ibmMembers = group.getOrgMember();
             if (ibmMembers != null) {
                 for (String s : ibmMembers) {
                     String base = s.substring(3, s.indexOf(','));
@@ -95,7 +100,7 @@ public class GroupLdapInService extends LdapInService {
                 }
             }
 
-            save(group);
+            save(group);*/
         }
 
         return "群组：本次新增" + insertSize + ",更新:" + updateSize;
