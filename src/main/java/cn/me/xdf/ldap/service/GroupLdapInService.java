@@ -41,7 +41,7 @@ public class GroupLdapInService extends LdapInService {
     @Override
     public void initData() {
         List<SysOrgGroup> list = ldapTemplate.search(
-                "ou=家庭教育中心员工,ou=群组", "(&(objectClass=xdf-group))",
+                "ou=群组", "(&(objectClass=xdf-group))",
                 new GroupContextMapper());
         String msg = updateGroup(list);
         ldapLogService.saveLog(msg);
