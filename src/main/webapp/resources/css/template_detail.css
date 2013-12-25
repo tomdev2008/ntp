@@ -25,6 +25,8 @@
 .page-body .section{padding:20px;}
 .page-body form .section + .section {margin-top:20px;}
 .page-body form label{margin:17px 0 12px;}
+.page-body form label.error{margin:0;}
+.page-body form input[type="text"],.page-body form textarea{background-color: #efefef}
 .page-body form .control-group label.control-label{ margin: 0;}
 .page-body .btn-submit{padding:19px 0;margin-top:20px;}
 .state-dragable{position:absolute;cursor:move;}
@@ -78,8 +80,9 @@
 #encrypt .radio label.error{display:inline;margin-left:20px;}
 
 /* 授权管理 页 */
-.kinguser-content .autoComplete{width:668px;}
+.kinguser-content .autoComplete{width:728px;background-color: #efefef}
 .kinguser-content .table td,.kinguser-content .table th{text-align:center;line-height:36px;padding:12px;}
+.kinguser-content .table tbody td{background-color: #eff4f7}
 .kinguser-content .table .tdTit img{width:36px;height:36px;margin-right:8px;}
 .kinguser-content .table .tdTit {text-align:left;}
 .kinguser-content .table .tdTit .pr{padding-left:50px;}

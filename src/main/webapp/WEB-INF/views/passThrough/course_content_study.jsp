@@ -1342,7 +1342,11 @@
             /*提交评论表单*/
             function submitFormComment(form){
                if($("#textComment").val()==""||$("#textComment").val()==null){
-            	   jalert_tips("请输入评论信息");  
+            	   jalert_tips("请输入评论信息！");  
+                   return false;
+               }
+               if($("#textComment").val().length>200){
+            	   jalert_tips("评论信息过长！");  
                    return false;
                }
                $.ajax({

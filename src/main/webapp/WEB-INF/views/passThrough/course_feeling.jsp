@@ -73,7 +73,7 @@
 
     <!--评论心情表单模板-->
     <script id="formCommentTemplate" type="x-dot-template">
-        <div class="formBox">
+        <div class="formBox" id="formBox">
                 <form action="#">
                     <textarea class="input-block-level" name="comment" rows="2" required maxlength="200" ></textarea>
                     <div class="formActions">
@@ -212,7 +212,7 @@
     <section class="mt20 clearfix">
         <section class="pull-left w760" id="feelingDiv">
             <div class="section box-pd20">
-                <form id="formAddMood" action="##">
+                <form id="formAddMood" method="post">
                 	<c:if test="${isMe=='true'}">
                     <textarea name="field-mood" required maxlength="200" id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
                     <div class="clearfix">
@@ -273,6 +273,8 @@ $(function(){
         if(!$this.hasClass("active")){
             var tips = "";
             if($this.hasClass("comment")){
+            	$("#formBox").remove();
+                $this.removeClass("active");
                 tips = "点击评论";
                 var $form = $(formCommentFn());
                 var dataRetuen={};
@@ -334,7 +336,7 @@ $(function(){
                            $num.text(parseInt($num.text())+1);
                            $this.addClass("active").attr("data-original-title",tips);
                   	}else{
-                  		jalert("不能支持和反对自己的评论");
+                  		jalert_tips("不能支持和反对自己的评论");
                   	}
                 } else if($this.hasClass("praise")){
                 	var pushok1=false;
@@ -360,7 +362,7 @@ $(function(){
                         $num.text(parseInt($num.text())+1);
                         $this.addClass("active").attr("data-original-title",tips);
                		}else{
-               			jalert("不能支持和反对自己的评论");
+               			jalert_tips("不能支持和反对自己的评论");
                		}
                 }
             }
@@ -398,8 +400,9 @@ $(function(){
         		}
         	});
             $("#field-mood").val("");
+            jalert_tips("发表心情成功");
         }
-    })
+    });
 
     function formatDate(d){
         return ((d.getMonth()+1)<10 ? "0"+(d.getMonth()+1) : d.getMonth()+1) + " " + (d.getDate()<10 ? "0"+ d.getDate() : d.getDate()) + " "
@@ -509,7 +512,7 @@ $(function(){
 			if(result.pageOver==-1){
 				//alert("0");
 				$("#gotoFriendsO").bind("click",function(){
-					jalert("没有上一页");
+					jalert_tips("没有上一页");
 				});
 			}else{
 				//alert("1:"+result.pageOver);
@@ -520,7 +523,7 @@ $(function(){
 			if(result.pageNext==-1){
 				//alert("2");
 				$("#gotoFriendsN").bind("click",function(){
-					jalert("没有下一页");
+					jalert_tips("没有下一页");
 				});
 			}else{
 				//alert("3:"+result.pageNext);

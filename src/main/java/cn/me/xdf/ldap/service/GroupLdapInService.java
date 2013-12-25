@@ -78,10 +78,11 @@ public class GroupLdapInService extends LdapInService {
             if (members != null) {
                 for (String s : members) {
                     String base = s.replaceAll(",dc=xdf,dc=cn", "");
-                    if (base.indexOf('=', ',') <= 1) {
+                    if (base.indexOf(',')-base.indexOf('=') <= 1) {
+                    	log.info(base);
                         continue;
                     }
-                    log.info(base);
+                    
                     List<String> personFdNos = ldapTemplate.search(base, "(&(objectClass=xdf-person))", new PersonContextMapper());
                     for (String personFdNo : personFdNos) {
                         List<SysOrgElement> personElements = findByCriteria(SysOrgElement.class, Value.eq("fdNo", personFdNo));

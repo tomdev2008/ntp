@@ -45,6 +45,10 @@ function addMessagemethod(){
 		jalert_tips("请输入评论信息");
 		return;
 	}
+	if(mess.length>200){
+		jalert_tips("请输入评论信息过长");
+		return;
+	}
 	$("#courseMessage").val("");
 	$.ajax({
 		  url: "${ctx}/ajax/message/addCourseMessage",
@@ -57,10 +61,10 @@ function addMessagemethod(){
 		  },
 		  success: function(result){
 			//jalert("评论发布成功");
-			var sTop = $("#commentDiv").offset().top - 60;
 			$("#courseMessage").val("");
 			initCommentLines("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
 			initCommentPageInfo("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
+			var sTop = $("#commentDiv").offset().top - 60;
 			$("html,body").animate({scrollTop: sTop},sTop*1,"swing");
 		  }
 	});
@@ -115,7 +119,6 @@ function scoreing(){
 		  },
 		  success: function(result){
 			  $("#goTop").trigger("click");
-			  //jalert("评分成功");
 			  //$("#ratingDo  i").unbind();
 			  var score = ($("#myScore").html());
 			  $("#ratingDo  i").each(function(index){	
@@ -125,6 +128,7 @@ function scoreing(){
 			  }); 
 			  setMyScore(score);
 			  setCourseScore();
+			  jalert_tips("评分成功");
 		  }
 	});
 }

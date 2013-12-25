@@ -891,24 +891,6 @@
 				  },
 			});
 			
-			//调用ajax保存课程模板的详细信息
-			function saveDetailInfo(){
-				$.post($('#ctx').val()+'/ajax/course/saveDetailInfo',{
-					 courseId : $("#courseId").val(),
-					 courseAbstract: $("#courseAbstract").val(),
-					 learnObjectives:  $("#learnObjectives").val(),
-					 suggestedGroup: $("#suggestedGroup").val(),
-					 courseRequirements: $("#courseRequirements").val(),
-					 courseAuthor: $("#courseAuthor").val(),
-					 authorDescrip: $("#authorDescrip").val()
-					})
-				.success(function(){
-					KindEditor.remove('textarea[name="courseAbstract"]');
-					//提交成功跳转到详细信息
-					jalert_tips("保存成功");
-		       	   // urlRouter("promotion");
-				});
-			}
 			
 			/*
 			 * data = {//ajax 成功后删除 action: "#",//form表单action courseAbstract:
@@ -993,7 +975,7 @@
 								var _val = $("#keyword").val();
 								var strs= new Array(); //定义一数组
 								strs=_val.split(","); //字符分割 
-								for (i=0;i<strs.length ;i++ ) {
+								for (var i=0;i<strs.length ;i++ ) {
 									var temp = strs[i];
 									if(temp == tit){
 										$(this).next().after('<label class="error" for="addKey">不能添加重复的关键词！</label>');
@@ -1063,6 +1045,7 @@
 			 * ============================================ ajax 加载章节数据
 			 * ================================================
 			 */
+			
 			$.ajax({
 				  url: $('#ctx').val()+"/ajax/catalog/getCatalogJsonByCourseId?courseId="+$('#courseId').val(),
 				  async:false,
@@ -1338,6 +1321,23 @@
 		}
 		
 	}());
-	
+	//调用ajax保存课程模板的详细信息
+	function saveDetailInfo(){
+		$.post($('#ctx').val()+'/ajax/course/saveDetailInfo',{
+			 courseId : $("#courseId").val(),
+			 courseAbstract: $("#courseAbstract").val(),
+			 learnObjectives:  $("#learnObjectives").val(),
+			 suggestedGroup: $("#suggestedGroup").val(),
+			 courseRequirements: $("#courseRequirements").val(),
+			 courseAuthor: $("#courseAuthor").val(),
+			 authorDescrip: $("#authorDescrip").val()
+			})
+		.success(function(){
+			//KindEditor.remove('textarea[name="courseAbstract"]');
+			//提交成功跳转到详细信息
+			jalert_tips("保存成功");
+       	   // urlRouter("promotion");
+		});
+	}	
 	
 	
