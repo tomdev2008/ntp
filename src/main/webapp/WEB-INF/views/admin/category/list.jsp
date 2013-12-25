@@ -95,7 +95,6 @@
 </head>
 <body>
 	<j:autoform>
-    <form class="form-inline" name="filterForm">
     <input type="hidden" id="fdType" name="fdType">
     <div class="page-body" id="pageBody">
 	<section class="section box-control">
@@ -110,8 +109,10 @@
 						<li><a href="#rightCont" onclick="batchDelete();">批量删除</a></li>
 					</ul>
 				</div>
+				<form class="toolbar-search" name="filterForm">
 				<input type="text" id="fdKey" name="fdKey" value='${fdKey }' class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
 				<i class="icon-search" onclick="goSearch();"></i>
+				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>
 					<span id="markshow">
 							 	<a id="containkey"href="#">全部条目</a>
@@ -231,7 +232,6 @@
 	  </div>
 	</div>
 </div>
-      </form>
     </j:autoform>
 </body>
 </html>

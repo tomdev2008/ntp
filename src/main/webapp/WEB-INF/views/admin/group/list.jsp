@@ -50,15 +50,16 @@
 </head>
 <body>
 	<j:autoform>
-    <form class="form-inline" name="filterForm">
     <div class="page-body" id="pageBody">
 	<section class="section box-control">
 		<div class="hd">
 			<div class="btn-toolbar">
 				<div class="btn-group">
 				</div>
+				<form class="toolbar-search" name="filterForm">
 				<input type="text" id="fdKey" name="fdKey" value='${fdKey}' class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
 				<i class="icon-search" onclick="goSearch();"></i>
+				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>
 					<span id="markshow">
 							 	<a id="containkey"href="#">全部条目</a>
@@ -67,6 +68,44 @@
 			</div>
 		</div>
 		<div class="bd">
+			<div class="btn-toolbar">
+				<div class="btn-group btns-radio" data-toggle="buttons-radio">
+				   
+				</div>
+				<label class="checkbox inline" for="selectCurrPage"></label>
+				<label class="checkbox inline" for="selectAll"></label>
+				<div class="pages pull-right">
+					<div class="span2">
+						 第<span> 
+						 ${page.startNum} - ${page.endNum}
+					   </span> 
+						 / <span>${page.totalCount}</span> 条 
+					</div>
+					<div class="btn-group">
+
+					<c:if test="${page.pageNo <= 1}">
+						<button class="btn btn-primary btn-ctrl" type="button" disabled>
+							<i class="icon-chevron-left icon-white"></i>
+						</button>
+					</c:if>
+					<c:if test="${page.pageNo > 1}">
+							<button class="btn btn-primary btn-ctrl" type="button" onclick="pageNavClick('${page.prePage}')">
+								<i class="icon-chevron-left icon-white"></i>
+							</button>
+					</c:if>
+					<c:if test="${page.pageNo >= page.totalPage}">
+						<button class="btn btn-primary btn-ctrl" type="button" disabled>
+							<i class="icon-chevron-right icon-white"></i>
+						</button>
+					</c:if>
+					<c:if test="${page.pageNo < page.totalPage}">
+							<button class="btn btn-primary btn-ctrl" type="button" onclick="pageNavClick('${page.nextPage}')">
+								<i class="icon-chevron-right icon-white"></i>
+							</button>
+					</c:if>
+				</div>
+				</div>
+			</div>
 		</div>
 	</section>
 	<section class="section listWrap">
@@ -133,7 +172,6 @@
 	  </div>
 	</div>
 </div>
-      </form>
     </j:autoform>
 </body>
 </html>

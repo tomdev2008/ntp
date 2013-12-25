@@ -55,15 +55,16 @@
 </head>
 <body>
 	<j:autoform>
-    <form class="form-inline" name="filterForm">
     <div class="page-body" id="pageBody">
 	<section class="section box-control">
 		<div class="hd">
 			<div class="btn-toolbar">
 				<div class="btn-group">
 				</div>
+				<form class="toolbar-search" name="filterForm">
 				<input type="text" id="fdKey" name="fdKey" value='${fdKey}' class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
 				<i class="icon-search" onclick="goSearch();"></i>
+				</form>
 				<span class="showState"> <span class="muted">当前显示：</span>
 					<span id="markshow">
 							 	<a id="containkey"href="#">全部条目</a>
@@ -72,31 +73,11 @@
 			</div>
 		</div>
 		<div class="bd">
-			<%-- <div class="btn-toolbar">
+			 <div class="btn-toolbar">
 				<div class="btn-group btns-radio" data-toggle="buttons-radio">
-				   <c:if test="${param.fdType==''|| param.fdType==null}">
-					<button class="btn btn-large active" type="button" onclick="getAll();">全部</button>
-				   </c:if>
-				   <c:if test="${param.fdType!=''&& param.fdType!=null}">
-					<button class="btn btn-large" type="button" onclick="getAll();">全部</button>
-				   </c:if>
-				   <c:if test="${param.fdType=='0'}">
-					<button class="btn btn-large active" type="button" onclick="getTemp();">临时账号</button>
-				   </c:if>
-				   <c:if test="${param.fdType!='0'}">
-					<button class="btn btn-large" type="button" onclick="getTemp();">临时账号</button>
-				   </c:if>
-			      <c:if test="${param.fdType=='1'}">
-					<button class="btn btn-large active" type="button" onclick="getUser();">正式账号</button>
-				   </c:if>
-				   <c:if test="${param.fdType!='1'}">
-					<button class="btn btn-large" type="button" onclick="getUser();">正式账号</button>
-				   </c:if>
 				</div>
-				<label class="checkbox inline" for="selectCurrPage">
-				   <input type="checkbox" id="selectCurrPage" name="selectCurrPage" onclick="checkcurrpage();"/>选中本页</label>
-				<label class="checkbox inline" for="selectAll">
-				   <input type="checkbox" id="selectAll" name="selectAll"  onclick="selectAlls();"/>选中全部</label>
+				<label class="checkbox inline" for="selectCurrPage"></label>
+				<label class="checkbox inline" for="selectAll"></label>
 				<div class="pages pull-right">
 					<div class="span2">
 						 第<span> 
@@ -128,7 +109,7 @@
 					</c:if>
 				</div>
 				</div>
-			</div> --%>
+			</div>
 		</div>
 	</section>
 	<section class="section listWrap">
@@ -197,7 +178,6 @@
 	  </div>
 	</div>
 </div>
-      </form>
     </j:autoform>
 </body>
 </html>
