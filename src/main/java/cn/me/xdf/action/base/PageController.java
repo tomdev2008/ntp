@@ -56,6 +56,7 @@ public class PageController {
 	}
 	@RequestMapping("edit")
 	public String edit(Model model,HttpServletRequest request){
+		model.addAttribute("active", "page");
 		String ptype=request.getParameter("ptype");
 		String pId=request.getParameter("pid");//配置页信息id;
 		if(StringUtil.isNotEmpty(ptype)){
