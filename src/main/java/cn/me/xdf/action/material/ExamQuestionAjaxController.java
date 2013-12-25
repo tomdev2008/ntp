@@ -73,15 +73,13 @@ public class ExamQuestionAjaxController {
 			exam.setIsDownload(true);
 			exam.setIsAvailable(true);
 			exam.setFdDescription(materialintro);
-			exam.setFdStudyTime(materialScore.equals("0")?null:new Integer(materialScore));
+			exam.setFdStudyTime(StringUtil.isAllBlank(materialScore)?0:Integer.parseInt(materialScore));
 			//保存测试
 			materialService.save(exam);
 		}else{
 			exam = materialService.get(materIalId);
 			exam.setFdDescription(materialintro);
-			if(!materialScore.equals("0")){
-				exam.setFdStudyTime(new Integer(materialScore));
-			}
+			exam.setFdStudyTime(StringUtil.isAllBlank(materialScore)?0:Integer.parseInt(materialScore));
 		}
 		String questionId = request.getParameter("questionId");
 		ExamQuestion examQuestion;
