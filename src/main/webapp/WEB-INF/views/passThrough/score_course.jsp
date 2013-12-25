@@ -119,7 +119,6 @@ function scoreing(){
 		  },
 		  success: function(result){
 			  $("#goTop").trigger("click");
-			  //jalert("评分成功");
 			  //$("#ratingDo  i").unbind();
 			  var score = ($("#myScore").html());
 			  $("#ratingDo  i").each(function(index){	
@@ -129,6 +128,7 @@ function scoreing(){
 			  }); 
 			  setMyScore(score);
 			  setCourseScore();
+			  jalert_tips("评分成功");
 		  }
 	});
 }
