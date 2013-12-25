@@ -42,18 +42,16 @@ public class AttMainInterfaceQuartz implements Serializable {
     public void executeTodo() {
         log.info("开始执行定时任务--attMain");
         List<AttMain> attMainList = attMainService.findByCriteria(AttMain.class,Value.eq("flag", -1),
-                Value.eq("fdFileType", "01"),Value.isNotNull("playCode"));
+                Value.eq("fdFileType", "01"),Value.isNotNull("playCode"),Value.isNotNull("fdModelId"),Value.isNotNull("fdModelName"));
         if (CollectionUtils.isEmpty(attMainList))
             return;
 
         for (AttMain attMain : attMainList) {
-            log.info("----");
             covertVideoToFlag(attMain);
         }
     }
 
     private void covertVideoToFlag(AttMain attMain) {
-        log.info("----="+attMain.getFdFileName());
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("userid", Config.userid);
         try {

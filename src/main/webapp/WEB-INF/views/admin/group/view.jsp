@@ -23,7 +23,7 @@
                 <a href="${ctx}/admin/group/list" class="backParent">
                 <span id="back">返回群组列表</span>
                </a>
-                <h4>群组设置</h4>
+                <h4>${bean.fdName}</h4>
 	        </div>
             <div class="page-body editingBody">
                     <input type="hidden" id="roleName" name="roleName" >
@@ -32,15 +32,13 @@
                              <div class="tab-pane active" id="encrypt">
                                 <table class="table table-bordered">
                                     <tbody id="list_user">
-                                    <j:iter items="${bean.fdMembers}" var="bean" status="vstatus">
                                     	<tr data-fdid="${bean.fdId}">
-									        <td class="tdTit">
-									          <div class="pr">
-									          	${bean.fdName}
-									          <div>
+									        <td style="text-align: left;">
+									          <j:iter items="${bean.fdMembers}" var="bean" status="vstatus">
+									          	${bean.fdName}；
+									          	</j:iter>
 									         </td>
 									    </tr>
-									</j:iter>
                                     </tbody>
                                 </table>
                             </div>
