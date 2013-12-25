@@ -45,6 +45,10 @@ function addMessagemethod(){
 		jalert_tips("请输入评论信息");
 		return;
 	}
+	if(mess.length>200){
+		jalert_tips("请输入评论信息过长");
+		return;
+	}
 	$("#courseMessage").val("");
 	$.ajax({
 		  url: "${ctx}/ajax/message/addCourseMessage",
