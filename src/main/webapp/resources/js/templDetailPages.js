@@ -363,7 +363,7 @@
                 matchContains:true ,
                 max: 10,
                 scroll: false,
-                width:688
+                width:650
             }).result(function(e,item){
             	    var flag = true;
                     item.typeTxt = data.typeTxt;
@@ -530,7 +530,7 @@
 				matchContains:true ,
 				max: 10,
 				scroll: false,
-				width:688
+				width:748
 			}).result(function(e,item){
 				var flag = true;
 				$("#addUser").next(".help-block").remove();
@@ -673,7 +673,7 @@
 				matchContains:true ,
 				max: 10,
 				scroll: false,
-				width:688
+				width:748
 			}).result(function(e,item){
 				var flag = true;
 				$("#addGroup").next(".help-block").remove();

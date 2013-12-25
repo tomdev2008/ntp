@@ -660,7 +660,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
             <div class="section" >
                 <label>在下面搜索框中输入{{=it.typeTxt}}名称，在<a id="gotoMaterial" href="#">课程素材库</a>(这是个链接) 中进行查找并添加到本节中</label>
                 <div class="autoCompleteWrap">
-					<input id="addMedia" type="text" />
+					<input id="addMedia" type="text"/>
 					<!--
 					<button class="btn btn-primary btn-large" type="button" >选择</button>
 					-->
