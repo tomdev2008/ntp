@@ -673,9 +673,14 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
 
 <!-- 视频,文档。。。列表项 模板 -->
 <script id="mediaListTemplate" type="text/x-dot-template">
-    <li data-fdid="{{=it.id}}"><span class="title">{{=it.typeTxt}} <span class="index">{{=it.index}}</span>：<span 
-
-class="name">{{=it.name}}</span></span>
+    <li data-fdid="{{=it.id}}"><span class="title">{{=it.typeTxt}}
+        <span class="index">{{=it.index}}</span>：<span class="name">
+                         {{?it.name.length>38}}
+							{{=it.name.substring(0,38)}}...
+						{{??}}
+							{{=it.name}}
+						{{?}}
+        </span></span>
         <a class="icon-pencil2 btn-ctrls" href="#"></a>
         <a class="icon-remove btn-ctrls" href="#"></a>
         <div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-
