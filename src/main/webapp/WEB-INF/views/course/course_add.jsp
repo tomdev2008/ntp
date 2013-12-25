@@ -565,9 +565,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 <!-- 视频,文档。。。页 模板 -->
 <script id="mediaPageTemplate" type="text/x-dot-template">
     <div class="page-header">
-		<a href="#sectionsDirectory">
          <button class="btn btn-link" onclick="backDirectory();" type="button" style="position:absolute;left:10px;top:20px">返回章节目录</button>
-       </a>
     <h4>第{{=it.lectureIndex}}节 {{=it.pageTitle || ''}}</h4>
 		<button class="btn btn-primary btn-large" onclick="saveDirectory();" type="button" style="position:absolute;right:20px;top:15px">保存</button>
     </div>
@@ -793,6 +791,12 @@ $.Placeholder.init();
 		urlRouter($(this).attr('data-target'));		
 	});
 	function backDirectory(){//返回章节目录
+		if ($('#upMovie').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+		     $('#upMovie').uploadify('destroy'); 
+		}
+		if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
+		     $('#upMaterial').uploadify('destroy'); 
+		}
 		urlRouter("sectionsDirectory");
 	}
 	function saveDirectory(){//触发一个提交事件
@@ -816,8 +820,7 @@ $.Placeholder.init();
 	  					rightCont.loadDetailInfoPage("详细信息");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					$("#sideNav>li>a").removeClass("active");
-	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
 	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
@@ -826,8 +829,7 @@ $.Placeholder.init();
 	  					rightCont.loadPromotionPage("课程推广");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					$("#sideNav>li>a").removeClass("active");
-	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
 	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
@@ -836,8 +838,7 @@ $.Placeholder.init();
 	  					rightCont.loadAccessRightPage("权限设置");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					$("#sideNav>li>a").removeClass("active");
-	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
 	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
@@ -846,8 +847,7 @@ $.Placeholder.init();
 	  					rightCont.loadKinguserPage("授权管理");
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					$("#sideNav>li>a").removeClass("active");
-	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
 	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
@@ -856,8 +856,7 @@ $.Placeholder.init();
 						rightCont.loadDeleteCoursePage("删除课程",$("#courseId").val());
 	  				}else{
 	  					jalert_tips("请先设置基本信息");
-	  					$("#sideNav>li>a").removeClass("active");
-	  					$("#sideNav>li>a[href='#basicInfo']").parent().addClass("active").siblings().removeClass("active");
+	  					$("#sideNav>li>a[data-target='basicInfo']").parent().addClass("active").siblings().removeClass("active");
 	  					rightCont.loadBasicInfoPage("基本信息");
 	  				}
 	  				break;
