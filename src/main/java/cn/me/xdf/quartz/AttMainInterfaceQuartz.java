@@ -42,7 +42,7 @@ public class AttMainInterfaceQuartz implements Serializable {
     public void executeTodo() {
         log.info("开始执行定时任务--attMain");
         List<AttMain> attMainList = attMainService.findByCriteria(AttMain.class,Value.eq("flag", -1),
-                Value.eq("fdFileType", "01"),Value.isNotNull("playCode"));
+                Value.eq("fdFileType", "01"),Value.isNotNull("playCode"),Value.isNotNull("fdModelId"),Value.isNotNull("fdModelName"));
         if (CollectionUtils.isEmpty(attMainList))
             return;
 
