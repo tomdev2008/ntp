@@ -1061,6 +1061,7 @@
   	  				});
             })  /*评论列表中按钮事件*/
                 .delegate("#listComment>.media .btns-comt>a","click",function(e){
+                	$("#textComment").next(".error").remove();
                     e.preventDefault();
                         var $this = $(this);
                         var itemId = $this.closest(".media").attr("data-fdid");
