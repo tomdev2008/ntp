@@ -80,6 +80,8 @@ public class SeriesAjaxContrller {
 		series.setVersion(0);
 		series.setFdCreateTime(new Date());
 		series.setCreator(creator);
+		series.setFdAuthor(ShiroUtils.getUser().getName());
+		series.setFdAuthorDescription(creator.getSelfIntroduction());
 		series.setFdSeriesNo(fdNo);
 		// 没有系列id说明是新增系列 否则就是新增阶段
 		Map<String, String> map = new HashMap<String, String>();
@@ -95,6 +97,8 @@ public class SeriesAjaxContrller {
 			seriessup.setVersion(0);
 			seriessup.setFdCreateTime(new Date());
 			seriessup.setCreator(creator);
+			series.setFdAuthor(ShiroUtils.getUser().getName());
+			series.setFdAuthorDescription(creator.getSelfIntroduction());
 			seriessup.setIsAvailable(true);// 有效的
 			seriessup.setFdName("未命名");
 			seriesInfoService.save(seriessup);

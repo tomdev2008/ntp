@@ -229,6 +229,7 @@ public class CourseCatalogAjaxController {
 			course.setIsOrder(true);
 			course.setCreator(sysOrgPerson);
 			course.setFdAuthor(ShiroUtils.getUser().getName());//作者
+			course.setFdAuthorDescription(sysOrgPerson.getSelfIntroduction());
 			course.setFdCreateTime(createdate);
 			course.setFdTitle("未命名课程");
 			courseService.save(course);
