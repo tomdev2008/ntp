@@ -1140,6 +1140,7 @@
           	                          		  },
           	                          		  success: function(result){
           	                          			resetComment(1,10);
+          	                          			jalert_tips("回复成功");
           	                          		  }
                                     		});
                                         }

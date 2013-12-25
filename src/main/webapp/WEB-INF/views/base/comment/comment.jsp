@@ -161,6 +161,7 @@ function initCommentLines(modelName,modelId,pageNo){
                  		  success: function(result){
                  			 initCommentLines("${param.modelName}","${param.modelId}",1);
                  			 initCommentPageInfo("${param.modelName}","${param.modelId}",1);
+                 			 jalert_tips("回复成功");
                  		  }
              		});
                  }
