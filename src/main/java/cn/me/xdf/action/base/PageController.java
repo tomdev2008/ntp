@@ -103,10 +103,12 @@ public class PageController {
 		//如果是学校联盟就要保存学校的图片
 		if("02".equals(fdType)){
 			String attId=request.getParameter("attIdID");
-			AttMain att = attMainService.get(attId);
-			att.setFdModelId(page.getFdId());
-			att.setFdModelName(PageConfig.class.getName());
-			attMainService.save(att);
+			if(StringUtil.isNotEmpty(attId)){
+					AttMain att = attMainService.get(attId);
+					att.setFdModelId(page.getFdId());
+					att.setFdModelName(PageConfig.class.getName());
+					attMainService.save(att);
+			}
 		}
 		if(StringUtil.isNotEmpty(fdType)){
 			model.addAttribute("ptype", fdType);
@@ -118,7 +120,7 @@ public class PageController {
 	}
 	
 	@RequestMapping("updatePageConfig")
-	public String updatePageConfig(HttpServletRequest request){
+	public String updatePageConfig(Model model,HttpServletRequest request){
 		String pId=request.getParameter("pid");
 		String ptype=request.getParameter("ptype");
 		String fdElementId=request.getParameter("fdElementId");
@@ -127,20 +129,40 @@ public class PageController {
 			PageConfig page=pageConfigService.get(pId);
 			page.setFdElementId(fdElementId);
 			page.setFdContent(fdContent);
-			if("02".equals(ptype)){
-				String attId=request.getParameter("attIdID");
-				//清理原始附件
-			    attMainService.deleteAttMainByModelId(pId);
-			    //添加新附件
-			    AttMain att = attMainService.get(attId);
-				att.setFdModelId(pId);
-				att.setFdModelName(PageConfig.class.getName());
-				attMainService.save(att);
-				pageConfigService.save(page);
-			}else{
-				pageConfigService.save(page);
+			if(StringUtil.isNotEmpty(ptype)){
+				if("02".equals(ptype)){
+					String attId=request.getParameter("attIdID");
+					//修改的时候 如果当前附件id和已有附件id相同则不处理 如果不同则是新附件 需要清理原附件 然后添加新附件
+					if(StringUtil.isNotEmpty(attId)){
+						AttMain oldAtt=attMainService.getByModelId(pId);
+						if(oldAtt==null){//为空则直接添加附件
+							AttMain att = attMainService.get(attId);
+							att.setFdModelId(pId);
+							att.setFdModelName(PageConfig.class.getName());
+							attMainService.save(att);
+						}
+						if(oldAtt!=null&&!oldAtt.getFdId().equals(attId)){//原附件为空 且和现在附件不相等 ,则不处理
+							//清理原始附件
+						    attMainService.deleteAttMainByModelId(pId);
+						    //添加新附件
+						    AttMain att = attMainService.get(attId);
+							att.setFdModelId(pId);
+							att.setFdModelName(PageConfig.class.getName());
+							attMainService.save(att);
+						}
+					}
+					pageConfigService.save(page);
+				}else{
+					pageConfigService.save(page);
+				}
 			}
 		}
+		if(StringUtil.isNotEmpty(ptype)){
+			model.addAttribute("ptype", ptype);
+		}else{
+			model.addAttribute("ptype", "02");
+		}
+		model.addAttribute("active", "page");
 		return "/admin/page/list";
 	}
 }
