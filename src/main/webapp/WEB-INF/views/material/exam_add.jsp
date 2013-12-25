@@ -71,14 +71,15 @@
                 <div class="control-group">
                     <label class="control-label" >试题总分 <small>(单位分)</small></label>
                     <div class="controls">
-                        <input name="examScore" id="examScore" value="{{=it.examScore || ''}}" type="hidden"/>
+						<input id="examScore" digits="true" max="100" min="0" required="true" value="{{=it.examScore || ''}}" class="input-block-level" name="timeLine" type="text">
+                       <!-- <input name="examScore" id="examScore" value="{{=it.examScore || ''}}" type="hidden"/>
                             <div class="timeLine scoreLine">
                                 <div class="num">0</div>
                                 {{ for(var i=1; i<=20; i++){ }}
                                 <a title="{{=i}}分" href="#" style="width: {{=(670-20-1)/20 + 'px'}}"
                                    class="{{?i==1}}first {{?}}{{?it.examScore && i<=it.examScore}}active{{?}}"><span class="num">{{=i}}</span></a>
                                 {{ } }}
-                            </div>
+                            </div> --> 
 					<label id="questionScoreErr" class="error" style="display: none;"></label>
                     </div>
                 </div>
@@ -188,8 +189,9 @@
 		            <a href="#">{{=it.subject}}</a>
 		        </div>
 		    </td>
-		    <td><input id="sore_{{=it.id}}" type="text" onblur="initScore()"  style="width:30px" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为整数且不能大于20分" class="itemScore input-mini digits">分
-			<label for="sore_{{=it.id}}" class="error" ></label>
+		    <td><input id="sore_{{=it.id}}" type="text" digits="true" max="100" min="0" onblur="initScore()"  style="width:30px" value="{{=it.score}}" data-toggle="tooltip" title="输入数字做为整数且不能大于100分" class="itemScore input-mini digits">分
+			
+			</label>
 			</td>
 		    <td><a href="#" class="icon-remove-blue"></a></td>
 		</tr>
@@ -243,7 +245,8 @@
 							<div class="control-group">
 								<label class="control-label">建议时间 <small>(单位分钟)</small></label>
 								<div class="controls">
-									<input name="examPaperTime" id="examPaperTime" value="0"
+								<input id="examPaperTime" digits="true" min="0" max="1440" class="input-block-level" name="examPaperTime" type="text">
+									<!-- <input name="examPaperTime" id="examPaperTime" value="0"
 										type="hidden" />
 									<div id="mainTimeLine" class="timeLine">
 										<div class="num">0</div>
@@ -255,7 +258,7 @@
 											title="90分钟" href="#"><span class="num">90</span></a> <a
 											title="105分钟" href="#"><span class="num">105</span></a> <a
 											title="120分钟" href="#"><span class="num">120</span></a>
-									</div>
+									</div> -->
 								</div>
 							</div>
 
@@ -385,13 +388,13 @@ $(function(){
 			$('.itemScore[data-toggle="tooltip"]').tooltip({
 				trigger : "focus"
 			});
-			$(".timeLine>a").tooltip().click(function(e) {
+			/* $(".timeLine>a").tooltip().click(function(e) {
 				e.preventDefault();
 				$(this).prevAll("a").add(this).addClass("active");
 				$(this).nextAll("a").removeClass("active");
 				$("#examPaperTime").val($(this).children(".num").text());
 				$("#questionScoreErr").css("display", "none");
-			});
+			}); */
 			//初始化页面
 			if ("${param.fdId}" != null && "${param.fdId}" != "") {
 				$
@@ -416,9 +419,9 @@ $(function(){
 									$("#permission").val("encrypt");
 								}
 								var n = result.time / 15;
-								$("#mainTimeLine a :lt(" + n + ")").attr(
-										"class", "active");
-								$("#examPaperTime").val(parseInt(result.time));
+								/* $("#mainTimeLine a :lt(" + n + ")").attr(
+										"class", "active");*/
+								$("#examPaperTime").val(parseInt(result.time)); 
 							}
 						});
 				//初始化试题列表
@@ -426,6 +429,7 @@ $(function(){
 				//初始化权限列表
 			}
 			var creater = "";
+			var createrId="";
 			var url = "";
 			$
 					.ajax({
@@ -437,6 +441,7 @@ $(function(){
 							creater = result.name + "（" + result.email
 									+ "），" + result.dept;
 							url = result.url;
+							createrId = result.fdId;
 						}
 					});
 			var listUserKinguserFn = doT.template(document
@@ -454,7 +459,7 @@ $(function(){
 							}else{
 								photo="${ctx}/"+url;
 							}
-							var html = "<tr data-fdid='creater' draggable='true'> "
+							var html = "<tr data-fdid='"+createrId+"' draggable='true'> "
 									+ " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "
 									+ "<img src='"+photo+"' alt=''>"
 									+ creater
@@ -637,7 +642,7 @@ $(function(){
 					.result(
 							function(e, item) {
 								var flag = true;
-								$("#addUser").next(".help-block").remove();
+								$("#addUser").next(".error").remove();
 								$("#list_user>tr")
 										.each(
 												function() {
@@ -645,7 +650,7 @@ $(function(){
 															"data-fdid") == item.id) {
 														$("#addUser")
 																.after(
-																		'<span class="help-block">不能添加重复的用户！</span>');
+																		'<label class="error">不能添加重复的用户！</label>');
 														;
 														$("#addUser").val("");
 														flag = false;
@@ -768,13 +773,13 @@ $(function(){
 									});
 								});
 
-				$(".scoreLine>a").tooltip().click(function(e) {//分数控制
+				/* $(".scoreLine>a").tooltip().click(function(e) {//分数控制
 					e.preventDefault();
 					$(this).prevAll("a").add(this).addClass("active");
 					$(this).nextAll("a").removeClass("active");
 					$("#examScore").val($(this).children(".num").text());
 					$("#questionScoreErr").css("display", "none");
-				});
+				}); */
 
 				var validator = $("#formEditDTotal").validate({
 					submitHandler : submitForm
@@ -908,11 +913,11 @@ $(function(){
 						data.listExamAnswer = JSON
 								.stringify(data.listExamAnswer);
 					}
-					if (JSON.stringify(data.examScore) == '""') {
-						$("#questionScoreErr").html("请设置分数");
+					/* if (JSON.stringify(data.examScore) == '""'||parseInt(data.examScore)>100) {
+						$("#questionScoreErr").html("试题分数必须在0—100之间");
 						$("#questionScoreErr").css("display", "block");
 						return;
-					}
+					} */
 					if (JSON.stringify(data.examType) != '"completion"'
 							&& JSON.stringify(data.listExamAnswer) == "[]") {
 						$("#answerErr").html("请输入试题选项");

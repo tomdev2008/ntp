@@ -245,7 +245,7 @@ public class ExamQuestionAjaxController {
 		if(!permission.equals("open")){
 			for (Map map : users) {
 				String personid =map.get("id").toString();
-				if(personid.equals("creater")){
+				if(personid.equals(info.getCreator().getFdId())){
 					continue;
 				}
 				MaterialAuth materialAuth = new MaterialAuth();

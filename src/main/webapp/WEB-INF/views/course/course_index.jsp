@@ -104,7 +104,7 @@
                 </div>
             </li>
         {{~}}
-{{?it.list.length<3}}
+{{?it.list.length<30}}
         	<li>
  			{{?it.type == 'single'}}
             	<div class="moreCourse">更多课程，敬请期待。</div>
@@ -228,7 +228,7 @@
 	
     $("#loadMoreSeries").click(function(e){//点击加载更多
     	 e.preventDefault();
-         var pageNo = $("#list-series li").length/3+1;
+         var pageNo = $("#list-series li").length/30+1;
          $.ajax({
         	 url : "${ctx}/ajax/series/getSeries",
      		async : false,
@@ -248,7 +248,7 @@
     });
     $("#loadMoreCourse").click(function(e){//点击加载更多
         e.preventDefault();
-        var pageNo = $("#list-course li").length/3+1;
+        var pageNo = $("#list-course li").length/30+1;
         var type = $("#navCourse .active a").attr("data-id");
         $.ajax({
     		url : "${ctx}/ajax/course/getMyCoursesIndexInfo",

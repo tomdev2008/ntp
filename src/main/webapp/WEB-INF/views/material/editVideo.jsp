@@ -52,8 +52,8 @@
                 <div class="btn-group">
                     <button class="btn btn-large btn-primary" type="button" onclick="saveMater();">保存</button>
                     <c:if test="${materialInfo.fdId!=null}">
-                    <button class="btn btn-large btn-primary" type="button" onclick="downloadMater();">下载</button>
-                    <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
+                     <button class="btn btn-large btn-primary" type="button" onclick="downloadMater();">下载</button>
+                     <button class="btn btn-white btn-large " type="button" onclick="confirmDel();">删除</button>
                     </c:if> 
                </div>
 	        </div>
@@ -182,7 +182,7 @@
 						
 						<ul class="unstyled list-attachment" id="listAttachment">
 						  <c:if test="${main != null}">
-							<li data-fdid="${main.fdId}" style="background-color:#eff4f7">
+							<li data-fdid="${main.fdId}" >
 								<a class="name" style="padding-left:20px;"><i class="icon-paperClip"></i>
 								&nbsp;${main.fdFileName}</a>
 								<input type="hidden"  name="attId" id="attId" value="${main.fdId}">
@@ -199,12 +199,12 @@
                         	
                         <c:if test="${materialInfo.fdLink==null||materialInfo.fdLink==''}">
 								<c:choose>
-									<c:when test="${main.flag==1&&main.fdFileType=='01'}">
+									<c:when test="${main.fileUrl!=null&&main.fileUrl!=''&&main.fdFileType=='01'}">
 										<script type="text/javascript"
 											src="${main.fileUrl}&width=750&height=510"></script>
 									</c:when>
 									<c:when
-										test="${main.flag==1&&(main.fdFileType=='04'||main.fdFileType=='05')}">
+										test="${main.fileUrl!=null&&main.fileUrl!=''&&(main.fdFileType=='04'||main.fdFileType=='05')}">
 										<iframe width="100%" height="510" id="iframe_ppt"
 											src="${main.fileUrl}" frameBorder="0" scrolling="no"></iframe>
 									</c:when>
@@ -351,10 +351,12 @@ function deleteMaterial(){
 //下载素材
 function downloadMater(){
   var attId = $("#fdattId").val();
-  if(attId!=null&&attId!=""){
+  var main = '${main.fileNetId}';
+  alert(main);
+  if(attId!=null&&attId!="" && main!=null&&main!=""){
 	  window.location.href="${ctx}/common/file/download/"+attId;
   } else {
-	  jalert("您好！该视频没有对应附件");
+	  jalert("您好！该素材没有对应附件");
   } 
 }
 </script>
@@ -433,7 +435,7 @@ $(function(){
         	$progress.width("0");
         	$pct.text("0%");
             var objvalue = eval("(" + data + ")");
-		    var html="<li data-fdid='"+objvalue.attId+"' style='background-color:#eff4f7' '><a class='name' style='padding-left:20px;'><i class='icon-paperClip'></i>&nbsp;"+file.name+" "
+		    var html="<li data-fdid='"+objvalue.attId+"' '><a class='name' style='padding-left:20px;'><i class='icon-paperClip'></i>&nbsp;"+file.name+" "
 		          +"</a><input type='hidden'  name='attId' id='attId' value='"+objvalue.attId+"'><div class='item-ctrl'> "
 		          +"<a class='icon-remove-blue' href='#'></a> </div></li>";
             $("#listAttachment").html(html);
@@ -494,6 +496,7 @@ $(function(){
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //初始化创建者
     var creator="";
+    var creatorId="";
     var url="";
 	   $.ajax({
 		 cache:false,
@@ -503,6 +506,7 @@ $(function(){
 		 success: function(result){
 		    creator = result.name+"（"+result.email+"），"+result.dept;
 				  url=result.url;
+			creatorId = result.fdId;
 		 }
 	   });
 	 //初始化权限列表
@@ -518,7 +522,7 @@ $(function(){
 				}else{
 					photo="${ctx}/"+url;
 				}
-			  var html = "<tr data-fdid='creator' draggable='true'> "+
+			  var html = "<tr data-fdid='"+creatorId+"' draggable='true'> "+
 			  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
 			  "<img src='"+photo+"' alt=''>"+creator+" </div> </td>"+
 			  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
@@ -593,13 +597,13 @@ $(function(){
 		matchContains:true ,
 		max: 10,
 		scroll: false,
-		width:688
+		width:748
     }).result(function(e,item){
 		var flag = true;
-		$("#addUser").next(".help-block").remove();
+		$("#addUser").next(".error").remove();
 		$("#list_user>tr").each(function(){
 			if($(this).attr("data-fdid")==item.id){
-				$("#addUser").after('<span class="help-block">不能添加重复的用户！</span>');;
+				$("#addUser").after('<label class="error" >不能添加重复的用户!');
 				$("#addUser").val("");
 				flag = false;
 			}

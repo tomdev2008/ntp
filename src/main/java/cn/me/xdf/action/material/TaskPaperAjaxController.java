@@ -198,7 +198,7 @@ public class TaskPaperAjaxController {
 		if(!permission.equals("open")){
 			for (Map map : users) {
 				String personid =map.get("id").toString();
-				if(personid.equals("creator")){
+				if(personid.equals(info.getCreator().getFdId())){
 					continue;
 				}
 				MaterialAuth materialAuth = new MaterialAuth();

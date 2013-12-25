@@ -35,14 +35,14 @@ request.setAttribute("path", path[path.length-1]);
 	         	<tags:navigation paths="<%=paths%>" checkString="/studyTrack/getStudyTrackDirector:/material/find:/material/materialFoward:/course/find:/course/add:/series/find:/series/add:/course/get" showString="我是主管" url="${ctx}/studyTrack/getStudyTrackDirector"></tags:navigation>
 	          </shiro:hasRole>
 	          <% if(user!=null){ %>
-	         	 <tags:navigation paths="<%=paths%>" checkString="/course/courseIndex:/passThrough:/successPage" showString="个人首页" url="${ctx}/course/courseIndex"></tags:navigation>
+	         	 <tags:navigation paths="<%=paths%>" checkString="/course/courseIndex:/passThrough:/successPage:series/studayfoward" showString="个人首页" url="${ctx}/course/courseIndex"></tags:navigation>
 	           <%} %>
 </ul>
 			<shiro:authenticated>
             <ul class="nav pull-right">
             	<shiro:hasRole name="group">
             	<li>
-                    <a class="btn-publish" href="${ctx}/course/add">
+                    <a class="btn-publish" title="发布课程" href="${ctx}/course/add">
                         <i class="icon-book-pencil"></i>
                     </a>
                 </li>

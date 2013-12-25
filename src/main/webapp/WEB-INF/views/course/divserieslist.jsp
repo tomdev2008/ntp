@@ -7,7 +7,7 @@
 	 <section class="section box-control">
 					     <div class="hd">
 						<div class="btn-toolbar">
-							<a class="btn" style="padding-left: 10px;padding-right: 10px;" href="${ctx}/series/add">发布新系列</a>
+							<a class="btn btn-primary" style="padding-left: 10px;padding-right: 10px;" href="${ctx}/series/add">发布新系列</a>
 							<div class="btn-group">
 								<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 									操作 <span class="caret"></span>

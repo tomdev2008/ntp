@@ -310,6 +310,8 @@ public class MaterialAjaxController {
 				  saveAtt(attId, info.getFdId());
 				}
 		    }
+		}else{
+			attMainService.deleteAttMainByModelId(info.getFdId());
 		}
 		info.setIsPublish("open".equals(permission)?true:false);
 		info.setIsDownload("yes".equals(isDownload)?true:false);
@@ -321,7 +323,7 @@ public class MaterialAjaxController {
 		info.setRichContent(richText);
 		materialService.save(info);
 		if (!permission.equals("open")) {
-			materialService.saveMaterAuth(kingUser, info.getFdId());
+			materialService.saveMaterAuth(kingUser, info.getFdId(),info.getCreator().getFdId());
 		}
 	}
 

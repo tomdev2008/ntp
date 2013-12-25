@@ -100,7 +100,7 @@
 <!--主体 S-->
 <section class="container">	
 		<div class="clearfix mt20">
-	        <div class="pull-left w760">
+	        <div class="pull-right w760">
 	           <div class="page-header">
                     <span class="muted">我正在看：</span> <span id="nowSee">未批改的作业</span>
                 </div>
@@ -182,17 +182,13 @@
                     </div>
                 </div>
 			</div>
-			<div class="pull-right w225">
-			  <div class="section">
-                <!--用户页面 -->
-			   <c:import url="/WEB-INF/views/studyTrack/divuserimg.jsp"></c:import>
-			  </div>
+			<div class="pull-left w225">
+                <%-- <!--用户页面 -->
+			   <c:import url="/WEB-INF/views/studyTrack/divuserimg.jsp"></c:import> --%>
 			<!-- 图片列表页面 -->
-			 <div class="section navTeacher" data-spy="affix" data-offset-top="384">
 			<c:import url="/WEB-INF/views/studyTrack/divimglist.jsp">
 				<c:param name="type" value="tutor"></c:param>
 			</c:import>
-            </div>    
               
 	        </div>
         </div>

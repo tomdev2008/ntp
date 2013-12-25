@@ -7,7 +7,7 @@
 	<section class="section box-control">
 		<div class="hd">
 			<div class="btn-toolbar">
-				<a class="btn" href="${ctx}/material/materialAddFoward?fdType=${param.fdType}">添加</a>
+				<a class="btn btn-primary" href="${ctx}/material/materialAddFoward?fdType=${param.fdType}">添加</a>
 				<div class="btn-group">
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 						操作 <span class="caret"></span>
@@ -244,6 +244,8 @@
 <script type="text/javascript">
 $(function(){
 $.Placeholder.init();
+$('[data-toggle="tooltip"]').tooltip();
+});
 //下载素材
 function downloadMater(){
 	 var key = $("#serach").val();
@@ -339,8 +341,8 @@ function initStu(){
 	});
 	
 }
-$('[data-toggle="tooltip"]').tooltip();
-});
+
+
 //initStu();
 </script>
 

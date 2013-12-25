@@ -93,7 +93,7 @@ input.error:focus,textarea.error:focus{border-color#f39800;-webkit-box-shadow:in
 .navbar-fixed-top .dropdown-menu li > a > .icon-disc-bg{margin-left:40px;}
 .navbar-fixed-top .nav li a.btn-off{font-size: 13px;padding: 19px 10px;width: 42px;}
 .navbar-fixed-top .nav li a.btn-off .divider{margin-right: 8px;font-size: 10px;vertical-align: top;color: #ffffff}
-.navbar-fixed-top .nav li a.btn-publish{margin: 7px 2px 6px;padding:3px 2px 0 0;text-align:right;height: 42px;width: 43px;background-color: #397da1;
+.navbar-fixed-top .nav li a.btn-publish{margin: 7px 2px 6px;padding:3px 2px 0 0;text-align:right;height: 42px;width: 43px;background-color: #f39800;
     -webkit-box-shadow: inset 2px 2px 1px rgba(0, 0, 0, .15);
     -moz-box-shadow: inset 2px 2px 1px rgba(0, 0, 0, .15);
     box-shadow: inset 2px 2px 1px rgba(0, 0, 0, .15);border-radius: 3px;}
@@ -114,7 +114,7 @@ footer .navbar .nav li.last a{border-right:none;}
 
 /*上传控件样式*/
 .control-upload{font-size: 0;margin-top: 10px;padding-top:5px;min-height:35px;position:relative}
-.control-upload .progress{width:450px;height:24px;padding:2px;border:solid #d0e3ee 1px;background-color:#FFF;display:inline-block;margin-bottom:0;vertical-align:middle;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
+.control-upload .progress{width:450px;height:24px;padding:2px;border:solid #d0e3ee 1px;background-color:#eff4f7;display:inline-block;margin-bottom:0;vertical-align:middle;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
 .control-upload .progress .bar{background-image:-moz-linear-gradient(top,#499dcb,#3d82a9);
     background-image:-webkit-gradient(linear,0 0,0 100%,from(#499dcb),to(#3d82a9));
     background-image:-webkit-linear-gradient(top,#499dcb,#3d82a9);background-image:-o-linear-gradient(top,#499dcb,#3d82a9);background-image:linear-gradient(to bottom,#499dcb,#3d82a9);background-repeat:repeat-x;
@@ -122,7 +122,6 @@ footer .navbar .nav li.last a{border-right:none;}
 .control-upload .txt{margin:0 10px;color:#888;font-size: 14px;vertical-align: middle;}
 .control-upload .upload-fileName{font-size: 14px;margin-bottom: 5px;color: #999999;}
 .control-upload .uploadify{position:absolute;right:10px;top:0;}
-.control-upload .pr .uploadify{top:-5px;}
 
 /*回到顶部*/
 .goTopWrap {position: fixed;z-index:1000;bottom: 70px;right: 60px;}

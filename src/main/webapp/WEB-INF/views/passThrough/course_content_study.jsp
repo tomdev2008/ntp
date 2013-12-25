@@ -102,7 +102,7 @@
 						{{??}}
 							{{=it.lectureName}}
 						{{?}}
-                <button class="btn btn-success{{?it.status == "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
+                <button class="btn btn-success{{?!it.isOptional || it.status == "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
                <i class="icon-right"></i>
                   <span class="tit">
 						{{?it.isOptional}}跳到此节{{??}}学习通过{{?}}
@@ -636,7 +636,7 @@
                 <span>第一节</span>
                 </a>
                 <h1>{{=it.courseName}}
-                <span class="labelPass{{?it.status != "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
+                <span class="labelPass{{?!it.isOptional || it.status == "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
                 </span>
                 </h1>
 				<a class="btn" href="#" id="lastC" >
@@ -1061,6 +1061,7 @@
   	  				});
             })  /*评论列表中按钮事件*/
                 .delegate("#listComment>.media .btns-comt>a","click",function(e){
+                	$("#textComment").next(".error").remove();
                     e.preventDefault();
                         var $this = $(this);
                         var itemId = $this.closest(".media").attr("data-fdid");
@@ -1140,6 +1141,7 @@
           	                          		  },
           	                          		  success: function(result){
           	                          			resetComment(1,10);
+          	                          			jalert_tips("回复成功");
           	                          		  }
                                     		});
                                         }
@@ -1339,6 +1341,10 @@
             
             /*提交评论表单*/
             function submitFormComment(form){
+               if($("#textComment").val()==""||$("#textComment").val()==null){
+            	   jalert_tips("请输入评论信息");  
+                   return false;
+               }
                $.ajax({
           		  	url: "${ctx}/ajax/message/addMaterialMessage",
           		  	async:false,
@@ -1349,9 +1355,9 @@
                     	fdContent: $("#textComment").val(),
               	  	},
           		});
-               jalert_tips("评论发表成功");  
                $("#textComment").val("");
                resetComment(1,10);
+               jalert_tips("评论发表成功");  
                return false;
             }
             $("#textComment").bind("keydown",function(){

@@ -1,6 +1,8 @@
 @charset "utf-8";
 @import "pages.css";
+
 .open .btn:focus{outline: 0;}
+
 /* width */
 .w760{width:760px;}
 .w225{width:225px;}
@@ -103,7 +105,7 @@
 .profile h5{margin: 20px 0 0px;line-height: 24px;font-weight: normal}
 .profile p{line-height: 25px;margin-bottom: 0;}
 
-.navTeacher{margin-top: 20px;}
+.navTeacher{}
 .navTeacher.affix{top:60px;margin-top: 0;}
 .navTeacher .hd{overflow:hidden;position:relative;}
 .navTeacher h5{padding:10px 20px;}

@@ -170,7 +170,7 @@ level" value="{{=it.courseTit || ''}}"  />
                         <textarea name="subTitle" id="subTitle"  minlength="12" class="input-block-level" rows="3">
 {{=it.subTit || ''}}</textarea>
 <label for="fdPrice">课程定价</label>
-<input name="fdPrice" id="fdPrice" value="{{=it.fdPrice}}" class="number" decimal="true" type="text">
+<input name="fdPrice" id="fdPrice" value="{{=it.fdPrice||''}}" class="number" decimal="true" type="text">
 
                         <label for="sectionOrder">章节顺序</label>
                         <input name="sectionOrder" id="sectionOrder" value="{{=it.sectionOrder||true}}" type="hidden">
@@ -188,7 +188,6 @@ id="false" type="button">无序学习</button>
                         	<input type="hidden" id="keyword" name="keyword" value="{{= it.keyword || '' }}" />
 							{{~ it.keyword :key:index}}
                          		 <span class="alert alert-tag"><span>{{=key}}</span><a href="#" data-dismiss="alert" 
-
 class="close">&times;</a></span>
                          	{{~}}
                           <a href="#" class="btn-add">+</a>
@@ -214,7 +213,7 @@ class="close">&times;</a></span>
 <!-- 模板详情_基本信息 添加关键词 模板 -->
 <script id="addKeywordInfoTemplate" type="text/x-dot-template">
 		<div class="inpKeyword form-inline control-group">
-			<input type="text" class="span5" id="addKey" placeholder="请输入关键词" />
+			<input type="text" class="span5" id="addKey" onblur="reminder();" placeholder="请输入关键词" />
 			<button class="btn btn-large btn-primary" type="button">确定</button>
 			<button class="btn btn-large" type="button">取消</button>
 		  </div>
@@ -452,7 +451,7 @@ it.encryptType !='passwordProtect'}}disabled{{?}} placeholder="请填写课程�
 							</tr>
 						</thead>
 						<tbody id="list_user">
-									<tr data-fdid="creater">
+									<tr data-fdid="{{=it.createrid}}" data-creater="creater">
 										<td class="tdTit">
                                           <div class="pr">
 											<div class="state-dragable"><span 
@@ -479,7 +478,7 @@ onclick="return false" class="editingCourse" /></td>
 							{{~it.user :user:index}}
 								{{~it.user :user:index2}}
 									{{?index == user.index}}
-									<tr data-fdid="{{=user.id}}">
+									<tr data-fdid="{{=user.id}}" data-creater="uncreater">
 										<td class="tdTit">
                                           <div class="pr">
 											<div class="state-dragable"><span 
@@ -517,7 +516,7 @@ blue"></a></td>
 
 <!-- 授权管理 用户列表 模板 -->
 <script id="listUserKinguserTemplate" type="text/x-dot-template">
-<tr data-fdid="{{=it.id}}">
+<tr data-fdid="{{=it.id}}" data-creater="uncreater">
 	<td class="tdTit">
         <div class="pr">
 		<div class="state-dragable"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-
@@ -727,12 +726,12 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 	                <i class="icon-content"></i>
 	                课程内容
 	            </li>
-	            <li class="active"><a href="#sectionsDirectory">章节目录</a></li> 
+	            <li class="active"><a href="#basicInfo">基本信息</a></li>  
+	            <li><a href="#sectionsDirectory">章节目录</a></li> 
 	             <li class="nav-header">
 	                <i class="icon-info"></i>
 	                课程信息
 	            </li>
-	            <li><a href="#basicInfo">基本信息</a></li>   
 	            <li><a href="#detailInfo">详细信息</a></li>
 	            <li><a href="#promotion">课程推广</a></li>  
 	             <li class="nav-header">
@@ -757,7 +756,15 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
 <script src="${ctx}/resources/js/templDetailPages.js"></script>
 <script src="${ctx}/resources/js/jquery.placeholder.1.3.min.js"></script>
-
+<script type="text/javascript">	
+function reminder(){
+	var key =  $("#addKey").val();
+	if(key.length>=10){
+		$("#formBasicInfo .keywordWrap>.btn-add").next().after('<label class="error" for="addKey">关键字不能超过10个字符！</label>');
+		$("#addKey").val("");
+	}
+}
+</script>
 <script type="text/javascript">	
 $.Placeholder.init();
 	
@@ -776,7 +783,7 @@ $.Placeholder.init();
 	//根据URL中‘#’后参数判断加载栏目
 	function urlRouter(href,opt){
 		setTimeout(function(){
-			var param = href ? href : location.href.split("#").pop();			
+			var param = href ? href : location.href.split("#").pop();	
 			$("#sideNav>li>a[href='#" + param + "']").parent().addClass("active").siblings().removeClass("active");
 			switch(param){			
 	  			case "basicInfo":
@@ -856,11 +863,14 @@ $.Placeholder.init();
                 case "task":
                     if(opt) {
                         rightCont.loadVideoPage(opt,"10");
-                        break;
+                       
                     }
 	  			case "sectionsDirectory":
+	  				rightCont.loadSectionDirectoryPage("章节目录");
+	  				break;
 	  			default:
-	  				rightCont.loadSectionDirectoryPage("章节目录");			
+	  				//rightCont.loadSectionDirectoryPage("章节目录");
+	  			    rightCont.loadBasicInfoPage("基本信息");
 	  		}
 		},10);
 		

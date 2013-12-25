@@ -168,20 +168,20 @@
         </div>
         {{##def.timeLine:total:
         <div class="timeLine" fdStatus="0">
-            <div class="num">0</div>
+            <div class="num hide">0</div>
             {{ for(var i=1; i <= total; i++){ }}
             <a title="{{=i*it.timeLine.span}}{{=it.timeLine.unit || ''}}" style="width: {{=(it.timeLine.width-total-1)/total}}px"
-               class="{{?i*it.timeLine.span==it.timeLine.span}}first {{?}}{{?it.timeLine.curPos && i*it.timeLine.span<=it.timeLine.curPos}}active{{?}}"><span class="num">{{=i*it.timeLine.span}}</span></a>
+               class="{{?i*it.timeLine.span==it.timeLine.span}}first {{?}}{{?it.timeLine.curPos && i*it.timeLine.span<=it.timeLine.curPos}}active{{?}}"><span class="num hide">{{=i*it.timeLine.span}}</span></a>
             {{ } }}
         </div>
         #}}
 
 		{{##def.timeLineOnChecked:total:
         <div class="timeLine onChecked" fdStatus="1">
-            <div class="num">0</div>
+            <div class="num hide">0</div>
             {{ for(var i=1; i <= total.totalScore; i++){ }}
             <a title="{{=i*it.timeLine.span}}{{=it.timeLine.unit || ''}}"  style="width: {{=(it.timeLine.width-total.totalScore-1)/total.totalScore}}px"
-               class="{{?i*it.timeLine.span==it.timeLine.span}}first {{?}}{{?it.timeLine.curPos && i*it.timeLine.span<=it.timeLine.curPos || i*it.timeLine.span<=total.rating.score}}active{{?}}"><span class="num">{{=i*it.timeLine.span}}</span></a>
+               class="{{?i*it.timeLine.span==it.timeLine.span}}first {{?}}{{?it.timeLine.curPos && i*it.timeLine.span<=it.timeLine.curPos || i*it.timeLine.span<=total.rating.score}}active{{?}}"><span class="num hide">{{=i*it.timeLine.span}}</span></a>
             {{ } }}
         </div>
         #}}
@@ -235,7 +235,7 @@
                 {{~it :task1:index1}}
                 {{~it :task}}
                 {{?index1 == task.index}}
-                <a class="num{{?task.status == 'checked'}} active" title="已批改"{{??task.status == 'unchecked'}}" title="未批改"{{??task.status == 'null'}} active" title="未作答"{{?}} href="#task{{=index1+1}}">
+                <a class="num {{?task.status == 'checked'}} active" title="已批改"{{??task.status == 'unchecked'}}" title="未批改"{{??task.status == 'null'}} active" title="未作答"{{?}} href="#task{{=index1+1}}">
                 {{=index1+1}}
                 </a>
                 {{?}}
