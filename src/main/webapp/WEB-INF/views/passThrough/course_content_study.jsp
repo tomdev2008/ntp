@@ -1341,6 +1341,10 @@
             
             /*提交评论表单*/
             function submitFormComment(form){
+               if($("#textComment").val()==""||$("#textComment").val()==null){
+            	   jalert_tips("请输入评论信息");  
+                   return false;
+               }
                $.ajax({
           		  	url: "${ctx}/ajax/message/addMaterialMessage",
           		  	async:false,
@@ -1351,9 +1355,9 @@
                     	fdContent: $("#textComment").val(),
               	  	},
           		});
-               jalert_tips("评论发表成功");  
                $("#textComment").val("");
                resetComment(1,10);
+               jalert_tips("评论发表成功");  
                return false;
             }
             $("#textComment").bind("keydown",function(){

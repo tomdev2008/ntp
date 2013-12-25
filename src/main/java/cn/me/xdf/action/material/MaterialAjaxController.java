@@ -310,6 +310,8 @@ public class MaterialAjaxController {
 				  saveAtt(attId, info.getFdId());
 				}
 		    }
+		}else{
+			attMainService.deleteAttMainByModelId(info.getFdId());
 		}
 		info.setIsPublish("open".equals(permission)?true:false);
 		info.setIsDownload("yes".equals(isDownload)?true:false);

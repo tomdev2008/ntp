@@ -41,6 +41,10 @@ $("#addMessage").bind("click",function(){
 //课程评论
 function addMessagemethod(){
 	var mess = $("#courseMessage").val();
+	if(mess==""||mess==null){
+		jalert_tips("请输入评论信息");
+		return;
+	}
 	$("#courseMessage").val("");
 	$.ajax({
 		  url: "${ctx}/ajax/message/addCourseMessage",
