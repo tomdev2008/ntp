@@ -51,7 +51,7 @@ public class GroupLdapInService extends LdapInService {
     public String executeUpdateData(int day) {
         String date = DateUtil.convertDateToString(DateUtils.addDays(new Date(), 0 - day), "yyyyMMddHHmmss.ssssss");
         List<SysOrgGroup> list = ldapTemplate.search(
-                "cn=users", "(&(objectClass=xdf-group)(modifyTimeStamp>=" + date + "))",
+                "ou=群组", "(&(objectClass=xdf-group)(modifyTimeStamp>=" + date + "))",
                 new GroupContextMapper());
         String msg = updateGroup(list);
         ldapLogService.saveLog(msg);

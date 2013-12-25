@@ -11,10 +11,7 @@ import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -67,15 +64,17 @@ public class DepartLdapInService extends LdapInService {
                 insertSize++;
             } else {
                 fdIds.put(map.get("FD_NO").toString(), lists.get(0).get("FDID").toString());
-                map.put("FDID",lists.get(0).get("FDID").toString());
+                map.put("FDID", lists.get(0).get("FDID").toString());
                 updateByNamedQuery("updateElement", map);
                 updateSize++;
             }
         }
 
         for (Map<String, Object> map : values) {
-            if (map.get("FD_PARENTID") != null) {
+            if (map.get("FD_PARENTID") != null && fdIds.get(map.get("FD_PARENTID").toString()) != null) {
                 map.put("FD_PARENTID", fdIds.get(map.get("FD_PARENTID").toString()).toString());
+            } else {
+                map.put("FD_PARENTID", "");
             }
             updateByNamedQuery("updateElementParent", map);
         }
@@ -94,7 +93,7 @@ public class DepartLdapInService extends LdapInService {
             map.put("FD_NAME", context.getStringAttribute("displayName"));
             map.put("FD_NO", context.getStringAttribute("departmentNumber"));
             map.put("FD_ORG_TYPE", LdapUtils.getOrgType(context.getStringAttribute("departmentNumber")));
-            map.put("LDAPDN", context.getDn());
+            map.put("LDAPDN", context.getDn().toString());
             if ("0".equals(context.getStringAttribute("parentId"))) {
                 map.put("FD_PARENTID", null);
             } else {

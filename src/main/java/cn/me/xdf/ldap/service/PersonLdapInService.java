@@ -113,7 +113,7 @@ public class PersonLdapInService extends LdapInService {
             map.put("AVAILABLE", "1".equals(context.getStringAttribute("displayed")));
             map.put("CREATETIME", new Date());
 
-            map.put("LDAPDN",context.getDn());
+            map.put("LDAPDN",context.getDn().toString());
             LdapUtils.setStringAttribute(context, map, "FD_LOGIN_NAME", "cn");
             LdapUtils.setStringAttribute(context, map, "FD_NAME", "name_attribute");
             LdapUtils.setStringAttribute(context, map, "FD_NO", "employeeNumber");
