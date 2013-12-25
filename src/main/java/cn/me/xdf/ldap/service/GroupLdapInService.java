@@ -4,6 +4,8 @@ import cn.me.xdf.common.hibernate4.Value;
 import cn.me.xdf.model.organization.SysOrgConstant;
 import cn.me.xdf.model.organization.SysOrgElement;
 import cn.me.xdf.model.organization.SysOrgGroup;
+import cn.me.xdf.utils.DateUtil;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.DirContextAdapter;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,12 +39,23 @@ public class GroupLdapInService extends LdapInService {
         List<SysOrgGroup> list = ldapTemplate.search(
                 "ou=群组", "(&(objectClass=xdf-group))",
                 new GroupContextMapper());
-        String msg = updateOrg(list);
+        String msg = updateGroup(list);
         ldapLogService.saveLog(msg);
     }
 
+    @Override
+    public String executeUpdateData(int day) {
+        String date = DateUtil.convertDateToString(DateUtils.addDays(new Date(), 0 - day), "yyyyMMddHHmmss.ssssss");
+        List<SysOrgGroup> list = ldapTemplate.search(
+                "cn=users", "(&(objectClass=xdf-group)(modifyTimeStamp>=" + date + "))",
+                new GroupContextMapper());
+        String msg = updateGroup(list);
+        ldapLogService.saveLog(msg);
+        return msg;
+    }
 
-    private String updateOrg(List<SysOrgGroup> groups) {
+
+    private String updateGroup(List<SysOrgGroup> groups) {
 
         int insertSize = 0;
         int updateSize = 0;
@@ -88,10 +102,6 @@ public class GroupLdapInService extends LdapInService {
     }
 
 
-    @Override
-    public String executeUpdateData(int day) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
 
     private static class PersonContextMapper implements ContextMapper {
