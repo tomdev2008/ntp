@@ -34,9 +34,11 @@ import cn.me.xdf.model.course.Visitor;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
+import cn.me.xdf.model.organization.RoleEnum;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.SysOrgPersonService;
+import cn.me.xdf.service.UserRoleService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
@@ -99,6 +101,8 @@ public class PassThroughAjaxController {
 	@Autowired
 	private VisitorService visitorService;
 	
+	@Autowired
+	private UserRoleService userRoleService;
 	
 	/**
 	 * 检查当前课程 当前登录是否有权限进入
@@ -614,6 +618,15 @@ public class PassThroughAjaxController {
 							weak.put("count", messageService.getOpposeCount(messages.get(i).getFdId()));
 							weak.put("did", messageReplyService.isOpposeMessage(ShiroUtils.getUser().getId(), messages.get(i).getFdId())!=null);
 							item.put("weak", weak);
+							if(messages.get(i).getFdUser()==null){
+								item.put("canDelete", false);
+							}else{
+								if((messages.get(i).getFdUser().getFdId().equals(ShiroUtils.getUser().getId()) || !userRoleService.isEmptyPerson(ShiroUtils.getUser().getId(), RoleEnum.admin))&&(!Constant.MESSAGE_TYPE_SYS.equals(messages.get(i).getFdType()))){
+									item.put("canDelete", true);
+								}else{
+									item.put("canDelete", false);
+								}
+							}
 							Map comment = new HashMap();
 							List<MessageReply> messageReplies = messageReplyService.findByCriteria(MessageReply.class,
 									Value.eq("message.fdId", messages.get(i).getFdId()), Value.eq("fdType", "03"));
