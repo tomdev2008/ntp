@@ -306,7 +306,7 @@ class="close">&times;</a></li>
 					<label for="CourseCover">课程封面</label>
 					<input id="courseCover" name="courseCover" class="input-block-level" type="hidden" 
 
-value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
+value="{{=it.coverUrl || 'images/default-cover.png'}}" />
                 <!--图片剪切-->
                 <div class="cutimg-box no" style="display:none;">
                     <iframe id="iframeimg" width="100%" height="500" id="win" name="win" frameborder="0" scrolling="no"
