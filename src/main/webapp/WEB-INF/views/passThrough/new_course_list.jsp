@@ -25,7 +25,7 @@
 <div class="section newClass mt20">
      <div class="hd">
      	<h5>最新课程</h5>
-            <a href="${ctx}/course/courseIndexAll" class="ab_r">发现更多课程</a>
+            <a href="${ctx}/course/courseIndexAll" class="ab_r">全部课程</a>
      </div>
      <div class="bd">
         	<div class="list-class" id="discoverCourses">
