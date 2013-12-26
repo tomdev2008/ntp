@@ -276,7 +276,6 @@ $.ajax({
 	async:false,
 	 url: "${ctx}/ajax/head/getTeacherWord",
 	success:function(data){
-		($("#myTabs").nextAll()[0].html();
 	}
 });
 </script>
