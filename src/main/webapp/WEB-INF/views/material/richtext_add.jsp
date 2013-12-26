@@ -70,6 +70,59 @@
                                 <input type="hidden" id="fdId" value="${materialInfo.fdId}">
                             </div>
                         </div>
+                         <div class="control-group">
+                            <label class="control-label" >统&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</label>
+                            <div class="controls controls-txt">
+                                <span class="rating-view">
+                                    <span class="rating-all">
+                                       <c:if test="${score.fdAverage!=null}">
+                        <c:forEach var="i" begin="1" end="5">
+					  	<c:if test="${i<=score.fdAverage}">
+					  	<i class="icon-star active"></i>
+					  	</c:if>
+					  	<c:if test="${i>score.fdAverage}">
+					  	<i class="icon-star"></i>
+					  	</c:if>
+					  </c:forEach>                                         
+                                       </c:if>
+                                       <c:if test="${score.fdAverage==null}">
+                                         <c:forEach var="i" begin="1" end="5">
+					   					   <i class="icon-star"></i>
+					  				     </c:forEach>
+                                       </c:if>
+                                       
+                                     </span>
+                                      <b class="text-warning">
+                                       <c:if test="${score.fdAverage==null}">
+                                          0.0
+                                       </c:if>
+                                       <c:if test="${score.fdAverage!=null}">
+                                          ${score.fdAverage}
+                                       </c:if>
+                                      </b>
+                                </span>
+                                <span class="btns-handle">
+                                <b>|</b>
+                                    <button type="button" class="btn btn-link"><i class="icon-eye"></i>
+                                       <c:if test="${materialInfo.fdPlays==null}">
+                                          0
+                                       </c:if>
+                                       <c:if test="${materialInfo.fdPlays!=null}">
+                                          ${materialInfo.fdPlays}
+                                       </c:if>
+                                     </button><b>|</b>
+                                    <button type="button" class="btn btn-link"><i class="icon-thumbs-up"></i>
+                                      <c:if test="${materialInfo.fdLauds==null}">
+                                          0
+                                       </c:if>
+                                       <c:if test="${materialInfo.fdLauds!=null}">
+                                          ${materialInfo.fdLauds}
+                                       </c:if>
+                                    </button><b>|</b>
+                                    <button type="button" class="btn btn-link"><i class="icon-download"></i>0</button>
+                                </span>
+                            </div>
+                        </div>
                         <div class="control-group">
                             <label class="control-label" for="videoIntro" id="materialIntro">简&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介</label>
                             <div class="controls">
@@ -224,8 +277,9 @@ $(function(){
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //初始化创建者
-    	var creator="";
-    	var url="";
+    var creator="";
+    var creatorId="";
+    var url="";
 	   $.ajax({
 		 cache:false,
 		 url: "${ctx}/ajax/material/getCreater?materialId=${materialInfo.fdId}",
@@ -234,33 +288,34 @@ $(function(){
 		 success: function(result){
 		    creator = result.name+"（"+result.email+"），"+result.dept;
 				  url=result.url;
+			creatorId = result.fdId;
 		 }
 	   });
 	 //初始化权限列表
-	   $.ajax({
-			  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
-			  async:false,
-			  cache:false,
-			  dataType : 'json',
-			  success: function(result){
-				  var photo;
-					if(url.indexOf("http")>-1){
-						photo=url;
-					}else{
-						photo="${ctx}/"+url;
-					}
-				  var html = "<tr data-fdid='creator' draggable='true'> "+
-				  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
-				  "<img src='"+photo+"' alt=''>"+creator+" </div> </td>"+
-				  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
-				  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
-				  "</td> </tr>";
-				  for(var i in result.user){
-					  html += listUserKinguserFn(result.user[i]);
-				  }
-				  $("#list_user").html(html); 
+	    $.ajax({
+		  url: "${ctx}/ajax/material/getAuthInfoByMaterId?MaterialId=${materialInfo.fdId}",
+		  async:false,
+		  cache:false,
+		  dataType : 'json',
+		  success: function(result){
+			  var photo;
+				if(url.indexOf("http")>-1){
+					photo=url;
+				}else{
+					photo="${ctx}/"+url;
+				}
+			  var html = "<tr data-fdid='"+creatorId+"' draggable='true'> "+
+			  " <td class='tdTit'> <div class='pr'> <div class='state-dragable'><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></div> "+
+			  "<img src='"+photo+"' alt=''>"+creator+" </div> </td>"+
+			  " <td><input type='checkbox' onclick='return false' checked='' class='tissuePreparation'></td> <td>"+
+			  "<input type='checkbox' onclick='return false' checked='' class='editingCourse'></td> <td></a>"+
+			  "</td> </tr>";
+			  for(var i in result.user){
+				  html += listUserKinguserFn(result.user[i]);
 			  }
-		  });
+			  $("#list_user").html(html); 
+		  }
+	  });
     
     $("#formEditDTotal").validate({
         submitHandler:saveMaterial

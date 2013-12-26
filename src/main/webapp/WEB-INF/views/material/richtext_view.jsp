@@ -66,6 +66,59 @@
                                 <input type="hidden" id="fdId" value="${materialInfo.fdId}" readonly>
                             </div>
                         </div>
+                         <div class="control-group">
+                            <label class="control-label" >统&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</label>
+                            <div class="controls controls-txt">
+                                <span class="rating-view">
+                                    <span class="rating-all">
+                                       <c:if test="${score.fdAverage!=null}">
+                        <c:forEach var="i" begin="1" end="5">
+					  	<c:if test="${i<=score.fdAverage}">
+					  	<i class="icon-star active"></i>
+					  	</c:if>
+					  	<c:if test="${i>score.fdAverage}">
+					  	<i class="icon-star"></i>
+					  	</c:if>
+					  </c:forEach>                                         
+                                       </c:if>
+                                       <c:if test="${score.fdAverage==null}">
+                                         <c:forEach var="i" begin="1" end="5">
+					   					   <i class="icon-star"></i>
+					  				     </c:forEach>
+                                       </c:if>
+                                       
+                                     </span>
+                                      <b class="text-warning">
+                                       <c:if test="${score.fdAverage==null}">
+                                          0.0
+                                       </c:if>
+                                       <c:if test="${score.fdAverage!=null}">
+                                          ${score.fdAverage}
+                                       </c:if>
+                                      </b>
+                                </span>
+                                <span class="btns-handle">
+                                <b>|</b>
+                                    <button type="button" class="btn btn-link"><i class="icon-eye"></i>
+                                       <c:if test="${materialInfo.fdPlays==null}">
+                                          0
+                                       </c:if>
+                                       <c:if test="${materialInfo.fdPlays!=null}">
+                                          ${materialInfo.fdPlays}
+                                       </c:if>
+                                     </button><b>|</b>
+                                    <button type="button" class="btn btn-link"><i class="icon-thumbs-up"></i>
+                                      <c:if test="${materialInfo.fdLauds==null}">
+                                          0
+                                       </c:if>
+                                       <c:if test="${materialInfo.fdLauds!=null}">
+                                          ${materialInfo.fdLauds}
+                                       </c:if>
+                                    </button><b>|</b>
+                                    <button type="button" class="btn btn-link"><i class="icon-download"></i>0</button>
+                                </span>
+                            </div>
+                        </div>
                         <div class="control-group">
                             <label class="control-label" for="videoIntro" id="materialIntro">简&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介</label>
                             <div class="controls">

@@ -170,7 +170,9 @@
                               <c:if test="${bean.FDLAUDS!=null}">
                                           ${bean.FDLAUDS}
                               </c:if>
-                         </strong></button><b>|</b>
+                         </strong></button>
+                         <c:if test="${param.fdType!='07'}">
+                         <b>|</b>
 							   <button type="button" class="btn btn-link">
 								<i class="icon-download"></i>
 								<c:if test="${bean.FDDOWNLOADS==null}">
@@ -180,6 +182,7 @@
 								  <strong>${bean.FDDOWNLOADS}</strong>
 								</c:if>
 							  </button>
+					   </c:if>
 					</span>
 				</a></li>
 			</j:iter> 
