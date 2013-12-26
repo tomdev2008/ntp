@@ -83,6 +83,7 @@ input.error:focus,textarea.error:focus{border-color:#953b39;-webkit-box-shadow:i
 .icon-chevron-left{background-position: right -196px}
 .icon-chevron-right{background-position: right -216px}
 .icon-book-pencil{width: 40px;height: 40px;background-position: 0 -1184px;}
+.icon-loading{background: url("../images/ajax_loader_32.gif") no-repeat 0 0;width: 32px;height: 32px;}
 
 /* star */
 .icon-star{*margin-right:0;vertical-align:middle;}
