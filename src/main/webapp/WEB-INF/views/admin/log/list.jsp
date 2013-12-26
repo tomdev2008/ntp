@@ -124,10 +124,10 @@
 						<li><a href="javascript:void(0)" onclick="deleteLog()">批量删除</a></li>
 					</ul>
 				</div>
-				
-				<input type="text" id="fdKey" name="fdKey" value='${fdKey }' class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
-				<i class="icon-search" onclick="goSearch();"></i>
-				
+				<div class="toolbar-search">
+					<input type="text" id="fdKey" name="fdKey" value='${fdKey }' class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
+					<i class="icon-search" onclick="goSearch();"></i>
+				</div>
 				<span class="showState"> <span class="muted">当前显示：</span>
 					<span id="markshow">
 							 	<a id="containkey"href="#">全部条目</a>

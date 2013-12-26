@@ -39,7 +39,7 @@
 	<section class="clearfix mt20">
      <section class="col-left pull-left">
     	<ul class="nav nav-list sidenav">
-    		<li class="nav-header first"><span>系统管理</span></li>
+    		<li class="nav-header first"><span>系统管理<b class="caret"></b></span></li>
             <tags:shirourl url="${ctx}/admin/user/list" active="user" text="用户管理" iconName="icon-user"  para="${active}"></tags:shirourl>
             <tags:shirourl url="${ctx}/admin/role/list" active="role" text="角色管理" iconName="icon-user"  para="${active}"></tags:shirourl>
             <tags:shirourl url="${ctx}/admin/group/list" active="group" text="群组管理" iconName="icon-user"  para="${active}"></tags:shirourl>
