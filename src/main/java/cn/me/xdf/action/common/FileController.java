@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jodd.io.StreamUtil;
+import jodd.util.StringUtil;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -332,13 +333,14 @@ public class FileController {
             List<InputStreamZipper.InputStreamEntry> fileEntrys = new ArrayList<InputStreamZipper.InputStreamEntry>();
             response.setContentType("application/x-download;charset=UTF-8");
             response.addHeader("Content-disposition", "filename=" + temp + ".zip");
-
             for (AttMain attMain : attMains) {
                 //File file = new File(attMain.getFdFilePath());
-                log.info("开始读取Filenet数据:" + attMain.getFdFileName());
-                ByteArrayOutputStream bos = AttMainPlugin.getDocByAttId(attMain);
-                InputStream stream = new ByteArrayInputStream(bos.toByteArray());
-                fileEntrys.add(new InputStreamZipper.InputStreamEntry(attMain.getFdFileName(), "", stream, attMain.getFdFileName()));
+            	if(StringUtil.isNotBlank(attMain.getFileNetId())){
+            		log.info("开始读取Filenet数据:" + attMain.getFdFileName());
+                    ByteArrayOutputStream bos = AttMainPlugin.getDocByAttId(attMain);
+                    InputStream stream = new ByteArrayInputStream(bos.toByteArray());
+                    fileEntrys.add(new InputStreamZipper.InputStreamEntry(attMain.getFdFileName(), "", stream, attMain.getFdFileName()));
+            	}
             }
             try {
                 // 模板一般都在windows下编辑，所以默认编码为GBK
