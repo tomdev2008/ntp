@@ -38,7 +38,7 @@
                 </div>
                 <label class="radio inline" for="selectCurrPage"><input value="noPage" type="radio" id="selectCurrPage" name="selectCheckbox" checked />选中本页</label>
                 <label class="radio inline" for="selectAll"><input value="all" type="radio" id="selectAll" name="selectCheckbox" />选中全部</label>
-                <div class="pages pull-right" id="pageTop" >
+                <div class="pages" id="pageTop" >
 
                 </div>
             </div>

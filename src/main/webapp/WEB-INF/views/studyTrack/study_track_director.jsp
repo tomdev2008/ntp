@@ -23,7 +23,7 @@
                 <div class="page-header" data-spy="affix" data-offset-top="20">
                     <span class="muted">我正在看：</span><span id="selectMessage">我授权的课程学习情况</span>
                     <div class="pos-r">
-                        <a class="btn btn-link dropdown-toggle" href="#" data-toggle="dropdown">修改筛选条件</a>
+                        <a class="btn btn-link dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-filter"></i>修改筛选条件</a>
                         <ul class="dropdown-menu pull-right" id="selectUl">
                             <li><a href="javascript:void(0)" data-type="myOrganized">我授权的课程学习情况</a></li>
                             <li><a href="javascript:void(0)" data-type="myDepart" >本部门的课程学习情况</a></li>

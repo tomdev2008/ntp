@@ -146,7 +146,7 @@
                         机构 {{=it.org}}  <br/>
                         部门  {{=it.dep}} <br/>
                         电话  {{=it.tel}} <br/>
-        QQ  {{=it.qq}} <br/>
+                        生日  {{=it.bird}} <br/>
                         血型  {{=it.bool}}
                     </p>
                 </div>
@@ -164,7 +164,11 @@
                     <i class="icon-shyhl"></i>
                     <a href="/ntp/register/updateTeacher" class="txt">
 {{?it.selfIntroduction==""}}这家伙很懒，也不好好介绍一下自己~ :-({{??}}
-{{=it.selfIntroduction}}
+							{{?it.selfIntroduction.length>20}}
+								{{=it.selfIntroduction.substring(0,20)}}...
+							{{??}}
+								{{=it.selfIntroduction}}
+							{{?}}
 {{?}}
 					
 					</a>
