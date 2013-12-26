@@ -42,7 +42,7 @@
           <input type="hidden" name="fdId" value="${bean.fdId}"/>
           <input type="hidden" id="fdIcoUrl" name="fdIcoUrl" value="${bean.fdIcoUrl}" />
         	<p class="reg_form-intro">以下信息将显示在您的
-        	<a href="${ctx}/trainee/welcome">备课主页</a>
+        	<a href="${ctx}/trainee/welcome">个人主页</a>
         	上，方便大家了解您。</p>
         	<div class="control-group" style="height: 70px;">
         		<label for="face" class="control-label">头像</label>
