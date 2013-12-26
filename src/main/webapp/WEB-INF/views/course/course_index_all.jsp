@@ -110,7 +110,7 @@
 	{{~}}
 </script>
 <script id="courseTopTemplate" type="text/x-dot-template">
-{{?it.list.length>=30}}
+{{?it.list.length>=3}}
  <div id="myCarousel" class="carousel slide" data-toggle="carousel" data-interval="4000">
 			<div class="carousel-l">
 			<img src="{{?it.list[it.list.length-1].attId!=""}}${ctx}/common/file/image/{{=it.list[it.list.length-1].attId}}{{??}}${ctx}/resources/images/default-cover.png{{?}}" alt="">
