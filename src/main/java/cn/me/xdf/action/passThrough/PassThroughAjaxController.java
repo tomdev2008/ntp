@@ -751,7 +751,7 @@ public class PassThroughAjaxController {
 							try {
 								nextCatalog = catalogs.get(i).getFdName();
 							} catch (Exception e) {
-								nextCatalog = "证书预览";
+								nextCatalog = "查看课程结业证书";
 							}
 						}
 					}
@@ -769,7 +769,7 @@ public class PassThroughAjaxController {
 						}
 					}
 					width="100%";
-					nextCatalog = "证书预览";
+					nextCatalog = "查看课程结业证书";
 				}
 			}
 			map.put("sums", sums);
