@@ -74,11 +74,8 @@
 		</div>
 		<div class="bd">
 			 <div class="btn-toolbar">
-				<div class="btn-group btns-radio" data-toggle="buttons-radio">
-				</div>
-				<label class="checkbox inline" for="selectCurrPage"></label>
-				<label class="checkbox inline" for="selectAll"></label>
-				<div class="pages pull-right">
+				
+				<div class="pages">
 					<div class="span2">
 						 第<span> 
 						 ${page.startNum} - ${page.endNum}
