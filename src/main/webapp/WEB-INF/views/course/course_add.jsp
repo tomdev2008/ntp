@@ -903,7 +903,7 @@ $.Placeholder.init();
                 case "task":
                     if(opt) {
                         rightCont.loadVideoPage(opt,"10");
-                       
+                        break;
                     }
 	  			default:
 	  				rightCont.loadSectionDirectoryPage("章节目录");
