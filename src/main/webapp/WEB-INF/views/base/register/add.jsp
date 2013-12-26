@@ -638,7 +638,7 @@ $(function(){
 			var departid = depart.options[index].value;
 			var departname = depart.options[index].text;
 			document.getElementById("departend").innerHTML = jgname
-					+ "--" + departname;
+					+ "&nbsp;/&nbsp;" + departname;
 			//设置电话
 			document.getElementById("telend").innerHTML = document
 					.getElementById("tel").value;
