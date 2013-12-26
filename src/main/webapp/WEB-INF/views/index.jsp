@@ -138,6 +138,7 @@
             <h5>Felix</h5>
             <p>SAT教师</p>
           </a></li>
+          
           <li class="caret"></li>
    	  </ul>
     </div>
@@ -256,7 +257,28 @@ $("#myTabs>li>a").bind("mouseover",function(e){
 .on("shown",function(e){
 	$("#myTabs>.caret").stop(false,true).animate({left: $(this).parent().index()*250 + 46 + "px"},"slow","swing");
 });
-		
+//初始化学校 教师 导师 课程数
+$.ajax({
+	type: "post",
+	async:false,
+	 url: "${ctx}/ajax/head/getSchoolInfo",
+	 dataType : 'json',
+	success:function(data){
+		$(".icon-school-home").next("span").children("h2").html(parseInt(data.schoolNum).toLocaleString().split(".")[0]+'+');
+		$(".icon-teacher-home").next("span").children("h2").html(parseInt(data.mentorNum).toLocaleString().split(".")[0]+'+');
+		$(".icon-mentor-home").next("span").children("h2").html(parseInt(data.newTeacherNum).toLocaleString().split(".")[0]+'+');
+		$(".icon-book-home").next("span").children("h2").html(parseInt(data.courseNum).toLocaleString().split(".")[0]+'+');
+	}
+});
+//教师寄语
+$.ajax({
+	type: "post",
+	async:false,
+	 url: "${ctx}/ajax/head/getTeacherWord",
+	success:function(data){
+		($("#myTabs").nextAll()[0].html();
+	}
+});
 </script>
 </body>
 </html>
