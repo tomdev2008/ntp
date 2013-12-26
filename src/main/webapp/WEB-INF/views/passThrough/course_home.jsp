@@ -124,42 +124,42 @@
                                 </dd>
                                 <dt>学习目标</dt>
                                 <dd>
-                                    <ol>
+                                    
                                      <j:ifelse test="${course.fdLearnAim!=null}">
 										<j:then>
-											<tags:stringli value="${course.fdLearnAim}" sign="#"/>
+											<ol><tags:stringli value="${course.fdLearnAim}" sign="#"/></ol>
 										</j:then>
 										<j:else>
 											课程作者很懒，什么都没写。
 										</j:else>
 									  </j:ifelse>
-                                    </ol>
+                                    
                                 </dd>
                                 <dt>建议群体</dt>
                                 <dd>
-                                    <ol>
+                                   
                                     <j:ifelse test="${course.fdProposalsGroup!=null}">
 										<j:then>
-											<tags:stringli value="${course.fdProposalsGroup}" sign="#"/>
+											 <ol><tags:stringli value="${course.fdProposalsGroup}" sign="#"/></ol>
 										</j:then>
 										<j:else>
 											课程作者很懒，什么都没写。
 										</j:else>
 									  </j:ifelse>
-                                    </ol>
+                                    
                                 </dd>
                                 <dt>课程要求</dt>
                                 <dd class="last">
-                                    <ol>
+                                   
                                     <j:ifelse test="${course.fdDemand!=null}">
 										<j:then>
-											<tags:stringli value="${course.fdDemand}" sign="#"/>
+											 <ol><tags:stringli value="${course.fdDemand}" sign="#"/></ol>
 										</j:then>
 										<j:else>
 											课程作者很懒，什么都没写。
 										</j:else>
 									  </j:ifelse>
-                                    </ol>
+                                    
                                 </dd>
                             </dl>
                         </div>
