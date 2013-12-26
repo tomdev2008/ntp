@@ -35,10 +35,6 @@ public class AttMainInterfaceQuartz implements Serializable {
     private AttMainService attMainService;
 
 
-    @Autowired
-    private AttMainTask attMainTask;
-
-
     public void executeTodo() {
         log.info("开始执行定时任务--attMain");
         List<AttMain> attMainList = attMainService.findByCriteria(AttMain.class,Value.eq("flag", -1),
