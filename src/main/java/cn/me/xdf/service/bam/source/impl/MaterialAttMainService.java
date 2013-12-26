@@ -6,14 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jodd.io.FileNameUtil;
 import jodd.util.StringUtil;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.WebRequest;
 
 import cn.me.xdf.model.bam.BamCourse;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
-import cn.me.xdf.model.course.CourseInfo;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.service.SimpleService;
@@ -21,15 +23,10 @@ import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
 import cn.me.xdf.service.bam.source.ISourceService;
 import cn.me.xdf.service.base.AttMainService;
-import cn.me.xdf.service.material.ExamQuestionService;
 import cn.me.xdf.service.material.MaterialDiscussInfoService;
 import cn.me.xdf.service.material.MaterialService;
 import cn.me.xdf.service.score.ScoreService;
 import cn.me.xdf.utils.ShiroUtils;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.WebRequest;
 
 
 /**
@@ -122,9 +119,17 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                         defaultMedia.put("code", getFdLinkMap(link));//播放地址
                     }else {
                     	if (attMain != null) {
-                            defaultMedia.put("url", attMain.getFdId());//附件id
                             defaultMedia.put("code",  attMain.getCode());
+                        }else{
+                        	defaultMedia.put("code",  "");
                         }
+                    }
+                    if (attMain != null) {
+                    	defaultMedia.put("url", attMain.getFdId());//附件id
+                    	defaultMedia.put("fileNetId", attMain.getFileNetId());//FileNetId
+                    }else{
+                    	defaultMedia.put("fileNetId", "");//FileNetId
+                    	defaultMedia.put("url", "");//附件id
                     }
                     defaultMedia.put("isPass", minfo.getThrough());
                     ///////////////////////////////////
@@ -154,9 +159,17 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                         defaultMedia.put("code", getFdLinkMap(link));//播放地址
                     }else {
                        if (attMain != null) {
-                           defaultMedia.put("url", attMain.getFdId());//附件id
                            defaultMedia.put("code",  attMain.getCode());
+                       }else{
+                       	defaultMedia.put("code",  "");
                        }
+                    }
+                    if (attMain != null) {
+                    	defaultMedia.put("url", attMain.getFdId());//附件id
+                    	defaultMedia.put("fileNetId", attMain.getFileNetId());//FileNetId
+                    }else{
+                    	defaultMedia.put("fileNetId", "");//FileNetId
+                    	defaultMedia.put("url", "");//附件id
                     }
                     defaultMedia.put("isPass", minfo.getThrough());
                     Map memap = new HashMap();
@@ -177,8 +190,16 @@ public class MaterialAttMainService extends SimpleService implements ISourceServ
                     }else {
                        if (attMain != null) {
                     	   defaultMedia.put("code", attMain.getCode());
-                           defaultMedia.put("url", attMain.getFdId());//附件id
+                       }else{
+                       	defaultMedia.put("code",  "");
                        }
+                    }
+                    if (attMain != null) {
+                    	defaultMedia.put("url", attMain.getFdId());//附件id
+                    	defaultMedia.put("fileNetId", attMain.getFileNetId());//FileNetId
+                    }else{
+                    	defaultMedia.put("fileNetId", "");//FileNetId
+                    	defaultMedia.put("url", "");//附件id
                     }
                     defaultMedia.put("isPass", minfo.getThrough());
                     Map memap = new HashMap();

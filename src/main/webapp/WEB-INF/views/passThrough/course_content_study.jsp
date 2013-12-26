@@ -209,7 +209,7 @@
                                 {{~exam.listAttachment :att1:index1}}
                                 {{~exam.listAttachment :att:index}}
                                 {{?index1 == att.fdOrder}}
-                                    <li><a href="${ctx}/common/file/download/{{=att.fdId}}"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
+                                    <li><a onclick="downloadMater('{{=att.fdId}}','{{=att.fileNetId}}');" href="javascript:void(0)"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
                                 {{?}}
                                 {{~}}
                                 {{~}}
@@ -254,7 +254,7 @@
                                 {{~task.listAttachment :att1:index1}}
                                 {{~task.listAttachment :att}}
                                 {{?index1 == att.fdOrder}}
-                                <li><a href="${ctx}/common/file/download/{{=att.fdId}}"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
+                                <li><a onclick="downloadMater('{{=att.fdId}}','{{=att.fileNetId}}');" href="javascript:void(0)"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
                                 {{?}}
                                 {{~}}
                                 {{~}}
@@ -276,7 +276,7 @@
                                     {{~task.listTaskAttachment :att2}}
                                         <li id="attach{{=att2.id}}">
                                             <input type="hidden" value='{{=att2.fdId}}' name='attach_{{=task.id}}' id='answerAttId_{{=task.id}}'>
-                                            <a href="${ctx}/common/file/download/{{=att2.fdId}}">
+                                            <a onclick="downloadMater('{{=att2.fdId}}','{{=att2.fileNetId}}');" href="javascript:void(0)">
 												<i class="icon-paperClip"></i>{{=att2.fdFileName}}</a>
                                             <a href="#" class="icon-remove-blue"></a>
                                         </li>
@@ -363,7 +363,7 @@
                     <div class="mediaToolbar" id="mediaToolbar" data-fdid="{{=param.id}}">
                         <div class="btn-group">
                             <a id="btnPraise"  converStatus="" title="赞"  class="btn btn-link{{?!param.mePraised}} active {{?}}"  href="javascript:void(0)"  praisedstatus="{{=param.mePraised}}" ><i class="icon-heart-blue"></i><span class="num">{{=param.praiseCount || 0 }}</span></a>
-                           <a id="btnDownload" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" canDownload="{{=param.canDownload}}"  class="btn btn-link {{?param.canDownload}}active{{?}}" {{?param.canDownload}}href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
+                           <a id="btnDownload" data-fileNetId="{{=param.fileNetId}}" title="{{?param.canDownload}}点击{{??}}无权{{?}}下载" canDownload="{{=param.canDownload}}"  class="btn btn-link {{?param.canDownload}}active{{?}}" {{?param.canDownload}}href="javascript:void(0)" data-fdid="{{=param.url}}" {{??}} disabled{{?}}><i class="icon-download-blue"></i><span class="num" id="sdowncount">{{=param.downloadCount || 0 }}</span></a>
                         </div>
                         <span class="playCount">{{?it.type == 'video'}}播放{{??}}阅读{{?}}  <strong class="num">{{=param.readCount || 0 }}</strong>  次</span>
                       <button id="btnDoPass" class="btn btn-success"{{?param.isPass}} disabled{{?}} converStatus=""><i class="icon-right"></i>我学会了</button>
@@ -688,6 +688,16 @@
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script type="text/javascript" src="${ctx}/resources/uploadify/jquery.uploadify.js?id=1211"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
+<script type="text/javascript">
+//下载素材
+function downloadMater(attId,fileNetId){
+  if(attId!=null && attId!='null' && attId!="" && fileNetId!=null&&fileNetId!="" && fileNetId!='null'){
+	  window.location.href="${ctx}/common/file/download/"+attId;
+  } else {
+	  jalert("您好！该附件不存在");
+  } 
+}
+</script>
 <script type="text/javascript">
 
 
@@ -1582,7 +1592,8 @@
                     return;
                 } else {
                     //$.post("url",{id: $mediaToolbar.attr("data-fdid")});
-                	 if($this.attr("data-fdid")!=null&&$this.attr("data-fdid")!=""){
+                	 if($(this).attr("data-fileNetId")!='null'&&$(this).attr("data-fileNetId")!=null&&$(this).attr("data-fileNetId")!=''
+                			 &&$this.attr("data-fdid")!=null&&$this.attr("data-fdid")!=""){
                 		 $.ajax({
                   			type: "post",
                   			url: "${ctx}/ajax/material/updateDownloadNum",
