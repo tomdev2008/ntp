@@ -426,7 +426,7 @@
 		         })
 		             .success(function(){
 		                 // 提交成功
-		            	 window.location.href=$('#ctx').val()+"/course/findcourseInfos";
+		            	 window.location.href=$('#ctx').val()+"/course/findcourseInfos?fdType=12&order=fdcreatetime";
 		             });
 			}
 		}
@@ -576,7 +576,7 @@
 					  data:{data:JSON.stringify(data)},
 					  dataType:'json',
 					  success: function(rsult){
-						  //$.fn.jalert("修改成功");
+						  jalert_tips("保存成功");
 					  },
 				});
 			});

@@ -411,7 +411,7 @@ $(function(){
     $progress = $txt.prev(".progress").children(".bar"),
     $pct = $txt.children(".pct"),
     $countdown = $txt.children(".countdown"),
-	flag = true,pct,interval,countdown = 0,byteUped = 0;
+	flag = true,pct,interval,timeOutAlert,countdown = 0,byteUped = 0;
 
 	$("#upMaterial").uploadify({
     'height' : 40,
@@ -430,22 +430,25 @@ $(function(){
     'onUploadStart' : function (file) {},
     'onUploadSuccess' : function (file, data, Response) {
         if (Response) {
-        	$countdown.text("00:00:00");
-        	$progress.width("0");
-        	$pct.text("0%");
-            var objvalue = eval("(" + data + ")");
-		    var html="<li data-fdid='"+objvalue.attId+"' '><a class='name' style='padding-left:20px;'><i class='icon-paperClip'></i>&nbsp;"+file.name+" "
-		          +"</a><input type='hidden'  name='attId' id='attId' value='"+objvalue.attId+"'><div class='item-ctrl'> "
-		          +"<a class='icon-remove-blue' href='#'></a> </div></li>";
-            $("#listAttachment").html(html);
-            $("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){
-				e.preventDefault();
-				$(this).closest("li").remove();
-			});
-            if($("#videoUrl").val()!=null && $("#videoUrl").val()!=""){
-            	$("#videoUrl").val("");//清空视频链接
-            }
-        }
+        	setTimeout(function(){
+        		timeOutAlert.modal("hide");
+        		$countdown.text("00:00:00");
+            	$progress.width("0");
+            	$pct.text("0%");
+                var objvalue = eval("(" + data + ")");
+    		    var html="<li data-fdid='"+objvalue.attId+"' '><a class='name' style='padding-left:20px;'><i class='icon-paperClip'></i>&nbsp;"+file.name+" "
+    		          +"</a><input type='hidden'  name='attId' id='attId' value='"+objvalue.attId+"'><div class='item-ctrl'> "
+    		          +"<a class='icon-remove-blue' href='#'></a> </div></li>";
+                $("#listAttachment").html(html);
+                $("#listAttachment").find("a.icon-remove-blue").bind("click",function(e){
+    				e.preventDefault();
+    				$(this).closest("li").remove();
+    			});
+                if($("#videoUrl").val()!=null && $("#videoUrl").val()!=""){
+                	$("#videoUrl").val("");//清空视频链接
+                }
+        	},1500);
+        } 
     },
     'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
     	pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
@@ -456,8 +459,16 @@ $(function(){
     	}
     	if(bytesUploaded == bytesTotal){
     		clearInterval(interval);
+    		$.fn.jalert({
+   	    		content: function(modalBody){
+   	    			timeOutAlert = modalBody.html('<p align="center"><i class="icon-loading"></i></p>\
+   	     	    		<p align="center">服务器正在存储文件，请耐心等候...</p>')
+   	     	    		.parent(".modal");
+   	    		},
+   	    		tip: true,
+   	    		tipTime: false
+    		});
     	}
-    	
     	$progress.width(pct);
     	$pct.text(pct);
     	countdown>0 && $countdown.text(secTransform((bytesTotal-bytesUploaded)/countdown*10));

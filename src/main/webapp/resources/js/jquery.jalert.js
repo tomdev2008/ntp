@@ -36,7 +36,7 @@
             cache.buttons = cache.footer.children();
             cache.modal.modal({
                 keyboard: true,
-                backdrop: true,
+                backdrop: "static",
                 show: false
             });
             window[cacheKey] = cache;
@@ -44,7 +44,7 @@
         cache = window[cacheKey];
         ps.tip  ? cache.footer.addClass("hide") : cache.footer.removeClass("hide");
         cache.modal.modal("show");
-        ps.tip && setTimeout(function(){
+        ps.tip&&ps.tipTime && setTimeout(function(){
             cache.modal.modal("hide");
         },ps.tipTime*1000);
         cache.title.html(ps.title);

@@ -51,7 +51,10 @@
                             <a href="#" class="praise{{?param.praise.did}} active{{?}}" title="{{?param.praise.did}}您已赞过{{??}}点击赞{{?}}"><i class="icon-thumbs-up"></i><span class="num">{{=param.praise.count}}</span></a>
                             <a href="#" class="weak{{?param.weak.did}} active{{?}}" title="{{?param.weak.did}}您已踩过{{??}}点击踩{{?}}"><i class="icon-thumbs-down"></i><span class="num">{{=param.weak.count}}</span></a>
                             <a href="#" class="comment" title="点击评论"><i class="icon-dialog"></i><span class="num">{{=param.comment.count}}</span></a>
-                        </div>
+                        	{{?param.canDelete}}
+								<a href="javascript:void(0)" class="btndeleteM" >删除</a>
+							{{?}}
+						</div>
                     </div>
                 </div>
                 <div id="commentBox{{=param.id}}" class="commentBox collapse in">
@@ -124,7 +127,7 @@
                        机构 {{=it.org}}  <br/>
                         部门  {{=it.dep}} <br/>
                         电话  {{=it.tel}} <br/>
-        QQ  {{=it.qq}} <br/>
+                       生日 {{=it.bird}} <br/>
                         血型  {{=it.bool}}
                     </p>
                 </div>
@@ -142,7 +145,11 @@
                     <i class="icon-shyhl"></i>
                     <span class="txt">
 {{?it.selfIntroduction==""}}这家伙很懒，也不好好介绍一下自己~ :-({{??}}
-{{=it.selfIntroduction}}
+							{{?it.selfIntroduction.length>20}}
+								{{=it.selfIntroduction.substring(0,20)}}...
+							{{??}}
+								{{=it.selfIntroduction}}
+							{{?}}
 {{?}}</span>
                     <i class="icon-shyhr"></i>
                 </div>
@@ -305,6 +312,7 @@ $(function(){
 	                        $form.remove();
 	                        $this.removeClass("active");
 	                        $num.text(parseInt($num.text())+1);
+	                        jalert_tips("回复成功");
                     }
                 });
                 $form.find(".btn-cancel").click(function(e){
@@ -364,6 +372,19 @@ $(function(){
                		}else{
                			jalert_tips("不能支持和反对自己的评论");
                		}
+                }else if($this.hasClass("btndeleteM")){
+            		jalert("您确定删除该评论吗？",function(){
+            			$.ajax({
+            	    		  url: "${ctx}/ajax/message/removeMessage",
+            	    		  async:false,
+            	    		  data:{
+            	    			  messageId :$this.closest(".item").attr("data-fdid"),
+            	    		  },
+            	    		  success: function(result){
+            	    			  initmoodData();
+            	    		  }
+            			});
+            		});
                 }
             }
             

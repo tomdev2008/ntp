@@ -9,7 +9,7 @@
 {{~it :item:index}}
 	<a href="${ctx}/passThrough/getCourseHome/{{=item.FDID}}">
 		{{?item.ATTID == ''}}
-			<img src="${ctx}/resources/images/zht-main-img.jpg" alt="">
+			<img src="${ctx}/resources/images/default-cover.png" alt="">
 		{{?}}
 		{{?item.ATTID != ''}}
 			<img src="${ctx}/common/file/image/{{=item.ATTID}}" alt="">
