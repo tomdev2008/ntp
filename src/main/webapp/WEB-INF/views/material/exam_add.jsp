@@ -1045,8 +1045,7 @@ $(function(){
 							.bind(
 									"click",
 									function() {
-										$.fn
-												.jalert(
+										jalert(
 														"确认删除试题？",
 														function() {
 															$
