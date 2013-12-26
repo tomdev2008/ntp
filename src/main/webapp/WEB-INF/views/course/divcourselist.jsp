@@ -105,7 +105,7 @@
 				 <input type="checkbox" name="ids" value="${bean.FDID}"/> 
 				    <span class="title">
 					<c:if test="${bean.FDTITLE!=null && bean.FDTITLE!=''}">
-						<tags:title size="33" value="${bean.FDTITLE}"></tags:title>
+						<tags:title size="32" value="${bean.FDTITLE}"></tags:title>
 					</c:if>
 					<c:if test="${bean.FDTITLE==null || bean.FDTITLE==''}">
 						未命名
@@ -123,10 +123,10 @@
 				      </c:if>
 				    </c:if>
 				    <c:if test="${bean.AUTHFLAG=='1'}">
-				      <span class="label label-info">编辑</span>
+				      <span class="label label-info">可编辑</span>
 				    </c:if>
 				    <c:if test="${bean.AUTHFLAG=='0'}">
-				      <span class="label label-info">可用</span>
+				      <span class="label label-info">可使用</span>
 				    </c:if>
 				    <span class="rating-view">
 				    <c:if test="${bean.FDAVERAGE!=null}">
