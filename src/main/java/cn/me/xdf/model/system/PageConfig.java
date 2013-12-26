@@ -1,5 +1,6 @@
 package cn.me.xdf.model.system;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -51,6 +52,10 @@ public class PageConfig extends IdEntity implements IAttMain{
      */
 	private AttMain attMain;
 	
+	/**
+	 * 创建时间
+	 */
+	private Date fdCreateTime;
 	public Integer getFdOrder() {
 		return fdOrder;
 	}
@@ -90,6 +95,14 @@ public class PageConfig extends IdEntity implements IAttMain{
 
 	public void setAttMain(AttMain attMain) {
 		this.attMain = attMain;
+	}
+
+	public Date getFdCreateTime() {
+		return fdCreateTime;
+	}
+
+	public void setFdCreateTime(Date fdCreateTime) {
+		this.fdCreateTime = fdCreateTime;
 	}
 	
 }
