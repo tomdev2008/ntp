@@ -30,7 +30,7 @@
 				<li>
                     <i class="icon-teacher-home"></i>
                 	<span><h2>1,000+</h2>
-                    新教师 </span>
+                    教师 </span>
                 </li>
                 <li>
                     <i class="icon-mentor-home"></i>
@@ -159,7 +159,7 @@
                         <i class="icon-shyhr"></i>
                     </div>
                     <div class="ft">
-                        新教师 99+ <span>|</span>
+                        教师 99+ <span>|</span>
                         导师 700+
                     </div>
                 </div>
@@ -177,7 +177,7 @@
                         <i class="icon-shyhr"></i>
                     </div>
                     <div class="ft">
-                        新教师 99+ <span>|</span>
+                        教师 99+ <span>|</span>
                         导师 700+
                     </div>
                 </div>
@@ -196,7 +196,7 @@
                     <i class="icon-shyhr"></i>
                 </div>
                 <div class="ft">
-                    新教师 99+ <span>|</span>
+                    教师 99+ <span>|</span>
                     导师 700+
                 </div>
             </div>
@@ -214,7 +214,7 @@
                     <i class="icon-shyhr"></i>
                 </div>
                 <div class="ft">
-                    新教师 99+ <span>|</span>
+                    教师 99+ <span>|</span>
                     导师 700+
                 </div>
             </div>
@@ -232,7 +232,7 @@
                     <i class="icon-shyhr"></i>
                 </div>
                 <div class="ft">
-                    新教师 99+ <span>|</span>
+                    教师 99+ <span>|</span>
                     导师 700+
                 </div>
             </div>

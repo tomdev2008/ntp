@@ -63,7 +63,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="examStem">试题题干</label>
-                    <div class="controls"><textarea placeholder="请使用#...#标记填空题的答案，例如：新教师在线备课课程的第三章学习内容是#标准化教案#" rows="4"
+                    <div class="controls"><textarea placeholder="请使用#...#标记填空题的答案，例如：新东方教育科技集团的创始人是#俞敏洪#先生" rows="4"
                                                     class="input-block-level" required id="examStem"
                                                     name="examStem">{{=it.examStem || ''}}</textarea><label id="examStemErr" for="examStem" class="error"></label>
                     </div>
