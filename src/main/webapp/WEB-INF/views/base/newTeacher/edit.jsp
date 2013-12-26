@@ -284,7 +284,7 @@ function CountStrByte(){
              <div class="control-group">
         		<label for="birthday" class="control-label">出生日期</label>
         		<div class="controls">
-        		 <div class="input-append date" id="dpYear" data-date="1990/01/10" data-date-format="yyyy/mm/dd" >
+        		 <div class="input-append date" id="dpYear" data-date="1986/01/10" data-date-format="yyyy/mm/dd" >
 					  <input id="birthday" type="text" name="fdBirthDay" value="${person.fdBirthDay}" class="span4" placeholder="请输入您的出生日期 ">
 					  <span class="add-on"><i class="icon-th"></i></span>
 				 </div>

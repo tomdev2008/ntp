@@ -98,7 +98,7 @@
 							{{?}}
 							</a>
                         {{?it.type == 'single'}}
-                            <div class="pull-right"><strong>{{=item.learnerNum}}</strong>位老师在学习</div>
+                            <div class="pull-right"><strong>{{=item.learnerNum}}</strong>&nbsp;位老师在学习</div>
                         {{?}}
                     </div>
                 </div>
@@ -107,10 +107,10 @@
 {{?it.list.length<30}}
         	<li>
  			{{?it.type == 'single'}}
-            	<div class="moreCourse">更多课程，敬请期待。</div>
+            	<div class="moreCourse">更多课程，敬请期待</div>
  			{{?}}
 			{{?it.type == 'series'}}
-            	<div class="moreCourse">更多系列，敬请期待。</div>
+            	<div class="moreCourse">更多系列，敬请期待</div>
  			{{?}}
         	</li>
 		{{?}}

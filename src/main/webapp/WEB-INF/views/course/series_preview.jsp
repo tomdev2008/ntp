@@ -42,7 +42,7 @@
                                         <b class="text-warning">{{=course.average}}</b>
                                     </div>
                                 	</div>
-                                	<div class="span2"><span class="text-warning">{{=course.countStudy}} </span>位老师在学习</div>
+                                	<div class="span2"><span class="text-warning">{{=course.countStudy}} </span>&nbsp;位老师在学习</div>
                                 </dt>
 								{{?phases.courselist.length==(index1+1)}}
  									<dd class="last">

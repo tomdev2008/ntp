@@ -93,7 +93,7 @@
                 <a id="studyBegin" class="btn btn-warning">
                    <i class="icon-book icon-white"></i>开始学习
                 </a>
-                    <span class="text-warning">${studayTotalNo}</span>位老师在学习
+                    <span class="text-warning">${studayTotalNo}</span>&nbsp;位老师在学习
                     <a href="${ctx}/course/courseIndex" title="课程列表" data-toggle="tooltip" class="btn-next icon-disc-lg-bg"><i class="icon-home icon-white"></i></a>
                     <a href="${ctx}/passThrough/getCourseFeeling?courseId=${course.fdId}" title="课程跟踪" data-toggle="tooltip" class="btn-home icon-disc-lg-bg"><i class="icon-tracking"></i></a>
                 </div>
