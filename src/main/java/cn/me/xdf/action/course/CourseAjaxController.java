@@ -222,7 +222,7 @@ public class CourseAjaxController {
 				course.setFdTotalPart(0);
 				course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
 				course.setIsAvailable(true);
-				course.setIsPublish(true);
+				course.setIsPublish(false);
 				course.setIsOrder(Boolean.valueOf(sectionOrder));
 				// 将分类保存到课程中
 				if (StringUtil.isNotEmpty(courseType)) {
@@ -258,7 +258,7 @@ public class CourseAjaxController {
 			course.setFdTotalPart(0);
 			course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
 			course.setIsAvailable(true);
-			course.setIsPublish(true);
+			course.setIsPublish(false);
 			course.setIsOrder(Boolean.valueOf(sectionOrder));
 			// 将分类保存到课程中
 			if (StringUtil.isNotEmpty(courseType)) {
@@ -959,7 +959,7 @@ public class CourseAjaxController {
 		finder.append("       ) ");
 		finder.append("   and course.fdStatus = '01' ");
 		finder.append("   and course.isAvailable = 'Y' ");
-		finder.append("   ");
+		finder.append("   order by course.fdCreateTime desc ");
 		
 		if(!type.equals("all")){
 			finder.append(" and course.fdcategoryid=:type " );

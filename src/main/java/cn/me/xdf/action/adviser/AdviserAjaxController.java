@@ -192,7 +192,8 @@ public class AdviserAjaxController {
 						attMap.put("fName", FileNameUtil.getName(attMain.getFdFilePath()));
 						attMap.put("playCode", attMain.getPlayCode());
 					}else{
-						attMap.put("type", "notOnlinePlay");	
+						attMap.put("type", "notOnlinePlay");
+						attMap.put("fileNetId", attMain.getFileNetId());
 					}
 					if(attMain.getFileUrl()!=null){//播放地址
 						attMap.put("mediaUrl", attMain.getFileUrl());

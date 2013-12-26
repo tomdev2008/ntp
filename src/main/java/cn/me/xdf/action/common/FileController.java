@@ -105,6 +105,9 @@ public class FileController {
         MultipartFile file = multipartRequest.getFile("imgFile");
         FileModel fileModel = fileRepository.storeByExt(file);
         AttMain attMain = fileModel.toAttMain();
+        //设置modelId与modelName,否则定时任务会清理掉
+        attMain.setFdModelId("");
+        attMain.setFdModelName("");
         attMain = attMainService.saveOnInit(attMain);
         Map map = new HashMap();
         map.put("error", 0);
