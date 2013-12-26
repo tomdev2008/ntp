@@ -426,7 +426,7 @@
 		         })
 		             .success(function(){
 		                 // 提交成功
-		            	 window.location.href=$('#ctx').val()+"/course/findcourseInfos";
+		            	 window.location.href=$('#ctx').val()+"/course/findcourseInfos?fdType=12&order=fdcreatetime";
 		             });
 			}
 		}
