@@ -1018,7 +1018,7 @@
 					matchContains:true ,
 					max: 10,
 					scroll: false,
-					width:336
+					width:387
 				});
 			});
 			// 删除关键词事件
