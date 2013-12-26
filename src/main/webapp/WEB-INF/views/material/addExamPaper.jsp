@@ -72,7 +72,7 @@
                 <div class="control-group">
                     <label class="control-label" >作业总分 <small>(单位分)</small></label>
                     <div class="controls">
-						<input id="examScore" digits="true" min="0" value="{{=it.examScore || ''}}" max="100" class="input-block-level" name="examScore" type="text">
+						<input id="examScore" digits="true" required min="0" value="{{=it.examScore || ''}}" max="100" class="input-block-level" name="examScore" type="text">
                        <!-- <input name="" id="examScore" value="{{=it.examScore || ''}}" type="hidden"/>
                            {{#def.timeLine:it.timeLine}}-->
                     </div>
