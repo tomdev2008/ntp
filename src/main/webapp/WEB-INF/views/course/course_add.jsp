@@ -971,6 +971,7 @@ $.Placeholder.init();
 			//提交成功跳转到详细信息
        	    //urlRouter("detailInfo");
 			jalert_tips("保存成功");
+			$("#goTop").trigger("click");
 		});
 	}
 	
@@ -998,6 +999,7 @@ $.Placeholder.init();
 			//提交成功跳转到详细信息
        	   // urlRouter("kinguser");
 			jalert_tips("保存成功");
+			$("#goTop").trigger("click");
 		});
 	}
 	//清空密码input
@@ -1029,6 +1031,7 @@ function successSelectArea(imgSrc){
 		.success(function(){
        	   // urlRouter("accessRight");
 			jalert_tips("保存成功");
+			$("#goTop").trigger("click");
 		});
     }
  // 验证值小数位数不能超过两位  

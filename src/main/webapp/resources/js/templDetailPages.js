@@ -577,6 +577,7 @@
 					  dataType:'json',
 					  success: function(rsult){
 						  jalert_tips("保存成功");
+						  $("#goTop").trigger("click");
 					  },
 				});
 			});
@@ -1336,6 +1337,7 @@
 			//KindEditor.remove('textarea[name="courseAbstract"]');
 			//提交成功跳转到详细信息
 			jalert_tips("保存成功");
+			$("#goTop").trigger("click");
        	   // urlRouter("promotion");
 		});
 	}	
