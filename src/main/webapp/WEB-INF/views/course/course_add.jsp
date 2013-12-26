@@ -315,7 +315,7 @@ value="{{=it.coverUrl || 'images/default-cover.png'}}" />
 									<!--图片预览-->
 					<div class="courseCover"><img id="imgshow" name="imgshow" style="width: 
 
-300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/zht-main-img.jpg'}}" alt="" /></div>			
+300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/default-cover.png'}}" alt="" /></div>			
 
 		
 	       </div>

@@ -347,7 +347,7 @@ function exportData(){
         if(result.coverUrl!=""){
         	$("#coursepage").attr('src','${ctx}/common/file/image/'+result.coverUrl);
         }else{
-        	$("#coursepage").attr('src','${ctx}/resources/images/zht-main-img.jpg');
+        	$("#coursepage").attr('src','${ctx}/resources/images/default-cover.png');
         }
         //课程评分
         for(var i=1;i<=result.courseScore;i++){

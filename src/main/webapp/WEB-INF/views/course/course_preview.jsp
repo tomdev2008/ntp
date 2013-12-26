@@ -41,7 +41,7 @@
         	
             <a href="#" class="pull-left">
             <c:if test="${courseAtt==''}">
-            	<img src="${ctx}/resources/images/zht-main-img.jpg" alt="" class="media-object">
+            	<img src="${ctx}/resources/images/default-cover.png" alt="" class="media-object">
             </c:if>
             <c:if test="${courseAtt!=null &&  courseAtt!=''}">
             	<img src="${ctx}/common/file/image/${courseAtt}" alt="" class="media-object">
