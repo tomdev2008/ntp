@@ -225,7 +225,7 @@ public class CourseCatalogAjaxController {
 			course.setFdTotalPart(0);
 			course.setFdStatus(Constant.COURSE_TEMPLATE_STATUS_DRAFT);
 			course.setIsAvailable(true);
-			course.setIsPublish(true);
+			course.setIsPublish(false);
 			course.setIsOrder(true);
 			course.setCreator(sysOrgPerson);
 			course.setFdAuthor(ShiroUtils.getUser().getName());//作者
