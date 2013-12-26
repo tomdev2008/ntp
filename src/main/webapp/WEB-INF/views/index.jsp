@@ -13,7 +13,7 @@
 
 <div class="banner-bg">
   <div class="container banner">
-    <a href="#" class="start-btn"></a>
+    <a href="${ctx}/login" class="start-btn"></a>
   </div>
 </div>
 <div class="bar-tools">
@@ -48,7 +48,7 @@
 </div>
 <div class="container">
 	<div class="page-header">
-		<h3>在线课程学习平台</h3>
+		<h3>在线课程学习</h3>
 	</div>
 	<div class="proIntro">
         <ul class="listIntro thumbnails">
@@ -100,7 +100,7 @@
         </ul>
     </div>
 	<div class="page-header">
-		<h3>倾听一线的心声</h3>
+		<h3>倾听一线心声</h3>
 	</div>
   <div class="tabbable tabs-below">
    	<div class="tab-content">
