@@ -311,7 +311,7 @@ function CountStrByte(){
         		<label for="selfIntro" class="control-label">自我介绍</label>
         		<div class="controls">
                 	<textarea id="selfIntro" onblur="CountStrByte();" onclick="clearCss(this);" name="selfIntroduction" class="span4" rows="5" placeholder="请填写200字以内的自我介绍">${person.selfIntroduction}</textarea>
-                    <span class="help-inline"><b class="icon-disc-bg warning">!</b>请填写200字以内的自我介绍</span>
+                    <span class="help-inline"><b class="icon-disc-bg warning">!</b>这家伙很懒，也不好好介绍一下自己~</span>
                 </div>
         	</div>
             <div class="control-group">
