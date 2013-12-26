@@ -381,7 +381,7 @@ id="encrypt">
 
 onclick="removePass()" value="authorized" {{?it.encryptType == 'authorized' || it.encryptType == ''}}checked{{?}} 
 
-name="encryptType" id="authorized" /><span class="labelTxt">授权组织备课</span>前往 <a href="#kinguser" onClick="urlRouter
+name="encryptType" id="authorized" /><span class="labelTxt">授权课程学习</span>前往 <a href="#kinguser" onClick="urlRouter
 
 ()" >授权管理</a> 本课程的用户列表</label>
 							<label  class="radio" id="passRadio" for="passwordProtect"><input 
