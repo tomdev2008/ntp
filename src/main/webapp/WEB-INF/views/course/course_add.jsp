@@ -1027,10 +1027,6 @@ function successSelectArea(imgSrc){
 			attId: $("#attIdID").val(),
 			})
 		.success(function(){
-			if ($('#upMovie').length > 0) { 
-				//注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
-			     $('#upMovie').uploadify('destroy'); 
-			}
        	   // urlRouter("accessRight");
 			jalert_tips("保存成功");
 		});
