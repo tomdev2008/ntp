@@ -3,7 +3,6 @@ package cn.me.xdf.action.passThrough;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,8 +30,6 @@ import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.base.Constant;
 import cn.me.xdf.model.course.CourseCatalog;
 import cn.me.xdf.model.course.CourseInfo;
-import cn.me.xdf.model.course.Visitor;
-import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
@@ -43,11 +40,8 @@ import cn.me.xdf.service.course.CourseCatalogService;
 import cn.me.xdf.service.course.CourseParticipateAuthService;
 import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.course.VisitorService;
-import cn.me.xdf.service.log.LogLoginService;
-import cn.me.xdf.service.log.LogOnlineService;
-import cn.me.xdf.service.message.MessageService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
-import cn.me.xdf.service.studyTack.StudyTrackService;
+import cn.me.xdf.utils.DateUtil;
 import cn.me.xdf.utils.ShiroUtils;
 
 /**
@@ -314,7 +308,27 @@ public class PassThroughController {
 	@RequestMapping(value = "getCertificate")
 	public String getCertificate(HttpServletRequest request){
 		String bamId=request.getParameter("bamId");
+		BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
 		
+        CourseInfo courseInfo = courseService.get(bamCourse.getCourseInfo().getFdId());
+        SysOrgPerson person = courseInfo.getCreator();
+        SysOrgPerson orgPerson = accountService.get(bamCourse.getPreTeachId());
+        String rootUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+        String imgUrl = "";
+        if(bamCourse.getThrough()==false){
+			return "/passThrough/course_feeling?courseId="+courseInfo.getFdId()+"&userId="+orgPerson.getFdId();
+		}
+        if (orgPerson.getPoto().indexOf("http") > -1) {
+            imgUrl = orgPerson.getPoto();
+        } else {
+            imgUrl = rootUrl + orgPerson.getPoto();
+        }
+        request.setAttribute("imgUrl", imgUrl);
+        request.setAttribute("userName", orgPerson.getRealName());
+        request.setAttribute("date", DateUtil.convertDateToString(((bamCourse.getEndDate() == null) ? new Date() : bamCourse.getEndDate())));
+        request.setAttribute("eName", orgPerson.getLoginName());
+        request.setAttribute("dep", (person.getHbmParent() == null ? "" : person.getHbmParent().getFdName()));
+        request.setAttribute("til", courseInfo.getFdTitle());
 		return "/passThrough/certificate";
 	}
 }

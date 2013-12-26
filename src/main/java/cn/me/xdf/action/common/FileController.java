@@ -425,7 +425,7 @@ public class FileController {
      */
     @RequestMapping("/downloadImg")
     public void downloadImg(HttpServletRequest request, HttpServletResponse response) {
-        String bamId = request.getParameter("bamId");
+    	String bamId = request.getParameter("bamId");
         BamCourse bamCourse = bamCourseService.get(BamCourse.class, bamId);
         CourseInfo courseInfo = courseService.get(bamCourse.getCourseInfo().getFdId());
         SysOrgPerson person = courseInfo.getCreator();
@@ -437,43 +437,63 @@ public class FileController {
         } else {
             imgUrl = rootUrl + orgPerson.getPoto();
         }
-        try {
-            String html =
-                    "<!DOCTYPE HTML>" +
-                            "<section class='container'>" +
-                            "  <section class='page-body' >" +
-                            "            <section class='bdbt2 box-certificate' id='cardId'>" +
-                            "               <div class='hd'><h2>" + courseInfo.getFdTitle() + "</h2></div>" +
-                            "                <div class='bd'>" +
-                            "                    <div class='media'>" +
-                            "                        <a class='pull-left' href='#'>" +
-                            "								<img src='" + imgUrl + "' alt=''/>" +
-                            "                            	<i class='icon-medal-lg'></i>" +
-                            "                        </a>" +
-                            "                        <div class='media-body'>" +
-                            "                            <div class='media-heading'><em>" + orgPerson.getRealName() + "</em>老师，</div>" +
-                            "                            <p>已于 " + DateUtil.convertDateToString(((bamCourse.getEndDate() == null) ? new Date() : bamCourse.getEndDate())) + " 完成《<em>" + courseInfo.getFdTitle() + "</em>》，特此认证。" +
-                            "                                This is to certify MR/MS <span class='upper'>" + orgPerson.getLoginName() + "</span> 's successful completion of the New Oriental Teacher Online Training.</p>" +
-                            "                            <p class='muted'>颁发者：" + (person.getHbmParent() == null ? "" : person.getHbmParent().getHbmParentOrg().getFdName()) + " " + person.getDeptName() + "</p>" +
-                            "                        </div>" +
-                            "                    </div>" +
-                            "                </div>" +
-                            "            </section>" +
-                            "        </section>" +
-                            "</section>";
-            HtmlImageGenerator imageGenerator = new HtmlImageGenerator();
-            imageGenerator.loadHtml(html);
-            byte[] img = GraphUtils.toJpeg(imageGenerator.getBufferedImage());
-            response.setHeader("Content-type", "text/html;charset=utf-8");
-            String imgName = java.net.URLEncoder.encode("结业证书.jpg", "UTF-8");
-            response.setHeader("Content-Disposition", "attachment;filename=" + imgName);
-            OutputStream out;
-            response.addHeader("Content-Length",
-                    String.valueOf(img.length));
-            out = response.getOutputStream();
-            out.write(img);
-            out.flush();
-            StreamUtil.close(out);
+    	try {
+    		String html =
+    	            "    <style type='text/css'>"+
+    	            "        body{background-color: #efefef;font-size: 14px;line-height: 20px;}"+
+    	            "        body,button{font-family: 'Microsoft Yahei', '微软雅黑', arial;}"+
+    	            "        body,div,p{padding: 0;margin: 0;}"+
+    	            "        .muted{color: #999999;}"+
+    	            "        .upper{text-transform: uppercase;}"+
+    	            "        .icon-medal-lg{width: 60px;height: 60px;background:url('theme/default/images/icon-png.png') no-repeat 0 -821px;}"+
+    	            "        .media, .media-body{overflow: hidden;zoom: 1;}"+
+    	            "        .box-certificate{background-color:#ffffff;padding:0 70px;width: 800px;margin:-200px 0 0 -470px;overflow: hidden;height: 400px;position: absolute;top:50%;left: 50%;}"+
+    	            "        .box-certificate .hd{overflow: hidden}"+
+    	            "        .box-certificate .hd h2{font-weight: normal; font-size: 20px;text-align: center;margin: 55px 0 40px;}"+
+    	            "        .box-certificate .bd .media{margin-left: 10px;}"+
+    	            "        .box-certificate .bd .media > .pull-left{margin: 0 57px 20px 0;width:184px;float: left;position: relative}"+
+    	            "        .box-certificate .bd .media > .pull-left i{position: absolute;right: -20px;bottom: -20px;}"+
+    	            "        .box-certificate .bd .media-object{width: 156px;height: 156px;padding: 12px;border: solid #cccccc 1px;}"+
+    	            "        .box-certificate .bd .media-body{font-size: 16px;}"+
+    	            "        .box-certificate .bd .media-body p{line-height: 32px;}"+
+    	            "        .box-certificate .bd .media-body p.muted{text-align: right;font-size: 14px;}"+
+    	            "        .box-certificate .bd .media-body em{font-style: normal;color: #4391bb;}"+
+    	            "        .box-certificate .bd .media-heading{border-bottom: dashed #b8b8b8 1px;margin-bottom:20px;padding: 10px 0 20px;}"+
+    	            "    </style>"+
+    	            ""+
+    	            "<div class='box-certificate'>"+
+    	            "     <div class='hd'><h2>新东方认证教师</h2></div>"+
+    	            "    <div class='bd'>"+
+    	            "         <div class='media'>"+
+    	            "             <a class='pull-left' href='#'>"+
+    	            "                 <img src='"+imgUrl+"' class='media-object img-polaroid' alt=''/>"+
+    	            "                 <i class='icon-medal-lg'></i>"+
+    	            "             </a>"+
+    	            "            <div class='media-body'>"+
+    	            "                 <div class='media-heading'><em>杨义锋</em>老师，</div>"+
+    	            "                 <p>已于 2013-11-19 完成《<em>集团雅思基础口语新教师学习课程</em>》，特此认证。"+
+    	            "                     This is to certify MR/MS <span class='upper'>yangyifeng</span> 's successful completion of the New Oriental Teacher Online Training.</p>"+
+    	            "                 <p class='muted'>颁发者：集团国外考试推广管理中心</p>"+
+    	            "             </div>"+
+    	            "         </div>"+
+    	            "     </div>"+
+    	            " </div>";	
+    		List<byte[]> list = GraphUtils.toImages(html);
+    		if(list!=null && list.size()>0){
+    			 byte[] img  = list.get(0);
+    			 response.setHeader("Content-type", "text/html;charset=utf-8");
+    	            String imgName = java.net.URLEncoder.encode("结业证书.jpg", "UTF-8");
+    	            response.setHeader("Content-Disposition", "attachment;filename=" + imgName);
+    	            OutputStream out;
+    	            response.addHeader("Content-Length",
+    	                    String.valueOf(img.length));
+    	            out = response.getOutputStream();
+    	            out.write(img);
+    	            out.flush();
+    	            StreamUtil.close(out);
+    		}	
+           
+            
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
