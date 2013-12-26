@@ -19,9 +19,9 @@
                     <span>课程管理<b class="caret"></b></span>
 	            </li>
 	            
-	            <tags:shirourl text="我的系列课程" url="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime" active="11"  iconName="icon-course-series"  para="${param.fdType}"></tags:shirourl>
+	            <tags:shirourl text="系列课程" url="${ctx}/series/findSeriesInfos?fdType=11&order=fdcreatetime" active="11"  iconName="icon-course-series"  para="${param.fdType}"></tags:shirourl>
 	            
-	            <tags:shirourl text="我的课程" url="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" active="12"  iconName="icon-course"  para="${param.fdType}"></tags:shirourl>
+	            <tags:shirourl text="课程" url="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" active="12"  iconName="icon-course"  para="${param.fdType}"></tags:shirourl>
 	           
 	             <li class="nav-header">
                      <span>课程素材库<b class="caret"></b></span>
