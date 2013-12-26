@@ -56,7 +56,7 @@
         <div class="page-header">
         	<div class="tit-icon_bg"><i class="icon-user icon-white"></i><i class="icon-sj"></i></div>
         	<h5><j:if test="${active=='user'}">个人资料</j:if><j:if test="${active=='photo'}">修改头像</j:if><j:if test="${active=='pwd'}">修改密码</j:if></h5>
-            <a href="${ctx}/course/courseIndex" title="个人首页" class="replyMybk"><i class="icon-home icon-white"></i></a>
+            <a href="${ctx}/course/courseIndex" title="个人主页" class="replyMybk"><i class="icon-home icon-white"></i></a>
         </div>
   <sitemesh:body />
          </div>
