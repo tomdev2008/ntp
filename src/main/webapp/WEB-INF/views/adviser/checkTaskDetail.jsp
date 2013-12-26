@@ -78,7 +78,7 @@
                             {{~task.listAttachment :att1:index1}}
                             {{~task.listAttachment :att}}
                             {{?index1 == att.fdOrder}}
-                            <li><a href="${ctx}/common/file/download/{{=att.fdId}}"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
+                            <li><a onclick="downloadMater('{{=att.fdId}}','{{=att.fileNetId}}');" href="javascript:void(0)"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
                             {{?}}
                             {{~}}
                             {{~}}
@@ -99,7 +99,7 @@
                                         <a class="read" href="{{=att2.mediaUrl}}" playType="{{=att2.mtype}}" {{?att2.mtype=="01"}} playCode="{{=att2.playCode}}"{{??}}fileNetId="{{=att2.fileNetId}}" fname="{{=att2.fName}}" {{?}}><i class="icon-eye blue"></i>在线阅读</a>
                                         <em>|</em>
                                         {{?}}
-                                        <a href="${ctx}/common/file/download/{{=att2.id}}" target="_blank" class="download"><i class="icon-downloadbox blue"></i>下载</a>
+                                        <a onclick="downloadMater('{{=att2.id}}','{{=att2.fileNetId}}');" href="javascript:void(0)" class="download"><i class="icon-downloadbox blue"></i>下载</a>
                                     </div>
                                 </li>
                                 {{~}}
@@ -287,6 +287,16 @@
 <script type="text/javascript" src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/messages_zh.js"></script>
 <script src="${ctx}/resources/js/jquery.jalert.js" type="text/javascript"></script>
+<script type="text/javascript">
+//下载素材
+function downloadMater(attId,fileNetId){
+  if(attId!=null && attId!='null' && attId!="" && fileNetId!=null&&fileNetId!="" && fileNetId!='null'){
+	  window.location.href="${ctx}/common/file/download/"+attId;
+  } else {
+	  jalert("您好！该附件不存在");
+  } 
+}
+</script>
 <script type="text/javascript">
     $(function(){
         /*作业包介绍模板函数*/
