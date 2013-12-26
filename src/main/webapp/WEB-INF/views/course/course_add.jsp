@@ -306,7 +306,7 @@ class="close">&times;</a></li>
 					<label for="CourseCover">课程封面</label>
 					<input id="courseCover" name="courseCover" class="input-block-level" type="hidden" 
 
-value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
+value="{{=it.coverUrl || 'images/default-cover.png'}}" />
                 <!--图片剪切-->
                 <div class="cutimg-box no" style="display:none;">
                     <iframe id="iframeimg" width="100%" height="500" id="win" name="win" frameborder="0" scrolling="no"
@@ -315,7 +315,7 @@ value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
 									<!--图片预览-->
 					<div class="courseCover"><img id="imgshow" name="imgshow" style="width: 
 
-300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/zht-main-img.jpg'}}" alt="" /></div>			
+300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/default-cover.png'}}" alt="" /></div>			
 
 		
 	       </div>
@@ -381,7 +381,7 @@ id="encrypt">
 
 onclick="removePass()" value="authorized" {{?it.encryptType == 'authorized' || it.encryptType == ''}}checked{{?}} 
 
-name="encryptType" id="authorized" /><span class="labelTxt">授权组织备课</span>前往 <a href="#kinguser" onClick="urlRouter
+name="encryptType" id="authorized" /><span class="labelTxt">授权课程学习</span>前往 <a href="#kinguser" onClick="urlRouter
 
 ()" >授权管理</a> 本课程的用户列表</label>
 							<label  class="radio" id="passRadio" for="passwordProtect"><input 
@@ -971,6 +971,7 @@ $.Placeholder.init();
 			//提交成功跳转到详细信息
        	    //urlRouter("detailInfo");
 			jalert_tips("保存成功");
+			$("#goTop").trigger("click");
 		});
 	}
 	
@@ -998,6 +999,7 @@ $.Placeholder.init();
 			//提交成功跳转到详细信息
        	   // urlRouter("kinguser");
 			jalert_tips("保存成功");
+			$("#goTop").trigger("click");
 		});
 	}
 	//清空密码input
@@ -1029,6 +1031,7 @@ function successSelectArea(imgSrc){
 		.success(function(){
        	   // urlRouter("accessRight");
 			jalert_tips("保存成功");
+			$("#goTop").trigger("click");
 		});
     }
  // 验证值小数位数不能超过两位  

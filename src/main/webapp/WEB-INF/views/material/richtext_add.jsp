@@ -118,8 +118,7 @@
                                        <c:if test="${materialInfo.fdLauds!=null}">
                                           ${materialInfo.fdLauds}
                                        </c:if>
-                                    </button><b>|</b>
-                                    <button type="button" class="btn btn-link"><i class="icon-download"></i>0</button>
+                                    </button>
                                 </span>
                             </div>
                         </div>

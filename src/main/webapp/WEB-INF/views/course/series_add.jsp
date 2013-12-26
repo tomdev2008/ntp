@@ -139,14 +139,14 @@
         <form id="formPromotion" method="post" action="{{=it.action || '##'}}">  	
 	    	<div class="section" >              	
 					<label for="CourseCover">系列封面</label>
-					<input id="courseCover" name="courseCover" class="input-block-level" type="hidden" value="{{=it.coverUrl || 'images/zht-main-img.jpg'}}" />
+					<input id="courseCover" name="courseCover" class="input-block-level" type="hidden" value="{{=it.coverUrl || 'images/default-cover.png'}}" />
 					 <!--图片剪切-->
                     <div class="cutimg-box no" style="display:none;">
                          <iframe id="iframeimg" width="100%" height="500" id="win" name="win" frameborder="0" scrolling="no"
                             src=""></iframe>
                     </div>				
                     <!--图片预览-->
-					<div class="courseCover"><img id="imgshow" name="imgshow" style="width: 300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/zht-main-img.jpg'}}" alt="" /></div>					
+					<div class="courseCover"><img id="imgshow" name="imgshow" style="width: 300px;height:200px;"  src="{{=it.coverUrl || '${ctx}/resources/images/default-cover.png'}}" alt="" /></div>					
 	       </div>
 		   <div class="section" >              	
 					<label>上传图片（支持JPG\JPEG、PNG、BMP格式的图片，建议小于2M）</label>

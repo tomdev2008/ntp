@@ -21,13 +21,13 @@
 		<div class="clearfix mt20">
 	        <div class="pull-right w760">
                 <div class="page-header" data-spy="affix" data-offset-top="20">
-                    <span class="muted">我正在看：</span><span id="selectMessage">我指导的备课</span>
+                    <span class="muted">我正在看：</span><span id="selectMessage">我指导的课程学习情况</span>
                     <div class="pos-r">
                         <a class="btn btn-link dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-filter"></i>修改筛选条件</a>
                         <ul class="dropdown-menu pull-right" id="selectUl">
-                            <li><a href="javascript:void(0)" data-type="myGuidance">我指导的备课</a></li>
-                            <li><a href="javascript:void(0)" data-type="myOrg">我所在机构的备课</a></li>
-                            <li><a href="javascript:void(0)" data-type="myDepart">我所在部门的备课</a></li>
+                            <li><a href="javascript:void(0)" data-type="myGuidance">我指导的课程学习情况</a></li>
+                            <li><a href="javascript:void(0)" data-type="myOrg">本机构的课程学习情况</a></li>
+                            <li><a href="javascript:void(0)" data-type="myDepart">本部门的课程学习情况</a></li>
                         </ul>
                     </div>
                 </div>
