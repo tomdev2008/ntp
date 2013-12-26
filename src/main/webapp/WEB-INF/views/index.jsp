@@ -48,14 +48,14 @@
 </div>
 <div class="container">
 	<div class="page-header">
-		<h3>备课平台产品介绍</h3>
+		<h3>在线课程学习平台</h3>
 	</div>
 	<div class="proIntro">
         <ul class="listIntro thumbnails">
             <li class="thumbnail">
                 <i class="icon-intro-1"></i>
-                <h4>免费在线课程</h4>
-                <p>淘宝上<em>连衣裙的搜</em>索趋势是怎样的？如商品、行业、事件等）的搜索和成交走势。</p>
+                <h4>开放在线课程</h4>
+                <p>新东方自己的<em>MOOC</em>，大规模开放在线课程平台。像<em><a href="https://www.coursera.org" target="_blank">Coursera</a></em>、<em><a href="https://www.edx.org" target="_blank">edX</a></em>一样，加入这场风靡全球的教育变革吧。</p>
             </li>
             <li class="divider">
                 <i class="icon-circle-home"></i>
@@ -63,7 +63,7 @@
             <li class="thumbnail">
                 <i class="icon-intro-2"></i>
                 <h4>集团教研分享</h4>
-                <p>淘宝上搜索、购买<em>iPhone4的都是什么样</em>的人？用淘宝指数查看不同商品的消费人群特征。</p>
+                <p>汇聚集团最优质的<em>教研骨干力量</em>，全面呈现<em>科学</em>、<em>扎实</em>的教研成果。一切尽在这里，广纳百川，倾囊相受。</p>
             </li>
             <li class="divider">
                 <i class="icon-circle-home"></i>
@@ -71,8 +71,7 @@
             <li class="thumbnail">
                 <i class="icon-intro-3"></i>
                 <h4>教师职业发展</h4>
-                <p>最近7天淘宝最火的搜索词、<em>行业和品牌</em>是？
-                    基于淘宝搜索和成交的排行榜观数据清晰呈现。</p>
+                <p>为新东方教师的职业生涯规划提供完整的<em>培训课程体系</em>，解决不同的<em>岗位素质要求</em>与教师能力成长的匹配问题。</p>
             </li>
             <li class="divider">
                 <i class="icon-circle-home"></i>
@@ -80,7 +79,7 @@
             <li class="thumbnail">
                 <i class="icon-intro-4"></i>
                 <h4>名师公开课堂</h4>
-                <p>淘宝上搜索、购买<em>iPhone4的都是什么样</em>的人？用淘宝指数查看不同商品的消费人群特征。</p>
+                <p>海内存知己，天涯若比邻。新东方<em>最优秀</em>教师们的绝代风华<em>近在咫尺</em>，<em>震撼登场</em>。让我们一起来领略名师风采吧。</p>
             </li>
             <li class="divider">
                 <i class="icon-circle-home"></i>
@@ -88,8 +87,7 @@
             <li class="thumbnail">
                 <i class="icon-intro-5"></i>
                 <h4>学校师训跟踪</h4>
-                <p>最近7天淘宝最火的搜索词、<em>行业和品牌</em>是？
-                    基于淘宝搜索和成交的排行榜观数据清晰呈现。</p>
+                <p>学校教师培训工作需要<em>量化指标</em>考核？如何<em>实时跟踪</em>每位老师的学习效果？如何<em>科学改进</em>培训课程的内容逻辑？让我们一起做得更好。</p>
             </li>
             <li class="divider">
                 <i class="icon-circle-home"></i>
@@ -97,7 +95,7 @@
             <li class="thumbnail">
                 <i class="icon-intro-6"></i>
                 <h4>学习通关证书</h4>
-                <p>淘宝上<em>连衣裙的搜</em>索趋势是怎样的？如商品、行业、事件等）的搜索和成交走势。</p>
+                <p>你来<em>学习</em>，我们来<em>认证</em>。想要证明自己？来晒晒拿到了多少高含金量的课程结业证书吧。也许你就是下一颗璀璨的<em>明星</em>。</p>
             </li>
         </ul>
     </div>
