@@ -105,16 +105,16 @@
   <div class="tabbable tabs-below">
    	<div class="tab-content">
 			<div class="tab-pane active" id="tab1">
-    			<div><p><i class="icon-shyhl"></i>初入职场时，尤其感觉到了职场技能的欠缺。工作之外的时间可以来这里看看，随时都可以学习，感觉真心不错！<i class="icon-shyhr"></i></p></div>
+    			<div><p><i class="icon-shyhl"></i><span name="intro">初入职场时，尤其感觉到了职场技能的欠缺。工作之外的时间可以来这里看看，随时都可以学习，感觉真心不错！</span><i class="icon-shyhr"></i></p></div>
     		</div>
     		<div class="tab-pane" id="tab2">
-   				<div><p><i class="icon-shyhl"></i>下班后会来看看有没有更新，然后学习一下，很受用。<i class="icon-shyhr"></i></p></div>
+   				<div><p><i class="icon-shyhl"></i><span name="intro">下班后会来看看有没有更新，然后学习一下，很受用。</span><i class="icon-shyhr"></i></p></div>
     		</div>
     		<div class="tab-pane" id="tab3">
-    			<div><p><i class="icon-shyhl"></i>在这里发现很多熟悉的培训师视频教程，真心不错！<i class="icon-shyhr"></i></p></div>
+    			<div><p><i class="icon-shyhl"></i><span name="intro">在这里发现很多熟悉的培训师视频教程，真心不错！</span><i class="icon-shyhr"></i></p></div>
     		</div>
     		<div class="tab-pane" id="tab4">
-    			<div><p><i class="icon-shyhl"></i>手头的资料大多是零散知识片段，真想学点什么的时候总缺乏系统性的知识体系。在线备课平台很不错，把知识有机的组织在一起，让人耳目一新。足见信息的组织精炼同样非常重要！<i class="icon-shyhr"></i></p></div>
+    			<div><p><i class="icon-shyhl"></i><span name="intro">手头的资料大多是零散知识片段，真想学点什么的时候总缺乏系统性的知识体系。在线备课平台很不错，把知识有机的组织在一起，让人耳目一新。足见信息的组织精炼同样非常重要！<i class="icon-shyhr"></i></p></div>
     		</div>
    	  </div>
    	  <ul class="nav nav-tabs" id="myTabs">
@@ -242,15 +242,15 @@
     <div class="grid-bottom">
          	<div class="pages">            	
                 <div class="btn-group">
-                	<button class="btn btn-primary" disabled><i class="icon-chevron-left icon-white"></i></button>
-                    <button class="btn btn-primary"><i class="icon-chevron-right icon-white"></i></button>
+                	<button class="btn btn-primary"  id="afterBtn"><i class="icon-chevron-left icon-white"></i></button>
+                    <button class="btn btn-primary"  id="nextBtn"><i class="icon-chevron-right icon-white"></i></button>
                 </div>
             </div>
      </div>
 </div>
 
 <script type="text/javascript">	
-			
+initSchool(1);		
 $("#myTabs>li>a").bind("mouseover",function(e){
 	$(this).tab("show");		
 })
@@ -265,8 +265,8 @@ $.ajax({
 	 dataType : 'json',
 	success:function(data){
 		$(".icon-school-home").next("span").children("h2").html(parseInt(data.schoolNum).toLocaleString().split(".")[0]+'+');
-		$(".icon-teacher-home").next("span").children("h2").html(parseInt(data.mentorNum).toLocaleString().split(".")[0]+'+');
-		$(".icon-mentor-home").next("span").children("h2").html(parseInt(data.newTeacherNum).toLocaleString().split(".")[0]+'+');
+		$(".icon-mentor-home").next("span").children("h2").html(parseInt(data.mentorNum).toLocaleString().split(".")[0]+'+');
+		$(".icon-teacher-home").next("span").children("h2").html(parseInt(data.newTeacherNum).toLocaleString().split(".")[0]+'+');
 		$(".icon-book-home").next("span").children("h2").html(parseInt(data.courseNum).toLocaleString().split(".")[0]+'+');
 	}
 });
@@ -275,9 +275,89 @@ $.ajax({
 	type: "post",
 	async:false,
 	 url: "${ctx}/ajax/head/getTeacherWord",
+	 dataType : 'json',
 	success:function(data){
+		if(data.length>0){
+			for(var i=0;i<data.length;i++){
+				$("#myTabs li:eq("+i+") h5").html(data[i].tname);
+				var img="";
+				if(data[i].headimg.indexOf('http')>-1){
+					img =data[i].headimg;
+				}else{
+					img ="${ctx}/"+data[i].headimg;
+				}
+				$("#myTabs li:eq("+i+") img").attr("src",img);
+				var dep = data[i].dep;
+				if(data[i].dep.length>8){
+					dep = data[i].dep.substr(0,8)+"...";
+				}
+				
+				$("#myTabs li:eq("+i+") p").html(dep);
+				$("#myTabs li:eq("+i+") p").attr("title",data[i].dep);
+				$("span[name='intro']:eq("+i+")").html(data[i].content);
+			}
+			
+			
+		}
+		
 	}
 });
+
+//初始化学校
+function initSchool(pageNo){
+	var temp = {};
+	$.ajax({
+		type: "post",
+		async:false,
+		url: "${ctx}/ajax/head/getSchoolWord",
+		data:{pageNoStr:pageNo},
+		dataType : 'json',
+		success:function(data){
+			$("#grid .media").each(function(i){
+				if(data.schools[i]!=undefined){
+					$this = $(this);
+					var name=data.schools[i].sname;
+					$this.find(".media-body .hd").attr("title",name);
+					if(name.length>9){
+						name=name.substr(0,8)+"...";
+					}
+					$this.find(".media-body .hd").html(name);
+					var content=data.schools[i].content;
+					$this.find(".media-body .bd h4").attr("title",content);
+					if(content.length>17){
+						content=content.substr(0,15)+"...";
+					}
+					$this.find(".media-body .bd h4").html(content);
+					$this.find(".media-body .ft").html('教师&nbsp;'+data.schools[i].tnum+'+<span>|</span>导师&nbsp;'+data.schools[i].munu+'+');
+					if(data.schools[i].simg!=""){
+						$this.find("img").attr("src","${ctx}/common/file/image/"+data.schools[i].simg);
+					}else{
+						$this.find("img").attr("src","${ctx}/resources/images/hoverfold-01.jpg");
+					}
+				}
+			});
+			temp=data;
+		}
+	});
+	$("#afterBtn").unbind();
+	$("#nextBtn").unbind();
+	if(temp.pageNo>1){
+		$("#afterBtn").bind("click",function(){
+			initSchool(temp.pageNo-1);	
+		});
+		$("#afterBtn").attr("disabled",false);
+	}else{
+		$("#afterBtn").attr("disabled",true);
+	};
+	if(temp.pageNo<temp.pageTotal){
+		$("#nextBtn").bind("click",function(){
+			initSchool(temp.pageNo+1);	
+		});
+		$("#nextBtn").attr("disabled",false);
+	}else{
+		$("#nextBtn").attr("disabled",true);
+	};
+}
 </script>
 </body>
 </html>

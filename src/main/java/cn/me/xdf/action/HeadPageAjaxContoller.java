@@ -20,6 +20,7 @@ import cn.me.xdf.common.json.JsonUtils;
 import cn.me.xdf.common.page.Pagination;
 import cn.me.xdf.model.base.AttMain;
 import cn.me.xdf.model.organization.SysOrgElement;
+import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.system.PageConfig;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.SysOrgDepartService;
@@ -83,9 +84,12 @@ public class HeadPageAjaxContoller {
 			for(int i=0;i<pages.size();i++){
 				Map page=(Map) pages.get(i);
 				Map teacher=new HashMap();
-				teacher.put("tname", accountService.findById(page.get("FDELEMENTID").toString()).getFdName());
+				SysOrgPerson orgPerson = accountService.findById(page.get("FDELEMENTID").toString());
+				teacher.put("tname", orgPerson.getFdName());
 				teacher.put("content",page.get("FDCONTENT"));
-				teacher.put("headimg", accountService.findById(page.get("FDELEMENTID").toString()).getPoto());
+				teacher.put("headimg", orgPerson.getPoto());
+				teacher.put("dep", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
+				teachers.add(teacher);
 			}
 		}
 		return JsonUtils.writeObjectToJson(teachers) ;
@@ -98,6 +102,7 @@ public class HeadPageAjaxContoller {
 	@ResponseBody
 	public String getSchoolWord(HttpServletRequest request){
 		String pageNoStr=request.getParameter("pageNoStr");
+		Map returnMap = new HashMap();
 		int pageNo=1;
 		if(StringUtil.isNotEmpty(pageNoStr)){
 			pageNo=Integer.parseInt(pageNoStr);
@@ -105,7 +110,8 @@ public class HeadPageAjaxContoller {
 		Finder finder=Finder.create(" from PageConfig page ");
 		finder.append(" where page.fdType='02' ");
 		finder.append(" order by page.fdOrder ");
-		List<PageConfig>  pages = (List<PageConfig>) pageConfigService.getPage(finder, pageNo,5).getList();
+		Pagination pagination = pageConfigService.getPage(finder, pageNo,5);
+		List<PageConfig>  pages = (List<PageConfig>) pagination.getList();
 		List<Map> schools=new ArrayList<Map>();
 		if(pages!=null&&pages.size()>0){
 			for(PageConfig page:pages){
@@ -124,9 +130,13 @@ public class HeadPageAjaxContoller {
 				int mnum=getMentorNum(deptIds);
 				school.put("munu", mnum);
 				schools.add(school);
+				
 			}
 		}
-		return JsonUtils.writeObjectToJson(schools);
+		returnMap.put("schools", schools);
+		returnMap.put("pageNo", pagination.getPageNo());
+		returnMap.put("pageTotal", pagination.getTotalPage());
+		return JsonUtils.writeObjectToJson(returnMap);
 	}
 	
 	private void getDeptIds(String id,List deptIds){
@@ -169,7 +179,7 @@ public class HeadPageAjaxContoller {
 		if(sqlstr.length()>0){
 			sqlstr = sqlstr.substring(0,sqlstr.length()-1);
 			sql=sql+sqlstr+")";
-			List mentors=departService.findBySQL(sqlstr, null, null);
+			List mentors=departService.findBySQL(sql, null, null);
 			return Integer.parseInt(mentors.get(0).toString());
 		}else{
 			return 0;
