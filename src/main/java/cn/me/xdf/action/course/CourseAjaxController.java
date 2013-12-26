@@ -959,12 +959,11 @@ public class CourseAjaxController {
 		finder.append("       ) ");
 		finder.append("   and course.fdStatus = '01' ");
 		finder.append("   and course.isAvailable = 'Y' ");
-		finder.append("   order by course.fdCreateTime desc ");
-		
 		if(!type.equals("all")){
 			finder.append(" and course.fdcategoryid=:type " );
 			finder.setParam("type", type);
-		}		
+		}	
+		finder.append("   order by course.fdCreateTime desc ");
 		Pagination pag=	courseService.getPageBySql(finder, pageNo, 30);
 		List<Map> courseInfos =  (List<Map>) pag.getList();
 		if(pag.getTotalPage()>=pageNo){
@@ -1044,7 +1043,7 @@ public class CourseAjaxController {
 		returnMap.put("org", orgPerson.getHbmParent()==null?"不详":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
 		returnMap.put("dep", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
 		returnMap.put("tel", orgPerson.getFdWorkPhone()==null?"不详":orgPerson.getFdWorkPhone());
-		returnMap.put("qq", orgPerson.getFdQq()==null?"不详":orgPerson.getFdQq());
+		returnMap.put("bird", orgPerson.getFdBirthDay()==null?"不详":orgPerson.getFdBirthDay());
 		
 		returnMap.put("bool", orgPerson.getFdBloodType());
 		returnMap.put("selfIntroduction", orgPerson.getSelfIntroduction()==null?"这家伙很懒，也不好好介绍一下自己~":orgPerson.getSelfIntroduction());
