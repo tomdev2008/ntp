@@ -35,7 +35,7 @@ request.setAttribute("path", path[path.length-1]);
 	         	<tags:navigation paths="<%=paths%>" checkString="/studyTrack/getStudyTrackDirector:/material/find:/material/materialFoward:/course/find:/course/add:/series/find:/series/add:/course/get" showString="我是主管" url="${ctx}/studyTrack/getStudyTrackDirector"></tags:navigation>
 	          </shiro:hasRole>
 	          <% if(user!=null){ %>
-	         	 <tags:navigation paths="<%=paths%>" checkString="/course/courseIndex:/passThrough:/successPage:series/studayfoward" showString="个人首页" url="${ctx}/course/courseIndex"></tags:navigation>
+	         	 <tags:navigation paths="<%=paths%>" checkString="/course/courseIndex:/passThrough:/successPage:series/studayfoward" showString="个人主页" url="${ctx}/course/courseIndex"></tags:navigation>
 	           <%} %>
 </ul>
 			<shiro:authenticated>
@@ -56,7 +56,7 @@ request.setAttribute("path", path[path.length-1]);
                     <b class="caret"></b>
                 </a>
                  <ul class="dropdown-menu">
-                   <li><a href="${ctx}/course/courseIndex"><i class="icon-home"></i>个人首页</a></li>
+                   <li><a href="${ctx}/course/courseIndex"><i class="icon-home"></i>个人主页</a></li>
                     <li><a href="${ctx}/notify/list/1/ALL"><i class="icon-envelope"></i>我的私信
                     <span class="icon-disc-bg" id="msgNum"></span></a></li>
                     <li><a href="${ctx}/register/updateTeacher"><i class="icon-user"></i>账号设置</a></li>

@@ -536,7 +536,7 @@
 				$("#addUser").next(".help-block").remove();
 				$("#list_user>tr").each(function(){
 					if($(this).attr("data-fdid")==item.id){
-						$("#addUser").after('<label class="error help-block">不能添加重复的用户!</label>');;
+						$("#addUser").after('<label class="error help-block">请勿重复添加用户</label>');;
 						$("#addUser").val("");
 						flag = false;
 					}
@@ -1018,7 +1018,7 @@
 					matchContains:true ,
 					max: 10,
 					scroll: false,
-					width:336
+					width:387
 				});
 			});
 			// 删除关键词事件

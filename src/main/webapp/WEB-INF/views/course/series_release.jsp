@@ -164,7 +164,7 @@
                 <div class="section newClass mt20">
                 	<div class="hd">
                 		<h5>最新系列课程</h5>
-                        <a href="javascript:void(0)" class="ab_r" id="findAll">发现全部</a>
+                        <a href="javascript:void(0)" class="ab_r" id="findAll">全部课程</a>
                 	</div>
                     <div class="bd">
                     	<div class="list-class" id="serieslist">

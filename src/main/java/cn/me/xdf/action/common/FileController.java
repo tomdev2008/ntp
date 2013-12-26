@@ -4,6 +4,7 @@ import cn.me.xdf.common.utils.InputStreamZipper;
 import cn.me.xdf.service.plugin.AttMainPlugin;
 import gui.ava.html.image.generator.HtmlImageGenerator;
 
+import java.awt.Color;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -439,13 +440,16 @@ public class FileController {
         }
     	try {
     		String html =
+    				"<!DOCTYPE HTML>"+
+    				"<html>"+
+    				"<head>"+
     	            "    <style type='text/css'>"+
     	            "        body{background-color: #efefef;font-size: 14px;line-height: 20px;}"+
     	            "        body,button{font-family: 'Microsoft Yahei', '微软雅黑', arial;}"+
     	            "        body,div,p{padding: 0;margin: 0;}"+
     	            "        .muted{color: #999999;}"+
     	            "        .upper{text-transform: uppercase;}"+
-    	            "        .icon-medal-lg{width: 60px;height: 60px;background:url('theme/default/images/icon-png.png') no-repeat 0 -821px;}"+
+    	            "        .icon-medal-lg{width: 60px;height: 60px;background:url('"+rootUrl+"theme/default/images/icon-png.png') no-repeat 0 -821px;}"+
     	            "        .media, .media-body{overflow: hidden;zoom: 1;}"+
     	            "        .box-certificate{background-color:#ffffff;padding:0 70px;width: 800px;margin:-200px 0 0 -470px;overflow: hidden;height: 400px;position: absolute;top:50%;left: 50%;}"+
     	            "        .box-certificate .hd{overflow: hidden}"+
@@ -461,6 +465,8 @@ public class FileController {
     	            "        .box-certificate .bd .media-heading{border-bottom: dashed #b8b8b8 1px;margin-bottom:20px;padding: 10px 0 20px;}"+
     	            "    </style>"+
     	            ""+
+    	            "</head>"+
+    	            "<body>"+
     	            "<div class='box-certificate'>"+
     	            "     <div class='hd'><h2>新东方认证教师</h2></div>"+
     	            "    <div class='bd'>"+
@@ -477,8 +483,10 @@ public class FileController {
     	            "             </div>"+
     	            "         </div>"+
     	            "     </div>"+
-    	            " </div>";	
-    		List<byte[]> list = GraphUtils.toImages(html);
+    	            " </div>"+
+    	            "</body>"+
+    	            "</html>";
+    		List<byte[]> list = GraphUtils.toImages(null, html, 940, 400);
     		if(list!=null && list.size()>0){
     			 byte[] img  = list.get(0);
     			 response.setHeader("Content-type", "text/html;charset=utf-8");

@@ -720,7 +720,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 	        <div class="page-title section" id="page-title">
 	        	<input type='hidden' id='courseId' value='${course.fdId}' />
 	        	<h5>
-	        	<a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" class="backParent">返回我的课程列表
+	        	<a href="${ctx}/course/findcourseInfos?fdType=12&order=fdcreatetime" class="backParent">返回课程管理
 </a>
 	        	&nbsp;&nbsp;&nbsp;
 	        	 <tags:title size="33" value="${course.fdTitle}"></tags:title>

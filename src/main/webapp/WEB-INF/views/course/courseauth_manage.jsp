@@ -396,7 +396,7 @@ function exportData(){
     		matchContains:true ,
     		max: 10,
     		scroll: false,
-    		width:688
+    		width:750
         }).result(function(e,item){
         	$("#inputTeacher").val(item.name + '（' + item.mail + '），' + item.org + '  ' + item.department);
         	$("#teacher").val(item.id);
@@ -434,7 +434,7 @@ function exportData(){
     		matchContains:true ,
     		max: 10,
     		scroll: false,
-    		width:688
+    		width:750
         }).result(function(e,item){
         	$("#inputMentor").val(item.name + '（' + item.mail + '），' + item.org + '  ' + item.department);
         	$("#mentor").val(item.id);

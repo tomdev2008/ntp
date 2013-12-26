@@ -46,7 +46,7 @@ public class SysOrgDepartService extends BaseService {
 	@SuppressWarnings("unchecked")
 	public List<SysOrgDepart> findTypeis1(){
 		Finder finder = Finder
-				.create("from SysOrgElement e where e.hbmParent is not null and e.fdOrgType=1");
+				.create("from SysOrgElement e where e.hbmParent is not null and e.fdOrgType=1 order by e.fdName");
 		return find(finder);
 	}
 	
