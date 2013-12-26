@@ -211,7 +211,7 @@ var editor = KindEditor.create('textarea[id="richText"]', {
 								cssData : 'body {font-size:14px;}',
 								allowPreviewEmoticons : false,
 								allowImageUpload : true,
-								uploadJson : $('#ctx').val()+'/common/file/KEditor_uploadImg',
+								uploadJson : '${ctx}/common/file/KEditor_uploadImg',
 								items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 									'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
 									'insertunorderedlist', '|', 'undo', 'redo','link','image'],
