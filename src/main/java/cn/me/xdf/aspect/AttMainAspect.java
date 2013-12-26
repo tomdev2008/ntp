@@ -56,7 +56,7 @@ public class AttMainAspect {
     }
 
 
-    @AfterReturning(value = "execution(* cn.me.xdf.service.base.AttMainService.deleteAttMain(..))", returning = "result")
+    //@AfterReturning(value = "execution(* cn.me.xdf.service.base.AttMainService.deleteAttMain(..))", returning = "result")
     public Object afterDeleteAttMain(JoinPoint joinPoint, Object result) {
 
         log.info("开始启动资源过滤------------afterSaveAttMain----------");
