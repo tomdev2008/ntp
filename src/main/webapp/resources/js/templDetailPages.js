@@ -576,7 +576,7 @@
 					  data:{data:JSON.stringify(data)},
 					  dataType:'json',
 					  success: function(rsult){
-						  //$.fn.jalert("修改成功");
+						  jalert_tips("保存成功");
 					  },
 				});
 			});
