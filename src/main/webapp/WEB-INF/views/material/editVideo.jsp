@@ -352,7 +352,6 @@ function deleteMaterial(){
 function downloadMater(){
   var attId = $("#fdattId").val();
   var main = '${main.fileNetId}';
-  alert(main);
   if(attId!=null&&attId!="" && main!=null&&main!=""){
 	  window.location.href="${ctx}/common/file/download/"+attId;
   } else {
