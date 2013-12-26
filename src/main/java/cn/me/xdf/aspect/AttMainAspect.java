@@ -56,8 +56,8 @@ public class AttMainAspect {
     }
 
 
-    //@AfterReturning(value = "execution(* cn.me.xdf.service.base.AttMainService.deleteAttMain(..))", returning = "result")
-    /*public Object afterDeleteAttMain(JoinPoint joinPoint, Object result) {
+    @AfterReturning(value = "execution(* cn.me.xdf.service.base.AttMainService.deleteAttMain(..))", returning = "result")
+    public Object afterDeleteAttMain(JoinPoint joinPoint, Object result) {
 
         log.info("开始启动资源过滤------------afterSaveAttMain----------");
         if (result == null) {
@@ -70,7 +70,7 @@ public class AttMainAspect {
         AttMain attMain = (AttMain)result;
         attMainTask.executeInterfaceDelete(attMain);
         return joinPoint.getTarget();
-    }*/
+    }
 
 
 }

@@ -22,8 +22,7 @@ import cn.me.xdf.service.SimpleService;
 public class AttMainService extends SimpleService {
 
 
-    @Autowired
-    private AttMainTask attMainTask;
+
 
     public AttMain get(String id) {
         return get(AttMain.class, id);
@@ -78,7 +77,7 @@ public class AttMainService extends SimpleService {
         String file = attMain.getFdFilePath();
         delete(AttMain.class, id);
         FileUtil.delete(file);
-        attMainTask.executeInterfaceDelete(attMainCopy);
+       // attMainTask.executeInterfaceDelete(attMainCopy);
         return attMainCopy;
     }
 
