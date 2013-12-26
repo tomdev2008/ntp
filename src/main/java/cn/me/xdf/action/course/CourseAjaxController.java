@@ -959,7 +959,7 @@ public class CourseAjaxController {
 		finder.append("       ) ");
 		finder.append("   and course.fdStatus = '01' ");
 		finder.append("   and course.isAvailable = 'Y' ");
-		finder.append("   ");
+		finder.append("   order by course.fdCreateTime desc ");
 		
 		if(!type.equals("all")){
 			finder.append(" and course.fdcategoryid=:type " );

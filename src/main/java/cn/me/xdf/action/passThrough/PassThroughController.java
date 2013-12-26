@@ -307,5 +307,14 @@ public class PassThroughController {
 		return "/passThrough/course_feeling";
 	}
 	
-	
+	/**
+	 * 证书页面
+	 * @param request
+	 */
+	@RequestMapping(value = "getCertificate")
+	public String getCertificate(HttpServletRequest request){
+		String bamId=request.getParameter("bamId");
+		
+		return "/passThrough/certificate";
+	}
 }
