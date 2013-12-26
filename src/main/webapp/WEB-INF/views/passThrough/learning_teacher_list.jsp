@@ -23,7 +23,7 @@
 </script>
 <div class="section mt20 list-face">
     <div class="hd">
-    	<h5><span id='leaningCount'>0</span>nbsp;位老师在学习</h5>
+    	<h5><span id='leaningCount'>0</span>&nbsp;位老师在学习</h5>
     </div>
     <div class="bd" id="leaningTeachers">
         

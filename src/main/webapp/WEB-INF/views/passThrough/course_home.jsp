@@ -118,7 +118,7 @@
 											${course.fdSummary} 
 										</j:then>
 										<j:else>
-											课程作者很懒，什么都没写，请自行脑补~:)
+											课程作者很懒，什么都没写。:(
 										</j:else>
 									  </j:ifelse> 
                                 </dd>
@@ -130,7 +130,7 @@
 											<tags:stringli value="${course.fdLearnAim}" sign="#"/>
 										</j:then>
 										<j:else>
-											课程作者很懒，什么都没写，请自行脑补~:)
+											课程作者很懒，什么都没写。:(
 										</j:else>
 									  </j:ifelse>
                                     </ol>
@@ -143,7 +143,7 @@
 											<tags:stringli value="${course.fdProposalsGroup}" sign="#"/>
 										</j:then>
 										<j:else>
-											课程作者很懒，什么都没写，请自行脑补~:)
+											课程作者很懒，什么都没写。:(
 										</j:else>
 									  </j:ifelse>
                                     </ol>
@@ -156,7 +156,7 @@
 											<tags:stringli value="${course.fdDemand}" sign="#"/>
 										</j:then>
 										<j:else>
-											课程作者很懒，什么都没写，请自行脑补~:)
+											课程作者很懒，什么都没写。:(
 										</j:else>
 									  </j:ifelse>
                                     </ol>
