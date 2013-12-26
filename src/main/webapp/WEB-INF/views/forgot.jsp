@@ -18,13 +18,13 @@
            	请采用以下方式找回您的登录密码：
             </p>
             <p class="forgot-intro">
-            1. 忘记集团邮箱密码，请联系本地邮箱运维工程师；<br />
-            2. 忘记临时账号密码，请联系系统管理员为您重置密码。
+            1. 忘记集团邮箱密码，请<a href="https://adpassport.xdf.cn/resetpasswd.aspx">点击这里</a>重置密码；<br />
+            2. 忘记临时账号密码，请<a href="mailto:yangyifeng@xdf.cn?subject=NTP临时账号忘记密码&body=账号名称：">联系我们</a>为您重置密码。
             </p>
             
        	  <p class="login_btns forgot-btns clearfix">
             <button class="btn btn-register" onClick="location.href='${ctx}/login'" type="button">返回登录</button>
-               <button class="btn btn-primary btn-login" onClick="location.href='mailto: yangyifeng@xdf.cn?subject=<%=java.net.URLEncoder.encode("忘记密码","gb2312")%>'" type="button">找回密码</button>
+               <button class="btn btn-primary btn-login" onClick="location.href='mailto:yangyifeng@xdf.cn?subject=NTP临时账号忘记密码&body=账号名称：'" type="button">找回密码</button>
             </p>
         </div>
 		
