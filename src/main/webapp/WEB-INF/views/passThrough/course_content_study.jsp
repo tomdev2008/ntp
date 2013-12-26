@@ -225,7 +225,7 @@
                                 {{~}}
                             {{??}}
                            		{{~exam.listExamAnswer :ans1:index1}}
-                            	{{~exam.listExamAnswer :ans:index}}
+                            	{{~exam.listExamAnswer :ans}}
                             	{{?index1 == ans.index}}
                                 	<label class="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" >
                                     	<input type="{{?exam.examType == 'single'}}radio{{??}}checkbox{{?}}" {{?ans.isChecked}}checked{{?}} exam-id="{{=exam.id}}" value="{{=ans.id}}" name="examAnswer_completion{{=exam.id}}{{=indexno+1}}" putId="examAnswer_s" />
