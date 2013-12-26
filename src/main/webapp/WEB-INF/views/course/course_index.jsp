@@ -162,12 +162,12 @@
                 </div>
                 <div class="well">
                     <i class="icon-shyhl"></i>
-                    <span class="txt">
+                    <a href="/ntp/register/updateTeacher" class="txt">
 {{?it.selfIntroduction==""}}这家伙很懒，也不好好介绍一下自己~ :-({{??}}
 {{=it.selfIntroduction}}
 {{?}}
 					
-					</span>
+					</a>
                     <i class="icon-shyhr"></i>
                 </div>
             </div>
