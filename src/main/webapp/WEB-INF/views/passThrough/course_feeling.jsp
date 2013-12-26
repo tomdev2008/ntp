@@ -312,6 +312,7 @@ $(function(){
 	                        $form.remove();
 	                        $this.removeClass("active");
 	                        $num.text(parseInt($num.text())+1);
+	                        jalert_tips("回复成功");
                     }
                 });
                 $form.find(".btn-cancel").click(function(e){
