@@ -221,7 +221,7 @@
             <div class="section box-pd20">
                 <form id="formAddMood" method="post">
                 	<c:if test="${isMe=='true'}">
-                    <textarea name="field-mood" required maxlength="200" id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
+                    <textarea name="field-mood" onkeydown="return pushMessage();" required maxlength="200" id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
                     <div class="clearfix">
                         <button type="submit" class="btn btn-primary pull-right">写备课心情</button>
                     </div>
@@ -315,6 +315,13 @@ $(function(){
 	                        jalert_tips("回复成功");
                     }
                 });
+                $form.find("textarea").bind("keydown",function(){
+                	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+                	if (keyCode == 13) {
+                		$form.find("form").submit();
+                		return false;
+                	}
+                });
                 $form.find(".btn-cancel").click(function(e){
                     $form.remove();
                     $this.removeClass("active");
@@ -402,6 +409,8 @@ $(function(){
                 $(this).children().prepend($btn);
             });
 
+    
+    
     /*发表心情表单*/
     $("#formAddMood").validate({
         submitHandler: function(form){
@@ -558,7 +567,14 @@ $(function(){
 		  
   }
 });
+function pushMessage(){
+	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+	if (keyCode == 13) {
+		$("#formAddMood").submit();
+		return false;
+	}
 	
+}	
 
 </script>
 </body>
