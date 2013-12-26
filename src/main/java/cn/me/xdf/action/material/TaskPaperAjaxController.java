@@ -59,10 +59,13 @@ public class TaskPaperAjaxController {
 		String taskId = request.getParameter("taskId");
 		String examPaperIntro = request.getParameter("examPaperIntro");
 		String studyTime = request.getParameter("studyTime");
+		SysOrgPerson orgPerson = accountService.load(ShiroUtils.getUser().getId());
 		Task task;
 		if(StringUtil.isBlank(materialId)){//先进行作业包素材的保存
 			info = new MaterialInfo();
-			info.setCreator((SysOrgPerson) accountService.load(ShiroUtils.getUser().getId()));
+			info.setCreator(orgPerson);
+			info.setFdAuthor(ShiroUtils.getUser().getName());
+			info.setFdAuthorDescription(orgPerson.getSelfIntroduction());
 			info.setFdType(Constant.MATERIAL_TYPE_JOBPACKAGE);
 			info.setFdCreateTime(new Date());
 			info.setFdName(request.getParameter("materialName"));
