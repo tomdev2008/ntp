@@ -90,7 +90,7 @@ public class DepartLdapInService extends LdapInService {
             map.put("FDID", Identities.generateID());
             map.put("AVAILABLE", true);
             map.put("CREATETIME", new Date());
-            map.put("FD_NAME", context.getStringAttribute("displayName"));
+            map.put("FD_NAME", context.getStringAttribute("displaySecondName"));
             map.put("FD_NO", context.getStringAttribute("departmentNumber"));
             map.put("FD_ORG_TYPE", LdapUtils.getOrgType(context.getStringAttribute("departmentNumber")));
             map.put("LDAPDN", context.getDn().toString());
