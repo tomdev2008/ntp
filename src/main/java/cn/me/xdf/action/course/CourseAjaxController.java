@@ -998,6 +998,11 @@ public class CourseAjaxController {
 					map.put("isLearning", false);
 				}else{
 					map.put("isLearning", true);
+					if(bamCourse.getThrough()==true){
+						map.put("isThrough", true);
+					}else{
+						map.put("isThrough", false);
+					}
 				}
 				map.put("dataId", courseInfo.getFdId());
 				lists.add(map);
