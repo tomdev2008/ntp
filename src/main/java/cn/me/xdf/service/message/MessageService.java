@@ -287,7 +287,7 @@ public class MessageService extends BaseService implements InitializingBean{
 	public void saveMaterialMessage(SourceNote note){
 		BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(note.getFdUserId(), note.getFdCourseId());
 		CourseCatalog catalog = bamCourse.getCatalogById(note.getFdCatalogId());
-		MaterialInfo material = bamCourse.getMaterialInfoById(note.getFdMaterialId());
+		MaterialInfo material = bamCourse.getMaterialInfoById(note.getFdCatalogId(),note.getFdMaterialId());
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("lectureName", catalog!=null?catalog.getFdName():"");
 		param.put("materialName", material!=null?material.getFdName():"");

@@ -469,5 +469,24 @@ public class BamCourse extends IdEntity implements BamProcess {
         }
         return null;
     }
+    
+    /**
+     * 根据素材ID获取素材信息
+     * @param catalogId 节ID
+     * @param materialId 素材ID
+     * @return MaterialInfo
+     */
+    @Transient
+    public MaterialInfo getMaterialInfoById(String catalogId,String materialId) {
+        List<CourseContent> courseContents = getCourseContents();
+        if (courseContents == null)
+            return null;
+        for (CourseContent content : courseContents) {
+            if (content.getMaterial().getFdId().equals(materialId)) {
+                return content.getMaterial();
+            }
+        }
+        return null;
+    }
 
 }
