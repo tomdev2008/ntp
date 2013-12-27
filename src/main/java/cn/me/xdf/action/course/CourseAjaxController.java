@@ -1051,8 +1051,7 @@ public class CourseAjaxController {
 		returnMap.put("dep", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
 		returnMap.put("tel", orgPerson.getFdWorkPhone()==null?"不详":orgPerson.getFdWorkPhone());
 		returnMap.put("bird", orgPerson.getFdBirthDay()==null?"不详":orgPerson.getFdBirthDay());
-		
-		returnMap.put("bool", orgPerson.getFdBloodType());
+		returnMap.put("bool", orgPerson.getFdBloodType()==null?"不详":orgPerson.getFdBloodType());
 		returnMap.put("selfIntroduction", orgPerson.getSelfIntroduction()==null?"这家伙很懒，也不好好介绍一下自己~":orgPerson.getSelfIntroduction());
 		Finder finder1 = Finder.create("select count(*) from BamCourse b where b.preTeachId = :preTeachId and b.through=:through");
 		finder1.setParam("preTeachId", userId);
