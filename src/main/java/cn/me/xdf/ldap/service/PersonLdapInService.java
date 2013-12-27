@@ -56,7 +56,10 @@ public class PersonLdapInService extends LdapInService {
 
     @Override
     public void initData() {
-
+    	List<Map<String, Object>> list = ldapTemplate.search(
+                "cn=users", "(&(objectClass=xdf-person))",
+                new PersonContextMapper());
+    	 updateOrg(list);
     }
 
     @Override
@@ -71,19 +74,53 @@ public class PersonLdapInService extends LdapInService {
     }
 
 
-    private String updateOrg(List<Map<String, Object>> values) {
+    public String updateOrg(List<Map<String, Object>> values) {
         int insertSize = 0;
         int updateSize = 0;
         for (Map<String, Object> map : values) {
             List<Map> lists = findByNamedQuery("person.selectElementByKey", map, Map.class);
-            List<Map> departList = findByNamedQuery("person.selectElementByFdNo", map, Map.class);
+            List<Map> departList = findByNamedQuery("selectElementByKey", map, Map.class);
             if (departList.size() > 0) {
                 Map departMap = departList.get(0);
                 Object v = departMap.get("FDID");
                 if (v != null) {
                     map.put("FD_PARENTID", v);
+                }else{
+                	map.put("FD_PARENTID", "");
                 }
+            }else{
+            	map.put("FD_PARENTID", "");
             }
+            if (CollectionUtils.isEmpty(lists)) {
+                log.info("开始初始化人员表-Insert:" + map.get("FD_NO"));
+                updateByNamedQuery("saveElement", map);
+                updateByNamedQuery("person.saveElement", map);
+                insertSize++;
+            } else {
+                log.info("开始初始化人员表-Update" + map.get("FD_NO"));
+                map.put("FDID", lists.get(0).get("FDID"));
+                updateByNamedQuery("person.updateElement", map);
+                updateByNamedQuery("updateElement", map);
+                updateSize++;
+            }
+        }
+
+
+        return "人员：本次新增" + insertSize + ",更新:" + updateSize;
+    }
+    
+    
+    
+    
+    public String updateOrg2(List<Map<String, Object>> values) {
+        int insertSize = 0;
+        int updateSize = 0;
+        for (Map<String, Object> map : values) {
+            List<Map> lists = findByNamedQuery("person.selectElementByKey", map, Map.class);
+            if(updateSize>2){
+            	break;
+            }
+            map.put("FD_PARENTID", map.get("PARENTID"));
             if (CollectionUtils.isEmpty(lists)) {
                 log.info("开始初始化人员表-Insert:" + map.get("FD_NO"));
                 updateByNamedQuery("saveElement", map);
