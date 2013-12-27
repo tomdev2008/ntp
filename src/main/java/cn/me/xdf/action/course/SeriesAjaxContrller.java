@@ -80,8 +80,6 @@ public class SeriesAjaxContrller {
 		series.setVersion(0);
 		series.setFdCreateTime(new Date());
 		series.setCreator(creator);
-		series.setFdAuthor(ShiroUtils.getUser().getName());
-		series.setFdAuthorDescription(creator.getSelfIntroduction());
 		series.setFdSeriesNo(fdNo);
 		// 没有系列id说明是新增系列 否则就是新增阶段
 		Map<String, String> map = new HashMap<String, String>();
@@ -97,8 +95,6 @@ public class SeriesAjaxContrller {
 			seriessup.setVersion(0);
 			seriessup.setFdCreateTime(new Date());
 			seriessup.setCreator(creator);
-			series.setFdAuthor(ShiroUtils.getUser().getName());
-			series.setFdAuthorDescription(creator.getSelfIntroduction());
 			seriessup.setIsAvailable(true);// 有效的
 			seriessup.setFdName("未命名");
 			seriesInfoService.save(seriessup);
@@ -445,11 +441,12 @@ public class SeriesAjaxContrller {
 			map.put("fdDescription", seriesInfo.getFdDescription());
 			// map.put("isavailable", seriesInfo.getIsAvailable());//如果当前没有作者信息
 			// 则去创建者的名字
-			map.put("seriesAuthor", seriesInfo.getFdAuthor() == null
-					|| seriesInfo.getFdAuthor() == "" ? seriesInfo.getCreator()
-					.getRealName() : seriesInfo.getFdAuthor());// 作者
+			map.put("seriesAuthor", seriesInfo.getFdAuthor());// 作者
 			map.put("authorDesc", seriesInfo.getFdAuthorDescription());// 作者简介
-
+		}else{
+			SysOrgPerson person = accountService.get(ShiroUtils.getUser().getId());
+			map.put("seriesAuthor", person.getFdName());// 作者
+			map.put("authorDesc", person.getSelfIntroduction());// 作者简介	
 		}
 		return JsonUtils.writeObjectToJson(map);
 	}
