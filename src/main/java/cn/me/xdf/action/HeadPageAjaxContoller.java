@@ -51,7 +51,7 @@ public class HeadPageAjaxContoller {
 	@RequestMapping(value = "getSchoolInfo")
 	@ResponseBody
 	public String getSchoolInfo(HttpServletRequest request) {
-		String sql = "select count(*) c from sys_org_element  o where o.fd_parentid='142eac9fb5cac1c910431544a39ba22a'";// 学校数量
+		String sql = "select count(*) c from sys_org_element  o where o.fd_parentid in(select fdid from sys_org_element where  fd_name ='学校')";// 学校数量
 		String sql1 = "select count(*) c from sys_user_role where person_role='guidance'"; // 导师数量
 		String sql2 = "select count(distinct preteachid) c from ixdf_ntp_bam_score ";// --新教师数量
 		String sql3 = "select count(*) c from ixdf_ntp_course c where c.isavailable='Y' ";// --课程数量
