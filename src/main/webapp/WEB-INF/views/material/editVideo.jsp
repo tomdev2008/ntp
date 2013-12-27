@@ -129,11 +129,11 @@
                             <div class="controls">
 							<j:ifelse test="${materialInfo.fdLink != null && materialInfo.fdLink != '' }">
 								<j:then>
-									<input value="${materialInfo.fdLink}" placeholder="请认真填写该章节的 建议学习时长"
+									<input value="${materialInfo.fdLink}" placeholder="此处为系统自动生成的视频播放地址,请勿手动填写"
                                        id="videoUrl" class="input-block-level" name="fdLink" type="text">
 								</j:then>
 								<j:else>
-									<input value="${main.fileUrl}" placeholder="请认真填写该章节的 建议学习时长"
+									<input value="${main.fileUrl}" placeholder="此处为系统自动生成的视频播放地址,请勿手动填写"
                                        id="videoUrl" class="input-block-level" name="fdLink" type="text">
 								</j:else>
 							</j:ifelse>
