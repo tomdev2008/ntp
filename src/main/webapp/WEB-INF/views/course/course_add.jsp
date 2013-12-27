@@ -604,7 +604,7 @@ xlarge" name="lectureName" type="text" /></div>
                 <div class="control-group">
                     <label class="control-label" for="sectionsIntro">章节说明</label>
                     <div class="controls">
-                        <textarea placeholder="请认真填写该章节的描述信息" rows="4" minlength="20" class="input-
+                        <textarea placeholder="请认真填写该章节的描述信息" rows="4"  class="input-
 
 xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>
                     </div>
@@ -658,7 +658,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
 	        </div>
 			{{?}}
             <div class="section" >
-                <label>在下面搜索框中输入{{=it.typeTxt}}名称，在<a id="gotoMaterial" href="#">课程素材库</a>(这是个链接) 中进行查找并添加到本节中</label>
+                <label>或者在下面的搜索框中输入课程素材库中的{{=it.typeTxt}}名称,同样可以添加到上面的视频列表中.</label>
                 <div class="autoCompleteWrap">
 					<input id="addMedia" type="text"/>
 					<!--

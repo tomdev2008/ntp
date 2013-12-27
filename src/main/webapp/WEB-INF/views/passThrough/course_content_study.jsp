@@ -131,7 +131,7 @@
                 <div class="line">
                     <div class="line">
                         <span class="label-intro" >学习任务</span>
-                        <small>建议您认真完成所有{{?it.type=='exam'}}题目后提交试卷{{??it.type=='video'}}视频后提交{{??it.type=='task'}}作业后提交作业包{{??it.type=='doc'}}文档后提交{{??it.type=='ppt'}}幻灯片后提交{{??it.type=='txt'}}在线创作后提交{{?}}： </small></div>
+                        <small>学习完成本节以后,请点击右上方的 “下一节” 按钮，继续学习。 </small></div>
                 </div>
             </li>
             <li>
@@ -144,8 +144,8 @@
                     <div class="line">
                         本{{?it.type=='exam'}}测试{{??it.type=='video'}}视频{{??it.type=='txt'}}在线创作{{??it.type=='task'}}作业包{{??it.type=='doc'}}文档{{??it.type=='ppt'}}幻灯片{{?}}环节为
                         <b class="text-warning">{{?it.isOptional}}选{{??}}必{{?}}修</b> 环节，
-                        您必须通过全部{{?it.type=='exam'}}试卷{{??it.type=='video'}}视频{{??it.type=='task'}}作业包{{??it.type=='doc'}}文档{{??it.type=='ppt'}}幻灯片{{?}}，
-                        才可以进入下一关继续学习。</div>
+                        您必须学习完成{{?it.type=='exam'}}试卷{{??it.type=='video'}}视频{{??it.type=='txt'}}在线创作{{??it.type=='task'}}作业包{{??it.type=='doc'}}文档{{??it.type=='ppt'}}幻灯片{{?}}，
+                        才可以进入下一节继续学习。</div>
                 </div>
             </li>
         </ul>
@@ -348,6 +348,7 @@
         {{##def.mediaInfo:param:
             <div class="section mt20">
                 <div class="mediaWrap bdbt2">
+					<div align="center">{{?it.type == 'video'}}视频{{??it.type == 'txt'}}富文本{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}名称：{{=param.name}}</div>
                     <div class="mediaObject">
                         {{?param.txt != null && it.txt!="" }}
                            <div id="richTxt">
@@ -1428,6 +1429,7 @@ function downloadMater(attId,fileNetId){
 		  			  },
 		  			  dataType:'json',
 		  			  success: function(data){
+		  					$("#goTop").trigger("click");
 		  	                   mdata=data.defaultMedia;
 		  	                 //alert(JSON.stringify(mdata))
 		  	                 if(data.type == 'txt'){
@@ -1631,6 +1633,7 @@ function downloadMater(attId,fileNetId){
           				"materialId":$mediaToolbar.attr("data-fdid"),
           			},
           			success:function(data){
+          				$("#goTop").trigger("click");
           				loadRightCont(catalogId,fdMtype);
           				loadLeftData(bamId);
           			  $("#sidenav>li>a").popover({

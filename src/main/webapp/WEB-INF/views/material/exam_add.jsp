@@ -530,7 +530,7 @@ $(function(){
 				var data = {
 					id : "${param.fdId}",
 					examPaperName : $("#examPaperName").val(),
-					examPaperIntro : $("#examPaperIntro").val(),
+					examPaperIntro : $("#examPaperIntro").val()==""?"测试作者很懒,没有写测试简介.":$("#examPaperIntro").val(),
 					author : $("#author").val(),
 					authorIntro : $("#authorIntro").val(),
 					permission : $("#permission").val(),

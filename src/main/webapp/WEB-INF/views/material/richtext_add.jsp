@@ -411,7 +411,7 @@ function saveMaterial(){
         videoName: $("#videoName").val(),
         fdId: $("#fdId").val(),
         videoUrl: $("#videoUrl").val(),
-        videoIntro: $("#videoIntro").val(),
+        videoIntro: $("#videoIntro").val()==""?"在线创作的作者很懒,没有写简介.":$("#videoIntro").val(),
         author: $("#author").val(),
         authorIntro: $("#authorIntro").val(),
         permission:$("#permission").val(),

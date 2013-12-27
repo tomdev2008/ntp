@@ -82,7 +82,7 @@
           	case "01":
           		data_type = "video";
           		data_typeTxt = "视频";
-          		data_uploadIntro = "上传视频（支持MP4、AVI、WMV格式的视频，建议小于10G）：成功上传的视频将会显示在上面的视频列表中。";
+          		data_uploadIntro = "您可以直接上传视频（支持绝大多数主流视频格式，建议小于10G）：成功上传的视频将会显示在上面视频列表中。";
           		uptype='*.wmv;*.wm;*.asf;*.asx;*.rm;*.rmvb;*.ra;*.ram;*.mpg;*.mpeg;*.mpe;*.vob;*.dat;*.mov;*.3gp;*.mp4;*.mp4v;*.m4v;*.mkv;*.avi;*.flv;*.f4v;*.mts;';
           		break;
             case "02":
@@ -368,7 +368,7 @@
                 matchContains:true ,
                 max: 10,
                 scroll: false,
-                width:650
+                width:657
             }).result(function(e,item){
             	    var flag = true;
                     item.typeTxt = data.typeTxt;
@@ -951,6 +951,9 @@
 						data = rsult ;	
 						data.pageTitle = title;
 						$("#rightCont").html(basicInfoFn(data));
+						if($("#fdPrice").val()==""){
+							$("#fdPrice").val("0.00");
+						}
 				  },
 			});
 			/*
