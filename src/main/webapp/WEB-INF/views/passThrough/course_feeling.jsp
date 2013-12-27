@@ -90,7 +90,7 @@
     <!--心情的评论模板-->
     <script id="moodCommentTemplate" type="x-dot-template">
         {{ if(!item)var item=it; }}
-        <div class="item2 media" >
+        <div class="item2 media" id="messR{{=item.msaageeRId}}">
             <a class="pull-left" href="${ctx}/{{!item.issuer.link}}">
 <img src="{{?item.issuer.imgUrl.indexOf('http')>-1}}{{=item.issuer.imgUrl}}{{??}}${ctx}/{{=item.issuer.imgUrl}}{{?}}" class="media-object" alt="头像" /></a>
 </a>
@@ -100,7 +100,7 @@
                     <span class="time"><i class="icon-time"></i>{{=item.time}}</span>
                 </div>
                 <p>{{=item.comment}}</p>
-
+				<a href="javascript:void (0)" onclick="deleteMR('{{=item.msaageeRId}}')">删除</a>
             </div>
         </div>
     </script>
@@ -574,7 +574,29 @@ function pushMessage(){
 		return false;
 	}
 	
-}	
+}
+
+function deleteMR(id){
+	jalert("您确定要删除回复吗？",function(){
+		$.ajax({
+			url : "${ctx}/ajax/message/removeMessageReply",
+			async : false,
+			dataType : 'json',
+			type: "post",
+			data:{
+				messageReplyId:id,
+			},
+			success : function(result) {
+				$("#messR"+id).remove();
+				if($("#commentBox"+result.messageId+" .item2").length==0){
+					$("#commentBox"+result.messageId).remove();
+				}
+				
+			}
+		}); 
+	});
+	
+}
 
 </script>
 </body>

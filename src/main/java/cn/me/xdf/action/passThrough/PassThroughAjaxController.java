@@ -643,6 +643,7 @@ public class PassThroughAjaxController {
 								userMap.put("org", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
 								messageReplyMap.put("issuer", userMap);
 								messageReplyMap.put("comment", messageReply.getFdContent());
+								messageReplyMap.put("msaageeRId", messageReply.getFdId());
 								messageReplyMap.put("time", DateUtil.getInterval(DateUtil.convertDateToString(messageReply.getFdCreateTime()), "yyyy/MM/dd hh:mm aa"));
 								messageRepliesMap.add(messageReplyMap);
 							}
