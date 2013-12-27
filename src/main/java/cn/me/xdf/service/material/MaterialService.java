@@ -26,7 +26,9 @@ import cn.me.xdf.model.organization.User;
 import cn.me.xdf.model.score.ScoreStatistics;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.BaseService;
+import cn.me.xdf.service.SysOrgPersonService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
+import cn.me.xdf.utils.DateUtil;
 import cn.me.xdf.utils.ShiroUtils;
 import cn.me.xdf.view.model.VMaterialData;
 
@@ -49,6 +51,9 @@ public class MaterialService extends BaseService {
 	
 	@Autowired
 	private ScoreStatisticsService scoreStatisticsService;
+	
+	@Autowired
+	private SysOrgPersonService sysOrgPersonService;
 
 
 	@SuppressWarnings("unchecked")
@@ -346,7 +351,7 @@ public class MaterialService extends BaseService {
 	public List<Map> getMaterialsTop10Bykey(String key, String type) {
 
 		Finder finder = Finder
-				.create("select info.FDID as id , info.FDNAME as name from IXDF_NTP_MATERIAL info ");
+				.create("select info.FDID as id , info.FDNAME as name , info.fdCreatorId as creator , to_char(info.fdCreateTime,'yyyy-mm-dd hh24:mi:ss') as createtime from IXDF_NTP_MATERIAL info ");
 		if(!ShiroUtils.isAdmin()){
 			finder.append("left join IXDF_NTP_MATERIAL_AUTH auth ");
 			finder.append(" on info.FDID=auth.FDMATERIALID ");
@@ -360,6 +365,7 @@ public class MaterialService extends BaseService {
 		}
 			finder.setParam("key", "%" + key + "%");
 			finder.setParam("fdType", type);
+			finder.append(" order by info.fdCreateTime ");
 		List<Map> list = (List<Map>) (getPageBySql(finder, 1, 10).getList());
 		if (list == null) {
 			return null;
@@ -369,6 +375,14 @@ public class MaterialService extends BaseService {
 			Map map = new HashMap();
 			map.put("id", map1.get("ID"));
 			map.put("name", map1.get("NAME"));
+			map.put("creator","");
+			if(map1.get("CREATOR")!=null){
+				SysOrgPerson person = sysOrgPersonService.get((String)map1.get("CREATOR"));
+				if(person!=null){
+					map.put("creator",person.getFdName());
+				}
+			}
+			map.put("createtime", DateUtil.getInterval((String)map1.get("CREATETIME"),null));
 			maps.add(map);
 		}
 		return maps;
