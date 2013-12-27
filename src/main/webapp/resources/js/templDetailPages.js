@@ -346,7 +346,7 @@
                 	if(fdName.length>42){
                 		fdName = fdName.substr(0,42)+"...";
                 	}
-                    return fdName;
+                    return fdName+"（发布者："+item.creator+"，发布时间："+item.createtime+"）";
                 },
                 extraParams : {
 					type : type

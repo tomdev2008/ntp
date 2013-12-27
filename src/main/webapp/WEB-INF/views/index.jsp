@@ -13,7 +13,7 @@
 
 <div class="banner-bg">
   <div class="container banner">
-    <a href="${ctx}/login" class="start-btn"></a>
+    <a href="${ctx}/course/courseIndex" class="start-btn"></a>
   </div>
 </div>
 <div class="bar-tools">
@@ -23,23 +23,23 @@
 				<li>
                     <i class="icon-school-home"></i>
                     <span>
-                       <h2>30+</h2>
+                       <h2></h2>
                         学校
                     </span>
                 </li>
 				<li>
                     <i class="icon-teacher-home"></i>
-                	<span><h2>1,000+</h2>
+                	<span><h2></h2>
                     教师 </span>
                 </li>
                 <li>
                     <i class="icon-mentor-home"></i>
-                	<span><h2>1,000+</h2>
+                	<span><h2></h2>
                     导师 </span>
                 </li>
                 <li>
                     <i class="icon-book-home"></i>
-                	<span><h2>1,000+</h2>
+                	<span><h2></h2>
                     课程</span>
                 </li>
 			</ul>
@@ -148,7 +148,7 @@
 	<div class="grid clearfix" id="grid">
         <div class="pull-left w385">
             <div class="media">
-                <a class="pull-left" href="#">
+                <a class="pull-left" href="javascript:void(0)">
                     <img src="${ctx}/resources/images/hoverfold-01.jpg" alt=""/>
                 </a>
                 <div class="media-body">
@@ -166,7 +166,7 @@
                 </div>
             </div>
             <div class="media">
-                <a class="pull-left" href="#">
+                <a class="pull-left" href="javascript:void(0)">
                     <img src="${ctx}/resources/images/hoverfold-01.jpg" class="media-object" alt=""/>
                 </a>
                 <div class="media-body">
@@ -185,7 +185,7 @@
             </div>
         </div>
         <div class="media">
-            <a class="" href="#">
+            <a class="" href="javascript:void(0)">
                 <img src="${ctx}/resources/images/hoverfold-01.jpg" class="media-object" alt=""/>
             </a>
             <div class="media-body">
@@ -203,7 +203,7 @@
             </div>
         </div>
         <div class="media">
-            <a class="pull-left" href="#">
+            <a class="pull-left" href="javascript:void(0)">
                 <img src="${ctx}/resources/images/hoverfold-01.jpg" class="media-object" alt=""/>
             </a>
             <div class="media-body">
@@ -221,7 +221,7 @@
             </div>
         </div>
         <div class="media">
-            <a class="pull-left" href="#">
+            <a class="pull-left" href="javascript:void(0)">
                 <img src="${ctx}/resources/images/hoverfold-01.jpg" class="media-object" alt=""/>
             </a>
             <div class="media-body">
@@ -264,10 +264,10 @@ $.ajax({
 	 url: "${ctx}/ajax/head/getSchoolInfo",
 	 dataType : 'json',
 	success:function(data){
-		$(".icon-school-home").next("span").children("h2").html(parseInt(data.schoolNum).toLocaleString().split(".")[0]+'+');
-		$(".icon-mentor-home").next("span").children("h2").html(parseInt(data.mentorNum).toLocaleString().split(".")[0]+'+');
-		$(".icon-teacher-home").next("span").children("h2").html(parseInt(data.newTeacherNum).toLocaleString().split(".")[0]+'+');
-		$(".icon-book-home").next("span").children("h2").html(parseInt(data.courseNum).toLocaleString().split(".")[0]+'+');
+		$(".icon-school-home").next("span").children("h2").html(parseInt(data.schoolNum).toLocaleString().split(".")[0]);
+		$(".icon-mentor-home").next("span").children("h2").html(parseInt(data.mentorNum).toLocaleString().split(".")[0]);
+		$(".icon-teacher-home").next("span").children("h2").html(parseInt(data.newTeacherNum).toLocaleString().split(".")[0]);
+		$(".icon-book-home").next("span").children("h2").html(parseInt(data.courseNum).toLocaleString().split(".")[0]);
 	}
 });
 //教师寄语
@@ -371,7 +371,7 @@ function getSchoolStatic(pageNo){
 			$("#grid .media").each(function(i){
 				$this = $(this);
 				if(data[i]!=undefined){
-					$this.find(".media-body .ft").html('教师&nbsp;'+data[i].tnum+'+<span>|</span>导师&nbsp;'+data[i].mnum+'+');
+					$this.find(".media-body .ft").html('教师&nbsp;'+data[i].tnum+'<span>|</span>导师&nbsp;'+data[i].mnum);
 				}
 			})
 		}
