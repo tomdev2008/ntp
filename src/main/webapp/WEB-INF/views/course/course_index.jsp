@@ -91,7 +91,7 @@
  							{{?}}
 							{{?it.type == "single"}}
 								{{?item.isme == true}}
-									<i class="{{?item.isLearning}}icon-progress-shadow"></i>继续学习{{??}}icon-book-shadow"></i>开始学习{{?}}
+									<i class="{{?item.isLearning}}icon-progress-shadow"></i>{{?item.isThrough}}再次学习{{??}}继续学习{{?}}{{??}}icon-book-shadow"></i>开始学习{{?}}
 								{{??}}
 									<i class="icon-book-shadow"></i>进入课程
 								{{?}}

@@ -264,6 +264,16 @@ public class MessageAjaxController {
 		userMap.put("mail", orgPerson.getFdEmail()==null?"不详":orgPerson.getFdEmail());
 		userMap.put("org", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
 		map.put("issuer", userMap);
+		map.put("msaageeRId", messageReply.getFdId());
+		if(messageReply.getFdUser()==null){
+			map.put("canDeleteMr", false);
+		}else{
+			if((messageReply.getFdUser().getFdId().equals(ShiroUtils.getUser().getId()) || !userRoleService.isEmptyPerson(ShiroUtils.getUser().getId(), RoleEnum.admin))){
+				map.put("canDeleteMr", true);
+			}else{
+				map.put("canDeleteMr", false);
+			}
+		}
 		return JsonUtils.writeObjectToJson(map);
 	}
 	
@@ -347,7 +357,7 @@ public class MessageAjaxController {
 	}
 	
 	/**
-	 * 根据课程Id查找分页信息
+	 * 删除message
 	 * 
 	 */
 	@RequestMapping(value = "removeMessage")
@@ -355,6 +365,21 @@ public class MessageAjaxController {
 	private String removeMessage(String messageId) {
 		messageService.deleteMessage(messageId);
 		return "";
+	}
+	
+	/**
+	 *  删除messageReplyService
+	 * 
+	 */
+	@RequestMapping(value = "removeMessageReply")
+	@ResponseBody
+	private String removeMessageReply(String messageReplyId) {
+		MessageReply messageReply = messageReplyService.get(messageReplyId);
+		Map map = new HashMap();
+		map.put("messageId", messageReply.getMessage().getFdId());
+		map.put("messageRId", messageReplyId);
+		messageReplyService.delete(messageReplyId);
+		return JsonUtils.writeObjectToJson(map);
 	}
 
 }

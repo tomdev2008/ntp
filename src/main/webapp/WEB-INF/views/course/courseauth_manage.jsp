@@ -347,7 +347,7 @@ function exportData(){
         if(result.coverUrl!=""){
         	$("#coursepage").attr('src','${ctx}/common/file/image/'+result.coverUrl);
         }else{
-        	$("#coursepage").attr('src','${ctx}/resources/images/zht-main-img.jpg');
+        	$("#coursepage").attr('src','${ctx}/resources/images/default-cover.png');
         }
         //课程评分
         for(var i=1;i<=result.courseScore;i++){
@@ -510,7 +510,7 @@ function selectAll(){
 		document.getElementById("selectCurrPage").checked=false;
 		$('input[name="teacherGroup"]').each(function(){
 			$(this).attr("checked",true);// disabled="disabled"
-			$(this).attr("disabled",true);
+			$(this).attr("disabled",false);
 		});
 		$("#allFlag").attr("value",true);
 	} else {

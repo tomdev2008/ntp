@@ -1,5 +1,6 @@
 package cn.me.xdf.action.base;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ public class PageAjaxController {
 	/**
 	 * 配置列表
 	 */
+	 public SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd h:m:s a");
 	@RequestMapping(value = "getPages")
 	@ResponseBody
 	public String getPages(HttpServletRequest request) {
@@ -55,6 +57,7 @@ public class PageAjaxController {
 				map.put("content", page.getFdContent());
 				map.put("order", page.getFdOrder().toString());
 				map.put("type", page.getFdType());
+				map.put("createtime", sdf.format(page.getFdCreateTime()));
 				maps.add(map);
 			}
 		}

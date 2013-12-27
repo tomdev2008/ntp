@@ -66,6 +66,7 @@ function addMessagemethod(){
 			initCommentPageInfo("<%=CourseInfo.class.getName()%>","${param.courseId}",1);
 			var sTop = $("#commentDiv").offset().top - 60;
 			$("html,body").animate({scrollTop: sTop},sTop*1,"swing");
+			jalert_tips("评论成功");
 		  }
 	});
 	

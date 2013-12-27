@@ -102,6 +102,7 @@ public class RegisterAjaxController {
 			//orgPerson.setPassword(password);
 			orgPerson.setPassword(MD5Util.getMD5String(password));
 			orgPerson.setFdEmail(email);
+			orgPerson.setLoginName(email);
 			orgPerson.setFdName(name);
 			orgPerson.setFdIdentityCard(cradid);
 			SysOrgElement element = sysOrgDepartService.getSysOrgElementById(departid);

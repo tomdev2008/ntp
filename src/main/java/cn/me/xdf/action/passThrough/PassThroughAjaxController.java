@@ -34,9 +34,11 @@ import cn.me.xdf.model.course.Visitor;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
+import cn.me.xdf.model.organization.RoleEnum;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.SysOrgPersonService;
+import cn.me.xdf.service.UserRoleService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.BamMaterialService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
@@ -99,6 +101,8 @@ public class PassThroughAjaxController {
 	@Autowired
 	private VisitorService visitorService;
 	
+	@Autowired
+	private UserRoleService userRoleService;
 	
 	/**
 	 * 检查当前课程 当前登录是否有权限进入
@@ -502,7 +506,7 @@ public class PassThroughAjaxController {
 				SysOrgPerson person = courseInfo.getCreator();
 				map.put("courseName", courseInfo.getFdTitle() );
 				map.put("passTime", DateUtil.convertDateToString(bamCourse.getEndDate()));
-				map.put("issuer", (person.getHbmParent()==null?"":person.getHbmParent().getHbmParentOrg().getFdName())+" "+person.getDeptName());
+				map.put("issuer", person.getDeptName());
 				map.put("user", user);
 				List<CourseCatalog> catalogs = bamCourse.getCatalogs();
 				List<CourseCatalog> catalog = new ArrayList<CourseCatalog>();
@@ -543,10 +547,10 @@ public class PassThroughAjaxController {
 			returnMap.put("org", orgPerson.getHbmParent()==null?"不详":orgPerson.getHbmParent().getHbmParentOrg().getFdName());
 			returnMap.put("dep", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
 			returnMap.put("tel", orgPerson.getFdWorkPhone()==null?"不详":orgPerson.getFdWorkPhone());
-			returnMap.put("qq", orgPerson.getFdQq()==null?"不详":orgPerson.getFdQq());
+			returnMap.put("bird", orgPerson.getFdBirthDay()==null?"不详":orgPerson.getFdBirthDay());
 			Map userMap = sysOrgPersonService.getUserInfo(userId);
 			returnMap.put("bool", userMap.get("fdBloodType"));
-			returnMap.put("selfIntroduction", userMap.get("selfIntroduction"));
+			returnMap.put("selfIntroduction", orgPerson.getSelfIntroduction()==null?"":orgPerson.getSelfIntroduction());
 			CourseInfo courseInfo = courseService.get(courseId);
 			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
 			returnMap.put("courseName",courseInfo.getFdTitle());
@@ -614,6 +618,15 @@ public class PassThroughAjaxController {
 							weak.put("count", messageService.getOpposeCount(messages.get(i).getFdId()));
 							weak.put("did", messageReplyService.isOpposeMessage(ShiroUtils.getUser().getId(), messages.get(i).getFdId())!=null);
 							item.put("weak", weak);
+							if(messages.get(i).getFdUser()==null){
+								item.put("canDelete", false);
+							}else{
+								if((messages.get(i).getFdUser().getFdId().equals(ShiroUtils.getUser().getId()) || !userRoleService.isEmptyPerson(ShiroUtils.getUser().getId(), RoleEnum.admin))&&(!Constant.MESSAGE_TYPE_SYS.equals(messages.get(i).getFdType()))){
+									item.put("canDelete", true);
+								}else{
+									item.put("canDelete", false);
+								}
+							}
 							Map comment = new HashMap();
 							List<MessageReply> messageReplies = messageReplyService.findByCriteria(MessageReply.class,
 									Value.eq("message.fdId", messages.get(i).getFdId()), Value.eq("fdType", "03"));
@@ -630,7 +643,17 @@ public class PassThroughAjaxController {
 								userMap.put("org", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
 								messageReplyMap.put("issuer", userMap);
 								messageReplyMap.put("comment", messageReply.getFdContent());
+								messageReplyMap.put("msaageeRId", messageReply.getFdId());
 								messageReplyMap.put("time", DateUtil.getInterval(DateUtil.convertDateToString(messageReply.getFdCreateTime()), "yyyy/MM/dd hh:mm aa"));
+								if(messageReply.getFdUser()==null){
+									messageReplyMap.put("canDeleteMr", false);
+								}else{
+									if((messageReply.getFdUser().getFdId().equals(ShiroUtils.getUser().getId()) || !userRoleService.isEmptyPerson(ShiroUtils.getUser().getId(), RoleEnum.admin))){
+										messageReplyMap.put("canDeleteMr", true);
+									}else{
+										messageReplyMap.put("canDeleteMr", false);
+									}
+								}
 								messageRepliesMap.add(messageReplyMap);
 							}
 							ArrayUtils.sortListByProperty(messageRepliesMap, "time", SortType.LOW); 

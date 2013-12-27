@@ -118,8 +118,7 @@
                                        <c:if test="${materialInfo.fdLauds!=null}">
                                           ${materialInfo.fdLauds}
                                        </c:if>
-                                    </button><b>|</b>
-                                    <button type="button" class="btn btn-link"><i class="icon-download"></i>0</button>
+                                    </button>
                                 </span>
                             </div>
                         </div>
@@ -190,8 +189,8 @@
                              </div>
                              <div class="tab-pane" id="encrypt">
                                 <table class="table table-bordered">
-                                    <thead><tr><th>授权用户</th><th>可用</th>
-                                     <th>编辑</th><th>删除</th></tr></thead>
+                                    <thead><tr><th>授权用户</th><th>可使用</th>
+                                     <th>可编辑</th><th>删除</th></tr></thead>
                                     <tbody id="list_user"></tbody>
                                 </table>
                                 <div class="pr">

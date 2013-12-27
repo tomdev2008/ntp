@@ -98,7 +98,7 @@ function selectAll(){
 		document.getElementById("selectCurrPage").checked=false;
 		$('input[name="ids"]').each(function(){
 			$(this).attr("checked",true);
-			$(this).attr("disabled",true);
+			$(this).attr("disabled",false);
 		});
 		$("#allFlag").attr("value",true);
 	} else {

@@ -51,7 +51,10 @@
                             <a href="#" class="praise{{?param.praise.did}} active{{?}}" title="{{?param.praise.did}}您已赞过{{??}}点击赞{{?}}"><i class="icon-thumbs-up"></i><span class="num">{{=param.praise.count}}</span></a>
                             <a href="#" class="weak{{?param.weak.did}} active{{?}}" title="{{?param.weak.did}}您已踩过{{??}}点击踩{{?}}"><i class="icon-thumbs-down"></i><span class="num">{{=param.weak.count}}</span></a>
                             <a href="#" class="comment" title="点击评论"><i class="icon-dialog"></i><span class="num">{{=param.comment.count}}</span></a>
-                        </div>
+                        	{{?param.canDelete}}
+								<a href="javascript:void(0)" class="btndeleteM" >删除</a>
+							{{?}}
+						</div>
                     </div>
                 </div>
                 <div id="commentBox{{=param.id}}" class="commentBox collapse in">
@@ -87,7 +90,7 @@
     <!--心情的评论模板-->
     <script id="moodCommentTemplate" type="x-dot-template">
         {{ if(!item)var item=it; }}
-        <div class="item2 media" >
+        <div class="item2 media" id="messR{{=item.msaageeRId}}">
             <a class="pull-left" href="${ctx}/{{!item.issuer.link}}">
 <img src="{{?item.issuer.imgUrl.indexOf('http')>-1}}{{=item.issuer.imgUrl}}{{??}}${ctx}/{{=item.issuer.imgUrl}}{{?}}" class="media-object" alt="头像" /></a>
 </a>
@@ -97,7 +100,9 @@
                     <span class="time"><i class="icon-time"></i>{{=item.time}}</span>
                 </div>
                 <p>{{=item.comment}}</p>
-
+				{{?item.canDeleteMr}}
+				<a href="javascript:void (0)" onclick="deleteMR('{{=item.msaageeRId}}')">删除</a>
+				{{?}}
             </div>
         </div>
     </script>
@@ -124,7 +129,7 @@
                        机构 {{=it.org}}  <br/>
                         部门  {{=it.dep}} <br/>
                         电话  {{=it.tel}} <br/>
-        QQ  {{=it.qq}} <br/>
+                       生日 {{=it.bird}} <br/>
                         血型  {{=it.bool}}
                     </p>
                 </div>
@@ -142,7 +147,11 @@
                     <i class="icon-shyhl"></i>
                     <span class="txt">
 {{?it.selfIntroduction==""}}这家伙很懒，也不好好介绍一下自己~ :-({{??}}
-{{=it.selfIntroduction}}
+							{{?it.selfIntroduction.length>20}}
+								{{=it.selfIntroduction.substring(0,20)}}...
+							{{??}}
+								{{=it.selfIntroduction}}
+							{{?}}
 {{?}}</span>
                     <i class="icon-shyhr"></i>
                 </div>
@@ -214,7 +223,7 @@
             <div class="section box-pd20">
                 <form id="formAddMood" method="post">
                 	<c:if test="${isMe=='true'}">
-                    <textarea name="field-mood" required maxlength="200" id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
+                    <textarea name="field-mood" onkeydown="return pushMessage();" required maxlength="200" id="field-mood" class="input-block-level textarea"  rows="3"></textarea>
                     <div class="clearfix">
                         <button type="submit" class="btn btn-primary pull-right">写备课心情</button>
                     </div>
@@ -292,8 +301,10 @@ $(function(){
 			        		},
 			        		success : function(result) {
 			        			dataRetuen=result;
+			        			
 			        		}
 			        	});
+						$("#commentBox"+$this.closest(".item").attr("data-fdid")).removeClass("hide");
 						 var $inner = $('<div class="collapse-inner"></div>');
 	                        var $num = $this.children(".num");
 	                        if($form.next(".commentBox").children(".collapse-inner").length){
@@ -305,7 +316,15 @@ $(function(){
 	                        $form.remove();
 	                        $this.removeClass("active");
 	                        $num.text(parseInt($num.text())+1);
+	                        jalert_tips("回复成功");
                     }
+                });
+                $form.find("textarea").bind("keydown",function(){
+                	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+                	if (keyCode == 13) {
+                		$form.find("form").submit();
+                		return false;
+                	}
                 });
                 $form.find(".btn-cancel").click(function(e){
                     $form.remove();
@@ -364,6 +383,19 @@ $(function(){
                		}else{
                			jalert_tips("不能支持和反对自己的评论");
                		}
+                }else if($this.hasClass("btndeleteM")){
+            		jalert("您确定删除该评论吗？",function(){
+            			$.ajax({
+            	    		  url: "${ctx}/ajax/message/removeMessage",
+            	    		  async:false,
+            	    		  data:{
+            	    			  messageId :$this.closest(".item").attr("data-fdid"),
+            	    		  },
+            	    		  success: function(result){
+            	    			  initmoodData();
+            	    		  }
+            			});
+            		});
                 }
             }
             
@@ -381,6 +413,8 @@ $(function(){
                 $(this).children().prepend($btn);
             });
 
+    
+    
     /*发表心情表单*/
     $("#formAddMood").validate({
         submitHandler: function(form){
@@ -537,7 +571,37 @@ $(function(){
 		  
   }
 });
+function pushMessage(){
+	var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+	if (keyCode == 13) {
+		$("#formAddMood").submit();
+		return false;
+	}
 	
+}
+
+function deleteMR(id){
+	jalert("您确定要删除回复吗？",function(){
+		$.ajax({
+			url : "${ctx}/ajax/message/removeMessageReply",
+			async : false,
+			dataType : 'json',
+			type: "post",
+			data:{
+				messageReplyId:id,
+			},
+			success : function(result) {
+				$("#messR"+id).remove();
+				if($("#commentBox"+result.messageId+" .item2").length==0){
+					$("#commentBox"+result.messageId).addClass("hide");
+				}
+				var $num = $("div[data-fdid='"+result.messageId+"'] .comment").children(".num");
+				$num.text(parseInt($num.text())-1);
+			}
+		}); 
+	});
+	
+}
 
 </script>
 </body>

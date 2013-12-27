@@ -639,6 +639,8 @@ public class CourseAjaxController {
 				}
 				// 删除章节
 				courseCatalogService.deleteByCourseId(courseId);
+				//草稿状态下 删除课程的群组关系
+				courseGroupAuthService.deleteByCourseId(courseId);
 				// 删除课程
 				courseService.delete(courseId);
 			} else {
@@ -998,6 +1000,11 @@ public class CourseAjaxController {
 					map.put("isLearning", false);
 				}else{
 					map.put("isLearning", true);
+					if(bamCourse.getThrough()==true){
+						map.put("isThrough", true);
+					}else{
+						map.put("isThrough", false);
+					}
 				}
 				map.put("dataId", courseInfo.getFdId());
 				lists.add(map);

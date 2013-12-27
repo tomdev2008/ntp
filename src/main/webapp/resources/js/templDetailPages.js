@@ -141,6 +141,10 @@
 		              data.typeTxt = data_typeTxt;
 		              data.uploadIntro = data_uploadIntro;
 		              $("#rightCont").html(mediaPageFn(data));
+		              //学习时长默认值
+		              if($("#learnTime").val()==""){
+		            	  $("#learnTime").val("不详");
+		              }
 				  },
 			});
         	
@@ -307,6 +311,7 @@
                             sectionsIntro: $("#sectionsIntro").val(),
                             mediaList:JSON.stringify(listArr)
                         }).success(function(){
+                        	$("#goTop").trigger("click");
                                 // 提交成功
     	                        if ($('#upMaterial').length > 0) { //注意jquery下检查一个元素是否存在必须使用 .length >0 来判断
     	                   		     $('#upMaterial').uploadify('destroy'); 
@@ -341,7 +346,7 @@
                 	if(fdName.length>42){
                 		fdName = fdName.substr(0,42)+"...";
                 	}
-                    return fdName;
+                    return fdName+"（发布者："+item.creator+"，发布时间："+item.createtime+"）";
                 },
                 extraParams : {
 					type : type
@@ -426,7 +431,7 @@
 		         })
 		             .success(function(){
 		                 // 提交成功
-		            	 window.location.href=$('#ctx').val()+"/course/findcourseInfos";
+		            	 window.location.href=$('#ctx').val()+"/course/findcourseInfos?fdType=12&order=fdcreatetime";
 		             });
 			}
 		}
@@ -576,7 +581,8 @@
 					  data:{data:JSON.stringify(data)},
 					  dataType:'json',
 					  success: function(rsult){
-						  //$.fn.jalert("修改成功");
+						  jalert_tips("保存成功");
+						  $("#goTop").trigger("click");
 					  },
 				});
 			});
@@ -1336,6 +1342,7 @@
 			//KindEditor.remove('textarea[name="courseAbstract"]');
 			//提交成功跳转到详细信息
 			jalert_tips("保存成功");
+			$("#goTop").trigger("click");
        	   // urlRouter("promotion");
 		});
 	}	

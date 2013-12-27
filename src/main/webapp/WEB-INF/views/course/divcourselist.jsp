@@ -105,28 +105,28 @@
 				 <input type="checkbox" name="ids" value="${bean.FDID}"/> 
 				    <span class="title">
 					<c:if test="${bean.FDTITLE!=null && bean.FDTITLE!=''}">
-						<tags:title size="33" value="${bean.FDTITLE}"></tags:title>
+						<tags:title size="32" value="${bean.FDTITLE}"></tags:title>
 					</c:if>
 					<c:if test="${bean.FDTITLE==null || bean.FDTITLE==''}">
 						未命名
 					</c:if>
 					</span> 
 					<c:if test="${bean.ISPUBLISH=='Y'}">
-				      <span class="label label-info">公开</span>
+				      <span class="label label-info">公开课</span>
 				    </c:if>
 				    <c:if test="${bean.ISPUBLISH=='N'}">
 				      <c:if test="${bean.FDPASSWORD==''||bean.FDPASSWORD==null}">
-				       <span class="label label-info">授权</span>
+				       <span class="label label-info">授权课</span>
 				      </c:if> 
 				      <c:if test="${bean.FDPASSWORD!=''&&bean.FDPASSWORD!=null}">
-				       <span class="label label-info">加密</span>
+				       <span class="label label-info">密码课</span>
 				      </c:if>
 				    </c:if>
 				    <c:if test="${bean.AUTHFLAG=='1'}">
-				      <span class="label label-info">编辑</span>
+				      <span class="label label-info">可编辑</span>
 				    </c:if>
 				    <c:if test="${bean.AUTHFLAG=='0'}">
-				      <span class="label label-info">可用</span>
+				      <span class="label label-info">可使用</span>
 				    </c:if>
 				    <span class="rating-view">
 				    <c:if test="${bean.FDAVERAGE!=null}">

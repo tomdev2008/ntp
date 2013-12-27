@@ -509,16 +509,16 @@ public class ExpController {
 			List<VUserData> vUserDatas = sysOrgPersonService.getVUserDatas(ids);
 			AbsExportExcel.exportExcel(vUserDatas, "user.xls", response, "用户导出表.xls");
 		}else if(StringUtils.isNotBlank(selectAll)){//导出全部
-			Pagination page = sysOrgPersonService.getVUserDatasPage(fdType, 1, 5000, param);
+			Pagination page = sysOrgPersonService.getVUserDatasPage(fdType, 1, 2000, param);
 			if(page.getTotalPage()==1){//全部导出（只导出一个模板，不需要打包）
 				List<VUserData> vUserDatas = sysOrgPersonService.findVUserDatasByPageList(page.getList());
 				AbsExportExcel.exportExcel(vUserDatas, "user.xls", response, "用户导出表.xls");
 			}else if(page.getTotalPage()>1){//全部导出（导出多个模板，需要打包）
 				String [] attMainIds= new String[page.getTotalPage()];
 				for(int i=1;i<=page.getTotalPage();i++){
-					Pagination pageZip = sysOrgPersonService.getVUserDatasPage(fdType, i, 5000, param);
-					AttMain attMain = AbsExportExcel.exportExcels(sysOrgPersonService.findVUserDatasByPageList(pageZip.getList()), "user.xls");
-					attMainService.save(attMain);
+					page = sysOrgPersonService.getVUserDatasPage(fdType, i, 2000, param);
+					AttMain attMain = AbsExportExcel.exportExcels(sysOrgPersonService.findVUserDatasByPageList(page.getList()), "user.xls");
+					attMainService.saveOnInit(attMain);
 					attMainIds[i-1] = attMain.getFdId();
 				}
 				try {
@@ -527,7 +527,7 @@ public class ExpController {
 					  log.error("export excleZip error!", e);
 				}
 				//删除下载后的无用附件
-				attMainService.deleteAttMainByIds(attMainIds);
+				//attMainService.deleteAttMainByIds(attMainIds);
 			}
 		}
 		return null;

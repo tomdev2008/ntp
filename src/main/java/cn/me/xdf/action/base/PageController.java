@@ -1,5 +1,6 @@
 package cn.me.xdf.action.base;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -100,6 +101,7 @@ public class PageController {
 		page.setFdElementId(fdElementId);
 		page.setFdContent(fdContent);
 		page.setFdOrder(fdOrder);
+		page.setFdCreateTime(new Date());
 		pageConfigService.save(page);
 		//如果是学校联盟就要保存学校的图片
 		if("02".equals(fdType)){

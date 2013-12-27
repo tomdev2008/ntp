@@ -93,7 +93,7 @@
 				<li><a href="${ctx}/material/materialFoward?fdId=${bean.FDID}&fdType=${param.fdType}"> 
 				 <input type="checkbox" name="ids" value="${bean.FDID}"/> 
 				    <span class="title">
-				    <tags:title size="35" value="${bean.FDNAME}"></tags:title>
+				    <tags:title size="34" value="${bean.FDNAME}"></tags:title>
 				    </span> 
 				    <c:if test="${bean.ISPUBLISH=='Y'}">
 				      <span class="label label-info">公开</span>
@@ -103,10 +103,10 @@
 				    </c:if>
 				    
 				    <c:if test="${bean.AUTHFLAG=='0'}">
-				      <span class="label label-info">可用</span>
+				      <span class="label label-info">可使用</span>
 				    </c:if>
 				    <c:if test="${bean.AUTHFLAG=='1'}">
-				      <span class="label label-info">编辑</span>
+				      <span class="label label-info">可编辑</span>
 				    </c:if>
 				     <span class="date"><i class="icon-time"></i>
 					<fmt:formatDate value="${bean.FDCREATETIME}" pattern="yyyy/MM/dd hh:mm aa"/>

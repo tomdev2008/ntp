@@ -34,7 +34,7 @@
                                     <tbody id="list_user">
                                     	<tr data-fdid="${bean.fdId}">
 									        <td style="text-align: left;">
-									          <j:iter items="${bean.fdMembers}" var="bean" status="vstatus">
+									          <j:iter items="${res}" var="bean" status="vstatus">
 									          	${bean.fdName}；
 									          	</j:iter>
 									         </td>

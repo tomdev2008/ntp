@@ -143,7 +143,7 @@ $(function(){
 		matchContains:true ,
 		max: 10,
 		scroll: false,
-		width:688
+		width:750
     }).result(function(e,item){
 		var flag = true;
 		$("#addUser").next(".help-block").remove();

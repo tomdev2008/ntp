@@ -54,7 +54,7 @@
                                               <img class="media-object" src="{{?course.coverImg!=""}}
 														${ctx}/common/file/image/{{=course.coverImg}}
 														{{??}}
-														${ctx}/resources/images/zht-main-img.jpg
+														${ctx}/resources/images/default-cover.png
 														{{?}}"  alt=""/>
 										</div>
                                         <div class="media-body">
@@ -172,7 +172,7 @@
          if(result.seriesImg!=""){
         	 $("#seriesImg").attr("src","${ctx}/common/file/image/"+result.seriesImg);
          }else{
-        	 $("#seriesImg").attr("src","${ctx }/resources/images/zht-main-img.jpg");
+        	 $("#seriesImg").attr("src","${ctx }/resources/images/default-cover.png");
          }
          //系列标题
          if(result.seriesName!=""){

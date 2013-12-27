@@ -207,7 +207,7 @@
                             {{?exam.listAttachment!=null}}
                             <ul class="attachList unstyled">
                                 {{~exam.listAttachment :att1:index1}}
-                                {{~exam.listAttachment :att:index}}
+                                {{~exam.listAttachment :att}}
                                 {{?index1 == att.fdOrder}}
                                     <li><a onclick="downloadMater('{{=att.fdId}}','{{=att.fileNetId}}');" href="javascript:void(0)"><i class="icon-paperClip"></i>{{=att.fdFileName}}</a></li>
                                 {{?}}
