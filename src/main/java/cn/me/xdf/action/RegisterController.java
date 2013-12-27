@@ -92,7 +92,7 @@ public class RegisterController {
             attMain.setFdModelId(person.getFdId());
             attMain.setFdModelName(SysOrgPerson.class.getName());
             attMain.setFdKey("Person");
-            attMainService.update(attMain);
+            attMainService.save(attMain);
             if(person.getFdIsEmp().equals("1")){
             	registerService.updatePerToDBIXDF(person.getLoginName(), attMain.getFdFilePath(), uid);
             }else{

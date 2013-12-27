@@ -314,9 +314,7 @@ public class ExamQuestionAjaxController {
 		//删除之前的选项
 		List<AttMain> oldAttMains =attMainService.getAttMainsByModelIdAndModelName(examQuestionId, ExamQuestion.class.getName());
 		for (AttMain attMain : oldAttMains) {
-			attMain.setFdModelId("");
-			attMain.setFdModelName("");
-			attMainService.save(attMain);
+			attMainService.deleteAttMain(attMain.getFdId());
 		}
 		// 更新选项附件
 		if (StringUtil.isNotBlank(attString)) {
@@ -327,7 +325,7 @@ public class ExamQuestionAjaxController {
 				e.setFdModelName(ExamQuestion.class.getName());
 				e.setFdOrder(map.get("index").toString());
 				e.setFdKey("ExamQuestion");
-				attMainService.update(e);
+				attMainService.save(e);
 			}
 		}
 	}

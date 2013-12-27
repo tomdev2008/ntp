@@ -47,9 +47,7 @@ public class ExamQuestionService extends BaseService{
                 Value.eq("fdModelId", questionId),
                 Value.eq("fdModelName", ExamQuestion.class.getName()));
 		for (AttMain attMain : attMains) {
-			attMain.setFdModelId("");
-			attMain.setFdModelName("");
-			attMainService.update(attMain);
+			attMainService.deleteAttMain(attMain.getFdId());
 		}
 		//删除试题
 		delete(questionId);

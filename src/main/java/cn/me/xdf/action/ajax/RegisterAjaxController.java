@@ -121,7 +121,7 @@ public class RegisterAjaxController {
 		    	attMain.setFdModelId(orgPerson.getFdId());
 		    	attMain.setFdModelName(SysOrgPerson.class.getName());
 		    	attMain.setFdKey("Person");
-		    	attMainService.update(attMain);
+		    	attMainService.save(attMain);
 			}
 			if (ShiroUtils.getUser() == null) {
 				return "redirect:/login";
