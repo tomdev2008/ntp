@@ -510,7 +510,7 @@ function selectAll(){
 		document.getElementById("selectCurrPage").checked=false;
 		$('input[name="teacherGroup"]').each(function(){
 			$(this).attr("checked",true);// disabled="disabled"
-			$(this).attr("disabled",true);
+			$(this).attr("disabled",false);
 		});
 		$("#allFlag").attr("value",true);
 	} else {
