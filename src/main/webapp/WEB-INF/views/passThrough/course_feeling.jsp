@@ -596,7 +596,6 @@ function deleteMR(id){
 					$("#commentBox"+result.messageId).addClass("hide");
 				}
 				var $num = $("div[data-fdid='"+result.messageId+"'] .comment").children(".num");
-				alert($num);
 				$num.text(parseInt($num.text())-1);
 			}
 		}); 
