@@ -148,8 +148,8 @@
 </head>
 <body>
 	<j:autoform>
-    
     <input type="hidden" id="fdType" name="fdType">
+     <form class="toolbar-search" name="filterForm">
     <div class="page-body" id="pageBody">
 	<section class="section box-control">
 		<div class="hd">
@@ -165,10 +165,10 @@
 						<li><a href="#rightCont" onclick="resetPassword();">重置密码</a></li>
 					</ul>
 				</div>
-				<form class="toolbar-search" name="filterForm">
+				<div class="toolbar-search">
 				<input type="text" id="fdKey" name="fdKey" value='${fdKey }' class="search" onkeydown="showSearch();" onkeyup="showSearch();"> 
 				<i class="icon-search" onclick="goSearch();"></i>
-				</form>
+				</div>
 				<span class="showState"> <span class="muted">当前显示：</span>
 					<span id="markshow">
 							 	<a id="containkey"href="#">全部条目</a>
@@ -312,7 +312,7 @@
 	  </div>
 	</div>
 </div>
-      
+      </form>
     </j:autoform>
 </body>
 </html>
