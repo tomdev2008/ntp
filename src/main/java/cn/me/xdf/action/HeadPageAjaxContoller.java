@@ -176,7 +176,7 @@ public class HeadPageAjaxContoller {
 	}
 	//某学校教师数量
 	private int getNewTeacherNum(List depart){
-		String sql=" select count(distinct preteachid) c from ixdf_ntp_bam_score  where preteachid in( ";
+		String sql=" select count(distinct preteachid) c from ixdf_ntp_bam_score  where preteachid  in (select fdid from sys_org_element where fd_parentid in( ";
 		String sqlstr="";
 		for(int i=0;i<depart.size();i++){
 			Object obj=depart.get(i);
@@ -184,7 +184,7 @@ public class HeadPageAjaxContoller {
 		}
 		if(sqlstr.length()>0){
 			sqlstr = sqlstr.substring(0,sqlstr.length()-1);
-			sql=sql+sqlstr+")";
+			sql=sql+sqlstr+"))";
 			List newTeachers=departService.findBySQL(sql, null, null);
 			return Integer.parseInt(newTeachers.get(0).toString());
 		}else{
@@ -193,7 +193,7 @@ public class HeadPageAjaxContoller {
 	}
 	//某学校导师数量
 	private int getMentorNum(List depart){
-		String sql=" select count(*) c from sys_user_role where person_role='guidance'  and person_id in( ";
+		String sql=" select count(*) c from sys_user_role where person_role='guidance'  and person_id in (select fdid from sys_org_element where fd_parentid in ( ";
 		String sqlstr="";
 		for(int i=0;i<depart.size();i++){
 			Object obj=depart.get(i);
@@ -201,7 +201,7 @@ public class HeadPageAjaxContoller {
 		}
 		if(sqlstr.length()>0){
 			sqlstr = sqlstr.substring(0,sqlstr.length()-1);
-			sql=sql+sqlstr+")";
+			sql=sql+sqlstr+"))";
 			List mentors=departService.findBySQL(sql, null, null);
 			return Integer.parseInt(mentors.get(0).toString());
 		}else{

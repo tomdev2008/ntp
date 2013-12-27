@@ -160,8 +160,8 @@
                         <i class="icon-shyhr"></i>
                     </div>
                     <div class="ft">
-                        教师 99+ <span>|</span>
-                        导师 700+
+                        教师 0 <span>|</span>
+                        导师 0
                     </div>
                 </div>
             </div>
@@ -178,8 +178,8 @@
                         <i class="icon-shyhr"></i>
                     </div>
                     <div class="ft">
-                        教师 99+ <span>|</span>
-                        导师 700+
+                        教师 0 <span>|</span>
+                        导师 0
                     </div>
                 </div>
             </div>
@@ -197,8 +197,8 @@
                     <i class="icon-shyhr"></i>
                 </div>
                 <div class="ft">
-                    教师 99+ <span>|</span>
-                    导师 700+
+                    教师 0 <span>|</span>
+                    导师 0
                 </div>
             </div>
         </div>
@@ -215,8 +215,8 @@
                     <i class="icon-shyhr"></i>
                 </div>
                 <div class="ft">
-                    教师 99+ <span>|</span>
-                    导师 700+
+                    教师 0 <span>|</span>
+                    导师 0
                 </div>
             </div>
         </div>
@@ -233,8 +233,8 @@
                     <i class="icon-shyhr"></i>
                 </div>
                 <div class="ft">
-                    教师 99+ <span>|</span>
-                    导师 700+
+                    教师 0 <span>|</span>
+                    导师 0
                 </div>
             </div>
         </div>
