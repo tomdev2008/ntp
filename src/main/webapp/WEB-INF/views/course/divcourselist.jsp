@@ -112,14 +112,14 @@
 					</c:if>
 					</span> 
 					<c:if test="${bean.ISPUBLISH=='Y'}">
-				      <span class="label label-info">公开</span>
+				      <span class="label label-info">公开课</span>
 				    </c:if>
 				    <c:if test="${bean.ISPUBLISH=='N'}">
 				      <c:if test="${bean.FDPASSWORD==''||bean.FDPASSWORD==null}">
-				       <span class="label label-info">授权</span>
+				       <span class="label label-info">授权课</span>
 				      </c:if> 
 				      <c:if test="${bean.FDPASSWORD!=''&&bean.FDPASSWORD!=null}">
-				       <span class="label label-info">加密</span>
+				       <span class="label label-info">密码课</span>
 				      </c:if>
 				    </c:if>
 				    <c:if test="${bean.AUTHFLAG=='1'}">

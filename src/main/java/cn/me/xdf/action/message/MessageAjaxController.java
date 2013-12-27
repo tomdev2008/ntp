@@ -265,6 +265,15 @@ public class MessageAjaxController {
 		userMap.put("org", orgPerson.getDeptName()==null?"不详":orgPerson.getDeptName());
 		map.put("issuer", userMap);
 		map.put("msaageeRId", messageReply.getFdId());
+		if(messageReply.getFdUser()==null){
+			map.put("canDeleteMr", false);
+		}else{
+			if((messageReply.getFdUser().getFdId().equals(ShiroUtils.getUser().getId()) || !userRoleService.isEmptyPerson(ShiroUtils.getUser().getId(), RoleEnum.admin))){
+				map.put("canDeleteMr", true);
+			}else{
+				map.put("canDeleteMr", false);
+			}
+		}
 		return JsonUtils.writeObjectToJson(map);
 	}
 	

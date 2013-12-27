@@ -100,7 +100,9 @@
                     <span class="time"><i class="icon-time"></i>{{=item.time}}</span>
                 </div>
                 <p>{{=item.comment}}</p>
+				{{?item.canDeleteMr}}
 				<a href="javascript:void (0)" onclick="deleteMR('{{=item.msaageeRId}}')">删除</a>
+				{{?}}
             </div>
         </div>
     </script>
@@ -299,8 +301,10 @@ $(function(){
 			        		},
 			        		success : function(result) {
 			        			dataRetuen=result;
+			        			
 			        		}
 			        	});
+						$("#commentBox"+$this.closest(".item").attr("data-fdid")).removeClass("hide");
 						 var $inner = $('<div class="collapse-inner"></div>');
 	                        var $num = $this.children(".num");
 	                        if($form.next(".commentBox").children(".collapse-inner").length){
@@ -589,9 +593,10 @@ function deleteMR(id){
 			success : function(result) {
 				$("#messR"+id).remove();
 				if($("#commentBox"+result.messageId+" .item2").length==0){
-					$("#commentBox"+result.messageId).remove();
+					$("#commentBox"+result.messageId).addClass("hide");
 				}
-				
+				var $num = $("div[data-fdid='"+result.messageId+"'] .comment").children(".num");
+				$num.text(parseInt($num.text())-1);
 			}
 		}); 
 	});
