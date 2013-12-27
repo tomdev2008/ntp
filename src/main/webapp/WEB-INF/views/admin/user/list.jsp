@@ -148,8 +148,8 @@
 </head>
 <body>
 	<j:autoform>
-    <input type="hidden" id="fdType" name="fdType">
      <form class="toolbar-search" name="filterForm">
+     <input type="hidden" id="fdType" name="fdType">
     <div class="page-body" id="pageBody">
 	<section class="section box-control">
 		<div class="hd">
