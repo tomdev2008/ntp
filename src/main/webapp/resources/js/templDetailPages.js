@@ -141,6 +141,10 @@
 		              data.typeTxt = data_typeTxt;
 		              data.uploadIntro = data_uploadIntro;
 		              $("#rightCont").html(mediaPageFn(data));
+		              //学习时长默认值
+		              if($("#learnTime").val()==""){
+		            	  $("#learnTime").val("不详");
+		              }
 				  },
 			});
         	

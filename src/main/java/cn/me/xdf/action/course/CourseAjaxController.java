@@ -639,6 +639,8 @@ public class CourseAjaxController {
 				}
 				// 删除章节
 				courseCatalogService.deleteByCourseId(courseId);
+				//草稿状态下 删除课程的群组关系
+				courseGroupAuthService.deleteByCourseId(courseId);
 				// 删除课程
 				courseService.delete(courseId);
 			} else {
