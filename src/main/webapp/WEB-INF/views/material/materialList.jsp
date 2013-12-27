@@ -113,6 +113,7 @@ function selectAll(){
 	} else {
 		$('input[name="ids"]').each(function(){
 			$(this).attr("checked",false);// 
+			$(this).attr("disabled",false);
 		});
 		$("#allFlag").attr("value",false);
 	}
