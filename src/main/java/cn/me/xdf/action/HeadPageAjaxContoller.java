@@ -149,10 +149,7 @@ public class HeadPageAjaxContoller {
 				Map school=new HashMap();
 				//统计学校的新教师  导师
 				List deptIds = new ArrayList();
-				Long starttime=System.currentTimeMillis();
 				getDeptIds(page.getFdElementId(),deptIds);
-				Long endtime=System.currentTimeMillis();
-				System.out.println("运行时间:"+(endtime-starttime));
 				int tnum=getNewTeacherNum(deptIds);
 				school.put("tnum", tnum);
 				//导师
