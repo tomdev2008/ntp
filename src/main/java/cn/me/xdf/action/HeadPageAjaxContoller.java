@@ -107,10 +107,7 @@ public class HeadPageAjaxContoller {
 		if(StringUtil.isNotEmpty(pageNoStr)){
 			pageNo=Integer.parseInt(pageNoStr);
 		}
-		Finder finder=Finder.create(" from PageConfig page ");
-		finder.append(" where page.fdType='02' ");
-		finder.append(" order by page.fdOrder ");
-		Pagination pagination = pageConfigService.getPage(finder, pageNo,5);
+		Pagination pagination = getShoolList(pageNo);
 		List<PageConfig>  pages = (List<PageConfig>) pagination.getList();
 		List<Map> schools=new ArrayList<Map>();
 		if(pages!=null&&pages.size()>0){
@@ -121,14 +118,7 @@ public class HeadPageAjaxContoller {
 				//学校图片
 				AttMain attMain=attMainService.getByModelIdAndModelName(page.getFdId(), PageConfig.class.getName());
 				school.put("simg", attMain==null?"":attMain.getFdId());
-				//统计学校的新教师  导师
-				List deptIds = new ArrayList();
-				getDeptIds(page.getFdElementId(),deptIds);
-				int tnum=getNewTeacherNum(deptIds);
-				school.put("tnum", tnum);
-				//导师
-				int mnum=getMentorNum(deptIds);
-				school.put("munu", mnum);
+				
 				schools.add(school);
 				
 			}
@@ -139,16 +129,52 @@ public class HeadPageAjaxContoller {
 		return JsonUtils.writeObjectToJson(returnMap);
 	}
 	
+	@RequestMapping(value="getStatistics")
+	@ResponseBody
+	public String getStatistics(HttpServletRequest request){
+		String pageNoStr=request.getParameter("pageNoStr");
+		Map returnMap = new HashMap();
+		int pageNo=1;
+		if(StringUtil.isNotEmpty(pageNoStr)){
+			pageNo=Integer.parseInt(pageNoStr);
+		}
+		Finder finder=Finder.create(" from PageConfig page ");
+		finder.append(" where page.fdType='02' ");
+		finder.append(" order by page.fdOrder ");
+		Pagination pagination = pageConfigService.getPage(finder, pageNo,5);
+		List<PageConfig>  pages = (List<PageConfig>) pagination.getList();
+		List<Map> schoolsNum=new ArrayList<Map>();
+		if(pages!=null&&pages.size()>0){
+			for(PageConfig page:pages){
+				Map school=new HashMap();
+				//统计学校的新教师  导师
+				List deptIds = new ArrayList();
+				Long starttime=System.currentTimeMillis();
+				getDeptIds(page.getFdElementId(),deptIds);
+				Long endtime=System.currentTimeMillis();
+				System.out.println("运行时间:"+(endtime-starttime));
+				int tnum=getNewTeacherNum(deptIds);
+				school.put("tnum", tnum);
+				//导师
+				int mnum=getMentorNum(deptIds);
+				school.put("mnum", mnum);
+				schoolsNum.add(school);
+				
+			}
+		}
+
+		return JsonUtils.writeObjectToJson(schoolsNum);
+	}
 	private void getDeptIds(String id,List deptIds){
-		String sql="select * from sys_org_element  where fd_parentid='"+id+"'  and fd_org_type='2' ";
+		String sql="select fdid from sys_org_element  where fd_parentid='"+id+"'  and fd_org_type='2' ";
 		List list=departService.findBySQL(sql, null, null);
 		if(list==null || list.size()==0){
 			return;
 		}
 		for(int i=0;i<list.size();i++){
-			Object []  obj=(Object[]) list.get(i);
+			Object obj=list.get(i);
 			deptIds.add(list.get(i));
-			getDeptIds(obj[0].toString(),deptIds);
+			getDeptIds(obj.toString(),deptIds);
 		}
 	}
 	//某学校教师数量
@@ -156,8 +182,8 @@ public class HeadPageAjaxContoller {
 		String sql=" select count(distinct preteachid) c from ixdf_ntp_bam_score  where preteachid in( ";
 		String sqlstr="";
 		for(int i=0;i<depart.size();i++){
-			Object []obj=(Object[]) depart.get(i);
-			sqlstr+="'"+obj[0]+"',";
+			Object obj=depart.get(i);
+			sqlstr+="'"+obj+"',";
 		}
 		if(sqlstr.length()>0){
 			sqlstr = sqlstr.substring(0,sqlstr.length()-1);
@@ -173,8 +199,8 @@ public class HeadPageAjaxContoller {
 		String sql=" select count(*) c from sys_user_role where person_role='guidance'  and person_id in( ";
 		String sqlstr="";
 		for(int i=0;i<depart.size();i++){
-			Object []obj=(Object[]) depart.get(i);
-			sqlstr+="'"+obj[0]+"',";
+			Object obj=depart.get(i);
+			sqlstr+="'"+obj+"',";
 		}
 		if(sqlstr.length()>0){
 			sqlstr = sqlstr.substring(0,sqlstr.length()-1);
@@ -185,5 +211,13 @@ public class HeadPageAjaxContoller {
 			return 0;
 		}
 	
+	}
+	
+	private Pagination getShoolList(int pageNo){
+		
+		Finder finder=Finder.create(" from PageConfig page ");
+		finder.append(" where page.fdType='02' ");
+		finder.append(" order by page.fdOrder ");
+		return  pageConfigService.getPage(finder, pageNo,5);
 	}
 }

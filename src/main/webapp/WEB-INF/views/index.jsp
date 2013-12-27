@@ -328,7 +328,6 @@ function initSchool(pageNo){
 						content=content.substr(0,15)+"...";
 					}
 					$this.find(".media-body .bd h4").html(content);
-					$this.find(".media-body .ft").html('教师&nbsp;'+data.schools[i].tnum+'+<span>|</span>导师&nbsp;'+data.schools[i].munu+'+');
 					if(data.schools[i].simg!=""){
 						$this.find("img").attr("src","${ctx}/common/file/image/"+data.schools[i].simg);
 					}else{
@@ -339,11 +338,13 @@ function initSchool(pageNo){
 			temp=data;
 		}
 	});
+	getSchoolStatic(pageNo);
 	$("#afterBtn").unbind();
 	$("#nextBtn").unbind();
 	if(temp.pageNo>1){
 		$("#afterBtn").bind("click",function(){
 			initSchool(temp.pageNo-1);	
+			getSchoolStatic(temp.pageNo-1);
 		});
 		$("#afterBtn").attr("disabled",false);
 	}else{
@@ -352,11 +353,29 @@ function initSchool(pageNo){
 	if(temp.pageNo<temp.pageTotal){
 		$("#nextBtn").bind("click",function(){
 			initSchool(temp.pageNo+1);	
+			getSchoolStatic(temp.pageNo+1)
 		});
 		$("#nextBtn").attr("disabled",false);
 	}else{
 		$("#nextBtn").attr("disabled",true);
 	};
+}
+function getSchoolStatic(pageNo){
+	$.ajax({
+		type: "post",
+		async:true,
+		url: "${ctx}/ajax/head/getStatistics",
+		data:{pageNoStr:pageNo},
+		dataType : 'json',
+		success:function(data){
+			$("#grid .media").each(function(i){
+				$this = $(this);
+				if(data[i]!=undefined){
+					$this.find(".media-body .ft").html('教师&nbsp;'+data[i].tnum+'+<span>|</span>导师&nbsp;'+data[i].mnum+'+');
+				}
+			})
+		}
+	});
 }
 </script>
 </body>
