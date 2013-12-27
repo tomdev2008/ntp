@@ -264,10 +264,10 @@ $.ajax({
 	 url: "${ctx}/ajax/head/getSchoolInfo",
 	 dataType : 'json',
 	success:function(data){
-		$(".icon-school-home").next("span").children("h2").html(parseInt(data.schoolNum).toLocaleString().split(".")[0]);
-		$(".icon-mentor-home").next("span").children("h2").html(parseInt(data.mentorNum).toLocaleString().split(".")[0]);
-		$(".icon-teacher-home").next("span").children("h2").html(parseInt(data.newTeacherNum).toLocaleString().split(".")[0]);
-		$(".icon-book-home").next("span").children("h2").html(parseInt(data.courseNum).toLocaleString().split(".")[0]);
+		$(".icon-school-home").next("span").children("h2").html(data.schoolNum=="0"?0:parseInt(data.schoolNum).toLocaleString().split(".")[0]);
+		$(".icon-mentor-home").next("span").children("h2").html(data.mentorNum=="0"?0:parseInt(data.mentorNum).toLocaleString().split(".")[0]);
+		$(".icon-teacher-home").next("span").children("h2").html(data.newTeacherNum=="0"?0:parseInt(data.newTeacherNum).toLocaleString().split(".")[0]);
+		$(".icon-book-home").next("span").children("h2").html(data.courseNum=="0"?0:parseInt(data.courseNum).toLocaleString().split(".")[0]);
 	}
 });
 //教师寄语
