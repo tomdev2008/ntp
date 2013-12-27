@@ -645,6 +645,15 @@ public class PassThroughAjaxController {
 								messageReplyMap.put("comment", messageReply.getFdContent());
 								messageReplyMap.put("msaageeRId", messageReply.getFdId());
 								messageReplyMap.put("time", DateUtil.getInterval(DateUtil.convertDateToString(messageReply.getFdCreateTime()), "yyyy/MM/dd hh:mm aa"));
+								if(messageReply.getFdUser()==null){
+									messageReplyMap.put("canDeleteMr", false);
+								}else{
+									if((messageReply.getFdUser().getFdId().equals(ShiroUtils.getUser().getId()) || !userRoleService.isEmptyPerson(ShiroUtils.getUser().getId(), RoleEnum.admin))){
+										messageReplyMap.put("canDeleteMr", true);
+									}else{
+										messageReplyMap.put("canDeleteMr", false);
+									}
+								}
 								messageRepliesMap.add(messageReplyMap);
 							}
 							ArrayUtils.sortListByProperty(messageRepliesMap, "time", SortType.LOW); 
