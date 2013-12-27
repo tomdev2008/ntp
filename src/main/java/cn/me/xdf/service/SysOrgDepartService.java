@@ -82,7 +82,7 @@ public class SysOrgDepartService extends BaseService {
 	}
     
 	public List<SysOrgElement> getSchools(String key){
-		Finder finder=Finder.create(" from SysOrgElement o where o.hbmParent.fdId='142eac9fb5cac1c910431544a39ba22a' and o.fdName like :key ");
+		Finder finder=Finder.create(" from SysOrgElement o where o.hbmParent.fdNo='100' and o.fdName like :key ");
 		finder.setParam("key", "%"+key+"%");
 		return find(finder);
 	}
