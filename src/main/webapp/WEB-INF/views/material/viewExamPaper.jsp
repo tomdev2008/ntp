@@ -29,7 +29,7 @@
 
     <!-- 时间轴 模板 -->
     <script id="timeLineTemplate" type="text/x-dot-template">
-        {{?!it.timeLine}}
+		<!--{{?!it.timeLine}}
             {{#def.timeLine:it}}
         {{?}}
         {{##def.timeLine:param:
@@ -40,7 +40,7 @@
             class="{{?i*param.span==param.span}}first {{?}}{{?param.curPos && i*param.span<=param.curPos}}active{{?}}"><span class="num">{{=i*param.span}}</span></a>
             {{ } }}
             </div>
-        #}}
+        #}}-->
     </script>
 
     <!-- 作业详情 列表项 模板 -->
@@ -123,7 +123,7 @@
                         <div class="control-group">
                             <label class="control-label" >建议时间 <small>(单位天)</small></label>
                             <div class="controls">
-                                <input name="examPaperTime" id="examPaperTime" value="${materialInfo.fdStudyTime}" type="hidden"/>
+                            <input id="examPaperTime" readonly="true"  digits="true" min="0" value="${materialInfo.fdStudyTime}" max="30" class="input-block-level" type="text">
                             </div>
                         </div>
 

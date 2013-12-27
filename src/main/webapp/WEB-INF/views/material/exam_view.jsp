@@ -64,7 +64,9 @@
                         </div>
                         <div class="control-group">
                             <label class="control-label" >建议时间 <small>(单位分钟)</small></label>
+                            <div class="controls">
                             <input id="mainTimeLine" readonly="true" class="input-block-level" type="text">
+                            </div>
                             <!-- <div class="controls">
                                 <input name="examPaperTime" id="examPaperTime" value="30" type="hidden"/>
                                     <div id="mainTimeLine" class="timeLine">
