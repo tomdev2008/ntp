@@ -549,7 +549,7 @@ public class PassThroughAjaxController {
 			returnMap.put("tel", orgPerson.getFdWorkPhone()==null?"不详":orgPerson.getFdWorkPhone());
 			returnMap.put("bird", orgPerson.getFdBirthDay()==null?"不详":orgPerson.getFdBirthDay());
 			Map userMap = sysOrgPersonService.getUserInfo(userId);
-			returnMap.put("bool", userMap.get("fdBloodType"));
+			returnMap.put("bool", orgPerson.getFdBloodType()==null?"不详":orgPerson.getFdBloodType());
 			returnMap.put("selfIntroduction", orgPerson.getSelfIntroduction()==null?"":orgPerson.getSelfIntroduction());
 			CourseInfo courseInfo = courseService.get(courseId);
 			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(courseInfo.getFdId(), CourseInfo.class.getName());
