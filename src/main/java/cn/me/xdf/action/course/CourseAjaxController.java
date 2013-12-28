@@ -965,6 +965,9 @@ public class CourseAjaxController {
 			finder.append(" and course.fdcategoryid=:type " );
 			finder.setParam("type", type);
 		}	
+		if(StringUtil.isEmpty(type)){
+			finder.append(" and course.fdcategoryid is null " );
+		}	
 		finder.append("   order by course.fdCreateTime desc ");
 		Pagination pag=	courseService.getPageBySql(finder, pageNo, 30);
 		List<Map> courseInfos =  (List<Map>) pag.getList();

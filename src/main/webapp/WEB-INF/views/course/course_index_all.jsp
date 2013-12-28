@@ -108,6 +108,7 @@
 	{{~it.list :item:index}}
 	<li ><a href="javascript:void(0)" data-id="{{=item.courseCategoryId}}">{{=item.courseCategoryName}}</a></li>
 	{{~}}
+<li ><a href="javascript:void(0)" data-id="">其他</a></li>
 </script>
 <script id="courseTopTemplate" type="text/x-dot-template">
 {{?it.list.length>=3}}
