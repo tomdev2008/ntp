@@ -36,6 +36,7 @@ import cn.me.xdf.service.course.CourseService;
 import cn.me.xdf.service.course.SeriesCoursesService;
 import cn.me.xdf.service.course.SeriesInfoService;
 import cn.me.xdf.service.score.ScoreStatisticsService;
+import cn.me.xdf.utils.DateUtil;
 import cn.me.xdf.utils.ShiroUtils;
 
 @Controller
@@ -77,10 +78,9 @@ public class SeriesAjaxContrller {
 				.getId());
 		SeriesInfo series = new SeriesInfo();
 		series.setFdName(fdName);
-		series.setVersion(0);
+		series.setFdSeriesNo(fdNo);
 		series.setFdCreateTime(new Date());
 		series.setCreator(creator);
-		series.setFdSeriesNo(fdNo);
 		// 没有系列id说明是新增系列 否则就是新增阶段
 		Map<String, String> map = new HashMap<String, String>();
 		if (StringUtil.isNotEmpty(seriesId)) {
@@ -91,7 +91,7 @@ public class SeriesAjaxContrller {
 			map.put("id", series.getFdId());
 		} else {
 			SeriesInfo seriessup = new SeriesInfo();// 先创建系列
-			seriessup.setIsPublish(false);// 初始化为非发布状态
+			seriessup.setIsPublish(false);// 初始化为草稿状态
 			seriessup.setVersion(0);
 			seriessup.setFdCreateTime(new Date());
 			seriessup.setCreator(creator);
@@ -150,8 +150,6 @@ public class SeriesAjaxContrller {
 			series.setFdAuthor(seriesAuthor);
 			series.setFdAuthorDescription(authorDesc);
 			series.setCreator(creator);
-			series.setFdCreateTime(new Date());
-			series.setIsAvailable(true);
 			seriesInfoService.save(series);
 		}else{
 			series.setFdName(seriesTitle);
@@ -160,6 +158,8 @@ public class SeriesAjaxContrller {
 			series.setFdCreateTime(new Date());
 			series.setFdAuthor(seriesAuthor);
 			series.setFdAuthorDescription(authorDesc);
+			series.setIsPublish(false);
+			series.setIsAvailable(true);
 			seriesInfoService.save(series);
 			seriesId=series.getFdId();
 		}
@@ -294,6 +294,8 @@ public class SeriesAjaxContrller {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("id", courseInfo.getFdId());// 课程id
 				map.put("name", courseInfo.getFdTitle());// 课程名称
+				map.put("creator", courseInfo.getCreator().getFdName());//课程发布者
+				map.put("createtime",  DateUtil.getInterval(courseInfo.getFdCreateTime().toString(),null));//发布时间
 				courseInfos.add(map);
 			}
 		}

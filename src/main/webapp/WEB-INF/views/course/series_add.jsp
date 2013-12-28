@@ -114,7 +114,7 @@
                     	<label for="seriesTitle">系列名称</label>
                         <input type="text" id="seriesTitle" name="seriesTitle" required minlength="6" class="input-block-level" value="{{=it.seriesTitle || ''}}"  />
                         <label for="seriesDesc">系列描述</label>
-                        <textarea name="seriesDesc" id="seriesDesc"  minlength="12" class="input-block-level" rows="3">{{=it.fdDescription || ''}}</textarea>   
+                        <textarea name="seriesDesc" id="seriesDesc"  class="input-block-level" rows="3">{{=it.fdDescription || ''}}</textarea>   
 						<label for="seriesAuthor">作者</label>
                         <input type="text" name="seriesAuthor" required  minlength="3" id="seriesAuthor"  class="input-block-level" value="{{=it.seriesAuthor || ''}}"/>   
 						<label for="authorDesc">作者简介</label>
@@ -202,7 +202,7 @@
 				<div class="control-group">
                     <label class="control-label" for="sectionsIntro">阶段说明</label>
                     <div class="controls">
-                        <textarea placeholder="请填写该阶段的描述信息" rows="4" required minlength="20" class="input-xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>
+                        <textarea placeholder="系列作者很懒,没有写阶段说明" rows="4"  class="input-xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>
                     </div>
                 </div>
 	       </div>
@@ -380,7 +380,7 @@ function saveDirectory(){//触发一个提交事件
 		$.post('${ctx}/ajax/series/saveSeriesBaseInfo',{
 			 seriesId:$("#seriesId").val(),
 			 seriesTitle: $("#seriesTitle").val(),
-			 seriesDesc:  $("#seriesDesc").val(),
+			 seriesDesc:  $("#seriesDesc").val()==""?"系列作者很懒,没有写系列描述":$("#seriesDesc").val(),
 			 seriesAuthor: $("#seriesAuthor").val(),
 			 authorDesc: $("#authorDesc").val()
 			 //isavailable:$("#sectionIsava").val()
@@ -390,6 +390,7 @@ function saveDirectory(){//触发一个提交事件
 		    .success(function(){
 			//提交成功系列推广
 			jalert_tips("保存成功");
+			$("#goTop").trigger("click");
        	   // urlRouter("promotion");
 		});
 	}
@@ -401,6 +402,7 @@ function saveDirectory(){//触发一个提交事件
 			})
 		.success(function(){
 			jalert_tips("保存成功");
+			$("#goTop").trigger("click");
 		});
     }
   //系列发布
