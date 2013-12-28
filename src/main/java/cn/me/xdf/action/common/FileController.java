@@ -451,7 +451,7 @@ public class FileController {
     		param.put("dep", person.getDeptName());
     		param.put("userEName", orgPerson.getLoginName());
     		String html =certificateService.getCertificateHtml("html", param);
-    		List<byte[]> list = GraphUtils.toImages(null, html, 940, 400);
+    		List<byte[]> list = GraphUtils.toImages(null, html, 1265, 615);
     		if(list!=null && list.size()>0){
     			 byte[] img  = list.get(0);
     			 response.setHeader("Content-type", "text/html;charset=utf-8");
