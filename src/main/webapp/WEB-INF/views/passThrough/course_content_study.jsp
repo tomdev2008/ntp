@@ -462,7 +462,7 @@
         <div class="section" id="mediaComment">
             <div class="edit-box">
                     <div class="box-rating">
-                        <span>评分</span>
+                        <span>我要评分</span>
                         <span class="rating-do" id="ratingDo">
                             {{ for(var i=0; i<5; i++ ){ }}
                                 <i class="icon-star{{?i<it.meRating}} active{{?}}"></i>
@@ -471,10 +471,10 @@
                         <span class="point" id="ratingDoScore"></span>
                     </div>
                 <form action="javascript:void(0)" id="formMakeComments" data-fdid="{{=it.mediaComment.id}}" >
-                    <textarea  id="textComment" name="textComment" required maxlength="200" class="input-block-level" placeholder="有什么想吐槽的吗？随便写两句文评吧~ : )" ></textarea>
+                    <textarea  id="textComment" name="textComment" required maxlength="200" class="input-block-level" placeholder="有什么想吐槽的吗？随便说两句吧~ : )" ></textarea>
                     <div class="comm-rating">
                         <label for="isAnonymity" class="checkbox span1">
-                            <input id="isAnonymity" name="isAnonymity" type="checkbox">匿名发表
+                            <input id="isAnonymity" name="isAnonymity" type="checkbox">匿名评论
                         </label>
                         <button class="btn btn-primary" id="commentSub" type="submit">发表</button>
                     </div>
@@ -674,7 +674,7 @@
     <script src="${ctx}/resources/js/doT.min.js"></script>
 </head>
 
-<body onbeforeunload="test()" onunload="test()" >
+<body >
 <input type="hidden" value="ldfklgsjkdfj">
 <section class="container pr">
     <section class="clearfix" >
@@ -889,6 +889,7 @@ function downloadMater(attId,fileNetId){
 		  	          		$("#btnPraise").attr("converStatus","true");
 		  	          	    $("#btnDoPass").attr("converStatus","true");
 		  	          		$("#btnDownload").addClass("hide");
+		  	          	    initplaceholder(false);
 		  	            } else if(result.type == "video" || result.type == "doc"||result.type == "ppt"){
 		  	            	mdata=result.defaultMedia;
 		  	            	 
@@ -937,7 +938,7 @@ function downloadMater(attId,fileNetId){
 				  	            		 $("#btnDoPass").attr("converStatus","true");
 				  	            	 }
 			  	                  } */
-			  	                
+			  	                initplaceholder(false); 
 			  	  			}
 		  	            }
 		  				
@@ -1352,6 +1353,7 @@ function downloadMater(attId,fileNetId){
             
             /*提交评论表单*/
             function submitFormComment(form){
+            	initplaceholder(true);
                if($("#textComment").val()==""||$("#textComment").val()==null){
             	   jalert_tips("请输入评论信息！");  
                    return false;
@@ -1533,6 +1535,7 @@ function downloadMater(attId,fileNetId){
 			  	                	}
 				  	            }
 			  	              }
+			  	              initplaceholder(false);
 			  	              //$("#listComment").html(listCommentFn(mdata.mediaComment.listComment));
 
 			  	              /*评分表单*/
@@ -1902,7 +1905,18 @@ function downloadMater(attId,fileNetId){
             	    }
               } 
         }
-
+        //该页面在ie下placeholder不能正常提示
+		function initplaceholder(mark){
+        	if(!mark){
+	        	if($("#textComment").val()==""){
+	        		$("#textComment").val("有什么想吐槽的吗？随便说两句吧~ : )");
+	        	}
+        	}else{
+        		if($.trim($("#textComment").val())=="有什么想吐槽的吗？随便说两句吧~ : )"){
+	        		$("#textComment").val("");
+	        	}
+        	}
+        }
     });
 
 
