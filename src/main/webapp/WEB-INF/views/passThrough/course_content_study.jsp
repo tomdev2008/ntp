@@ -148,6 +148,13 @@
                         才可以进入下一节继续学习。</div>
                 </div>
             </li>
+			{{?it.type!='txt'&&it.type!='exam'&&it.type!='task'}}
+			<li>
+				<div class="line">
+ 					<div  class="line">{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}名称：{{=it.defaultMedia.name}}</div>
+				</div>
+			</li>
+			{{?}}
         </ul>
     </script>
 
@@ -348,7 +355,6 @@
         {{##def.mediaInfo:param:
             <div class="section mt20">
                 <div class="mediaWrap bdbt2">
-					<div align="center">{{?it.type == 'video'}}视频{{??it.type == 'txt'}}富文本{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}名称：{{=param.name}}</div>
                     <div class="mediaObject">
                         {{?param.txt != null && it.txt!="" }}
                            <div id="richTxt">
