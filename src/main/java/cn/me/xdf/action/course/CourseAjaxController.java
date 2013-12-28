@@ -1109,7 +1109,16 @@ public class CourseAjaxController {
 				map.put("score", scoreStatistics==null?0:scoreStatistics.getFdAverage());
 				map.put("raterNum",  scoreStatistics==null?0:scoreStatistics.getFdScoreNum());
 				BamCourse bamCourse = bamCourseService.getCourseByUserIdAndCourseId(userId, courseInfo.getFdId());
-				map.put("isLearning", bamCourse==null?false:true);
+				if(bamCourse==null){
+					map.put("isLearning", false);
+				}else{
+					map.put("isLearning", true);
+					if(bamCourse.getThrough()==true){
+						map.put("isThrough", true);
+					}else{
+						map.put("isThrough", false);
+					}
+				}
 				map.put("dataId", courseInfo.getFdId());
 				lists.add(map);
 			}

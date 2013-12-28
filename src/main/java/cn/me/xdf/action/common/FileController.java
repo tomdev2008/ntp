@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -490,18 +491,16 @@ public class FileController {
 			String html = certificateService.getCertificateHtml("html", param);
 			HtmlImageGenerator imageGenerator = new HtmlImageGenerator();
 			imageGenerator.loadHtml(html);
-			byte[] img = GraphUtils.toJpeg(imageGenerator.getBufferedImage());
 			response.setHeader("Content-type", "text/html;charset=utf-8");
-			String imgName = java.net.URLEncoder.encode("结业证书.jpg", "UTF-8");
+			String imgName = java.net.URLEncoder.encode("结业证书.png", "UTF-8");
 			response.setHeader("Content-Disposition", "attachment;filename="
 					+ imgName);
 			OutputStream out;
-			response.addHeader("Content-Length", String.valueOf(img.length));
+			response.addHeader("Content-Length", String.valueOf(imageGenerator.getSize()));
 			out = response.getOutputStream();
-			out.write(img);
+			ImageIO.write(imageGenerator.getBufferedImage(),"png",out);
 			out.flush();
 			StreamUtil.close(out);
-
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

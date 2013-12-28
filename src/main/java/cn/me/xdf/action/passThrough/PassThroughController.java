@@ -111,6 +111,16 @@ public class PassThroughController {
 				}else{
 					courseCatalogs = courseCatalogService.getCatalogsByCourseId(course.getFdId());
 				}
+				if(bamCourse==null){
+					request.setAttribute("isLearning", false);
+				}else{
+					request.setAttribute("isLearning", true);
+					if(bamCourse.getThrough()==true){
+						request.setAttribute("isThrough", true);
+					}else{
+						request.setAttribute("isThrough", false);
+					}
+				}
 				request.setAttribute("catalog", courseCatalogs);
 				//当前作者的图片(当作者和创建者是相同时候使用创建者的照片)
 				if(course.getFdAuthor()!=null&&course.getFdAuthor().equals(course.getCreator().getRealName())){
