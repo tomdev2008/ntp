@@ -20,7 +20,11 @@ public class BamCourseServiceTest extends BaseTest {
     @Test
     public void testSaveBamCourse() {
         //测试
-        CourseInfo courseInfo = bamCourseService.get(CourseInfo.class, "1420de343fd77bc99047dcd4c71a6196");
-        bamCourseService.saveBamCourse(courseInfo, null);
+//        CourseInfo courseInfo = bamCourseService.get(CourseInfo.class, "1420de343fd77bc99047dcd4c71a6196");
+//        bamCourseService.saveBamCourse(courseInfo, null);
     }
+    public static void main(String[] args) {
+		String s ="4,,";
+		System.out.println(s.split(",").length);
+	}
 }

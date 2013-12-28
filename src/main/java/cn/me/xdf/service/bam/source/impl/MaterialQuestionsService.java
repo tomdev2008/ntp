@@ -171,8 +171,15 @@ public class MaterialQuestionsService extends SimpleService implements ISourceSe
 					Set<AnswerRecord> answerRecords = sourceNote.getAnswerRecords();
 					for (AnswerRecord answerRecord : answerRecords) {
 						if(answerRecord.getFdQuestionId().equals(examQuestion2.getFdId())){
-							answers = answerRecord.getFdAnswer().split("#");
-							break;
+							if(answerRecord.getFdAnswer()!=null){
+								for (int i = 0; i < answers.length; i++) {
+									String [] an = answerRecord.getFdAnswer().split("#");
+									if(i<an.length){
+										answers[i]=an[i];
+									}
+								}
+								break;
+							}
 						}
 					}
 				}

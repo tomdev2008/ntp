@@ -1696,6 +1696,7 @@ function downloadMater(attId,fileNetId){
             //试卷列表折叠 手风琴事件
             $("#listExamPaper>li>.collapse")
                     .bind("show",function(){
+                    	
                         var $this = $(this);
                         var tempData = {};
                         $this.prev(".titBar").addClass("hide");
