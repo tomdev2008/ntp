@@ -181,9 +181,9 @@ public class ExpController {
     	}
     	examPaperList.add(data);
     	if(info.getIsPublish()){
-    		exportExcel(examPaperList, "examPaperDetail.xls", response,"素材测试-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
+    		exportExcel(examPaperList, "examPaperDetail.xls", response,info.getFdName()+"-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
     	}else{
-    		exportExcel(examPaperList, "examPaperEncrypt.xls", response,"素材测试-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
+    		exportExcel(examPaperList, "examPaperEncrypt.xls", response,info.getFdName()+"-"+DateUtil.convertDateToString(date, "yyyyMMddHHmmss")+".xls");
     	}
     	
     	return null;
