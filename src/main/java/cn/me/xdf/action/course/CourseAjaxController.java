@@ -146,7 +146,7 @@ public class CourseAjaxController {
 			}
 			map.put("courseTypeList", cateList);
 			// 默认将第一个分类选中
-			map.put("courseType", categorys.get(0).getFdId());
+			map.put("courseType", "");//categorys.get(0).getFdId());
 		}
 		if (StringUtil.isNotEmpty(courseId)) {
 			CourseInfo course = courseService.get(courseId);
@@ -229,6 +229,8 @@ public class CourseAjaxController {
 					CourseCategory category = courseCategoryService
 							.get(courseType);
 					course.setFdCategory(category);
+				}else{
+					course.setFdCategory(null);
 				}
 				course.setCreator(sysOrgPerson);
 				course.setFdAuthor(ShiroUtils.getUser().getName());
@@ -244,6 +246,8 @@ public class CourseAjaxController {
 					CourseCategory category = courseCategoryService
 							.get(courseType);
 					course.setFdCategory(category);
+				}else{
+					course.setFdCategory(null);
 				}
 				if(StringUtil.isNotBlank(fdPrice)){
 					course.setFdPrice(Double.parseDouble(fdPrice));

@@ -197,10 +197,14 @@ class="close">&times;</a></span>
                     <label >分类</label>
                     <input type="hidden" id="courseType" name="courseType" value="{{=it.courseType || ''}}" />
                     <ul class="nav nav-pills courseType">
+ 						<li{{?it.courseType==""}} class="active" {{?}}><a href="#">默认分类</a>
+						<input type='hidden' value=''>
+						</li>
 						{{~ it.courseTypeList :type:index}}
-							 <li{{?type.id == it.courseType}} class="active"{{?}}><a href="#">
-
-{{=type.title}}</a><input type='hidden' value='{{=type.id}}'></li>
+							 <li{{?type.id == it.courseType}} class="active"{{?}}>
+							 <a href="#">{{=type.title}}</a>
+                             <input type='hidden' value='{{=type.id}}'>
+                             </li>
 						{{~}}                    	                  
                     </ul>  
 	       </div>
