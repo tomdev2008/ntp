@@ -115,7 +115,7 @@
                     $.post($('#ctx').val()+"/ajax/series/saveSeriesCourse",{
                     	phasesId:opt.id,
                     	phaseTitle:$("#seriesTitle").val(),
-                        sectionsIntro: $("#sectionsIntro").val(),
+                        sectionsIntro: $("#sectionsIntro").val()==""?"系列作者很拦,没有写阶段说明":$("#sectionsIntro").val(),
                         mediaList:JSON.stringify(listArr)
                     })
                         .success(function(){
@@ -131,7 +131,11 @@
             $("#addMedia").autocomplete($("#ctx").val()+"/ajax/series/getCourseBykey",{
                 formatItem: function(item) {
                 	$("#addMedia").next(".help-block").remove();
-                    return item.name;
+                	var fdName = item.name;
+                	if(fdName.length>20){
+                		fdName = fdName.substr(0,18)+"...";
+                	}
+                	 return fdName+"（发布者："+item.creator+"，发布时间："+item.createtime+"）";
                 },
                 parse : function(data) {
                 	$("#addMedia").next(".help-block").remove();
@@ -150,7 +154,7 @@
                 matchContains:true ,
                 max: 10,
                 scroll: false,
-                width:688
+                width:657
             }).result(function(e,item){
             		$("#showError").html("");//清除错误提示;
             	    var flag = true;

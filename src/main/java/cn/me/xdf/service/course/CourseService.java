@@ -269,6 +269,7 @@ public class CourseService  extends BaseService{
 			finder.setParam("userId", ShiroUtils.getUser().getId());
 			finder.setParam("createId", ShiroUtils.getUser().getId());
 		}
+		finder.append(" order by c.fdCreateTime ");
 		return (List<CourseInfo>)getPage(finder, 1,10).getList();
 	}
 	
