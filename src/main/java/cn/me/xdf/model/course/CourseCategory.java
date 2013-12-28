@@ -33,6 +33,19 @@ public class CourseCategory extends IdEntity{
 	 * 分类描述
 	 */
 	private String fdDescription;
+	
+	/**
+	 * 分类排序
+	 */
+	private Integer fdOrder;
+	
+	public Integer getFdOrder() {
+		return fdOrder;
+	}
+
+	public void setFdOrder(Integer fdOrder) {
+		this.fdOrder = fdOrder;
+	}
 
 	public String getFdName() {
 		return fdName;
