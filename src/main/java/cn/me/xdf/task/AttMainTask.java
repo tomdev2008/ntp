@@ -74,7 +74,7 @@ public class AttMainTask {
                         } else {
                             String playUrl = "http://union.bokecc.com/player?vid="
                                     + playCode
-                                    + "&siteid=8B90641B41283EDC&autoStart=true&playerid=628A174866D77DB5&playertype=1";
+                                    + "&siteid=B47D5D75B8086E19&autoStart=true&playerid=628A174866D77DB5&playertype=1";
                             attMain.setFileNetId(fileNetId);
                             attMain.setPlayCode(playCode);
                             attMain.setFlag(-1);
