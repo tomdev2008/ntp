@@ -35,14 +35,14 @@
     <div class="bd">
         <div class="media">
             <a class="pull-left" href="#">
-                <img src="./images/default-face-180.png" class="media-object img-polaroid" alt=""/>
+                <img src="${imgUrl}" class="media-object img-polaroid" alt=""/>
                 <i class="icon-medal-lg"></i>
             </a>
             <div class="media-body">
-                <div class="media-heading"><em>杨义锋</em>老师，</div>
-                <p>已于 2013-11-19 完成《<em>集团雅思基础口语新教师学习课程</em>》，特此认证。
-                    This is to certify MR/MS <span class="upper">yangyifeng</span> 's successful completion of the New Oriental Teacher Online Training.</p>
-                <p class="muted">颁发者：集团国外考试推广管理中心</p>
+                <div class="media-heading"><em>${userName}</em>老师，</div>
+                <p>已于${date} 完成《<em>${til}</em>》，特此认证。
+                    This is to certify MR/MS <span class="upper">${eName}</span> 's successful completion of the New Oriental Teacher Online Training.</p>
+                <p class="muted">颁发者：${dep}</p>
             </div>
         </div>
     </div>
