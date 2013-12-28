@@ -91,7 +91,18 @@
                 <input type="hidden" name="fdMtype" id="fdMtype">
                 </form>
                 <a id="studyBegin" class="btn btn-warning">
-                   <i class="icon-book icon-white"></i>开始学习
+                   <i class="icon-book icon-white"></i>
+      <c:if test="${isLearning==true}">
+	      <c:if test="${isThrough==true}">
+	      再次学习
+	      </c:if>
+	      <c:if test="${isThrough==false}">
+	      	继续学习
+	      </c:if>
+      </c:if>
+      <c:if test="${isLearning==false}">
+      	 开始学习
+      </c:if>              
                 </a>
                     <span class="text-warning">${studayTotalNo}</span>&nbsp;位老师在学习
                     <a href="${ctx}/course/courseIndex" title="课程列表" data-toggle="tooltip" class="btn-next icon-disc-lg-bg"><i class="icon-home icon-white"></i></a>
