@@ -749,8 +749,9 @@
 					    			{title: "国内考试", imgUrl:  $('#ctx').val()+"/resources/images/courseSkin-02.png"},
 					    			{title: "英语学习", imgUrl:  $('#ctx').val()+"/resources/images/courseSkin-03.png"},
 					    			{title: "优能中学", imgUrl:  $('#ctx').val()+"/resources/images/courseSkin-04.png"},
-					    			{title: "优能小学", imgUrl:  $('#ctx').val()+"/resources/images/courseSkin-05.png"}];
-					  data.courseSkin= {title: "国内考试"};
+					    			{title: "优能小学", imgUrl:  $('#ctx').val()+"/resources/images/courseSkin-05.png"},
+					    			{title: "默认皮肤", imgUrl:  $('#ctx').val()+"/resources/images/courseSkin-05.png"}];
+					  data.courseSkin= {title: "默认皮肤"};
 					  data.pageTitle = title;	// ajax 成功后删除
 					  $("#rightCont").html(promotionFn(data));// ajax 成功后删除
 				  },

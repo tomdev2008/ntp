@@ -58,6 +58,9 @@ public class PageAjaxController {
 				map.put("order", page.getFdOrder().toString());
 				map.put("type", page.getFdType());
 				map.put("createtime", sdf.format(page.getFdCreateTime()));
+				if("01".equals(ptype)){
+					map.put("org", element.getHbmParent().getFdName());//老师寄语 加部门信息
+				}
 				maps.add(map);
 			}
 		}
