@@ -175,7 +175,7 @@
                     <div class="bar" style="width: {{=it.width}};"></div>
                 </div>
                 <div class="statusBar">
-                    我共完成 {{=it.sums}} 个<span class="text-info">备课环节</span>，下一节：<span class="text-info">{{=it.nextCatalog}}</span>
+                    我共完成 {{=it.sums}} 个<span class="text-info">课程章节</span>，下一节：<span class="text-info">{{=it.nextCatalog}}</span>
                 </div>
 </script>
 

@@ -257,6 +257,7 @@ public class MessageService extends BaseService implements InitializingBean{
 	 */
 	public void saveLectureMessage(BamCourse bamCourse,CourseCatalog catalog){
 		Map<String, String> param = new HashMap<String, String>();
+		param.put("lectureNo", catalog.getFdNo().toString());
 		param.put("lectureName", catalog.getFdName());
 		saveSysMessage(bamCourse.getFdId(),"lecture",param);
 	}
@@ -269,6 +270,7 @@ public class MessageService extends BaseService implements InitializingBean{
 	 */
 	public void saveMaterialMessage(BamCourse bamCourse,CourseCatalog catalog,MaterialInfo material){
 		Map<String, String> param = new HashMap<String, String>();
+		param.put("lectureNo", catalog.getFdNo().toString());
 		param.put("lectureName", catalog.getFdName());
 		param.put("materialName", material.getFdName());
 		String type = catalog.getFdMaterialType();
@@ -289,6 +291,7 @@ public class MessageService extends BaseService implements InitializingBean{
 		CourseCatalog catalog = bamCourse.getCatalogById(note.getFdCatalogId());
 		MaterialInfo material = bamCourse.getMaterialInfoById(note.getFdCatalogId(),note.getFdMaterialId());
 		Map<String, String> param = new HashMap<String, String>();
+		param.put("lectureNo", catalog.getFdNo().toString());
 		param.put("lectureName", catalog!=null?catalog.getFdName():"");
 		param.put("materialName", material!=null?material.getFdName():"");
 		if(note.getIsStudy()!=null){
@@ -334,8 +337,7 @@ public class MessageService extends BaseService implements InitializingBean{
         StringTemplateLoader stringLoader = new StringTemplateLoader();
         for (Entry<String, String> entry : message.entrySet()) {
             stringLoader.putTemplate(entry.getKey(), entry.getValue());
-            templateCache
-                    .put(entry.getKey(),new Template(entry.getKey(),
+            templateCache.put(entry.getKey(),new Template(entry.getKey(),
                                             new StringReader(entry.getValue()),
                                             configuration));
         }

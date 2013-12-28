@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sys-message>
-    <message name="source"><![CDATA[您的课程《${courseName}》全部通过，已获得<a href="${link}" target="_blank">证书</a>。]]>
+    <message name="source"><![CDATA[我获得了《${courseName}》 课程结业证书，点击 <a href="${link}" target="_blank">这里</a> 查看证书。]]>
     </message>
-    <message name="lecture"><![CDATA[您已通过节${lectureName}。]]>
+    <message name="lecture"><![CDATA[我学会了  第${lectureNo}节  ${lectureName}。]]>
     </message>
-    <message name="video"><![CDATA[您已通过节${lectureName}中的${materialName}视频。]]>
+    <message name="video"><![CDATA[我学会了  第${lectureNo}节  ${lectureName}  中的${materialName}视频。]]>
     </message>
-    <message name="doc"><![CDATA[您已通过节${lectureName}中的${materialName}文档。]]>
+    <message name="doc"><![CDATA[我学会了  第${lectureNo}节  ${lectureName}  中的${materialName}文档。]]>
     </message>
-    <message name="ppt"><![CDATA[您已通过节${lectureName}中的${materialName}幻灯片。]]>
+    <message name="ppt"><![CDATA[我学会了  第${lectureNo}节${lectureName}  中的${materialName}幻灯片。]]>
     </message>
-    <message name="exam"><![CDATA[您学习的节${lectureName}中的${materialName}测试${ispass}。]]>
+    <message name="exam"><![CDATA[我学习的  第${lectureNo}节${lectureName}  中的${materialName}测试${ispass}。]]>
     </message>
-    <message name="task"><![CDATA[您学习的节${lectureName}中的${materialName}作业${ispass}。]]>
+    <message name="task"><![CDATA[我学习的节  第${lectureNo}节  ${lectureName}  中的${materialName}作业${ispass}。]]>
     </message>
-    <message name="txt"><![CDATA[您学习的节${lectureName}中的${materialName}富文本。]]>
+    <message name="txt"><![CDATA[我学会了  第${lectureNo}节${lectureName}  中的${materialName}富文本。]]>
     </message>
 </sys-message>
