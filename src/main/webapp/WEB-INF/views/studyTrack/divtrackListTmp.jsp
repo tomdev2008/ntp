@@ -21,10 +21,10 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <span class="name">{{=item.user.name}}</span>
-                        <span class="muted">{{=item.user.department}}</span>
+                        <span class="muted">{{=item.user.department||'不详'}}</span>
                                             <span class="muted right">
-                                                <i class="icon-tel"></i>{{=item.user.phone || ''}}
-                                                <i class="icon-envelope"></i>{{=item.user.mail}}
+                                                <i class="icon-tel"></i>{{=item.user.phone || '不详'}}
+                                                <i class="icon-envelope"></i>{{=item.user.mail||'不详'}}
                                             </span>
                     </div>
                     <dl>
