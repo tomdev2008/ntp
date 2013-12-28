@@ -35,7 +35,7 @@ public class CourseCategoryService extends BaseService{
 	public List<CourseCategory> findAll(){
 		//根据课程ID查找章节，并按总序号升序
 		Finder finder = Finder
-				.create("from CourseCategory category ");		
+				.create("from CourseCategory category order by category.fdOrder");		
 		return  super.find(finder);
 	}
 	
