@@ -83,7 +83,7 @@
 						{{?it.type == "single"}}
                         	<a class="btn btn-warning pull-right" href="${ctx}/passThrough/getCourseHome/{{=item.dataId}}">
  						{{?}}
-						<i class="{{?item.isLearning}}icon-progress-shadow"></i>继续学习{{??}}icon-book-shadow"></i>开始学习{{?}}</a>
+						<i class="{{?item.isLearning}}icon-progress-shadow"></i>{{?item.isThrough}}再次学习{{??}}继续学习{{?}}{{??}}icon-book-shadow"></i>开始学习{{?}}</a>
                         {{?it.type == 'single'}}
                             <div class="pull-right"><strong>{{=item.learnerNum}}</strong>&nbsp;位老师在学习</div>
                         {{?}}
