@@ -27,7 +27,7 @@
 								<dt>
                                     <span class="icon-disc-lg-bg disc-bd">{{=course.courseNo}}</span>
                                     <b class="caret"></b>
-                                	<div class="span5"><span class="tit">课程{{=course.courseNo}}{{=course.courseName}}</span></div>
+                                	<div class="span5"><span class="tit">课程{{=course.courseNo}}&nbsp;&nbsp;{{=course.courseName}}</span></div>
                                 	<div class="span2">
                                     <div class="rating-view">
                                             <span class="rating-all">
