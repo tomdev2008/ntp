@@ -108,6 +108,7 @@ public class AttMainService extends SimpleService {
         return null;
     }
 
+    //OK
     public void executeInterfaceDelete(final AttMain attMain){
         taskExecutor.execute(new Runnable() {
             @Override
