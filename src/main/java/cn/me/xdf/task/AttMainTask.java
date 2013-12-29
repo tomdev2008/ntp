@@ -41,17 +41,7 @@ public class AttMainTask {
 
     }
 
-    public void executeInterfaceDelete(final AttMain attMain){
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                AttMainPlugin.deleteDoc(attMain);
-                if ("01".equals(attMain.getFdFileType())) {
-                    AttMainPlugin.DeleteDocToCC(attMain);
-                }
-            }
-        });
-    }
+
 
     public void executeInterfaceSave(final AttMain attMain) {
         taskExecutor.execute(new Runnable() {

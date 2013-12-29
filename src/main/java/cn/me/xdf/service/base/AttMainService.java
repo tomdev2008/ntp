@@ -10,10 +10,12 @@ import cn.me.xdf.api.bokecc.config.Config;
 import cn.me.xdf.api.bokecc.util.APIServiceFunction;
 import cn.me.xdf.api.bokecc.util.DemoUtil;
 import cn.me.xdf.common.utils.MyBeanUtils;
+import cn.me.xdf.service.plugin.AttMainPlugin;
 import cn.me.xdf.task.AttMainTask;
 import org.apache.commons.collections.CollectionUtils;
 import org.dom4j.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import cn.me.xdf.common.file.FileUtil;
@@ -28,7 +30,8 @@ import cn.me.xdf.service.SimpleService;
 @Transactional(readOnly = true)
 public class AttMainService extends SimpleService {
 
-
+    @Autowired
+    private TaskExecutor taskExecutor;
 
 
     public AttMain get(String id) {
@@ -105,6 +108,17 @@ public class AttMainService extends SimpleService {
         return null;
     }
 
+    public void executeInterfaceDelete(final AttMain attMain){
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                AttMainPlugin.deleteDoc(attMain);
+                if ("01".equals(attMain.getFdFileType())) {
+                    AttMainPlugin.DeleteDocToCC(attMain);
+                }
+            }
+        });
+    }
 
     @Transactional(readOnly = false)
     public AttMain deleteAttMain(String id) {
@@ -114,7 +128,7 @@ public class AttMainService extends SimpleService {
         String file = attMain.getFdFilePath();
         delete(AttMain.class, id);
         FileUtil.delete(file);
-       // attMainTask.executeInterfaceDelete(attMainCopy);
+        executeInterfaceDelete(attMainCopy);
         return attMainCopy;
     }
 

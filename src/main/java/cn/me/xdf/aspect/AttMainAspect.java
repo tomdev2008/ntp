@@ -29,9 +29,6 @@ public class AttMainAspect {
     @Autowired
     private AttMainTask attMainTask;
 
-    @Autowired
-    private AttMainService attMainService;
-
 
     /**
      * 資源接口
@@ -55,7 +52,7 @@ public class AttMainAspect {
         return joinPoint.getTarget();
     }
 
-
+/*
     @AfterReturning(value = "execution(* cn.me.xdf.service.base.AttMainService.deleteAttMain(..))", returning = "result")
     public Object afterDeleteAttMain(JoinPoint joinPoint, Object result) {
 
@@ -70,7 +67,7 @@ public class AttMainAspect {
         AttMain attMain = (AttMain)result;
         attMainTask.executeInterfaceDelete(attMain);
         return joinPoint.getTarget();
-    }
+    }*/
 
 
 }
