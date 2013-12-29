@@ -114,7 +114,7 @@
     			<div><p><i class="icon-shyhl"></i><span name="intro">在这里发现很多熟悉的培训师视频教程，真心不错！</span><i class="icon-shyhr"></i></p></div>
     		</div>
     		<div class="tab-pane" id="tab4">
-    			<div><p><i class="icon-shyhl"></i><span name="intro">手头的资料大多是零散知识片段，真想学点什么的时候总缺乏系统性的知识体系。在线备课平台很不错，把知识有机的组织在一起，让人耳目一新。足见信息的组织精炼同样非常重要！<i class="icon-shyhr"></i></p></div>
+    			<div><p><i class="icon-shyhl"></i><span name="intro">手头的资料大多是零散知识片段，真想学点什么的时候总缺乏系统性的知识体系。在线备课平台很不错，把知识有机的组织在一起，让人耳目一新。足见信息的组织精炼同样非常重要！</span><i class="icon-shyhr"></i></p></div>
     		</div>
    	  </div>
    	  <ul class="nav nav-tabs" id="myTabs">
