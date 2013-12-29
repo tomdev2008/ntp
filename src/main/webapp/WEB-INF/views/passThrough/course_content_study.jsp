@@ -32,7 +32,7 @@
                 {{ for(var i=0; i < param.chapter.length+param.lecture.length; i++){ }}
                     {{~param.chapter :chapter:index}}
                         {{?chapter.index == i}}
-                            <li class="nav-hd">
+                            <li class="nav-hd" data-toggle="popover" data-content="{{=chapter.name || ''}}" title="{{=chapter.name || ''}}">
                                 <span class="dt">章<b class="icon-circle-white-large">{{=chapter.num}}</b></span>
                                 <span class="name">
                                 {{?chapter.name.length>7}}
@@ -190,6 +190,17 @@
                         {{??it.examPaperStatus == 'unfinish'}}">待答{{?}}</span> {{?it.type=='exam'}}试卷{{??it.type=='task'}}作业包{{?}}{{=it.num}} {{=it.name}} 共计 <span class="total">{{=it.examCount}}</span>{{?it.type=='exam'}}题{{??it.type=='task'}}个作业{{?}}，满分{{=it.fullScore}}分，建议{{?it.type=='exam'}}答题{{??it.type=='task'}}完成{{?}}时间为{{=it.examPaperTime}}分钟。</h2>
         <p class="muted">{{=it.examPaperIntro||''}}</p>
         <a class="btn btn-link" data-toggle="collapse" data-parent="#listExamPaper" href="#examPaper{{=it.num}}">收起<b class="caret"></b></a>
+        </div>
+<div id="navExams">
+                {{~it.listExam :exam1:index1}}
+                {{~it.listExam :exam:index}}
+                {{?index1 == exam.index}}
+                    <a class="num{{?exam.status != 'null'}} active"{{??}}" title="待答"{{?}} {{?exam.status == 'error'}}title="答错"{{??exam.status == 'success'}}title="答对"{{??exam.status == 'finish'}}title="答过"{{?}} href="#examStem{{=index1+1}}">
+                    {{=index1+1}}
+                    <i class="icon-circle-{{?exam.status == 'error'}}error{{??exam.status == 'success'}}success{{?}}"></i></a>
+                {{?}}
+                {{~}}
+                {{~}}
         </div>
         <form action="{{=it.action || '#'}}" post="post" id="formExam">
 			{{?it.listExam.length==0}}
@@ -487,7 +498,7 @@
                 </form>
             </div>
 			<div id="commentDiv">
-            <div class="hd">
+            <div class="hd" id="hd-comment">
                 <div class="tit-icon_bg"><i class="icon-white-info"></i></div>
                 <h5>全部评论</h5>
                 <div class="pages">
@@ -766,10 +777,10 @@ function downloadMater(attId,fileNetId){
 
  
 
-        $("#sidenav>li>a").popover({
+        $("[data-toggle='popover']").popover({
             trigger: "hover"
-        })
-                .click(function(e){
+        });
+        $("#sidenav>li>a").click(function(e){
                 	$(".uploadify").each(function(){
                 		$(this).uploadify('destroy'); 
                 	});
@@ -1162,6 +1173,8 @@ function downloadMater(attId,fileNetId){
           	                          			jalert_tips("回复成功");
           	                          		  }
                                     		});
+                                           $("body").animate({scrollTop:$("#hd-comment").offset().top - $("#pageHeader").height() - 60},400,"swing",function(){
+                                           });
                                         }
                                     });
                                     $("#replyComm").focus();
@@ -1737,17 +1750,8 @@ function downloadMater(attId,fileNetId){
                         tempData.successCount = count;
 
 
-                        $("#headToolsBar").html(examPaperStatusBarFn(tempData));
-                        //试题列表序号控制
-                        $("#navExams>.collapse-inner>.num").click(function(e){
-                            e.preventDefault();
-                            var $this = $(this);
-                            var id = $this.attr("href");
-                            $("html,body").animate({scrollTop: $(id).offset().top - $("#pageHeader").height() - 60},"fast","swing");
-                        })
-                                .tooltip({
-                                    placement: "bottom"
-                                });
+                        //$("#headToolsBar").html(examPaperStatusBarFn(tempData));
+                        
 
 						tempData.action = "submitExamOrTask";
                         tempData.bamId=bamId ;
@@ -1758,7 +1762,16 @@ function downloadMater(attId,fileNetId){
                         //tempData.startTime=date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                         tempData.startTime=date.getTime();
                         $this.html(examPaperDetailFn(tempData));
-
+                        //试题列表序号控制
+                        $("#navExams>.num").click(function(e){
+                            e.preventDefault();
+                            var $this = $(this);
+                            var id = $this.attr("href");
+                            $("html,body").animate({scrollTop: $(id).offset().top - $("#pageHeader").height() - 60},"fast","swing");
+                        });/* 
+                                .tooltip({
+                                    placement: "bottom"
+                                }); */
                         $this.find("[data-toggle='collapse']").click(function(e){
                         	var $this2 = $(this);
                         	$this2.attr("data-toggle","");
