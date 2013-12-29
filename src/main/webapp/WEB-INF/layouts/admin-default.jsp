@@ -68,6 +68,15 @@
                 </div>
 	        </div>
 	        </j:if>
+	        
+	        <j:if test="${fn:contains(currentUrl, '/updateUserInfo/')}">
+	        	<div class="page-header">
+                <a href="${ctx}/admin/user/list" class="backParent">
+                <span id="back">返回用户列表</span>
+               	</a>
+                <h4>修改信息</h4>
+	        </div> 
+	        </j:if>
   <sitemesh:body />
          </section>
 	</section>

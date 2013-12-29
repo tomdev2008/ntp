@@ -12,7 +12,12 @@
 </head>
 <body>
 
-       
+<div class="page-header">
+                <a href="${ctx}/admin/user/list" class="backParent">
+                <span id="back">返回用户列表</span>
+               </a>
+                <h4>重置密码</h4>
+	        </div>       
 <div class="page-body editingBody"> 
        <div class="section">
        		<form id="subForm" onsubmit="return checkSubmit();" action="${ctx}/admin/user/savePassword" method="post" class="reg_form form-horizontal">
@@ -21,7 +26,7 @@
         	<div class="control-group">
         		<label for="user" class="control-label">临时账号</label>
         		<div class="controls">
-                	<span class="inp-placeholder">${fdEmail}</span>
+                	<label  class="control-label">${fdEmail}</label>
                 </div>
         	</div>   
             <div class="control-group">
