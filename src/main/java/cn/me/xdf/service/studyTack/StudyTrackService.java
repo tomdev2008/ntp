@@ -25,12 +25,14 @@ import cn.me.xdf.model.course.Visitor;
 import cn.me.xdf.model.material.MaterialInfo;
 import cn.me.xdf.model.message.Message;
 import cn.me.xdf.model.message.MessageReply;
+import cn.me.xdf.model.organization.RoleEnum;
 import cn.me.xdf.model.organization.SysOrgPerson;
 import cn.me.xdf.model.process.AnswerRecord;
 import cn.me.xdf.model.process.SourceNote;
 import cn.me.xdf.model.process.TaskRecord;
 import cn.me.xdf.service.AccountService;
 import cn.me.xdf.service.SimpleService;
+import cn.me.xdf.service.UserRoleService;
 import cn.me.xdf.service.bam.BamCourseService;
 import cn.me.xdf.service.bam.process.AnswerRecordService;
 import cn.me.xdf.service.bam.process.SourceNodeService;
@@ -79,6 +81,7 @@ public class StudyTrackService extends SimpleService  {
 	
 	@Autowired
 	private AnswerRecordService answerRecordService;
+	
 	/**
 	 * 得到学习跟踪分页列表
 	 * 
@@ -232,17 +235,22 @@ public class StudyTrackService extends SimpleService  {
 	private Finder getStudyTrackByMyManaged(String orderType,String key){
 		Finder finder = Finder
 				.create("");
-		finder.append(" SELECT b.FDID bamId,c.FDID courseId,b.PRETEACHID preId,o1.fdid guiId from");
-		finder.append("  (");
-		finder.append(" select * from IXDF_NTP_BAM_SCORE  bamc ");
-		finder.append(" where (bamc.COURSEID in ");
-		finder.append(" (select course.fdId from IXDF_NTP_COURSE course where course.FDCREATORID='"+ShiroUtils.getUser().getId()+"'))");
-		finder.append("  or ");
-		finder.append(" (bamc.COURSEID in (select courseAuth.FDCOURSEID from IXDF_NTP_COURSE_AUTH courseAuth where courseAuth.Isediter='Y' and courseAuth.Fduserid='"+ShiroUtils.getUser().getId()+"'))"); 
-		finder.append("  )  b ");
-		finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_ELEMENT o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_ELEMENT o2 on b.PRETEACHID = o2.fdid");
-		finder.append("    where o2.fd_name like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
-		finder = addOrder(finder, orderType);
+		if(ShiroUtils.isAdmin()){
+			finder.append(" SELECT b.FDID bamId,b.courseid courseId,b.preteachid preId,b.guideteachid guiId from IXDF_NTP_BAM_SCORE b");
+			finder = addOrder(finder, orderType);
+		}else{
+			finder.append(" SELECT b.FDID bamId,c.FDID courseId,b.PRETEACHID preId,o1.fdid guiId from");
+			finder.append("  (");
+			finder.append(" select * from IXDF_NTP_BAM_SCORE  bamc ");
+			finder.append(" where (bamc.COURSEID in ");
+			finder.append(" (select course.fdId from IXDF_NTP_COURSE course where course.FDCREATORID='"+ShiroUtils.getUser().getId()+"'))");
+			finder.append("  or ");
+			finder.append(" (bamc.COURSEID in (select courseAuth.FDCOURSEID from IXDF_NTP_COURSE_AUTH courseAuth where courseAuth.Isediter='Y' and courseAuth.Fduserid='"+ShiroUtils.getUser().getId()+"'))"); 
+			finder.append("  )  b ");
+			finder.append("   left join IXDF_NTP_COURSE c on b.COURSEID = c.FDID left join SYS_ORG_ELEMENT o1 on b.GUIDETEACHID = o1.fdid left join SYS_ORG_ELEMENT o2 on b.PRETEACHID = o2.fdid");
+			finder.append("    where o2.fd_name like '%"+key+"%' or c.fdTitle like '%"+key+"%' ");
+			finder = addOrder(finder, orderType);
+		}
 		return finder;//bamCourseService.getPageBySql(finder, pageNo, pageSize);
 	}
 	
