@@ -167,7 +167,7 @@
     padding-left: 20px;}
 .mediaList ul{
     padding-top: 10px;}
-.mediaList ul li{cursor:move;position:relative;background-color:#FFF;color:#000;border-bottom:solid #dcdcdc 2px;
+.mediaList ul li{cursor:move;position:relative;background-color:#eff4f7;color:#000;border-bottom:solid #dcdcdc 2px;
     line-height:24px;height:24px;padding:17px 20px; margin-bottom: 10px;}
 .mediaList ul li .btn-ctrls{margin-left:16px;display:none;}
 .mediaList ul li:hover .btn-ctrls{display:inline-block;}

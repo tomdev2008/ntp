@@ -17,7 +17,7 @@
 .bar-tools-wrap .counting li{width:240px;text-align:center;float: left;height: 58px;}
 .bar-tools-wrap .counting li + li{border-left:solid #5d9fc2 1px;}
 .bar-tools-wrap .counting li i{width: 70px;height: 70px;background-image: url("../images/icon-home.png");background-repeat: no-repeat;}
-.bar-tools-wrap .counting li h2{font-weight:normal;margin:0;line-height:35px;font-size:30px;}
+.bar-tools-wrap .counting li h2{font-weight:normal;margin:0;line-height:35px;font-size:30px;color: #ffffff}
 .bar-tools-wrap .counting li span{display: inline-block;font-size: 12px;text-align: left}
 
 /*备课平台产品介绍*/
