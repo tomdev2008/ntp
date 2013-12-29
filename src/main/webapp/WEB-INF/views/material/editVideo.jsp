@@ -411,7 +411,7 @@ $(function(){
     $progress = $txt.prev(".progress").children(".bar"),
     $pct = $txt.children(".pct"),
     $countdown = $txt.children(".countdown"),
-	flag = true,pct,interval,timeOutAlert,countdown = 0,byteUped = 0;
+	flag = true,isShown = false,pct,interval={},timeOutAlert ={},countdown = 0,byteUped = 0;
 
 	$("#upMaterial").uploadify({
     'height' : 40,
@@ -431,7 +431,16 @@ $(function(){
     'onUploadSuccess' : function (file, data, Response) {
         if (Response) {
         	setTimeout(function(){
-        		timeOutAlert.modal("hide");
+       			var inl = setInterval(function(){
+       				if(timeOutAlert.hasClass("in")){
+       					timeOutAlert.modal("hide");
+       					console.log("hidden");
+       					isShown = true;
+       				} else {
+       					isShown = false;
+       				}
+       				isShown && clearInterval(inl);
+       			},500);
         		$countdown.text("00:00:00");
             	$progress.width("0");
             	$pct.text("0%");
@@ -467,7 +476,7 @@ $(function(){
    	    		},
    	    		tip: true,
    	    		tipTime: false
-    		});
+    		});    		
     	}
     	$progress.width(pct);
     	$pct.text(pct);
