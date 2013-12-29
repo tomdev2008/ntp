@@ -2,7 +2,9 @@
 <%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator"%>
 <%@ taglib prefix="j" uri="/WEB-INF/tld/formtag.tld"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <j:set name="ctx" value="${pageContext.request.contextPath}" />
+<j:set name="currentUrl" value="${pageContext.request.requestURI}" />
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html lang="zh_CN" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="zh_CN" class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -51,6 +53,7 @@
     </section>
     	 
 		<section class="w790 pull-right" id="rightCont">
+			<j:if test="${fn:endsWith(currentUrl, 'list')}">
 	        <div class="page-header bder2">
                 <span class="muted">我正在看：</span>
                  <j:if test="${active=='user'}">用户管理</j:if>
@@ -64,6 +67,7 @@
                     <a href="${ctx}/admin/user/list"><span class="muted">返回</span>系统管理<span class="muted">首页</span> <i class="icon-home icon-white"></i> </a>
                 </div>
 	        </div>
+	        </j:if>
   <sitemesh:body />
          </section>
 	</section>
