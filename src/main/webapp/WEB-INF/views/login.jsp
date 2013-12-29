@@ -43,7 +43,7 @@
             <button type="submit" id="loginSubmit"  class="btn btn-primary btn-login" type="button">登录</button>
             </p>
         </div>
-		<div class="login_intro">请使用您的集团邮箱账号及密码直接登录本平台，或者注册临时账号以保证快速访问。<br />您在登录或者注册过程中遇到任何问题，请直接&nbsp;<a href="mailto:yangyifeng@xdf.cn?subject=NTP使用问题&body=问题描述及截图如下：">联系我们</a>&nbsp;。</div>
+		<div class="login_intro">请使用您的集团邮箱账号及密码直接登录本平台，或者注册临时账号以保证快速访问。<br />您在登录或者注册过程中遇到任何问题，请直接&nbsp;<a href="mailto:yangyifeng@xdf.cn?subject=<%=java.net.URLEncoder.encode("NTP使用问题","gb2312")%>&body=<%=java.net.URLEncoder.encode("问题描述及截图如下：","gb2312")%>">联系我们</a>&nbsp;。</div>
 	</div>
   </form>
 </div>

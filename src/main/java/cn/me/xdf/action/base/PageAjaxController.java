@@ -106,7 +106,7 @@ public class PageAjaxController {
 				pageConfigService.delete(pageId);
 			}
 		}
-		updatePageOrder(ptype);
+		//updatePageOrder(ptype);
 
 	}
 
@@ -135,7 +135,7 @@ public class PageAjaxController {
 				}
 			}
 		}
-		updatePageOrder(ptype);
+		//updatePageOrder(ptype);
 
 	}
 	//更新顺序

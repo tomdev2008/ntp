@@ -368,7 +368,7 @@ $(function(){
   		$("#materialIntro").html("视频简介");
   		$("#back").html("返回视频列表");
   		$("#typeTxt").html("视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
-  		data_uploadIntro = "（支持绝大多数主流视频格式，建议小于10G）：成功上传的视频将会显示在下面视频列表中。";
+  		data_uploadIntro = "上传视频（支持绝大多数主流视频格式，建议小于10G）：成功上传的视频将会显示在下面视频列表中。";
   		$("#uploadIntro").html(data_uploadIntro);
   		uptype='*.wmv;*.wm;*.asf;*.asx;*.rm;*.rmvb;*.ra;*.ram;*.mpg;*.mpeg;*.mpe;*.vob;*.dat;*.mov;*.3gp;*.mp4;*.mp4v;*.m4v;*.mkv;*.avi;*.flv;*.f4v;*.mts;';
   		break;
@@ -510,7 +510,7 @@ $(function(){
 </script>
 <script type="text/javascript">
 $(function(){
-    $.Placeholder.init();
+    
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //初始化创建者
@@ -554,7 +554,20 @@ $(function(){
 		  }
 	  });
     
-    
+	if('${materialInfo.fdId}'==''){
+		if($("#fdType").val()=='01'){
+	  		$("#videoIntro").attr("placeholder","视频作者很懒,没有写视频简介。");
+		}
+		if($("#fdType").val()=='02'){
+			$("#videoIntro").attr("placeholder","音频作者很懒,没有写音频简介。");
+		}
+		if($("#fdType").val()=='04'){
+	    	$("#videoIntro").attr("placeholder","文档作者很懒,没有写文档简介。");
+	    }
+	    if($("#fdType").val()=='05'){
+	    	$("#videoIntro").attr("placeholder","幻灯片作者很懒,没有写幻灯片简介。");
+	    }
+	}
     $("#formEditDTotal").validate({
         submitHandler:saveMaterial
     });
@@ -641,6 +654,7 @@ $(function(){
 			$("#addUser").val("");
 		}
 	});
+    $.Placeholder.init();
 });
 function saveMaterial(){
 	if(!$("#formEditDTotal").valid()){
@@ -648,16 +662,16 @@ function saveMaterial(){
 	}
 	if($("#videoIntro").val()==""){
 		if($("#fdType").val()=='01'){
-	  		$("#videoIntro").val("视频作者很懒,没有写视频简介.");
+	  		$("#videoIntro").val("视频作者很懒,没有写视频简介。");
 		}
 		if($("#fdType").val()=='02'){
-			$("#videoIntro").val("音频作者很懒,没有写音频简介.");
+			$("#videoIntro").val("音频作者很懒,没有写音频简介。");
 		}
 		if($("#fdType").val()=='04'){
-	    	$("#videoIntro").val("文档作者很懒,没有写文档简介.");
+	    	$("#videoIntro").val("文档作者很懒,没有写文档简介。");
 	    }
 	    if($("#fdType").val()=='05'){
-	    	$("#videoIntro").val("幻灯片作者很懒,没有写幻灯片简介.");
+	    	$("#videoIntro").val("幻灯片作者很懒,没有写幻灯片简介。");
 	    }
 	} 
     var data = {

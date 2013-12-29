@@ -403,7 +403,6 @@
                 </div>
                 <div class="clearfix mt20" id="materialpf">
                     <div class="pull-left video-info">
-                        <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}名称  <span class="name" id="mediaName">{{=param.name}}</span></h5>
                         <p class="mediaIntro" id="mediaIntro">
                             {{=param.intro || ""}}
                         </p>
