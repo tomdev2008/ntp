@@ -965,12 +965,11 @@ public class CourseAjaxController {
 		finder.append("       ) ");
 		finder.append("   and course.fdStatus = '01' ");
 		finder.append("   and course.isAvailable = 'Y' ");
-		if(!type.equals("all")){
-			finder.append(" and course.fdcategoryid=:type " );
-			finder.setParam("type", type);
-		}	
 		if(StringUtil.isEmpty(type)){
-			finder.append(" and course.fdcategoryid is null " );
+			finder.append(" and (course.fdcategoryid is null or course.fdcategoryid='')" );
+		}else if(!type.equals("all")){
+			finder.append(" and course.fdcategoryid=:type" );
+			finder.setParam("type", type);
 		}	
 		finder.append("   order by course.fdCreateTime desc ");
 		Pagination pag=	courseService.getPageBySql(finder, pageNo, 30);
@@ -1086,11 +1085,14 @@ public class CourseAjaxController {
 		if(type.equals("all")){
 			finder.append(" where c.fdStatus=:fdStatus and c.isAvailable='Y' order by aver desc" );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
+		}else if(StringUtil.isEmpty(type)){
+			finder.append(" where c.isAvailable='Y' and c.fdStatus=:fdStatus  and (c.fdcategoryid is null or c.fdcategoryid='') order by aver desc" );
+			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 		}else{
-			finder.append(" where c.isAvailable='Y' and c.fdStatus=:fdStatus  and c.fdcategoryid=:type order by aver desc" );
+			finder.append(" where c.isAvailable='Y' and c.fdStatus=:fdStatus  and c.fdcategoryid=:type  order by aver desc" );
 			finder.setParam("fdStatus", Constant.COURSE_TEMPLATE_STATUS_RELEASE);
 			finder.setParam("type", type);
-		}		
+		}
 		Pagination pag=	courseService.getPageBySql(finder, pageNo, 30);
 		List<Map> courseInfos =  (List<Map>) pag.getList();
 		if(pag.getTotalPage()>=pageNo){
