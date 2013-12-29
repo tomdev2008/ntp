@@ -487,7 +487,7 @@
                 </form>
             </div>
 			<div id="commentDiv">
-            <div class="hd">
+            <div class="hd" id="hd-comment">
                 <div class="tit-icon_bg"><i class="icon-white-info"></i></div>
                 <h5>全部评论</h5>
                 <div class="pages">
@@ -1162,6 +1162,8 @@ function downloadMater(attId,fileNetId){
           	                          			jalert_tips("回复成功");
           	                          		  }
                                     		});
+                                           $("body").animate({scrollTop:$("#hd-comment").offset().top - $("#pageHeader").height() - 60},400,"swing",function(){
+                                           });
                                         }
                                     });
                                     $("#replyComm").focus();
