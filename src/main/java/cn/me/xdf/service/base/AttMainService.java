@@ -1,11 +1,18 @@
 package cn.me.xdf.service.base;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import cn.me.xdf.api.bokecc.config.Config;
+import cn.me.xdf.api.bokecc.util.APIServiceFunction;
+import cn.me.xdf.api.bokecc.util.DemoUtil;
 import cn.me.xdf.common.utils.MyBeanUtils;
 import cn.me.xdf.task.AttMainTask;
 import org.apache.commons.collections.CollectionUtils;
+import org.dom4j.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +54,37 @@ public class AttMainService extends SimpleService {
         List<AttMain> attMains = findByCriteria(AttMain.class, Value.eq("playCode", playCode));
         for (AttMain attMain : attMains) {
             attMain.setFlag(1);
+            covertVideoToFlag(attMain);
             update(attMain);
+        }
+    }
+
+    private void covertVideoToFlag(AttMain attMain) {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("userid", Config.userid);
+        try {
+            paramsMap.put("videoid", attMain.getPlayCode());
+            paramsMap.put("userid", Config.userid);
+            String title = attMain.getFdFileName();
+            String tag = "NTP";
+            String description = attMain.getFdFileName();
+            paramsMap.put("title", new String(title.getBytes("ISO-8859-1"), "UTF-8"));
+            paramsMap.put("tag", new String(tag.getBytes("ISO-8859-1"), "UTF-8"));
+            paramsMap.put("description", new String(description.getBytes("ISO-8859-1"), "UTF-8"));
+            paramsMap.put("categoryid", "0FB948A49BFC3E78");
+
+            long time = System.currentTimeMillis();
+            String salt = Config.key;
+            String requestURL = APIServiceFunction.createHashedQueryString(paramsMap, time, salt);
+            String responsestr = APIServiceFunction.HttpRetrieve(Config.api_updateVideo + "?" + requestURL);
+            Document doc = DemoUtil.build(responsestr);
+            String videoId = doc.getRootElement().elementText("id");
+            if (videoId != null) {
+                attMain.setFlag(1);
+                update(attMain);
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 
