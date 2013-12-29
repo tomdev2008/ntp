@@ -25,8 +25,6 @@ function delById(fdId,fdType){
 	});
 }
 </script>
-<form name="filterForm">
-</form>
 <div class="page-body editingBody">
 <div class="page-header">
                 
@@ -119,6 +117,7 @@ function delById(fdId,fdType){
 
                 </form>
             </div>
-
+<form name="filterForm">
+</form>
 </body>
 </html>
