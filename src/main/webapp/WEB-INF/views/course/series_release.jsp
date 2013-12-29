@@ -249,7 +249,7 @@
            	 $("#authorImg").attr("src","${ctx }/resources/images/face-placeholder.png");
             }
        		//作者简介
-          	 $("#authorDesc2").html(result.author.authorDesc);
+          	 $("#authorDesc3").html(result.author.authorDesc);
           	
           }
          //最新课程列表点击
