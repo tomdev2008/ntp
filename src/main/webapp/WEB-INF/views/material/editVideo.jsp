@@ -368,7 +368,7 @@ $(function(){
   		$("#materialIntro").html("视频简介");
   		$("#back").html("返回视频列表");
   		$("#typeTxt").html("视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
-  		data_uploadIntro = "（支持绝大多数主流视频格式，建议小于10G）：成功上传的视频将会显示在下面视频列表中。";
+  		data_uploadIntro = "上传视频（支持绝大多数主流视频格式，建议小于10G）：成功上传的视频将会显示在下面视频列表中。";
   		$("#uploadIntro").html(data_uploadIntro);
   		uptype='*.wmv;*.wm;*.asf;*.asx;*.rm;*.rmvb;*.ra;*.ram;*.mpg;*.mpeg;*.mpe;*.vob;*.dat;*.mov;*.3gp;*.mp4;*.mp4v;*.m4v;*.mkv;*.avi;*.flv;*.f4v;*.mts;';
   		break;
