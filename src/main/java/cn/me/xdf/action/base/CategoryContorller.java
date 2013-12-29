@@ -74,7 +74,7 @@ public class CategoryContorller {
 		}
 		category.setFdName(name);
 		category.setFdDescription(descrip);
-		category.setFdOrder(courseCategoryService.findAll().size()+1);
+		category.setFdOrder(courseCategoryService.getMaxOrder()+1);
 		courseCategoryService.save(category);
 		return "redirect:/admin/category/list";
 	}

@@ -61,4 +61,16 @@ public class CourseCategoryService extends BaseService{
 			}
 		}
 	}
+	
+	public int getMaxOrder(){
+		Finder finder = Finder
+				.create("from CourseCategory category order by category.fdOrder desc");		
+		List<CourseCategory> list = (List<CourseCategory>) getPage(finder, 1,1).getList();
+		if(list.size()==0){
+			return 0;
+		}else{
+			return list.get(0).getFdOrder();
+		}
+		
+	}
 }
