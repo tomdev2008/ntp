@@ -111,7 +111,7 @@
                       <h2 id="seriesTitle"></h2>
                     </div>
                      <p id="seriesAuthor"></p>
-                    
+                     <p id="authorDesc"></p>
                     <!--加密类型时 start
                     <form id="formPassword" action="#">
                         <input type="password" placeholder="输入授权密码" class="password" name="password" id="password" />
@@ -157,7 +157,7 @@
                         </p>
                     </div>
                       <div class="ft">
-                    	<span id="authorDesc"></span>
+                    	<span id="authorDesc3"></span>
                     </div>
                 </div>
 
@@ -219,6 +219,7 @@
          //系列作者
          if(result.author!=null){
         	 $("#seriesAuthor").html(result.author.authorName);
+        	 $("#authorDesc").html(result.author.authorDesc);
          }
          //系列中部信息
          	//系列作者
@@ -235,7 +236,7 @@
          }
          //系列作者信息
          
-         if(result.author!=null){authorDesc
+         if(result.author!=null){
         	 $("#seriesAuthor3").html(result.author.authorName);
        			//头像信息
           	 if(result.author.imgUrl!=""){
@@ -248,7 +249,7 @@
            	 $("#authorImg").attr("src","${ctx }/resources/images/face-placeholder.png");
             }
        		//作者简介
-          	 $("#authorDesc").html(result.author.authorDesc);
+          	 $("#authorDesc2").html(result.author.authorDesc);
           	
           }
          //最新课程列表点击

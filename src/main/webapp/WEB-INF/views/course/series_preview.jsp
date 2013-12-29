@@ -94,7 +94,7 @@
                       <h2 id="seriesTitle"></h2>
                     </div>
                      <p id="seriesAuthor"></p>
-                    
+                     <p id="authorDesc"></p>
                     <!--加密类型时 start
                     <form id="formPassword" action="#">
                         <input type="password" placeholder="输入授权密码" class="password" name="password" id="password" />
@@ -137,6 +137,8 @@
                         <div class="faceWrap"><img id="authorImg" src="" class="face img-polaroid" alt=""/></div>
                         <p>作者</p>
                         <p class="muted" id="seriesAuthor3">
+                        </p>
+                         <p class="muted" id="authorDesc3">
                         </p>
                     </div>
                 </div>
@@ -183,6 +185,7 @@
          //系列作者
          if(result.author!=null){
         	 $("#seriesAuthor").html(result.author.authorName);
+        	 $("#authorDesc").html(result.author.authorDesc);
          }
          //系列中部信息
          	//系列作者
@@ -200,6 +203,7 @@
          //系列作者名称头像信息
          if(result.author!=null){
         	 $("#seriesAuthor3").html(result.author.authorName);
+        	 $("#authorDesc3").html(result.author.authorDesc);
          }
          //头像信息
          if(result.author!=null){
