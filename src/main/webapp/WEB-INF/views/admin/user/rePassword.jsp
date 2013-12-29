@@ -11,6 +11,35 @@
 
 </head>
 <body>
+
+       
+<div class="page-body editingBody"> 
+       <div class="section">
+       		<form id="subForm" onsubmit="return checkSubmit();" action="${ctx}/admin/user/savePassword" method="post" class="reg_form form-horizontal">
+           <input type="hidden" id="fdId" name="fdId" value="${fdId}"/>
+        	<p class="muted">请确认您要修改的新密码。</p>
+        	<div class="control-group">
+        		<label for="user" class="control-label">临时账号</label>
+        		<div class="controls">
+                	<span class="inp-placeholder">${fdEmail}</span>
+                </div>
+        	</div>   
+            <div class="control-group">
+        		<label for="newPwd" class="control-label">密码</label>
+        		<div class="controls">
+                	 <input id="newPwd" type="password" name="fdPassword"  onclick="clearCss(this);" onblur="checkNewPwd();"  class="span4" placeholder="请填写密码">
+                    <!-- <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写密码</span> -->
+                </div>
+        	</div>     
+            <div class="control-group" >
+            	<div class="controls">
+                	<button type="submit" id="submitForm"  class="submit btn btn-primary btn-large" >确认修改</button>
+                </div>
+            </div>
+        </form>
+       </div>
+          
+</div>
 <script type="text/javascript">
 $.Placeholder.init();
 
@@ -43,30 +72,5 @@ function checkSubmit(){
 		}
 }
 </script>
-       
-       <div class="page-body"> 
-          <form id="subForm" onsubmit="return checkSubmit();" action="${ctx}/admin/user/savePassword" method="post" class="reg_form form-horizontal">
-           <input type="hidden" id="fdId" name="fdId" value="${fdId}"/>
-        	<p class="reg_form-intro">请确认您要修改的新密码。</p>
-        	<div class="control-group" style="height: 40px;">
-        		<label for="user" class="control-label">临时账号</label>
-        		<div class="controls">
-                	<span class="inp-placeholder">${fdEmail}</span>
-                </div>
-        	</div>   
-            <div class="control-group" style="height: 40px;">
-        		<label for="newPwd" class="control-label">密码<span class="text-error">*</span></label>
-        		<div class="controls">
-                	 <input id="newPwd" type="password" name="fdPassword"  onclick="clearCss(this);" onblur="checkNewPwd();"  class="span4" placeholder="请填写密码">
-                    <span class="help-inline"><b class="icon-disc-bg warning">!</b>请正确填写密码</span>
-                </div>
-        	</div>     
-            <div class="control-group" style="height: 40px;">
-            	<div class="controls">
-                	<button type="submit" id="submitForm"  class="submit btn btn-primary btn-large" >确认修改</button>
-                </div>
-            </div>
-        </form>
-        </div>
 </body>
 </html>

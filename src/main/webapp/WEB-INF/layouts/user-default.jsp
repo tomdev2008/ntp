@@ -29,6 +29,7 @@
 <![endif]-->
 <link rel="stylesheet" href="${ctx}/resources/css/global.css" />
 <link href="${ctx}/resources/css/settings.css" rel="stylesheet" type="text/css">
+<link href="${ctx}/resources/css/editProfile.css" rel="stylesheet" type="text/css">
 <script src="${ctx}/resources/js/jquery.js" type="text/javascript"></script>
 
 <sitemesh:head />
