@@ -102,7 +102,7 @@
 						{{??}}
 							{{=it.lectureName}}
 						{{?}}
-                <button class="btn btn-success{{?!it.isOptional || it.status == "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
+                <button class="btn{{?it.isOptional || it.status == "pass"}} btn-success{{?}}{{? it.status == "pass" || !it.isOptional}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
                <i class="icon-right"></i>
                   <span class="tit">
 						{{?it.isOptional}}跳到此节{{??}}学习通过{{?}}

@@ -44,7 +44,8 @@
 .page-header .hd> .btn.disabled span{color: #9a9a9a;}
 .page-header h1{font-size:16px;font-weight:normal;line-height:36px;text-align:center;border-bottom: solid #dcdcdc 2px;
     background-color: #fff;height:36px;margin:0 5px 0 0;padding:12px 0 10px;width:640px;float: left;}
-.page-header h1 .btn-success{padding: 7px 12px;vertical-align: top;margin-left: 5px;}
+.page-header h1 .btn{padding: 7px 12px;vertical-align: top;margin-left: 5px;}
+.page-header h1 .btn-success{}
 .page-header .hd>h1 + .btn{margin-right: 0;}
 .page-header.affix{width: 790px;z-index: 3;}
 .page-header.affix .hd{margin:0;background-color: #FFFFFF;border: solid #4491bb 1px;}
@@ -160,7 +161,8 @@
 .mediaToolbar .btn-success{position: absolute;right: 25px;top: 10px;padding: 7px 12px;}
 .mediaToolbar .playCount{border-left: solid #dcdcdc 1px;padding: 3px 15px;}
 .mediaToolbar .playCount .num{font-size: 18px;font-weight: normal}
-.btn-success .icon-right{background-color: #307c48;border-radius: 10px;margin-right: 5px;}
+.btn .icon-right{background-color: #cccccc;border-radius: 10px;margin-right: 5px;}
+.btn-success .icon-right{background-color: #307c48;}
 .mediaList{margin: 5px 0 0 -13px;border-top:solid #dcdcdc 1px;padding: 10px 25px 0;}
 .mediaList>li>a{width: 60px;background-color: #cccccc;padding: 7px 0;position:relative;margin:0 0 15px 13px;color:#ffffff;text-align:center;border: solid #adadad 1px;
     -webkit-border-radius: 2px;

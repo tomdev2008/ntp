@@ -411,7 +411,7 @@ $(function(){
     $progress = $txt.prev(".progress").children(".bar"),
     $pct = $txt.children(".pct"),
     $countdown = $txt.children(".countdown"),
-	flag = true,isShown = false,pct,interval={},timeOutAlert ={},countdown = 0,byteUped = 0;
+	flag = true,isShown = true,isResponse = false,pct,interval={},timeOutAlert ={},countdown = 0,byteUped = 0;
 
 	$("#upMaterial").uploadify({
     'height' : 40,
@@ -430,17 +430,7 @@ $(function(){
     'onUploadStart' : function (file) {},
     'onUploadSuccess' : function (file, data, Response) {
         if (Response) {
-        	setTimeout(function(){
-       			var inl = setInterval(function(){
-       				if(timeOutAlert.hasClass("in")){
-       					timeOutAlert.modal("hide");
-       					console.log("hidden");
-       					isShown = true;
-       				} else {
-       					isShown = false;
-       				}
-       				isShown && clearInterval(inl);
-       			},500);
+        	isResponse = true;
         		$countdown.text("00:00:00");
             	$progress.width("0");
             	$pct.text("0%");
@@ -456,7 +446,6 @@ $(function(){
                 if($("#videoUrl").val()!=null && $("#videoUrl").val()!=""){
                 	$("#videoUrl").val("");//清空视频链接
                 }
-        	},1500);
         } 
     },
     'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
@@ -473,6 +462,21 @@ $(function(){
    	    			timeOutAlert = modalBody.html('<p align="center"><i class="icon-loading"></i></p>\
    	     	    		<p align="center">服务器正在存储文件，请耐心等候...</p>')
    	     	    		.parent(".modal");
+   	    			timeOutAlert.one("shown",function(){
+   	    				isShown = true;
+   	            		console.log("shown1,"+new Date());
+   	            		if(isResponse){ 
+   	            			setTimeout(function(){
+	   	            			timeOutAlert.modal("hide");
+	   	            			isResponse = false;
+	   	            		},1000);
+   	            		} else{
+   	            			var itl = setInterval(function(){
+	   	            			timeOutAlert.modal("hide");
+	   	            			clearInterval(itl);
+	   	            		},500);
+   	            		}
+   	            	});
    	    		},
    	    		tip: true,
    	    		tipTime: false
