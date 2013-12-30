@@ -115,7 +115,7 @@
                     $.post($('#ctx').val()+"/ajax/series/saveSeriesCourse",{
                     	phasesId:opt.id,
                     	phaseTitle:$("#seriesTitle").val(),
-                        sectionsIntro: $("#sectionsIntro").val()==""?"系列作者很拦,没有写阶段说明":$("#sectionsIntro").val(),
+                        sectionsIntro: $("#sectionsIntro").val()==""?"系列作者很懒,没有写阶段说明":$("#sectionsIntro").val(),
                         mediaList:JSON.stringify(listArr)
                     })
                         .success(function(){

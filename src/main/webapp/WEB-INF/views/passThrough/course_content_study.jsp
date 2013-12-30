@@ -403,6 +403,7 @@
                 </div>
                 <div class="clearfix mt20" id="materialpf">
                     <div class="pull-left video-info">
+ 						 <h5><span class="name" id="mediaName">{{=param.name}}</span></h5>
                         <p class="mediaIntro" id="mediaIntro">
                             {{=param.intro || ""}}
                         </p>
