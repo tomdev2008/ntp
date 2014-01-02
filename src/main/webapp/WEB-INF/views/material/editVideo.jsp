@@ -411,7 +411,7 @@ $(function(){
     $progress = $txt.prev(".progress").children(".bar"),
     $pct = $txt.children(".pct"),
     $countdown = $txt.children(".countdown"),
-	flag = true,isShown = true,isResponse = false,pct,interval={},timeOutAlert ={},countdown = 0,byteUped = 0;
+    intervalSpeed={},isResponse = false,countdown = 0,byteUped = 0;
 
 	$("#upMaterial").uploadify({
     'height' : 40,
@@ -449,39 +449,35 @@ $(function(){
         } 
     },
     'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
-    	pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
     	byteUped = bytesUploaded;
-    	if(flag){
-    		interval = setInterval(uploadSpeed,100);
-    		flag = false;
+    	if(bytesUploaded == 0){
+    		var pct="0%";
+    		countdown = 0;
+    		intervalSpeed = setInterval(uploadSpeed,100);
+    		isResponse = false;
     	}
     	if(bytesUploaded == bytesTotal){
-    		clearInterval(interval);
+    		clearInterval(intervalSpeed);
     		$.fn.jalert({
    	    		content: function(modalBody){
-   	    			timeOutAlert = modalBody.html('<p align="center"><i class="icon-loading"></i></p>\
+   	    			var timeOutModal = modalBody.html('<p align="center"><i class="icon-loading"></i></p>\
    	     	    		<p align="center">服务器正在存储文件，请耐心等候...</p>')
    	     	    		.parent(".modal");
-   	    			timeOutAlert.one("shown",function(){
-   	    				isShown = true;
-   	            		console.log("shown1,"+new Date());
-   	            		if(isResponse){ 
-   	            			setTimeout(function(){
-	   	            			timeOutAlert.modal("hide");
-	   	            			isResponse = false;
+   	    			var itl = setInterval(function(){
+   	    				if(isResponse && timeOutModal.hasClass("in")){ 
+   	    					clearInterval(itl);
+	            			setTimeout(function(){
+	            				timeOutModal.modal("hide");
+	            				console.log("hide,"+new Date());
 	   	            		},1000);
-   	            		} else{
-   	            			var itl = setInterval(function(){
-	   	            			timeOutAlert.modal("hide");
-	   	            			clearInterval(itl);
-	   	            		},500);
-   	            		}
-   	            	});
+	            		} 
+	            	},500);
    	    		},
    	    		tip: true,
    	    		tipTime: false
     		});    		
     	}
+    	pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
     	$progress.width(pct);
     	$pct.text(pct);
     	countdown>0 && $countdown.text(secTransform((bytesTotal-bytesUploaded)/countdown*10));
