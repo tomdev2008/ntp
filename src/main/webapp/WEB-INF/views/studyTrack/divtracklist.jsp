@@ -107,6 +107,10 @@ function refreshTrackList(type,pageNo,pageSize,order){
 			chk_value.push($(this).attr("data-fdid"));
 		});
 		var serach = $("#serach").val();
+		if(chk_value.length==0){
+			jalert_tips("没有要导出的数据");
+			return false;
+		}
 		window.location.href="${ctx}/common/exp/getExpStudyTrack?modelIds="+chk_value+"&selectType="+type+"&key="+serach+"&order="+order+"&isAll="+isAll;
 	});
 	$("#pageTop").html(pageTopFn(pageDate));
