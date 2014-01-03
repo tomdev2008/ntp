@@ -326,15 +326,18 @@ public class CourseAjaxController {
 				// 学习目标
 				String learnObjectives = course.getFdLearnAim() == null ? ""
 						: course.getFdLearnAim();
-				map.put("learnObjectives", buildString(learnObjectives));
+				map.put("learnObjectives", learnObjectives);
+				map.put("learnObjectiveslist", buildString(learnObjectives));
 				// 建议群体
 				String suggestedGroup = course.getFdProposalsGroup() == null ? ""
 						: course.getFdProposalsGroup();
-				map.put("suggestedGroup", buildString(suggestedGroup));
+				map.put("suggestedGroup", suggestedGroup);
+				map.put("suggestedGrouplist", buildString(suggestedGroup));
 				// 课程要求
 				String courseRequirements = course.getFdDemand() == null ? ""
 						: course.getFdDemand();
-				map.put("courseRequirements", buildString(courseRequirements));
+				map.put("courseRequirements", courseRequirements);
+				map.put("courseRequirementslist", buildString(courseRequirements));
 			}
 		}else{
 			//默认设置创建者为作者

@@ -253,7 +253,7 @@ rows="4">{{=it.authorDescrip || ''}}</textarea>
 
 it.learnObjectives || '' }}" />
 					<ul class="list_alert nav">						
-						{{~ it.learnObjectives :obj:index}}
+						{{~ it.learnObjectiveslist :obj:index}}
 							 {{#def.item:obj}}
 						{{~}}					  
 					</ul>
@@ -263,7 +263,7 @@ it.learnObjectives || '' }}" />
 
 it.suggestedGroup || '' }}" />
 					<ul class="list_alert nav">						
-						{{~ it.suggestedGroup :obj:index}}
+						{{~ it.suggestedGrouplist :obj:index}}
 							 {{#def.item:obj}}
 						{{~}}					  
 					</ul>
@@ -273,7 +273,7 @@ it.suggestedGroup || '' }}" />
 
 it.courseRequirements || '' }}" />
 					<ul class="list_alert nav">						
-						{{~ it.courseRequirements :obj:index}}
+						{{~ it.courseRequirementslist :obj:index}}
 							 {{#def.item:obj}}
 						{{~}}					  
 					</ul>
