@@ -71,9 +71,9 @@ public class AttMainService extends SimpleService {
             String title = attMain.getFdFileName();
             String tag = "NTP";
             String description = attMain.getFdFileName();
-            paramsMap.put("title", new String(title.getBytes("ISO-8859-1"), "UTF-8"));
-            paramsMap.put("tag", new String(tag.getBytes("ISO-8859-1"), "UTF-8"));
-            paramsMap.put("description", new String(description.getBytes("ISO-8859-1"), "UTF-8"));
+            paramsMap.put("title", title);
+            paramsMap.put("tag", tag);
+            paramsMap.put("description", description);
             paramsMap.put("categoryid", "0FB948A49BFC3E78");
 
             long time = System.currentTimeMillis();
@@ -86,7 +86,7 @@ public class AttMainService extends SimpleService {
                 attMain.setFlag(1);
                 update(attMain);
             }
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
