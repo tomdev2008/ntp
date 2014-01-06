@@ -226,6 +226,10 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 		SourceNote sourceNote = sourceNodeService.getSourceNote(materialId, catalogId, ShiroUtils.getUser().getId());
 		if(sourceNote==null){
 			return null;
+		}else{
+			if(Constant.TASK_STATUS_FINISH.equals(sourceNote.getFdStatus())){
+				return false;
+			}
 		}
 		//素材中的作业
 		List<Task> taskList = materialInfo.getTasks();
@@ -235,8 +239,7 @@ public class MaterialTaskService extends SimpleService implements ISourceService
 		for(Task task:taskList){
 			for (TaskRecord taskRecord : taskRecordList) {
 				if(taskRecord.getFdTaskId().equals(task.getFdId())){
-					score += taskRecord.getFdScore();	
-					
+					score += taskRecord.getFdScore()==null?0:taskRecord.getFdScore();	
 				}
 			}
 		}

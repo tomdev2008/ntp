@@ -967,9 +967,12 @@
 			 * $("#rightCont").html(basicInfoFn(data));//ajax 成功后删除
 			 */
 			$("#formBasicInfo").validate();	
-			$("#formBasicInfo").find(".btns-radio>.btn").on("click",function(){
+			$("#formBasicInfo").find("#btns-radio-sectionOrder>.btn").on("click",function(){
                 $("#sectionOrder").val(this.id);
-            });		
+            });
+			$("#formBasicInfo").find("#btns-radio-isCompulsoryCourse>.btn").on("click",function(){
+                $("#isCompulsoryCourse").val(this.id);
+            });
 			// 添加关键词事件
 			$("#formBasicInfo .keywordWrap>.btn-add").bind("click",function(e){
 				e.preventDefault();

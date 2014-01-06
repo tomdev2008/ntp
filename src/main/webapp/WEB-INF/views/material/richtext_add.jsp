@@ -171,7 +171,12 @@
                     <section class="section">
                         <label>权限设置</label>
                         <ul class="nav nav-pills">
-                        <c:if test="${materialInfo.isPublish!=false}">
+                         <c:if test="${materialInfo.isPublish==null}">
+                            <li><a data-toggle="tab" href="#open">公开</a></li>
+                            <li class="active"><a data-toggle="tab" href="#encrypt">加密</a></li>
+                            <input type="hidden" id="permission" name="permission" value="encrypt">
+                         </c:if>
+                        <c:if test="${materialInfo.isPublish==true}">
                             <li class="active"><a data-toggle="tab" href="#open">公开</a></li>
                             <li><a data-toggle="tab" href="#encrypt">加密</a></li>
                             <input type="hidden" id="permission" name="permission" value="open">
@@ -183,7 +188,7 @@
                          </c:if>
                         </ul>
                         <div class="tab-content">
-                          <c:if test="${materialInfo.isPublish!=false}">
+                          <c:if test="${materialInfo.isPublish==true}">
                              <div class="tab-pane active" id="open">
                                 	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
                              </div>
@@ -213,7 +218,21 @@
                                 </div>
                             </div>
                           </c:if>
-                            
+                             <c:if test="${materialInfo.isPublish==null}">
+                             <div class="tab-pane" id="open">
+                                	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
+                             </div>
+                             <div class="tab-pane active" id="encrypt">
+                                <table class="table table-bordered">
+                                    <thead><tr><th>授权用户</th><th>可用</th>
+                                     <th>编辑</th><th>删除</th></tr></thead>
+                                    <tbody id="list_user"></tbody>
+                                </table>
+                                <div class="pr">
+                                    <input type="text" id="addUser" class="autoComplete input-block-level" placeholder="请输入人名、邮箱、机构或者部门查找用户">
+                                </div>
+                            </div>
+                          </c:if>
                         </div>
                     </section>
                     <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
@@ -411,7 +430,7 @@ function saveMaterial(){
         videoName: $("#videoName").val(),
         fdId: $("#fdId").val(),
         videoUrl: $("#videoUrl").val(),
-        videoIntro: $("#videoIntro").val()==""?"在线创作的作者很懒,没有写简介.":$("#videoIntro").val(),
+        videoIntro: $("#videoIntro").val()==""?"在线创作的作者很懒，没有写简介。":$("#videoIntro").val(),
         author: $("#author").val(),
         authorIntro: $("#authorIntro").val(),
         permission:$("#permission").val(),

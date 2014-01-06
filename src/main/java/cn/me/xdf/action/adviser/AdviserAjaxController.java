@@ -320,7 +320,9 @@ public class AdviserAjaxController {
         for (int i = 0; i < fdIds.length; i++) {
             List<AttMain> attMains = adviserService.findNotesAtts(fdIds[i]);
             for (AttMain attMain : attMains) {
-            	attMainList.add(attMain.getFdId());
+            	if(StringUtil.isNotBlank(attMain.getFileNetId())){
+            		attMainList.add(attMain.getFdId());
+            	}
 			}
         }
         Map attmap = new HashMap();
@@ -425,7 +427,7 @@ public class AdviserAjaxController {
 			List<AttMain> attMains = attMainService.getAttMainsByModelIdAndModelName(taskRecord.getFdId(), TaskRecord.class.getName());
 			if(attMains!=null&&!attMains.isEmpty()){
 				for (AttMain attMain : attMains) {
-					if(attMain!=null){
+					if(attMain!=null&&StringUtil.isNotBlank(attMain.getFileNetId())){
 						attAll.add(attMain.getFdId());
 					}
 				}

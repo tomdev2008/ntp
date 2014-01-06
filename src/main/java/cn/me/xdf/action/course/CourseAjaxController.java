@@ -154,6 +154,7 @@ public class CourseAjaxController {
 				map.put("courseTit", course.getFdTitle());
 				map.put("subTit", course.getFdSubTitle());
 				map.put("sectionOrder", course.getIsOrder());
+				map.put("isCompulsoryCourse", course.getIsCompulsoryCourse());
 				if(course.getFdPrice()!=null){
 					String fdPrice = new java.text.DecimalFormat("0.00").format(course.getFdPrice());
 					map.put("fdPrice", fdPrice);
@@ -206,6 +207,8 @@ public class CourseAjaxController {
 		SysOrgPerson sysOrgPerson=accountService.load(ShiroUtils.getUser().getId());
 		//创建时间
 		Date createdate=new Date();
+		// 获取课程必修选修
+		String isCompulsoryCourse = request.getParameter("isCompulsoryCourse");
 		
 		Map map = new HashMap();
 		CourseInfo course = new CourseInfo();
@@ -224,6 +227,7 @@ public class CourseAjaxController {
 				course.setIsAvailable(true);
 				course.setIsPublish(false);
 				course.setIsOrder(Boolean.valueOf(sectionOrder));
+				course.setIsCompulsoryCourse(Boolean.valueOf(isCompulsoryCourse));
 				// 将分类保存到课程中
 				if (StringUtil.isNotEmpty(courseType)) {
 					CourseCategory category = courseCategoryService
@@ -241,6 +245,7 @@ public class CourseAjaxController {
 				course.setFdTitle(courseTitle);
 				course.setFdSubTitle(subTitle);
 				course.setIsOrder(Boolean.valueOf(sectionOrder));
+				course.setIsCompulsoryCourse(Boolean.valueOf(isCompulsoryCourse));
 				// 将分类保存到课程中
 				if (StringUtil.isNotEmpty(courseType)) {
 					CourseCategory category = courseCategoryService
@@ -264,6 +269,7 @@ public class CourseAjaxController {
 			course.setIsAvailable(true);
 			course.setIsPublish(false);
 			course.setIsOrder(Boolean.valueOf(sectionOrder));
+			course.setIsCompulsoryCourse(Boolean.valueOf(isCompulsoryCourse));
 			// 将分类保存到课程中
 			if (StringUtil.isNotEmpty(courseType)) {
 				CourseCategory category = courseCategoryService.get(courseType);
@@ -326,15 +332,18 @@ public class CourseAjaxController {
 				// 学习目标
 				String learnObjectives = course.getFdLearnAim() == null ? ""
 						: course.getFdLearnAim();
-				map.put("learnObjectives", buildString(learnObjectives));
+				map.put("learnObjectives", learnObjectives);
+				map.put("learnObjectiveslist", buildString(learnObjectives));
 				// 建议群体
 				String suggestedGroup = course.getFdProposalsGroup() == null ? ""
 						: course.getFdProposalsGroup();
-				map.put("suggestedGroup", buildString(suggestedGroup));
+				map.put("suggestedGroup", suggestedGroup);
+				map.put("suggestedGrouplist", buildString(suggestedGroup));
 				// 课程要求
 				String courseRequirements = course.getFdDemand() == null ? ""
 						: course.getFdDemand();
-				map.put("courseRequirements", buildString(courseRequirements));
+				map.put("courseRequirements", courseRequirements);
+				map.put("courseRequirementslist", buildString(courseRequirements));
 			}
 		}else{
 			//默认设置创建者为作者
@@ -948,19 +957,19 @@ public class CourseAjaxController {
 		finder.append("    on (course.fdId = cpa.fdcourseid and cpa.fduserid ='"+userId+"') ");
 		finder.append(" where ( ");
 		finder.append("       ((course.isPublish = 'Y' or (course.fdPassword is not null or course.fdPassword != '')) and ");
-		finder.append("         (course.fdId in  ");
+		finder.append("         ((course.fdId in  ");
 		finder.append("                      (select ga.fdCourseId from IXDF_NTP_COURSE_GROUP_AUTH ga  ");
 		finder.append("                      where ga.fdgroupid in  ");
-		finder.append("                           （select ga.fdgroupid from sys_org_group_element soge ,sys_org_element soe1org,sys_org_element soe2dep,sys_org_element soe3per ");
+		finder.append("                           (select ga.fdgroupid from sys_org_group_element soge ,sys_org_element soe1org,sys_org_element soe2dep,sys_org_element soe3per ");
 		finder.append("                            where ga.fdgroupid = soge.fd_groupid and (soe1org.fdid = soe2dep.fd_parentid and soe2dep.fdid = soe3per.fd_parentid and soe3per.fdid='"+userId+"' ) and ( soge.fd_elementid = soe1org.fdid or  soge.fd_elementid = soe3per.fdid or  soge.fd_elementid = soe2dep.fdid ) ");
-		finder.append("                            ） ");
+		finder.append("                            ) ");
 		finder.append("                       ) ");
 		finder.append("          )  ");
 		finder.append("          or ");
 		finder.append("          ( ");
 		finder.append("          course.fdId not in( select ga2.fdCourseId from IXDF_NTP_COURSE_GROUP_AUTH ga2 ) ");
 		finder.append("         ) ");
-		finder.append("       ) ");
+		finder.append("       )) ");
 		finder.append("       or (cpa.fduserid = '"+userId+"') ");
 		finder.append("       ) ");
 		finder.append("   and course.fdStatus = '01' ");

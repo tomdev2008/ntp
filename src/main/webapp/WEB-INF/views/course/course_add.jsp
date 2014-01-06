@@ -175,7 +175,7 @@ level" value="{{=it.courseTit || ''}}"  />
                         <label for="sectionOrder">章节顺序</label>
                         <input name="sectionOrder" id="sectionOrder" value="{{=it.sectionOrder||true}}" type="hidden">
                         <label for="sectionOrder"></label>
-						 <div class="btn-group btns-radio" data-toggle="buttons-radio">
+						 <div class="btn-group btns-radio" id="btns-radio-sectionOrder" data-toggle="buttons-radio">
                             <button class="btn btn-large{{?it.sectionOrder==null || it.sectionOrder}} active{{?}}" id="true" 
 
 type="button">顺序学习</button>
@@ -183,6 +183,17 @@ type="button">顺序学习</button>
 
 id="false" type="button">无序学习</button>
                         </div>
+
+<label for="isCompulsoryCourse">是否必修课</label>
+                        <input name="isCompulsoryCourse" id="isCompulsoryCourse" value="{{=it.isCompulsoryCourse||false}}" type="hidden">
+                        <label for="isCompulsoryCourse"></label>
+						 <div class="btn-group btns-radio" id="btns-radio-isCompulsoryCourse" data-toggle="buttons-radio">
+                            <button class="btn btn-large{{?it.isCompulsoryCourse!=null && it.isCompulsoryCourse}} active{{?}}" id="true" 
+type="button">必修</button>
+                            <button class="btn btn-large{{?it.isCompulsoryCourse==null || !it.isCompulsoryCourse}} active{{?}}"
+id="false" type="button">选修</button>
+                        </div>
+
                         <label >关键词</label>
                         <div class="keywordWrap">
                         	<input type="hidden" id="keyword" name="keyword" value="{{= it.keyword || '' }}" />
@@ -253,7 +264,7 @@ rows="4">{{=it.authorDescrip || ''}}</textarea>
 
 it.learnObjectives || '' }}" />
 					<ul class="list_alert nav">						
-						{{~ it.learnObjectives :obj:index}}
+						{{~ it.learnObjectiveslist :obj:index}}
 							 {{#def.item:obj}}
 						{{~}}					  
 					</ul>
@@ -263,7 +274,7 @@ it.learnObjectives || '' }}" />
 
 it.suggestedGroup || '' }}" />
 					<ul class="list_alert nav">						
-						{{~ it.suggestedGroup :obj:index}}
+						{{~ it.suggestedGrouplist :obj:index}}
 							 {{#def.item:obj}}
 						{{~}}					  
 					</ul>
@@ -273,7 +284,7 @@ it.suggestedGroup || '' }}" />
 
 it.courseRequirements || '' }}" />
 					<ul class="list_alert nav">						
-						{{~ it.courseRequirements :obj:index}}
+						{{~ it.courseRequirementslist :obj:index}}
 							 {{#def.item:obj}}
 						{{~}}					  
 					</ul>
@@ -662,7 +673,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
 	        </div>
 			{{?}}
             <div class="section" >
-                <label>或者在下面的搜索框中输入课程素材库中的{{=it.typeTxt}}名称,同样可以添加到上面的视频列表中.</label>
+                <label>或者在下面的搜索框中输入<a id="gotoMaterial" href="#">课程素材库</a>中的{{=it.typeTxt}}名称，同样可以添加到上面的{{=it.typeTxt}}列表中。</label>
                 <div class="autoCompleteWrap">
 					<input id="addMedia" type="text"/>
 					<!--
@@ -968,6 +979,7 @@ $.Placeholder.init();
 			 courseType: $("#courseType").val(),
 			 sectionOrder: $("#sectionOrder").val(),
 			 fdPrice:$("#fdPrice").val(),
+			 isCompulsoryCourse:$("#isCompulsoryCourse").val(),
 			},
 			function(data){
 				$("#courseId").val(data.courseid);

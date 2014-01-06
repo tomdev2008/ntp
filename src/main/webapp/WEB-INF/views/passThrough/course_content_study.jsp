@@ -102,7 +102,7 @@
 						{{??}}
 							{{=it.lectureName}}
 						{{?}}
-                <button class="btn btn-success{{?!it.isOptional || it.status == "pass"}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
+                <button class="btn{{?it.isOptional || it.status == "pass"}} btn-success{{?}}{{? it.status == "pass" || !it.isOptional}} disabled{{?}}"{{?it.isOptional}} id="btnOptionalLecture"{{?}}>
                <i class="icon-right"></i>
                   <span class="tit">
 						{{?it.isOptional}}跳到此节{{??}}学习通过{{?}}
@@ -403,7 +403,7 @@
                 </div>
                 <div class="clearfix mt20" id="materialpf">
                     <div class="pull-left video-info">
-                        <h5>{{?it.type == 'video'}}视频{{??it.type == 'doc'}}文档{{??it.type == 'ppt'}}幻灯片{{?}}名称  <span class="name" id="mediaName">{{=param.name}}</span></h5>
+ 						 <h5><span class="name" id="mediaName">{{=param.name}}</span></h5>
                         <p class="mediaIntro" id="mediaIntro">
                             {{=param.intro || ""}}
                         </p>

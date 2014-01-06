@@ -84,56 +84,28 @@
                     <div class="bd">
                     	<div class="box-txt">
                             <dl>
-                                <dt>课程摘要</dt>
-                                <dd>
-                                     <j:ifelse test="${course.fdSummary!=null}">
-										<j:then>
-											${course.fdSummary} 
-										</j:then>
-										<j:else>
-											课程作者很懒，什么都没写
-										</j:else>
-									  </j:ifelse>
-                                </dd>
-                                <dt>学习目标</dt>
-                                <dd>
-                                    <ol>
-                                      <j:ifelse test="${course.fdLearnAim!=null}">
-										<j:then>
-											<tags:stringli value="${course.fdLearnAim}" sign="#"/>
-										</j:then>
-										<j:else>
-											课程作者很懒，什么都没写
-										</j:else>
-									  </j:ifelse>
-                                    </ol>
-                                </dd>
-                                <dt>建议群体</dt>
-                                <dd>
-                                    <ol>
-                                     <j:ifelse test="${course.fdProposalsGroup!=null}">
-										<j:then>
-											<tags:stringli value="${course.fdProposalsGroup}" sign="#"/>
-										</j:then>
-										<j:else>
-											课程作者很懒，什么都没写
-										</j:else>
-									  </j:ifelse>
-                                    </ol>
-                                </dd>
-                                <dt>课程要求</dt>
-                                <dd class="last">
-                                    <ol>
-                                     <j:ifelse test="${course.fdDemand!=null}">
-										<j:then>
-											<tags:stringli value="${course.fdDemand}" sign="#"/>
-										</j:then>
-										<j:else>
-											课程作者很懒，什么都没写
-										</j:else>
-									  </j:ifelse>
-                                    </ol>
-                                </dd>
+                                <j:if test="${course.fdSummary!=null && course.fdSummary!=''}">
+                                	<dt>课程摘要</dt>
+                                	<dd>${course.fdSummary}</dd>
+                                </j:if>
+                                <j:if test="${course.fdLearnAim!=null && course.fdLearnAim!=''}">
+                                	<dt>学习目标</dt>
+                                	<dd>
+										<ol><tags:stringli value="${course.fdLearnAim}" sign="#"/></ol>
+                                	</dd>
+                                </j:if>
+                                <j:if test="${course.fdProposalsGroup!=null && course.fdProposalsGroup!=''}">
+	                                <dt>建议群体</dt>
+	                                <dd>
+										<ol><tags:stringli value="${course.fdProposalsGroup}" sign="#"/></ol>
+	                                </dd>
+                                </j:if>
+                                <j:if test="${course.fdDemand!=null && course.fdDemand!=''}">
+	                                <dt>课程要求</dt>
+	                                <dd class="last">
+										<ol><tags:stringli value="${course.fdDemand}" sign="#"/></ol>
+	                                </dd>
+                                </j:if>
                             </dl>
                         </div>
                     </div>

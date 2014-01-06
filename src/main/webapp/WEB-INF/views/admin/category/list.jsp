@@ -16,13 +16,14 @@
 <!-- 学校信息 模板 -->
 <script id="sectionDirectoryTemplate" type="text/x-dot-template">
  <ul class="nav list" id="sortable"> 
-		{{for(var i=0,j=0;i<it.list[it.list.length-1].order;i++,j++){}}
+		{{for(var i=0,j=0;i<it.list[it.list.length-1].order;i++){}}
 		  {{~it.list:lec:index}}
 			{{?lec.order-1==i}}
+			{{j=j+1;}}
 			<li data-fdid="{{=lec.fdId}}">
             	<a href="${ctx}/admin/category/edit?fdId={{=lec.fdId}}"  title="编辑"> 
 			   		<input type="checkbox" name="ids" value="{{=lec.fdId}}" />
-						<span class="index">{{=j+1}}</span>. 
+						<span class="index">{{=j}}</span>. 
 						<span class="title">{{?lec.courseCategoryName.length<20}}{{=lec.courseCategoryName}}{{??}}{{=lec.courseCategoryName.substr(0,20)+"..."}}{{?}}</span>
 						<span class="date">
 							<span class="dt"></span> 
@@ -58,7 +59,7 @@
 				<div class="bd">
 					<div class="btn-toolbar">
 						<label class="checkbox" for="selectAll">
-						<input type="checkbox" id="selectAll" name="selectAll"  onclick="selectAll();"/>选中全部</label>
+						<input type="checkbox" id="selectAll" name="selectAll"/>选中全部</label>
 					</div>
 				</div>
 			</section>
@@ -112,6 +113,18 @@
 							'json'
 					); 
 				};
+				
+				$("#selectAll").bind("click",function(){
+					if(document.getElementById("selectAll").checked){
+						$('input[name="ids"]').each(function(){
+							$(this).attr("checked",true);
+						});
+					} else {
+						$('input[name="ids"]').each(function(){
+							$(this).attr("checked",false);// 
+						});
+					}
+				});
 				  
 		});
 		
@@ -132,19 +145,6 @@
 			document.filterForm.action = '${ctx}/admin/category/delete';
 			document.filterForm.submit();
 			return;
-		}
-
-		//全部选中
-		function selectAll(){
-			if(document.getElementById("selectAll").checked){
-				$('input[name="ids"]').each(function(){
-					$(this).attr("checked",true);
-				});
-			} else {
-				$('input[name="ids"]').each(function(){
-					$(this).attr("checked",false);// 
-				});
-			}
 		}
 	</script>
 </body>

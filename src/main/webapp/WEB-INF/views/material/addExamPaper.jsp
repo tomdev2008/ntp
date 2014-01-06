@@ -252,16 +252,16 @@
                     </section>
                     <div class="page-header mt20"> <h4>权限设置</h4> </div>
                     <section class="section">
-                        <label>权限设置<input type="hidden" id="permission" name="permission" value="open"></label>
+                        <label>权限设置<input type="hidden" id="permission" name="permission" value="encrypt"></label>
                         <ul class="nav nav-pills">
-                            <li class="active"><a id="open1" data-toggle="tab" href="#open">公开</a></li>
-                            <li ><a id="close1" data-toggle="tab" href="#encrypt">加密</a></li>
+                            <li><a id="open1" data-toggle="tab" href="#open">公开</a></li>
+                            <li class="active"><a id="close1" data-toggle="tab" href="#encrypt">加密</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="open">
+                            <div class="tab-pane" id="open">
                                 提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
                             </div>
-                            <div class="tab-pane" id="encrypt">
+                            <div class="tab-pane active" id="encrypt">
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
@@ -625,7 +625,7 @@ $(function(){
     /*加载作业页面*/
     function loadExamPage(fdid){
     	var materialName = $("#examPaperName").val();
-    	var examPaperIntro = $("#examPaperIntro").val()==""?"作业包作者很懒,没有写作业包简介.":$("#examPaperIntro").val();
+    	var examPaperIntro = $("#examPaperIntro").val()==""?"作业包作者很懒，没有写作业包简介。":$("#examPaperIntro").val();
     	var studyTime = $("#examPaperTime").val();
     	
         if(materialName==""||materialName==null){

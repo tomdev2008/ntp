@@ -7,8 +7,6 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<link rel="stylesheet" href="${ctx}/resources/css/global.css" />
-<link href="${ctx}/resources/css/settings.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/uploadify/uploadify.css"/> 
 <style>
 .uploadify-button {

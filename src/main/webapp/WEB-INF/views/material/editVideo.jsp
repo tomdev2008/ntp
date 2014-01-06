@@ -45,7 +45,7 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="${ctx}/material/findList?fdType=${materialInfo.fdType}&order=FDCREATETIME" class="backParent">
+                <a href="${ctx}/material/findList?fdType=${param.fdType}&order=FDCREATETIME" class="backParent">
                 <span id="back"></span>
                </a>
                 <h4><tags:title value="${materialInfo.fdName}" size="16" ></tags:title></h4>
@@ -260,7 +260,12 @@
                     <section class="section">
                         <label>权限设置</label>
                         <ul class="nav nav-pills">
-                        <c:if test="${materialInfo.isPublish!=false}">
+                        <c:if test="${materialInfo.isPublish==null}">
+                            <li><a data-toggle="tab" href="#open">公开</a></li>
+                            <li class="active"><a data-toggle="tab" href="#encrypt">加密</a></li>
+                            <input type="hidden" id="permission" name="permission" value="encrypt">
+                         </c:if>
+                        <c:if test="${materialInfo.isPublish==true}">
                             <li class="active"><a data-toggle="tab" href="#open">公开</a></li>
                             <li><a data-toggle="tab" href="#encrypt">加密</a></li>
                             <input type="hidden" id="permission" name="permission" value="open">
@@ -272,7 +277,7 @@
                          </c:if>
                         </ul>
                         <div class="tab-content">
-                          <c:if test="${materialInfo.isPublish!=false}">
+                          <c:if test="${materialInfo.isPublish==true}">
                              <div class="tab-pane active" id="open">
                                 	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
                              </div>
@@ -304,7 +309,22 @@
                                 </div>
                             </div>
                           </c:if>
-                            
+                            <c:if test="${materialInfo.isPublish==null}">
+                             <div class="tab-pane" id="open">
+                                	提示：“公开”素材将允许所有主管在管理课程的过程中使用，而“加密”素材将允许您手动授权某些主管使用本课程素材。
+                             </div>
+                             <div class="tab-pane active" id="encrypt">
+                                <table class="table table-bordered">
+                                    <thead><tr><th>授权用户</th><th>可使用</th>
+                                     <th>可编辑</th><th>删除</th></tr></thead>
+                                    <tbody id="list_user"></tbody>
+                                </table>
+                                <div class="pr">
+                                    <input type="text" id="addUser" class="autoComplete input-block-level" placeholder="请输入人名、邮箱、机构或者部门查找用户">
+                                    
+                                </div>
+                            </div>
+                          </c:if>
                         </div>
                     </section>
                     <button class="btn btn-block btn-submit btn-inverse" type="submit">保存</button>
@@ -368,7 +388,7 @@ $(function(){
   		$("#materialIntro").html("视频简介");
   		$("#back").html("返回视频列表");
   		$("#typeTxt").html("视&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;频");
-  		data_uploadIntro = "（支持绝大多数主流视频格式，建议小于10G）：成功上传的视频将会显示在下面视频列表中。";
+  		data_uploadIntro = "上传视频（支持绝大多数主流视频格式，建议小于10G）：成功上传的视频将会显示在下面视频列表中。";
   		$("#uploadIntro").html(data_uploadIntro);
   		uptype='*.wmv;*.wm;*.asf;*.asx;*.rm;*.rmvb;*.ra;*.ram;*.mpg;*.mpeg;*.mpe;*.vob;*.dat;*.mov;*.3gp;*.mp4;*.mp4v;*.m4v;*.mkv;*.avi;*.flv;*.f4v;*.mts;';
   		break;
@@ -411,7 +431,7 @@ $(function(){
     $progress = $txt.prev(".progress").children(".bar"),
     $pct = $txt.children(".pct"),
     $countdown = $txt.children(".countdown"),
-	flag = true,pct,interval,timeOutAlert,countdown = 0,byteUped = 0;
+    intervalSpeed={},isResponse = false,countdown = 0,byteUped = 0;
 
 	$("#upMaterial").uploadify({
     'height' : 40,
@@ -430,8 +450,7 @@ $(function(){
     'onUploadStart' : function (file) {},
     'onUploadSuccess' : function (file, data, Response) {
         if (Response) {
-        	setTimeout(function(){
-        		timeOutAlert.modal("hide");
+        	isResponse = true;
         		$countdown.text("00:00:00");
             	$progress.width("0");
             	$pct.text("0%");
@@ -447,28 +466,38 @@ $(function(){
                 if($("#videoUrl").val()!=null && $("#videoUrl").val()!=""){
                 	$("#videoUrl").val("");//清空视频链接
                 }
-        	},1500);
         } 
     },
     'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
-    	pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
     	byteUped = bytesUploaded;
-    	if(flag){
-    		interval = setInterval(uploadSpeed,100);
-    		flag = false;
+    	if(bytesUploaded == 0){
+    		var pct="0%";
+    		countdown = 0;
+    		intervalSpeed = setInterval(uploadSpeed,100);
+    		isResponse = false;
     	}
     	if(bytesUploaded == bytesTotal){
-    		clearInterval(interval);
+    		clearInterval(intervalSpeed);
     		$.fn.jalert({
    	    		content: function(modalBody){
-   	    			timeOutAlert = modalBody.html('<p align="center"><i class="icon-loading"></i></p>\
+   	    			var timeOutModal = modalBody.html('<p align="center"><i class="icon-loading"></i></p>\
    	     	    		<p align="center">服务器正在存储文件，请耐心等候...</p>')
    	     	    		.parent(".modal");
+   	    			var itl = setInterval(function(){
+   	    				if(isResponse && timeOutModal.hasClass("in")){ 
+   	    					clearInterval(itl);
+	            			setTimeout(function(){
+	            				timeOutModal.modal("hide");
+	            				console.log("hide,"+new Date());
+	   	            		},1000);
+	            		} 
+	            	},500);
    	    		},
    	    		tip: true,
    	    		tipTime: false
-    		});
+    		});    		
     	}
+    	pct = Math.round((bytesUploaded/bytesTotal)*100)+'%';
     	$progress.width(pct);
     	$pct.text(pct);
     	countdown>0 && $countdown.text(secTransform((bytesTotal-bytesUploaded)/countdown*10));
@@ -501,7 +530,7 @@ $(function(){
 </script>
 <script type="text/javascript">
 $(function(){
-    $.Placeholder.init();
+    
     //授权管理 用户列表 模板函数
     var listUserKinguserFn = doT.template(document.getElementById("listUserKinguserTemplate").text);
     //初始化创建者
@@ -545,7 +574,20 @@ $(function(){
 		  }
 	  });
     
-    
+	if('${materialInfo.fdId}'==''){
+		if($("#fdType").val()=='01'){
+	  		$("#videoIntro").attr("placeholder","视频作者很懒,没有写视频简介。");
+		}
+		if($("#fdType").val()=='02'){
+			$("#videoIntro").attr("placeholder","音频作者很懒,没有写音频简介。");
+		}
+		if($("#fdType").val()=='04'){
+	    	$("#videoIntro").attr("placeholder","文档作者很懒,没有写文档简介。");
+	    }
+	    if($("#fdType").val()=='05'){
+	    	$("#videoIntro").attr("placeholder","幻灯片作者很懒,没有写幻灯片简介。");
+	    }
+	}
     $("#formEditDTotal").validate({
         submitHandler:saveMaterial
     });
@@ -632,6 +674,7 @@ $(function(){
 			$("#addUser").val("");
 		}
 	});
+    $.Placeholder.init();
 });
 function saveMaterial(){
 	if(!$("#formEditDTotal").valid()){
@@ -639,22 +682,27 @@ function saveMaterial(){
 	}
 	if($("#videoIntro").val()==""){
 		if($("#fdType").val()=='01'){
-	  		$("#videoIntro").val("视频作者很懒,没有写视频简介.");
+	  		$("#videoIntro").val("视频作者很懒，没有写视频简介。");
 		}
 		if($("#fdType").val()=='02'){
-			$("#videoIntro").val("音频作者很懒,没有写音频简介.");
+			$("#videoIntro").val("音频作者很懒，没有写音频简介。");
 		}
 		if($("#fdType").val()=='04'){
-	    	$("#videoIntro").val("文档作者很懒,没有写文档简介.");
+	    	$("#videoIntro").val("文档作者很懒，没有写文档简介。");
 	    }
 	    if($("#fdType").val()=='05'){
-	    	$("#videoIntro").val("幻灯片作者很懒,没有写幻灯片简介.");
+	    	$("#videoIntro").val("幻灯片作者很懒，没有写幻灯片简介。");
 	    }
 	} 
+	var vUrl = "";
+	if($("#videoUrl").val()!=$("#videoUrl").attr("placeholder")){
+		vUrl = $("#videoUrl").val();
+	}
+	
     var data = {
         videoName: $("#videoName").val(),
         fdId: $("#fdId").val(),
-        videoUrl: $("#videoUrl").val(),
+        videoUrl: vUrl,
         videoIntro: $("#videoIntro").val(),
         author: $("#author").val(),
         authorIntro: $("#authorIntro").val(),

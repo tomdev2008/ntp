@@ -71,7 +71,7 @@ public class ExamQuestionAjaxController {
 			exam.setFdType(Constant.MATERIAL_TYPE_TEST);
 			exam.setFdName(materialName);
 			exam.setFdCreateTime(new Date());
-			exam.setIsPublish(true);
+			exam.setIsPublish(false);
 			exam.setIsDownload(true);
 			exam.setIsAvailable(true);
 			exam.setFdDescription(materialintro);

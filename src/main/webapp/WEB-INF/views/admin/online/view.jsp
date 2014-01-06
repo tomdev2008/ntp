@@ -18,8 +18,6 @@
 <script type="text/javascript">
 $("#rightCont .bder2").addClass("hide");
 </script>
-<form name="filterForm">
-</form>
 <div class="page-body editingBody">
 <div class="page-header">
                 
@@ -72,6 +70,7 @@ $("#rightCont .bder2").addClass("hide");
 
                 </form>
             </div>
-
+<form name="filterForm">
+</form>
 </body>
 </html>
