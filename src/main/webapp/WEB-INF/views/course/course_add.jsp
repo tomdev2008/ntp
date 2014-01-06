@@ -175,7 +175,7 @@ level" value="{{=it.courseTit || ''}}"  />
                         <label for="sectionOrder">章节顺序</label>
                         <input name="sectionOrder" id="sectionOrder" value="{{=it.sectionOrder||true}}" type="hidden">
                         <label for="sectionOrder"></label>
-						 <div class="btn-group btns-radio" data-toggle="buttons-radio">
+						 <div class="btn-group btns-radio" id="btns-radio-sectionOrder" data-toggle="buttons-radio">
                             <button class="btn btn-large{{?it.sectionOrder==null || it.sectionOrder}} active{{?}}" id="true" 
 
 type="button">顺序学习</button>
@@ -183,6 +183,17 @@ type="button">顺序学习</button>
 
 id="false" type="button">无序学习</button>
                         </div>
+
+<label for="isCompulsoryCourse">是否必修课</label>
+                        <input name="isCompulsoryCourse" id="isCompulsoryCourse" value="{{=it.isCompulsoryCourse||true}}" type="hidden">
+                        <label for="isCompulsoryCourse"></label>
+						 <div class="btn-group btns-radio" id="btns-radio-isCompulsoryCourse" data-toggle="buttons-radio">
+                            <button class="btn btn-large{{?it.isCompulsoryCourse==null || it.isCompulsoryCourse}} active{{?}}" id="true" 
+type="button">必修</button>
+                            <button class="btn btn-large{{?it.isCompulsoryCourse!=null && !it.isCompulsoryCourse}} active{{?}}"
+id="false" type="button">选修</button>
+                        </div>
+
                         <label >关键词</label>
                         <div class="keywordWrap">
                         	<input type="hidden" id="keyword" name="keyword" value="{{= it.keyword || '' }}" />
@@ -968,6 +979,7 @@ $.Placeholder.init();
 			 courseType: $("#courseType").val(),
 			 sectionOrder: $("#sectionOrder").val(),
 			 fdPrice:$("#fdPrice").val(),
+			 isCompulsoryCourse:$("#isCompulsoryCourse").val(),
 			},
 			function(data){
 				$("#courseId").val(data.courseid);

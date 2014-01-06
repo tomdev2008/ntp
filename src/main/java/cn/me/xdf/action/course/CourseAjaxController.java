@@ -154,6 +154,7 @@ public class CourseAjaxController {
 				map.put("courseTit", course.getFdTitle());
 				map.put("subTit", course.getFdSubTitle());
 				map.put("sectionOrder", course.getIsOrder());
+				map.put("isCompulsoryCourse", course.getIsCompulsoryCourse());
 				if(course.getFdPrice()!=null){
 					String fdPrice = new java.text.DecimalFormat("0.00").format(course.getFdPrice());
 					map.put("fdPrice", fdPrice);
@@ -206,6 +207,8 @@ public class CourseAjaxController {
 		SysOrgPerson sysOrgPerson=accountService.load(ShiroUtils.getUser().getId());
 		//创建时间
 		Date createdate=new Date();
+		// 获取课程必修选修
+		String isCompulsoryCourse = request.getParameter("isCompulsoryCourse");
 		
 		Map map = new HashMap();
 		CourseInfo course = new CourseInfo();
@@ -224,6 +227,7 @@ public class CourseAjaxController {
 				course.setIsAvailable(true);
 				course.setIsPublish(false);
 				course.setIsOrder(Boolean.valueOf(sectionOrder));
+				course.setIsCompulsoryCourse(Boolean.valueOf(isCompulsoryCourse));
 				// 将分类保存到课程中
 				if (StringUtil.isNotEmpty(courseType)) {
 					CourseCategory category = courseCategoryService
@@ -241,6 +245,7 @@ public class CourseAjaxController {
 				course.setFdTitle(courseTitle);
 				course.setFdSubTitle(subTitle);
 				course.setIsOrder(Boolean.valueOf(sectionOrder));
+				course.setIsCompulsoryCourse(Boolean.valueOf(isCompulsoryCourse));
 				// 将分类保存到课程中
 				if (StringUtil.isNotEmpty(courseType)) {
 					CourseCategory category = courseCategoryService
@@ -264,6 +269,7 @@ public class CourseAjaxController {
 			course.setIsAvailable(true);
 			course.setIsPublish(false);
 			course.setIsOrder(Boolean.valueOf(sectionOrder));
+			course.setIsCompulsoryCourse(Boolean.valueOf(isCompulsoryCourse));
 			// 将分类保存到课程中
 			if (StringUtil.isNotEmpty(courseType)) {
 				CourseCategory category = courseCategoryService.get(courseType);
