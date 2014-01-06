@@ -32,7 +32,7 @@
                                     <div class="rating-view">
                                             <span class="rating-all">
 												{{for(var i=1;i<=5;i++){}}
-													{{?course.average>i}}
+													{{?course.average>=i}}
 													<i class="icon-star active"/>
 													{{??}}													
                                                 	<i class="icon-star "/>
@@ -82,7 +82,7 @@
 <script id="seriesTemplate" type="text/x-dot-template">
 						{{~it.newestSeries:series:index}}
 							<a href="javascript:void(0)" data-fdid="{{=series.seriesId}}">
-                    			<img src="{{?series.seriesImg!=""}}${ctx}/common/file/image/{{=series.seriesImg}}{{??}}${ctx }/resources/images/temp-newClass.jpg{{?}}" alt="">
+                    			<img src="{{?series.seriesImg!=""}}${ctx}/common/file/image/{{=series.seriesImg}}{{??}}${ctx }/resources/images/default-cover.png{{?}}" alt="">
                     			<span class="mask"></span>
                     			<span class="caption">
                                 	<h6 id="seriesName">{{=series.seriesName}}</h6>
