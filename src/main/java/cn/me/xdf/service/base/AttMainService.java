@@ -68,10 +68,10 @@ public class AttMainService extends SimpleService {
         try {
             paramsMap.put("videoid", attMain.getPlayCode());
             paramsMap.put("userid", Config.userid);
-            String title = attMain.getFdFileName();
+            //String title = attMain.getFdFileName();
             String tag = "NTP";
             String description = attMain.getFdFileName();
-            paramsMap.put("title", title);
+            //paramsMap.put("title", title);
             paramsMap.put("tag", tag);
             paramsMap.put("description", description);
             paramsMap.put("categoryid", "0FB948A49BFC3E78");
