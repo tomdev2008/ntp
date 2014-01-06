@@ -70,6 +70,9 @@
 
                 <!--测试-->
                 <value>cn.me.xdf.model.demo</value>
+                
+                 <!--私信-->
+                <value>cn.me.xdf.model.letter</value>
 
                 <!-- 日志 -->
                 <value>cn.me.xdf.model.log</value>
