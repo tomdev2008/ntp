@@ -171,11 +171,17 @@ public class MachineListener
     }
 
     private boolean validationUser(){
-        if (ShiroUtils.getSubject() == null)
-            return false;
-        ShiroDbRealm.ShiroUser user = ShiroUtils.getUser();
-        if(user==null )
-            return false;
-        return true;
+    	try {
+    		 if (ShiroUtils.getSubject() == null)
+    	            return false;
+    	        ShiroDbRealm.ShiroUser user = ShiroUtils.getUser();
+    	        if(user==null )
+    	            return false;
+    	        return true;
+			
+		} catch (Exception e) {
+			return false;
+		}
+       
     }
 }
