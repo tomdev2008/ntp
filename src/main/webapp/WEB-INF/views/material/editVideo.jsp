@@ -45,7 +45,7 @@
 	  </section>
 		<section class="w790 pull-right" id="rightCont">
 	        <div class="page-header">
-                <a href="${ctx}/material/findList?fdType=${materialInfo.fdType}&order=FDCREATETIME" class="backParent">
+                <a href="${ctx}/material/findList?fdType=${param.fdType}&order=FDCREATETIME" class="backParent">
                 <span id="back"></span>
                </a>
                 <h4><tags:title value="${materialInfo.fdName}" size="16" ></tags:title></h4>
