@@ -673,7 +673,7 @@ bar"></span><span class="icon-bar"></span><span class="icon-bar"></span><span cl
 	        </div>
 			{{?}}
             <div class="section" >
-                <label>或者在下面的搜索框中输入<a id="gotoMaterial" href="#">课程素材库</a>库中的{{=it.typeTxt}}名称，同样可以添加到上面的视频列表中。</label>
+                <label>或者在下面的搜索框中输入<a id="gotoMaterial" href="#">课程素材库</a>中的{{=it.typeTxt}}名称，同样可以添加到上面的{{=it.typeTxt}}列表中。</label>
                 <div class="autoCompleteWrap">
 					<input id="addMedia" type="text"/>
 					<!--
