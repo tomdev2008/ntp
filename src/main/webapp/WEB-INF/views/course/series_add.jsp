@@ -202,7 +202,7 @@
 				<div class="control-group">
                     <label class="control-label" for="sectionsIntro">阶段说明</label>
                     <div class="controls">
-                        <textarea placeholder="系列作者很懒,没有写阶段说明" rows="4"  class="input-xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>
+                        <textarea placeholder="系列作者很懒，没有写阶段说明。" rows="4"  class="input-xxlarge" id="sectionsIntro" name="sectionsIntro" >{{=it.sectionsIntro || ''}}</textarea>
                     </div>
                 </div>
 	       </div>
@@ -380,7 +380,7 @@ function saveDirectory(){//触发一个提交事件
 		$.post('${ctx}/ajax/series/saveSeriesBaseInfo',{
 			 seriesId:$("#seriesId").val(),
 			 seriesTitle: $("#seriesTitle").val(),
-			 seriesDesc:  $("#seriesDesc").val()==""?"系列作者很懒,没有写系列描述":$("#seriesDesc").val(),
+			 seriesDesc:  $("#seriesDesc").val()==""?"系列作者很懒，没有写系列描述。":$("#seriesDesc").val(),
 			 seriesAuthor: $("#seriesAuthor").val(),
 			 authorDesc: $("#authorDesc").val()
 			 //isavailable:$("#sectionIsava").val()

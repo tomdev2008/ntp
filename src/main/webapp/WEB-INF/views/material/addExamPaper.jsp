@@ -625,7 +625,7 @@ $(function(){
     /*加载作业页面*/
     function loadExamPage(fdid){
     	var materialName = $("#examPaperName").val();
-    	var examPaperIntro = $("#examPaperIntro").val()==""?"作业包作者很懒,没有写作业包简介.":$("#examPaperIntro").val();
+    	var examPaperIntro = $("#examPaperIntro").val()==""?"作业包作者很懒，没有写作业包简介。":$("#examPaperIntro").val();
     	var studyTime = $("#examPaperTime").val();
     	
         if(materialName==""||materialName==null){

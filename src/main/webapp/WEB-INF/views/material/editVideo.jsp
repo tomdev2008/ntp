@@ -662,16 +662,16 @@ function saveMaterial(){
 	}
 	if($("#videoIntro").val()==""){
 		if($("#fdType").val()=='01'){
-	  		$("#videoIntro").val("视频作者很懒,没有写视频简介。");
+	  		$("#videoIntro").val("视频作者很懒，没有写视频简介。");
 		}
 		if($("#fdType").val()=='02'){
-			$("#videoIntro").val("音频作者很懒,没有写音频简介。");
+			$("#videoIntro").val("音频作者很懒，没有写音频简介。");
 		}
 		if($("#fdType").val()=='04'){
-	    	$("#videoIntro").val("文档作者很懒,没有写文档简介。");
+	    	$("#videoIntro").val("文档作者很懒，没有写文档简介。");
 	    }
 	    if($("#fdType").val()=='05'){
-	    	$("#videoIntro").val("幻灯片作者很懒,没有写幻灯片简介。");
+	    	$("#videoIntro").val("幻灯片作者很懒，没有写幻灯片简介。");
 	    }
 	} 
     var data = {
