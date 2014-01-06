@@ -58,7 +58,7 @@
 				<div class="bd">
 					<div class="btn-toolbar">
 						<label class="checkbox" for="selectAll">
-						<input type="checkbox" id="selectAll" name="selectAll"  onclick="selectAll();"/>选中全部</label>
+						<input type="checkbox" id="selectAll" name="selectAll"/>选中全部</label>
 					</div>
 				</div>
 			</section>
@@ -112,6 +112,18 @@
 							'json'
 					); 
 				};
+				
+				$("#selectAll").bind("click",function(){
+					if(document.getElementById("selectAll").checked){
+						$('input[name="ids"]').each(function(){
+							$(this).attr("checked",true);
+						});
+					} else {
+						$('input[name="ids"]').each(function(){
+							$(this).attr("checked",false);// 
+						});
+					}
+				});
 				  
 		});
 		
@@ -132,19 +144,6 @@
 			document.filterForm.action = '${ctx}/admin/category/delete';
 			document.filterForm.submit();
 			return;
-		}
-
-		//全部选中
-		function selectAll(){
-			if(document.getElementById("selectAll").checked){
-				$('input[name="ids"]').each(function(){
-					$(this).attr("checked",true);
-				});
-			} else {
-				$('input[name="ids"]').each(function(){
-					$(this).attr("checked",false);// 
-				});
-			}
 		}
 	</script>
 </body>
