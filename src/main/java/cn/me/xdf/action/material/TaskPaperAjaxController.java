@@ -69,7 +69,7 @@ public class TaskPaperAjaxController {
 			info.setFdType(Constant.MATERIAL_TYPE_JOBPACKAGE);
 			info.setFdCreateTime(new Date());
 			info.setFdName(request.getParameter("materialName"));
-			info.setIsPublish(true);
+			info.setIsPublish(false);
 			info.setIsDownload(true);
 			info.setIsAvailable(true);
 			info.setFdDescription(examPaperIntro);
