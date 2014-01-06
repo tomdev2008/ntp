@@ -694,10 +694,15 @@ function saveMaterial(){
 	    	$("#videoIntro").val("幻灯片作者很懒，没有写幻灯片简介。");
 	    }
 	} 
+	var vUrl = "";
+	if($("#videoUrl").val()!=$("#videoUrl").attr("placeholder")){
+		vUrl = $("#videoUrl").val();
+	}
+	
     var data = {
         videoName: $("#videoName").val(),
         fdId: $("#fdId").val(),
-        videoUrl: $("#videoUrl").val(),
+        videoUrl: vUrl,
         videoIntro: $("#videoIntro").val(),
         author: $("#author").val(),
         authorIntro: $("#authorIntro").val(),
