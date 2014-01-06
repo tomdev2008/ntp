@@ -57,7 +57,7 @@ request.setAttribute("path", path[path.length-1]);
                 </a>
                  <ul class="dropdown-menu">
                    <li><a href="${ctx}/course/courseIndex"><i class="icon-home"></i>个人主页</a></li>
-                    <li><a href="${ctx}/notify/list/1/ALL"><i class="icon-envelope"></i>我的私信
+                    <li><a href="${ctx}/letter/findLetterList"><i class="icon-envelope"></i>我的私信
                     <span class="icon-disc-bg" id="msgNum"></span></a></li>
                     <li><a href="${ctx}/register/updateTeacher"><i class="icon-user"></i>账号设置</a></li>
                     <li><a href="${ctx}/logout"><i class="icon-off"></i>退出平台</a></li>
@@ -95,14 +95,14 @@ function getUnreadNotifyCount(){
  $.ajax({
     type: "post",
     dataType: "json",
-    url: "${ctx}/ajax/notify/notifyCount",
+    url: "${ctx}/ajax/letter/getUnReadNum",
     data: {},
     success: function(data){
     	if(data>0){
-    		$("#notify_box").html('<a href="#" class="close">×</a>'+data+'条未读消息，<a href="${ctx}/notify/list/1/ALL" >查看信息</a>')
+    		/* $("#notify_box").html('<a href="#" class="close">×</a>'+data+'条未读消息，<a href="${ctx}/letter/findLetterList" >查看信息</a>')
         	.show().find(".close").click(function(){
         		$(this).parent().remove();
-        	});
+        	}); */
         	$("#notify").append('<i class="icon-disc"></i>');
         	$("#msgNum").text(data);
     	}else{
@@ -112,5 +112,5 @@ function getUnreadNotifyCount(){
     }
  }); 
 }
-///getUnreadNotifyCount();
+getUnreadNotifyCount();
 </script>
