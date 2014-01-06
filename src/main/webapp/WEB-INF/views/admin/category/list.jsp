@@ -16,13 +16,14 @@
 <!-- 学校信息 模板 -->
 <script id="sectionDirectoryTemplate" type="text/x-dot-template">
  <ul class="nav list" id="sortable"> 
-		{{for(var i=0,j=0;i<it.list[it.list.length-1].order;i++,j++){}}
+		{{for(var i=0,j=0;i<it.list[it.list.length-1].order;i++){}}
 		  {{~it.list:lec:index}}
 			{{?lec.order-1==i}}
+			{{j=j+1;}}
 			<li data-fdid="{{=lec.fdId}}">
             	<a href="${ctx}/admin/category/edit?fdId={{=lec.fdId}}"  title="编辑"> 
 			   		<input type="checkbox" name="ids" value="{{=lec.fdId}}" />
-						<span class="index">{{=j+1}}</span>. 
+						<span class="index">{{=j}}</span>. 
 						<span class="title">{{?lec.courseCategoryName.length<20}}{{=lec.courseCategoryName}}{{??}}{{=lec.courseCategoryName.substr(0,20)+"..."}}{{?}}</span>
 						<span class="date">
 							<span class="dt"></span> 
