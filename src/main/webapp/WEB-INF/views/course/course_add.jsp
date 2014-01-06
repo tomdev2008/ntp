@@ -185,12 +185,12 @@ id="false" type="button">无序学习</button>
                         </div>
 
 <label for="isCompulsoryCourse">是否必修课</label>
-                        <input name="isCompulsoryCourse" id="isCompulsoryCourse" value="{{=it.isCompulsoryCourse||true}}" type="hidden">
+                        <input name="isCompulsoryCourse" id="isCompulsoryCourse" value="{{=it.isCompulsoryCourse||false}}" type="hidden">
                         <label for="isCompulsoryCourse"></label>
 						 <div class="btn-group btns-radio" id="btns-radio-isCompulsoryCourse" data-toggle="buttons-radio">
-                            <button class="btn btn-large{{?it.isCompulsoryCourse==null || it.isCompulsoryCourse}} active{{?}}" id="true" 
+                            <button class="btn btn-large{{?it.isCompulsoryCourse!=null && it.isCompulsoryCourse}} active{{?}}" id="true" 
 type="button">必修</button>
-                            <button class="btn btn-large{{?it.isCompulsoryCourse!=null && !it.isCompulsoryCourse}} active{{?}}"
+                            <button class="btn btn-large{{?it.isCompulsoryCourse==null || !it.isCompulsoryCourse}} active{{?}}"
 id="false" type="button">选修</button>
                         </div>
 
